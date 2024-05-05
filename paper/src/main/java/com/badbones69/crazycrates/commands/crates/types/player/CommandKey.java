@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.commands.crates.types.player;
 
-import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import com.ryderbelserion.vital.util.builders.PlayerBuilder;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
@@ -17,7 +16,7 @@ public class CommandKey {
     @Command
     @Permission(value = "crazycrates.keys", def = PermissionDefault.TRUE)
     public void personal(Player player) {
-        /*Map<String, String> placeholders = new HashMap<>();
+        /*Map<String, String> placeholders = new ConcurrentHashMap<>();
 
         placeholders.put("{crates_opened}", String.valueOf(this.userManager.getTotalCratesOpened(player.getUniqueId())));
 
@@ -33,7 +32,7 @@ public class CommandKey {
             return;
         }
 
-        Map<String, String> placeholders = new HashMap<>();
+        Map<String, String> placeholders = new ConcurrentHashMap<>();
 
         placeholders.put("{player}", target.getName());
         placeholders.put("{crates_opened}", String.valueOf(this.userManager.getTotalCratesOpened(target.getUniqueId())));

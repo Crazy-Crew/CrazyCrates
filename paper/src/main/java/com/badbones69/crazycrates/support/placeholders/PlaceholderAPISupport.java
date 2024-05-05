@@ -17,11 +17,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class PlaceholderAPISupport extends PlaceholderExpansion {
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
+    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
     @Override
     public @NotNull final String onRequest(final OfflinePlayer player, @NotNull final String identifier) {
@@ -114,30 +114,27 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
     }
     
     @Override
-    public boolean persist() {
+    public final boolean persist() {
         return true;
     }
 
     @Override
-    public boolean canRegister() {
+    public final boolean canRegister() {
         return true;
     }
 
     @Override
-    @NotNull
-    public String getIdentifier() {
+    public @NotNull final String getIdentifier() {
         return this.plugin.getName().toLowerCase();
     }
     
     @Override
-    @NotNull
-    public String getAuthor() {
+    public @NotNull final String getAuthor() {
         return "BadBones69";
     }
     
     @Override
-    @NotNull
-    public String getVersion() {
+    public @NotNull final String getVersion() {
         return this.plugin.getPluginMeta().getVersion();
     }
 }

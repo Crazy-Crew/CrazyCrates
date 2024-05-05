@@ -30,19 +30,19 @@ public class PlayerPrizeEvent extends Event {
         return handlers;
     }
     
-    public Player getPlayer() {
+    public @NotNull final Player getPlayer() {
         return this.player;
     }
     
-    public Crate getCrate() {
+    public @NotNull final Crate getCrate() {
         return this.crate;
     }
     
-    public String getCrateName() {
+    public @NotNull final String getCrateName() {
         return this.crateName;
     }
     
-    public Prize getPrize() {
+    public @NotNull final Prize getPrize() {
         return this.prize;
     }
 }

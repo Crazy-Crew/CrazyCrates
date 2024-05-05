@@ -8,12 +8,12 @@ import eu.decentsoftware.holograms.api.holograms.Hologram;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DecentHologramsSupport extends HologramManager {
 
-    private final Map<String, Hologram> holograms = new HashMap<>();
+    private final Map<String, Hologram> holograms = new ConcurrentHashMap<>();
 
     @Override
     public void createHologram(Location location, Crate crate) {

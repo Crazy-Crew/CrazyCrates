@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import org.bukkit.Color;
@@ -26,9 +27,10 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MiscUtils {
@@ -87,7 +89,7 @@ public class MiscUtils {
     // ElectronicBoy is the author.
     public static @Nullable Map<Integer, ItemStack> removeMultipleItemStacks(@NotNull final Inventory inventory, @NotNull final ItemStack... items) {
         if (items != null) {
-            HashMap<Integer, ItemStack> leftover = new HashMap<>();
+            Map<Integer, ItemStack> leftover = new ConcurrentHashMap<>();
 
             // TODO: optimization
 
@@ -113,19 +115,21 @@ public class MiscUtils {
                     } else {
                         ItemStack itemStack = inventory.getItem(first);
 
-                        int amount = itemStack.getAmount();
+                        if (itemStack != null) {
+                            int amount = itemStack.getAmount();
 
-                        if (amount <= toDelete) {
-                            toDelete -= amount;
-                            // clear the slot, all used up
-                            inventory.clear(first);
-                        } else {
-                            // split the stack and store
-                            itemStack.setAmount(amount - toDelete);
+                            if (amount <= toDelete) {
+                                toDelete -= amount;
+                                // clear the slot, all used up
+                                inventory.clear(first);
+                            } else {
+                                // split the stack and store
+                                itemStack.setAmount(amount - toDelete);
 
-                            inventory.setItem(first, itemStack);
+                                inventory.setItem(first, itemStack);
 
-                            toDelete = 0;
+                                toDelete = 0;
+                            }
                         }
                     }
 

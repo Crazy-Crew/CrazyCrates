@@ -20,8 +20,8 @@ public class CommandReload extends BaseCommand {
 
         this.fileManager.create();
 
-        FileConfiguration locations = Files.locations.getFile();
-        FileConfiguration data = Files.data.getFile();
+        final FileConfiguration locations = Files.locations.getFile();
+        final FileConfiguration data = Files.data.getFile();
 
         if (!locations.contains("Locations")) {
             locations.set("Locations.Clear", null);

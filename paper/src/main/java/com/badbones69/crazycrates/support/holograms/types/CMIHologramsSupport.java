@@ -12,14 +12,14 @@ import net.Zrips.CMILib.Container.CMILocation;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CMIHologramsSupport extends HologramManager {
 
     private final com.Zrips.CMI.Modules.Holograms.HologramManager hologramManager = CMI.getInstance().getHologramManager();
 
-    private final Map<String, CMIHologram> holograms = new HashMap<>();
+    private final Map<String, CMIHologram> holograms = new ConcurrentHashMap<>();
 
     @Override
     public void createHologram(Location location, Crate crate) {

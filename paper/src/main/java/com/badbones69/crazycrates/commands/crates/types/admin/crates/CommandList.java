@@ -13,12 +13,12 @@ public class CommandList extends BaseCommand {
     @Command("list")
     @Permission(value = "crazycrates.list", def = PermissionDefault.OP)
     public void list(CommandSender sender) {
-        StringBuilder crates = new StringBuilder();
+        final StringBuilder crates = new StringBuilder();
         String brokeCrates;
 
         this.crateManager.getUsableCrates().forEach(crate -> crates.append("<green>").append(crate.getName()).append("<dark_gray>, "));
 
-        StringBuilder brokeCratesBuilder = new StringBuilder();
+        final StringBuilder brokeCratesBuilder = new StringBuilder();
 
         this.crateManager.getBrokeCrates().forEach(crate -> brokeCratesBuilder.append("<red>").append(crate).append(".yml<dark_gray>,"));
 
@@ -32,13 +32,13 @@ public class CommandList extends BaseCommand {
         sender.sendRichMessage("<red>[ID]<dark_gray>, <red>[Crate]<dark_gray>, <red>[World]<dark_gray>, <red>[X]<dark_gray>, <red>[Y]<dark_gray>, <red>[Z]");
         int line = 1;
 
-        for (CrateLocation loc : this.crateManager.getCrateLocations()) {
-            Crate crate = loc.getCrate();
-            String world = loc.getLocation().getWorld().getName();
+        for (final CrateLocation loc : this.crateManager.getCrateLocations()) {
+            final Crate crate = loc.getCrate();
+            final String world = loc.getLocation().getWorld().getName();
 
-            int x = loc.getLocation().getBlockX();
-            int y = loc.getLocation().getBlockY();
-            int z = loc.getLocation().getBlockZ();
+            final int x = loc.getLocation().getBlockX();
+            final int y = loc.getLocation().getBlockY();
+            final int z = loc.getLocation().getBlockZ();
 
             sender.sendRichMessage("<dark_gray>[<blue>" + line + "<dark_gray>]: " + "<red>" + loc.getID() + "<dark_gray>, <red>" + crate.getName() + "<dark_gray>, <red>" + world + "<dark_gray>, <red>" + x + "<dark_gray>, <red>" + y + "<dark_gray>, <red>" + z);
 

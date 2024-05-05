@@ -7,7 +7,6 @@ import com.badbones69.crazycrates.api.hooks.HeadDatabaseListener;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -17,9 +16,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class ItemUtils {
 
-    private static final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private static @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private static final @NotNull CrateManager crateManager = plugin.getCrateManager();
+    private static @NotNull final CrateManager crateManager = plugin.getCrateManager();
 
     public static void removeItem(@NotNull final ItemStack item, @NotNull final Player player) {
         try {

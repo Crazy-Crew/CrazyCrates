@@ -36,11 +36,11 @@ import java.util.UUID;
 
 public class CrateMainMenu extends InventoryBuilder {
 
-    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
+    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private final @NotNull SettingsManager config = ConfigManager.getConfig();
+    private @NotNull final SettingsManager config = ConfigManager.getConfig();
 
     public CrateMainMenu(@NotNull final Player player, final int size, @NotNull final String title) {
         super(player, size, title);
@@ -48,17 +48,17 @@ public class CrateMainMenu extends InventoryBuilder {
 
     @Override
     public InventoryBuilder build() {
-        Inventory inventory = getInventory();
+        final Inventory inventory = getInventory();
 
-        Player player = getPlayer();
-        UUID uuid = player.getUniqueId();
+        final Player player = getPlayer();
+        final UUID uuid = player.getUniqueId();
 
         if (this.config.getProperty(ConfigKeys.filler_toggle)) {
-            String id = this.config.getProperty(ConfigKeys.filler_item);
-            String name = this.config.getProperty(ConfigKeys.filler_name);
-            List<String> lore = this.config.getProperty(ConfigKeys.filler_lore);
+            final String id = this.config.getProperty(ConfigKeys.filler_item);
+            final String name = this.config.getProperty(ConfigKeys.filler_name);
+            final List<String> lore = this.config.getProperty(ConfigKeys.filler_lore);
 
-            ItemStack item = new ItemBuilder().setMaterial(id).setDisplayName(name).setDisplayLore(lore).setTarget(getPlayer()).build();
+            final ItemStack item = new ItemBuilder().setMaterial(id).setDisplayName(name).setDisplayLore(lore).setTarget(getPlayer()).build();
 
             for (int i = 0; i < getSize(); i++) {
                 inventory.setItem(i, item.clone());
@@ -66,14 +66,14 @@ public class CrateMainMenu extends InventoryBuilder {
         }
 
         if (this.config.getProperty(ConfigKeys.gui_customizer_toggle)) {
-            List<String> customizer = this.config.getProperty(ConfigKeys.gui_customizer);
+            final List<String> customizer = this.config.getProperty(ConfigKeys.gui_customizer);
 
             if (!customizer.isEmpty()) {
                 for (String custom : customizer) {
                     int slot = 0;
-                    ItemBuilder item = new ItemBuilder();
+                    final ItemBuilder item = new ItemBuilder();
 
-                    String[] split = custom.split(", ");
+                    final String[] split = custom.split(", ");
 
                     for (String option : split) {
                         if (option.contains("item:")) item.setMaterial(option.replace("item:", ""));
@@ -88,7 +88,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
                         if (option.contains("lore:")) {
                             option = option.replace("lore:", "");
-                            String[] lore = option.split(",");
+                            final String[] lore = option.split(",");
 
                             for (String line : lore) {
                                 option = getCrates(option);
@@ -121,14 +121,14 @@ public class CrateMainMenu extends InventoryBuilder {
         }
 
         for (Crate crate : this.crateManager.getUsableCrates()) {
-            FileConfiguration file = crate.getFile();
+            final FileConfiguration file = crate.getFile();
 
             if (file != null) {
-                ConfigurationSection section = file.getConfigurationSection("Crate");
+                final ConfigurationSection section = file.getConfigurationSection("Crate");
 
                 if (section != null) {
                     if (section.getBoolean("InGUI", false)) {
-                        String crateName = crate.getName();
+                        final String crateName = crate.getName();
 
                         int slot = section.getInt("Slot");
 
@@ -136,7 +136,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
                         slot--;
 
-                        ItemBuilder builder = new ItemBuilder().addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)))
+                        final ItemBuilder builder = new ItemBuilder().addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)))
                                 .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, crateName)))
                                 .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, crateName)))
                                 .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(uuid, crateName)))
@@ -151,14 +151,19 @@ public class CrateMainMenu extends InventoryBuilder {
         return this;
     }
 
-    private String getCrates(String option) {
     private @NotNull String getCrates(@NotNull String option) {
         if (option.isEmpty()) return "";
+
+        final UUID uuid = getPlayer().getUniqueId();
+
         for (Crate crate : this.crateManager.getUsableCrates()) {
-            option = option.replaceAll("%" + crate.getName().toLowerCase() + "}", this.userManager.getVirtualKeys(getPlayer().getUniqueId(), crate.getName()) + "")
-                    .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", this.userManager.getPhysicalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
-                    .replaceAll("%" + crate.getName().toLowerCase() + "_total%", this.userManager.getTotalKeys(getPlayer().getUniqueId(), crate.getName()) + "")
-                    .replaceAll("%" + crate.getName().toLowerCase() + "_opened%", this.userManager.getCrateOpened(getPlayer().getUniqueId(), crate.getName()) + "");
+            final String crateName = crate.getName();
+            final String lowerCase = crateName.toLowerCase();
+
+            option = option.replaceAll("%" + lowerCase + "}", this.userManager.getVirtualKeys(uuid, crateName) + "")
+                    .replaceAll("%" + lowerCase + "_physical%", this.userManager.getPhysicalKeys(uuid, crateName) + "")
+                    .replaceAll("%" + lowerCase + "_total%", this.userManager.getTotalKeys(uuid, crateName) + "")
+                    .replaceAll("%" + lowerCase + "_opened%", this.userManager.getCrateOpened(uuid, crateName) + "");
         }
 
         return option;
@@ -166,40 +171,40 @@ public class CrateMainMenu extends InventoryBuilder {
 
     public static class CrateMenuListener implements Listener {
 
-        private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+        private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-        private final @NotNull InventoryManager inventoryManager = this.plugin.getInventoryManager();
+        private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
-        private final @NotNull SettingsManager config = ConfigManager.getConfig();
+        private @NotNull final SettingsManager config = ConfigManager.getConfig();
 
-        private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+        private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-        private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
+        private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
         @EventHandler
         public void onInventoryClick(InventoryClickEvent event) {
-            Inventory inventory = event.getInventory();
+            final Inventory inventory = event.getInventory();
 
             if (!(inventory.getHolder(false) instanceof CrateMainMenu holder)) return;
 
             event.setCancelled(true);
 
-            Player player = holder.getPlayer();
-            Location location = player.getLocation();
-            String playerWorld = player.getWorld().getName();
-            UUID uuid = player.getUniqueId();
+            final Player player = holder.getPlayer();
+            final Location location = player.getLocation();
+            final String playerWorld = player.getWorld().getName();
+            final UUID uuid = player.getUniqueId();
 
-            ItemStack item = event.getCurrentItem();
+            final ItemStack item = event.getCurrentItem();
 
             if (item == null || item.getType() == Material.AIR) return;
 
             if (!item.hasItemMeta()) return;
 
-            Crate crate = this.crateManager.getCrateFromName(ItemUtils.getKey(item.getItemMeta()));
+            final Crate crate = this.crateManager.getCrateFromName(ItemUtils.getKey(item.getItemMeta()));
 
             if (crate == null) return;
 
-            String crateName = crate.getName();
+            final String crateName = crate.getName();
 
             if (event.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
                 if (crate.isPreviewEnabled()) {

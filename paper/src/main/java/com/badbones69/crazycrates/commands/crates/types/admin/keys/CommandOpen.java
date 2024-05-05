@@ -22,8 +22,8 @@ import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CommandOpen extends BaseCommand {
@@ -71,7 +71,7 @@ public class CommandOpen extends BaseCommand {
 
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
-            Map<String, String> placeholders = new HashMap<>();
+            final Map<String, String> placeholders = new ConcurrentHashMap<>();
 
             placeholders.put("{cratetype}", crate.getCrateType().getName());
             placeholders.put("{crate}", crate.getName());
@@ -100,7 +100,7 @@ public class CommandOpen extends BaseCommand {
                 player.playSound(player.getLocation(), ItemUtil.getSound(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
             }
 
-            Map<String, String> placeholders = new HashMap<>();
+            Map<String, String> placeholders = new ConcurrentHashMap<>();
 
             placeholders.put("{crate}", crate.getName());
             placeholders.put("{key}", crate.getKeyName());
@@ -129,15 +129,8 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
-        // If the command is cancelled.
-        if (isCancelled(player, crateName)) {
-            return;
-        }
-
         // If player is null, return.
-        if (player == null) {
-            return;
-        }
+        if (player == null) return;
 
         // Get the crate
         Crate crate = getCrate(player, crateName, true);
@@ -145,17 +138,13 @@ public class CommandOpen extends BaseCommand {
         flags.getFlagValue("f").ifPresent(arg -> {
             boolean isForced = Boolean.parseBoolean(arg);
 
-            if (isForced) {
-                keyType.set(KeyType.free_key);
-            }
+            if (isForced) keyType.set(KeyType.free_key);
         });
 
         boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType.get() == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), crate.getName()) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1;
 
         if (!hasKey && keyType.get() != KeyType.free_key) {
-            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                player.playSound(player.getLocation(), ItemUtil.getSound(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
-            }
+            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) player.playSound(player.getLocation(), ItemUtil.getSound(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
 
             sender.sendRichMessage(Messages.no_virtual_key.getMessage(sender, "{crate}", crate.getName()));
 
@@ -164,7 +153,7 @@ public class CommandOpen extends BaseCommand {
 
         this.crateManager.openCrate(player, crate, keyType.get(), player.getLocation(), true, false);
 
-        Map<String, String> placeholders = new HashMap<>();
+        final Map<String, String> placeholders = new ConcurrentHashMap<>();
 
         placeholders.put("{crate}", crate.getName());
         placeholders.put("{player}", player.getName());
@@ -176,13 +165,11 @@ public class CommandOpen extends BaseCommand {
     @Permission(value = "crazycrates.massopen", def = PermissionDefault.OP)
     public void mass(Player player, @Suggestion("crates") String crateName, @Suggestion("keys") String type, @Suggestion("numbers") int amount) {
         // If the command is cancelled.
-        if (isCancelled(player, crateName)) {
-            return;
-        }
+        if (isCancelled(player, crateName)) return;
 
-        KeyType keyType = getKeyType(player, type);
-        Crate crate = getCrate(player, crateName, true);
-        CrateType crateType = crate.getCrateType();
+        final KeyType keyType = getKeyType(player, type);
+        final Crate crate = getCrate(player, crateName, true);
+        final CrateType crateType = crate.getCrateType();
 
         int keys = keyType == KeyType.physical_key ? this.userManager.getPhysicalKeys(player.getUniqueId(), crate.getName()) : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName());
         int used = 0;

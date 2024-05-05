@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.commands;
 
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
-import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandAddItem;
 import com.badbones69.crazycrates.commands.relations.ArgumentRelations;
 import com.badbones69.crazycrates.commands.crates.types.player.CommandHelp;
@@ -43,7 +42,7 @@ public class CommandManager {
         new ArgumentRelations().build();
 
         commandManager.registerSuggestion(SuggestionKey.of("crates"), (sender, context) -> {
-            List<String> crates = new ArrayList<>(crateManager.getCrateNames());
+            final List<String> crates = new ArrayList<>(crateManager.getCrateNames());
 
             crates.add("Menu");
 
@@ -57,7 +56,7 @@ public class CommandManager {
         commandManager.registerSuggestion(SuggestionKey.of("locations"), (sender, context) -> crateManager.getCrateLocations().stream().map(CrateLocation::getID).toList());
 
         commandManager.registerSuggestion(SuggestionKey.of("prizes"), (sender, context) -> {
-            List<String> numbers = new ArrayList<>();
+            final List<String> numbers = new ArrayList<>();
 
             crateManager.getCrateFromName(context.getFirst()).getPrizes().forEach(prize -> numbers.add(prize.getSectionName()));
 

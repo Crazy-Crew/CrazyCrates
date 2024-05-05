@@ -32,20 +32,20 @@ import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CrateControlListener implements Listener {
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final @NotNull InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
-    private final @NotNull SettingsManager config = ConfigManager.getConfig();
+    private @NotNull final SettingsManager config = ConfigManager.getConfig();
 
-    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
+    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
     @EventHandler
     public void onLeftClickCrate(PlayerInteractEvent event) {
@@ -115,9 +115,6 @@ public class CrateControlListener implements Listener {
 
         Crate crate = crateLocation.getCrate();
 
-        // If crate is null, return.
-        if (crate == null) return;
-
         boolean isKey = event.getHand() == EquipmentSlot.OFF_HAND ? ItemUtils.isSimilar(player.getInventory().getItemInOffHand(), crate) : ItemUtils.isSimilar(player.getInventory().getItemInMainHand(), crate);
 
         if (isKey) {
@@ -156,7 +153,7 @@ public class CrateControlListener implements Listener {
         int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), crate.getName());
 
         if (requiredKeys > 0 && totalKeys < requiredKeys) {
-            Map<String, String> placeholders = new HashMap<>();
+            Map<String, String> placeholders = new ConcurrentHashMap<>();
 
             placeholders.put("{key_amount}", String.valueOf(requiredKeys));
             placeholders.put("{crate}", crate.getPreviewName());
@@ -176,7 +173,7 @@ public class CrateControlListener implements Listener {
 
         if (this.config.getProperty(ConfigKeys.physical_accepts_virtual_keys) && this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) hasKey = true;
 
-        Map<String, String> placeholders = new HashMap<>();
+        Map<String, String> placeholders = new ConcurrentHashMap<>();
 
         placeholders.put("{crate}", crate.getName());
         placeholders.put("{key}", keyName);

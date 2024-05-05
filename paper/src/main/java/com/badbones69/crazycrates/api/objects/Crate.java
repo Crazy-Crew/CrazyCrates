@@ -74,21 +74,21 @@ public class Crate {
     private List<Tier> tiers;
     private CrateHologram hologram;
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
+    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    private final @NotNull InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
-    private final @NotNull FileManager fileManager = this.plugin.getFileManager();
+    private @NotNull final FileManager fileManager = this.plugin.getFileManager();
 
     private int maxMassOpen;
     private int requiredKeys;
-    private List<String> prizeMessage;
+    private List<String> prizeMessage = new ArrayList<>();
 
-    private List<String> prizeCommands;
+    private List<String> prizeCommands = new ArrayList<>();
 
     /**
      * @param name The name of the crate.
@@ -97,13 +97,20 @@ public class Crate {
      * @param prizes The prizes that can be won.
      * @param file The crate file.
      */
-    public Crate(String name, String previewName, CrateType crateType, ItemBuilder key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, List<String> prizeCommands, CrateHologram hologram) {
+    public Crate(@NotNull final String name,
+                 @NotNull final String previewName,
+                 @NotNull final CrateType crateType,
+                 @NotNull final ItemBuilder key,
+                 @NotNull final String keyName,
+                 @NotNull final List<Prize> prizes,
+                 @NotNull final FileConfiguration file, final int newPlayerKeys, @NotNull final List<Tier> tiers, final int maxMassOpen, final int requiredKeys, @NotNull final List<String> prizeMessage, @NotNull final List<String> prizeCommands,
+                 @NotNull final CrateHologram hologram) {
         this.keyBuilder = key.setDisplayName(keyName).setCrateName(name);
         this.keyName = keyName;
 
         this.file = file;
         this.name = name;
-        this.tiers = tiers != null ? tiers : new ArrayList<>();
+        this.tiers = tiers;
         this.maxMassOpen = maxMassOpen;
         this.requiredKeys = requiredKeys;
         this.prizeMessage = prizeMessage;
@@ -111,13 +118,13 @@ public class Crate {
         this.prizes = prizes;
         this.crateType = crateType;
         this.preview = getPreviewItems();
-        this.previewToggle = file != null && file.getBoolean("Crate.Preview.Toggle", false);
-        this.borderToggle = file != null && file.getBoolean("Crate.Preview.Glass.Toggle", false);
+        this.previewToggle = file.getBoolean("Crate.Preview.Toggle", false);
+        this.borderToggle = file.getBoolean("Crate.Preview.Glass.Toggle", false);
 
-        this.previewTierToggle = file != null && file.getBoolean("Crate.tier-preview.toggle", false);
-        this.previewTierBorderToggle = file != null && file.getBoolean("Crate.tier-preview.glass.toggle", false);
+        this.previewTierToggle = file.getBoolean("Crate.tier-preview.toggle", false);
+        this.previewTierBorderToggle = file.getBoolean("Crate.tier-preview.glass.toggle", false);
 
-        setPreviewChestLines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
+        setPreviewChestLines(file.getInt("Crate.Preview.ChestLines", 6));
         this.previewName = previewName;
         this.newPlayerKeys = newPlayerKeys;
         this.giveNewPlayerKeys = newPlayerKeys > 0;
@@ -126,27 +133,24 @@ public class Crate {
 
         for (int amount = this.preview.size(); amount > this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0); amount -= this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0), this.maxPage++) ;
 
-        this.crateInventoryName = file != null ? file.getString("Crate.CrateName") : "";
+        this.crateInventoryName = file.getString("Crate.CrateName", " ");
 
-        String borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? file.getString("Crate.Preview.Glass.Name") : " ";
-        this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane"))
-                .hideItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
-                .setDisplayName(borderName) : new ItemBuilder().setMaterial(Material.AIR).setDisplayName(borderName);
+        String borderName = file.getString("Crate.Preview.Glass.Name", " ");
+        this.borderItem = new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane")).hideItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false)).setDisplayName(borderName);
 
-        String previewTierBorderName = file != null ? file.getString("Crate.tier-preview.glass.name", " ") : " ";
-        this.previewTierBorderItem = file != null ? new ItemBuilder().setMaterial(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane")).hideItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
-                .setDisplayName(previewTierBorderName) : new ItemBuilder().setMaterial(Material.AIR).setDisplayName(previewTierBorderName);
+        String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
+        this.previewTierBorderItem = new ItemBuilder().setMaterial(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane")).hideItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false)).setDisplayName(previewTierBorderName);
 
-        setTierPreviewRows(file != null ? file.getInt("Crate.tier-preview.rows", 5) : 5);
+        setTierPreviewRows(file.getInt("Crate.tier-preview.rows", 5));
         this.previewTierMaxSlots = this.previewTierCrateRows * 9;
 
         if (crateType == CrateType.quad_crate) {
-            this.particle = ItemUtil.getParticleType(file != null ? file.getString("Crate.particles.type", "dust") : "dust");
+            this.particle = ItemUtil.getParticleType(file.getString("Crate.particles.type", "dust"));
 
-            this.color = DyeUtil.getColor(file != null ? file.getString("Crate.particles.color", "235,64,52") : "235,64,52");
+            this.color = DyeUtil.getColor(file.getString("Crate.particles.color", "235,64,52"));
         }
 
-        this.hologram = hologram != null ? hologram : new CrateHologram();
+        this.hologram = hologram;
 
         if (crateType == CrateType.cosmic) {
             if (this.file != null) this.manager = new CosmicCrateManager(this.file);
@@ -558,20 +562,20 @@ public class Crate {
 
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
-        return getPrize(container.get(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING));
+        return getPrize(container.getOrDefault(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, ""));
     }
     
     /**
      * @return true if new players get keys and false if they do not.
      */
-    public boolean doNewPlayersGetKeys() {
+    public final boolean doNewPlayersGetKeys() {
         return this.giveNewPlayerKeys;
     }
     
     /**
      * @return the number of keys new players get.
      */
-    public int getNewPlayerKeys() {
+    public final int getNewPlayerKeys() {
         return this.newPlayerKeys;
     }
 
@@ -613,12 +617,10 @@ public class Crate {
     /**
      * @return the configuration section.
      */
-    public ConfigurationSection getPrizeSection() {
-        ConfigurationSection section = this.file.getConfigurationSection("Crate");
+    public @Nullable final ConfigurationSection getPrizeSection() {
+        final ConfigurationSection section = this.file.getConfigurationSection("Crate");
 
-        if (section == null) {
-            return null;
-        }
+        if (section == null) return null;
 
         return section.getConfigurationSection("Prizes");
     }
@@ -632,8 +634,8 @@ public class Crate {
      * @param chance the chance of the prize.
      * @param tier the tier of the prize.
      */
-    private void setItem(ItemStack itemStack, Player player, String prizeName, ConfigurationSection section, int chance, @Nullable String tier) {
-        String nbt = new ItemBuilder().getCompoundTag(itemStack, player).getCompoundTag().getAsString();
+    private void setItem(@Nullable final ItemStack itemStack, @NotNull final Player player, @NotNull final String prizeName, @Nullable final ConfigurationSection section, final int chance, @NotNull final String tier) {
+        if (itemStack == null || prizeName.isEmpty() || section == null || chance <= 0) return;
 
         final String nbt = new ItemBuilder().getCompoundTag(itemStack, player).getCompoundTag().getAsString();
         if (nbt.isEmpty()) return;
@@ -651,9 +653,9 @@ public class Crate {
 
             section.set(getPath(prizeName, "Chance"), chance);
 
-            if (tier != null) {
+            if (!tier.isEmpty()) {
                 if (section.contains(tiers)) {
-                    List<String> list = section.getStringList(tiers);
+                    final List<String> list = section.getStringList(tiers);
                     list.add(tier);
 
                     section.set(tiers, list);
@@ -673,7 +675,7 @@ public class Crate {
         section.set(getPath(prizeName, "MaxRange"), 100);
         section.set(path, nbt);
 
-        if (tier != null) {
+        if (!tier.isEmpty()) {
             section.set(tiers, new ArrayList<>() {{
                 add(tier);
             }});
@@ -712,14 +714,14 @@ public class Crate {
     /**
      * @return the max page for the preview.
      */
-    public int getMaxPage() {
+    public final int getMaxPage() {
         return this.maxPage;
     }
     
     /**
      * @return a list of the tiers for the crate. Will be empty if there are none.
      */
-    public List<Tier> getTiers() {
+    public @NotNull final List<Tier> getTiers() {
         return this.tiers;
     }
 
@@ -740,28 +742,28 @@ public class Crate {
     /**
      * @return returns the max amount that players can specify for crate mass open.
      */
-    public int getMaxMassOpen() {
+    public final int getMaxMassOpen() {
         return this.maxMassOpen;
     }
 
     /**
      * @return the amount of required keys.
      */
-    public int getRequiredKeys() {
+    public final int getRequiredKeys() {
         return this.requiredKeys;
     }
 
     /**
      * @return a list of item stacks
      */
-    public List<ItemStack> getPreview() {
+    public @NotNull final List<ItemStack> getPreview() {
         return this.preview;
     }
 
     /**
      * @return a CrateHologram which contains all the info about the hologram the crate uses.
      */
-    public CrateHologram getHologram() {
+    public @NotNull final CrateHologram getHologram() {
         return this.hologram;
     }
 
@@ -769,7 +771,7 @@ public class Crate {
      * @param baseSlot - default slot to use.
      * @return the finalized slot.
      */
-    public int getAbsoluteItemPosition(int baseSlot) {
+    public final int getAbsoluteItemPosition(final int baseSlot) {
         return baseSlot + (this.previewChestLines > 1 ? this.previewChestLines - 1 : 1) * 9;
     }
 
@@ -777,7 +779,7 @@ public class Crate {
      * @param baseSlot - default slot to use.
      * @return the finalized slot.
      */
-    public int getAbsolutePreviewItemPosition(int baseSlot) {
+    public final int getAbsolutePreviewItemPosition(final int baseSlot) {
         return baseSlot + (this.previewTierCrateRows > 1 ? this.previewTierCrateRows - 1 : 1) * 9;
     }
 
@@ -786,10 +788,10 @@ public class Crate {
      *
      * @return a list of all the preview items that were created.
      */
-    public List<ItemStack> getPreviewItems() {
-        List<ItemStack> items = new ArrayList<>();
+    public @NotNull final List<ItemStack> getPreviewItems() {
+        final List<ItemStack> items = new ArrayList<>();
 
-        for (Prize prize : getPrizes()) {
+        for (final Prize prize : getPrizes()) {
             items.add(prize.getDisplayItem());
         }
 
@@ -801,10 +803,10 @@ public class Crate {
      *
      * @return a list of all the preview items that were created.
      */
-    public List<ItemStack> getPreviewItems(Player player) {
-        List<ItemStack> items = new ArrayList<>();
+    public @NotNull final List<ItemStack> getPreviewItems(@NotNull final Player player) {
+        final List<ItemStack> items = new ArrayList<>();
 
-        for (Prize prize : getPrizes()) {
+        for (final Prize prize : getPrizes()) {
             items.add(prize.getDisplayItem(player));
         }
 
@@ -817,13 +819,11 @@ public class Crate {
      * @param tier The tier to check
      * @return list of prizes
      */
-    public List<ItemStack> getPreviewItems(Tier tier, Player player) {
-        List<ItemStack> prizes = new ArrayList<>();
+    public @NotNull final List<ItemStack> getPreviewItems(@NotNull final Tier tier, @NotNull final Player player) {
+        final List<ItemStack> prizes = new ArrayList<>();
 
-        for (Prize prize : getPrizes()) {
-            if (prize.getTiers().contains(tier)) {
-                prizes.add(prize.getDisplayItem(player));
-            }
+        for (final Prize prize : getPrizes()) {
+            if (prize.getTiers().contains(tier)) prizes.add(prize.getDisplayItem(player));
         }
 
         return prizes;

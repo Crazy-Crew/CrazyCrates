@@ -4,14 +4,13 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SpiralManager {
 
-    @NotNull
-    private static List<Location> getLocations(Location center, boolean clockWise) {
-        World world = center.getWorld();
     private static @NotNull List<Location> getLocations(@NotNull final Location center, final boolean clockWise) {
+        final World world = center.getWorld();
 
         double downWardsDistance = .05;
         double expandingRadius = .08;
@@ -24,12 +23,12 @@ public class SpiralManager {
 
         int nextLocation = 0;
 
-        double increment = (2*Math.PI) / particleAmount;
+        final double increment = (2*Math.PI) / particleAmount;
 
-        List<Location> locations = new ArrayList<>();
+        final List<Location> locations = new ArrayList<>();
 
         for (int i = 0; i < 60; i++) {
-            double angle = nextLocation * increment;
+            final double angle = nextLocation * increment;
 
             double x;
             double z;
@@ -55,7 +54,7 @@ public class SpiralManager {
             if (nextLocation == 10) nextLocation = 0;
         }
 
-        return locations;
+        return Collections.unmodifiableList(locations);
     }
 
     public static @NotNull List<Location> getSpiralLocationClockwise(@NotNull final Location center) {

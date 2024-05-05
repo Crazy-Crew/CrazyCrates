@@ -12,10 +12,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CosmicCrateManager extends AbstractCrateManager {
 
@@ -24,14 +26,14 @@ public class CosmicCrateManager extends AbstractCrateManager {
     private final FileConfiguration file;
     private final int totalPrizes;
 
-    private final Map<UUID, Map<Integer, Tier>> prizes = new HashMap<>();
+    private final Map<UUID, Map<Integer, Tier>> prizes = new ConcurrentHashMap<>();
 
     /**
      * Creates a cosmic crate manager instance.
      *
      * @param file the crate configuration.
      */
-    public CosmicCrateManager(FileConfiguration file) {
+    public CosmicCrateManager(@NotNull final FileConfiguration file) {
         this.file = file;
 
         String path = "Crate.Crate-Type-Settings.";
@@ -58,32 +60,32 @@ public class CosmicCrateManager extends AbstractCrateManager {
     /**
      * @return crate file configuration.
      */
-    public FileConfiguration getFile() {
+    public final FileConfiguration getFile() {
         return this.file;
     }
 
     /**
      * @return total prizes allowed to be won.
      */
-    public int getTotalPrizes() {
+    public final int getTotalPrizes() {
         return this.totalPrizes;
     }
 
     /**
      * @return mystery crate builder.
      */
-    public ItemBuilder getMysteryCrate() {
+    public final ItemBuilder getMysteryCrate() {
         return this.mysteryCrate;
     }
 
     /**
      * @return picked crate builder.
      */
-    public ItemBuilder getPickedCrate() {
+    public final ItemBuilder getPickedCrate() {
         return this.pickedCrate;
     }
 
-    public Tier getTier(ItemStack itemStack, Crate crate) {
+    public final Tier getTier(@NotNull final ItemStack itemStack, @NotNull final Crate crate) {
         if (itemStack.hasItemMeta()) {
             ItemMeta itemMeta = itemStack.getItemMeta();
 
@@ -101,7 +103,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
         return PrizeManager.getTier(crate);
     }
 
-    public void setTier(ItemBuilder itemBuilder, String name) {
+    public void setTier(@NotNull final ItemBuilder itemBuilder, @NotNull final String name) {
         itemBuilder.setString(PersistentKeys.crate_tier.getNamespacedKey(), name);
     }
 
@@ -112,8 +114,8 @@ public class CosmicCrateManager extends AbstractCrateManager {
      * @param player player to add
      * @param slot slot to add.
      */
-    public void addPickedPrize(Player player, int slot, Tier tier) {
-        UUID uuid = player.getUniqueId();
+    public void addPickedPrize(@NotNull final Player player, final int slot, @NotNull final Tier tier) {
+        final UUID uuid = player.getUniqueId();
 
         if (this.prizes.containsKey(uuid)) {
             this.prizes.get(uuid).put(slot, tier);
@@ -133,10 +135,10 @@ public class CosmicCrateManager extends AbstractCrateManager {
      * @param player player to remove.
      * @param slot slot to remove.
      */
-    public void removePickedPrize(Player player, int slot) {
-        UUID uuid = player.getUniqueId();
+    public void removePickedPrize(@NotNull final Player player, final int slot) {
+        final UUID uuid = player.getUniqueId();
 
-        Map<Integer, Tier> map = this.prizes.get(player.getUniqueId());
+        final Map<Integer, Tier> map = this.prizes.get(player.getUniqueId());
 
         map.entrySet().removeIf(value -> value.getKey() == slot);
 
@@ -149,14 +151,14 @@ public class CosmicCrateManager extends AbstractCrateManager {
      *
      * @param player player to remove.
      */
-    public void removePickedPlayer(Player player) {
+    public void removePickedPlayer(@NotNull final Player player) {
         this.prizes.remove(player.getUniqueId());
     }
 
     /**
      * @return unmodifiable map of picked prizes.
      */
-    public Map<Integer, Tier> getPrizes(Player player) {
+    public final Map<Integer, Tier> getPrizes(@NotNull final Player player) {
         return Collections.unmodifiableMap(this.prizes.getOrDefault(player.getUniqueId(), new HashMap<>()));
     }
 }

@@ -20,16 +20,15 @@ public class ShulkerPrize extends PrizeBuilder {
     private int chance;
 
     @Override
-    public void init(ConfigurationSection section) {
-        String material = section.getString("DisplayItem", "shulker_box");
-        String name = section.getString("DisplayName", material.replaceAll("_", " "));
-        int amount = section.getInt("DisplayAmount", 1);
     public void init(@NotNull final ConfigurationSection section) {
+        final String material = section.getString("DisplayItem", "shulker_box");
+        final String name = section.getString("DisplayName", material.replaceAll("_", " "));
+        final int amount = section.getInt("DisplayAmount", 1);
 
         // The display item.
         this.builder.setMaterial(material).setDisplayName(name).setAmount(amount);
 
-        ItemStack itemStack = this.builder.getItemStack();
+        final ItemStack itemStack = this.builder.getItemStack();
 
         itemStack.editMeta(itemMeta -> {
             if (!(itemMeta instanceof BlockStateMeta block)) {
@@ -40,32 +39,32 @@ public class ShulkerPrize extends PrizeBuilder {
                 return;
             }
 
-            List<String> content = section.getStringList("DisplayContent");
+            final List<String> content = section.getStringList("DisplayContent");
 
-            List<ItemStack> items = new ArrayList<>(27);
+            final List<ItemStack> items = new ArrayList<>(27);
 
-            for (String line : content) {
-                ItemBuilder shulkerItem = new ItemBuilder();
+            for (final String line : content) {
+                final ItemBuilder shulkerItem = new ItemBuilder();
 
-                for (String key : line.split(", ")) {
-                    String option = key.split(":")[0];
-                    String value = key.replace(option + ":", "").replace(option, "");
+                for (final String key : line.split(", ")) {
+                    final String option = key.split(":")[0];
+                    final String value = key.replace(option + ":", "").replace(option, "");
 
                     switch (option.toLowerCase()) {
                         case "item" -> {
-                            String[] item = value.split(";");
+                            final String[] item = value.split(";");
 
-                            String mat = item[0];
-                            int matAmount = Integer.parseInt(item[1]);
+                            final String mat = item[0];
+                            final int matAmount = Integer.parseInt(item[1]);
 
                             shulkerItem.setMaterial(mat).setAmount(matAmount);
                         }
 
                         case "enchantments" -> {
-                            String[] enchantments = value.split("\\|")[0].split(";");
+                            final String[] enchantments = value.split("\\|")[0].split(";");
 
-                            String enchantment = enchantments[0];
-                            int level = Integer.parseInt(enchantments[1]);
+                            final String enchantment = enchantments[0];
+                            final int level = Integer.parseInt(enchantments[1]);
 
                             shulkerItem.addEnchantment(enchantment, level, true);
                         }
@@ -75,12 +74,12 @@ public class ShulkerPrize extends PrizeBuilder {
                 items.add(shulkerItem.build());
             }
 
-            int size = items.size();
+            final int size = items.size();
 
-            ItemStack[] itemStacks = new ItemStack[size];
+            final ItemStack[] itemStacks = new ItemStack[size];
 
             for (int count = 0; count < size; count++) {
-                ItemStack shulkerItem = items.get(count);
+                final ItemStack shulkerItem = items.get(count);
 
                 itemStacks[count] = (shulkerItem.isEmpty()) ? null : shulkerItem;
             }

@@ -35,16 +35,16 @@ public class KeyCheckEvent extends Event implements Cancellable {
         return handlers;
     }
     
-    public Player getPlayer() {
+    public @NotNull final Player getPlayer() {
         return this.player;
     }
     
-    public CrateLocation getCrateLocation() {
+    public @NotNull final CrateLocation getCrateLocation() {
         return this.crateLocation;
     }
     
     @Override
-    public boolean isCancelled() {
+    public final boolean isCancelled() {
         return this.isCancelled;
     }
     

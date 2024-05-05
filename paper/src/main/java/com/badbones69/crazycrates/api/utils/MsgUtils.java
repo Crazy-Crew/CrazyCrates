@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api.utils;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import static java.util.regex.Matcher.quoteReplacement;
@@ -22,7 +23,7 @@ public class MsgUtils {
         if (!prefix.isEmpty() && prefixToggle) commandSender.sendRichMessage(message.replaceAll("%prefix%", quoteReplacement(prefix)).replaceAll("%Prefix%", quoteReplacement(prefix))); else commandSender.sendRichMessage(message);
     }
 
-    public static String getPrefix() {
+    public static @NotNull String getPrefix() {
         return ConfigManager.getConfig().getProperty(ConfigKeys.command_prefix);
     }
 

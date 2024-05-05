@@ -11,9 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandTransfer extends BaseCommand {
 
@@ -35,8 +35,8 @@ public class CommandTransfer extends BaseCommand {
             return;
         }
 
-        UUID uuid = player.getUniqueId();
-        UUID receiver = target.getUniqueId();
+        final UUID uuid = player.getUniqueId();
+        final UUID receiver = target.getUniqueId();
 
         // If it's the same player, we return.
         if (uuid.toString().equalsIgnoreCase(receiver.toString())) {
@@ -52,7 +52,7 @@ public class CommandTransfer extends BaseCommand {
             return;
         }
 
-        PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.TRANSFER, amount);
+        final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.TRANSFER, amount);
         this.plugin.getServer().getPluginManager().callEvent(event);
 
         // If the event is cancelled, We return.
@@ -61,7 +61,7 @@ public class CommandTransfer extends BaseCommand {
         this.userManager.takeKeys(uuid, crate.getName(), KeyType.virtual_key, amount, false);
         this.userManager.addKeys(receiver, crate.getName(), KeyType.virtual_key, amount);
 
-        Map<String, String> placeholders = new HashMap<>();
+        final Map<String, String> placeholders = new ConcurrentHashMap<>();
 
         placeholders.put("{crate}", crate.getName());
         placeholders.put("{amount}", String.valueOf(amount));

@@ -3,8 +3,6 @@ package com.badbones69.crazycrates.api;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.enums.Support;
-import com.ryderbelserion.vital.util.MiscUtil;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.apache.commons.lang.WordUtils;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
@@ -19,15 +17,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
-import java.util.HashMap;
+import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class PrizeManager {
     
-    private static final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private static @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     /**
      * Gets the prize for the player.
@@ -46,9 +45,9 @@ public class PrizeManager {
         prize = prize.hasPermission(player) ? prize.getAlternativePrize() : prize;
 
         if (!prize.getItems().isEmpty()) {
-            for (ItemStack item : prize.getItems()) {
+            for (final ItemStack item : prize.getItems()) {
                 if (item == null) {
-                    Map<String, String> placeholders = new HashMap<>();
+                    final Map<String, String> placeholders = new ConcurrentHashMap<>();
 
                     placeholders.put("{crate}", prize.getCrateName());
                     placeholders.put("{prize}", prize.getPrizeName());
@@ -67,8 +66,8 @@ public class PrizeManager {
         }
 
         if (!prize.getItemBuilders().isEmpty()) {
-            for (ItemBuilder item : prize.getItemBuilders()) {
-                ItemBuilder clone = new ItemBuilder(item).setTarget(player);
+            for (final ItemBuilder item : prize.getItemBuilders()) {
+                final ItemBuilder clone = new ItemBuilder(item).setTarget(player);
 
                 if (!MiscUtils.isInventoryFull(player)) {
                     player.getInventory().addItem(clone.build());
@@ -87,23 +86,23 @@ public class PrizeManager {
             }
         }
 
-        for (String command : crate.getPrizeCommands()) {
+        for (final String command : crate.getPrizeCommands()) {
             runCommands(player, prize, crate, command);
         }
 
-        for (String command : prize.getCommands()) {
+        for (final String command : prize.getCommands()) {
             runCommands(player, prize, crate, command);
         }
 
         if (!crate.getPrizeMessage().isEmpty() && prize.getMessages().isEmpty()) {
-            for (String message : crate.getPrizeMessage()) {
+            for (final String message : crate.getPrizeMessage()) {
                 sendMessage(player, prize, crate, message);
             }
 
             return;
         }
 
-        for (String message : prize.getMessages()) {
+        for (final String message : prize.getMessages()) {
             sendMessage(player, prize, crate, message);
         }
     }
@@ -134,19 +133,20 @@ public class PrizeManager {
                 }
             }
 
-            command = commandBuilder.toString();
-            command = command.substring(0, command.length() - 1);
+            cmd = commandBuilder.toString();
+            cmd = cmd.substring(0, cmd.length() - 1);
         }
 
-        if (Support.placeholder_api.isEnabled() ) command = PlaceholderAPI.setPlaceholders(player, command);
+        if (Support.placeholder_api.isEnabled() ) cmd = PlaceholderAPI.setPlaceholders(player, cmd);
 
-        ItemBuilder builder = prize.getDisplayItemBuilder();
+        final ItemBuilder builder = prize.getDisplayItemBuilder();
 
-        String display = builder.getPlainDisplayName();
+        final String display = builder.getPlainDisplayName();
 
-        String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(builder.getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
+        //todo() we will not need this with the new itembuilder
+        final String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(builder.getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
 
-        MiscUtils.sendCommand(command
+        MiscUtils.sendCommand(cmd
                 .replaceAll("%player%", quoteReplacement(player.getName()))
                 .replaceAll("%reward%", quoteReplacement(name))
                 .replaceAll("%reward_stripped%", quoteReplacement(name))
@@ -158,9 +158,12 @@ public class PrizeManager {
 
         final ItemBuilder builder = prize.getDisplayItemBuilder();
 
-        String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(builder.getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
+        final String display = builder.getPlainDisplayName();
 
-        String defaultMessage = message
+        //todo() we will not need this with the new itembuilder
+        final String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(builder.getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
+
+        final String defaultMessage = message
                 .replaceAll("%player%", quoteReplacement(player.getName()))
                 .replaceAll("%reward%", quoteReplacement(name))
                 .replaceAll("%reward_stripped%", quoteReplacement(name))
@@ -188,25 +191,23 @@ public class PrizeManager {
         }
     }
 
-    public static void getPrize(Crate crate, Inventory inventory, int slot, Player player) {
-        ItemStack item = inventory.getItem(slot);
     public static void getPrize(@NotNull final Crate crate, @NotNull final Inventory inventory, final int slot, @NotNull final Player player) {
+        final ItemStack item = inventory.getItem(slot);
 
         if (item == null) return;
 
-        Prize prize = crate.getPrize(item);
+        final Prize prize = crate.getPrize(item);
 
         givePrize(player, prize, crate);
     }
 
-    public static Tier getTier(Crate crate) {
-        if (crate.getTiers() != null && !crate.getTiers().isEmpty()) {
     public static @Nullable Tier getTier(@NotNull final Crate crate) {
+        if (!crate.getTiers().isEmpty()) {
             for (int stopLoop = 0; stopLoop <= 100; stopLoop++) {
-                for (Tier tier : crate.getTiers()) {
-                    int chance = tier.getChance();
+                for (final Tier tier : crate.getTiers()) {
+                    final int chance = tier.getChance();
 
-                    int num = MiscUtils.useOtherRandom() ? ThreadLocalRandom.current().nextInt(tier.getMaxRange()) : new Random().nextInt(tier.getMaxRange());
+                    final int num = MiscUtils.useOtherRandom() ? ThreadLocalRandom.current().nextInt(tier.getMaxRange()) : new Random().nextInt(tier.getMaxRange());
 
                     if (num >= 1 && num <= chance) {
                         return tier;

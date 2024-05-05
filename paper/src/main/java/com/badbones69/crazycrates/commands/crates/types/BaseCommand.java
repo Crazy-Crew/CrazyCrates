@@ -21,29 +21,30 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Command(value = "crazycrates", alias = {"crates", "crate"})
 public abstract class BaseCommand {
 
-    protected final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    protected @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    protected final @NotNull InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    protected @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
-    protected final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
+    protected @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    protected final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+    protected @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    protected final @NotNull FileManager fileManager = this.plugin.getFileManager();
+    protected @NotNull final FileManager fileManager = this.plugin.getFileManager();
 
-    protected final @NotNull SettingsManager config = ConfigManager.getConfig();
+    protected @NotNull final SettingsManager config = ConfigManager.getConfig();
 
     /**
      * Add keys to a player who is online.
@@ -175,17 +176,17 @@ public abstract class BaseCommand {
 
         message.add(header);
 
-        Map<Crate, Integer> keys = new HashMap<>();
+        final Map<Crate, Integer> keys = new ConcurrentHashMap<>();
 
         this.plugin.getCrateManager().getUsableCrates().forEach(crate -> keys.put(crate, this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName())));
 
         boolean hasKeys = false;
 
-        for (Crate crate : keys.keySet()) {
-            int amount = keys.get(crate);
+        for (final Crate crate : keys.keySet()) {
+            final int amount = keys.get(crate);
 
             if (amount > 0) {
-                Map<String, String> placeholders = new HashMap<>();
+                final Map<String, String> placeholders = new ConcurrentHashMap<>();
 
                 hasKeys = true;
 
@@ -225,7 +226,7 @@ public abstract class BaseCommand {
     @ApiStatus.Internal
     private void takeKey(@NotNull final CommandSender sender, @Nullable final Player player, @Nullable final OfflinePlayer offlinePlayer, @NotNull final Crate crate, @NotNull final KeyType type, int amount) {
         if (player != null) {
-            int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), crate.getName());
+            final int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), crate.getName());
 
             if (totalKeys < 1) {
                 if (MiscUtils.isLogging())
@@ -279,7 +280,7 @@ public abstract class BaseCommand {
                 this.userManager.addKeys(player.getUniqueId(), crate.getName(), type, amount);
             }
 
-            Map<String, String> placeholders = new HashMap<>();
+            final Map<String, String> placeholders = new ConcurrentHashMap<>();
 
             placeholders.put("{amount}", String.valueOf(amount));
             placeholders.put("{player}", player.getName());

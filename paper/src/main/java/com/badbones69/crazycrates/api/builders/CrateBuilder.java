@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.api.builders;
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
@@ -26,7 +27,9 @@ import java.util.List;
 
 public abstract class CrateBuilder extends FoliaRunnable {
 
-    protected final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    protected @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+
+    protected @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
     private final InventoryBuilder builder;
     private final Inventory inventory;
@@ -171,15 +174,15 @@ public abstract class CrateBuilder extends FoliaRunnable {
      *
      * @param task task to add.
      */
-    public void addCrateTask(ScheduledTask task) {
-        this.plugin.getCrateManager().addCrateTask(this.player, task);
+    public void addCrateTask(@NotNull final ScheduledTask task) {
+        this.crateManager.addCrateTask(this.player, task);
     }
 
     /**
      * Remove crate task.
      */
     public void removeTask() {
-        this.plugin.getCrateManager().removeCrateTask(this.player);
+        this.crateManager.removeCrateTask(this.player);
     }
 
     /**
@@ -187,7 +190,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      */
     public void cancelCrateTask() {
         // Cancel
-        this.plugin.getCrateManager().getCrateTask(this.player).cancel();
+        this.crateManager.getCrateTask(this.player).cancel();
 
         // Remove the task.
         removeTask();
@@ -197,7 +200,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @return true or false.
      */
     public final boolean hasCrateTask() {
-        return this.plugin.getCrateManager().hasCrateTask(this.player);
+        return this.crateManager.hasCrateTask(this.player);
     }
 
     /**
@@ -367,15 +370,19 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * @return the display item of the picked prize.
      */
-    public ItemStack getDisplayItem() {
-        return getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer());
+    public final ItemStack getDisplayItem() {
+        Player player = getPlayer();
+
+        return getCrate().pickPrize(player).getDisplayItem(player);
     }
 
     /**
      * @return the display item of the picked prize with a tier.
      */
-    public ItemStack getDisplayItem(Tier tier) {
-        return getCrate().pickPrize(getPlayer(), tier).getDisplayItem(getPlayer());
+    public final ItemStack getDisplayItem(@NotNull final Tier tier) {
+        Player player = getPlayer();
+
+        return getCrate().pickPrize(player, tier).getDisplayItem(player);
     }
 
     /**
@@ -391,6 +398,8 @@ public abstract class CrateBuilder extends FoliaRunnable {
         ConfigurationSection section = getFile().getConfigurationSection("Crate.sound");
 
         if (section != null) {
+            Player player = getPlayer();
+
             SoundEffect sound = new SoundEffect(
                     section,
                     type,
@@ -398,7 +407,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
                     category
             );
 
-            sound.play(getPlayer(), getPlayer().getLocation());
+            sound.play(player, player.getLocation());
         }
     }
 }

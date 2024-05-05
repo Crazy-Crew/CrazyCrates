@@ -9,7 +9,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Prize {
@@ -93,21 +95,21 @@ public class Prize {
     /**
      * @return the name of the prize.
      */
-    public String getPrizeName() {
+    public @NotNull final String getPrizeName() {
         return this.prizeName;
     }
 
     /**
      * @return the section name.
      */
-    public String getSectionName() {
+    public @NotNull final String getSectionName() {
         return this.sectionName;
     }
 
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
-    public ItemStack getDisplayItem() {
+    public @NotNull final ItemStack getDisplayItem() {
         ItemStack itemStack = this.displayItem.build();
 
         itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.sectionName));
@@ -129,84 +131,84 @@ public class Prize {
     /**
      * @return the ItemBuilder of the display item.
      */
-    public ItemBuilder getDisplayItemBuilder() {
+    public @NotNull final ItemBuilder getDisplayItemBuilder() {
         return this.displayItem;
     }
     
     /**
      * @return the list of tiers the prize is in.
      */
-    public List<Tier> getTiers() {
-        return this.tiers;
+    public @NotNull final List<Tier> getTiers() {
+        return Collections.unmodifiableList(this.tiers);
     }
     
     /**
      * @return the messages sent to the player.
      */
-    public List<String> getMessages() {
-        return this.messages;
+    public @NotNull final List<String> getMessages() {
+        return Collections.unmodifiableList(this.messages);
     }
     
     /**
      * @return the commands that are run when the player wins.
      */
-    public List<String> getCommands() {
-        return this.commands;
+    public @NotNull final List<String> getCommands() {
+        return Collections.unmodifiableList(this.commands);
     }
     
     /**
      * @return the Editor ItemStacks that are given to the player that wins.
      */
-    public List<ItemStack> getItems() {
-        return this.items;
+    public @NotNull final List<ItemStack> getItems() {
+        return Collections.unmodifiableList(this.items);
     }
     
     /**
      * @return the ItemBuilders for all the custom items made from the Items: option.
      */
-    public List<ItemBuilder> getItemBuilders() {
-        return this.builders;
+    public @NotNull final List<ItemBuilder> getItemBuilders() {
+        return Collections.unmodifiableList(this.builders);
     }
     
     /**
      * @return the name of the crate the prize is in.
      */
-    public String getCrateName() {
+    public @NotNull final String getCrateName() {
         return this.crateName;
     }
     
     /**
      * @return the chance the prize has of being picked.
      */
-    public int getChance() {
+    public final int getChance() {
         return this.chance;
     }
     
     /**
      * @return the max range of the prize.
      */
-    public int getMaxRange() {
+    public final int getMaxRange() {
         return this.maxRange;
     }
     
     /**
      * @return true if a firework explosion is played and false if not.
      */
-    public boolean useFireworks() {
+    public final boolean useFireworks() {
         return this.firework;
     }
     
     /**
      * @return the alternative prize the player wins if they have a blacklist permission.
      */
-    public Prize getAlternativePrize() {
+    public @NotNull final Prize getAlternativePrize() {
         return this.alternativePrize;
     }
     
     /**
      * @return true if the prize doesn't have an alternative prize and false if it does.
      */
-    public boolean hasAlternativePrize() {
+    public final boolean hasAlternativePrize() {
         return this.alternativePrize == null;
     }
     
@@ -223,15 +225,14 @@ public class Prize {
         return false;
     }
 
-    private ItemBuilder display() {
-        ItemBuilder builder = new ItemBuilder();
     private @NotNull ItemBuilder display() {
+        final ItemBuilder builder = new ItemBuilder();
 
         try {
-            String material = this.section.getString("DisplayItem", "red_terracotta");
+            final String material = this.section.getString("DisplayItem", "red_terracotta");
 
-            int amount = this.section.getInt("DisplayAmount", 1);
-            String nbt = this.section.getString("DisplayNbt", "");
+            final int amount = this.section.getInt("DisplayAmount", 1);
+            final String nbt = this.section.getString("DisplayNbt", "");
 
             if (!nbt.isEmpty()) {
                 builder.setMaterial(material).setAmount(amount).setCompoundTag(nbt);
@@ -241,14 +242,14 @@ public class Prize {
                 return builder;
             }
 
+            // todo() fix this shit when the new itembuilder shows up
             builder.setMaterial(material).setAmount(amount).setDisplayName(this.prizeName);
-
             // Set the pdc with the section name.
             ItemUtils.getItem(this.section, builder).setString(PersistentKeys.crate_prize.getNamespacedKey(), this.section.getName());
 
             return builder;
         } catch (Exception exception) {
-            List<String> list = new ArrayList<>() {{
+            final List<String> list = new ArrayList<>() {{
                add("<red>There was an error with one of your prizes!");
                add("<red>The reward in question is labeled: <yellow>" + section.getName() + " <red>in crate: <yellow>" + crateName);
                add("<red>Name of the reward is " + section.getString("DisplayName"));

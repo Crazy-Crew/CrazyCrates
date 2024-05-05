@@ -5,8 +5,8 @@ import ch.jalu.configme.properties.Property;
 import com.ryderbelserion.vital.common.util.StringUtil;
 import com.ryderbelserion.vital.enums.Support;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.messages.CommandKeys;
 import us.crazycrew.crazycrates.platform.config.impl.messages.CrateKeys;
@@ -100,23 +100,23 @@ public enum Messages {
         this.isList = isList;
     }
 
-    private final @NotNull SettingsManager config = ConfigManager.getConfig();
+    private @NotNull final SettingsManager config = ConfigManager.getConfig();
 
-    private final @NotNull SettingsManager messages = ConfigManager.getMessages();
+    private @NotNull final SettingsManager messages = ConfigManager.getMessages();
 
     private boolean isList() {
         return this.isList;
     }
 
-    public @NotNull String getString() {
+    public @NotNull final String getString() {
         return this.messages.getProperty(this.property);
     }
 
-    public @NotNull List<String> getList() {
+    public @NotNull final List<String> getList() {
         return this.messages.getProperty(this.properties);
     }
 
-    public String getMessage() {
+    public @NotNull final String getMessage() {
         return getMessage(null, new HashMap<>());
     }
 

@@ -40,7 +40,7 @@ public class CommandTake extends BaseCommand {
         }
 
         if (target.getPlayer() != null) {
-            Player player = target.getPlayer();
+            final Player player = target.getPlayer();
 
             takeKey(sender, player, crate, keyType, amount);
 

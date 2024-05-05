@@ -23,13 +23,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CrateAdminMenu extends InventoryBuilder {
 
-    public CrateAdminMenu(Player player, int size, String title) {
+    public CrateAdminMenu(@NotNull final Player player, final int size, @NotNull final String title) {
         super(player, size, title);
     }
 
@@ -56,11 +56,11 @@ public class CrateAdminMenu extends InventoryBuilder {
 
     public static class CrateAdminListener implements Listener {
 
-        private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+        private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-        private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+        private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-        private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
+        private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
         @EventHandler
         public void onInventoryClick(InventoryClickEvent event) {
@@ -98,7 +98,7 @@ public class CrateAdminMenu extends InventoryBuilder {
 
             ClickType clickType = event.getClick();
 
-            Map<String, String> placeholders = new HashMap<>();
+            Map<String, String> placeholders = new ConcurrentHashMap<>();
 
             placeholders.put("{amount}", String.valueOf(1));
             placeholders.put("{key}", crate.getKeyName());

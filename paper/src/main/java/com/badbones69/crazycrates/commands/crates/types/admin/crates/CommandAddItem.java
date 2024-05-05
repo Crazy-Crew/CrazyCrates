@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates;
 
+import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -23,7 +24,7 @@ public class CommandAddItem extends BaseCommand {
             return;
         }
 
-        ItemStack item = player.getInventory().getItemInMainHand();
+        final ItemStack item = player.getInventory().getItemInMainHand();
 
         if (tier != null) {
             crate.addEditorItem(item, player, prizeName, tier, chance);

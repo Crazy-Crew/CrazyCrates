@@ -2,12 +2,13 @@ package com.badbones69.crazycrates.api.objects.other;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.Location;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
 public class CrateLocation {
     
     private final String id;
-    private Crate crate;
+    private final Crate crate;
     private final Location loc;
     
     public CrateLocation(@NotNull final String id, @NotNull final Crate crate, @NotNull final Location loc) {
@@ -21,7 +22,7 @@ public class CrateLocation {
      *
      * @return the location's ID.
      */
-    public String getID() {
+    public @NotNull final String getID() {
         return this.id;
     }
     
@@ -30,7 +31,7 @@ public class CrateLocation {
      *
      * @return the crate that the block is set to.
      */
-    public Crate getCrate() {
+    public @NotNull final Crate getCrate() {
         return this.crate;
     }
 
@@ -48,7 +49,7 @@ public class CrateLocation {
      *
      * @return the type of crate the crate is.
      */
-    public CrateType getCrateType() {
+    public @NotNull final CrateType getCrateType() {
         return this.crate.getCrateType();
     }
     
@@ -57,7 +58,7 @@ public class CrateLocation {
      *
      * @return the location of the crate.
      */
-    public Location getLocation() {
+    public @NotNull final Location getLocation() {
         return this.loc;
     }
 }

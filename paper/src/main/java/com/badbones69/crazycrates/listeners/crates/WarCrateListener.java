@@ -15,7 +15,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyCrates;
@@ -25,30 +24,30 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 
 public class WarCrateListener implements Listener {
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        Inventory inventory = event.getInventory();
+        final Inventory inventory = event.getInventory();
 
         if (!(inventory.getHolder(false) instanceof CratePrizeMenu holder)) return;
 
-        Player player = holder.getPlayer();
+        final Player player = holder.getPlayer();
 
         event.setCancelled(true);
 
         if (this.crateManager.containsPicker(player) && this.crateManager.isInOpeningList(player)) {
-            Crate crate = this.crateManager.getOpeningCrate(player);
+            final Crate crate = this.crateManager.getOpeningCrate(player);
 
             if (crate.getCrateType() == CrateType.war && this.crateManager.isPicker(player)) {
-                ItemStack item = event.getCurrentItem();
+                final ItemStack item = event.getCurrentItem();
 
                 if (item != null && item.getType().toString().contains(Material.GLASS_PANE.toString())) {
-                    int slot = event.getRawSlot();
+                    final int slot = event.getRawSlot();
 
-                    Prize prize = crate.pickPrize(player);
+                    final Prize prize = crate.pickPrize(player);
 
                     inventory.setItem(slot, prize.getDisplayItem(player));
 
@@ -107,10 +106,10 @@ public class WarCrateListener implements Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        Player player = (Player) event.getPlayer();
+        final Player player = (Player) event.getPlayer();
 
         if (this.crateManager.containsPicker(player) && this.crateManager.isPicker(player)) {
-            for (Crate crate : this.crateManager.getUsableCrates()) {
+            for (final Crate crate : this.crateManager.getUsableCrates()) {
                 if (crate.getCrateType() == CrateType.war && event.getInventory().getHolder(false) instanceof CratePrizeMenu) {
                     if (this.crateManager.hasCrateTask(player)) {
                         this.crateManager.removeCloser(player);

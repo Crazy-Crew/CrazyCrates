@@ -39,20 +39,20 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 public class CosmicCrateListener implements Listener {
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
+    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
@@ -292,7 +292,7 @@ public class CosmicCrateListener implements Listener {
 
             // If they don't have enough keys.
             if (value) {
-                Map<String, String> placeholders = new HashMap<>();
+                Map<String, String> placeholders = new ConcurrentHashMap<>();
                 placeholders.put("{crate}", crate.getName());
                 placeholders.put("{key}", crate.getKeyName());
 

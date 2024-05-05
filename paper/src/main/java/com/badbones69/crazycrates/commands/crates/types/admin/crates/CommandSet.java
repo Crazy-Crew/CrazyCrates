@@ -12,9 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
-
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandSet extends BaseCommand {
 
@@ -41,7 +40,7 @@ public class CommandSet extends BaseCommand {
             return;
         }
 
-        Block block = player.getTargetBlock(null, 5);
+        final Block block = player.getTargetBlock(null, 5);
 
         if (block.isEmpty()) {
             player.sendRichMessage(Messages.must_be_looking_at_block.getMessage(player));
@@ -51,7 +50,7 @@ public class CommandSet extends BaseCommand {
 
         this.crateManager.addCrateLocation(block.getLocation(), crate);
 
-        Map<String, String> placeholders = new HashMap<>();
+        final Map<String, String> placeholders = new ConcurrentHashMap<>();
 
         placeholders.put("{crate}", crate.getName());
         placeholders.put("{prefix}", MsgUtils.getPrefix());

@@ -27,9 +27,9 @@ import java.util.List;
 
 public class CrateTierMenu extends InventoryBuilder {
 
-    private final @NotNull InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
-    private final @NotNull SettingsManager config = ConfigManager.getConfig();
+    private @NotNull final SettingsManager config = ConfigManager.getConfig();
 
     public CrateTierMenu(@NotNull final List<Tier> tiers, @NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final String title) {
         super(tiers, crate, player, size, title);
@@ -43,16 +43,16 @@ public class CrateTierMenu extends InventoryBuilder {
     }
 
     private void setDefaultItems() {
-        Inventory inventory = getInventory();
-        Player player = getPlayer();
-        Crate crate = getCrate();
+        final Inventory inventory = getInventory();
+        final Player player = getPlayer();
+        final Crate crate = getCrate();
 
         getTiers().forEach(tier -> inventory.setItem(tier.getSlot(), tier.getTierItem(player)));
 
         if (crate.isPreviewTierBorderToggle()) {
-            List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
+            final List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
 
-            ItemStack itemStack = crate.getPreviewTierBorderItem().setTarget(player).build();
+            final ItemStack itemStack = crate.getPreviewTierBorderItem().setTarget(player).build();
 
             for (int item : borderItems) { // Top border slots
                 inventory.setItem(item, itemStack);
@@ -70,35 +70,35 @@ public class CrateTierMenu extends InventoryBuilder {
 
     public static class CrateTierListener implements Listener {
 
-        private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+        private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-        private final @NotNull InventoryManager inventoryManager = this.plugin.getInventoryManager();
+        private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
-        private final @NotNull SettingsManager config = ConfigManager.getConfig();
+        private @NotNull final SettingsManager config = ConfigManager.getConfig();
 
         @EventHandler
         public void onInventoryClick(InventoryClickEvent event) {
-            Inventory inventory = event.getInventory();
+            final Inventory inventory = event.getInventory();
 
             if (!(inventory.getHolder(false) instanceof CrateTierMenu holder)) return;
 
             event.setCancelled(true);
 
-            Player player = holder.getPlayer();
+            final Player player = holder.getPlayer();
 
-            ItemStack item = event.getCurrentItem();
+            final ItemStack item = event.getCurrentItem();
 
             if (item == null || item.getType() == Material.AIR) return;
 
             if (!item.hasItemMeta()) return;
 
-            Crate crate = this.inventoryManager.getCratePreview(player);
+            final Crate crate = this.inventoryManager.getCratePreview(player);
 
             if (crate == null) return;
 
-            ItemMeta itemMeta = item.getItemMeta();
+            final ItemMeta itemMeta = item.getItemMeta();
 
-            PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+            final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
             if (container.has(PersistentKeys.main_menu_button.getNamespacedKey()) && this.config.getProperty(ConfigKeys.enable_crate_menu)) {
                 if (this.inventoryManager.inCratePreview(player)) {
@@ -109,7 +109,7 @@ public class CrateTierMenu extends InventoryBuilder {
                     this.inventoryManager.removeViewer(player);
                     this.inventoryManager.closeCratePreview(player);
 
-                    CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_size), this.config.getProperty(ConfigKeys.inventory_name));
+                    final CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_size), this.config.getProperty(ConfigKeys.inventory_name));
 
                     player.openInventory(crateMainMenu.build().getInventory());
                 }
@@ -120,11 +120,11 @@ public class CrateTierMenu extends InventoryBuilder {
             if (container.has(PersistentKeys.preview_tier_button.getNamespacedKey())) {
                 crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", SoundCategory.PLAYERS);
 
-                String tierName = container.get(PersistentKeys.preview_tier_button.getNamespacedKey(), PersistentDataType.STRING);
+                final String tierName = container.get(PersistentKeys.preview_tier_button.getNamespacedKey(), PersistentDataType.STRING);
 
-                Tier tier = crate.getTier(tierName);
+                final Tier tier = crate.getTier(tierName);
 
-                Inventory cratePreviewMenu = crate.getPreview(player, this.inventoryManager.getPage(player), true, tier);
+                final Inventory cratePreviewMenu = crate.getPreview(player, this.inventoryManager.getPage(player), true, tier);
 
                 player.openInventory(cratePreviewMenu);
             }

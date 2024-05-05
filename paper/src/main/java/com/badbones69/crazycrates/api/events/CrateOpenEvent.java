@@ -42,28 +42,28 @@ public class CrateOpenEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public Player getPlayer() {
+    public @NotNull final Player getPlayer() {
         return this.player;
     }
 
-    public Crate getCrate() {
+    public @NotNull final Crate getCrate() {
         return this.crate;
     }
 
-    public KeyType getKeyType() {
+    public @NotNull final KeyType getKeyType() {
         return this.keyType;
     }
 
-    public boolean isCheckHand() {
+    public final boolean isCheckHand() {
         return this.checkHand;
     }
 
-    public FileConfiguration getConfiguration() {
+    public @NotNull final FileConfiguration getConfiguration() {
         return this.configuration;
     }
 
     @Override
-    public boolean isCancelled() {
+    public final boolean isCancelled() {
         return this.isCancelled;
     }
 

@@ -65,34 +65,34 @@ public class Server extends AbstractPlugin {
     }
 
     @Override
-    public @NotNull Path getDirectory() {
+    public @NotNull final Path getDirectory() {
         return this.plugin.getDataFolder().toPath();
     }
 
     @Override
-    public @NotNull Logger getLogger() {
+    public @NotNull final Logger getLogger() {
         return this.plugin.getLogger();
     }
 
-    public @NotNull FileManager getFileManager() {
+    public @NotNull final FileManager getFileManager() {
         return this.fileManager;
     }
 
-    public @NotNull File getCrateFolder() {
+    public @NotNull final File getCrateFolder() {
         return this.crateFolder;
     }
 
-    public @NotNull File[] getCrateFiles() {
+    public @NotNull final File[] getCrateFiles() {
         return this.crateFolder.listFiles((dir, name) -> name.endsWith(".yml"));
     }
 
     private UserManager userManager;
 
-    public void setUserManager(UserManager userManager) {
+    public void setUserManager(@NotNull final UserManager userManager) {
         this.userManager = userManager;
     }
 
-    public @NotNull UserManager getUserManager() {
+    public @NotNull final UserManager getUserManager() {
         return this.userManager;
     }
 }

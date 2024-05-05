@@ -23,9 +23,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CasinoCrate extends CrateBuilder {
 
-    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
+    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
     public CasinoCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size);
@@ -137,11 +137,11 @@ public class CasinoCrate extends CrateBuilder {
         }
 
         if (section != null) {
-            boolean isRandom = section.getBoolean("toggle", false);
+            final boolean isRandom = section.getBoolean("toggle", false);
 
-            String row_uno = section.getString("types.row-1");
-            String row_dos = section.getString("types.row-2");
-            String row_tres = section.getString("types.row-3");
+            final String row_uno = section.getString("types.row-1");
+            final String row_dos = section.getString("types.row-2");
+            final String row_tres = section.getString("types.row-3");
 
             if (isRandom) {
                 List<Tier> tiers = crate.getTiers();
@@ -179,13 +179,13 @@ public class CasinoCrate extends CrateBuilder {
 
     private void cycle() {
         for (int index = 0; index < 27; index++) {
-            ItemStack itemStack = getInventory().getItem(index);
+            final ItemStack itemStack = getInventory().getItem(index);
 
             if (itemStack != null) {
                 if (itemStack.hasItemMeta()) {
-                    ItemMeta itemMeta = itemStack.getItemMeta();
+                    final ItemMeta itemMeta = itemStack.getItemMeta();
 
-                    PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+                    final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
                     if (!container.has(PersistentKeys.crate_prize.getNamespacedKey())) {
                         setItem(index, getRandomGlassPane());

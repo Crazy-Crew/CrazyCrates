@@ -11,9 +11,9 @@ public enum Files {
     locations("locations.yml"),
     data("data.yml");
 
-    private final @NotNull Server server = CratesProvider.get();
+    private @NotNull final Server server = CratesProvider.get();
 
-    private final @NotNull FileManager fileManager = server.getFileManager();
+    private @NotNull final FileManager fileManager = server.getFileManager();
 
     private final FileConfiguration config;
     private final String fileName;

@@ -29,9 +29,9 @@ import static java.util.regex.Matcher.quoteReplacement;
 
 public abstract class InventoryBuilder implements InventoryHolder {
 
-    protected final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    protected @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    protected final @NotNull Server server = this.plugin.getServer();
+    protected @NotNull final Server server = this.plugin.getServer();
 
     private final Inventory inventory;
     private final Player player;
@@ -120,7 +120,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
         this.size = size;
     }
 
-    public int getSize() {
+    public final int getSize() {
         return this.size;
     }
 
@@ -128,11 +128,11 @@ public abstract class InventoryBuilder implements InventoryHolder {
         this.page = page;
     }
 
-    public int getPage() {
+    public final int getPage() {
         return this.page;
     }
 
-    public Crate getCrate() {
+    public @NotNull final Crate getCrate() {
         return this.crate;
     }
 
@@ -144,15 +144,15 @@ public abstract class InventoryBuilder implements InventoryHolder {
         return this.title.contains(message);
     }
 
-    public Player getPlayer() {
+    public @NotNull final Player getPlayer() {
         return this.player;
     }
 
-    public List<Tier> getTiers() {
+    public @NotNull final List<Tier> getTiers() {
         return this.tiers;
     }
 
-    public InventoryView getView() {
+    public @NotNull final InventoryView getView() {
         return getPlayer().getOpenInventory();
     }
 
@@ -165,8 +165,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
     }
 
     @Override
-    @NotNull
-    public Inventory getInventory() {
+    public @NotNull final Inventory getInventory() {
         return this.inventory;
     }
 }

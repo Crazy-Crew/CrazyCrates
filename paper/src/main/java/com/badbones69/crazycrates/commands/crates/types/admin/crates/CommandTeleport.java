@@ -17,12 +17,17 @@ import java.util.Objects;
 
 public class CommandTeleport extends BaseCommand {
 
-    private final @NotNull FileConfiguration locations = Files.locations.getFile();
+    private @NotNull final FileConfiguration locations = Files.locations.getFile();
 
     @Command("teleport")
     @Permission(value = "crazycrates.teleport", def = PermissionDefault.OP)
     public void teleport(Player player, @Suggestion("locations") String id) {
-        ConfigurationSection section = this.locations.getConfigurationSection("Locations");
+        if (id.isEmpty()) {
+            //todo() send message? it might not needed it but I'll test it anyway.
+            return;
+        }
+
+        final ConfigurationSection section = this.locations.getConfigurationSection("Locations");
 
         if (section == null) {
             this.locations.set("Locations.Clear", null);
@@ -32,15 +37,15 @@ public class CommandTeleport extends BaseCommand {
             return;
         }
 
-        for (String name : section.getKeys(false)) {
+        for (final String name : section.getKeys(false)) {
             if (name.equalsIgnoreCase(id)) {
-                World world = this.plugin.getServer().getWorld(Objects.requireNonNull(this.locations.getString("Locations." + name + ".World")));
+                final World world = this.plugin.getServer().getWorld(Objects.requireNonNull(this.locations.getString("Locations." + name + ".World")));
 
-                int x = this.locations.getInt("Locations." + name + ".X");
-                int y = this.locations.getInt("Locations." + name + ".Y");
-                int z = this.locations.getInt("Locations." + name + ".Z");
+                final int x = this.locations.getInt("Locations." + name + ".X");
+                final int y = this.locations.getInt("Locations." + name + ".Y");
+                final int z = this.locations.getInt("Locations." + name + ".Z");
 
-                Location loc = new Location(world, x, y, z);
+                final Location loc = new Location(world, x, y, z);
 
                 player.teleport(loc.add(.5, 0, .5));
 

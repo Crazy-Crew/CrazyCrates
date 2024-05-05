@@ -15,14 +15,13 @@ public class CommandDebug extends BaseCommand {
     @Command("debug")
     @Permission(value = "crazycrates.debug", def = PermissionDefault.OP)
     public void debug(Player player, @Suggestion("crates") String crateName) {
-        Crate crate = this.crateManager.getCrateFromName(crateName);
+        final Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null) {
             player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
 
             return;
         }
-
 
         crate.getPrizes().forEach(prize -> PrizeManager.givePrize(player, crate, prize));
     }

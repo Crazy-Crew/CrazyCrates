@@ -104,10 +104,10 @@ public class CrazyCrates extends JavaPlugin {
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
 
         if (MiscUtils.isLogging()) {
-            String prefix = ConfigManager.getConfig().getProperty(ConfigKeys.console_prefix);
+            final String prefix = ConfigManager.getConfig().getProperty(ConfigKeys.console_prefix);
 
             // Print dependency garbage
-            for (Support value : Support.values()) {
+            for (final Support value : Support.values()) {
                 if (value.isEnabled()) {
                     getServer().getConsoleSender().sendRichMessage(prefix + "<bold><gold>" + value.getName() + " <green>FOUND");
                 } else {
@@ -138,7 +138,7 @@ public class CrazyCrates extends JavaPlugin {
         if (this.crateManager != null) {
             this.crateManager.purgeRewards();
 
-            HologramManager holograms = this.crateManager.getHolograms();
+            final HologramManager holograms = this.crateManager.getHolograms();
 
             if (holograms != null && !holograms.isEmpty()) {
                 holograms.removeAllHolograms(true);
@@ -150,27 +150,27 @@ public class CrazyCrates extends JavaPlugin {
         }
     }
 
-    public @NotNull InventoryManager getInventoryManager() {
+    public @NotNull final InventoryManager getInventoryManager() {
         return this.inventoryManager;
     }
 
-    public @NotNull BukkitUserManager getUserManager() {
+    public @NotNull final BukkitUserManager getUserManager() {
         return this.userManager;
     }
 
-    public @NotNull CrateManager getCrateManager() {
+    public @NotNull final CrateManager getCrateManager() {
         return this.crateManager;
     }
 
-    public @NotNull FileManager getFileManager() {
+    public @NotNull final FileManager getFileManager() {
         return this.instance.getFileManager();
     }
 
-    public @NotNull Server getInstance() {
+    public @NotNull final Server getInstance() {
         return this.instance;
     }
 
-    public @NotNull Timer getTimer() {
+    public @NotNull final Timer getTimer() {
         return this.timer;
     }
 }

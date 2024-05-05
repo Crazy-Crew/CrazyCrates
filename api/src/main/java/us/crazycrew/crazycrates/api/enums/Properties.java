@@ -137,9 +137,7 @@ public enum Properties {
     public boolean moveString(PropertyReader reader, ConfigurationData configuration) {
         String key = reader.getString(this.oldString.getPath());
 
-        if (key == null) {
-            return false;
-        }
+        if (key == null) return false;
 
         configuration.setValue(this.newString, replace(this.oldString.determineValue(reader).getValue()));
 
@@ -157,9 +155,7 @@ public enum Properties {
     public boolean moveBoolean(PropertyReader reader, ConfigurationData configuration) {
         Boolean key = reader.getBoolean(this.oldBoolean.getPath());
 
-        if (key == null) {
-            return false;
-        }
+        if (key == null) return false;
 
         configuration.setValue(this.newBoolean, this.oldBoolean.determineValue(reader).getValue());
 
@@ -177,9 +173,7 @@ public enum Properties {
     public boolean moveInteger(PropertyReader reader, ConfigurationData configuration) {
         Integer key = reader.getInt(this.oldInteger.getPath());
 
-        if (key == null) {
-            return false;
-        }
+        if (key == null) return false;
 
         configuration.setValue(this.newInteger, this.oldInteger.determineValue(reader).getValue());
 
@@ -197,9 +191,7 @@ public enum Properties {
     public boolean moveList(PropertyReader reader, ConfigurationData configuration) {
         List<?> key = reader.getList(this.oldList.getPath());
 
-        if (key == null) {
-            return false;
-        }
+        if (key == null) return false;
 
         List<String> list = new ArrayList<>();
 

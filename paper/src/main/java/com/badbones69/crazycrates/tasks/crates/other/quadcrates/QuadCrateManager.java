@@ -24,17 +24,17 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class QuadCrateManager {
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
-    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
+    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
     private static final List<QuadCrateManager> crateSessions = new ArrayList<>();
 
@@ -69,13 +69,13 @@ public class QuadCrateManager {
     private final List<Location> crateLocations = new ArrayList<>();
 
     // Stores if the crate is open or not.
-    private final Map<Location, Boolean> cratesOpened = new HashMap<>();
+    private final Map<Location, Boolean> cratesOpened = new ConcurrentHashMap<>();
 
     // Saves all the chests spawned by the QuadCrate task.
-    private final Map<Location, BlockState> quadCrateChests = new HashMap<>();
+    private final Map<Location, BlockState> quadCrateChests = new ConcurrentHashMap<>();
 
     // Saves all the old blocks to restore after.
-    private final Map<Location, BlockState> oldBlocks = new HashMap<>();
+    private final Map<Location, BlockState> oldBlocks = new ConcurrentHashMap<>();
 
     // Get the particles that will be used to display above the crates.
     private final Color particleColor;
@@ -141,7 +141,7 @@ public class QuadCrateManager {
         }
 
         // Check if the blocks are able to be changed.
-        Set<Location> structureLocations = this.handler.getBlocks(this.spawnLocation.clone());
+        final Set<Location> structureLocations = this.handler.getBlocks(this.spawnLocation.clone());
 
         // Loop through the blocks and check if the blacklist contains the block type.
         // Do not open the crate if the block is not able to be changed.
@@ -160,7 +160,7 @@ public class QuadCrateManager {
             }
         }
 
-        List<Entity> shovePlayers = new ArrayList<>();
+        final List<Entity> shovePlayers = new ArrayList<>();
 
         for (Entity entity : player.getNearbyEntities(3, 3, 3)) {
             if (entity instanceof Player) {
@@ -365,7 +365,7 @@ public class QuadCrateManager {
      *
      * @return the player.
      */
-    public Player getPlayer() {
+    public @NotNull final Player getPlayer() {
         return this.player;
     }
 
@@ -374,7 +374,7 @@ public class QuadCrateManager {
      *
      * @return list of crate locations.
      */
-    public List<Location> getCrateLocations() {
+    public @NotNull final List<Location> getCrateLocations() {
         return this.crateLocations;
     }
 
@@ -383,7 +383,7 @@ public class QuadCrateManager {
      *
      * @return map of opened crates.
      */
-    public Map<Location, Boolean> getCratesOpened() {
+    public @NotNull final Map<Location, Boolean> getCratesOpened() {
         return this.cratesOpened;
     }
 
@@ -392,7 +392,7 @@ public class QuadCrateManager {
      *
      * @return the crate object.
      */
-    public Crate getCrate() {
+    public @NotNull final Crate getCrate() {
         return this.crate;
     }
 
@@ -401,7 +401,7 @@ public class QuadCrateManager {
      *
      * @return list of display rewards.
      */
-    public List<Entity> getDisplayedRewards() {
+    public @NotNull final List<Entity> getDisplayedRewards() {
         return this.displayedRewards;
     }
 
@@ -410,7 +410,7 @@ public class QuadCrateManager {
      *
      * @return true or false.
      */
-    public boolean allCratesOpened() {
+    public final boolean allCratesOpened() {
         for (Map.Entry<Location, Boolean> location : this.cratesOpened.entrySet()) {
             if (!location.getValue()) return false;
         }
