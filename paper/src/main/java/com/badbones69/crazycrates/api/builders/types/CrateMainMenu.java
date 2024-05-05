@@ -56,7 +56,7 @@ public class CrateMainMenu extends InventoryBuilder {
             final String name = this.config.getProperty(ConfigKeys.filler_name);
             final List<String> lore = this.config.getProperty(ConfigKeys.filler_lore);
 
-            final ItemStackBuilder item = new ItemStackBuilder(Material.RED_STAINED_GLASS_PANE).withType(id, false).setDisplayName(name).setDisplayLore(lore).setPlayer(getPlayer()).build();
+            final ItemStackBuilder item = new ItemStackBuilder().withType(id, false).setDisplayName(name).setDisplayLore(lore).setPlayer(getPlayer()).build();
 
             for (int i = 0; i < getSize(); i++) {
                 inventory.setItem(i, item);
@@ -69,7 +69,7 @@ public class CrateMainMenu extends InventoryBuilder {
             if (!customizer.isEmpty()) {
                 for (String custom : customizer) {
                     int slot = 0;
-                    final ItemStackBuilder item = new ItemStackBuilder(Material.RED_STAINED_GLASS_PANE);
+                    final ItemStackBuilder item = new ItemStackBuilder();
 
                     final String[] split = custom.split(", ");
 
@@ -134,7 +134,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
                         slot--;
 
-                        final ItemStackBuilder builder = new ItemStackBuilder(Material.RED_STAINED_GLASS_PANE)
+                        final ItemStackBuilder builder = new ItemStackBuilder()
                                 .addPlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)), true)
                                 .addPlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, crateName)), true)
                                 .addPlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, crateName)), true)

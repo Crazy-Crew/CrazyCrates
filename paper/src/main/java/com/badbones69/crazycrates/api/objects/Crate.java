@@ -148,14 +148,14 @@ public class Crate {
 
         String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
-        this.borderItem = new ItemStackBuilder(Material.GRAY_STAINED_GLASS_PANE)
+        this.borderItem = new ItemStackBuilder()
                 .withType(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane"), false)
                 .setHiddenItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
                 .setDisplayName(borderName);
 
         String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
 
-        this.previewTierBorderItem = new ItemStackBuilder(Material.GRAY_STAINED_GLASS_PANE)
+        this.previewTierBorderItem = new ItemStackBuilder()
                 .withType(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane"), false)
                 .setHiddenItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
                 .setDisplayName(previewTierBorderName);

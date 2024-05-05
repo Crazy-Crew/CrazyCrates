@@ -129,7 +129,7 @@ public class ItemBuilder {
      * @return the string as an ItemBuilder.
      */
     public static ItemStackBuilder convertString(String itemString, String section) {
-        ItemStackBuilder itemBuilder = new ItemStackBuilder(null);
+        ItemStackBuilder itemBuilder = new ItemStackBuilder();
 
         try {
             for (String optionString : itemString.split(", ")) {

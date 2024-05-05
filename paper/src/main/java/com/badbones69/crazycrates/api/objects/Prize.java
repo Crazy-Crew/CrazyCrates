@@ -18,7 +18,7 @@ import java.util.List;
 
 public class Prize {
 
-    private ItemStackBuilder displayItem = new ItemStackBuilder(Material.CHEST);
+    private ItemStackBuilder displayItem = new ItemStackBuilder();
     private final List<ItemStack> items = new ArrayList<>();
 
     private List<String> permissions = new ArrayList<>();
@@ -224,7 +224,7 @@ public class Prize {
     }
 
     private @NotNull ItemStackBuilder display() {
-        final ItemStackBuilder builder = new ItemStackBuilder(Material.CHEST);
+        final ItemStackBuilder builder = new ItemStackBuilder();
 
         try {
             final String material = this.section.getString("DisplayItem", "red_terracotta");
