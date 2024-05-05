@@ -140,8 +140,7 @@ public class CrateManager {
                             boolean isEnabled = alternativeSection.getBoolean("Toggle");
 
                             if (isEnabled) {
-                                alternativePrize = new Prize(prizeSection.getString("DisplayName", WordUtils.capitalizeFully(prizeSection.getString("DisplayItem", "Stone")
-                                        .replaceAll("_", " "))), prizeSection.getName(), alternativeSection);
+                                alternativePrize = new Prize(prizeSection.getString("DisplayName", WordUtils.capitalizeFully(prizeSection.getString("DisplayItem", "Stone").replaceAll("_", " "))), prizeSection.getName(), alternativeSection);
                             }
                         }
 
