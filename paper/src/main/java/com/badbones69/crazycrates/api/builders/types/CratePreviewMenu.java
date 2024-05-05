@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
@@ -33,7 +34,7 @@ public class CratePreviewMenu extends InventoryBuilder {
     private final boolean isTier;
     private final Tier tier;
 
-    public CratePreviewMenu(@NotNull final Crate crate, @NotNull final Player player, final int size, final int page, @NotNull final String title, final boolean isTier, @NotNull final Tier tier) {
+    public CratePreviewMenu(@NotNull final Crate crate, @NotNull final Player player, final int size, final int page, @NotNull final String title, final boolean isTier, @Nullable final Tier tier) {
         super(crate, player, size, page, title);
 
         this.isTier = isTier;
@@ -66,7 +67,7 @@ public class CratePreviewMenu extends InventoryBuilder {
         if (crate.isBorderToggle()) {
             final List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
 
-            final ItemStack itemStack = crate.getBorderItem().setTarget(player).build();
+            final ItemStack itemStack = crate.getBorderItem().setPlayer(player).build();
 
             for (int i : borderItems) { // Top Border slots
                 inventory.setItem(i, itemStack);
@@ -87,7 +88,7 @@ public class CratePreviewMenu extends InventoryBuilder {
 
         if (page == 1) {
             if (crate.isBorderToggle()) {
-                inventory.setItem(crate.getAbsoluteItemPosition(3), crate.getBorderItem().setTarget(player).build());
+                inventory.setItem(crate.getAbsoluteItemPosition(3), crate.getBorderItem().setPlayer(player).build());
             }
         } else {
             inventory.setItem(crate.getAbsoluteItemPosition(3), this.inventoryManager.getBackButton(player));
@@ -95,7 +96,7 @@ public class CratePreviewMenu extends InventoryBuilder {
 
         if (page == crate.getMaxPage()) {
             if (crate.isBorderToggle()) {
-                inventory.setItem(crate.getAbsoluteItemPosition(5), crate.getBorderItem().setTarget(player).build());
+                inventory.setItem(crate.getAbsoluteItemPosition(5), crate.getBorderItem().setPlayer(player).build());
             }
         } else {
             inventory.setItem(crate.getAbsoluteItemPosition(5), this.inventoryManager.getNextButton(player));
