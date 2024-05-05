@@ -254,7 +254,8 @@ public abstract class BaseCommand {
             return;
         }
 
-        Map<String, String> placeholders = new HashMap<>();
+        if (offlinePlayer != null) {
+            final Map<String, String> placeholders = new ConcurrentHashMap<>();
 
         placeholders.put("{amount}", String.valueOf(amount));
         placeholders.put("{keytype}", type.getFriendlyName());
@@ -266,14 +267,14 @@ public abstract class BaseCommand {
     }
 
     @ApiStatus.Internal
-    private void addKey(CommandSender sender, Player player, OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount) {
-        PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
-
-        this.plugin.getServer().getPluginManager().callEvent(event);
-
-        if (event.isCancelled()) return;
-
+    private void addKey(@NotNull final CommandSender sender, @Nullable Player player, @Nullable OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount) {
         if (player != null) {
+            final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
+
+            this.plugin.getServer().getPluginManager().callEvent(event);
+
+            if (event.isCancelled()) return;
+
             if (crate.getCrateType() == CrateType.crate_on_the_go) {
                 player.getInventory().addItem(crate.getKey(amount, player));
             } else {
@@ -292,22 +293,29 @@ public abstract class BaseCommand {
 
             sender.sendRichMessage(Messages.gave_a_player_keys.getMessage(sender, placeholders));
 
-            if (!inventoryCheck || !fullMessage && !MiscUtils.isInventoryFull(player) && player.isOnline())
-                player.sendRichMessage(Messages.obtaining_keys.getMessage(player, placeholders));
+            if (!inventoryCheck || !fullMessage && !MiscUtils.isInventoryFull(player) && player.isOnline()) player.sendRichMessage(Messages.obtaining_keys.getMessage(player, placeholders));
 
             return;
         }
 
-        if (!this.userManager.addOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), type, amount)) {
-            sender.sendRichMessage(Messages.internal_error.getMessage(sender));
-        } else {
-            Map<String, String> placeholders = new HashMap<>();
+        if (offlinePlayer != null) {
+            final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(offlinePlayer, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
 
-            placeholders.put("{amount}", String.valueOf(amount));
-            placeholders.put("{keytype}", type.getFriendlyName());
-            placeholders.put("{player}", offlinePlayer.getName());
+            this.plugin.getServer().getPluginManager().callEvent(event);
 
-            sender.sendRichMessage(Messages.given_offline_player_keys.getMessage(sender, placeholders));
+            if (event.isCancelled()) return;
+
+            if (!this.userManager.addOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), type, amount)) {
+                sender.sendRichMessage(Messages.internal_error.getMessage(sender));
+            } else {
+                Map<String, String> placeholders = new ConcurrentHashMap<>();
+
+                placeholders.put("{amount}", String.valueOf(amount));
+                placeholders.put("{keytype}", type.getFriendlyName());
+                placeholders.put("{player}", offlinePlayer.getName());
+
+                sender.sendRichMessage(Messages.given_offline_player_keys.getMessage(sender, placeholders));
+            }
         }
     }
 }

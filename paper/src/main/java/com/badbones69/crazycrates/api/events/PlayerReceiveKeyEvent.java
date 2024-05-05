@@ -1,17 +1,20 @@
 package com.badbones69.crazycrates.api.events;
 
 import com.badbones69.crazycrates.api.objects.Crate;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class PlayerReceiveKeyEvent extends Event implements Cancellable {
     
     private static final HandlerList handlers = new HandlerList();
     
     private final Player player;
+    private final OfflinePlayer offlinePlayer;
     private final Crate crate;
     private final KeyReceiveReason reason;
     private final int amount;
@@ -39,25 +42,29 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
         return handlers;
     }
     
-    public Player getPlayer() {
+    public @Nullable final Player getPlayer() {
         return this.player;
     }
-    
-    public Crate getCrate() {
+
+    public @Nullable OfflinePlayer getOfflinePlayer() {
+        return this.offlinePlayer;
+    }
+
+    public @NotNull final Crate getCrate() {
         return this.crate;
     }
     
-    public KeyReceiveReason getReason() {
+    public @NotNull final KeyReceiveReason getReason() {
         return this.reason;
     }
     
     @Override
-    public boolean isCancelled() {
+    public final boolean isCancelled() {
         return this.isCancelled;
     }
     
     @Override
-    public void setCancelled(boolean cancel) {
+    public void setCancelled(final boolean cancel) {
         this.isCancelled = cancel;
     }
     
@@ -65,7 +72,7 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
         return handlers;
     }
     
-    public int getAmount() {
+    public final int getAmount() {
         return this.amount;
     }
     
