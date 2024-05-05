@@ -130,7 +130,7 @@ Crate:
      # An example prize of how to use a shulker box.
     '1':
       # The name of the item to display in the gui.
-      DisplayName: "<purple>Shulker Box"
+      DisplayName: "<light_purple>Shulker Box"
       # The item to display in the gui.
       DisplayItem: "shulker_box"
       # The amount to display in the gui.
