@@ -26,7 +26,6 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -329,9 +328,7 @@ public class BukkitUserManager extends UserManager {
 
         for (ItemStack item : items) {
             if (item != null) {
-                if (ItemUtils.isSimilar(item, crate)) {
-                    return true;
-                }
+                if (ItemUtils.isSimilar(item, crate)) return true;
             }
         }
 
@@ -347,8 +344,6 @@ public class BukkitUserManager extends UserManager {
 
             return false;
         }
-
-        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         try {
             if (keyType == KeyType.physical_key) {
@@ -384,8 +379,6 @@ public class BukkitUserManager extends UserManager {
 
             return false;
         }
-
-        Crate crate = this.crateManager.getCrateFromName(crateName);
 
         try {
             if (keyType == KeyType.physical_key) {

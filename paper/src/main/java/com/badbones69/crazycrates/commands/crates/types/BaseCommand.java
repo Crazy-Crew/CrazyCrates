@@ -178,7 +178,7 @@ public abstract class BaseCommand {
 
         final Map<Crate, Integer> keys = new ConcurrentHashMap<>();
 
-        this.plugin.getCrateManager().getUsableCrates().forEach(crate -> keys.put(crate, this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName())));
+        this.crateManager.getUsableCrates().forEach(crate -> keys.put(crate, this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName())));
 
         boolean hasKeys = false;
 
@@ -229,8 +229,7 @@ public abstract class BaseCommand {
             final int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), crate.getName());
 
             if (totalKeys < 1) {
-                if (MiscUtils.isLogging())
-                    this.plugin.getLogger().warning("The player " + player.getName() + " does not have enough keys to take.");
+                if (MiscUtils.isLogging()) this.plugin.getLogger().warning("The player " + player.getName() + " does not have enough keys to take.");
 
                 sender.sendRichMessage(Messages.cannot_take_keys.getMessage(sender, "{player}", player.getName()));
 
@@ -243,7 +242,7 @@ public abstract class BaseCommand {
 
             this.userManager.takeKeys(player.getUniqueId(), crate.getName(), type, amount, false);
 
-            Map<String, String> placeholders = new HashMap<>();
+            final Map<String, String> placeholders = new ConcurrentHashMap<>();
 
             placeholders.put("{amount}", String.valueOf(amount));
             placeholders.put("{keytype}", type.getFriendlyName());
@@ -257,13 +256,14 @@ public abstract class BaseCommand {
         if (offlinePlayer != null) {
             final Map<String, String> placeholders = new ConcurrentHashMap<>();
 
-        placeholders.put("{amount}", String.valueOf(amount));
-        placeholders.put("{keytype}", type.getFriendlyName());
-        placeholders.put("{player}", offlinePlayer.getName());
+            placeholders.put("{amount}", String.valueOf(amount));
+            placeholders.put("{keytype}", type.getFriendlyName());
+            placeholders.put("{player}", offlinePlayer.getName());
 
-        sender.sendRichMessage(Messages.take_offline_player_keys.getMessage(sender, placeholders));
+            sender.sendRichMessage(Messages.take_offline_player_keys.getMessage(sender, placeholders));
 
-        this.userManager.takeOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), type, amount);
+            this.userManager.takeOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), type, amount);
+        }
     }
 
     @ApiStatus.Internal
