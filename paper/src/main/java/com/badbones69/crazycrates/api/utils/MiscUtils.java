@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.api.utils;
 
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.Permissions;
+import com.ryderbelserion.vital.items.ItemStackBuilder;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
@@ -197,7 +197,7 @@ public class MiscUtils {
         return MiscUtils.useOtherRandom() ? min + ThreadLocalRandom.current().nextInt(max - min) : min + new Random().nextInt(max - min);
     }
 
-    public static ItemBuilder getRandomPaneColor() {
+    public static ItemStackBuilder getRandomPaneColor() {
         List<Material> panes = Arrays.asList(
                 Material.LIGHT_BLUE_STAINED_GLASS_PANE,
                 Material.MAGENTA_STAINED_GLASS_PANE,
@@ -215,7 +215,7 @@ public class MiscUtils {
                 Material.RED_STAINED_GLASS_PANE
         );
 
-        return new ItemBuilder().setMaterial(panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
+        return new ItemStackBuilder(panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
     }
 
     /**
