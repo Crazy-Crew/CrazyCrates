@@ -97,12 +97,19 @@ public class CrateManager {
      */
     public void reloadCrate(@Nullable final Crate crate) {
         try {
-            // Close previews
-            this.plugin.getServer().getOnlinePlayers().forEach(this.inventoryManager::closeCratePreview);
+            // If crate null, return.
+            if (crate == null) return;
 
             // Grab the new file.
             FileConfiguration file = crate.getFile();
 
+            // If null return
+            if (file == null) return;
+
+            // Close previews
+            this.plugin.getServer().getOnlinePlayers().forEach(this.inventoryManager::closeCratePreview);
+
+            // Purge the crate stuff
             crate.purge();
 
             // Profit?
