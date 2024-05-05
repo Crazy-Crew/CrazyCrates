@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.api.objects;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
+import com.ryderbelserion.vital.items.ItemStackBuilder;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -17,10 +18,10 @@ import java.util.List;
 
 public class Prize {
 
+    private ItemStackBuilder displayItem = new ItemStackBuilder(Material.CHEST);
     private final List<ItemStack> items = new ArrayList<>();
 
     private List<String> permissions = new ArrayList<>();
-    private ItemBuilder displayItem = new ItemBuilder();
     private final List<String> commands;
     private final List<String> messages;
     private boolean firework = false;
@@ -110,8 +111,8 @@ public class Prize {
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
-    public @NotNull final ItemStack getDisplayItem() {
-        ItemStack itemStack = this.displayItem.build();
+    public @NotNull final ItemStackBuilder getDisplayItem() {
+        ItemStackBuilder itemStack = this.displayItem.build();
 
         itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.sectionName));
 
@@ -121,18 +122,14 @@ public class Prize {
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
-    public @NotNull final ItemStack getDisplayItem(@NotNull final Player player) {
-        ItemStack itemStack = this.displayItem.setTarget(player).build();
-
-        itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.sectionName));
-
-        return itemStack;
+    public @NotNull final ItemStackBuilder getDisplayItem(@NotNull final Player player) {
+        return this.displayItem.setPlayer(player).setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.sectionName).build();
     }
 
     /**
      * @return the ItemBuilder of the display item.
      */
-    public @NotNull final ItemBuilder getDisplayItemBuilder() {
+    public @NotNull final ItemStackBuilder getDisplayItemBuilder() {
         return this.displayItem;
     }
     
@@ -226,14 +223,14 @@ public class Prize {
         return false;
     }
 
-    private @NotNull ItemBuilder display() {
-        final ItemBuilder builder = new ItemBuilder();
+    private @NotNull ItemStackBuilder display() {
+        final ItemStackBuilder builder = new ItemStackBuilder(Material.CHEST);
 
         try {
             final String material = this.section.getString("DisplayItem", "red_terracotta");
 
             final int amount = this.section.getInt("DisplayAmount", 1);
-            final String nbt = this.section.getString("DisplayNbt", "");
+            /*final String nbt = this.section.getString("DisplayNbt", "");
 
             if (!nbt.isEmpty()) {
                 builder.setMaterial(material).setAmount(amount).setCompoundTag(nbt);
@@ -241,14 +238,11 @@ public class Prize {
                 builder.setString(PersistentKeys.crate_prize.getNamespacedKey(), this.section.getName());
 
                 return builder;
-            }
+            }*/
 
-            // todo() fix this shit when the new itembuilder shows up
-            builder.setMaterial(material).setAmount(amount).setDisplayName(this.prizeName);
-            // Set the pdc with the section name.
-            ItemUtils.getItem(this.section, builder).setString(PersistentKeys.crate_prize.getNamespacedKey(), this.section.getName());
+            builder.withType(material, false).setDisplayName(this.prizeName).setDisplayAmount(amount);
 
-            return builder;
+            return ItemUtils.getItem(this.section, builder).setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.section.getName());
         } catch (Exception exception) {
             final List<String> list = new ArrayList<>() {{
                add("<red>There was an error with one of your prizes!");
@@ -257,7 +251,7 @@ public class Prize {
                add("<red>If you are confused, Stop by our discord for support!");
             }};
 
-            return new ItemBuilder().setMaterial(Material.RED_TERRACOTTA).setDisplayName("<bold><red>ERROR</bold>").setDisplayLore(list);
+            return new ItemStackBuilder(Material.RED_TERRACOTTA).setDisplayName("<bold><red>ERROR</bold>").setDisplayLore(list);
         }
     }
 }
