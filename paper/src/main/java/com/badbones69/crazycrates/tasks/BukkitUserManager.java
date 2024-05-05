@@ -1,9 +1,9 @@
 package com.badbones69.crazycrates.tasks;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.items.ItemStackBuilder;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.Files;
@@ -628,14 +628,17 @@ public class BukkitUserManager extends UserManager {
      * @param crate the crate
      * @return the itembuilder
      */
-    public ItemBuilder addPlaceholders(@NotNull final ItemBuilder itemBuilder, @NotNull final Crate crate) {
-        final UUID uuid = itemBuilder.getTarget().getUniqueId();
+    public ItemStackBuilder addPlaceholders(@NotNull final ItemStackBuilder itemBuilder, @NotNull final Crate crate) {
         final String name = crate.getName();
+        if (name.isEmpty()) return itemBuilder;
 
-        itemBuilder.addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(getVirtualKeys(uuid, name)))
-                .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(getPhysicalKeys(uuid, name)))
-                .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(getTotalKeys(uuid, name)))
-                .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(getCrateOpened(uuid, name)));
+        final UUID uuid = itemBuilder.getPlayer();
+        if (uuid == null) return itemBuilder;
+
+        itemBuilder.addPlaceholder("%keys%", NumberFormat.getNumberInstance().format(getVirtualKeys(uuid, name)), false)
+                .addPlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(getPhysicalKeys(uuid, name)), false)
+                .addPlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(getTotalKeys(uuid, name)), false)
+                .addPlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(getCrateOpened(uuid, name)), false);
 
         return itemBuilder;
     }
