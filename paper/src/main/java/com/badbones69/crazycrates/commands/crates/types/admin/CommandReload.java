@@ -18,7 +18,7 @@ public class CommandReload extends BaseCommand {
     public void reload(CommandSender sender) {
         ConfigManager.reload();
 
-        this.fileManager.create();
+        this.fileManager.apply();
 
         final FileConfiguration locations = Files.locations.getFile();
         final FileConfiguration data = Files.data.getFile();
