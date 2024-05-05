@@ -16,19 +16,29 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
 
-    compileOnly(libs.config.me)
+    compileOnlyApi(libs.config.me) {
+        isTransitive = true
+    }
 
-    compileOnly(libs.vital)
+    compileOnlyApi(libs.vital.paper) {
+        isTransitive = true
+    }
 }
 
-java {
-    withSourcesJar()
-    withJavadocJar()
-}
-
-val component: SoftwareComponent = components["java"]
+val javaComponent: SoftwareComponent = components["java"]
 
 tasks {
+    val sourcesJar by creating(Jar::class) {
+        archiveClassifier.set("sources")
+        from(sourceSets.main.get().allSource)
+    }
+
+    val javadocJar by creating(Jar::class) {
+        dependsOn.add(javadoc)
+        archiveClassifier.set("javadoc")
+        from(javadoc)
+    }
+
     publishing {
         repositories {
             maven {
@@ -43,11 +53,45 @@ tasks {
 
         publications {
             create<MavenPublication>("maven") {
-                group = project.group
-                artifactId = project.name
-                version = "${project.version}"
+                artifact(shadowJar)
+                artifact(sourcesJar)
+                artifact(javadocJar)
 
-                from(component)
+                versionMapping {
+                    usage("java-api") {
+                        fromResolutionOf("runtimeClasspath")
+                    }
+                    usage("java-runtime") {
+                        fromResolutionResult()
+                    }
+                }
+
+                pom {
+                    name.set("CrazyCrates API")
+                    description.set("The official API of CrazyCrates")
+                    url.set("https://modrinth.com/plugin/crazycrates")
+
+                    licenses {
+                        licenses {
+                            name.set("MIT")
+                            url.set("https://opensource.org/licenses/MIT")
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id.set("ryderbelserion")
+                            name.set("Ryder Belserion")
+                            email.set("no-reply@ryderbelserion.com")
+                        }
+                    }
+
+                    scm {
+                        connection.set("scm:git:git://github.com/Crazy-Crew/CrazyCrates")
+                        developerConnection.set("scm:git:ssh://github.com/Crazy-Crew/CrazyCrates")
+                        url.set("https://github.com/Crazy-Crew/CrazyCrates")
+                    }
+                }
             }
         }
     }

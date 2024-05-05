@@ -15,7 +15,7 @@ dependencies {
 
     implementation(project(":api"))
 
-    implementation(libs.vital)
+    implementation(libs.vital.snapshot)
 
     compileOnly(libs.head.database.api)
 
