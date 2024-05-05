@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.hooks.HeadDatabaseListener;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.items.ItemStackBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -46,8 +47,8 @@ public class ItemUtils {
      * @param player the player to set.
      * @return the builder object with updated data.
      */
-    public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder, @NotNull final Player player) {
-        return getItem(section, builder.setTarget(player));
+    public static @NotNull ItemStackBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemStackBuilder builder, @NotNull final Player player) {
+        return getItem(section, builder.setPlayer(player));
     }
 
     /**
@@ -57,35 +58,35 @@ public class ItemUtils {
      * @param builder the current builder object.
      * @return the builder object with updated data.
      */
-    public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder) {
+    public static @NotNull ItemStackBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemStackBuilder builder) {
         builder.setGlowing(section.getBoolean("Glowing", false));
         
-        builder.setItemDamage(section.getInt("DisplayDamage", 0));
+        builder.setDamage(section.getInt("DisplayDamage", 0));
         
         builder.setDisplayLore(section.getStringList("Lore"));
 
         builder.addPatterns(section.getStringList("Patterns"));
 
-        builder.addItemFlags(section.getStringList("Flags"));
+        //builder.addItemFlags(section.getStringList("Flags"));
 
-        builder.hideItemFlags(section.getBoolean("HideItemFlags", false));
+        builder.setHiddenItemFlags(section.getBoolean("HideItemFlags", false));
 
         builder.setUnbreakable(section.getBoolean("Unbreakable", false));
         
         if (section.contains("Skull")) {
-            builder.setSkull(section.getString("Skull", ""), HeadDatabaseListener.getHeads());
+            //builder.setSkull(section.getString("Skull", ""), HeadDatabaseListener.getHeads());
         }
         
-        if (section.contains("Player") && builder.isHead()) {
-            builder.setPlayer(section.getString("Player", ""));
+        if (section.contains("Player") && builder.isPlayerHead()) {
+            //builder.setPlayer(section.getString("Player", ""));
         }
         
         if (section.contains("DisplayTrim.Pattern") && builder.isArmor()) {
-            builder.setTrimPattern(section.getString("DisplayTrim.Pattern", "sentry"));
+            builder.applyTrimPattern(section.getString("DisplayTrim.Pattern", "sentry"));
         }
         
         if (section.contains("DisplayTrim.Material") && builder.isArmor()) {
-            builder.setTrimMaterial(section.getString("DisplayTrim.Material", "quartz"));
+            builder.applyTrimMaterial(section.getString("DisplayTrim.Material", "quartz"));
         }
         
         if (section.contains("DisplayEnchantments")) {

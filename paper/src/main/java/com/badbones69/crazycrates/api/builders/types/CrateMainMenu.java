@@ -3,14 +3,14 @@ package com.badbones69.crazycrates.api.builders.types;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.api.hooks.HeadDatabaseListener;
+import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.items.ItemStackBuilder;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -38,8 +38,6 @@ public class CrateMainMenu extends InventoryBuilder {
 
     private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
-
     private @NotNull final SettingsManager config = ConfigManager.getConfig();
 
     public CrateMainMenu(@NotNull final Player player, final int size, @NotNull final String title) {
@@ -58,10 +56,10 @@ public class CrateMainMenu extends InventoryBuilder {
             final String name = this.config.getProperty(ConfigKeys.filler_name);
             final List<String> lore = this.config.getProperty(ConfigKeys.filler_lore);
 
-            final ItemStack item = new ItemBuilder().setMaterial(id).setDisplayName(name).setDisplayLore(lore).setTarget(getPlayer()).build();
+            final ItemStackBuilder item = new ItemStackBuilder(Material.RED_STAINED_GLASS_PANE).withType(id, false).setDisplayName(name).setDisplayLore(lore).setPlayer(getPlayer()).build();
 
             for (int i = 0; i < getSize(); i++) {
-                inventory.setItem(i, item.clone());
+                inventory.setItem(i, item);
             }
         }
 
@@ -71,12 +69,12 @@ public class CrateMainMenu extends InventoryBuilder {
             if (!customizer.isEmpty()) {
                 for (String custom : customizer) {
                     int slot = 0;
-                    final ItemBuilder item = new ItemBuilder();
+                    final ItemStackBuilder item = new ItemStackBuilder(Material.RED_STAINED_GLASS_PANE);
 
                     final String[] split = custom.split(", ");
 
                     for (String option : split) {
-                        if (option.contains("item:")) item.setMaterial(option.replace("item:", ""));
+                        if (option.contains("item:")) item.withType(option.replace("item:", ""), false);
 
                         if (option.contains("name:")) {
                             option = option.replace("name:", "");
@@ -100,7 +98,7 @@ public class CrateMainMenu extends InventoryBuilder {
                         if (option.contains("glowing:")) item.setGlowing(option.replace("glowing:", "").equalsIgnoreCase("true"));
 
                         //todo() test the new options.
-                        if (option.contains("hdb:")) item.setSkull(option.replace("hdb:", ""), HeadDatabaseListener.getHeads());
+                        //if (option.contains("hdb:")) item.setSkull(option.replace("hdb:", ""), HeadDatabaseListener.getHeads());
 
                         if (option.contains("player:")) item.setPlayer(option.replace("{player}", player.getName())); // ryder - this doesn't need to be replaceAll, what logic would an owner need to put the player name twice in the displayName?
 
@@ -108,14 +106,14 @@ public class CrateMainMenu extends InventoryBuilder {
 
                         if (option.contains("unbreakable-item:")) item.setUnbreakable(option.replace("unbreakable-item:", "").equalsIgnoreCase("true"));
 
-                        if (option.contains("hide-item-flags:")) item.hideItemFlags(option.replace("hide-item-flags:", "").equalsIgnoreCase("true"));
+                        if (option.contains("hide-item-flags:")) item.setHiddenItemFlags(option.replace("hide-item-flags:", "").equalsIgnoreCase("true"));
                     }
 
                     if (slot > getSize()) continue;
 
                     slot--;
 
-                    inventory.setItem(slot, item.setTarget(player).build());
+                    inventory.setItem(slot, item.setPlayer(player).build());
                 }
             }
         }
@@ -136,11 +134,14 @@ public class CrateMainMenu extends InventoryBuilder {
 
                         slot--;
 
-                        final ItemBuilder builder = new ItemBuilder().addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)))
-                                .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, crateName)))
-                                .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, crateName)))
-                                .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(uuid, crateName)))
-                                .addLorePlaceholder("%player%", getPlayer().getName()).setCrateName(crate.getName()).setDisplayName(section.getString("CrateName", crateName)).setMaterial(section.getString("Item", "chest"));
+                        final ItemStackBuilder builder = new ItemStackBuilder(Material.RED_STAINED_GLASS_PANE)
+                                .addPlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)), true)
+                                .addPlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, crateName)), true)
+                                .addPlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, crateName)), true)
+                                .addPlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(uuid, crateName)), true)
+                                .addPlaceholder("%player%", getPlayer().getName(), true)
+                                .setPersistentString(PersistentKeys.crate_key.getNamespacedKey(), crate.getName()).setDisplayName(section.getString("CrateName", crateName))
+                                .withType(section.getString("Item", "chest"), false);
 
                         inventory.setItem(slot, ItemUtils.getItem(section, builder, player).build());
                     }
