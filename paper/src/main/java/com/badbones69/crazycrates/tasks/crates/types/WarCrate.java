@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.ryderbelserion.vital.items.ItemStackBuilder;
 import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
@@ -24,7 +24,7 @@ public class WarCrate extends CrateBuilder {
 
     private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    private final Map<ItemStack, String> colorCodes = new ConcurrentHashMap<>();
+    private final Map<Material, String> colorCodes = new ConcurrentHashMap<>();
 
     public WarCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size);
@@ -109,8 +109,8 @@ public class WarCrate extends CrateBuilder {
 
         if (this.colorCodes.isEmpty()) getColorCode();
 
-        final ItemBuilder builder = MiscUtils.getRandomPaneColor();
-        builder.setDisplayName("<" + this.colorCodes.get(builder.build()) + "><bold>???</bold>");
+        final ItemStackBuilder builder = MiscUtils.getRandomPaneColor();
+        builder.setDisplayName("<" + this.colorCodes.get(builder.getType()) + "><bold>???</bold>");
         final ItemStack item = builder.build();
 
         for (int index = 0; index < 9; index++) {
@@ -119,22 +119,22 @@ public class WarCrate extends CrateBuilder {
     }
 
     private void getColorCode() {
-        this.colorCodes.put(new ItemBuilder().setMaterial(Material.WHITE_STAINED_GLASS_PANE).build(), "white");
-        this.colorCodes.put(new ItemBuilder().setMaterial(Material.ORANGE_STAINED_GLASS_PANE).build(), "gold");
-        this.colorCodes.put(new ItemBuilder().setMaterial(Material.MAGENTA_STAINED_GLASS_PANE).build(), "light_purple");
-        this.colorCodes.put(new ItemBuilder().setMaterial(Material.LIGHT_BLUE_STAINED_GLASS_PANE).build(), "dark_aqua");
-        this.colorCodes.put(new ItemBuilder().setMaterial(Material.YELLOW_STAINED_GLASS_PANE).build(), "yellow");
-        this.colorCodes.put(new ItemBuilder().setMaterial(Material.LIME_STAINED_GLASS_PANE).build(), "green");
-        this.colorCodes.put(new ItemBuilder().setMaterial(Material.PINK_STAINED_GLASS_PANE).build(), "red");
-        this.colorCodes.put(new ItemBuilder().setMaterial(Material.GRAY_STAINED_GLASS_PANE).build(), "dark_gray");
-        this.colorCodes.put(new ItemBuilder().setMaterial(Material.LIGHT_GRAY_STAINED_GLASS_PANE).build(), "gray");
-        this.colorCodes.put(new ItemBuilder().setMaterial(Material.CYAN_STAINED_GLASS_PANE).build(), "aqua");
-        this.colorCodes.put(new ItemBuilder().setMaterial(Material.PURPLE_STAINED_GLASS_PANE).build(), "dark_purple");
-        this.colorCodes.put(new ItemBuilder().setMaterial(Material.BLUE_STAINED_GLASS_PANE).build(), "dark_blue");
-        this.colorCodes.put(new ItemBuilder().setMaterial(Material.BROWN_STAINED_GLASS_PANE).build(), "gold");
-        this.colorCodes.put(new ItemBuilder().setMaterial(Material.GREEN_STAINED_GLASS_PANE).build(), "green");
-        this.colorCodes.put(new ItemBuilder().setMaterial(Material.RED_STAINED_GLASS_PANE).build(), "dark_red");
-        this.colorCodes.put(new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).build(), "black");
+        this.colorCodes.put(Material.WHITE_STAINED_GLASS_PANE, "white");
+        this.colorCodes.put(Material.ORANGE_STAINED_GLASS_PANE, "gold");
+        this.colorCodes.put(Material.MAGENTA_STAINED_GLASS_PANE, "light_purple");
+        this.colorCodes.put(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "dark_aqua");
+        this.colorCodes.put(Material.YELLOW_STAINED_GLASS_PANE, "yellow");
+        this.colorCodes.put(Material.LIME_STAINED_GLASS_PANE, "green");
+        this.colorCodes.put(Material.PINK_STAINED_GLASS_PANE, "red");
+        this.colorCodes.put(Material.GRAY_STAINED_GLASS_PANE, "dark_gray");
+        this.colorCodes.put(Material.LIGHT_GRAY_STAINED_GLASS_PANE, "gray");
+        this.colorCodes.put(Material.CYAN_STAINED_GLASS_PANE, "aqua");
+        this.colorCodes.put(Material.PURPLE_STAINED_GLASS_PANE, "dark_purple");
+        this.colorCodes.put(Material.BLUE_STAINED_GLASS_PANE, "dark_blue");
+        this.colorCodes.put(Material.BROWN_STAINED_GLASS_PANE, "gold");
+        this.colorCodes.put(Material.GREEN_STAINED_GLASS_PANE, "green");
+        this.colorCodes.put(Material.RED_STAINED_GLASS_PANE, "dark_red");
+        this.colorCodes.put(Material.BLACK_STAINED_GLASS_PANE, "black");
     }
 
     @Override
