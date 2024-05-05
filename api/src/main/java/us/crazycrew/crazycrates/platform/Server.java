@@ -31,7 +31,7 @@ public class Server extends AbstractPlugin {
     public void enable() {
         ConfigManager.load(this.plugin.getDataFolder());
       
-        this.fileManager = new FileManager();
+        this.fileManager = new FileManager(getDirectory(), getLogger());
         this.fileManager
                 .addDefaultFile("crates", "CrateExample.yml")
                 .addDefaultFile("crates", "QuadCrateExample.yml")
@@ -48,7 +48,7 @@ public class Server extends AbstractPlugin {
                 .addStaticFile("locations.yml")
                 .addStaticFile("data.yml")
                 .addFolder("crates")
-                .addFolder("schematics").create();
+                .addFolder("schematics").apply();
 
         // Register default provider.
         CratesProvider.register(this);

@@ -5,24 +5,22 @@ plugins {
 }
 
 project.group = "us.crazycrew.crazycrates"
-project.version = "0.5"
+project.version = "0.6"
 
 repositories {
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 
     maven("https://repo.papermc.io/repository/maven-public")
+
+    //mavenLocal()
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
 
-    compileOnlyApi(libs.config.me) {
-        isTransitive = true
-    }
+    compileOnlyApi(libs.vital.paper)
 
-    compileOnlyApi(libs.vital.paper) {
-        isTransitive = true
-    }
+    compileOnlyApi(libs.config.me)
 }
 
 val javaComponent: SoftwareComponent = components["java"]
@@ -53,7 +51,8 @@ tasks {
 
         publications {
             create<MavenPublication>("maven") {
-                artifact(shadowJar)
+                from(javaComponent)
+
                 artifact(sourcesJar)
                 artifact(javadocJar)
 
