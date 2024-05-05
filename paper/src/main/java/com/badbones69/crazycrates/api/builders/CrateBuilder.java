@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.items.ItemStackBuilder;
 import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
@@ -301,7 +302,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param lore lore of item.
      */
     public void setItem(final int slot, @NotNull final Material material, @NotNull final String name, @NotNull final List<String> lore) {
-        ItemBuilder builder = new ItemBuilder().setMaterial(material).setTarget(getPlayer()).setDisplayName(name).setDisplayLore(lore);
+        ItemStackBuilder builder = new ItemStackBuilder(material).setPlayer(getPlayer()).setDisplayName(name).setDisplayLore(lore);
 
         getInventory().setItem(slot, builder.build());
     }
@@ -314,7 +315,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param name name of item.
      */
     public void setItem(final int slot, @NotNull final Material material, @NotNull final String name) {
-        ItemBuilder builder = new ItemBuilder().setMaterial(material).setTarget(getPlayer()).setDisplayName(name);
+        ItemStackBuilder builder = new ItemStackBuilder(material).setPlayer(getPlayer()).setDisplayName(name);
 
         getInventory().setItem(slot, builder.build());
     }
@@ -328,7 +329,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
         getInventory().setItem(slot, getRandomGlassPane());
     }
 
-    public ItemStack getRandomGlassPane() {
+    public ItemStackBuilder getRandomGlassPane() {
         return MiscUtils.getRandomPaneColor().setDisplayName(" ").build();
     }
 
