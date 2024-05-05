@@ -94,7 +94,7 @@ public class QuadCrateManager {
      * @param inHand checks the hand of the player.
      * @param handler the structure handler instance.
      */
-    public QuadCrateManager(Player player, Crate crate, KeyType keyType, Location spawnLocation, boolean inHand, StructureManager handler) {
+    public QuadCrateManager(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, @NotNull final Location spawnLocation, final boolean inHand, @NotNull final StructureManager handler) {
         this.instance = this;
         this.player = player;
         this.crate = crate;
@@ -266,7 +266,7 @@ public class QuadCrateManager {
     /**
      * End the crate gracefully.
      */
-    public void endCrate(boolean immediately) {
+    public void endCrate(final boolean immediately) {
         new FoliaRunnable(this.plugin.getServer().getGlobalRegionScheduler()) {
             @Override
             public void run() {
@@ -306,7 +306,7 @@ public class QuadCrateManager {
      *
      * @param removeForce whether to stop the crate session or not.
      */
-    public void endCrateForce(boolean removeForce) {
+    public void endCrateForce(final boolean removeForce) {
         this.oldBlocks.keySet().forEach(location -> this.oldBlocks.get(location).update(true, false));
         this.crateLocations.forEach(location -> this.quadCrateChests.get(location).update(true, false));
         this.displayedRewards.forEach(Entity::remove);
@@ -328,7 +328,7 @@ public class QuadCrateManager {
      * @param y y coordinate.
      * @param z z coordinate.
      */
-    public void addCrateLocations(int x, int y, int z) {
+    public void addCrateLocations(final int x, final int y, final int z) {
         this.crateLocations.add(this.spawnLocation.clone().add(x, y, z));
     }
 
@@ -339,7 +339,7 @@ public class QuadCrateManager {
      * @param location1 the first location of the particle.
      * @param location2 the second location of the particle.
      */
-    private void spawnParticles(Color particleColor, Location location1, Location location2) {
+    private void spawnParticles(@NotNull final Color particleColor, @NotNull final Location location1, @NotNull final Location location2) {
         if (this.particle == Particle.DUST) {
             location1.getWorld().spawnParticle(this.particle, location1, 0, new Particle.DustOptions(particleColor, 1));
             location2.getWorld().spawnParticle(this.particle, location2, 0, new Particle.DustOptions(particleColor, 1));

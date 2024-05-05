@@ -8,8 +8,8 @@ import static java.util.regex.Matcher.quoteReplacement;
 
 public class MsgUtils {
 
-    public static void sendMessage(CommandSender commandSender, String message, boolean prefixToggle) {
-        if (message == null || message.isEmpty()) return;
+    public static void sendMessage(CommandSender commandSender, @NotNull final String message, final boolean prefixToggle) {
+        if (message.isEmpty()) return;
 
         String prefix = getPrefix();
 
@@ -26,7 +26,9 @@ public class MsgUtils {
         return ConfigManager.getConfig().getProperty(ConfigKeys.command_prefix);
     }
 
-    public static String getPrefix(String msg) {
+    public static @NotNull String getPrefix(@NotNull final String msg) {
+        if (msg.isEmpty()) return "";
+
         return getPrefix() + msg;
     }
 }

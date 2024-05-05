@@ -1,6 +1,7 @@
 package us.crazycrew.crazycrates;
 
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.platform.Server;
 
 /**
@@ -27,7 +28,7 @@ public class CratesProvider {
     }
 
     @ApiStatus.Internal
-    public static void register(Server instance) {
+    public static void register(@NotNull final Server instance) {
         if (CratesProvider.instance != null) return;
 
         CratesProvider.instance = instance;

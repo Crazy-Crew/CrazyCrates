@@ -29,11 +29,13 @@ public abstract class HologramManager {
         return this.plugin.getName().toLowerCase() + "-" + UUID.randomUUID();
     }
 
-    protected Vector getVector(Crate crate) {
+    protected @NotNull final Vector getVector(@NotNull final Crate crate) {
         return new Vector(0.5, crate.getHologram().getHeight(), 0.5);
     }
 
-    protected String color(String message) {
+    protected @Nullable final String color(@NotNull final String message) {
+        if (message.isEmpty()) return null;
+
         Matcher matcher = Pattern.compile("#[a-fA-F\\d]{6}").matcher(message);
         StringBuilder buffer = new StringBuilder();
 
@@ -44,7 +46,9 @@ public abstract class HologramManager {
         return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
     }
 
-    protected List<String> lines(CrateHologram crateHologram) {
+    protected @NotNull final List<String> lines(@NotNull final CrateHologram crateHologram) {
+        if (crateHologram.getMessages().isEmpty()) return Collections.emptyList();
+
         List<String> lines = new ArrayList<>();
 
         crateHologram.getMessages().forEach(line -> lines.add(color(line)));

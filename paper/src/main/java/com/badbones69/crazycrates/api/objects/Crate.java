@@ -541,15 +541,19 @@ public class Crate {
      * @param name name of the prize you want.
      * @return the prize you asked for.
      */
-    public Prize getPrize(String name) {
-        for (Prize prize : this.prizes) {
+    public @Nullable final Prize getPrize(@NotNull final String name) {
+        if (name.isEmpty()) return null;
+
+        for (final Prize prize : this.prizes) {
             if (prize.getSectionName().equalsIgnoreCase(name)) return prize;
         }
 
         return null;
     }
     
-    public Prize getPrize(ItemStack item) {
+    public @Nullable final Prize getPrize(@NotNull final ItemStack item) {
+        if (!item.hasItemMeta()) return null;
+
         ItemMeta itemMeta = item.getItemMeta();
 
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
@@ -596,12 +600,12 @@ public class Crate {
      * @param tier the tier to add.
      * @param chance the chance to add.
      */
-    public void addEditorItem(ItemStack itemStack, Player player, String prizeName, String tier, int chance) {
-        ConfigurationSection section = getPrizeSection();
+    public void addEditorItem(@Nullable final ItemStack itemStack, @NotNull final Player player, @NotNull final String prizeName, @NotNull final String tier, final int chance) {
+        if (itemStack == null || tier.isEmpty() || prizeName.isEmpty() || chance <= 0) return;
 
-        if (section == null) {
-            return;
-        }
+        final ConfigurationSection section = getPrizeSection();
+
+        if (section == null) return;
 
         setItem(itemStack, player, prizeName, section, chance, tier);
     }
@@ -631,9 +635,14 @@ public class Crate {
     private void setItem(ItemStack itemStack, Player player, String prizeName, ConfigurationSection section, int chance, @Nullable String tier) {
         String nbt = new ItemBuilder().getCompoundTag(itemStack, player).getCompoundTag().getAsString();
 
-        String path = getPath(prizeName, "DisplayNbt");
+        final String nbt = new ItemBuilder().getCompoundTag(itemStack, player).getCompoundTag().getAsString();
+        if (nbt.isEmpty()) return;
 
-        String tiers = getPath(prizeName, "Tiers");
+        final String path = getPath(prizeName, "DisplayNbt");
+        if (path.isEmpty()) return;
+
+        final String tiers = getPath(prizeName, "Tiers");
+        if (tiers.isEmpty()) return;
 
         // The section already contains a prize name, so we return.
         if (section.contains(prizeName)) {
@@ -673,7 +682,9 @@ public class Crate {
         saveFile();
     }
 
-    private String getPath(String section, String path) {
+    private String getPath(final String section, final String path) {
+        if (section.isEmpty() || path.isEmpty()) return "";
+
         return section + "." + path;
     }
 
@@ -681,6 +692,8 @@ public class Crate {
      * Saves item stacks to editor-items
      */
     private void saveFile() {
+        if (this.name.isEmpty()) return;
+
         File crates = new File(this.plugin.getDataFolder(), "crates");
 
         File crateFile = new File(crates, this.name + ".yml");
@@ -714,11 +727,11 @@ public class Crate {
      * @param name name of the tier.
      * @return the tier object.
      */
-    public Tier getTier(String name) {
-        for (Tier tier : this.tiers) {
-            if (tier.getName().equalsIgnoreCase(name)) {
-                return tier;
-            }
+    public @Nullable final Tier getTier(String name) {
+        if (name.isEmpty()) return null;
+
+        for (final Tier tier : this.tiers) {
+            if (tier.getName().equalsIgnoreCase(name)) return tier;
         }
 
         return null;
@@ -823,7 +836,9 @@ public class Crate {
      * @param category sound category to respect client settings.
      * @param fallback fallback sound in case no sound is found.
      */
-    public void playSound(Player player, Location location, String type, String fallback, SoundCategory category) {
+    public void playSound(@NotNull final Player player, @NotNull final Location location, @NotNull final String type, @NotNull final String fallback, @NotNull final SoundCategory category) {
+        if (type.isEmpty() && fallback.isEmpty()) return;
+
         ConfigurationSection section = getFile().getConfigurationSection("Crate.sound");
 
         if (section != null) {

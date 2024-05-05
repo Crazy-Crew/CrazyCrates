@@ -48,7 +48,7 @@ public class MobileCrateListener implements Listener {
 
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
-        Crate crate = this.crateManager.getCrateFromName(container.get(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING));
+        Crate crate = this.crateManager.getCrateFromName(container.getOrDefault(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING, ""));
 
         if (crate == null) return;
 

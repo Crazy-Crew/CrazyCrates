@@ -19,7 +19,7 @@ public class Server extends AbstractPlugin {
     private final File crateFolder;
 
     @ApiStatus.Internal
-    public Server(JavaPlugin plugin) {
+    public Server(@NotNull final JavaPlugin plugin) {
         super(plugin.getName());
 
         this.plugin = plugin;

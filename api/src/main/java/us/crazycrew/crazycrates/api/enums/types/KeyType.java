@@ -32,6 +32,8 @@ public enum KeyType {
      * @return the type of key otherwise null
      */
     public static KeyType getFromName(String type) {
+        if (type.isEmpty()) return KeyType.virtual_key;
+
         if (type.equalsIgnoreCase("virtual") || type.equalsIgnoreCase("v")) {
             return KeyType.virtual_key;
         } else if (type.equalsIgnoreCase("physical") || type.equalsIgnoreCase("p")) {
@@ -40,7 +42,7 @@ public enum KeyType {
             return KeyType.free_key;
         }
 
-        return null;
+        return KeyType.virtual_key;
     }
 
     /**

@@ -75,11 +75,13 @@ public enum CrateType {
      * @return crate object otherwise null
      */
     public static CrateType getFromName(String name) {
+        if (name.isEmpty()) return CrateType.csgo;
+
         for (CrateType crate : CrateType.values()) {
             if (crate.getName().equalsIgnoreCase(name)) return crate;
         }
 
-        return null;
+        return CrateType.csgo;
     }
 
     /**

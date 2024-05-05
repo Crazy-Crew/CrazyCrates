@@ -19,7 +19,7 @@ public class CrateOpenEvent extends Event implements Cancellable {
 
     private boolean isCancelled;
 
-    public CrateOpenEvent(Player player, Crate crate, KeyType keyType, boolean checkHand, FileConfiguration configuration) {
+    public CrateOpenEvent(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, final boolean checkHand, @NotNull final FileConfiguration configuration) {
         this.player = player;
         this.crate = crate;
 
@@ -68,7 +68,7 @@ public class CrateOpenEvent extends Event implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean isCancelled) {
+    public void setCancelled(final boolean isCancelled) {
         this.isCancelled = isCancelled;
     }
 }

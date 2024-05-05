@@ -33,9 +33,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class MiscUtils {
 
-    private static final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private static @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    public static void sendCommand(String command) {
+    public static void sendCommand(@NotNull final String command) {
+        if (command.isEmpty()) return;
+
         Server server = plugin.getServer();
 
         server.getGlobalRegionScheduler().run(plugin, scheduledTask -> {
@@ -45,7 +47,7 @@ public class MiscUtils {
         });
     }
 
-    public static void spawnFirework(Location location, Color color) {
+    public static void spawnFirework(@NotNull final Location location, @Nullable final Color color) {
         Firework firework = (Firework) location.getWorld().spawnEntity(location, EntityType.FIREWORK_ROCKET);
 
         FireworkMeta fireworkMeta = firework.getFireworkMeta();
@@ -69,7 +71,7 @@ public class MiscUtils {
         plugin.getServer().getRegionScheduler().runDelayed(plugin, location, scheduledTask -> firework.detonate(), 3L);
     }
 
-    public static String location(Location location) {
+    public static @NotNull String location(@NotNull final Location location) {
         return location.getWorld().getUID() + "," + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ();
     }
 
@@ -78,12 +80,12 @@ public class MiscUtils {
      *
      * @return true if inventory is empty otherwise false.
      */
-    public static boolean isInventoryFull(Player player) {
+    public static final boolean isInventoryFull(@NotNull final Player player) {
         return player.getInventory().firstEmpty() == -1;
     }
 
     // ElectronicBoy is the author.
-    public static HashMap<Integer, ItemStack> removeMultipleItemStacks(Inventory inventory, ItemStack... items) {
+    public static @Nullable Map<Integer, ItemStack> removeMultipleItemStacks(@NotNull final Inventory inventory, @NotNull final ItemStack... items) {
         if (items != null) {
             HashMap<Integer, ItemStack> leftover = new HashMap<>();
 
@@ -147,7 +149,7 @@ public class MiscUtils {
      *
      * @return -1 or item amount.
      */
-    private static int getFirstItem(ItemStack item, boolean getAmount, ItemStack[] inventory) {
+    private static int getFirstItem(@Nullable final ItemStack item, final boolean getAmount, @Nullable final ItemStack[] inventory) {
         if (item == null) return -1;
 
         for (int i = 0; i < inventory.length; i++) {
@@ -161,7 +163,7 @@ public class MiscUtils {
         return -1;
     }
 
-    public static void failedToTakeKey(CommandSender player, String crateName) {
+    public static void failedToTakeKey(@NotNull final CommandSender player, @NotNull final String crateName) {
         List.of(
                 "An error has occurred while trying to take a key from a player.",
                 "Player: " + player.getName(),
@@ -187,7 +189,7 @@ public class MiscUtils {
         }
     }
 
-    public static int randomNumber(int min, int max) {
+    public static int randomNumber(final int min, final int max) {
         return MiscUtils.useOtherRandom() ? min + ThreadLocalRandom.current().nextInt(max - min) : min + new Random().nextInt(max - min);
     }
 

@@ -42,7 +42,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param player player opening crate.
      * @param size size of inventory.
      */
-    public CrateBuilder(Crate crate, Player player, int size) {
+    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(player.getScheduler(), null);
 
         Preconditions.checkNotNull(crate, "Crate can't be null.");
@@ -67,7 +67,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param size size of inventory.
      * @param crateName crate name of crate.
      */
-    public CrateBuilder(Crate crate, Player player, int size, String crateName) {
+    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final String crateName) {
         super(player.getScheduler(), null);
 
         Preconditions.checkNotNull(crate, "Crate can't be null.");
@@ -92,7 +92,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param size size of inventory.
      * @param location location of player.
      */
-    public CrateBuilder(Crate crate, Player player, int size, Location location) {
+    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final Location location) {
         super(player.getScheduler(), null);
 
         Preconditions.checkNotNull(crate, "Crate can't be null.");
@@ -116,7 +116,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param crate crate opened by player.
      * @param player player opening crate.
      */
-    public CrateBuilder(Crate crate, Player player) {
+    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player) {
         super(player.getScheduler(), null);
 
         Preconditions.checkNotNull(crate, "Crate can't be null.");
@@ -140,7 +140,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param player player opening crate.
      * @param location location of player.
      */
-    public CrateBuilder(Crate crate, Player player, Location location) {
+    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location) {
         super(player.getScheduler(), null);
 
         Preconditions.checkNotNull(crate, "Crate can't be null.");
@@ -386,6 +386,8 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param fallback fallback sound in case no sound is found.
      */
     public void playSound(@NotNull final String type, @NotNull final SoundCategory category, @NotNull final String fallback) {
+        if (type.isEmpty() && fallback.isEmpty()) return;
+
         ConfigurationSection section = getFile().getConfigurationSection("Crate.sound");
 
         if (section != null) {

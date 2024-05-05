@@ -91,6 +91,8 @@ public class CrateAdminMenu extends InventoryBuilder {
 
             Crate crate = this.crateManager.getCrateFromKey(item);
 
+            if (crate == null) return;
+
             String crateName = crate.getName();
             UUID uuid = player.getUniqueId();
 

@@ -23,7 +23,13 @@ public class CommandGive extends BaseCommand {
     @Command("give")
     @Permission(value = "crazycrates.givekey", def = PermissionDefault.OP)
     public void give(CommandSender sender, @Suggestion("keys") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, @Suggestion("players") PlayerBuilder target) {
-        KeyType keyType = getKeyType(sender, type);
+        if (crateName.isEmpty()) {
+            sender.sendRichMessage(Messages.not_a_crate.getMessage(sender, "{crate}", crateName));
+
+            return;
+        }
+
+        final KeyType keyType = getKeyType(sender, type);
 
         if (amount <= 0) {
             sender.sendRichMessage(Messages.not_a_number.getMessage(sender, "{number}", String.valueOf(amount)));
@@ -34,6 +40,8 @@ public class CommandGive extends BaseCommand {
         Crate crate = getCrate(sender, crateName, false);
 
         if (crate == null) {
+            sender.sendRichMessage(Messages.not_a_crate.getMessage(sender, "{crate}", crateName));
+
             return;
         }
 

@@ -24,8 +24,10 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
     private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
     @Override
-    public String onRequest(OfflinePlayer player, @NotNull String identifier) {
+    public @NotNull final String onRequest(final OfflinePlayer player, @NotNull final String identifier) {
         if (player == null) return "N/A";
+
+        if (identifier.isEmpty()) return "N/A";
 
         // The player who sees the placeholder.
         Player human = (Player) player;
@@ -75,12 +77,14 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         return getKeys(target.getUniqueId(), identifier, crateName, value);
     }
 
-    private String getKeys(UUID uuid, String identifier, String crateName, String value) {
-        if (this.plugin.getCrateManager().getCrateFromName(crateName) == null && identifier.endsWith("opened")) { // %crazycrates_<player>_opened%
+    private String getKeys(@NotNull final UUID uuid, @NotNull final String identifier, @NotNull final String crateName, @NotNull final String value) {
+        if (crateName.isEmpty() || value.isEmpty()) return "N/A";
+
+        if (this.crateManager.getCrateFromName(crateName) == null && identifier.endsWith("opened")) { // %crazycrates_<player>_opened%
             return NumberFormat.getNumberInstance().format(this.userManager.getTotalCratesOpened(uuid));
         }
 
-        Crate crate = this.plugin.getCrateManager().getCrateFromName(crateName);
+        final Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null) {
             this.plugin.getLogger().warning("Crate: " + crateName + " is not a valid crate name.");

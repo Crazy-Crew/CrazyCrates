@@ -54,7 +54,7 @@ public abstract class BaseCommand {
      * @param type the type of key.
      * @param amount the amount of keys.
      */
-    protected void addKey(CommandSender sender, Player player, Crate crate, KeyType type, int amount) {
+    protected void addKey(@NotNull final CommandSender sender, @NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType type, final int amount) {
         addKey(sender, player, null, crate, type, amount);
     }
 
@@ -64,11 +64,11 @@ public abstract class BaseCommand {
      * @param sender the sender of the command.
      * @param player the target of the command.
      * @param crate the crate.
-     * @param type the type of key.
+     * @param keyType the type of key.
      * @param amount the amount of keys.
      */
-    protected void addKey(CommandSender sender, OfflinePlayer player, Crate crate, KeyType type, int amount) {
-        addKey(sender, null, player, crate, type, amount);
+    protected void addKey(@NotNull final CommandSender sender, @NotNull final OfflinePlayer player, @NotNull final Crate crate, @NotNull final KeyType keyType, final int amount) {
+        addKey(sender, null, player, crate, keyType, amount);
     }
 
     /**
@@ -77,11 +77,11 @@ public abstract class BaseCommand {
      * @param sender the sender of the command.
      * @param player the target of the command.
      * @param crate the crate.
-     * @param type the type of key.
+     * @param keyType the type of key.
      * @param amount the amount of keys.
      */
-    protected void takeKey(CommandSender sender, Player player, Crate crate, KeyType type, int amount) {
-        takeKey(sender, player, null, crate, type, amount);
+    protected void takeKey(@NotNull final CommandSender sender, @NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, final int amount) {
+        takeKey(sender, player, null, crate, keyType, amount);
     }
 
     /**
@@ -90,11 +90,11 @@ public abstract class BaseCommand {
      * @param sender the sender of the command.
      * @param player the target of the command.
      * @param crate the crate.
-     * @param type the type of key.
+     * @param keyType the type of key.
      * @param amount the amount of keys.
      */
-    protected void takeKey(CommandSender sender, OfflinePlayer player, Crate crate, KeyType type, int amount) {
-        takeKey(sender, null, player, crate, type, amount);
+    protected void takeKey(@NotNull final CommandSender sender, @NotNull final OfflinePlayer player, @NotNull final Crate crate, @NotNull final KeyType keyType, final int amount) {
+        takeKey(sender, null, player, crate, keyType, amount);
     }
 
     /**
@@ -104,7 +104,9 @@ public abstract class BaseCommand {
      * @param type the keytype to check.
      * @return the keytype or virtual key if none found.
      */
-    protected KeyType getKeyType(CommandSender sender, String type) {
+    protected @NotNull final KeyType getKeyType(@NotNull final CommandSender sender, @NotNull final String type) {
+        if (type.isEmpty()) return KeyType.virtual_key;
+
         KeyType keyType = KeyType.getFromName(type);
 
         if (keyType == null || keyType == KeyType.free_key) {
@@ -123,7 +125,9 @@ public abstract class BaseCommand {
      * @param name the name of the crate.
      * @return the crate object or null if not found.
      */
-    protected Crate getCrate(CommandSender sender, String name, boolean ignoreChecks) {
+    protected @Nullable final Crate getCrate(@NotNull final CommandSender sender, @NotNull final String name, final boolean ignoreChecks) {
+        if (name.isEmpty()) return null;
+
         Crate crate = this.crateManager.getCrateFromName(name);
 
         if (ignoreChecks) {
@@ -137,12 +141,13 @@ public abstract class BaseCommand {
         return crate;
     }
 
-    protected Prize getPrize(CommandSender sender, String crateName, String name, boolean ignoreChecks) {
+    protected @Nullable final Prize getPrize(@NotNull final CommandSender sender, @NotNull final String crateName, @NotNull final String name, final boolean ignoreChecks) {
+        if (crateName.isEmpty()) return null;
+        if (name.isEmpty()) return null;
+
         Crate crate = getCrate(sender, crateName, false);
 
-        if (crate == null) {
-            return null;
-        }
+        if (crate == null) return null;
 
         Prize prize = crate.getPrize(name);
 
@@ -163,8 +168,10 @@ public abstract class BaseCommand {
      * @param header header of the message.
      * @param content content of the message.
      */
-    protected void getKeys(Player player, CommandSender sender, String header, String content) {
-        List<String> message = new ArrayList<>();
+    protected void getKeys(@NotNull final Player player, @NotNull final CommandSender sender, @NotNull final String header, @NotNull final String content) {
+        if (header.isEmpty() || content.isEmpty()) return;
+
+        final List<String> message = new ArrayList<>();
 
         message.add(header);
 
@@ -216,7 +223,7 @@ public abstract class BaseCommand {
     }
 
     @ApiStatus.Internal
-    private void takeKey(CommandSender sender, Player player, OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount) {
+    private void takeKey(@NotNull final CommandSender sender, @Nullable final Player player, @Nullable final OfflinePlayer offlinePlayer, @NotNull final Crate crate, @NotNull final KeyType type, int amount) {
         if (player != null) {
             int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), crate.getName());
 

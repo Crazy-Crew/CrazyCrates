@@ -11,6 +11,7 @@ public class SpiralManager {
     @NotNull
     private static List<Location> getLocations(Location center, boolean clockWise) {
         World world = center.getWorld();
+    private static @NotNull List<Location> getLocations(@NotNull final Location center, final boolean clockWise) {
 
         double downWardsDistance = .05;
         double expandingRadius = .08;
@@ -57,13 +58,11 @@ public class SpiralManager {
         return locations;
     }
 
-    @NotNull
-    public static List<Location> getSpiralLocationClockwise(Location center) {
+    public static @NotNull List<Location> getSpiralLocationClockwise(@NotNull final Location center) {
         return getLocations(center, true);
     }
 
-    @NotNull
-    public static List<Location> getSpiralLocationCounterClockwise(Location center) {
+    public static @NotNull List<Location> getSpiralLocationCounterClockwise(@NotNull final Location center) {
         return getLocations(center, false);
     }
 }

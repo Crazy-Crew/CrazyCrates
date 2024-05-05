@@ -10,7 +10,7 @@ import org.bukkit.block.data.Directional;
 
 public class ChestManager {
 
-    public static void openChest(Block block, boolean forceUpdate) {
+    public static void openChest(@NotNull final Block block, final boolean forceUpdate) {
         if (block.getType() != Material.CHEST || block.getType() != Material.TRAPPED_CHEST || block.getType() != Material.ENDER_CHEST) return;
 
         BlockState blockState = block.getState();

@@ -33,7 +33,7 @@ public class Prize {
 
     private final ConfigurationSection section;
 
-    public Prize(ConfigurationSection section, List<Tier> tierPrizes, String crateName, Prize alternativePrize) {
+    public Prize(@NotNull final ConfigurationSection section, @NotNull final List<Tier> tierPrizes, @NotNull final String crateName, @NotNull final Prize alternativePrize) {
         this.section = section;
 
         this.sectionName = section.getName();
@@ -77,7 +77,7 @@ public class Prize {
      *
      * @param section the configuration section.
      */
-    public Prize(String prizeName, String sectionName, ConfigurationSection section) {
+    public Prize(@NotNull final String prizeName, @NotNull final String sectionName, @NotNull final ConfigurationSection section) {
         this.prizeName = prizeName;
 
         this.messages = section.getStringList("Messages"); // this returns an empty list if not found anyway.
@@ -118,7 +118,7 @@ public class Prize {
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
-    public ItemStack getDisplayItem(Player player) {
+    public @NotNull final ItemStack getDisplayItem(@NotNull final Player player) {
         ItemStack itemStack = this.displayItem.setTarget(player).build();
 
         itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.sectionName));
@@ -213,10 +213,8 @@ public class Prize {
     /**
      * @return true if they prize has blacklist permissions and false if not.
      */
-    public boolean hasPermission(Player player) {
-        if (player.isOp()) {
-            return false;
-        }
+    public final boolean hasPermission(@NotNull final Player player) {
+        if (player.isOp()) return false;
 
         for (String permission : this.permissions) {
             if (player.hasPermission(permission)) return true;
@@ -227,6 +225,7 @@ public class Prize {
 
     private ItemBuilder display() {
         ItemBuilder builder = new ItemBuilder();
+    private @NotNull ItemBuilder display() {
 
         try {
             String material = this.section.getString("DisplayItem", "red_terracotta");

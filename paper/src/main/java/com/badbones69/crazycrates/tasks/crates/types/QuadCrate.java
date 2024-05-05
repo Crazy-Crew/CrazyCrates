@@ -41,7 +41,13 @@ public class QuadCrate extends CrateBuilder {
         final FileConfiguration config = getFile();
         final List<CrateSchematic> schematics = this.crateManager.getCrateSchematics();
 
-        final CrateSchematic crateSchematic = config.getBoolean("Crate.structure.random", true) ? schematics.get(ThreadLocalRandom.current().nextInt(schematics.size())) : this.crateManager.getCrateSchematic(config.getString("Crate.structure.file"));
+        final CrateSchematic crateSchematic = config.getBoolean("Crate.structure.random", true) ? schematics.get(ThreadLocalRandom.current().nextInt(schematics.size())) : this.crateManager.getCrateSchematic(config.getString("Crate.structure.file", ""));
+
+        // todo() add message if schematic null before session starts.
+        if (crateSchematic == null) {
+            return;
+        }
+
         final StructureManager handler = new StructureManager(this.plugin, crateSchematic.schematicFile());
         final CrateLocation crateLocation = this.crateManager.getCrateLocation(this.location);
         final QuadCrateManager session = new QuadCrateManager(getPlayer(), getCrate(), type, crateLocation.getLocation(), checkHand, handler);

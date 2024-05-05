@@ -21,7 +21,7 @@ public class ItemUtils {
 
     private static final @NotNull CrateManager crateManager = plugin.getCrateManager();
 
-    public static void removeItem(ItemStack item, Player player) {
+    public static void removeItem(@NotNull final ItemStack item, @NotNull final Player player) {
         try {
             if (item.getAmount() <= 1) {
                 player.getInventory().removeItem(item);
@@ -31,12 +31,12 @@ public class ItemUtils {
         } catch (Exception ignored) {}
     }
 
-    public static boolean isSimilar(ItemStack itemStack, Crate crate) {
+    public static boolean isSimilar(@NotNull final ItemStack itemStack, @NotNull final Crate crate) {
         return crateManager.isKeyFromCrate(itemStack, crate);
     }
 
-    public static String getKey(ItemMeta itemMeta) {
-        return itemMeta.getPersistentDataContainer().get(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
+    public static @NotNull String getKey(@NotNull final ItemMeta itemMeta) {
+        return itemMeta.getPersistentDataContainer().getOrDefault(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING, "");
     }
 
     /**
@@ -47,7 +47,7 @@ public class ItemUtils {
      * @param player the player to set.
      * @return the builder object with updated data.
      */
-    public static ItemBuilder getItem(ConfigurationSection section, ItemBuilder builder, Player player) {
+    public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder, @NotNull final Player player) {
         return getItem(section, builder.setTarget(player));
     }
 
@@ -58,7 +58,7 @@ public class ItemUtils {
      * @param builder the current builder object.
      * @return the builder object with updated data.
      */
-    public static ItemBuilder getItem(ConfigurationSection section, ItemBuilder builder) {
+    public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder) {
         builder.setGlowing(section.getBoolean("Glowing", false));
         
         builder.setItemDamage(section.getInt("DisplayDamage", 0));

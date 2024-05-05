@@ -58,7 +58,9 @@ public class BukkitUserManager extends UserManager {
             return;
         }
 
-        if (isCrateInvalid(crateName)) {
+        final Crate crate = isCrateInvalid(crateName);
+
+        if (crate == null) {
             if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
 
             return;
@@ -85,7 +87,9 @@ public class BukkitUserManager extends UserManager {
             return;
         }
 
-        if (isCrateInvalid(crateName)) {
+        final Crate crate = isCrateInvalid(crateName);
+
+        if (crate == null) {
             if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
 
             return;
@@ -113,7 +117,9 @@ public class BukkitUserManager extends UserManager {
             return;
         }
 
-        if (isCrateInvalid(crateName)) {
+        final Crate crate = isCrateInvalid(crateName);
+
+        if (crate == null) {
             if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
 
             return;
@@ -170,7 +176,9 @@ public class BukkitUserManager extends UserManager {
             return 0;
         }
 
-        if (isCrateInvalid(crateName)) {
+        final Crate crate = isCrateInvalid(crateName);
+
+        if (crate == null) {
             if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
 
             return 0;
@@ -201,7 +209,9 @@ public class BukkitUserManager extends UserManager {
             return false;
         }
 
-        if (isCrateInvalid(crateName)) {
+        final Crate crate = isCrateInvalid(crateName);
+
+        if (crate == null) {
             if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
 
             return false;
@@ -305,13 +315,9 @@ public class BukkitUserManager extends UserManager {
 
     @Override
     public boolean hasPhysicalKey(@NotNull final UUID uuid, @NotNull final String crateName, boolean checkHand) {
-        if (isPlayerNull(uuid)) {
-            if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Player with the uuid " + uuid + " is null.");
+        final Crate crate = isCrateInvalid(crateName);
 
-            return false;
-        }
-
-        if (isCrateInvalid(crateName)) {
+        if (crate == null) {
             if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
 
             return false;
@@ -344,7 +350,9 @@ public class BukkitUserManager extends UserManager {
 
     @Override
     public boolean addOfflineKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull KeyType keyType, int keys) {
-        if (isCrateInvalid(crateName)) {
+        final Crate crate = isCrateInvalid(crateName);
+
+        if (crate == null) {
             if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
 
             return false;
@@ -379,7 +387,9 @@ public class BukkitUserManager extends UserManager {
 
     @Override
     public boolean takeOfflineKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull KeyType keyType, int keys) {
-        if (isCrateInvalid(crateName)) {
+        final Crate crate = isCrateInvalid(crateName);
+
+        if (crate == null) {
             if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
 
             return false;
@@ -543,8 +553,10 @@ public class BukkitUserManager extends UserManager {
 
     @Override
     public int getCrateOpened(@NotNull final UUID uuid, @NotNull final String crateName) {
-        if (isCrateInvalid(crateName)) {
-            this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
+        final Crate crate = isCrateInvalid(crateName);
+
+        if (crate == null) {
+            if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
 
             return 0;
         }
@@ -554,7 +566,9 @@ public class BukkitUserManager extends UserManager {
 
     @Override
     public void addOpenedCrate(@NotNull final UUID uuid, @NotNull final String crateName, int amount) {
-        if (isCrateInvalid(crateName)) {
+        final Crate crate = isCrateInvalid(crateName);
+
+        if (crate == null) {
             if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
 
             return;
@@ -585,7 +599,9 @@ public class BukkitUserManager extends UserManager {
 
     @Override
     public void addOpenedCrate(@NotNull final UUID uuid, @NotNull final String crateName) {
-        if (isCrateInvalid(crateName)) {
+        final Crate crate = isCrateInvalid(crateName);
+
+        if (crate == null) {
             if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Crate " + crateName + " doesn't exist.");
 
             return;
@@ -616,8 +632,14 @@ public class BukkitUserManager extends UserManager {
         this.data.save();
     }
 
-    private boolean isCrateInvalid(@NotNull final String crateName) {
-        return crateName.isBlank() || this.crateManager.getCrateFromName(crateName) == null;
+    private @Nullable Crate isCrateInvalid(@NotNull final String crateName) {
+        if (crateName.isEmpty()) return null;
+
+        if (this.crateManager.getCrateFromName(crateName) != null) {
+            return this.crateManager.getCrateFromName(crateName);
+        }
+
+        return null;
     }
 
     /**

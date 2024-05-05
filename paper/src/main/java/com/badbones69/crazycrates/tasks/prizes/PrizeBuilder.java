@@ -10,9 +10,9 @@ public abstract class PrizeBuilder {
 
     protected final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    public abstract ItemStack getItemStack(Player player);
+    public abstract ItemStack getItemStack(@NotNull final Player player);
 
-    public abstract void init(ConfigurationSection section);
+    public abstract void init(@NotNull final ConfigurationSection section);
 
     public abstract int maxRange();
 

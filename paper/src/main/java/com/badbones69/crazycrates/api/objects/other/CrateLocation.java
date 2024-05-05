@@ -10,7 +10,7 @@ public class CrateLocation {
     private Crate crate;
     private final Location loc;
     
-    public CrateLocation(String id, Crate crate, Location loc) {
+    public CrateLocation(@NotNull final String id, @NotNull final Crate crate, @NotNull final Location loc) {
         this.id = id;
         this.crate = crate;
         this.loc = loc;

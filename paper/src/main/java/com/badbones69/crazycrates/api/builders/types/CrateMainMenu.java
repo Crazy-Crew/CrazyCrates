@@ -42,7 +42,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
     private final @NotNull SettingsManager config = ConfigManager.getConfig();
 
-    public CrateMainMenu(Player player, int size, String title) {
+    public CrateMainMenu(@NotNull final Player player, final int size, @NotNull final String title) {
         super(player, size, title);
     }
 
@@ -152,6 +152,8 @@ public class CrateMainMenu extends InventoryBuilder {
     }
 
     private String getCrates(String option) {
+    private @NotNull String getCrates(@NotNull String option) {
+        if (option.isEmpty()) return "";
         for (Crate crate : this.crateManager.getUsableCrates()) {
             option = option.replaceAll("%" + crate.getName().toLowerCase() + "}", this.userManager.getVirtualKeys(getPlayer().getUniqueId(), crate.getName()) + "")
                     .replaceAll("%" + crate.getName().toLowerCase() + "_physical%", this.userManager.getPhysicalKeys(getPlayer().getUniqueId(), crate.getName()) + "")

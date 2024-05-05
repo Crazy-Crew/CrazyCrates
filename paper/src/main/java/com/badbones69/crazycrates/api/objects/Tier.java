@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class Tier {
@@ -17,7 +18,7 @@ public class Tier {
     private final int chance;
     private final int slot;
 
-    public Tier(String tier, ConfigurationSection section) {
+    public Tier(@NotNull final String tier, @NotNull final ConfigurationSection section) {
         this.name = tier;
 
         this.coloredName = section.getString("Name", "");
@@ -77,8 +78,10 @@ public class Tier {
     /**
      * @return the tier item shown in the preview.
      */
-    public ItemStack getTierItem(Player target) {
-        this.item.setTarget(target).setDisplayName(this.coloredName).setDisplayLore(this.lore).setString(PersistentKeys.preview_tier_button.getNamespacedKey(), this.name);
+    public @NotNull final ItemStack getTierItem(Player target) {
+        if (target != null) this.item.setTarget(target);
+
+        this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).setString(PersistentKeys.preview_tier_button.getNamespacedKey(), this.name);
 
         return this.item.build();
     }

@@ -15,7 +15,7 @@ public class PlayerPrizeEvent extends Event {
     private final Prize prize;
     private final String crateName;
     
-    public PlayerPrizeEvent(Player player, Crate crate, String crateName, Prize prize) {
+    public PlayerPrizeEvent(@NotNull final Player player, @NotNull final Crate crate, @NotNull final String crateName, @NotNull final Prize prize) {
         this.player = player;
         this.crate = crate;
         this.prize = prize;

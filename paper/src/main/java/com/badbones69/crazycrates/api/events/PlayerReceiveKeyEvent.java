@@ -17,8 +17,18 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
     private final int amount;
     private boolean isCancelled;
     
-    public PlayerReceiveKeyEvent(Player player, Crate crate, KeyReceiveReason reason, int amount) {
+    public PlayerReceiveKeyEvent(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyReceiveReason reason, final int amount) {
         this.player = player;
+        this.offlinePlayer = null;
+        this.crate = crate;
+        this.reason = reason;
+        this.amount = amount;
+        this.isCancelled = false;
+    }
+
+    public PlayerReceiveKeyEvent(@NotNull final OfflinePlayer player, @NotNull final Crate crate, @NotNull final KeyReceiveReason reason, final int amount) {
+        this.player = null;
+        this.offlinePlayer = player;
         this.crate = crate;
         this.reason = reason;
         this.amount = amount;

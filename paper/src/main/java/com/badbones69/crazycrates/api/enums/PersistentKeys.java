@@ -26,7 +26,7 @@ public enum PersistentKeys {
     private final String NamespacedKey;
     private final PersistentDataType type;
 
-    PersistentKeys(String NamespacedKey, PersistentDataType type) {
+    PersistentKeys(@NotNull final String NamespacedKey, @NotNull final PersistentDataType type) {
         this.NamespacedKey = NamespacedKey;
         this.type = type;
     }

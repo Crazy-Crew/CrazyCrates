@@ -41,7 +41,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
     private int page;
     private List<Tier> tiers;
 
-    public InventoryBuilder(Player player, int size, String title) {
+    public InventoryBuilder(@NotNull final Player player, final int size, @NotNull final String title) {
         this.title = title;
         this.player = player;
         this.size = size;
@@ -51,7 +51,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
         this.inventory = this.server.createInventory(this, this.size, MiscUtil.parse(inventoryTitle));
     }
 
-    public InventoryBuilder(Crate crate, Player player, int size, String title) {
+    public InventoryBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final String title) {
         this.title = title;
         this.player = player;
         this.size = size;
@@ -63,7 +63,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
         this.inventory = this.server.createInventory(this, this.size, MiscUtil.parse(inventoryTitle));
     }
 
-    public InventoryBuilder(Crate crate, Player player, int size, int page, String title) {
+    public InventoryBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size, final int page, @NotNull final String title) {
         this.title = title;
         this.player = player;
         this.size = size;
@@ -76,7 +76,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
         this.inventory = this.server.createInventory(this, this.size, MiscUtil.parse(inventoryTitle));
     }
 
-    public InventoryBuilder(List<Tier> tiers, Crate crate, Player player, int size, String title) {
+    public InventoryBuilder(@NotNull final List<Tier> tiers, @NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final String title) {
         this.title = title;
         this.player = player;
         this.size = size;
@@ -116,7 +116,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
 
     public abstract InventoryBuilder build();
 
-    public void size(int size) {
+    public void size(final int size) {
         this.size = size;
     }
 
@@ -124,7 +124,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
         return this.size;
     }
 
-    public void setPage(int page) {
+    public void setPage(final int page) {
         this.page = page;
     }
 
@@ -136,11 +136,11 @@ public abstract class InventoryBuilder implements InventoryHolder {
         return this.crate;
     }
 
-    public void title(String title) {
+    public void title(@NotNull final String title) {
         this.title = title;
     }
 
-    public boolean contains(String message) {
+    public final boolean contains(@NotNull final String message) {
         return this.title.contains(message);
     }
 

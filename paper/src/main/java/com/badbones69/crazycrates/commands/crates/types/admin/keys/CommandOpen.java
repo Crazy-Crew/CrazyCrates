@@ -29,6 +29,12 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CommandOpen extends BaseCommand {
 
     private boolean isCancelled(Player player, String crateName) {
+        if (crateName.isEmpty()) {
+            player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
+
+            return true;
+        }
+
         if (MiscUtils.isInventoryFull(player)) {
             player.sendRichMessage(Messages.inventory_not_empty.getMessage(player, "{crate}", crateName));
 
@@ -47,6 +53,8 @@ public class CommandOpen extends BaseCommand {
 
         // If crate is null, return.
         if (crate == null) {
+            player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
+
             return true;
         }
 
@@ -79,10 +87,7 @@ public class CommandOpen extends BaseCommand {
     @Command("open")
     @Permission(value = "crazycrates.open", def = PermissionDefault.OP)
     public void open(Player player, @Suggestion("crates") String crateName, @Suggestion("keys") String type) {
-        // If the command is cancelled.
-        if (isCancelled(player, crateName)) {
-            return;
-        }
+        if (isCancelled(player, crateName)) return;
 
         KeyType keyType = getKeyType(player, type);
         Crate crate = getCrate(player, crateName, true);
@@ -113,6 +118,9 @@ public class CommandOpen extends BaseCommand {
     @CommandFlags({@Flag(flag = "f", argument = boolean.class)})
     @Permission(value = "crazycrates.open-others", def = PermissionDefault.TRUE)
     public void others(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("players") Player player, @Suggestion("keys") String type, @Suggestion("numbers") int amount, @Optional Flags flags) {
+        // If the command is cancelled.
+        if (isCancelled(player, crateName)) return;
+
         AtomicReference<KeyType> keyType = new AtomicReference<>(getKeyType(sender, type));
 
         if (sender == player && keyType.get() != KeyType.free_key) {

@@ -36,7 +36,7 @@ public class PrizeManager {
      * @param crate the player is opening.
      * @param prize the player is being given.
      */
-    public static void givePrize(Player player, Prize prize, Crate crate) {
+    public static void givePrize(@NotNull final Player player, @Nullable Prize prize, @NotNull final Crate crate) {
         if (prize == null) {
             if (MiscUtils.isLogging()) plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
 
@@ -108,10 +108,11 @@ public class PrizeManager {
         }
     }
 
-    private static void runCommands(Player player, Prize prize, Crate crate, String command) {
-        if (command.contains("%random%:")) {
-            String cmd = command;
-            StringBuilder commandBuilder = new StringBuilder();
+    private static void runCommands(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, @NotNull String command) {
+        String cmd = command;
+
+        if (cmd.contains("%random%:")) {
+            final StringBuilder commandBuilder = new StringBuilder();
 
             for (String word : cmd.split(" ")) {
                 if (word.startsWith("%random%:")) {// /give %player% iron %random%:1-64
@@ -152,10 +153,10 @@ public class PrizeManager {
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())));
     }
 
-    private static void sendMessage(Player player, Prize prize, Crate crate, String message) {
-        ItemBuilder builder = prize.getDisplayItemBuilder();
+    private static void sendMessage(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, String message) {
+        if (message.isEmpty()) return;
 
-        String display = builder.getPlainDisplayName();
+        final ItemBuilder builder = prize.getDisplayItemBuilder();
 
         String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(builder.getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
 
@@ -175,7 +176,7 @@ public class PrizeManager {
      * @param crate the player is opening.
      * @param prize the player is being given.
      */
-    public static void givePrize(Player player, Crate crate, Prize prize) {
+    public static void givePrize(@NotNull final Player player, @NotNull final Crate crate, @Nullable final Prize prize) {
         if (prize != null) {
             givePrize(player, prize, crate);
 
@@ -189,6 +190,7 @@ public class PrizeManager {
 
     public static void getPrize(Crate crate, Inventory inventory, int slot, Player player) {
         ItemStack item = inventory.getItem(slot);
+    public static void getPrize(@NotNull final Crate crate, @NotNull final Inventory inventory, final int slot, @NotNull final Player player) {
 
         if (item == null) return;
 
@@ -199,6 +201,7 @@ public class PrizeManager {
 
     public static Tier getTier(Crate crate) {
         if (crate.getTiers() != null && !crate.getTiers().isEmpty()) {
+    public static @Nullable Tier getTier(@NotNull final Crate crate) {
             for (int stopLoop = 0; stopLoop <= 100; stopLoop++) {
                 for (Tier tier : crate.getTiers()) {
                     int chance = tier.getChance();

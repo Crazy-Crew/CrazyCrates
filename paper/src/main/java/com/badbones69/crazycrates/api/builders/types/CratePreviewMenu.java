@@ -34,7 +34,7 @@ public class CratePreviewMenu extends InventoryBuilder {
     private final boolean isTier;
     private final Tier tier;
 
-    public CratePreviewMenu(Crate crate, Player player, int size, int page, String title, boolean isTier, Tier tier) {
+    public CratePreviewMenu(@NotNull final Crate crate, @NotNull final Player player, final int size, final int page, @NotNull final String title, final boolean isTier, @NotNull final Tier tier) {
         super(crate, player, size, page, title);
 
         this.isTier = isTier;
@@ -63,6 +63,7 @@ public class CratePreviewMenu extends InventoryBuilder {
     private void setDefaultItems(Inventory inventory) {
         Player player = getPlayer();
         Crate crate = getCrate();
+    private void setDefaultItems(@NotNull final Inventory inventory) {
 
         if (crate.isBorderToggle()) {
             List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
@@ -106,6 +107,7 @@ public class CratePreviewMenu extends InventoryBuilder {
     private List<ItemStack> getPageItems(int page) {
         Player player = getPlayer();
         Crate crate = getCrate();
+    private @NotNull List<ItemStack> getPageItems(int page) {
 
         List<ItemStack> list = !this.isTier ? crate.getPreviewItems(player) : crate.getPreviewItems(this.tier, player);
         List<ItemStack> items = new ArrayList<>();

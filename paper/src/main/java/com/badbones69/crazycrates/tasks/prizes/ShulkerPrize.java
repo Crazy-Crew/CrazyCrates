@@ -6,6 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class ShulkerPrize extends PrizeBuilder {
         String material = section.getString("DisplayItem", "shulker_box");
         String name = section.getString("DisplayName", material.replaceAll("_", " "));
         int amount = section.getInt("DisplayAmount", 1);
+    public void init(@NotNull final ConfigurationSection section) {
 
         // The display item.
         this.builder.setMaterial(material).setDisplayName(name).setAmount(amount);
@@ -105,14 +107,14 @@ public class ShulkerPrize extends PrizeBuilder {
     }
 
     @Override
-    public ItemStack getItemStack(Player player) {
+    public final ItemStack getItemStack(@NotNull final Player player) {
         return this.builder.setTarget(player).build();
     }
 
     /**
      * @return a stack of items for inventories.
      */
-    public ItemStack[] getStorageContents() {
+    public final ItemStack[] getStorageContents() {
         return this.itemStacks;
     }
 }

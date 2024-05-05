@@ -17,11 +17,19 @@ public class CommandTake extends BaseCommand {
     @Command("take")
     @Permission(value = "crazycrates.takekey", def = PermissionDefault.OP)
     public void take(CommandSender sender, @Suggestion("keys") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, @Suggestion("players") PlayerBuilder target) {
-        KeyType keyType = getKeyType(sender, type);
+        if (crateName.isEmpty()) {
+            sender.sendRichMessage(Messages.not_a_crate.getMessage(sender, "{crate}", crateName));
 
-        Crate crate = getCrate(sender, crateName, false);
+            return;
+        }
+
+        final KeyType keyType = getKeyType(sender, type);
+
+        final Crate crate = getCrate(sender, crateName, false);
 
         if (crate == null) {
+            sender.sendRichMessage(Messages.not_a_crate.getMessage(sender, "{crate}", crateName));
+
             return;
         }
 
