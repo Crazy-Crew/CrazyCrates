@@ -163,17 +163,29 @@ public class CasinoCrate extends CrateBuilder {
                 return;
             }
 
-            setItem(2, getDisplayItem(crate.getTier(row_uno)));
-            setItem(11, getDisplayItem(crate.getTier(row_uno)));
-            setItem(20, getDisplayItem(crate.getTier(row_uno)));
+            Tier tierUno = crate.getTier(row_uno);
 
-            setItem(4, getDisplayItem(crate.getTier(row_dos)));
-            setItem(13, getDisplayItem(crate.getTier(row_dos)));
-            setItem(22, getDisplayItem(crate.getTier(row_dos)));
+            if (tierUno != null) {
+                setItem(2, getDisplayItem(tierUno));
+                setItem(11, getDisplayItem(tierUno));
+                setItem(20, getDisplayItem(tierUno));
+            }
 
-            setItem(6, getDisplayItem(crate.getTier(row_tres)));
-            setItem(15, getDisplayItem(crate.getTier(row_tres)));
-            setItem(24, getDisplayItem(crate.getTier(row_tres)));
+            Tier tierDos = crate.getTier(row_dos);
+
+            if (tierDos != null) {
+                setItem(4, getDisplayItem(tierDos));
+                setItem(13, getDisplayItem(tierDos));
+                setItem(22, getDisplayItem(tierDos));
+            }
+
+            Tier tierTres = crate.getTier(row_tres);
+
+            if (tierTres != null) {
+                setItem(6, getDisplayItem(tierTres));
+                setItem(15, getDisplayItem(tierTres));
+                setItem(24, getDisplayItem(tierTres));
+            }
         }
     }
 
