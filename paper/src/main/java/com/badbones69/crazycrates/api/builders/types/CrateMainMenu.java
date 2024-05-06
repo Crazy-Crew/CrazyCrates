@@ -69,7 +69,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
             if (!customizer.isEmpty()) {
                 for (String custom : customizer) {
-                    ItemBuilder item = new ItemBuilder();
+                    final ItemBuilder item = new ItemBuilder();
                     int slot = 0;
 
                     for (String key : custom.split(", ")) {
