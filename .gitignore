@@ -6,6 +6,9 @@ build
 buildSrc/.gradle
 buildSrc/build
 
+common/.gradle
+common/build
+
 api/.gradle
 api/build
 
