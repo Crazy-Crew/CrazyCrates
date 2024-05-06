@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates;
 
-import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
@@ -16,6 +15,9 @@ import com.badbones69.crazycrates.listeners.crates.MobileCrateListener;
 import com.badbones69.crazycrates.listeners.crates.QuadCrateListener;
 import com.badbones69.crazycrates.listeners.crates.WarCrateListener;
 import com.badbones69.crazycrates.listeners.other.EntityDamageListener;
+import com.badbones69.crazycrates.platform.Server;
+import com.badbones69.crazycrates.platform.config.ConfigManager;
+import com.badbones69.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
@@ -26,9 +28,8 @@ import com.ryderbelserion.vital.enums.Support;
 import com.ryderbelserion.vital.files.FileManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.platform.Server;
-import us.crazycrew.crazycrates.platform.config.ConfigManager;
-import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
+import us.crazycrew.crazycrates.platform.IServer;
+
 import java.util.List;
 import java.util.Timer;
 import static com.badbones69.crazycrates.api.utils.MiscUtils.registerPermissions;
@@ -161,11 +162,7 @@ public class CrazyCrates extends JavaPlugin {
         return this.crateManager;
     }
 
-    public @NotNull final FileManager getFileManager() {
-        return this.instance.getFileManager();
-    }
-
-    public @NotNull final Server getInstance() {
+    public @NotNull final IServer getInstance() {
         return this.instance;
     }
 

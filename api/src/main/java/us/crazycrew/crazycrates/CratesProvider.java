@@ -2,7 +2,7 @@ package us.crazycrew.crazycrates;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.platform.Server;
+import us.crazycrew.crazycrates.platform.IServer;
 
 /**
  * A class used to initialize the api so other plugins can use it.
@@ -12,9 +12,9 @@ import us.crazycrew.crazycrates.platform.Server;
  */
 public class CratesProvider {
 
-    private static Server instance;
+    private static IServer instance;
 
-    public static Server get() {
+    public static IServer get() {
         if (instance == null) {
             throw new IllegalStateException("CrazyCrates API is not loaded.");
         }
@@ -28,7 +28,7 @@ public class CratesProvider {
     }
 
     @ApiStatus.Internal
-    public static void register(@NotNull final Server instance) {
+    public static void register(@NotNull final IServer instance) {
         if (CratesProvider.instance != null) return;
 
         CratesProvider.instance = instance;

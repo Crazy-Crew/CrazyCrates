@@ -1,15 +1,15 @@
-package us.crazycrew.crazycrates.api.enums;
+package com.badbones69.crazycrates.api.enums;
 
 import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.properties.Property;
 import ch.jalu.configme.resource.PropertyReader;
 import org.jetbrains.annotations.ApiStatus;
-import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
-import us.crazycrew.crazycrates.platform.config.impl.messages.CommandKeys;
-import us.crazycrew.crazycrates.platform.config.impl.messages.CrateKeys;
-import us.crazycrew.crazycrates.platform.config.impl.messages.ErrorKeys;
-import us.crazycrew.crazycrates.platform.config.impl.messages.MiscKeys;
-import us.crazycrew.crazycrates.platform.config.impl.messages.PlayerKeys;
+import com.badbones69.crazycrates.platform.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.platform.config.impl.messages.CommandKeys;
+import com.badbones69.crazycrates.platform.config.impl.messages.CrateKeys;
+import com.badbones69.crazycrates.platform.config.impl.messages.ErrorKeys;
+import com.badbones69.crazycrates.platform.config.impl.messages.MiscKeys;
+import com.badbones69.crazycrates.platform.config.impl.messages.PlayerKeys;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -129,11 +129,24 @@ public enum Properties {
     private Property<String> newString;
     private Property<String> oldString;
 
+    /**
+     * A constructor moving the new and old string property for migration
+     *
+     * @param newString the new property
+     * @param oldString the old property
+     */
     Properties(Property<String> newString, Property<String> oldString) {
         this.newString = newString;
         this.oldString = oldString;
     }
 
+    /**
+     * Moves the old value to the new value
+     *
+     * @param reader the config reader
+     * @param configuration the configuration data
+     * @return true or false
+     */
     public boolean moveString(PropertyReader reader, ConfigurationData configuration) {
         String key = reader.getString(this.oldString.getPath());
 
@@ -147,11 +160,25 @@ public enum Properties {
     private Property<Boolean> newBoolean;
     private Property<Boolean> oldBoolean;
 
+    /**
+     * A constructor consisting of the new and old boolean property for migration
+     *
+     * @param newBoolean the new property
+     * @param oldBoolean the old property
+     * @param dummy only to differentiate from previous constructors
+     */
     Properties(Property<Boolean> newBoolean, Property<Boolean> oldBoolean, boolean dummy) {
         this.newBoolean = newBoolean;
         this.oldBoolean = oldBoolean;
     }
 
+    /**
+     * Moves the old value to the new value
+     *
+     * @param reader the config reader
+     * @param configuration the configuration data
+     * @return true or false
+     */
     public boolean moveBoolean(PropertyReader reader, ConfigurationData configuration) {
         Boolean key = reader.getBoolean(this.oldBoolean.getPath());
 
@@ -165,11 +192,25 @@ public enum Properties {
     private Property<Integer> newInteger;
     private Property<Integer> oldInteger;
 
+    /**
+     * A constructor consisting of the new and old int property for migration
+     *
+     * @param newInteger the new property
+     * @param oldInteger the old property
+     * @param dummy only to differentiate from previous constructors
+     */
     Properties(Property<Integer> newInteger, Property<Integer> oldInteger, int dummy) {
         this.newInteger = newInteger;
         this.oldInteger = oldInteger;
     }
 
+    /**
+     * Moves the old value to the new value
+     *
+     * @param reader the config reader
+     * @param configuration the configuration data
+     * @return true or false
+     */
     public boolean moveInteger(PropertyReader reader, ConfigurationData configuration) {
         Integer key = reader.getInt(this.oldInteger.getPath());
 
@@ -183,11 +224,25 @@ public enum Properties {
     private Property<List<String>> newList;
     private Property<List<String>> oldList;
 
+    /**
+     * A constructor consisting of the new and old list property for migration
+     *
+     * @param newList the new property
+     * @param oldList the old property
+     * @param dummy only to differentiate from previous constructors
+     */
     Properties(Property<List<String>> newList, Property<List<String>> oldList, List<String> dummy) {
         this.newList = newList;
         this.oldList = oldList;
     }
 
+    /**
+     * Moves the old value to the new value
+     *
+     * @param reader the config reader
+     * @param configuration the configuration data
+     * @return true or false
+     */
     public boolean moveList(PropertyReader reader, ConfigurationData configuration) {
         List<?> key = reader.getList(this.oldList.getPath());
 
@@ -213,6 +268,12 @@ public enum Properties {
         return true;
     }
 
+    /**
+     * Replaces old placeholders in the option when migrating.
+     *
+     * @param message the message to check
+     * @return the finalized message to set
+     */
     private String replace(String message) {
         return message.replaceAll("%page%", "{page}")
                 .replaceAll("%prefix%", "{prefix}")

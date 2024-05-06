@@ -8,7 +8,7 @@ import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
-import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.platform.config.impl.ConfigKeys;
 
 public class CommandHelp extends BaseCommand {
 

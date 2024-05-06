@@ -1,11 +1,11 @@
-package us.crazycrew.crazycrates.platform.config.migrate;
+package com.badbones69.crazycrates.platform.config.migrate;
 
 import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.migration.PlainMigrationService;
 import ch.jalu.configme.resource.PropertyReader;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.enums.Properties;
+import com.badbones69.crazycrates.api.enums.Properties;
 
 @ApiStatus.Internal
 public class LocaleMigration extends PlainMigrationService {

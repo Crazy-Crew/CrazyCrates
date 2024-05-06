@@ -12,12 +12,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.enums.Files;
+import com.badbones69.crazycrates.api.enums.Files;
 import java.util.Objects;
 
 public class CommandTeleport extends BaseCommand {
 
-    private @NotNull final FileConfiguration locations = Files.locations.getFile();
+    private @NotNull final FileConfiguration locations = Files.locations.getFile(this.fileManager);
 
     @Command("teleport")
     @Permission(value = "crazycrates.teleport", def = PermissionDefault.OP)
@@ -32,7 +32,7 @@ public class CommandTeleport extends BaseCommand {
         if (section == null) {
             this.locations.set("Locations.Clear", null);
 
-            Files.locations.save();
+            Files.locations.save(this.fileManager);
 
             return;
         }

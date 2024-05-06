@@ -1,4 +1,4 @@
-package us.crazycrew.crazycrates.platform.config.impl.messages;
+package com.badbones69.crazycrates.platform.config.impl.messages;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;

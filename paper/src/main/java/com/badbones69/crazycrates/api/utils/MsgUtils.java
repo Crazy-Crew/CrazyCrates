@@ -3,8 +3,8 @@ package com.badbones69.crazycrates.api.utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.platform.config.ConfigManager;
-import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.platform.config.ConfigManager;
+import com.badbones69.crazycrates.platform.config.impl.ConfigKeys;
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class MsgUtils {

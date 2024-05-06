@@ -16,9 +16,7 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
 
-    compileOnlyApi(libs.config.me)
-
-    compileOnlyApi(libs.vital)
+    compileOnly(libs.vital)
 }
 
 val javaComponent: SoftwareComponent = components["java"]
@@ -33,6 +31,12 @@ tasks {
         dependsOn.add(javadoc)
         archiveClassifier.set("javadoc")
         from(javadoc)
+    }
+
+    javadoc {
+        options {
+            (this as CoreJavadocOptions).addBooleanOption("Xdoclint:all,-missing", true)
+        }
     }
 
     publishing {

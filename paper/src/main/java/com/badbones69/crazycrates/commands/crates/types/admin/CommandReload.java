@@ -7,9 +7,9 @@ import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.permissions.PermissionDefault;
-import us.crazycrew.crazycrates.api.enums.Files;
-import us.crazycrew.crazycrates.platform.config.ConfigManager;
-import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.api.enums.Files;
+import com.badbones69.crazycrates.platform.config.ConfigManager;
+import com.badbones69.crazycrates.platform.config.impl.ConfigKeys;
 
 public class CommandReload extends BaseCommand {
 
@@ -20,19 +20,19 @@ public class CommandReload extends BaseCommand {
 
         this.fileManager.apply();
 
-        final FileConfiguration locations = Files.locations.getFile();
-        final FileConfiguration data = Files.data.getFile();
+        final FileConfiguration locations = Files.locations.getFile(this.fileManager);
+        final FileConfiguration data = Files.data.getFile(this.fileManager);
 
         if (!locations.contains("Locations")) {
             locations.set("Locations.Clear", null);
 
-            Files.locations.save();
+            Files.locations.save(this.fileManager);
         }
 
         if (!data.contains("Players")) {
             data.set("Players.Clear", null);
 
-            Files.data.save();
+            Files.data.save(this.fileManager);
         }
 
         if (this.config.getProperty(ConfigKeys.take_out_of_preview)) {

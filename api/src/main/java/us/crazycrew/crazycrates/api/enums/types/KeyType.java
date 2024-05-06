@@ -7,9 +7,18 @@ package us.crazycrew.crazycrates.api.enums.types;
  * @version 0.5
  */
 public enum KeyType {
-    
+
+    /**
+     * A physical key
+     */
     physical_key("physical_key", "Physical Key"),
+    /**
+     * A virtual key
+     */
     virtual_key("virtual_key", "Virtual Key"),
+    /**
+     * A free key
+     */
     free_key("free_key", "Free Key");
     
     private final String name;

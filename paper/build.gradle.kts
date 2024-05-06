@@ -13,7 +13,7 @@ repositories {
 dependencies {
     compileOnly(fileTree("$rootDir/libs/compile").include("*.jar"))
 
-    implementation(project(":api"))
+    implementation(project(":common"))
 
     implementation(libs.vital)
 

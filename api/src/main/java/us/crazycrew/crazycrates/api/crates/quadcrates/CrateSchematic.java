@@ -3,7 +3,7 @@ package us.crazycrew.crazycrates.api.crates.quadcrates;
 import java.io.File;
 
 /**
- * A class for crate schematics
+ * A record holding the data required to load a schematic
  *
  * @author Ryder Belserion
  * @version 0.5

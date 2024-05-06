@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A class for crate holograms
+ * A class containing the data required to create a hologram.
  *
  * @author Ryder Belserion
  * @version 0.5
@@ -34,6 +34,7 @@ public class CrateHologram {
      * @param enabled if the hologram enabled or not.
      * @param height height of the hologram from the ground.
      * @param range range the hologram can be seen.
+     * @param color the background color
      * @param messages the hologram will display.
      */
     public CrateHologram(boolean enabled, double height, int range, String color, List<String> messages) {
