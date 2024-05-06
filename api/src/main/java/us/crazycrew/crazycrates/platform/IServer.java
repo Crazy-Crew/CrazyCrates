@@ -6,7 +6,7 @@ import java.io.File;
 import java.nio.file.Path;
 
 /**
- * A class containing available methods to use,
+ * A class containing available methods to use.
  *
  * @author Ryder Belserion
  * @version 0.5
