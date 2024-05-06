@@ -124,13 +124,14 @@ public class CrateMainMenu extends InventoryBuilder {
                         slot--;
 
                         final ItemBuilder builder = new ItemBuilder()
+                                .withType(section.getString("Item", "chest"), false)
+                                .setDisplayName(section.getString("CrateName", crateName))
                                 .addPlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)), true)
                                 .addPlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, crateName)), true)
                                 .addPlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, crateName)), true)
                                 .addPlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(uuid, crateName)), true)
                                 .addPlaceholder("%player%", getPlayer().getName(), true)
-                                .setPersistentString(PersistentKeys.crate_key.getNamespacedKey(), crate.getName()).setDisplayName(section.getString("CrateName", crateName))
-                                .withType(section.getString("Item", "chest"), false);
+                                .setPersistentString(PersistentKeys.crate_key.getNamespacedKey(), crate.getName());
 
                         inventory.setItem(slot, ItemUtils.getItem(section, builder, player).build());
                     }
