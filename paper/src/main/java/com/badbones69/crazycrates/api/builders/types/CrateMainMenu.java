@@ -10,7 +10,7 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.items.ItemStackBuilder;
+import com.ryderbelserion.vital.items.ItemBuilder;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -56,7 +56,7 @@ public class CrateMainMenu extends InventoryBuilder {
             final String name = this.config.getProperty(ConfigKeys.filler_name);
             final List<String> lore = this.config.getProperty(ConfigKeys.filler_lore);
 
-            final ItemStackBuilder item = new ItemStackBuilder().withType(id, false).setDisplayName(name).setDisplayLore(lore).setPlayer(getPlayer()).build();
+            final ItemBuilder item = new ItemBuilder().withType(id, false).setDisplayName(name).setDisplayLore(lore).setPlayer(getPlayer()).build();
 
             for (int i = 0; i < getSize(); i++) {
                 inventory.setItem(i, item);
@@ -69,7 +69,7 @@ public class CrateMainMenu extends InventoryBuilder {
             if (!customizer.isEmpty()) {
                 for (String custom : customizer) {
                     int slot = 0;
-                    final ItemStackBuilder item = new ItemStackBuilder();
+                    final ItemBuilder item = new ItemBuilder();
 
                     final String[] split = custom.split(", ");
 
@@ -134,7 +134,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
                         slot--;
 
-                        final ItemStackBuilder builder = new ItemStackBuilder()
+                        final ItemBuilder builder = new ItemBuilder()
                                 .addPlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)), true)
                                 .addPlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, crateName)), true)
                                 .addPlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, crateName)), true)

@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.tasks;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.ryderbelserion.vital.items.ItemBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -26,47 +26,44 @@ public class InventoryManager {
     private ItemBuilder backButton;
 
     public void loadButtons() {
-        this.menuButton = new ItemBuilder()
-                .setMaterial(this.config.getProperty(ConfigKeys.menu_button_item))
+        this.menuButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.menu_button_item), false)
                 .setDisplayName(this.config.getProperty(ConfigKeys.menu_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.menu_button_lore))
-                .setString(PersistentKeys.main_menu_button.getNamespacedKey(), "none");
+                .setPersistentString(PersistentKeys.main_menu_button.getNamespacedKey(), "none");
 
-        this.nextButton = new ItemBuilder()
-                .setMaterial(this.config.getProperty(ConfigKeys.next_button_item))
+        this.nextButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.next_button_item), false)
                 .setDisplayName(this.config.getProperty(ConfigKeys.next_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.next_button_lore))
-                .setString(PersistentKeys.next_button.getNamespacedKey(), "none");
+                .setPersistentString(PersistentKeys.next_button.getNamespacedKey(), "none");
 
-        this.backButton = new ItemBuilder()
-                .setMaterial(this.config.getProperty(ConfigKeys.back_button_item))
+        this.backButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.back_button_item), false)
                 .setDisplayName(this.config.getProperty(ConfigKeys.back_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.back_button_lore))
-                .setString(PersistentKeys.back_button.getNamespacedKey(), "none");
+                .setPersistentString(PersistentKeys.back_button.getNamespacedKey(), "none");
     }
 
     public final ItemStack getMenuButton(@NotNull final Player player) {
-        return this.menuButton.setTarget(player).build();
+        return this.menuButton.setPlayer(player).build();
     }
 
     public final ItemStack getNextButton(@Nullable final Player player) {
         ItemBuilder button = new ItemBuilder(this.nextButton);
 
         if (player != null) {
-            button.addLorePlaceholder("{page}", (getPage(player) + 1) + "");
+            button.setPlayer(player).addPlaceholder("{page}", (getPage(player) + 1) + "", true);
         }
 
-        return button.setTarget(player).build();
+        return button.build();
     }
 
     public final ItemStack getBackButton(@Nullable final Player player) {
         ItemBuilder button = new ItemBuilder(this.backButton);
 
         if (player != null) {
-            button.addLorePlaceholder("{page}", (getPage(player) - 1) + "");
+            button.setPlayer(player).addPlaceholder("{page}", (getPage(player) - 1) + "", true);
         }
 
-        return button.setTarget(player).build();
+        return button.build();
     }
 
     private final Map<UUID, Crate> crateViewers = new ConcurrentHashMap<>();

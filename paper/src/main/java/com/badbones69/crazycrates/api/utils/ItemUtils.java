@@ -1,19 +1,27 @@
 package com.badbones69.crazycrates.api.utils;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
-import com.badbones69.crazycrates.api.hooks.HeadDatabaseListener;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.items.ItemStackBuilder;
+import com.ryderbelserion.vital.common.util.StringUtil;
+import com.ryderbelserion.vital.items.ItemBuilder;
+import com.ryderbelserion.vital.util.DyeUtil;
+import com.ryderbelserion.vital.util.ItemUtil;
+import org.bukkit.DyeColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import java.util.List;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
+import static com.ryderbelserion.vital.util.ItemUtil.getEnchantment;
 
 public class ItemUtils {
 
@@ -47,7 +55,7 @@ public class ItemUtils {
      * @param player the player to set.
      * @return the builder object with updated data.
      */
-    public static @NotNull ItemStackBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemStackBuilder builder, @NotNull final Player player) {
+    public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder, @NotNull final Player player) {
         return getItem(section, builder.setPlayer(player));
     }
 
@@ -58,7 +66,7 @@ public class ItemUtils {
      * @param builder the current builder object.
      * @return the builder object with updated data.
      */
-    public static @NotNull ItemStackBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemStackBuilder builder) {
+    public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder) {
         builder.setGlowing(section.getBoolean("Glowing", false));
         
         builder.setDamage(section.getInt("DisplayDamage", 0));
@@ -98,5 +106,142 @@ public class ItemUtils {
         }
         
         return builder;
+    }
+
+    /**
+     * Converts an item stack to an itembuilder
+     *
+     * @param player the player.
+     * @param itemStack the itemstack.
+     * @return the itembuilder.
+     */
+    public static ItemBuilder convertItemStack(Player player, ItemStack itemStack) {
+        ItemBuilder itemBuilder = new ItemBuilder(itemStack.getType(), itemStack.getAmount());
+
+        if (itemStack.hasItemMeta()) {
+            itemStack.editMeta(itemMeta -> {
+                if (itemMeta.hasEnchants()) {
+                    itemMeta.getEnchants().forEach((enchantment, level) -> itemBuilder.addEnchantment(enchantment.translationKey(), level, true));
+                }
+            });
+        }
+
+        if (player != null) {
+            itemBuilder.setPlayer(player);
+        }
+
+        return itemBuilder;
+    }
+
+    /**
+     * Converts an itemstack without a player.
+     *
+     * @param itemStack the itemstack.
+     * @return the itembuilder.
+     */
+    public static ItemBuilder convertItemStack(ItemStack itemStack) {
+        return convertItemStack(null, itemStack);
+    }
+
+    /**
+     * Converts a list of Strings to a list of ItemBuilders.
+     *
+     * @param itemStrings the list of Strings.
+     * @return the list of ItemBuilders.
+     */
+    public static List<ItemBuilder> convertStringList(List<String> itemStrings) {
+        return convertStringList(itemStrings, null);
+    }
+
+    /**
+     * Converts a list of Strings to a list of ItemBuilders with a placeholder for errors.
+     *
+     * @param itemStrings the list of strings.
+     * @param section the placeholder for errors.
+     * @return the list of ItemBuilders.
+     */
+    public static List<ItemBuilder> convertStringList(List<String> itemStrings, String section) {
+        return itemStrings.stream().map(itemString -> convertString(itemString, section)).collect(Collectors.toList());
+    }
+
+    /**
+     * Converts a String to an ItemBuilder.
+     *
+     * @param itemString the string you wish to convert.
+     * @return the string as an ItemBuilder.
+     */
+    public static ItemBuilder convertString(String itemString) {
+        return convertString(itemString, null);
+    }
+
+    /**
+     * Converts a string to an ItemBuilder with a placeholder for errors.
+     *
+     * @param itemString the string you wish to convert.
+     * @param section the placeholder to use if there is an error.
+     * @return the string as an ItemBuilder.
+     */
+    public static ItemBuilder convertString(String itemString, String section) {
+        ItemBuilder itemBuilder = new ItemBuilder();
+
+        try {
+            for (String optionString : itemString.split(", ")) {
+                String option = optionString.split(":")[0];
+                String value = optionString.replace(option + ":", "").replace(option, "");
+
+                switch (option.toLowerCase()) {
+                    case "item" -> itemBuilder.withType(value, false);
+                    case "name" -> itemBuilder.setDisplayName(value);
+                    case "amount" -> {
+                        final Optional<Number> amount = StringUtil.tryParseInt(value);
+                        itemBuilder.setAmount(amount.map(Number::intValue).orElse(1));
+                    }
+                    case "damage" -> {
+                        final Optional<Number> amount = StringUtil.tryParseInt(value);
+                        itemBuilder.setDamage(amount.map(Number::intValue).orElse(1));
+                    }
+                    case "lore" -> itemBuilder.setDisplayLore(List.of(value.split(",")));
+                    //case "hdb" -> itemBuilder.setSkull(value, HeadDatabaseListener.getHeads());
+                    case "player" -> itemBuilder.setPlayer(value);
+                    case "unbreakable-item" -> itemBuilder.setUnbreakable(value.isEmpty() || value.equalsIgnoreCase("true"));
+                    case "trim-pattern" -> itemBuilder.applyTrimPattern(value);
+                    case "trim-material" -> itemBuilder.applyTrimMaterial(value);
+                    default -> {
+                        if (getEnchantment(option) != null) {
+                            final Optional<Number> amount = StringUtil.tryParseInt(value);
+
+                            itemBuilder.addEnchantment(option, amount.map(Number::intValue).orElse(1), true);
+
+                            break;
+                        }
+
+                        for (ItemFlag itemFlag : ItemFlag.values()) {
+                            if (itemFlag.name().equalsIgnoreCase(option)) {
+                                itemBuilder.addItemFlag(itemFlag);
+
+                                break;
+                            }
+                        }
+
+                        try {
+                            DyeColor color = DyeUtil.getDyeColor(value);
+
+                            if (color != null) {
+                                itemBuilder.addPattern(ItemUtil.getPatternType(option), color);
+                            }
+                        } catch (Exception ignored) {}
+                    }
+                }
+            }
+        } catch (Exception exception) {
+            /*itemBuilder.setMaterial(Material.RED_TERRACOTTA).setDisplayName("<red>ERROR").setDisplayLore(Arrays.asList(
+                    "<red>There is an error",
+                    "<red>For : " + (placeHolder != null ? placeHolder : "")
+            ));*/
+
+            plugin.getLogger().log(Level.WARNING, "An error has occurred with the item builder: ", exception);
+        }
+
+        return itemBuilder;
     }
 }

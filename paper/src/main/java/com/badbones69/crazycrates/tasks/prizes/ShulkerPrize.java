@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.tasks.prizes;
 
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.ryderbelserion.vital.items.ItemBuilder;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -26,11 +26,9 @@ public class ShulkerPrize extends PrizeBuilder {
         final int amount = section.getInt("DisplayAmount", 1);
 
         // The display item.
-        this.builder.setMaterial(material).setDisplayName(name).setAmount(amount);
+        this.builder.withType(material, amount, false).setDisplayName(name);
 
-        final ItemStack itemStack = this.builder.getItemStack();
-
-        itemStack.editMeta(itemMeta -> {
+        this.builder.editMeta(itemMeta -> {
             if (!(itemMeta instanceof BlockStateMeta block)) {
                 return;
             }
@@ -57,7 +55,7 @@ public class ShulkerPrize extends PrizeBuilder {
                             final String mat = item[0];
                             final int matAmount = Integer.parseInt(item[1]);
 
-                            shulkerItem.setMaterial(mat).setAmount(matAmount);
+                            shulkerItem.withType(mat, matAmount, false);
                         }
 
                         case "enchantments" -> {
@@ -107,7 +105,7 @@ public class ShulkerPrize extends PrizeBuilder {
 
     @Override
     public final ItemStack getItemStack(@NotNull final Player player) {
-        return this.builder.setTarget(player).build();
+        return this.builder.setPlayer(player).build();
     }
 
     /**

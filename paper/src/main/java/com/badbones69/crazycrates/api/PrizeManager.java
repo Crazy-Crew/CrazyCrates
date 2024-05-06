@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.ryderbelserion.vital.enums.Support;
-import com.ryderbelserion.vital.items.ItemStackBuilder;
+import com.ryderbelserion.vital.items.ItemBuilder;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
@@ -66,13 +66,13 @@ public class PrizeManager {
         }
 
         if (!prize.getItemBuilders().isEmpty()) {
-            for (final ItemStackBuilder item : prize.getItemBuilders()) {
-                final ItemStackBuilder clone = item.setPlayer(player);
+            for (final ItemBuilder item : prize.getItemBuilders()) {
+                item.setPlayer(player); //todo() test this
 
                 if (!MiscUtils.isInventoryFull(player)) {
-                    player.getInventory().addItem(clone.build());
+                    player.getInventory().addItem(item.build());
                 } else {
-                    player.getWorld().dropItemNaturally(player.getLocation(), clone.build());
+                    player.getWorld().dropItemNaturally(player.getLocation(), item.build());
                 }
             }
         } else {
@@ -139,13 +139,13 @@ public class PrizeManager {
 
         if (Support.placeholder_api.isEnabled() ) cmd = PlaceholderAPI.setPlaceholders(player, cmd);
 
-        final ItemStackBuilder builder = prize.getDisplayItemBuilder();
+        final ItemBuilder builder = prize.getDisplayItemBuilder();
 
         final String display = PlainTextComponentSerializer.plainText().serialize(builder.displayName());
 
         MiscUtils.sendCommand(cmd
                 .replaceAll("%player%", quoteReplacement(player.getName()))
-                //.replaceAll("%reward%", quoteReplacement(name))
+                .replaceAll("%reward%", quoteReplacement(builder.getDisplayName()))
                 .replaceAll("%reward_stripped%", quoteReplacement(display))
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())));
     }
@@ -153,13 +153,13 @@ public class PrizeManager {
     private static void sendMessage(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, String message) {
         if (message.isEmpty()) return;
 
-        final ItemStackBuilder builder = prize.getDisplayItemBuilder();
+        final ItemBuilder builder = prize.getDisplayItemBuilder();
 
         final String display = PlainTextComponentSerializer.plainText().serialize(builder.displayName());
 
         final String defaultMessage = message
                 .replaceAll("%player%", quoteReplacement(player.getName()))
-                //.replaceAll("%reward%", quoteReplacement(name))
+                .replaceAll("%reward%", quoteReplacement(builder.getDisplayName()))
                 .replaceAll("%reward_stripped%", quoteReplacement(display))
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName()));
 

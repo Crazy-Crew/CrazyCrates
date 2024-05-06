@@ -1,22 +1,19 @@
 package com.badbones69.crazycrates.api.objects;
 
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
+import com.ryderbelserion.vital.files.CustomFile;
 import com.ryderbelserion.vital.files.FileManager;
-import com.ryderbelserion.vital.items.ItemStackBuilder;
+import com.ryderbelserion.vital.items.ItemBuilder;
 import com.ryderbelserion.vital.util.DyeUtil;
 import com.ryderbelserion.vital.util.ItemUtil;
 import org.bukkit.Color;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
@@ -37,6 +34,7 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -44,9 +42,9 @@ import java.util.logging.Level;
 
 public class Crate {
 
-    private ItemStackBuilder previewTierBorderItem;
-    private ItemStackBuilder borderItem;
-    private ItemStackBuilder keyBuilder;
+    private ItemBuilder previewTierBorderItem;
+    private ItemBuilder borderItem;
+    private ItemBuilder keyBuilder;
     
     private AbstractCrateManager manager;
     private final String name;
@@ -75,7 +73,7 @@ public class Crate {
     private List<Tier> tiers;
     private CrateHologram hologram;
 
-    private List<ItemStackBuilder> preview;
+    private List<ItemBuilder> preview;
 
     private int maxMassOpen;
     private int requiredKeys;
@@ -104,7 +102,7 @@ public class Crate {
     public Crate(@NotNull final String name,
                  @NotNull final String previewName,
                  @NotNull final CrateType crateType,
-                 @NotNull final ItemStackBuilder key,
+                 @NotNull final ItemBuilder key,
                  @NotNull final String keyName,
                  @NotNull final List<Prize> prizes,
                  @NotNull final FileConfiguration file,
@@ -148,14 +146,14 @@ public class Crate {
 
         String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
-        this.borderItem = new ItemStackBuilder()
+        this.borderItem = new ItemBuilder()
                 .withType(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane"), false)
                 .setHiddenItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
                 .setDisplayName(borderName);
 
         String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
 
-        this.previewTierBorderItem = new ItemStackBuilder()
+        this.previewTierBorderItem = new ItemBuilder()
                 .withType(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane"), false)
                 .setHiddenItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
                 .setDisplayName(previewTierBorderName);
@@ -185,8 +183,8 @@ public class Crate {
     }
 
     public Crate(String name) {
-        this.name = name;
         this.crateType = CrateType.menu;
+        this.name = name;
     }
 
     /**
@@ -213,7 +211,7 @@ public class Crate {
     /**
      * @return item for the preview border.
      */
-    public ItemStackBuilder getPreviewTierBorderItem() {
+    public ItemBuilder getPreviewTierBorderItem() {
         return this.previewTierBorderItem;
     }
 
@@ -371,7 +369,7 @@ public class Crate {
      *
      * @param itemStacks list of items
      */
-    public void setPreviewItems(List<ItemStackBuilder> itemStacks) {
+    public void setPreviewItems(List<ItemBuilder> itemStacks) {
         this.preview = itemStacks;
     }
 
@@ -459,7 +457,7 @@ public class Crate {
      *
      * @return the ItemBuilder for the border item.
      */
-    public ItemStackBuilder getBorderItem() {
+    public ItemBuilder getBorderItem() {
         return this.borderItem;
     }
     
@@ -513,7 +511,7 @@ public class Crate {
     /**
      * @return the key as an item stack.
      */
-    public ItemStackBuilder getKey() {
+    public ItemBuilder getKey() {
         return this.keyBuilder.build();
     }
 
@@ -522,7 +520,7 @@ public class Crate {
      *
      * @return the key as an item stack.
      */
-    public ItemStackBuilder getKey(Player player) {
+    public ItemBuilder getKey(Player player) {
         return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).build();
     }
 
@@ -530,8 +528,8 @@ public class Crate {
      * @param amount The amount of keys you want.
      * @return the key as an item stack.
      */
-    public ItemStackBuilder getKey(int amount) {
-        ItemStackBuilder key = this.keyBuilder;
+    public ItemBuilder getKey(int amount) {
+        ItemBuilder key = this.keyBuilder;
 
         key.setAmount(amount);
 
@@ -544,8 +542,8 @@ public class Crate {
      *
      * @return the key as an item stack.
      */
-    public ItemStackBuilder getKey(int amount, Player player) {
-        ItemStackBuilder key = this.keyBuilder;
+    public ItemBuilder getKey(int amount, Player player) {
+        ItemBuilder key = this.keyBuilder;
 
         key.setAmount(amount);
 
@@ -583,11 +581,7 @@ public class Crate {
     public @Nullable final Prize getPrize(@NotNull final ItemStack item) {
         if (!item.hasItemMeta()) return null;
 
-        ItemMeta itemMeta = item.getItemMeta();
-
-        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-
-        return getPrize(container.getOrDefault(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, ""));
+        return getPrize(item.getItemMeta().getPersistentDataContainer().getOrDefault(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, ""));
     }
     
     /**
@@ -614,9 +608,7 @@ public class Crate {
     public void addEditorItem(ItemStack itemStack, Player player, String prizeName, int chance) {
         ConfigurationSection section = getPrizeSection();
 
-        if (section == null) {
-            return;
-        }
+        if (section == null) return;
 
         setItem(itemStack, player, prizeName, section, chance, null);
     }
@@ -732,7 +724,9 @@ public class Crate {
             this.plugin.getLogger().log(Level.SEVERE, "Failed to save " + this.name + ".yml", exception);
         }
 
-        this.fileManager.getCustomFile(this.name).reload();
+        CustomFile customFile = this.fileManager.getCustomFile(this.name);
+
+        if (customFile != null) customFile.reload();
 
         this.crateManager.reloadCrate(this.crateManager.getCrateFromName(this.name));
     }
@@ -748,14 +742,14 @@ public class Crate {
      * @return a list of the tiers for the crate. Will be empty if there are none.
      */
     public @NotNull final List<Tier> getTiers() {
-        return this.tiers;
+        return Collections.unmodifiableList(this.tiers);
     }
 
     /**
      * @param name name of the tier.
      * @return the tier object.
      */
-    public @Nullable final Tier getTier(String name) {
+    public @Nullable final Tier getTier(final String name) {
         if (name.isEmpty()) return null;
 
         for (final Tier tier : this.tiers) {
@@ -782,8 +776,8 @@ public class Crate {
     /**
      * @return a list of item stacks
      */
-    public @NotNull final List<ItemStackBuilder> getPreview() {
-        return this.preview;
+    public @NotNull final List<ItemBuilder> getPreview() {
+        return Collections.unmodifiableList(this.preview);
     }
 
     /**
@@ -814,14 +808,14 @@ public class Crate {
      *
      * @return a list of all the preview items that were created.
      */
-    public @NotNull final List<ItemStackBuilder> getPreviewItems() {
-        final List<ItemStackBuilder> items = new ArrayList<>();
+    public @NotNull final List<ItemBuilder> getPreviewItems() {
+        final List<ItemBuilder> items = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
             items.add(prize.getDisplayItem());
         }
 
-        return items;
+        return Collections.unmodifiableList(items);
     }
     
     /**
@@ -836,7 +830,7 @@ public class Crate {
             items.add(prize.getDisplayItem(player));
         }
 
-        return items;
+        return Collections.unmodifiableList(items);
     }
 
     /**
@@ -852,7 +846,7 @@ public class Crate {
             if (prize.getTiers().contains(tier)) prizes.add(prize.getDisplayItem(player));
         }
 
-        return prizes;
+        return Collections.unmodifiableList(prizes);
     }
 
     /**

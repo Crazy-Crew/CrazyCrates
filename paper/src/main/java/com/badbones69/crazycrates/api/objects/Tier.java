@@ -1,8 +1,7 @@
 package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
-import com.ryderbelserion.vital.items.ItemStackBuilder;
-import org.bukkit.Material;
+import com.ryderbelserion.vital.items.ItemBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +9,7 @@ import java.util.List;
 
 public class Tier {
 
-    private final ItemStackBuilder item;
+    private final ItemBuilder item;
     private final int maxRange;
     private final String name;
     private final List<String> lore;
@@ -25,7 +24,7 @@ public class Tier {
 
         this.lore = section.getStringList("Lore"); // this returns an empty list if not found anyway.
 
-        this.item = new ItemStackBuilder(Material.CHEST).withType(section.getString("Item", "chest"), false).setHiddenItemFlags(section.getBoolean("HideItemFlags", false));
+        this.item = new ItemBuilder().withType(section.getString("Item", "chest"), false).setHiddenItemFlags(section.getBoolean("HideItemFlags", false));
 
         this.chance = section.getInt("Chance");
         this.maxRange = section.getInt("MaxRange", 100);
@@ -50,7 +49,7 @@ public class Tier {
     /**
      * @return the colored glass pane.
      */
-    public @NotNull final ItemStackBuilder getItem() {
+    public @NotNull final ItemBuilder getItem() {
         return this.item;
     }
     
@@ -78,11 +77,9 @@ public class Tier {
     /**
      * @return the tier item shown in the preview.
      */
-    public @NotNull final ItemStackBuilder getTierItem(Player target) {
+    public @NotNull final ItemBuilder getTierItem(Player target) {
         if (target != null) this.item.setPlayer(target);
 
-        this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).setPersistentString(PersistentKeys.preview_tier_button.getNamespacedKey(), this.name);
-
-        return this.item.build();
+        return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).setPersistentString(PersistentKeys.preview_tier_button.getNamespacedKey(), this.name).build();
     }
 }

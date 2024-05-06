@@ -5,7 +5,6 @@ import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
 import com.badbones69.crazycrates.api.ChestManager;
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.support.holograms.types.FancyHologramsSupport;
 import com.badbones69.crazycrates.tasks.InventoryManager;
@@ -23,6 +22,7 @@ import com.badbones69.crazycrates.tasks.crates.types.WonderCrate;
 import com.ryderbelserion.vital.common.util.FileUtil;
 import com.ryderbelserion.vital.enums.Support;
 import com.ryderbelserion.vital.files.FileManager;
+import com.ryderbelserion.vital.items.ItemBuilder;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -1239,13 +1239,13 @@ public class CrateManager {
 
     // Internal methods.
     private ItemBuilder getKey(@NotNull final FileConfiguration file) {
-        final String name = file.getString("Crate.PhysicalKey.Name");
+        final String name = file.getString("Crate.PhysicalKey.Name", "");
         final List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
         final String id = file.getString("Crate.PhysicalKey.Item", "tripwire_hook");
         final boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
-        return new ItemBuilder().setMaterial(id).setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).hideItemFlags(hideFlags);
+        return new ItemBuilder().withType(id, false).setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setHiddenItemFlags(hideFlags);
     }
 
     // Cleans the data file.
@@ -1258,7 +1258,11 @@ public class CrateManager {
 
         final List<String> removePlayers = new ArrayList<>();
 
-        for (String uuid : data.getConfigurationSection("Players").getKeys(false)) {
+        ConfigurationSection section = data.getConfigurationSection("Players");
+
+        if (section == null) return;
+
+        for (String uuid : section.getKeys(false)) {
             if (data.contains("Players." + uuid + ".tracking")) return;
 
             boolean hasKeys = false;

@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.tasks.crates.types;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.ryderbelserion.vital.items.ItemBuilder;
 import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
@@ -155,7 +155,7 @@ public class CsgoCrate extends CrateBuilder {
         setItem(3, glass.get(5));
         setItem(3 + 18, glass.get(5));
 
-        ItemStack itemStack = new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(" ").build();
+        ItemStack itemStack = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(" ").build();
 
         setItem(4, itemStack);
         setItem(4 + 18, itemStack);

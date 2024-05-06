@@ -1,8 +1,8 @@
 package com.badbones69.crazycrates.listeners.crates;
 
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.badbones69.crazycrates.api.objects.other.CrateLocation;
+import com.badbones69.crazycrates.api.utils.ItemUtils;
+import com.ryderbelserion.vital.items.ItemBuilder;
 import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import org.bukkit.Location;
 import org.bukkit.SoundCategory;
@@ -35,7 +35,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -56,16 +55,18 @@ public class QuadCrateListener implements Listener {
     public void onChestClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
-        if (!this.sessionManager.inSession(player)) return;
-
-        final QuadCrateManager session = sessionManager.getSession(player);
-
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK) {
             final Block block = event.getClickedBlock();
 
-            final List<Location> crateLocation = session.getCrateLocations();
+            if (block == null) return;
 
-            if (crateLocation == null) return;
+            if (!this.sessionManager.inSession(player)) return;
+
+            final QuadCrateManager session = this.sessionManager.getSession(player);
+
+            if (session == null) return;
+
+            final List<Location> crateLocation = session.getCrateLocations();
 
             if (!crateLocation.contains(block.getLocation())) return;
 
@@ -75,19 +76,19 @@ public class QuadCrateListener implements Listener {
 
             ChestManager.openChest(block, true);
 
-            Crate crate = session.getCrate();
-            Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
+            final Crate crate = session.getCrate();
+            final Prize prize = crate.pickPrize(player, block.getLocation().add(.5, 1.3, .5));
 
             PrizeManager.givePrize(player, prize, crate);
 
             // Get the display item.
-            ItemStack display = prize.getDisplayItem(player);
+            final ItemStack display = prize.getDisplayItem(player);
 
             // Get the item meta.
-            ItemMeta itemMeta = display.getItemMeta();
+            final ItemMeta itemMeta = display.getItemMeta();
 
             // Access the pdc and set "crazycrates-item"
-            PersistentKeys key = PersistentKeys.crate_prize;
+            final PersistentKeys key = PersistentKeys.crate_prize;
 
             //noinspection unchecked
             itemMeta.getPersistentDataContainer().set(key.getNamespacedKey(), key.getType(), "1");
@@ -96,21 +97,16 @@ public class QuadCrateListener implements Listener {
             display.setItemMeta(itemMeta);
 
             // Convert the item stack to item builder.
-            ItemBuilder itemBuilder = ItemBuilder.convertItemStack(display);
-
-            // Makes sure items do not merge.
-            itemBuilder.addDisplayLore(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE) + "");
-
-            // Builds the item.
-            ItemStack item = itemBuilder.build();
+            // The max integer prevents it from stacking.
+            final ItemBuilder itemBuilder = ItemUtils.convertItemStack(display).addDisplayLore(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE) + "").build();
 
             // Drop the item.
-            Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), item);
+            Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), itemBuilder);
 
             // Set data
             reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(plugin, true));
             reward.setVelocity(new Vector(0, .2, 0));
-            reward.setCustomName(itemMeta.getDisplayName());
+            reward.customName(itemMeta.displayName());
             reward.setCustomNameVisible(true);
             reward.setPickupDelay(Integer.MAX_VALUE);
 
@@ -149,7 +145,7 @@ public class QuadCrateListener implements Listener {
         }
 
         for (Entity en : player.getNearbyEntities(2, 2, 2)) { // Someone tries to enter the crate area
-            if (en instanceof Player p) {
+            if (en instanceof final Player p) {
                 if (this.sessionManager.inSession(p)) {
                     Vector velocity = player.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().setY(1);
 
