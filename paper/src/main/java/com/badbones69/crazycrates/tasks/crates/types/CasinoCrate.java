@@ -109,6 +109,27 @@ public class CasinoCrate extends CrateBuilder {
         final Crate crate = getCrate();
         final String crateName = crate.getName();
 
+        final ConfigurationSection section = crate.getFile().getConfigurationSection("Crate.random");
+
+        if (section != null) {
+            final boolean isRandom = section.getBoolean("toggle", false);
+
+            if (!isRandom) {
+                final String row_uno = section.getString("types.row-1", "");
+                final String row_dos = section.getString("types.row-2", "");
+                final String row_tres = section.getString("types.row-3", "");
+
+                if (row_uno.isEmpty() || row_dos.isEmpty() || row_tres.isEmpty()) {
+                    this.plugin.getLogger().warning("One of your tiers in the config is empty.");
+                    this.plugin.getLogger().warning("Tier 1: " + row_uno);
+                    this.plugin.getLogger().warning("Tier 2: " + row_dos);
+                    this.plugin.getLogger().warning("Tier 3:" + row_tres);
+
+                    return;
+                }
+            }
+        }
+
         final boolean keyCheck = this.userManager.takeKeys(uuid, crateName, type, 1, checkHand);
 
         if (!keyCheck) {
@@ -139,10 +160,6 @@ public class CasinoCrate extends CrateBuilder {
         if (section != null) {
             final boolean isRandom = section.getBoolean("toggle", false);
 
-            final String row_uno = section.getString("types.row-1");
-            final String row_dos = section.getString("types.row-2");
-            final String row_tres = section.getString("types.row-3");
-
             if (isRandom) {
                 List<Tier> tiers = crate.getTiers();
 
@@ -162,6 +179,10 @@ public class CasinoCrate extends CrateBuilder {
 
                 return;
             }
+
+            final String row_uno = section.getString("types.row-1", "");
+            final String row_dos = section.getString("types.row-2", "");
+            final String row_tres = section.getString("types.row-3", "");
 
             Tier tierUno = crate.getTier(row_uno);
 
