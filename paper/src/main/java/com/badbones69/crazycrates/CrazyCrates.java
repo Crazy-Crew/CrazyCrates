@@ -29,7 +29,6 @@ import com.ryderbelserion.vital.files.FileManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.platform.IServer;
-
 import java.util.List;
 import java.util.Timer;
 import static com.badbones69.crazycrates.api.utils.MiscUtils.registerPermissions;
@@ -162,7 +161,11 @@ public class CrazyCrates extends JavaPlugin {
         return this.crateManager;
     }
 
-    public @NotNull final IServer getInstance() {
+    public @NotNull final FileManager getFileManager() {
+        return this.instance.getFileManager();
+    }
+
+    public @NotNull final Server getInstance() {
         return this.instance;
     }
 
