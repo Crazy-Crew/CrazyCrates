@@ -57,7 +57,7 @@ public class CrateMainMenu extends InventoryBuilder {
             final String name = this.config.getProperty(ConfigKeys.filler_name);
             final List<String> lore = this.config.getProperty(ConfigKeys.filler_lore);
 
-            final ItemBuilder item = new ItemBuilder().withType(id, false).setDisplayName(name).setDisplayLore(lore).setPlayer(getPlayer()).build();
+            final ItemStack item = new ItemBuilder().withType(id, false).setDisplayName(name).setDisplayLore(lore).setPlayer(getPlayer()).build();
 
             for (int i = 0; i < getSize(); i++) {
                 inventory.setItem(i, item);
