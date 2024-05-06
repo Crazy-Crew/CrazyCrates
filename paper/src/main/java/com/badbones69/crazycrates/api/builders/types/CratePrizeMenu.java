@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class CratePrizeMenu extends InventoryBuilder {
 
-    public CratePrizeMenu(@NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final String title) {
-        super(crate, player, size, title);
+    public CratePrizeMenu(@NotNull final Player player, @NotNull final String title, final int size, @NotNull final Crate crate) {
+        super(player, title, size, crate);
     }
 
     @Override

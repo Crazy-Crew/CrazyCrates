@@ -31,8 +31,8 @@ public class CrateTierMenu extends InventoryBuilder {
 
     private @NotNull final SettingsManager config = ConfigManager.getConfig();
 
-    public CrateTierMenu(@NotNull final List<Tier> tiers, @NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final String title) {
-        super(tiers, crate, player, size, title);
+    public CrateTierMenu(@NotNull final Player player, @NotNull final String title, final int size, @NotNull final Crate crate, @NotNull final List<Tier> tiers) {
+        super(player, title, size, crate, tiers);
     }
 
     @Override

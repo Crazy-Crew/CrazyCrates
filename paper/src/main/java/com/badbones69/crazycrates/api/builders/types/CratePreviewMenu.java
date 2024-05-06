@@ -34,8 +34,8 @@ public class CratePreviewMenu extends InventoryBuilder {
     private final boolean isTier;
     private final Tier tier;
 
-    public CratePreviewMenu(@NotNull final Crate crate, @NotNull final Player player, final int size, final int page, @NotNull final String title, final boolean isTier, @Nullable final Tier tier) {
-        super(crate, player, size, page, title);
+    public CratePreviewMenu(@NotNull final Player player, @NotNull final String title, final int size, final int page, @NotNull final Crate crate, final boolean isTier, @Nullable final Tier tier) {
+        super(player, title, size, page, crate);
 
         this.isTier = isTier;
         this.tier = tier;

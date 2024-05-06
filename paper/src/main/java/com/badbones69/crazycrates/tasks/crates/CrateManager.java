@@ -462,7 +462,7 @@ public class CrateManager {
 
         if (crate.getCrateType() == CrateType.menu) {
             if (config.getProperty(ConfigKeys.enable_crate_menu)) {
-                final CrateMainMenu crateMainMenu = new CrateMainMenu(player, config.getProperty(ConfigKeys.inventory_size), config.getProperty(ConfigKeys.inventory_name));
+                final CrateMainMenu crateMainMenu = new CrateMainMenu(player, config.getProperty(ConfigKeys.inventory_name), config.getProperty(ConfigKeys.inventory_size));
 
                 player.openInventory(crateMainMenu.build().getInventory());
 

@@ -485,7 +485,7 @@ public class Crate {
      * @return the preview as an Inventory object.
      */
     public Inventory getPreview(Player player, int page, boolean isTier, @Nullable Tier tier) {
-        CratePreviewMenu cratePreviewMenu = new CratePreviewMenu(this, player, !this.borderToggle && (this.inventoryManager.inCratePreview(player) || this.maxPage > 1) && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, page, this.previewName, isTier, tier);
+        CratePreviewMenu cratePreviewMenu = new CratePreviewMenu(player, this.previewName, !this.borderToggle && (this.inventoryManager.inCratePreview(player) || this.maxPage > 1) && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, page, this, isTier, tier);
 
         return cratePreviewMenu.build().getInventory();
     }
@@ -496,7 +496,7 @@ public class Crate {
      * @return the tier preview as an Inventory object.
      */
     public Inventory getTierPreview(Player player) {
-        CrateTierMenu crateTierMenu = new CrateTierMenu(getTiers(), this, player, !this.previewTierBorderToggle && (this.inventoryManager.inCratePreview(player)) && this.previewTierMaxSlots == 9 ? this.previewTierMaxSlots + 9 : this.previewTierMaxSlots, this.previewName);
+        CrateTierMenu crateTierMenu = new CrateTierMenu(player, this.previewName, !this.previewTierBorderToggle && (this.inventoryManager.inCratePreview(player)) && this.previewTierMaxSlots == 9 ? this.previewTierMaxSlots + 9 : this.previewTierMaxSlots, this, this.tiers);
 
         return crateTierMenu.build().getInventory();
     }

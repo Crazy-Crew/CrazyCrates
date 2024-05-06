@@ -44,9 +44,9 @@ public abstract class InventoryBuilder implements InventoryHolder {
     private int page;
     private List<Tier> tiers;
 
-    public InventoryBuilder(@NotNull final Player player, final int size, @NotNull final String title) {
-        this.title = title;
+    public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size) {
         this.player = player;
+        this.title = title;
         this.size = size;
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
@@ -54,9 +54,9 @@ public abstract class InventoryBuilder implements InventoryHolder {
         this.inventory = this.server.createInventory(this, this.size, MiscUtil.parse(inventoryTitle));
     }
 
-    public InventoryBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final String title) {
-        this.title = title;
+    public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, @NotNull final Crate crate) {
         this.player = player;
+        this.title = title;
         this.size = size;
 
         this.crate = crate;
@@ -66,9 +66,9 @@ public abstract class InventoryBuilder implements InventoryHolder {
         this.inventory = this.server.createInventory(this, this.size, MiscUtil.parse(inventoryTitle));
     }
 
-    public InventoryBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size, final int page, @NotNull final String title) {
-        this.title = title;
+    public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, final int page, @NotNull final Crate crate) {
         this.player = player;
+        this.title = title;
         this.size = size;
         this.page = page;
 
@@ -79,13 +79,12 @@ public abstract class InventoryBuilder implements InventoryHolder {
         this.inventory = this.server.createInventory(this, this.size, MiscUtil.parse(inventoryTitle));
     }
 
-    public InventoryBuilder(@NotNull final List<Tier> tiers, @NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final String title) {
-        this.title = title;
+    public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, @NotNull final Crate crate, @NotNull final List<Tier> tiers) {
         this.player = player;
+        this.title = title;
         this.size = size;
 
         this.crate = crate;
-
         this.tiers = tiers;
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;

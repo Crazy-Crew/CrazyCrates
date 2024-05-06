@@ -41,8 +41,8 @@ public class CrateMainMenu extends InventoryBuilder {
 
     private @NotNull final SettingsManager config = ConfigManager.getConfig();
 
-    public CrateMainMenu(@NotNull final Player player, final int size, @NotNull final String title) {
-        super(player, size, title);
+    public CrateMainMenu(@NotNull final Player player, @NotNull final String title, final int size) {
+        super(player, title, size);
     }
 
     @Override

@@ -127,7 +127,7 @@ public class CrateControlListener implements Listener {
         if (crate.getCrateType() == CrateType.menu) {
             // this is to stop players in QuadCrate to not be able to try and open a crate set to menu.
             if (!this.crateManager.isInOpeningList(player) && this.config.getProperty(ConfigKeys.enable_crate_menu)) {
-                final CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_size), this.config.getProperty(ConfigKeys.inventory_name));
+                final CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_size));
 
                 player.openInventory(crateMainMenu.build().getInventory());
             } else {
