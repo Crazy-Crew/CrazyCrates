@@ -10,6 +10,7 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.common.util.StringUtil;
 import com.ryderbelserion.vital.items.ItemBuilder;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -68,45 +69,33 @@ public class CrateMainMenu extends InventoryBuilder {
 
             if (!customizer.isEmpty()) {
                 for (String custom : customizer) {
+                    ItemBuilder item = new ItemBuilder();
                     int slot = 0;
-                    final ItemBuilder item = new ItemBuilder();
 
-                    final String[] split = custom.split(", ");
+                    for (String key : custom.split(", ")) {
+                        String option = key.split(":")[0];
+                        String value = key.replace(option + ":", "").replace(option, "");
 
-                    for (String option : split) {
-                        if (option.contains("item:")) item.withType(option.replace("item:", ""), false);
+                        switch (option.toLowerCase()) {
+                            case "item" -> item.withType(value, false);
+                            case "name" -> item.setDisplayName(getCrates(value).replace("{player}", player.getName()));
 
-                        if (option.contains("name:")) {
-                            option = option.replace("name:", "");
+                            case "lore" -> {
+                                String[] lore = value.split(",");
 
-                            option = getCrates(option);
-
-                            item.setDisplayName(option.replace("{player}", player.getName())); // ryder - this didn't need to be replaceAll, what logic would an owner need to put the player name twice in the displayName?
-                        }
-
-                        if (option.contains("lore:")) {
-                            option = option.replace("lore:", "");
-                            final String[] lore = option.split(",");
-
-                            for (String line : lore) {
-                                option = getCrates(option);
-
-                                item.addDisplayLore(option.replaceAll("\\{player}", player.getName()));
+                                for (String line : lore) {
+                                    item.addDisplayLore(getCrates(line).replace("{player}", player.getName()));
+                                }
                             }
+
+                            case "glowing" -> item.setGlowing(StringUtil.tryParseBoolean(value).orElse(null));
+
+                            case "slot" -> slot = Integer.parseInt(value);
+
+                            case "unbreakable-item" -> item.setUnbreakable(StringUtil.tryParseBoolean(value).orElse(false));
+
+                            case "hide-item-flags" -> item.setHiddenItemFlags(StringUtil.tryParseBoolean(value).orElse(false));
                         }
-
-                        if (option.contains("glowing:")) item.setGlowing(option.replace("glowing:", "").equalsIgnoreCase("true"));
-
-                        //todo() test the new options.
-                        //if (option.contains("hdb:")) item.setSkull(option.replace("hdb:", ""), HeadDatabaseListener.getHeads());
-
-                        if (option.contains("player:")) item.setPlayer(option.replace("{player}", player.getName())); // ryder - this doesn't need to be replaceAll, what logic would an owner need to put the player name twice in the displayName?
-
-                        if (option.contains("slot:")) slot = Integer.parseInt(option.replace("slot:", ""));
-
-                        if (option.contains("unbreakable-item:")) item.setUnbreakable(option.replace("unbreakable-item:", "").equalsIgnoreCase("true"));
-
-                        if (option.contains("hide-item-flags:")) item.setHiddenItemFlags(option.replace("hide-item-flags:", "").equalsIgnoreCase("true"));
                     }
 
                     if (slot > getSize()) continue;
