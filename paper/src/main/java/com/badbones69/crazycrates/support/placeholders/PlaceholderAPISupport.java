@@ -30,7 +30,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         if (identifier.isEmpty()) return "N/A";
 
         // The player who sees the placeholder.
-        Player human = (Player) player;
+        final Player human = (Player) player;
 
         // This is if the person opening the gui is to be used.
         for (Crate crate : this.crateManager.getUsableCrates()) {
@@ -56,23 +56,23 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         }
 
         // Gets the {player_name} or whatever
-        int index = identifier.lastIndexOf("_");
-        String value = PlaceholderAPI.setPlaceholders(human, "%" + StringUtils.substringBetween(identifier.substring(0, index), "{", "}") + "%");
+        final int index = identifier.lastIndexOf("_");
+        final String value = PlaceholderAPI.setPlaceholders(human, "%" + StringUtils.substringBetween(identifier.substring(0, index), "{", "}") + "%");
 
         // Get player
-        Player target = this.plugin.getServer().getPlayer(value);
+        final Player target = this.plugin.getServer().getPlayer(value);
 
         // If player is offline.
         if (target == null) {
-            UUID offlinePlayer = CompletableFuture.supplyAsync(() -> plugin.getServer().getOfflinePlayer(value)).thenApply(OfflinePlayer::getUniqueId).join();
+            final UUID offlinePlayer = CompletableFuture.supplyAsync(() -> plugin.getServer().getOfflinePlayer(value)).thenApply(OfflinePlayer::getUniqueId).join();
 
-            String crateName = identifier.split("_")[2];
+            final String crateName = identifier.split("_")[2];
 
             return getKeys(offlinePlayer, identifier, crateName, value);
         }
 
         // If player is online.
-        String crateName = identifier.split("_")[2];
+        final String crateName = identifier.split("_")[2];
 
         return getKeys(target.getUniqueId(), identifier, crateName, value);
     }
@@ -92,7 +92,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
             return "N/A";
         }
 
-        String result = value + "_" + crateName + "_" + identifier.split("_")[3];
+        final String result = value + "_" + crateName + "_" + identifier.split("_")[3];
 
         if (result.endsWith("total")) { // %crazycrates_<player>_<crate>_total%
             return NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, crate.getName()));

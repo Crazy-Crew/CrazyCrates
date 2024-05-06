@@ -34,7 +34,7 @@ public class MiscListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
         // Set new keys if we have to.
         this.crateManager.setNewPlayerKeys(player);
@@ -65,7 +65,7 @@ public class MiscListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
         this.inventoryManager.removeViewer(player);
         this.inventoryManager.removeCrateViewer(player);
@@ -90,7 +90,7 @@ public class MiscListener implements Listener {
 
     @EventHandler
     public void onInventoryDragEvent(InventoryDragEvent event) {
-        Inventory inventory = event.getView().getTopInventory();
+        final Inventory inventory = event.getView().getTopInventory();
 
         if (inventory.getHolder(false) instanceof CrateAdminMenu || inventory.getHolder(false) instanceof CrateMainMenu || inventory.getHolder(false) instanceof CratePreviewMenu || inventory.getHolder(false) instanceof CratePrizeMenu) {
             event.setCancelled(true);

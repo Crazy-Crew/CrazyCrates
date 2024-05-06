@@ -25,7 +25,7 @@ public class CMIHologramsSupport extends HologramManager {
     public void createHologram(Location location, Crate crate) {
         if (crate.getCrateType() == CrateType.menu) return;
 
-        CrateHologram crateHologram = crate.getHologram();
+        final CrateHologram crateHologram = crate.getHologram();
 
         if (!crateHologram.isEnabled()) {
             removeHologram(location);
@@ -58,12 +58,12 @@ public class CMIHologramsSupport extends HologramManager {
             return;
         }*/
 
-        CMIHologram hologram = new CMIHologram(name(), new CMILocation(location.clone().add(getVector(crate))));
+        final CMIHologram hologram = new CMIHologram(name(), new CMILocation(location.clone().add(getVector(crate))));
 
         hologram.setNewDisplayMethod(true);
         hologram.setBillboard(CMIBillboard.CENTER);
 
-        String color = crateHologram.getBackgroundColor();
+        final String color = crateHologram.getBackgroundColor();
 
         if (color.equalsIgnoreCase("transparent")) {
             hologram.setBackgroundAlpha(0);
@@ -83,7 +83,7 @@ public class CMIHologramsSupport extends HologramManager {
 
     @Override
     public void removeHologram(Location location) {
-        CMIHologram hologram = this.holograms.remove(MiscUtils.location(location));
+        final CMIHologram hologram = this.holograms.remove(MiscUtils.location(location));
 
         if (hologram != null) {
             hologram.remove();

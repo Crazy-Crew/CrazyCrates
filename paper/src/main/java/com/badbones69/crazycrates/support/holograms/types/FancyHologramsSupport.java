@@ -37,16 +37,16 @@ public class FancyHologramsSupport extends HologramManager {
             return;
         }
 
-        DisplayHologramData displayData = DisplayHologramData.getDefault(location.clone().add(getVector(crate)))
+        final DisplayHologramData displayData = DisplayHologramData.getDefault(location.clone().add(getVector(crate)))
                 .setBillboard(Display.Billboard.CENTER)
                 .setVisibilityDistance(crateHologram.getRange());
 
-        String uuid = name();
+        final String uuid = name();
 
-        TextHologramData textData = TextHologramData.getDefault(uuid);
+        final TextHologramData textData = TextHologramData.getDefault(uuid);
         textData.setBackground(TextColor.fromCSSHexString(crateHologram.getBackgroundColor()));
 
-        String color = crateHologram.getBackgroundColor();
+        final String color = crateHologram.getBackgroundColor();
 
         if (color.equalsIgnoreCase("transparent")) {
             textData.setBackground(Hologram.TRANSPARENT);
@@ -56,14 +56,14 @@ public class FancyHologramsSupport extends HologramManager {
 
         textData.setText(crateHologram.getMessages());
 
-        HologramData hologramData = new HologramData(uuid, displayData, HologramType.TEXT, textData);
+        final HologramData hologramData = new HologramData(uuid, displayData, HologramType.TEXT, textData);
 
-        Hologram hologram = this.manager.create(hologramData);
+        final Hologram hologram = this.manager.create(hologramData);
 
         this.manager.addHologram(hologram);
         this.manager.saveHolograms();
 
-        Server server = this.plugin.getServer();
+        final Server server = this.plugin.getServer();
 
         new FoliaRunnable(server.getAsyncScheduler(), null) {
             @Override
@@ -77,7 +77,7 @@ public class FancyHologramsSupport extends HologramManager {
 
     @Override
     public void removeHologram(Location location) {
-        Hologram hologram = this.holograms.remove(MiscUtils.location(location));
+        final Hologram hologram = this.holograms.remove(MiscUtils.location(location));
 
         if (hologram != null) {
             nuke(hologram, false);
@@ -96,7 +96,7 @@ public class FancyHologramsSupport extends HologramManager {
         }
 
         this.manager.getHolograms().forEach(hologram -> {
-            String name = hologram.getData().getName();
+            final String name = hologram.getData().getName();
 
             if (name.startsWith(this.plugin.getName().toLowerCase() + "-")) {
                 nuke(hologram, isShutdown);

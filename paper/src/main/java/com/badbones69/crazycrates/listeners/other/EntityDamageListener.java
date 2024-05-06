@@ -14,7 +14,7 @@ public class EntityDamageListener implements Listener {
     public void onFireworkDamage(EntityDamageEvent event) {
         final Entity directEntity = event.getDamageSource().getDirectEntity();
 
-        if (directEntity instanceof Firework firework) {
+        if (directEntity instanceof final Firework firework) {
             final PersistentDataContainer container = firework.getPersistentDataContainer();
 
             if (container.has(PersistentKeys.no_firework_damage.getNamespacedKey())) {

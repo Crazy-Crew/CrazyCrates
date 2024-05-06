@@ -29,8 +29,8 @@ public class CrateOpenListener implements Listener {
 
     @EventHandler
     public void onCrateOpen(CrateOpenEvent event) {
-        Player player = event.getPlayer();
-        Crate crate = event.getCrate();
+        final Player player = event.getPlayer();
+        final Crate crate = event.getCrate();
 
         if (crate.getCrateType() != CrateType.menu) {
             if (!crate.canWinPrizes(player)) {
@@ -60,23 +60,23 @@ public class CrateOpenListener implements Listener {
 
         if (crate.getCrateType() != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), crate.getName());
 
-        FileConfiguration configuration = event.getConfiguration();
+        final FileConfiguration configuration = event.getConfiguration();
 
-        String broadcastMessage = configuration.getString("Crate.BroadCast", "");
-        boolean broadcastToggle = configuration.contains("Crate.OpeningBroadCast") && configuration.getBoolean("Crate.OpeningBroadCast");
+        final String broadcastMessage = configuration.getString("Crate.BroadCast", "");
+        final boolean broadcastToggle = configuration.contains("Crate.OpeningBroadCast") && configuration.getBoolean("Crate.OpeningBroadCast");
 
         if (broadcastToggle && crate.getCrateType() != CrateType.cosmic) {
             if (!broadcastMessage.isBlank()) {
-                String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
+                final String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
                 this.plugin.getServer().broadcast(MiscUtil.parse(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
             }
         }
 
-        boolean commandToggle = configuration.contains("Crate.opening-command") && configuration.getBoolean("Crate.opening-command.toggle");
+        final boolean commandToggle = configuration.contains("Crate.opening-command") && configuration.getBoolean("Crate.opening-command.toggle");
 
         if (commandToggle) {
-            List<String> commands = configuration.getStringList("Crate.opening-command.commands");
+            final List<String> commands = configuration.getStringList("Crate.opening-command.commands");
 
             if (!commands.isEmpty()) {
                 commands.forEach(line -> {

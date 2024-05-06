@@ -19,7 +19,7 @@ public class DecentHologramsSupport extends HologramManager {
     public void createHologram(Location location, Crate crate) {
         if (crate.getCrateType() == CrateType.menu) return;
 
-        CrateHologram crateHologram = crate.getHologram();
+        final CrateHologram crateHologram = crate.getHologram();
 
         if (!crateHologram.isEnabled()) {
             removeHologram(location);
@@ -27,7 +27,7 @@ public class DecentHologramsSupport extends HologramManager {
             return;
         }
 
-        Hologram hologram = DHAPI.createHologram(name(), location.clone().add(getVector(crate)));
+        final Hologram hologram = DHAPI.createHologram(name(), location.clone().add(getVector(crate)));
 
         DHAPI.addHologramPage(hologram, lines(crateHologram));
 
@@ -40,7 +40,7 @@ public class DecentHologramsSupport extends HologramManager {
 
     @Override
     public void removeHologram(Location location) {
-        Hologram hologram = this.holograms.remove(MiscUtils.location(location));
+        final Hologram hologram = this.holograms.remove(MiscUtils.location(location));
 
         if (hologram != null) {
             hologram.destroy();

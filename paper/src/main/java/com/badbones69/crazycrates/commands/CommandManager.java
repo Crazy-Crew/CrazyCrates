@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.commands;
 
+import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandAddItem;
 import com.badbones69.crazycrates.commands.relations.ArgumentRelations;
@@ -56,23 +57,31 @@ public class CommandManager {
         commandManager.registerSuggestion(SuggestionKey.of("locations"), (sender, context) -> crateManager.getCrateLocations().stream().map(CrateLocation::getID).toList());
 
         commandManager.registerSuggestion(SuggestionKey.of("prizes"), (sender, context) -> {
-            final List<String> numbers = new ArrayList<>();
+            final List<String> prizes = new ArrayList<>();
 
-            crateManager.getCrateFromName(context.getFirst()).getPrizes().forEach(prize -> numbers.add(prize.getSectionName()));
+            Crate crate = crateManager.getCrateFromName(context.getFirst());
 
-            return numbers;
+            if (crate != null) {
+                crate.getPrizes().forEach(prize -> prizes.add(prize.getSectionName()));
+            }
+
+            return prizes;
         });
 
         commandManager.registerSuggestion(SuggestionKey.of("tiers"), (sender, context) -> {
-            List<String> numbers = new ArrayList<>();
+            final List<String> tiers = new ArrayList<>();
 
-            crateManager.getCrateFromName(context.getFirst()).getTiers().forEach(tier -> numbers.add(tier.getName()));
+            Crate crate = crateManager.getCrateFromName(context.getFirst());
 
-            return numbers;
+            if (crate != null) {
+                crate.getTiers().forEach(tier -> tiers.add(tier.getName()));
+            }
+
+            return tiers;
         });
 
         commandManager.registerSuggestion(SuggestionKey.of("numbers"), (sender, context) -> {
-            List<String> numbers = new ArrayList<>();
+            final List<String> numbers = new ArrayList<>();
 
             for (int i = 1; i <= 100; i++) numbers.add(String.valueOf(i));
 

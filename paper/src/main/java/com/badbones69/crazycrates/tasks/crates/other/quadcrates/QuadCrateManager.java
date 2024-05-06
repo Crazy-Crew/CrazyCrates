@@ -170,7 +170,6 @@ public class QuadCrateManager {
 
                         this.crateManager.removePlayerFromOpeningList(this.player);
 
-
                         crateSessions.remove(this.instance);
 
                         return;

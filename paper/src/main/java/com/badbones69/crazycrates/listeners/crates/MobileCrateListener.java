@@ -32,23 +32,23 @@ public class MobileCrateListener implements Listener {
 
     @EventHandler
     public void onCrateUse(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
         if (event.getHand() == EquipmentSlot.OFF_HAND) return;
 
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
-        ItemStack item = player.getInventory().getItemInMainHand();
+        final ItemStack item = player.getInventory().getItemInMainHand();
 
         if (item.getType() == Material.AIR) return;
 
         if (!item.hasItemMeta()) return;
 
-        ItemMeta itemMeta = item.getItemMeta();
+        final ItemMeta itemMeta = item.getItemMeta();
 
-        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+        final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
-        Crate crate = this.crateManager.getCrateFromName(container.getOrDefault(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING, ""));
+        final Crate crate = this.crateManager.getCrateFromName(container.getOrDefault(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING, ""));
 
         if (crate == null) return;
 
@@ -62,7 +62,7 @@ public class MobileCrateListener implements Listener {
 
         ItemUtils.removeItem(item, player);
 
-        Prize prize = crate.pickPrize(player);
+        final Prize prize = crate.pickPrize(player);
 
         PrizeManager.givePrize(player, prize, crate);
 

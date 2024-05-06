@@ -39,8 +39,8 @@ public abstract class HologramManager {
     protected @Nullable final String color(@NotNull final String message) {
         if (message.isEmpty()) return null;
 
-        Matcher matcher = Pattern.compile("#[a-fA-F\\d]{6}").matcher(message);
-        StringBuilder buffer = new StringBuilder();
+        final Matcher matcher = Pattern.compile("#[a-fA-F\\d]{6}").matcher(message);
+        final StringBuilder buffer = new StringBuilder();
 
         while (matcher.find()) {
             matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of(matcher.group()).toString());
@@ -52,7 +52,7 @@ public abstract class HologramManager {
     protected @NotNull final List<String> lines(@NotNull final CrateHologram crateHologram) {
         if (crateHologram.getMessages().isEmpty()) return Collections.emptyList();
 
-        List<String> lines = new ArrayList<>();
+        final List<String> lines = new ArrayList<>();
 
         crateHologram.getMessages().forEach(line -> lines.add(color(line)));
 

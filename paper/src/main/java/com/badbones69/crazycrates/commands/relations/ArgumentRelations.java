@@ -12,6 +12,8 @@ import java.util.Optional;
 public class ArgumentRelations extends MessageManager {
 
     private String getContext(String command, String order) {
+        if (command.isEmpty() || order.isEmpty()) return "";
+
         String usage = null;
 
         switch (command) {
