@@ -14,6 +14,9 @@ public class CratesProvider {
 
     private static IServer instance;
 
+    /**
+     * @return the server object instance
+     */
     public static IServer get() {
         if (instance == null) {
             throw new IllegalStateException("CrazyCrates API is not loaded.");
