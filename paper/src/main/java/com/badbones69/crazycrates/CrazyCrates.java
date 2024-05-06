@@ -87,7 +87,6 @@ public class CrazyCrates extends JavaPlugin {
         List.of(
                 // Menu listeners.
                 new CratePreviewMenu.CratePreviewListener(),
-                new CrateAdminMenu.CrateAdminListener(),
                 new CrateMainMenu.CrateMenuListener(),
                 new CrateTierMenu.CrateTierListener(),
 

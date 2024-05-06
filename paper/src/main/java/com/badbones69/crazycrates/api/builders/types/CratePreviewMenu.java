@@ -103,6 +103,11 @@ public class CratePreviewMenu extends InventoryBuilder {
         }
     }
 
+    @Override
+    public void run(InventoryClickEvent event) {
+
+    }
+
     private @NotNull List<ItemStack> getPageItems(int page) {
         final Player player = getPlayer();
         final Crate crate = getCrate();
@@ -180,7 +185,7 @@ public class CratePreviewMenu extends InventoryBuilder {
                     this.inventoryManager.removeViewer(player);
                     this.inventoryManager.closeCratePreview(player);
 
-                    final CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_size), this.config.getProperty(ConfigKeys.inventory_name));
+                    final CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_size));
 
                     player.openInventory(crateMainMenu.build().getInventory());
                 }

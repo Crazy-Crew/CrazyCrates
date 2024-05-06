@@ -142,6 +142,11 @@ public class CrateMainMenu extends InventoryBuilder {
         return this;
     }
 
+    @Override
+    public void run(InventoryClickEvent event) {
+
+    }
+
     private @NotNull String getCrates(@NotNull String option) {
         if (option.isEmpty()) return "";
 

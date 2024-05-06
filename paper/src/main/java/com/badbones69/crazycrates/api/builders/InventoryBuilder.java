@@ -16,6 +16,9 @@ import org.bukkit.Server;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.craftbukkit.inventory.CraftContainer;
 import org.bukkit.craftbukkit.util.CraftChatMessage;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
@@ -28,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import static java.util.regex.Matcher.quoteReplacement;
 
-public abstract class InventoryBuilder implements InventoryHolder {
+public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
     protected @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
@@ -36,8 +39,8 @@ public abstract class InventoryBuilder implements InventoryHolder {
 
     protected @NotNull final Server server = this.plugin.getServer();
 
-    private final Inventory inventory;
-    private final Player player;
+    private Inventory inventory;
+    private Player player;
     private String title;
     private Crate crate;
     private int size;
@@ -92,6 +95,8 @@ public abstract class InventoryBuilder implements InventoryHolder {
         this.inventory = this.server.createInventory(this, this.size, MiscUtil.parse(inventoryTitle));
     }
 
+    public InventoryBuilder() {}
+
     public boolean overrideMenu() {
         SettingsManager config = ConfigManager.getConfig();
 
@@ -117,6 +122,13 @@ public abstract class InventoryBuilder implements InventoryHolder {
     }
 
     public abstract InventoryBuilder build();
+
+    public abstract void run(InventoryClickEvent event);
+
+    @EventHandler
+    public void onPlayerClick(InventoryClickEvent event) {
+        run(event);
+    }
 
     public void size(final int size) {
         this.size = size;
