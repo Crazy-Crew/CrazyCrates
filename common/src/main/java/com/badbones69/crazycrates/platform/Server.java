@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.platform;
 
-import com.badbones69.crazycrates.platform.config.api.ConfigOptions;
+import com.badbones69.crazycrates.api.Settings;
 import com.ryderbelserion.vital.common.AbstractPlugin;
 import com.ryderbelserion.vital.files.FileManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -8,7 +8,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.users.UserManager;
-import us.crazycrew.crazycrates.platform.IConfigOptions;
+import us.crazycrew.crazycrates.platform.ISettings;
 import us.crazycrew.crazycrates.platform.IServer;
 import com.badbones69.crazycrates.platform.config.ConfigManager;
 import java.io.File;
@@ -21,7 +21,7 @@ public class Server extends AbstractPlugin implements IServer {
     private final JavaPlugin plugin;
     private final File crateFolder;
 
-    private ConfigOptions configOptions;
+    private Settings settings;
     private UserManager userManager;
 
     @ApiStatus.Internal
@@ -38,7 +38,7 @@ public class Server extends AbstractPlugin implements IServer {
     public void enable() {
         ConfigManager.load(this.plugin.getDataFolder());
 
-        this.configOptions = new ConfigOptions();
+        this.settings = new Settings();
 
         this.fileManager.addDefaultFile("crates", "CrateExample.yml")
                 .addDefaultFile("crates", "QuadCrateExample.yml")
@@ -108,7 +108,7 @@ public class Server extends AbstractPlugin implements IServer {
     }
 
     @Override
-    public @NotNull IConfigOptions getConfigOptions() {
-        return this.configOptions;
+    public @NotNull ISettings getSettings() {
+        return this.settings;
     }
 }

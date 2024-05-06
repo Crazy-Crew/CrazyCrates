@@ -41,6 +41,6 @@ public interface IServer {
     /**
      * @return available config options
      */
-    @NotNull IConfigOptions getConfigOptions();
+    @NotNull ISettings getSettings();
 
 }

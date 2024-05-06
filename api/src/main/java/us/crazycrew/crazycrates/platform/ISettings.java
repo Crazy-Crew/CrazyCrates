@@ -8,7 +8,7 @@ import java.util.List;
  * @author Ryder Belserion
  * @version 0.5
  */
-public interface IConfigOptions {
+public interface ISettings {
 
     /**
      * Decides whether a physical crate accepts virtual keys.
