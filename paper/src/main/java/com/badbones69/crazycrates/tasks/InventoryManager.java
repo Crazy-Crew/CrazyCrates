@@ -26,44 +26,44 @@ public class InventoryManager {
     private ItemBuilder backButton;
 
     public void loadButtons() {
-        this.menuButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.menu_button_item), false)
+        this.menuButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.menu_button_item))
                 .setDisplayName(this.config.getProperty(ConfigKeys.menu_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.menu_button_lore))
                 .setPersistentString(PersistentKeys.main_menu_button.getNamespacedKey(), "none");
 
-        this.nextButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.next_button_item), false)
+        this.nextButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.next_button_item))
                 .setDisplayName(this.config.getProperty(ConfigKeys.next_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.next_button_lore))
                 .setPersistentString(PersistentKeys.next_button.getNamespacedKey(), "none");
 
-        this.backButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.back_button_item), false)
+        this.backButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.back_button_item))
                 .setDisplayName(this.config.getProperty(ConfigKeys.back_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.back_button_lore))
                 .setPersistentString(PersistentKeys.back_button.getNamespacedKey(), "none");
     }
 
-    public final ItemStack getMenuButton(@NotNull final Player player) {
-        return this.menuButton.setPlayer(player).build();
+    public @NotNull final ItemStack getMenuButton(@NotNull final Player player) {
+        return this.menuButton.setPlayer(player).getStack();
     }
 
-    public final ItemStack getNextButton(@Nullable final Player player) {
+    public @NotNull final ItemStack getNextButton(@Nullable final Player player) {
         ItemBuilder button = new ItemBuilder(this.nextButton);
 
         if (player != null) {
-            button.setPlayer(player).addPlaceholder("{page}", (getPage(player) + 1) + "", true);
+            button.setPlayer(player).addLorePlaceholder("{page}", (getPage(player) + 1) + "");
         }
 
-        return button.build();
+        return button.getStack();
     }
 
-    public final ItemStack getBackButton(@Nullable final Player player) {
+    public @NotNull final ItemStack getBackButton(@Nullable final Player player) {
         ItemBuilder button = new ItemBuilder(this.backButton);
 
         if (player != null) {
-            button.setPlayer(player).addPlaceholder("{page}", (getPage(player) - 1) + "", true);
+            button.setPlayer(player).addLorePlaceholder("{page}", (getPage(player) - 1) + "");
         }
 
-        return button.build();
+        return button.getStack();
     }
 
     private final Map<UUID, Crate> crateViewers = new ConcurrentHashMap<>();
@@ -100,7 +100,7 @@ public class InventoryManager {
         player.closeInventory();
     }
 
-    public final Crate getCratePreview(@NotNull final Player player) {
+    public @NotNull final Crate getCratePreview(@NotNull final Player player) {
         return this.crateViewers.get(player.getUniqueId());
     }
 
@@ -156,7 +156,7 @@ public class InventoryManager {
         this.viewers.clear();
     }
 
-    public final List<UUID> getViewers() {
+    public @NotNull final List<UUID> getViewers() {
         return Collections.unmodifiableList(this.viewers);
     }
 }

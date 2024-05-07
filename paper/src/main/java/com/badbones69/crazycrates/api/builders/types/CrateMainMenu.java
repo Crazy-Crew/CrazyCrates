@@ -57,7 +57,7 @@ public class CrateMainMenu extends InventoryBuilder {
             final String name = this.config.getProperty(ConfigKeys.filler_name);
             final List<String> lore = this.config.getProperty(ConfigKeys.filler_lore);
 
-            final ItemStack item = new ItemBuilder().withType(id, false).setDisplayName(name).setDisplayLore(lore).setPlayer(getPlayer()).build();
+            final ItemStack item = new ItemBuilder().withType(id).setDisplayName(name).setDisplayLore(lore).setPlayer(getPlayer()).getStack();
 
             for (int i = 0; i < getSize(); i++) {
                 inventory.setItem(i, item);
@@ -77,7 +77,7 @@ public class CrateMainMenu extends InventoryBuilder {
                         String value = key.replace(option + ":", "").replace(option, "");
 
                         switch (option.toLowerCase()) {
-                            case "item" -> item.withType(value, false);
+                            case "item" -> item.withType(value);
                             case "name" -> item.setDisplayName(getCrates(value).replace("{player}", player.getName()));
 
                             case "lore" -> {
@@ -94,7 +94,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
                             case "unbreakable-item" -> item.setUnbreakable(StringUtil.tryParseBoolean(value).orElse(false));
 
-                            case "hide-item-flags" -> item.setHiddenItemFlags(StringUtil.tryParseBoolean(value).orElse(false));
+                            case "hide-item-flags" -> item.setHidingItemFlags(StringUtil.tryParseBoolean(value).orElse(false));
                         }
                     }
 
@@ -102,7 +102,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
                     slot--;
 
-                    inventory.setItem(slot, item.setPlayer(player).build());
+                    inventory.setItem(slot, item.setPlayer(player).getStack());
                 }
             }
         }
@@ -124,16 +124,16 @@ public class CrateMainMenu extends InventoryBuilder {
                         slot--;
 
                         final ItemBuilder builder = new ItemBuilder()
-                                .withType(section.getString("Item", "chest"), false)
+                                .withType(section.getString("Item", "chest"))
                                 .setDisplayName(section.getString("CrateName", crateName))
-                                .addPlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)), true)
-                                .addPlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, crateName)), true)
-                                .addPlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, crateName)), true)
-                                .addPlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(uuid, crateName)), true)
-                                .addPlaceholder("%player%", getPlayer().getName(), true)
+                                .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)))
+                                .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, crateName)))
+                                .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, crateName)))
+                                .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(uuid, crateName)))
+                                .addLorePlaceholder("%player%", getPlayer().getName())
                                 .setPersistentString(PersistentKeys.crate_key.getNamespacedKey(), crate.getName());
 
-                        inventory.setItem(slot, ItemUtils.getItem(section, builder, player).build());
+                        inventory.setItem(slot, ItemUtils.getItem(section, builder, player).getStack());
                     }
                 }
             }

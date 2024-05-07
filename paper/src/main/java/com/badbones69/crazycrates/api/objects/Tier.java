@@ -4,7 +4,9 @@ import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.ryderbelserion.vital.items.ItemBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class Tier {
@@ -24,7 +26,7 @@ public class Tier {
 
         this.lore = section.getStringList("Lore"); // this returns an empty list if not found anyway.
 
-        this.item = new ItemBuilder().withType(section.getString("Item", "chest"), false).setHiddenItemFlags(section.getBoolean("HideItemFlags", false));
+        this.item = new ItemBuilder().withType(section.getString("Item", "chest")).setHidingItemFlags(section.getBoolean("HideItemFlags", false));
 
         this.chance = section.getInt("Chance");
         this.maxRange = section.getInt("MaxRange", 100);
@@ -77,9 +79,9 @@ public class Tier {
     /**
      * @return the tier item shown in the preview.
      */
-    public @NotNull final ItemBuilder getTierItem(Player target) {
+    public @NotNull final ItemStack getTierItem(final @Nullable Player target) {
         if (target != null) this.item.setPlayer(target);
 
-        return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).setPersistentString(PersistentKeys.preview_tier_button.getNamespacedKey(), this.name).build();
+        return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).setPersistentString(PersistentKeys.preview_tier_button.getNamespacedKey(), this.name).getStack();
     }
 }

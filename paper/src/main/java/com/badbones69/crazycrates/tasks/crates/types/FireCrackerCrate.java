@@ -23,7 +23,7 @@ public class FireCrackerCrate extends CrateBuilder {
 
     private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    public FireCrackerCrate(Crate crate, Player player, int size, Location location) {
+    public FireCrackerCrate(@NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final Location location) {
         super(crate, player, size, location);
     }
 

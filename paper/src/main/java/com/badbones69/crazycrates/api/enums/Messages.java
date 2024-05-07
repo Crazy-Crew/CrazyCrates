@@ -108,19 +108,19 @@ public enum Messages {
         return this.isList;
     }
 
-    public @NotNull final String getString() {
+    public String getString() {
         return this.messages.getProperty(this.property);
     }
 
-    public @NotNull final List<String> getList() {
+    public List<String> getList() {
         return this.messages.getProperty(this.properties);
     }
 
-    public @NotNull final String getMessage() {
+    public String getMessage() {
         return getMessage(null, new HashMap<>());
     }
 
-    public @NotNull final String getMessage(@Nullable final CommandSender sender) {
+    public String getMessage(@Nullable final CommandSender sender) {
         if (sender instanceof Player player) {
             return getMessage(player, new HashMap<>());
         }
@@ -128,15 +128,15 @@ public enum Messages {
         return getMessage(null, new HashMap<>());
     }
 
-    public @NotNull final String getMessage(@NotNull final Map<String, String> placeholders) {
+    public String getMessage(@NotNull final Map<String, String> placeholders) {
         return getMessage(null, placeholders);
     }
 
-    public @NotNull final String getMessage(@NotNull final String placeholder, @NotNull final String replacement) {
+    public String getMessage(@NotNull final String placeholder, @NotNull final String replacement) {
         return getMessage(null, placeholder, replacement);
     }
 
-    public @NotNull final String getMessage(@Nullable final CommandSender sender, @NotNull final String placeholder, @NotNull final String replacement) {
+    public String getMessage(@Nullable final CommandSender sender, @NotNull final String placeholder, @NotNull final String replacement) {
         Map<String, String> placeholders = new HashMap<>() {{
             put(placeholder, replacement);
         }};
@@ -148,7 +148,7 @@ public enum Messages {
         return getMessage(null, placeholders);
     }
 
-    public @NotNull final String getMessage(@Nullable final CommandSender sender, @NotNull final Map<String, String> placeholders) {
+    public String getMessage(@Nullable final CommandSender sender, @NotNull final Map<String, String> placeholders) {
         if (sender instanceof Player player) {
             return getMessage(player, placeholders);
         }
@@ -156,7 +156,7 @@ public enum Messages {
         return getMessage(null, placeholders);
     }
 
-    public @NotNull final String getMessage(@Nullable final Player player, @NotNull final Map<String, String> placeholders) {
+    public String getMessage(@Nullable final Player player, @NotNull final Map<String, String> placeholders) {
         String prefix = this.config.getProperty(ConfigKeys.command_prefix);
 
         String message = parse(placeholders);

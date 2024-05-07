@@ -84,7 +84,7 @@ public class WonderCrate extends CrateBuilder {
                     other.add(this.slot1);
                     other.add(this.slot2);
 
-                    final ItemStack material = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(" ").build();
+                    final ItemStack material = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(" ").getStack();
 
                     setItem(this.slot1, material);
                     setItem(this.slot2, material);

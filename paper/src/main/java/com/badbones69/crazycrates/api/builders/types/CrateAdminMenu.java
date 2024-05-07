@@ -27,9 +27,11 @@ public class CrateAdminMenu extends InventoryBuilder {
         super(player, title, size);
     }
 
+    public CrateAdminMenu() {}
+
     @Override
     public InventoryBuilder build() {
-        Inventory inventory = getInventory();
+        final Inventory inventory = getInventory();
 
         inventory.setItem(49, new ItemBuilder(Material.CHEST)
                 .setDisplayName("<red>What is this menu?")
@@ -39,9 +41,9 @@ public class CrateAdminMenu extends InventoryBuilder {
                 .addDisplayLore("<bold><gray>Shift right click to get 8 virtual keys.")
                 .addDisplayLore("<bold><gray>Left click to get physical keys.")
                 .addDisplayLore("<bold><gray>Shift left click to get 8 physical keys.")
-                .build());
+                .getStack());
 
-        for (Crate crate : this.crateManager.getUsableCrates()) {
+        for (final Crate crate : this.crateManager.getUsableCrates()) {
             if (inventory.firstEmpty() >= 0) inventory.setItem(inventory.firstEmpty(), crate.getKey(1, getPlayer()));
         }
 
@@ -50,15 +52,15 @@ public class CrateAdminMenu extends InventoryBuilder {
 
     @Override
     public void run(InventoryClickEvent event) {
-        Inventory inventory = event.getInventory();
+        final Inventory inventory = event.getInventory();
 
         if (!(inventory.getHolder(false) instanceof CrateAdminMenu holder)) return;
 
         event.setCancelled(true);
 
-        Player player = holder.getPlayer();
+        final Player player = holder.getPlayer();
 
-        InventoryView view = holder.getView();
+        final InventoryView view = holder.getView();
 
         if (event.getClickedInventory() != view.getTopInventory()) return;
 
@@ -69,22 +71,22 @@ public class CrateAdminMenu extends InventoryBuilder {
             return;
         }
 
-        ItemStack item = event.getCurrentItem();
+        final ItemStack item = event.getCurrentItem();
 
         if (item == null || item.getType() == Material.AIR) return;
 
         if (!this.crateManager.isKey(item)) return;
 
-        Crate crate = this.crateManager.getCrateFromKey(item);
+        final Crate crate = this.crateManager.getCrateFromKey(item);
 
         if (crate == null) return;
 
-        String crateName = crate.getName();
-        UUID uuid = player.getUniqueId();
+        final String crateName = crate.getName();
+        final UUID uuid = player.getUniqueId();
 
-        ClickType clickType = event.getClick();
+        final ClickType clickType = event.getClick();
 
-        Map<String, String> placeholders = new ConcurrentHashMap<>();
+        final Map<String, String> placeholders = new ConcurrentHashMap<>();
 
         placeholders.put("{amount}", String.valueOf(1));
         placeholders.put("{key}", crate.getKeyName());
@@ -116,7 +118,7 @@ public class CrateAdminMenu extends InventoryBuilder {
             }
 
             case RIGHT -> {
-                //this.userManager.addKeys(uuid, crateName, KeyType.virtual_key, 1);
+                this.userManager.addKeys(uuid, crateName, KeyType.virtual_key, 1);
 
                 player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 
@@ -126,7 +128,7 @@ public class CrateAdminMenu extends InventoryBuilder {
             }
 
             case SHIFT_RIGHT -> {
-                //this.userManager.addKeys(uuid, crateName, KeyType.virtual_key, 8);
+                this.userManager.addKeys(uuid, crateName, KeyType.virtual_key, 8);
 
                 player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 

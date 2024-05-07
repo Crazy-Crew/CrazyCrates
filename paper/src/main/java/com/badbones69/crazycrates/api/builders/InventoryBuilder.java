@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.enums.Support;
 import com.ryderbelserion.vital.util.MiscUtil;
@@ -34,6 +35,8 @@ import static java.util.regex.Matcher.quoteReplacement;
 public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
     protected @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+
+    protected @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
     protected @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 

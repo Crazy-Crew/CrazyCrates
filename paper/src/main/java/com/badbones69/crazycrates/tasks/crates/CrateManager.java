@@ -103,9 +103,6 @@ public class CrateManager {
             // Grab the new file.
             FileConfiguration file = crate.getFile();
 
-            // If null return
-            if (file == null) return;
-
             // Close previews
             this.plugin.getServer().getOnlinePlayers().forEach(this.inventoryManager::closeCratePreview);
 
@@ -206,7 +203,7 @@ public class CrateManager {
     /**
      * @return a list of crate names.
      */
-    public @NotNull final List<String> getCrateNames() {
+    public List<String> getCrateNames() {
         final List<String> files = new ArrayList<>();
 
         for (File crate : this.plugin.getInstance().getCrateFiles()) {
@@ -623,7 +620,7 @@ public class CrateManager {
     /**
      * @return hashmap of crates in use.
      */
-    public @NotNull final Map<UUID, Location> getCratesInUse() {
+    public Map<UUID, Location> getCratesInUse() {
         return Collections.unmodifiableMap(this.cratesInUse);
     }
 
@@ -946,7 +943,7 @@ public class CrateManager {
     /**
      * @return an unmodifiable list of crate objects.
      */
-    public @NotNull final List<Crate> getUsableCrates() {
+    public List<Crate> getUsableCrates() {
         List<Crate> crateList = new ArrayList<>(this.crates);
 
         crateList.removeIf(crate -> crate.getCrateType() == CrateType.menu);
@@ -957,7 +954,7 @@ public class CrateManager {
     /**
      * @return an unmodifiable list of crate objects.
      */
-    public @NotNull final List<Crate> getCrates() {
+    public List<Crate> getCrates() {
         return Collections.unmodifiableList(this.crates);
     }
 
@@ -1194,7 +1191,7 @@ public class CrateManager {
     /**
      * @return an unmodifiable list of crate locations.
      */
-    public @NotNull final List<CrateLocation> getCrateLocations() {
+    public List<CrateLocation> getCrateLocations() {
         return Collections.unmodifiableList(this.crateLocations);
     }
 
@@ -1210,14 +1207,14 @@ public class CrateManager {
     /**
      * @return an unmodifiable list of broke crates.
      */
-    public @NotNull final List<String> getBrokeCrates() {
+    public List<String> getBrokeCrates() {
         return Collections.unmodifiableList(this.brokeCrates);
     }
 
     /**
      * @return an unmodifiable list of broken crate locations.
      */
-    public @NotNull final List<BrokeLocation> getBrokeLocations() {
+    public List<BrokeLocation> getBrokeLocations() {
         return Collections.unmodifiableList(this.brokeLocations);
     }
 
@@ -1233,7 +1230,7 @@ public class CrateManager {
     /**
      * @return an unmodifiable list of crate schematics.
      */
-    public @NotNull final List<CrateSchematic> getCrateSchematics() {
+    public List<CrateSchematic> getCrateSchematics() {
         return Collections.unmodifiableList(this.crateSchematics);
     }
 
@@ -1245,7 +1242,7 @@ public class CrateManager {
         final boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
-        return new ItemBuilder().withType(id, false).setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setHiddenItemFlags(hideFlags);
+        return new ItemBuilder().withType(id).setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setHidingItemFlags(hideFlags);
     }
 
     // Cleans the data file.

@@ -16,6 +16,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("deprecation")
 public abstract class HologramManager {
 
     protected CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
@@ -28,7 +29,7 @@ public abstract class HologramManager {
 
     public abstract boolean isEmpty();
 
-    protected String name() {
+    protected @NotNull final String name() {
         return this.plugin.getName().toLowerCase() + "-" + UUID.randomUUID();
     }
 

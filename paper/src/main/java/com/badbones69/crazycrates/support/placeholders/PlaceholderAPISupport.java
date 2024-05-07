@@ -77,7 +77,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         return getKeys(target.getUniqueId(), identifier, crateName, value);
     }
 
-    private String getKeys(@NotNull final UUID uuid, @NotNull final String identifier, @NotNull final String crateName, @NotNull final String value) {
+    private @NotNull String getKeys(@NotNull final UUID uuid, @NotNull final String identifier, @NotNull final String crateName, @NotNull final String value) {
         if (crateName.isEmpty() || value.isEmpty()) return "N/A";
 
         if (this.crateManager.getCrateFromName(crateName) == null && identifier.endsWith("opened")) { // %crazycrates_<player>_opened%

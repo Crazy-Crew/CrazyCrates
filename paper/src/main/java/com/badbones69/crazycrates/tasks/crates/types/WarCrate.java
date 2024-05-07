@@ -14,9 +14,9 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class WarCrate extends CrateBuilder {
 
@@ -24,7 +24,7 @@ public class WarCrate extends CrateBuilder {
 
     private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    private final Map<Material, String> colorCodes = new ConcurrentHashMap<>();
+    private final Map<Material, String> colorCodes = new HashMap<>();
 
     public WarCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size);
@@ -111,7 +111,7 @@ public class WarCrate extends CrateBuilder {
 
         final ItemBuilder builder = MiscUtils.getRandomPaneColor();
         builder.setDisplayName("<" + this.colorCodes.get(builder.getType()) + "><bold>???</bold>");
-        final ItemStack item = builder.build();
+        final ItemStack item = builder.getStack();
 
         for (int index = 0; index < 9; index++) {
             setItem(index, item);

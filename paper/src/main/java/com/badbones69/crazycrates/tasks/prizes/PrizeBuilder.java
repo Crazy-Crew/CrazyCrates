@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class PrizeBuilder {
 
-    protected final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    protected @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     public abstract ItemStack getItemStack(@NotNull final Player player);
 

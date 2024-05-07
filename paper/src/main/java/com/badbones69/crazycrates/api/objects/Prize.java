@@ -16,24 +16,23 @@ import java.util.List;
 
 public class Prize {
 
-    private ItemBuilder displayItem = new ItemBuilder();
     private final List<ItemStack> items = new ArrayList<>();
-
-    private List<String> permissions = new ArrayList<>();
+    private final ConfigurationSection section;
+    private final List<ItemBuilder> builders;
     private final List<String> commands;
     private final List<String> messages;
+    private final String sectionName;
+    private final String prizeName;
+
+    private List<String> permissions = new ArrayList<>();
+    private ItemBuilder displayItem = new ItemBuilder();
     private boolean firework = false;
     private String crateName = "";
-    private final String prizeName;
     private int maxRange = 100;
-    private final String sectionName;
     private int chance = 0;
 
     private List<Tier> tiers = new ArrayList<>();
-    private final List<ItemBuilder> builders;
     private Prize alternativePrize;
-
-    private final ConfigurationSection section;
 
     public Prize(@NotNull final ConfigurationSection section, @NotNull final List<Tier> tierPrizes, @NotNull final String crateName, @Nullable final Prize alternativePrize) {
         this.section = section;
@@ -109,15 +108,15 @@ public class Prize {
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
-    public @NotNull final ItemBuilder getDisplayItem() {
-        return this.displayItem.setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.sectionName).build();
+    public @NotNull final ItemStack getDisplayItem() {
+        return this.displayItem.setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
     }
 
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
-    public @NotNull final ItemBuilder getDisplayItem(@NotNull final Player player) {
-        return this.displayItem.setPlayer(player).setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.sectionName).build();
+    public @NotNull final ItemStack getDisplayItem(@NotNull final Player player) {
+        return this.displayItem.setPlayer(player).setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
     }
 
     /**
@@ -224,7 +223,7 @@ public class Prize {
             final String material = this.section.getString("DisplayItem", "red_terracotta");
             final int amount = this.section.getInt("DisplayAmount", 1);
 
-            return ItemUtils.getItem(this.section, builder.withType(material, amount, false).setDisplayName(this.prizeName)).setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.section.getName());
+            return ItemUtils.getItem(this.section, builder.withType(material).setAmount(amount).setDisplayName(this.prizeName)).setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.section.getName());
         } catch (Exception exception) {
             final List<String> list = new ArrayList<>() {{
                add("<red>There was an error with one of your prizes!");

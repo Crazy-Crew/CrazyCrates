@@ -34,7 +34,7 @@ public class CosmicCrate extends CrateBuilder {
         int slot = 1;
 
         for (int index = 0; index < getSize(); index++) {
-            final ItemBuilder stack = manager.getMysteryCrate().setPlayer(player).addPlaceholder("%Slot%", String.valueOf(slot), false).addPlaceholder("%Slot%", String.valueOf(slot), true);
+            final ItemBuilder stack = manager.getMysteryCrate().setPlayer(player).addNamePlaceholder("%Slot%", String.valueOf(slot)).addLorePlaceholder("%Slot%", String.valueOf(slot));
 
             stack.setAmount(slot);
 
@@ -43,9 +43,7 @@ public class CosmicCrate extends CrateBuilder {
             if (tier != null) {
                 stack.setPersistentString(PersistentKeys.crate_tier.getNamespacedKey(), tier.getName());
 
-                this.plugin.getLogger().warning("Debug: " + stack.hasKey(PersistentKeys.crate_tier.getNamespacedKey()));
-
-                setItem(index, stack.build());
+                setItem(index, stack.getStack());
 
                 slot++;
             }

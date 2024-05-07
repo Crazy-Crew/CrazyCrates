@@ -25,7 +25,7 @@ public class QuadCrate extends CrateBuilder {
 
     private final Location location;
 
-    public QuadCrate(Crate crate, Player player, Location location) {
+    public QuadCrate(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location) {
         super(crate, player);
 
         this.location = location;

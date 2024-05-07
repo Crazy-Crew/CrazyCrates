@@ -11,7 +11,6 @@ import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
@@ -93,62 +92,12 @@ public class WheelCrate extends CrateBuilder {
                 if (this.what >= 18) this.what = 0;
 
                 if (this.full < this.timer) {
-                    final ItemStack itemStack = rewards.get(this.slots.get(this.uh));
-
-                    if (itemStack.hasItemMeta()) {
-                        ItemMeta itemMeta = itemStack.getItemMeta();
-
-                        if (itemMeta != null) {
-                            final boolean hasLore = itemMeta.hasLore();
-
-                            final String displayName = itemMeta.getDisplayName();
-
-                            if (hasLore) {
-                                setItem(this.slots.get(this.uh), material, displayName, itemMeta.getLore());
-                            } else {
-                                setItem(this.slots.get(this.uh), material, displayName);
-                            }
-
-                            int otherSlot = this.slots.get(this.what);
-
-                            setItem(this.slots.get(this.what), rewards.get(otherSlot));
-                        }
-                    }
-
-                    playSound("cycle-sound", SoundCategory.MUSIC, "block.note_block.xylophone");
-
-                    this.uh++;
-                    this.what++;
+                    populateMenu();
                 }
 
                 if (this.full >= this.timer) {
                     if (MiscUtils.slowSpin(46, 9).contains(this.slower)) {
-                        final ItemStack itemStack = rewards.get(this.slots.get(this.uh));
-
-                        if (itemStack.hasItemMeta()) {
-                            ItemMeta itemMeta = itemStack.getItemMeta();
-
-                            if (itemMeta != null) {
-                                final boolean hasLore = itemMeta.hasLore();
-
-                                final String displayName = itemMeta.getDisplayName();
-
-                                if (hasLore) {
-                                    setItem(this.slots.get(this.uh), material, displayName, itemMeta.getLore());
-                                } else {
-                                    setItem(this.slots.get(this.uh), material, displayName);
-                                }
-
-                                int otherSlot = this.slots.get(this.what);
-
-                                setItem(this.slots.get(this.what), rewards.get(otherSlot));
-                            }
-                        }
-
-                        playSound("cycle-sound", SoundCategory.MUSIC, "block.note_block.xylophone");
-
-                        this.uh++;
-                        this.what++;
+                        populateMenu();
                     }
 
                     if (this.full == this.timer + 47) {
@@ -199,6 +148,21 @@ public class WheelCrate extends CrateBuilder {
 
                     this.open = 0;
                 }
+            }
+
+            private void populateMenu() {
+                @NotNull ItemStack itemStack = rewards.get(this.slots.get(this.uh));
+
+                setItem(this.slots.get(this.uh), itemStack.withType(material));
+
+                int otherSlot = this.slots.get(this.what);
+
+                setItem(this.slots.get(this.what), rewards.get(otherSlot));
+
+                playSound("cycle-sound", SoundCategory.MUSIC, "block.note_block.xylophone");
+
+                this.uh++;
+                this.what++;
             }
         }.runAtFixedRate(this.plugin, 1, 1));
     }

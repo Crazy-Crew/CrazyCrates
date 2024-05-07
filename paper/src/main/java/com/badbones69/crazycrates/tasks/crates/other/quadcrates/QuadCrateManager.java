@@ -162,7 +162,7 @@ public class QuadCrateManager {
 
         final List<Entity> shovePlayers = new ArrayList<>();
 
-        for (Entity entity : player.getNearbyEntities(3, 3, 3)) {
+        for (final Entity entity : player.getNearbyEntities(3, 3, 3)) {
             if (entity instanceof Player) {
                 for (QuadCrateManager ongoingCrate : crateSessions) {
                     if (entity.getUniqueId() == ongoingCrate.player.getUniqueId()) {
@@ -204,7 +204,7 @@ public class QuadCrateManager {
         this.crateLocations.forEach(loc -> this.cratesOpened.put(loc, false));
 
         // This holds the quad crate's spawned chests.
-        for (Location loc : this.crateLocations) {
+        for (final Location loc : this.crateLocations) {
             if (this.crateLocations.contains(loc)) this.quadCrateChests.put(loc.clone(), loc.getBlock().getState());
         }
 

@@ -249,8 +249,8 @@ public class CosmicCrateListener implements Listener {
 
                 // Get item builder.
                 ItemBuilder builder = cosmicCrateManager.getPickedCrate().setPlayer(player)
-                        .addPlaceholder("%Slot%", String.valueOf(pickedSlot), false)
-                        .addPlaceholder("%Slot%", String.valueOf(pickedSlot), true);
+                        .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
+                        .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
 
                 // Set the amount.
                 builder.setAmount(pickedSlot);
@@ -259,7 +259,7 @@ public class CosmicCrateListener implements Listener {
                 cosmicCrateManager.setTier(builder, tierName);
 
                 // Overwrite the current item.
-                event.setCurrentItem(builder.build());
+                event.setCurrentItem(builder.getStack());
 
                 // Add the picked prize.
                 cosmicCrateManager.addPickedPrize(player, slot, tier);
@@ -276,8 +276,8 @@ public class CosmicCrateListener implements Listener {
 
             // Get item builder.
             ItemBuilder builder = cosmicCrateManager.getMysteryCrate().setPlayer(player)
-                    .addPlaceholder("%Slot%", String.valueOf(pickedSlot), false)
-                    .addPlaceholder("%Slot%", String.valueOf(pickedSlot), true);
+                    .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
+                    .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
 
             // Set the amount.
             builder.setAmount(pickedSlot);
@@ -286,7 +286,7 @@ public class CosmicCrateListener implements Listener {
             cosmicCrateManager.setTier(builder, tierName);
 
             // Overwrite the current item.
-            event.setCurrentItem(builder.build());
+            event.setCurrentItem(builder.getStack());
 
             // Remove slot if we click it.
             cosmicCrateManager.removePickedPrize(player, slot);

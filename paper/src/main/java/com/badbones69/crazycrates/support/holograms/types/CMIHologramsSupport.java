@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import net.Zrips.CMILib.Container.CMILocation;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -22,7 +23,7 @@ public class CMIHologramsSupport extends HologramManager {
     private final Map<String, CMIHologram> holograms = new ConcurrentHashMap<>();
 
     @Override
-    public void createHologram(Location location, Crate crate) {
+    public void createHologram(@NotNull final Location location, @NotNull final Crate crate) {
         if (crate.getCrateType() == CrateType.menu) return;
 
         final CrateHologram crateHologram = crate.getHologram();
@@ -82,7 +83,7 @@ public class CMIHologramsSupport extends HologramManager {
     }
 
     @Override
-    public void removeHologram(Location location) {
+    public void removeHologram(@NotNull final Location location) {
         final CMIHologram hologram = this.holograms.remove(MiscUtils.location(location));
 
         if (hologram != null) {
@@ -91,7 +92,7 @@ public class CMIHologramsSupport extends HologramManager {
     }
 
     @Override
-    public void removeAllHolograms(boolean isShutdown) {
+    public void removeAllHolograms(final boolean isShutdown) {
         if (!isEmpty()) {
             this.holograms.forEach((key, value) -> value.remove());
             this.holograms.clear();
@@ -99,7 +100,7 @@ public class CMIHologramsSupport extends HologramManager {
     }
 
     @Override
-    public boolean isEmpty() {
+    public final boolean isEmpty() {
         return this.holograms.isEmpty();
     }
 }

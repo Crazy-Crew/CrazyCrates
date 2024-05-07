@@ -73,7 +73,7 @@ public class Crate {
     private List<Tier> tiers;
     private CrateHologram hologram;
 
-    private List<ItemBuilder> preview;
+    private List<ItemStack> preview;
 
     private int maxMassOpen;
     private int requiredKeys;
@@ -139,23 +139,22 @@ public class Crate {
 
         this.maxSlots = this.previewChestLines * 9;
 
-        for (int amount = this.preview.size(); amount > this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0); amount -= this.maxSlots - (this.borderToggle ? 18 :
-                this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0), this.maxPage++) ;
+        for (int amount = this.preview.size(); amount > this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0); amount -= this.maxSlots - (this.borderToggle ? 18 : 0), this.maxPage++) ;
 
         this.crateInventoryName = file.getString("Crate.CrateName", " ");
 
-        String borderName = file.getString("Crate.Preview.Glass.Name", " ");
+        @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
         this.borderItem = new ItemBuilder()
-                .withType(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane"), false)
-                .setHiddenItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
+                .withType(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane"))
+                .setHidingItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
                 .setDisplayName(borderName);
 
-        String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
+        @NotNull final String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
 
         this.previewTierBorderItem = new ItemBuilder()
-                .withType(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane"), false)
-                .setHiddenItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
+                .withType(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane"))
+                .setHidingItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
                 .setDisplayName(previewTierBorderName);
 
         setTierPreviewRows(file.getInt("Crate.tier-preview.rows", 5));
@@ -174,17 +173,17 @@ public class Crate {
         }
     }
 
+    public Crate(@NotNull final String name) {
+        this.crateType = CrateType.menu;
+        this.name = name;
+    }
+
     public Color getColor() {
         return this.color;
     }
 
     public Particle getParticle() {
         return this.particle;
-    }
-
-    public Crate(String name) {
-        this.crateType = CrateType.menu;
-        this.name = name;
     }
 
     /**
@@ -197,14 +196,14 @@ public class Crate {
     /**
      * @return true or false if the border for the preview tier is toggled.
      */
-    public boolean isPreviewTierBorderToggle() {
+    public final boolean isPreviewTierBorderToggle() {
         return this.previewTierBorderToggle;
     }
 
     /**
      * @return true or false if the border for the tier is toggled.
      */
-    public boolean isPreviewTierToggle() {
+    public final boolean isPreviewTierToggle() {
         return this.previewTierToggle;
     }
 
@@ -227,7 +226,7 @@ public class Crate {
      *
      * @param amount the amount of lines the preview has.
      */
-    public void setPreviewChestLines(int amount) {
+    public void setPreviewChestLines(final int amount) {
         int finalAmount;
 
         if (amount < 3 && this.borderToggle) {
@@ -242,7 +241,7 @@ public class Crate {
      *
      * @param amount the amount of lines the preview has.
      */
-    public void setTierPreviewRows(int amount) {
+    public void setTierPreviewRows(final int amount) {
         int finalAmount;
 
         if (amount < 3 && this.borderToggle) {
@@ -257,7 +256,7 @@ public class Crate {
      *
      * @return the amount of lines it is set to show.
      */
-    public int getPreviewChestLines() {
+    public final int getPreviewChestLines() {
         return this.previewChestLines;
     }
     
@@ -266,7 +265,7 @@ public class Crate {
      *
      * @return the max number of slots in the preview.
      */
-    public int getMaxSlots() {
+    public final int getMaxSlots() {
         return this.maxSlots;
     }
     
@@ -276,7 +275,7 @@ public class Crate {
      * @param player the player you are checking.
      * @return true if they can win at least 1 prize and false if they can't win any.
      */
-    public boolean canWinPrizes(Player player) {
+    public final boolean canWinPrizes(@NotNull final Player player) {
         return pickPrize(player) != null;
     }
 
@@ -294,9 +293,9 @@ public class Crate {
      * @param player the player that will be winning the prize.
      * @return the winning prize.
      */
-    public Prize pickPrize(Player player) {
-        List<Prize> prizes = new ArrayList<>();
-        List<Prize> usablePrizes = new ArrayList<>();
+    public Prize pickPrize(@NotNull final Player player) {
+        final List<Prize> prizes = new ArrayList<>();
+        final List<Prize> usablePrizes = new ArrayList<>();
 
         // ================= Blacklist Check ================= //
         if (player.isOp()) {
@@ -331,7 +330,7 @@ public class Crate {
      * @param prizes The prizes to check
      * @param usablePrizes The usable prizes to check
      */
-    private void chanceCheck(List<Prize> prizes, List<Prize> usablePrizes) {
+    private void chanceCheck(@NotNull final List<Prize> prizes, @NotNull final List<Prize> usablePrizes) {
         for (int stop = 0; prizes.isEmpty() && stop <= 2000; stop++) {
             for (Prize prize : usablePrizes) {
                 int max = prize.getMaxRange();
@@ -352,7 +351,7 @@ public class Crate {
      *
      * @param prizes list of prizes
      */
-    public void setPrize(List<Prize> prizes) {
+    public void setPrize(@NotNull final List<Prize> prizes) {
         this.prizes = prizes.stream().filter(prize -> prize.getChance() != -1).toList();;
     }
 
@@ -369,7 +368,7 @@ public class Crate {
      *
      * @param itemStacks list of items
      */
-    public void setPreviewItems(List<ItemBuilder> itemStacks) {
+    public void setPreviewItems(@NotNull final List<ItemStack> itemStacks) {
         this.preview = itemStacks;
     }
 
@@ -380,17 +379,17 @@ public class Crate {
      * @param tier The tier you wish the prize to be from.
      * @return the winning prize based on the crate's tiers.
      */
-    public Prize pickPrize(Player player, Tier tier) {
-        List<Prize> prizes = new ArrayList<>();
-        List<Prize> usablePrizes = new ArrayList<>();
+    public Prize pickPrize(@NotNull final Player player, @NotNull final Tier tier) {
+        final List<Prize> prizes = new ArrayList<>();
+        final List<Prize> usablePrizes = new ArrayList<>();
 
         // ================= Blacklist Check ================= //
         if (player.isOp()) {
-            for (Prize prize : getPrizes()) {
+            for (final Prize prize : getPrizes()) {
                 if (prize.getTiers().contains(tier)) usablePrizes.add(prize);
             }
         } else {
-            for (Prize prize : getPrizes()) {
+            for (final Prize prize : getPrizes()) {
                 if (prize.hasPermission(player)) {
                     if (prize.hasAlternativePrize()) continue;
                 }
@@ -412,7 +411,7 @@ public class Crate {
      * @param location the location the firework will spawn at.
      * @return the winning prize.
      */
-    public Prize pickPrize(Player player, Location location) {
+    public Prize pickPrize(@NotNull final Player player, @NotNull final Location location) {
         Prize prize = pickPrize(player);
 
         if (prize.useFireworks()) MiscUtils.spawnFirework(location, null);
@@ -423,14 +422,14 @@ public class Crate {
     /**
      * @return name the name of the crate.
      */
-    public String getName() {
+    public @NotNull final String getName() {
         return this.name;
     }
     
     /**
      * @return the name of the crate's preview page.
      */
-    public String getPreviewName() {
+    public @NotNull final String getPreviewName() {
         return this.previewName;
     }
     
@@ -439,7 +438,7 @@ public class Crate {
      *
      * @return true if preview is on and false if not.
      */
-    public boolean isPreviewEnabled() {
+    public final boolean isPreviewEnabled() {
         return this.previewToggle;
     }
     
@@ -448,7 +447,7 @@ public class Crate {
      *
      * @return true if it does and false if not.
      */
-    public boolean isBorderToggle() {
+    public final boolean isBorderToggle() {
         return this.borderToggle;
     }
     
@@ -457,7 +456,7 @@ public class Crate {
      *
      * @return the ItemBuilder for the border item.
      */
-    public ItemBuilder getBorderItem() {
+    public @NotNull final ItemBuilder getBorderItem() {
         return this.borderItem;
     }
     
@@ -466,7 +465,7 @@ public class Crate {
      *
      * @return the name of the inventory for GUI based crate types.
      */
-    public String getCrateInventoryName() {
+    public @NotNull final String getCrateInventoryName() {
         return this.crateInventoryName;
     }
     
@@ -475,7 +474,7 @@ public class Crate {
      *
      * @return the preview as an Inventory object.
      */
-    public Inventory getPreview(Player player) {
+    public @NotNull final Inventory getPreview(Player player) {
         return getPreview(player, this.inventoryManager.getPage(player), false, null);
     }
     
@@ -484,7 +483,7 @@ public class Crate {
      *
      * @return the preview as an Inventory object.
      */
-    public Inventory getPreview(Player player, int page, boolean isTier, @Nullable Tier tier) {
+    public @NotNull final Inventory getPreview(Player player, int page, boolean isTier, @Nullable Tier tier) {
         CratePreviewMenu cratePreviewMenu = new CratePreviewMenu(player, this.previewName, !this.borderToggle && (this.inventoryManager.inCratePreview(player) || this.maxPage > 1) && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, page, this, isTier, tier);
 
         return cratePreviewMenu.build().getInventory();
@@ -495,7 +494,7 @@ public class Crate {
      *
      * @return the tier preview as an Inventory object.
      */
-    public Inventory getTierPreview(Player player) {
+    public @NotNull final Inventory getTierPreview(Player player) {
         CrateTierMenu crateTierMenu = new CrateTierMenu(player, this.previewName, !this.previewTierBorderToggle && (this.inventoryManager.inCratePreview(player)) && this.previewTierMaxSlots == 9 ? this.previewTierMaxSlots + 9 : this.previewTierMaxSlots, this, this.tiers);
 
         return crateTierMenu.build().getInventory();
@@ -504,63 +503,61 @@ public class Crate {
     /**
      * @return the crate type of the crate.
      */
-    public CrateType getCrateType() {
+    public final CrateType getCrateType() {
         return this.crateType;
     }
     
     /**
      * @return the key as an item stack.
      */
-    public ItemBuilder getKey() {
-        return this.keyBuilder.build();
+    public @NotNull final ItemStack getKey() {
+        return this.keyBuilder.getStack();
     }
 
     /**
      * @param player The player getting the key.
-     *
      * @return the key as an item stack.
      */
-    public ItemBuilder getKey(Player player) {
-        return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).build();
+    public @NotNull final ItemStack getKey(Player player) {
+        return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).getStack();
     }
 
     /**
      * @param amount The amount of keys you want.
      * @return the key as an item stack.
      */
-    public ItemBuilder getKey(int amount) {
+    public @NotNull final ItemStack getKey(int amount) {
         ItemBuilder key = this.keyBuilder;
 
         key.setAmount(amount);
 
-        return key.build();
+        return key.getStack();
     }
     
     /**
      * @param amount The amount of keys you want.
      * @param player The player getting the key.
-     *
      * @return the key as an item stack.
      */
-    public ItemBuilder getKey(int amount, Player player) {
+    public @NotNull final ItemStack getKey(int amount, Player player) {
         ItemBuilder key = this.keyBuilder;
 
         key.setAmount(amount);
 
-        return this.userManager.addPlaceholders(key.setPlayer(player), this).build();
+        return this.userManager.addPlaceholders(key.setPlayer(player), this).getStack();
     }
 
     /**
      * @return the crates file.
      */
-    public FileConfiguration getFile() {
+    public @NotNull final FileConfiguration getFile() {
         return this.file;
     }
     
     /**
      * @return the prizes in the crate.
      */
-    public List<Prize> getPrizes() {
+    public @NotNull final List<Prize> getPrizes() {
         return this.prizes;
     }
     
@@ -702,7 +699,7 @@ public class Crate {
         saveFile();
     }
 
-    private String getPath(final String section, final String path) {
+    private @NotNull final String getPath(final String section, final String path) {
         if (section.isEmpty() || path.isEmpty()) return "";
 
         return section + "." + path;
@@ -776,7 +773,7 @@ public class Crate {
     /**
      * @return a list of item stacks
      */
-    public @NotNull final List<ItemBuilder> getPreview() {
+    public @NotNull final List<ItemStack> getPreview() {
         return Collections.unmodifiableList(this.preview);
     }
 
@@ -808,8 +805,8 @@ public class Crate {
      *
      * @return a list of all the preview items that were created.
      */
-    public @NotNull final List<ItemBuilder> getPreviewItems() {
-        final List<ItemBuilder> items = new ArrayList<>();
+    public @NotNull final List<ItemStack> getPreviewItems() {
+        final List<ItemStack> items = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
             items.add(prize.getDisplayItem());

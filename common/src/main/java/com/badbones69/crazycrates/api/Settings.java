@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Settings implements ISettings {
 
-    private final @NotNull SettingsManager config = ConfigManager.getConfig();
+    private @NotNull final SettingsManager config = ConfigManager.getConfig();
 
     @Override
     public final boolean isPhysicalAcceptsVirtual() {

@@ -40,15 +40,15 @@ public class CosmicCrateManager extends AbstractCrateManager {
         this.totalPrizes = file.getInt(path + "Total-Prize-Amount", 4);
 
         this.mysteryCrate = new ItemBuilder()
-                .withType(file.getString(path + "Mystery-Crate.Item", "chest"), false)
+                .withType(file.getString(path + "Mystery-Crate.Item", "chest"))
                 .setDisplayName(file.getString(path + "Mystery-Crate.Name", "<bold><white>???</bold>"))
-                .setHiddenItemFlags(file.getBoolean(path + "Mystery-Crate.HideItemFlags", false))
+                .setHidingItemFlags(file.getBoolean(path + "Mystery-Crate.HideItemFlags", false))
                 .setDisplayLore(file.contains(path + "Mystery-Crate.Lore") ? file.getStringList(path + "Mystery-Crate.Lore") : Collections.singletonList("<gray>You may choose 4 crates."))
                 .setPersistentInteger(PersistentKeys.cosmic_mystery_crate.getNamespacedKey(), 1);
 
-        this.pickedCrate = new ItemBuilder().withType(file.getString(path + "Picked-Crate.Item", "gray_stained_glass_pane"), false)
+        this.pickedCrate = new ItemBuilder().withType(file.getString(path + "Picked-Crate.Item", "gray_stained_glass_pane"))
                 .setDisplayName(file.getString(path + "Picked-Crate.Name", "<bold><white>???</white>"))
-                .setHiddenItemFlags(file.getBoolean(path + "Picked-Crate.HideItemFlags", false))
+                .setHidingItemFlags(file.getBoolean(path + "Picked-Crate.HideItemFlags", false))
                 .setDisplayLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("<gray>You have chosen #%slot%."))
                 .setPersistentInteger(PersistentKeys.cosmic_picked_crate.getNamespacedKey(), 1);
     }
@@ -56,7 +56,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
     /**
      * @return crate file configuration.
      */
-    public final FileConfiguration getFile() {
+    public @NotNull final FileConfiguration getFile() {
         return this.file;
     }
 
@@ -70,14 +70,14 @@ public class CosmicCrateManager extends AbstractCrateManager {
     /**
      * @return mystery crate builder.
      */
-    public final ItemBuilder getMysteryCrate() {
+    public @NotNull final ItemBuilder getMysteryCrate() {
         return this.mysteryCrate;
     }
 
     /**
      * @return picked crate builder.
      */
-    public final ItemBuilder getPickedCrate() {
+    public @NotNull final ItemBuilder getPickedCrate() {
         return this.pickedCrate;
     }
 

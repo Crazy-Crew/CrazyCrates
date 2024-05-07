@@ -70,9 +70,9 @@ public class PrizeManager {
                 item.setPlayer(player); //todo() test this
 
                 if (!MiscUtils.isInventoryFull(player)) {
-                    player.getInventory().addItem(item.build());
+                    player.getInventory().addItem(item.getStack());
                 } else {
-                    player.getWorld().dropItemNaturally(player.getLocation(), item.build());
+                    player.getWorld().dropItemNaturally(player.getLocation(), item.getStack());
                 }
             }
         } else {
@@ -141,7 +141,7 @@ public class PrizeManager {
 
         final ItemBuilder builder = prize.getDisplayItemBuilder();
 
-        final String display = PlainTextComponentSerializer.plainText().serialize(builder.displayName());
+        final String display = builder.getStrippedName();
 
         MiscUtils.sendCommand(cmd
                 .replaceAll("%player%", quoteReplacement(player.getName()))
@@ -155,7 +155,7 @@ public class PrizeManager {
 
         final ItemBuilder builder = prize.getDisplayItemBuilder();
 
-        final String display = PlainTextComponentSerializer.plainText().serialize(builder.displayName());
+        final String display = builder.getStrippedName();
 
         final String defaultMessage = message
                 .replaceAll("%player%", quoteReplacement(player.getName()))

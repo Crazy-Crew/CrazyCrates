@@ -138,7 +138,7 @@ public class QuickCrate extends CrateBuilder {
 
             reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(this.plugin, true));
             reward.setVelocity(new Vector(0, .2, 0));
-            reward.setCustomName(itemMeta.getDisplayName());
+            reward.customName(display.displayName());
             reward.setCustomNameVisible(true);
             reward.setPickupDelay(-1);
 

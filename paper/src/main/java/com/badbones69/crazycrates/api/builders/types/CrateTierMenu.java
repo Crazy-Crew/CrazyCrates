@@ -57,7 +57,7 @@ public class CrateTierMenu extends InventoryBuilder {
         if (crate.isPreviewTierBorderToggle()) {
             final List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
 
-            final ItemStack itemStack = crate.getPreviewTierBorderItem().setPlayer(player).build();
+            final ItemStack itemStack = crate.getPreviewTierBorderItem().setPlayer(player).getStack();
 
             for (int item : borderItems) { // Top border slots
                 inventory.setItem(item, itemStack);

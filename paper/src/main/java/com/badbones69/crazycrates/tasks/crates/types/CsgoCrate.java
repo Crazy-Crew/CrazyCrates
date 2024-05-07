@@ -16,10 +16,9 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class CsgoCrate extends CrateBuilder {
 
@@ -124,10 +123,7 @@ public class CsgoCrate extends CrateBuilder {
     }
 
     private void populate() {
-        final Map<Integer, ItemStack> glass = new ConcurrentHashMap<>();
-
-        final Player player = getPlayer();
-        final Crate crate = getCrate();
+        final HashMap<Integer, ItemStack> glass = new HashMap<>();
 
         for (int index = 0; index < 10; index++) {
             if (index < 9 && index != 3) glass.put(index, getInventory().getItem(index));
@@ -155,8 +151,7 @@ public class CsgoCrate extends CrateBuilder {
         setItem(3, glass.get(5));
         setItem(3 + 18, glass.get(5));
 
-        ItemStack itemStack = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(" ").build();
-
+        ItemStack itemStack = new ItemBuilder().withType(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(" ").getStack();
         setItem(4, itemStack);
         setItem(4 + 18, itemStack);
 
@@ -174,7 +169,7 @@ public class CsgoCrate extends CrateBuilder {
 
         // Set display items.
         for (int index = 9; index > 8 && index < 18; index++) {
-            setItem(index, crate.pickPrize(player).getDisplayItem(player));
+            setItem(index, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
         }
     }
 

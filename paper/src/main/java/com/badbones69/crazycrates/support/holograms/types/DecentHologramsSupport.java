@@ -6,6 +6,7 @@ import eu.decentsoftware.holograms.api.DHAPI;
 import org.bukkit.Location;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.Map;
@@ -16,7 +17,7 @@ public class DecentHologramsSupport extends HologramManager {
     private final Map<String, Hologram> holograms = new ConcurrentHashMap<>();
 
     @Override
-    public void createHologram(Location location, Crate crate) {
+    public void createHologram(@NotNull final Location location, @NotNull final Crate crate) {
         if (crate.getCrateType() == CrateType.menu) return;
 
         final CrateHologram crateHologram = crate.getHologram();
@@ -39,7 +40,7 @@ public class DecentHologramsSupport extends HologramManager {
     }
 
     @Override
-    public void removeHologram(Location location) {
+    public void removeHologram(@NotNull final Location location) {
         final Hologram hologram = this.holograms.remove(MiscUtils.location(location));
 
         if (hologram != null) {
@@ -48,7 +49,7 @@ public class DecentHologramsSupport extends HologramManager {
     }
 
     @Override
-    public void removeAllHolograms(boolean isShutdown) {
+    public void removeAllHolograms(final boolean isShutdown) {
         if (!isEmpty()) {
             this.holograms.forEach((key, value) -> value.destroy());
             this.holograms.clear();
@@ -56,7 +57,7 @@ public class DecentHologramsSupport extends HologramManager {
     }
 
     @Override
-    public boolean isEmpty() {
+    public final boolean isEmpty() {
         return this.holograms.isEmpty();
     }
 }

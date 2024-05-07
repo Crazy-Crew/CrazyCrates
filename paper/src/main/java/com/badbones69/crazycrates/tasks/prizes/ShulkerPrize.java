@@ -26,9 +26,9 @@ public class ShulkerPrize extends PrizeBuilder {
         final int amount = section.getInt("DisplayAmount", 1);
 
         // The display item.
-        this.builder.withType(material, amount, false).setDisplayName(name);
+        this.builder.withType(material).setAmount(amount).setDisplayName(name);
 
-        this.builder.editMeta(itemMeta -> {
+        this.builder.getStack().editMeta(itemMeta -> {
             if (!(itemMeta instanceof BlockStateMeta block)) {
                 return;
             }
@@ -55,7 +55,7 @@ public class ShulkerPrize extends PrizeBuilder {
                             final String mat = item[0];
                             final int matAmount = Integer.parseInt(item[1]);
 
-                            shulkerItem.withType(mat, matAmount, false);
+                            shulkerItem.withType(mat).setAmount(matAmount);
                         }
 
                         case "enchantments" -> {
@@ -69,7 +69,7 @@ public class ShulkerPrize extends PrizeBuilder {
                     }
                 }
 
-                items.add(shulkerItem.build());
+                items.add(shulkerItem.getStack());
             }
 
             final int size = items.size();
@@ -94,18 +94,18 @@ public class ShulkerPrize extends PrizeBuilder {
     }
 
     @Override
-    public int maxRange() {
+    public final int maxRange() {
         return this.maxRange;
     }
 
     @Override
-    public int chance() {
+    public final int chance() {
         return this.chance;
     }
 
     @Override
     public final ItemStack getItemStack(@NotNull final Player player) {
-        return this.builder.setPlayer(player).build();
+        return this.builder.setPlayer(player).getStack();
     }
 
     /**

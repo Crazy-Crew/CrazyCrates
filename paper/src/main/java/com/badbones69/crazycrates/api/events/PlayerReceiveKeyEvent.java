@@ -50,11 +50,11 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
         return this.offlinePlayer;
     }
 
-    public @NotNull final Crate getCrate() {
+    public Crate getCrate() {
         return this.crate;
     }
     
-    public @NotNull final KeyReceiveReason getReason() {
+    public KeyReceiveReason getReason() {
         return this.reason;
     }
     

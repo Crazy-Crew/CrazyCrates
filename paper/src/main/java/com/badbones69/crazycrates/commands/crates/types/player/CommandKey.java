@@ -27,7 +27,7 @@ public class CommandKey {
     @Permission("crazycrates.keys-others")
     public void view(CommandSender sender, @Suggestion("players") PlayerBuilder target) {
         /*if (target == sender) {
-            viewPersonal(target);
+            personal(target);
 
             return;
         }

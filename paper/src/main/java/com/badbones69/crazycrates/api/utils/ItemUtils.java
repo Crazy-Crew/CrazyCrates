@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api.utils;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.api.hooks.HeadDatabaseListener;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.common.util.StringUtil;
@@ -9,6 +10,7 @@ import com.ryderbelserion.vital.items.ItemBuilder;
 import com.ryderbelserion.vital.util.DyeUtil;
 import com.ryderbelserion.vital.util.ItemUtil;
 import org.bukkit.DyeColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -75,18 +77,18 @@ public class ItemUtils {
 
         builder.addPatterns(section.getStringList("Patterns"));
 
-        //builder.addItemFlags(section.getStringList("Flags"));
+        builder.setItemFlags(section.getStringList("Flags"));
 
-        builder.setHiddenItemFlags(section.getBoolean("HideItemFlags", false));
+        builder.setHidingItemFlags(section.getBoolean("HideItemFlags", false));
 
         builder.setUnbreakable(section.getBoolean("Unbreakable", false));
         
         if (section.contains("Skull")) {
-            //builder.setSkull(section.getString("Skull", ""), HeadDatabaseListener.getHeads());
+            builder.setSkull(section.getString("Skull", ""), HeadDatabaseListener.getHeads());
         }
         
         if (section.contains("Player") && builder.isPlayerHead()) {
-            //builder.setPlayer(section.getString("Player", ""));
+            builder.setPlayer(section.getString("Player", ""));
         }
         
         if (section.contains("DisplayTrim.Pattern") && builder.isArmor()) {
@@ -190,7 +192,7 @@ public class ItemUtils {
                 String value = optionString.replace(option + ":", "").replace(option, "");
 
                 switch (option.toLowerCase()) {
-                    case "item" -> itemBuilder.withType(value, false);
+                    case "item" -> itemBuilder.withType(value);
                     case "name" -> itemBuilder.setDisplayName(value);
                     case "amount" -> {
                         final Optional<Number> amount = StringUtil.tryParseInt(value);
@@ -201,7 +203,7 @@ public class ItemUtils {
                         itemBuilder.setDamage(amount.map(Number::intValue).orElse(1));
                     }
                     case "lore" -> itemBuilder.setDisplayLore(List.of(value.split(",")));
-                    //case "hdb" -> itemBuilder.setSkull(value, HeadDatabaseListener.getHeads());
+                    case "hdb" -> itemBuilder.setSkull(value, HeadDatabaseListener.getHeads());
                     case "player" -> itemBuilder.setPlayer(value);
                     case "unbreakable-item" -> itemBuilder.setUnbreakable(value.isEmpty() || value.equalsIgnoreCase("true"));
                     case "trim-pattern" -> itemBuilder.applyTrimPattern(value);
@@ -234,10 +236,7 @@ public class ItemUtils {
                 }
             }
         } catch (Exception exception) {
-            /*itemBuilder.setMaterial(Material.RED_TERRACOTTA).setDisplayName("<red>ERROR").setDisplayLore(Arrays.asList(
-                    "<red>There is an error",
-                    "<red>For : " + (placeHolder != null ? placeHolder : "")
-            ));*/
+            itemBuilder.withType(Material.RED_TERRACOTTA).setDisplayName("<red>Error found!, Prize Name: " + section);
 
             plugin.getLogger().log(Level.WARNING, "An error has occurred with the item builder: ", exception);
         }

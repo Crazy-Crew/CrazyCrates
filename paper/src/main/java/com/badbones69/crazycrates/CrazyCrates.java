@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates;
 
+import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
@@ -28,7 +29,6 @@ import com.ryderbelserion.vital.enums.Support;
 import com.ryderbelserion.vital.files.FileManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.platform.IServer;
 import java.util.List;
 import java.util.Timer;
 import static com.badbones69.crazycrates.api.utils.MiscUtils.registerPermissions;
@@ -89,6 +89,8 @@ public class CrazyCrates extends JavaPlugin {
                 new CratePreviewMenu.CratePreviewListener(),
                 new CrateMainMenu.CrateMenuListener(),
                 new CrateTierMenu.CrateTierListener(),
+
+                new CrateAdminMenu(),
 
                 // Other listeners.
                 new BrokeLocationsListener(),

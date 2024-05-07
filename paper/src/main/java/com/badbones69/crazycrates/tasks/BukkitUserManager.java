@@ -638,9 +638,9 @@ public class BukkitUserManager extends UserManager {
         final UUID uuid = itemBuilder.getPlayer();
         if (uuid == null) return itemBuilder;
 
-        return itemBuilder.addPlaceholder("%keys%", NumberFormat.getNumberInstance().format(getVirtualKeys(uuid, name)), false)
-                .addPlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(getPhysicalKeys(uuid, name)), false)
-                .addPlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(getTotalKeys(uuid, name)), false)
-                .addPlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(getCrateOpened(uuid, name)), false);
+        return itemBuilder.addNamePlaceholder("%keys%", NumberFormat.getNumberInstance().format(getVirtualKeys(uuid, name)))
+                .addNamePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(getPhysicalKeys(uuid, name)))
+                .addNamePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(getTotalKeys(uuid, name)))
+                .addNamePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(getCrateOpened(uuid, name)));
     }
 }

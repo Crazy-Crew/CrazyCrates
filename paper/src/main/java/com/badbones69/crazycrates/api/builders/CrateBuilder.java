@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api.builders;
 
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.items.ItemBuilder;
@@ -256,14 +257,14 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * @return file configuration of crate.
      */
-    public @NotNull final FileConfiguration getFile() {
+    public FileConfiguration getFile() {
         return this.crate.getFile();
     }
 
     /**
      * @return inventory of the crate.
      */
-    public @NotNull final Inventory getInventory() {
+    public Inventory getInventory() {
         return this.inventory;
     }
 
@@ -272,14 +273,14 @@ public abstract class CrateBuilder extends FoliaRunnable {
      *
      * @return location in the world.
      */
-    public @NotNull final Location getLocation() {
+    public Location getLocation() {
         return this.location;
     }
 
     /**
      * @return instance of this class.
      */
-    public @NotNull final InventoryBuilder getMenu() {
+    public InventoryBuilder getMenu() {
         return this.builder.build();
     }
 
@@ -302,7 +303,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param lore lore of item.
      */
     public void setItem(final int slot, @NotNull final Material material, @NotNull final String name, @NotNull final List<String> lore) {
-        getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).setDisplayLore(lore).build());
+        getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).setDisplayLore(lore).getStack());
     }
 
     /**
@@ -313,7 +314,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param name name of item.
      */
     public void setItem(final int slot, @NotNull final Material material, @NotNull final String name) {
-        getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).build());
+        getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).getStack());
     }
 
     /**
@@ -325,8 +326,11 @@ public abstract class CrateBuilder extends FoliaRunnable {
         getInventory().setItem(slot, getRandomGlassPane());
     }
 
-    public ItemBuilder getRandomGlassPane() {
-        return MiscUtils.getRandomPaneColor().setDisplayName(" ").build();
+    /**
+     * @return the itemstack
+     */
+    public @NotNull final ItemStack getRandomGlassPane() {
+        return MiscUtils.getRandomPaneColor().setDisplayName(" ").getStack();
     }
 
     /**
@@ -336,7 +340,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param checkHand true or false.
      * @return true if cancelled otherwise false.
      */
-    public boolean isCrateEventValid(@NotNull final KeyType keyType, final boolean checkHand) {
+    public final boolean isCrateEventValid(@NotNull final KeyType keyType, final boolean checkHand) {
         CrateOpenEvent event = new CrateOpenEvent(this.player, this.crate, keyType, checkHand, this.crate.getFile());
         event.callEvent();
 
@@ -367,19 +371,19 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * @return the display item of the picked prize.
      */
-    public final ItemStack getDisplayItem() {
-        Player player = getPlayer();
+    public ItemStack getDisplayItem() {
+        Prize prize = getCrate().pickPrize(getPlayer());
 
-        return getCrate().pickPrize(player).getDisplayItem(player);
+        if (prize == null) return new ItemStack(Material.STONE);
+
+        return prize.getDisplayItem(getPlayer());
     }
 
     /**
      * @return the display item of the picked prize with a tier.
      */
-    public final ItemStack getDisplayItem(@NotNull final Tier tier) {
-        Player player = getPlayer();
-
-        return getCrate().pickPrize(player, tier).getDisplayItem(player);
+    public ItemStack getDisplayItem(@NotNull final Tier tier) {
+        return getCrate().pickPrize(getPlayer(), tier).getDisplayItem(getPlayer());
     }
 
     /**

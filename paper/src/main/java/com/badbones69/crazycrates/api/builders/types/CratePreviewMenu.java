@@ -67,7 +67,7 @@ public class CratePreviewMenu extends InventoryBuilder {
         if (crate.isBorderToggle()) {
             final List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
 
-            final ItemStack itemStack = crate.getBorderItem().setPlayer(player).build();
+            final ItemStack itemStack = crate.getBorderItem().setPlayer(player).getStack();
 
             for (int i : borderItems) { // Top Border slots
                 inventory.setItem(i, itemStack);
@@ -88,7 +88,7 @@ public class CratePreviewMenu extends InventoryBuilder {
 
         if (page == 1) {
             if (crate.isBorderToggle()) {
-                inventory.setItem(crate.getAbsoluteItemPosition(3), crate.getBorderItem().setPlayer(player).build());
+                inventory.setItem(crate.getAbsoluteItemPosition(3), crate.getBorderItem().setPlayer(player).getStack());
             }
         } else {
             inventory.setItem(crate.getAbsoluteItemPosition(3), this.inventoryManager.getBackButton(player));
@@ -96,7 +96,7 @@ public class CratePreviewMenu extends InventoryBuilder {
 
         if (page == crate.getMaxPage()) {
             if (crate.isBorderToggle()) {
-                inventory.setItem(crate.getAbsoluteItemPosition(5), crate.getBorderItem().setPlayer(player).build());
+                inventory.setItem(crate.getAbsoluteItemPosition(5), crate.getBorderItem().setPlayer(player).getStack());
             }
         } else {
             inventory.setItem(crate.getAbsoluteItemPosition(5), this.inventoryManager.getNextButton(player));
