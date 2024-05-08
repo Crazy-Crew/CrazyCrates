@@ -34,31 +34,6 @@ public class CMIHologramsSupport extends HologramManager {
             return;
         }
 
-        //todo() make this work eventually, it's just not properly updating.
-        /*String loc = MiscUtils.location(location);
-
-        if (this.holograms.containsKey(loc)) {
-            CMIHologram hologram = this.hologramManager.getByLoc(this.holograms.get(loc).getLocation());
-
-            String color = crateHologram.getBackgroundColor();
-
-            if (color.equalsIgnoreCase("transparent")) {
-                hologram.setBackgroundAlpha(0);
-            } else {
-                hologram.setBackgroundColor(CMIChatColor.getByHex(color));
-            }
-
-            hologram.setShowRange(crateHologram.getRange());
-
-            hologram.setLines(lines(crateHologram));
-
-            location.getNearbyEntitiesByType(Player.class, crateHologram.getRange()).forEach(player -> this.hologramManager.handleHoloUpdates(player, hologram.getLocation()));
-
-            this.holograms.put(loc, hologram);
-
-            return;
-        }*/
-
         final CMIHologram hologram = new CMIHologram(name(), new CMILocation(location.clone().add(getVector(crate))));
 
         hologram.setNewDisplayMethod(true);
