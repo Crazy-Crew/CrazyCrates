@@ -23,7 +23,7 @@ public class CommandGive extends BaseCommand {
     @Command("give")
     @Permission(value = "crazycrates.givekey", def = PermissionDefault.OP)
     public void give(CommandSender sender, @Suggestion("keys") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, @Suggestion("players") PlayerBuilder target) {
-        if (crateName.isEmpty()) {
+        if (crateName.isEmpty() || crateName.isBlank()) {
             sender.sendRichMessage(Messages.cannot_be_empty.getMessage(sender, "{value}", "crate name"));
 
             return;

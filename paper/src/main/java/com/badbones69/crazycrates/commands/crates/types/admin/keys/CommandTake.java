@@ -17,7 +17,7 @@ public class CommandTake extends BaseCommand {
     @Command("take")
     @Permission(value = "crazycrates.takekey", def = PermissionDefault.OP)
     public void take(CommandSender sender, @Suggestion("keys") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, @Suggestion("players") PlayerBuilder target) {
-        if (crateName.isEmpty()) {
+        if (crateName.isEmpty() || crateName.isBlank()) {
             sender.sendRichMessage(Messages.cannot_be_empty.getMessage(sender, "{value}", "crate name"));
 
             return;

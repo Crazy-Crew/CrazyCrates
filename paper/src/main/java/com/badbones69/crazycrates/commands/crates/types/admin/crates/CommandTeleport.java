@@ -23,7 +23,7 @@ public class CommandTeleport extends BaseCommand {
     @Command("teleport")
     @Permission(value = "crazycrates.teleport", def = PermissionDefault.OP)
     public void teleport(Player player, @Suggestion("locations") String id) {
-        if (id.isEmpty()) {
+        if (id.isEmpty() || id.isBlank()) {
             player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate location id"));
 
             return;

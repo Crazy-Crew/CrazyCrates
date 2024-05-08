@@ -20,7 +20,7 @@ public class CommandSet extends BaseCommand {
     @Command("set")
     @Permission(value = "crazycrates.set", def = PermissionDefault.OP)
     public void set(Player player, @Suggestion("crates") String crateName) {
-        if (crateName.isEmpty()) {
+        if (crateName.isEmpty() || crateName.isBlank()) {
             player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
 
             return;
