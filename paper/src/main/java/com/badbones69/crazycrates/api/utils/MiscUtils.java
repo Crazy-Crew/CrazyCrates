@@ -82,7 +82,7 @@ public class MiscUtils {
      *
      * @return true if inventory is empty otherwise false.
      */
-    public static final boolean isInventoryFull(@NotNull final Player player) {
+    public static boolean isInventoryFull(@NotNull final Player player) {
         return player.getInventory().firstEmpty() == -1;
     }
 
