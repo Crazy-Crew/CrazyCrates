@@ -203,7 +203,6 @@ public class ItemUtils {
                         itemBuilder.setDamage(amount.map(Number::intValue).orElse(1));
                     }
                     case "lore" -> itemBuilder.setDisplayLore(List.of(value.split(",")));
-                    //todo() test this
                     case "hdb" -> itemBuilder.setSkull(value, HeadDatabaseListener.getHeads());
                     case "player" -> itemBuilder.setPlayer(value);
                     case "unbreakable-item" -> itemBuilder.setUnbreakable(value.isEmpty() || value.equalsIgnoreCase("true"));

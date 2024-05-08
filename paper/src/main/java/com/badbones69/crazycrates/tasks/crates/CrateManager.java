@@ -1374,7 +1374,6 @@ public class CrateManager {
         removePlayerFromOpeningList(player);
 
         if (!useQuickCrateAgain) {
-            //todo() this might cause problems.
             if (crate != null && getHolograms() != null) getHolograms().createHologram(location, crate);
         }
     }

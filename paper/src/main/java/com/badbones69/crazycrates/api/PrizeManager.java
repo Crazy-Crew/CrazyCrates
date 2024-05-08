@@ -66,12 +66,10 @@ public class PrizeManager {
 
         if (!prize.getItemBuilders().isEmpty()) {
             for (final ItemBuilder item : prize.getItemBuilders()) {
-                item.setPlayer(player); //todo() test this
-
                 if (!MiscUtils.isInventoryFull(player)) {
-                    player.getInventory().addItem(item.getStack());
+                    player.getInventory().addItem(item.setPlayer(player).getStack());
                 } else {
-                    player.getWorld().dropItemNaturally(player.getLocation(), item.getStack());
+                    player.getWorld().dropItemNaturally(player.getLocation(), item.setPlayer(player).getStack());
                 }
             }
         } else {
