@@ -125,9 +125,12 @@ Crate:
     # Note: MiniMessage or Color Codes being supported is depending on the 'holograms' plugin.
     Message:
       - "<bold><green>Basic Crate</bold>"
-  # All the prizes that can be gotten in the Crate.
+  # All the prizes that can be obtained in the Crate.
+  # These prizes do not require any extra configuration
+  # They will give the prizes based on what's already below.
+  # See the AdvancedExample.yml for a more advanced crate.
   Prizes:
-     # An example prize of how to use a shulker box.
+    # An example prize of how to use a shulker box.
     '1':
       # The name of the item to display in the gui.
       DisplayName: "<light_purple>Shulker Box"
@@ -147,14 +150,14 @@ Crate:
       DisplayItem: "player_head"
       # The amount to display in the gui.
       DisplayAmount: 1
-      # The max range i.e. 5/100 = 5% chance to win.
+      # The max range i.e. 1/100 = 1% chance to win.
       MaxRange: 100
       # An example of a custom player head.
       # This can be a player head as well.
       # https://minecraft-heads.com/
       Player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
-      # The chance to win i.e. 5%
-      Chance: 3
+      # The chance to win i.e. 1%
+      Chance: 1
     '3':
       # The name of the item to display in the gui.
       DisplayName: "<gold>Rukkhadevata"
@@ -162,9 +165,60 @@ Crate:
       DisplayItem: "player_head"
       # The amount to display in the gui.
       DisplayAmount: 1
-      # The max range i.e. 5/100 = 5% chance to win.
+      # The max range i.e. 7/100 = 7% chance to win.
       MaxRange: 100
       # An example of a custom player head using minecraft players.
       Player: "rukkhadevata"
-      # The chance to win i.e. 5%
-      Chance: 3
+      # The chance to win i.e. 7%
+      Chance: 7
+    '4':
+      # The name of the item to display in the gui.
+      DisplayName: "<red>Diamond Sword"
+      DisplayEnchantments:
+        - "sharpness:5"
+        - "looting:3"
+      # The item to display in the gui.
+      DisplayItem: "diamond_sword"
+      # The amount to display in the gui.
+      DisplayAmount: 1
+      # The max range i.e. 15/100 = 15% chance to win.
+      MaxRange: 100
+      # The chance to win i.e. 15%
+      Chance: 15
+    '5':
+      # The name of the item to display in the gui.
+      DisplayName: "<red>Diamond Helmet"
+      DisplayEnchantments:
+        - "protection:5"
+        - "unbreaking:3"
+      DisplayTrim:
+        # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
+        Material: "quartz"
+        # Available Patterns: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimPattern.html
+        Pattern: "sentry"
+      # The item to display in the gui.
+      DisplayItem: "diamond_helmet"
+      # The amount to display in the gui.
+      DisplayAmount: 1
+      Lore:
+        - "<gradient:#8fcfa0:#32a852>A gradient lore!"
+      # The max range i.e. 15/100 = 15% chance to win.
+      MaxRange: 100
+      # The chance to win i.e. 15%
+      Chance: 15
+    '6':
+      # The enchants to be stored on the book.
+      DisplayEnchantments:
+        - "protection:5"
+        - "unbreaking:3"
+      # The item to display in the gui.
+      # The enchanted book will function with the enchants properly in an anvil.
+      DisplayItem: "enchanted_book"
+      # The amount to display in the gui.
+      DisplayAmount: 3
+      Lore:
+        - "<gradient:#8fcfa0:#32a852>A gradient lore!"
+      # The max range i.e. 25/100 = 25% chance to win.
+      MaxRange: 100
+      # The chance to win i.e. 25%
+      Chance: 25
