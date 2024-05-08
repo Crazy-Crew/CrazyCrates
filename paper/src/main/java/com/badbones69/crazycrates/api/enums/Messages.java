@@ -34,6 +34,7 @@ public enum Messages {
     no_schematics_found(ErrorKeys.no_schematics_found),
     no_prizes_found(ErrorKeys.no_prizes_found),
     prize_error(ErrorKeys.prize_error),
+    cannot_be_air(ErrorKeys.cannot_be_air),
     not_online(PlayerKeys.not_online),
 
     no_permission(PlayerKeys.no_permission),

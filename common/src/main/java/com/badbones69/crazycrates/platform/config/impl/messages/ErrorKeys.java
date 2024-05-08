@@ -26,6 +26,9 @@ public class ErrorKeys implements SettingsHolder {
     @Comment("A list of available placeholders: {prefix}")
     public static final Property<String> internal_error = newProperty("errors.internal-error", "{prefix}<red>An internal error has occurred. Please check the console for the full error.");
 
+    @Comment("A list of available placeholders: {prefix}")
+    public static final Property<String> cannot_be_air = newProperty("errors.cannot-be-air", "{prefix}<red>You can't use air silly!~");
+
     @Comment("A list of available placeholders: {prefix}, {crate}, {prize}")
     public static final Property<String> prize_error = newProperty("errors.prize-error", "{prefix}<red>An error has occurred while trying to give you the prize called <gold>{prize}<red> in crate called <gold>{crate}<red>. Please contact the server owner and show them this error.");
 }

@@ -19,7 +19,8 @@ public class CommandAddItem extends BaseCommand {
         final ItemStack item = player.getInventory().getItemInMainHand();
 
         if (item.getType().isAir()) {
-            //todo() add message if item is air.
+            player.sendRichMessage(Messages.cannot_be_air.getMessage(player));
+
             return;
         }
 
