@@ -130,35 +130,35 @@ public class Prize {
      * @return the list of tiers the prize is in.
      */
     public @NotNull final List<Tier> getTiers() {
-        return Collections.unmodifiableList(this.tiers);
+        return this.tiers;
     }
     
     /**
      * @return the messages sent to the player.
      */
     public @NotNull final List<String> getMessages() {
-        return Collections.unmodifiableList(this.messages);
+        return this.messages;
     }
     
     /**
      * @return the commands that are run when the player wins.
      */
     public @NotNull final List<String> getCommands() {
-        return Collections.unmodifiableList(this.commands);
+        return this.commands;
     }
     
     /**
      * @return the Editor ItemStacks that are given to the player that wins.
      */
     public @NotNull final List<ItemStack> getItems() {
-        return Collections.unmodifiableList(this.items);
+        return this.items;
     }
     
     /**
      * @return the ItemBuilders for all the custom items made from the Items: option.
      */
     public @NotNull final List<ItemBuilder> getItemBuilders() {
-        return Collections.unmodifiableList(this.builders);
+        return this.builders;
     }
     
     /**

@@ -279,11 +279,11 @@ public class Crate {
         return pickPrize(player) != null;
     }
 
-    public List<String> getPrizeMessage() {
+    public @NotNull final List<String> getPrizeMessage() {
         return this.prizeMessage;
     }
 
-    public List<String> getPrizeCommands() {
+    public @NotNull final List<String> getPrizeCommands() {
         return this.prizeCommands;
     }
 
@@ -739,7 +739,7 @@ public class Crate {
      * @return a list of the tiers for the crate. Will be empty if there are none.
      */
     public @NotNull final List<Tier> getTiers() {
-        return Collections.unmodifiableList(this.tiers);
+        return this.tiers;
     }
 
     /**
@@ -774,7 +774,7 @@ public class Crate {
      * @return a list of item stacks
      */
     public @NotNull final List<ItemStack> getPreview() {
-        return Collections.unmodifiableList(this.preview);
+        return this.preview;
     }
 
     /**
@@ -806,13 +806,13 @@ public class Crate {
      * @return a list of all the preview items that were created.
      */
     public @NotNull final List<ItemStack> getPreviewItems() {
-        final List<ItemStack> items = new ArrayList<>();
+        List<ItemStack> items = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
             items.add(prize.getDisplayItem());
         }
 
-        return Collections.unmodifiableList(items);
+        return items;
     }
     
     /**
@@ -821,13 +821,13 @@ public class Crate {
      * @return a list of all the preview items that were created.
      */
     public @NotNull final List<ItemStack> getPreviewItems(@NotNull final Player player) {
-        final List<ItemStack> items = new ArrayList<>();
+        List<ItemStack> items = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
             items.add(prize.getDisplayItem(player));
         }
 
-        return Collections.unmodifiableList(items);
+        return items;
     }
 
     /**
@@ -837,13 +837,13 @@ public class Crate {
      * @return list of prizes
      */
     public @NotNull final List<ItemStack> getPreviewItems(@NotNull final Tier tier, @NotNull final Player player) {
-        final List<ItemStack> prizes = new ArrayList<>();
+        List<ItemStack> prizes = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
             if (prize.getTiers().contains(tier)) prizes.add(prize.getDisplayItem(player));
         }
 
-        return Collections.unmodifiableList(prizes);
+        return prizes;
     }
 
     /**
