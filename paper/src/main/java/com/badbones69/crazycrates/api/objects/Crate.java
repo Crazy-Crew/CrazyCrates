@@ -10,8 +10,8 @@ import com.ryderbelserion.vital.files.yaml.FileManager;
 import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import com.ryderbelserion.vital.util.DyeUtil;
 import com.ryderbelserion.vital.util.ItemUtil;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
@@ -659,14 +659,14 @@ public class Crate {
 
         final String tiers = getPath(prizeName, "Tiers");
 
-        String material = itemStack.getType().getKey().getKey();
+        Material material = itemStack.getType();
 
         if (!section.contains(prizeName)) {
             section.set(getPath(prizeName, "MaxRange"), 100);
         }
 
         section.set(getPath(prizeName, "DisplayAmount"), itemStack.getAmount());
-        section.set(getPath(prizeName, "DisplayItem"), material);
+        section.set(getPath(prizeName, "DisplayItem"), material.getKey().getKey());
         section.set(getPath(prizeName, "Chance"), chance);
 
         // The section already contains a prize name, so we update the tiers.
@@ -728,7 +728,7 @@ public class Crate {
                 if (itemMeta.hasDisplayName()) {
                     section.setRichMessage(getPath(prizeName, "DisplayName"), itemMeta.displayName());
                 } else {
-                    section.setRichMessage(getPath(prizeName, "DisplayName"), Component.translatable(itemStack.translationKey()));
+                    section.set(getPath(prizeName, "DisplayName"), material.isBlock() ? "<lang:" + material.getBlockTranslationKey() + ">" : "<lang:" + material.getItemTranslationKey() + ">");
                 }
             });
         }

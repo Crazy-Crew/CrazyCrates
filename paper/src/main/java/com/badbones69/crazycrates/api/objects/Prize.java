@@ -2,8 +2,8 @@ package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
+import com.ryderbelserion.vital.util.ItemUtil;
 import com.ryderbelserion.vital.util.builders.ItemBuilder;
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Prize {
@@ -55,7 +54,9 @@ public class Prize {
 
         this.alternativePrize = alternativePrize;
 
-        this.prizeName = section.getString("DisplayName", WordUtils.capitalizeFully(section.getString("DisplayItem", "stone").replaceAll("_", " ")));
+        Material material = ItemUtil.getMaterial(section.getString("DisplayItem", "stone"));
+
+        this.prizeName = section.getString("DisplayName", material.isBlock() ? "<lang:" + material.getBlockTranslationKey() + ">" : "<lang:" + material.getItemTranslationKey() + ">");
         this.maxRange = section.getInt("MaxRange", 100);
         this.chance = section.getInt("Chance", 50);
         this.firework = section.getBoolean("Firework", false);
