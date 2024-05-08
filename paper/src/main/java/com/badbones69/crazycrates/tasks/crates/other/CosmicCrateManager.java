@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
 
 public class CosmicCrateManager extends AbstractCrateManager {
 
@@ -25,7 +25,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
     private final FileConfiguration file;
     private final int totalPrizes;
 
-    private final Map<UUID, Map<Integer, Tier>> prizes = new ConcurrentHashMap<>();
+    private final Map<UUID, Map<Integer, Tier>> prizes = new HashMap<>();
 
     /**
      * Creates a cosmic crate manager instance.

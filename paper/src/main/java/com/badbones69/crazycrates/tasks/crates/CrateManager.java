@@ -71,7 +71,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TimerTask;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 public class CrateManager {
@@ -84,7 +84,7 @@ public class CrateManager {
     private final List<CrateLocation> crateLocations = new ArrayList<>();
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
     private final List<BrokeLocation> brokeLocations = new ArrayList<>();
-    private final Map<UUID, Location> cratesInUse = new ConcurrentHashMap<>();
+    private final Map<UUID, Location> cratesInUse = new HashMap<>();
     private final List<String> brokeCrates = new ArrayList<>();
     private final List<Crate> crates = new ArrayList<>();
 
@@ -439,18 +439,18 @@ public class CrateManager {
     }
 
     // The crate that the player is opening.
-    private final Map<UUID, Crate> playerOpeningCrates = new ConcurrentHashMap<>();
+    private final Map<UUID, Crate> playerOpeningCrates = new HashMap<>();
 
     // Keys that are being used in crates. Only needed in cosmic due to it taking the key after the player picks a prize and not in a start method.
-    private final Map<UUID, KeyType> playerKeys = new ConcurrentHashMap<>();
+    private final Map<UUID, KeyType> playerKeys = new HashMap<>();
 
     // A list of all current crate tasks that are running that a time. Used to force stop any crates it needs to.
-    private final Map<UUID, ScheduledTask> currentTasks = new ConcurrentHashMap<>();
+    private final Map<UUID, ScheduledTask> currentTasks = new HashMap<>();
 
-    private final Map<UUID, TimerTask> timerTasks = new ConcurrentHashMap<>();
+    private final Map<UUID, TimerTask> timerTasks = new HashMap<>();
 
     // A list of tasks being run by the QuadCrate type.
-    private final Map<UUID, List<ScheduledTask>> currentQuadTasks = new ConcurrentHashMap<>();
+    private final Map<UUID, List<ScheduledTask>> currentQuadTasks = new HashMap<>();
 
     /**
      * Opens a crate for a player.
@@ -1300,8 +1300,8 @@ public class CrateManager {
     }
 
     // War Crate
-    private final Map<UUID, Boolean> canPick = new ConcurrentHashMap<>();
-    private final Map<UUID, Boolean> canClose = new ConcurrentHashMap<>();
+    private final Map<UUID, Boolean> canPick = new HashMap<>();
+    private final Map<UUID, Boolean> canClose = new HashMap<>();
 
     public void addPicker(@NotNull final Player player, final boolean value) {
         this.canPick.put(player.getUniqueId(), value);
@@ -1331,7 +1331,7 @@ public class CrateManager {
         this.canClose.remove(player.getUniqueId());
     }
 
-    private final Map<UUID, Boolean> checkHands = new ConcurrentHashMap<>();
+    private final Map<UUID, Boolean> checkHands = new HashMap<>();
 
     public void addHands(@NotNull final Player player, final boolean checkHand) {
         this.checkHands.put(player.getUniqueId(), checkHand);
@@ -1347,7 +1347,7 @@ public class CrateManager {
 
     // QuickCrate/FireCracker
     private final List<Entity> allRewards = new ArrayList<>();
-    private final Map<UUID, Entity> rewards = new ConcurrentHashMap<>();
+    private final Map<UUID, Entity> rewards = new HashMap<>();
 
     public void addReward(@NotNull final Player player, @NotNull final Entity entity) {
         this.allRewards.add(entity);

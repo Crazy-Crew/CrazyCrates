@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
 
 public class WheelCrate extends CrateBuilder {
 
@@ -58,7 +58,7 @@ public class WheelCrate extends CrateBuilder {
             setCustomGlassPane(index);
         }
 
-        this.rewards = new ConcurrentHashMap<>();
+        this.rewards = new HashMap<>();
 
         for (int number : getBorder()) {
             final Prize prize = crate.pickPrize(player);

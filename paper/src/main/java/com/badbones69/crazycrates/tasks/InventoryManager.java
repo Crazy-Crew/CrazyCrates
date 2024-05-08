@@ -12,10 +12,10 @@ import com.badbones69.crazycrates.platform.config.ConfigManager;
 import com.badbones69.crazycrates.platform.config.impl.ConfigKeys;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class InventoryManager {
 
@@ -66,7 +66,7 @@ public class InventoryManager {
         return button.getStack();
     }
 
-    private final Map<UUID, Crate> crateViewers = new ConcurrentHashMap<>();
+    private final Map<UUID, Crate> crateViewers = new HashMap<>();
 
     public void openNewCratePreview(@NotNull final Player player, @NotNull final Crate crate) {
         this.crateViewers.put(player.getUniqueId(), crate);
@@ -116,7 +116,7 @@ public class InventoryManager {
         return this.crateViewers.containsKey(player.getUniqueId());
     }
 
-    private final Map<UUID, Integer> pageViewers = new ConcurrentHashMap<>();
+    private final Map<UUID, Integer> pageViewers = new HashMap<>();
 
     public void nextPage(@NotNull final Player player) {
         setPage(player, getPage(player) + 1);

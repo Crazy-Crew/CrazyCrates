@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
 
 public class QuadCrateManager {
 
@@ -69,13 +69,13 @@ public class QuadCrateManager {
     private final List<Location> crateLocations = new ArrayList<>();
 
     // Stores if the crate is open or not.
-    private final Map<Location, Boolean> cratesOpened = new ConcurrentHashMap<>();
+    private final Map<Location, Boolean> cratesOpened = new HashMap<>();
 
     // Saves all the chests spawned by the QuadCrate task.
-    private final Map<Location, BlockState> quadCrateChests = new ConcurrentHashMap<>();
+    private final Map<Location, BlockState> quadCrateChests = new HashMap<>();
 
     // Saves all the old blocks to restore after.
-    private final Map<Location, BlockState> oldBlocks = new ConcurrentHashMap<>();
+    private final Map<Location, BlockState> oldBlocks = new HashMap<>();
 
     // Get the particles that will be used to display above the crates.
     private final Color particleColor;

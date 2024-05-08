@@ -186,17 +186,21 @@ public class CratePreviewMenu extends InventoryBuilder {
         int index = page * max - max;
         int endIndex = index >= list.size() ? list.size() - 1 : index + max;
 
-        for (; index < endIndex; index++) {
-            if (index < list.size()) items.add(list.get(index));
+        for (;index < endIndex; index++) {
+            if (index < list.size()) {
+                items.add(list.get(index));
+            }
         }
 
-        for (; items.isEmpty(); page--) {
+        for (;items.isEmpty(); page--) {
             if (page <= 0) break;
             index = page * max - max;
             endIndex = index >= list.size() ? list.size() - 1 : index + max;
 
-            for (; index < endIndex; index++) {
-                if (index < list.size()) items.add(list.get(index));
+            for (;index < endIndex; index++) {
+                if (index < list.size()) {
+                    items.add(list.get(index));
+                }
             }
         }
 

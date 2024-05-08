@@ -18,11 +18,11 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
 
 public class FancyHologramsSupport extends HologramManager {
 
-    private final Map<String, Hologram> holograms = new ConcurrentHashMap<>();
+    private final Map<String, Hologram> holograms = new HashMap<>();
 
     private final de.oliver.fancyholograms.api.HologramManager manager = FancyHologramsPlugin.get().getHologramManager();
 

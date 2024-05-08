@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
-import com.ryderbelserion.vital.util.ItemUtil;
 import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
