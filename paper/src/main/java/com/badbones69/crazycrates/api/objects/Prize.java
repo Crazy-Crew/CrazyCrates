@@ -110,14 +110,14 @@ public class Prize {
      * @return the display item that is shown for the preview and the winning prize.
      */
     public @NotNull final ItemStack getDisplayItem() {
-        return this.displayItem.setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
+        return getDisplayItemBuilder().setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
     }
 
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
     public @NotNull final ItemStack getDisplayItem(@NotNull final Player player) {
-        return this.displayItem.setPlayer(player).setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
+        return getDisplayItemBuilder().setPlayer(player).setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
     }
 
     /**
