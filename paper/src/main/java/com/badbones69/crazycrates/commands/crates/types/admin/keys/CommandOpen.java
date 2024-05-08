@@ -30,7 +30,7 @@ public class CommandOpen extends BaseCommand {
 
     private boolean isCancelled(Player player, String crateName) {
         if (crateName.isEmpty()) {
-            player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
+            player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
 
             return true;
         }

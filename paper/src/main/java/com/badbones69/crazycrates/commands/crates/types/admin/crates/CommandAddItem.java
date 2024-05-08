@@ -25,7 +25,7 @@ public class CommandAddItem extends BaseCommand {
         }
 
         if (crateName.isEmpty()) {
-            player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
+            player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
 
             return;
         }

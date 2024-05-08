@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates;
 
+import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -23,7 +24,8 @@ public class CommandTeleport extends BaseCommand {
     @Permission(value = "crazycrates.teleport", def = PermissionDefault.OP)
     public void teleport(Player player, @Suggestion("locations") String id) {
         if (id.isEmpty()) {
-            //todo() send message? it might not needed it but I'll test it anyway.
+            player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate location id"));
+
             return;
         }
 

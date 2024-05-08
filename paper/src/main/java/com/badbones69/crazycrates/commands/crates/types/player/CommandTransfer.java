@@ -21,7 +21,7 @@ public class CommandTransfer extends BaseCommand {
     @Permission(value = "crazycrates.transfer", def = PermissionDefault.OP)
     public void transfer(Player player, @Suggestion("crates") String crateName, @Suggestion("players") Player target, @Suggestion("numbers") int amount) {
         if (crateName.isEmpty()) {
-            player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
+            player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
 
             return;
         }
