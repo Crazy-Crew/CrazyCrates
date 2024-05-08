@@ -7,7 +7,7 @@ plugins {
 }
 
 repositories {
-    maven("https://repo.fancyplugins.de/releases")
+    maven("https://repo.fancyplugins.de/releases/")
 }
 
 dependencies {
