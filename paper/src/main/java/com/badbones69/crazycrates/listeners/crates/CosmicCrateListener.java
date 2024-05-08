@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.listeners.crates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.ryderbelserion.vital.enums.Support;
-import com.ryderbelserion.vital.items.ItemBuilder;
+import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import com.ryderbelserion.vital.util.MiscUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.file.FileConfiguration;

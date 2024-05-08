@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.tasks.prizes;
 
-import com.ryderbelserion.vital.items.ItemBuilder;
+import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;

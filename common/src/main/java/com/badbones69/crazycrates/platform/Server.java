@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.platform;
 
 import com.badbones69.crazycrates.api.Settings;
 import com.ryderbelserion.vital.common.AbstractPlugin;
-import com.ryderbelserion.vital.files.FileManager;
+import com.ryderbelserion.vital.files.yaml.FileManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;

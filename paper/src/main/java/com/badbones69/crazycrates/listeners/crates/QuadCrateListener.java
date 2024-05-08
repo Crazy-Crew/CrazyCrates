@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.listeners.crates;
 
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
-import com.ryderbelserion.vital.items.ItemBuilder;
+import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import org.bukkit.Location;
 import org.bukkit.SoundCategory;

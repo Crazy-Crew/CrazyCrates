@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.ryderbelserion.vital.enums.Support;
-import com.ryderbelserion.vital.items.ItemBuilder;
+import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;

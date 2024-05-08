@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.api.enums;
 
-import com.ryderbelserion.vital.files.FileManager;
+import com.ryderbelserion.vital.files.yaml.FileManager;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public enum Files {

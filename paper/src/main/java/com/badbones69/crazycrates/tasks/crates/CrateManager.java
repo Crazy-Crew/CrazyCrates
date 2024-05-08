@@ -21,8 +21,9 @@ import com.badbones69.crazycrates.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WonderCrate;
 import com.ryderbelserion.vital.common.util.FileUtil;
 import com.ryderbelserion.vital.enums.Support;
-import com.ryderbelserion.vital.files.FileManager;
-import com.ryderbelserion.vital.items.ItemBuilder;
+import com.ryderbelserion.vital.files.yaml.CustomFile;
+import com.ryderbelserion.vital.files.yaml.FileManager;
+import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -247,7 +248,11 @@ public class CrateManager {
 
         for (final String crateName : getCrateNames()) {
             try {
-                final FileConfiguration file = this.fileManager.getCustomFile(crateName).getConfiguration();
+                final @Nullable CustomFile customFile = this.fileManager.getCustomFile(crateName);
+
+                if (customFile == null) return;
+
+                final FileConfiguration file = customFile.getConfiguration();
 
                 final CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType", "CSGO"));
 

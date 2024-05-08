@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.tasks;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.ryderbelserion.vital.items.ItemBuilder;
+import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -100,7 +100,7 @@ public class InventoryManager {
         player.closeInventory();
     }
 
-    public @NotNull final Crate getCratePreview(@NotNull final Player player) {
+    public final Crate getCratePreview(@NotNull final Player player) {
         return this.crateViewers.get(player.getUniqueId());
     }
 
