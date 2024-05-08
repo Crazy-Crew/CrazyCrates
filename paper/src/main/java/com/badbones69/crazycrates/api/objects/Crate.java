@@ -215,14 +215,14 @@ public class Crate {
     /**
      * @return item for the preview border.
      */
-    public ItemBuilder getPreviewTierBorderItem() {
+    public @NotNull final ItemBuilder getPreviewTierBorderItem() {
         return this.previewTierBorderItem;
     }
 
     /**
      * Get the crate manager which contains all the settings for that crate type.
      */
-    public AbstractCrateManager getManager() {
+    public @NotNull final AbstractCrateManager getManager() {
         return this.manager;
     }
     
