@@ -138,7 +138,7 @@ public class CrateManager {
                             boolean isEnabled = alternativeSection.getBoolean("Toggle");
 
                             if (isEnabled) {
-                                alternativePrize = new Prize(prizeSection.getString("DisplayName", WordUtils.capitalizeFully(prizeSection.getString("DisplayItem", "Stone").replaceAll("_", " "))), prizeSection.getName(), alternativeSection);
+                                alternativePrize = new Prize(prizeSection.getString("DisplayName", "<lang:item.minecraft." + prizeSection.getString("DisplayItem", "stone") + ">"), prizeSection.getName(), alternativeSection);
                             }
                         }
 
@@ -780,7 +780,7 @@ public class CrateManager {
      * @param player the player you want to check.
      * @return the Crate of which the player is opening. May return null if no crate found.
      */
-    public final Crate getOpeningCrate(@NotNull final Player player) {
+    public @Nullable final Crate getOpeningCrate(@NotNull final Player player) {
         return this.playerOpeningCrates.get(player.getUniqueId());
     }
 
@@ -821,7 +821,7 @@ public class CrateManager {
      * @param player the player that is using the crate.
      * @return the key type of the crate the player is using.
      */
-    public final KeyType getPlayerKeyType(@NotNull final Player player) {
+    public @Nullable final KeyType getPlayerKeyType(@NotNull final Player player) {
         return this.playerKeys.get(player.getUniqueId());
     }
 
@@ -898,7 +898,7 @@ public class CrateManager {
             id = (i + 1) + "";
         }
 
-        for (CrateLocation crateLocation : getCrateLocations()) {
+        for (final CrateLocation crateLocation : getCrateLocations()) {
             if (crateLocation.getLocation().equals(location)) {
                 id = crateLocation.getID();
 
@@ -930,7 +930,7 @@ public class CrateManager {
 
         CrateLocation location = null;
 
-        for (CrateLocation crateLocation : getCrateLocations()) {
+        for (final CrateLocation crateLocation : getCrateLocations()) {
             if (crateLocation.getID().equalsIgnoreCase(id)) {
                 location = crateLocation;
 
@@ -948,18 +948,18 @@ public class CrateManager {
     /**
      * @return an unmodifiable list of crate objects.
      */
-    public List<Crate> getUsableCrates() {
+    public @NotNull final List<Crate> getUsableCrates() {
         List<Crate> crateList = new ArrayList<>(this.crates);
 
         crateList.removeIf(crate -> crate.getCrateType() == CrateType.menu);
 
-        return Collections.unmodifiableList(crateList);
+        return crateList;
     }
 
     /**
      * @return an unmodifiable list of crate objects.
      */
-    public List<Crate> getCrates() {
+    public @NotNull final List<Crate> getCrates() {
         return Collections.unmodifiableList(this.crates);
     }
 
@@ -986,7 +986,7 @@ public class CrateManager {
      * @return true if it is a physical crate and false if not.
      */
     public final boolean isCrateLocation(@NotNull final Location location) {
-        for (CrateLocation crateLocation : getCrateLocations()) {
+        for (final CrateLocation crateLocation : getCrateLocations()) {
             if (crateLocation.getLocation().equals(location)) return true;
         }
 
@@ -1032,7 +1032,7 @@ public class CrateManager {
      * @param location location you are checking.
      * @return a crate location if the location is a physical crate otherwise null if not.
      */
-    public final CrateLocation getCrateLocation(@NotNull final Location location) {
+    public @Nullable final CrateLocation getCrateLocation(@NotNull final Location location) {
         CrateLocation crateLocation = null;
 
         for (CrateLocation key : this.crateLocations) {
@@ -1046,7 +1046,7 @@ public class CrateManager {
         return crateLocation;
     }
 
-    public final Crate getCrateFromLocation(@NotNull final Location location) {
+    public @Nullable final Crate getCrateFromLocation(@NotNull final Location location) {
         Crate crate = null;
 
         for (CrateLocation key : this.crateLocations) {
@@ -1066,7 +1066,7 @@ public class CrateManager {
      * @param name the name of the schematic.
      * @return the CrateSchematic otherwise returns null if not found.
      */
-    public final CrateSchematic getCrateSchematic(@NotNull final String name) {
+    public @Nullable final CrateSchematic getCrateSchematic(@NotNull final String name) {
         if (name.isEmpty()) return null;
 
         for (CrateSchematic schematic : this.crateSchematics) {
@@ -1196,7 +1196,7 @@ public class CrateManager {
     /**
      * @return an unmodifiable list of crate locations.
      */
-    public List<CrateLocation> getCrateLocations() {
+    public @NotNull final List<CrateLocation> getCrateLocations() {
         return Collections.unmodifiableList(this.crateLocations);
     }
 
@@ -1212,14 +1212,14 @@ public class CrateManager {
     /**
      * @return an unmodifiable list of broke crates.
      */
-    public List<String> getBrokeCrates() {
+    public @NotNull final List<String> getBrokeCrates() {
         return Collections.unmodifiableList(this.brokeCrates);
     }
 
     /**
      * @return an unmodifiable list of broken crate locations.
      */
-    public List<BrokeLocation> getBrokeLocations() {
+    public @NotNull final List<BrokeLocation> getBrokeLocations() {
         return Collections.unmodifiableList(this.brokeLocations);
     }
 
@@ -1235,7 +1235,7 @@ public class CrateManager {
     /**
      * @return an unmodifiable list of crate schematics.
      */
-    public List<CrateSchematic> getCrateSchematics() {
+    public @NotNull final List<CrateSchematic> getCrateSchematics() {
         return Collections.unmodifiableList(this.crateSchematics);
     }
 

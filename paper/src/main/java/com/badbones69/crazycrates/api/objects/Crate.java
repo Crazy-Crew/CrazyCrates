@@ -39,7 +39,6 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -299,7 +298,7 @@ public class Crate {
      * @param player the player that will be winning the prize.
      * @return the winning prize.
      */
-    public Prize pickPrize(@NotNull final Player player) {
+    public @Nullable final Prize pickPrize(@NotNull final Player player) {
         final List<Prize> prizes = new ArrayList<>();
         final List<Prize> usablePrizes = new ArrayList<>();
 
@@ -385,7 +384,7 @@ public class Crate {
      * @param tier The tier you wish the prize to be from.
      * @return the winning prize based on the crate's tiers.
      */
-    public Prize pickPrize(@NotNull final Player player, @NotNull final Tier tier) {
+    public @NotNull final Prize pickPrize(@NotNull final Player player, @NotNull final Tier tier) {
         final List<Prize> prizes = new ArrayList<>();
         final List<Prize> usablePrizes = new ArrayList<>();
 
@@ -417,8 +416,10 @@ public class Crate {
      * @param location the location the firework will spawn at.
      * @return the winning prize.
      */
-    public Prize pickPrize(@NotNull final Player player, @NotNull final Location location) {
+    public @Nullable Prize pickPrize(@NotNull final Player player, @NotNull final Location location) {
         Prize prize = pickPrize(player);
+
+        if (prize == null) return null;
 
         if (prize.useFireworks()) MiscUtils.spawnFirework(location, null);
 
@@ -608,12 +609,14 @@ public class Crate {
      * @param prizeName the name of the prize.
      * @param chance the chance to add.
      */
-    public void addEditorItem(ItemStack itemStack, Player player, String prizeName, int chance) {
+    public void addEditorItem(@Nullable final ItemStack itemStack, @NotNull final Player player, @NotNull final String prizeName, final int chance) {
+        if (itemStack == null || prizeName.isEmpty() || chance <= 0) return;
+
         ConfigurationSection section = getPrizeSection();
 
         if (section == null) return;
 
-        setItem(itemStack, player, prizeName, section, chance, null);
+        setItem(itemStack, player, prizeName, section, chance, "");
     }
 
     /**
@@ -652,20 +655,11 @@ public class Crate {
      * @param prizeName the prize name.
      * @param section the prizes section.
      * @param chance the chance of the prize.
-     * @param tier the tier of the prize.
      */
     private void setItem(@Nullable final ItemStack itemStack, @NotNull final Player player, @NotNull final String prizeName, @Nullable final ConfigurationSection section, final int chance, final String tier) {
         if (itemStack == null || prizeName.isEmpty() || section == null || chance <= 0) return;
 
-        //todo() update item editor
-        //final String nbt = new ItemBuilder().getCompoundTag(itemStack, player).getCompoundTag(itemStack).getAsString();
-        //if (nbt.isEmpty()) return;
-
-        final String path = getPath(prizeName, "DisplayNbt");
-        if (path.isEmpty()) return;
-
         final String tiers = getPath(prizeName, "Tiers");
-        if (tiers.isEmpty()) return;
 
         String material = itemStack.getType().getKey().getKey();
 
@@ -744,7 +738,7 @@ public class Crate {
         saveFile();
     }
 
-    private @NotNull final String getPath(final String section, final String path) {
+    private @NotNull String getPath(final String section, final String path) {
         if (section.isEmpty() || path.isEmpty()) return "";
 
         return section + "." + path;

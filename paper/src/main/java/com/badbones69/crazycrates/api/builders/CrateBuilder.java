@@ -208,24 +208,21 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * @return crate that is being opened.
      */
-    @NotNull
-    public Crate getCrate() {
+    public @NotNull final Crate getCrate() {
         return this.crate;
     }
 
     /**
      * @return title of the crate.
      */
-    @NotNull
-    public String getTitle() {
+    public @NotNull final String getTitle() {
         return this.crate.getCrateInventoryName();
     }
 
     /**
      * @return player opening the crate.
      */
-    @NotNull
-    public final Player getPlayer() {
+    public @NotNull final Player getPlayer() {
         return this.player;
     }
 

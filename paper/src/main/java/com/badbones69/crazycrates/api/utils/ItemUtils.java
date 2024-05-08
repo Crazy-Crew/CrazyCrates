@@ -69,7 +69,7 @@ public class ItemUtils {
      * @return the builder object with updated data.
      */
     public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder) {
-        builder.setGlowing(section.getBoolean("Glowing", false));
+        builder.setGlowing(section.contains("Glowing") ? section.getBoolean("Glowing") : null);
         
         builder.setDamage(section.getInt("DisplayDamage", 0));
         

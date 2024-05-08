@@ -100,7 +100,7 @@ public class InventoryManager {
         player.closeInventory();
     }
 
-    public final Crate getCratePreview(@NotNull final Player player) {
+    public @Nullable final Crate getCratePreview(@NotNull final Player player) {
         return this.crateViewers.get(player.getUniqueId());
     }
 
