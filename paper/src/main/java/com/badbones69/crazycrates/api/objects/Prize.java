@@ -54,7 +54,7 @@ public class Prize {
 
         this.alternativePrize = alternativePrize;
 
-        Material material = ItemUtil.getMaterial(section.getString("DisplayItem", "stone"));
+        Material material = new ItemBuilder().withType(section.getString("DisplayItem", "stone")).getType();
 
         this.prizeName = section.getString("DisplayName", material.isBlock() ? "<lang:" + material.getBlockTranslationKey() + ">" : "<lang:" + material.getItemTranslationKey() + ">");
         this.maxRange = section.getInt("MaxRange", 100);
