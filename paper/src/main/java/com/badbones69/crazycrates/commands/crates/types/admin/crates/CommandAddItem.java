@@ -16,16 +16,16 @@ public class CommandAddItem extends BaseCommand {
     @Command("additem")
     @Permission(value = "crazycrates.additem", def = PermissionDefault.OP)
     public void add(Player player, @Suggestion("crates") String crateName, @Suggestion("prizes") String prizeName, @Suggestion("numbers") int chance, @Suggestion("tiers") @Optional String tier) {
-        final ItemStack item = player.getInventory().getItemInMainHand();
-
-        if (item.getType().isAir()) {
-            player.sendRichMessage(Messages.cannot_be_air.getMessage(player));
+        if (crateName.isEmpty() || crateName.isBlank()) {
+            player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
 
             return;
         }
 
-        if (crateName.isEmpty()) {
-            player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
+        final ItemStack item = player.getInventory().getItemInMainHand();
+
+        if (item.getType().isAir()) {
+            player.sendRichMessage(Messages.cannot_be_air.getMessage(player));
 
             return;
         }
