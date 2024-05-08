@@ -1,48 +1,58 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates;
 
+import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
+import com.ryderbelserion.vital.common.util.StringUtil;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CommandList extends BaseCommand {
 
     @Command("list")
     @Permission(value = "crazycrates.list", def = PermissionDefault.OP)
     public void list(CommandSender sender) {
-        final StringBuilder crates = new StringBuilder();
-        String brokeCrates;
+        final List<String> crates = new ArrayList<>();
 
-        this.crateManager.getUsableCrates().forEach(crate -> crates.append("<green>").append(crate.getName()).append("<dark_gray>, "));
+        for (final CrateLocation crateLocation : this.crateManager.getCrateLocations()) {
+            final Crate crate = crateLocation.getCrate();
 
-        final StringBuilder brokeCratesBuilder = new StringBuilder();
+            Location location = crateLocation.getLocation();
 
-        this.crateManager.getBrokeCrates().forEach(crate -> brokeCratesBuilder.append("<red>").append(crate).append(".yml<dark_gray>,"));
+            final String world = location.getWorld().getName();
+            final int x = location.getBlockX();
+            final int y = location.getBlockY();
+            final int z = location.getBlockZ();
 
-        brokeCrates = brokeCratesBuilder.toString();
+            Map<String, String> placeholders = new HashMap<>();
 
-        sender.sendRichMessage("<bold><yellow>Crates:</bold><white> " + crates);
+            placeholders.put("{crate_name}", crate.getName());
+            placeholders.put("{id}", crateLocation.getID());
+            placeholders.put("{x}", String.valueOf(x));
+            placeholders.put("{y}", String.valueOf(y));
+            placeholders.put("{z}", String.valueOf(z));
+            placeholders.put("{world}", world);
 
-        if (!brokeCrates.isEmpty()) sender.sendRichMessage("<bold><gold>Broken Crates:</bold><white> " + brokeCrates.substring(0, brokeCrates.length() - 2));
-
-        sender.sendRichMessage("<bold><yellow>All Crate Locations:</bold>");
-        sender.sendRichMessage("<red>[ID]<dark_gray>, <red>[Crate]<dark_gray>, <red>[World]<dark_gray>, <red>[X]<dark_gray>, <red>[Y]<dark_gray>, <red>[Z]");
-        int line = 1;
-
-        for (final CrateLocation loc : this.crateManager.getCrateLocations()) {
-            final Crate crate = loc.getCrate();
-            final String world = loc.getLocation().getWorld().getName();
-
-            final int x = loc.getLocation().getBlockX();
-            final int y = loc.getLocation().getBlockY();
-            final int z = loc.getLocation().getBlockZ();
-
-            sender.sendRichMessage("<dark_gray>[<blue>" + line + "<dark_gray>]: " + "<red>" + loc.getID() + "<dark_gray>, <red>" + crate.getName() + "<dark_gray>, <red>" + world + "<dark_gray>, <red>" + x + "<dark_gray>, <red>" + y + "<dark_gray>, <red>" + z);
-
-            line++;
+            crates.add(Messages.crate_locations_format.getMessage(placeholders));
         }
+
+        final Map<String, String> placeholders = new HashMap<>();
+
+        placeholders.put("{active_crates}", String.valueOf(this.crateManager.getUsableCrates().size()));
+        placeholders.put("{broken_crates}", String.valueOf(this.crateManager.getBrokeCrates().size()));
+        placeholders.put("{active_locations}", String.valueOf(this.crateManager.getCrateLocations().size()));
+
+        placeholders.put("{locations}", this.crateManager.getCrateLocations().isEmpty() ? "N/A" : StringUtils.chomp(StringUtil.convertList(crates)));
+
+        sender.sendRichMessage(Messages.crate_locations.getMessage(sender, placeholders));
     }
 }

@@ -61,6 +61,8 @@ public enum Messages {
     required_keys(CrateKeys.required_keys),
     created_physical_crate(CrateKeys.created_physical_crate, true),
     removed_physical_crate(CrateKeys.removed_physical_crate),
+    crate_locations(CrateKeys.crate_locations, true),
+    crate_locations_format(CrateKeys.crate_location_format),
     reloaded_forced_out_of_preview(CrateKeys.reloaded_forced_out_of_preview),
 
     gave_a_player_keys(CommandKeys.gave_a_player_keys),

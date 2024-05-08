@@ -72,4 +72,21 @@ public class CrateKeys implements SettingsHolder {
 
     @Comment("A list of available placeholders: {prefix}, {id}")
     public static final Property<String> removed_physical_crate = newProperty("crates.physical-crate.removed", "{prefix}<gray>You have removed <gold>{id}.");
+
+    @Comment("The format for the /crazycrates list command")
+    public static final Property<List<String>> crate_locations = newListProperty("crates.list.format", List.of(
+            "<bold><gold>━━━━━━━━━━━━━━━━━━━ Crate Statistics ━━━━━━━━━━━━━━━━━━━</gold></bold>",
+            "<dark_gray>»</dark_gray> <green>Active Crates: ",
+            " ⤷ {active_crates}</green>",
+            "<dark_gray>»</dark_gray> <red>Broken Crates: ",
+            " ⤷ {broken_crates}</red>",
+            "<dark_gray>»</dark_gray> <yellow>Crate Locations: ",
+            " ⤷ {active_locations}</yellow>",
+            "",
+            "{locations}",
+            "",
+            "<bold><gold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</gold></bold>"
+    ));
+
+    public static final Property<String> crate_location_format = newProperty("crates.list.per-crate", "<dark_gray>[<blue>{id}<dark_gray>]: <red>{crate_name}<dark_gray>, <red>{world}<dark_gray>, <red>{x}<dark_gray>, <red>{y}<dark_gray>, <red>{z}");
 }

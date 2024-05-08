@@ -73,8 +73,14 @@ public class MiscUtils {
         plugin.getServer().getRegionScheduler().runDelayed(plugin, location, scheduledTask -> firework.detonate(), 3L);
     }
 
+    public static @NotNull String location(@NotNull final Location location, boolean getName) {
+        String name = getName ? location.getWorld().getName() : String.valueOf(location.getWorld().getUID());
+
+        return name + "," + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ();
+    }
+
     public static @NotNull String location(@NotNull final Location location) {
-        return location.getWorld().getUID() + "," + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ();
+        return location(location, false);
     }
 
     /**
