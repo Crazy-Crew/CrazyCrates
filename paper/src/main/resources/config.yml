@@ -151,7 +151,7 @@ crate:
     physical-crate-accepts-physical-keys: true
     # Should a physical crate accept physical keys?
     virtual-crate-accepts-physical-keys: true
-    # Settings related to a player"s inventory is not empty.
+    # Settings related to a player's inventory is not empty.
     inventory-settings:
       # Should the player should be given virtual keys if inventory is not empty? If you leave it as false, All keys will be dropped on the ground.
       give-virtual-keys: false

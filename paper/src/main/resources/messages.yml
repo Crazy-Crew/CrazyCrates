@@ -149,14 +149,14 @@ command:
         - ""
     # A list of available placeholders: {crate}, {keys}, {crate_opened}
     crate-format: "{crate} <bold><gray>><dark_gray>></bold> <gold>{keys} keys <gray>: Opened <gold>{crate_opened} times"
-  # This requires crazycrates.command.help
+  # This requires crazycrates.help
   player-help:
     - "<bold><yellow>Crazy Crates Player Help</bold>"
     - ""
     - "<gold>/keys view [player] <gray>- <yellow>Check the number of keys a player has."
     - "<gold>/keys <gray>- <yellow>Shows how many keys you have."
     - "<gold>/cc <gray>- <yellow>Opens the menu."
-  # This requires crazycrates.command.admin.help
+  # This requires crazycrates.admin
   admin-help:
     - "<bold><red>Crazy Crates Admin Help</bold>"
     - ""
