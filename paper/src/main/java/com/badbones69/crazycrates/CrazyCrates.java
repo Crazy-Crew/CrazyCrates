@@ -86,11 +86,10 @@ public class CrazyCrates extends JavaPlugin {
 
         List.of(
                 // Menu listeners.
-                new CratePreviewMenu.CratePreviewListener(),
-                new CrateMainMenu.CrateMenuListener(),
-                new CrateTierMenu.CrateTierListener(),
-
+                new CratePreviewMenu(),
                 new CrateAdminMenu(),
+                new CrateMainMenu(),
+                new CrateTierMenu(),
 
                 // Other listeners.
                 new BrokeLocationsListener(),

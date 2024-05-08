@@ -1,17 +1,14 @@
 package com.badbones69.crazycrates.api.builders.types;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.badbones69.crazycrates.tasks.InventoryManager;
-import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.common.util.StringUtil;
-import com.ryderbelserion.vital.items.ItemBuilder;
+import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -19,13 +16,10 @@ import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.platform.config.ConfigManager;
 import com.badbones69.crazycrates.platform.config.impl.ConfigKeys;
@@ -44,6 +38,8 @@ public class CrateMainMenu extends InventoryBuilder {
     public CrateMainMenu(@NotNull final Player player, @NotNull final String title, final int size) {
         super(player, title, size);
     }
+
+    public CrateMainMenu() {}
 
     @Override
     public InventoryBuilder build() {
@@ -110,31 +106,29 @@ public class CrateMainMenu extends InventoryBuilder {
         for (Crate crate : this.crateManager.getUsableCrates()) {
             final FileConfiguration file = crate.getFile();
 
-            if (file != null) {
-                final ConfigurationSection section = file.getConfigurationSection("Crate");
+            final ConfigurationSection section = file.getConfigurationSection("Crate");
 
-                if (section != null) {
-                    if (section.getBoolean("InGUI", false)) {
-                        final String crateName = crate.getName();
+            if (section != null) {
+                if (section.getBoolean("InGUI", false)) {
+                    final String crateName = crate.getName();
 
-                        int slot = section.getInt("Slot");
+                    int slot = section.getInt("Slot");
 
-                        if (slot > getSize()) continue;
+                    if (slot > getSize()) continue;
 
-                        slot--;
+                    slot--;
 
-                        final ItemBuilder builder = new ItemBuilder()
-                                .withType(section.getString("Item", "chest"))
-                                .setDisplayName(section.getString("CrateName", crateName))
-                                .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)))
-                                .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, crateName)))
-                                .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, crateName)))
-                                .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(uuid, crateName)))
-                                .addLorePlaceholder("%player%", getPlayer().getName())
-                                .setPersistentString(PersistentKeys.crate_key.getNamespacedKey(), crate.getName());
+                    final ItemBuilder builder = new ItemBuilder()
+                            .withType(section.getString("Item", "chest"))
+                            .setDisplayName(section.getString("CrateName", crateName))
+                            .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)))
+                            .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, crateName)))
+                            .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, crateName)))
+                            .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(uuid, crateName)))
+                            .addLorePlaceholder("%player%", getPlayer().getName())
+                            .setPersistentString(PersistentKeys.crate_key.getNamespacedKey(), crate.getName());
 
-                        inventory.setItem(slot, ItemUtils.getItem(section, builder, player).getStack());
-                    }
+                    inventory.setItem(slot, ItemUtils.getItem(section, builder, player).getStack());
                 }
             }
         }
@@ -144,7 +138,87 @@ public class CrateMainMenu extends InventoryBuilder {
 
     @Override
     public void run(InventoryClickEvent event) {
+        final Inventory inventory = event.getInventory();
 
+        if (!(inventory.getHolder(false) instanceof CrateMainMenu holder)) return;
+
+        event.setCancelled(true);
+
+        final Player player = holder.getPlayer();
+        final Location location = player.getLocation();
+        final String playerWorld = player.getWorld().getName();
+        final UUID uuid = player.getUniqueId();
+
+        final ItemStack item = event.getCurrentItem();
+
+        if (item == null || item.getType() == Material.AIR) return;
+
+        if (!item.hasItemMeta()) return;
+
+        final Crate crate = this.crateManager.getCrateFromName(ItemUtils.getKey(item.getItemMeta()));
+
+        if (crate == null) return;
+
+        final String crateName = crate.getName();
+
+        if (event.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
+            if (crate.isPreviewEnabled()) {
+                crate.playSound(player, location, "click-sound", "ui.button.click", SoundCategory.PLAYERS);
+
+                player.closeInventory();
+
+                this.inventoryManager.addViewer(player);
+                this.inventoryManager.openNewCratePreview(player, crate);
+            } else {
+                player.sendRichMessage(Messages.preview_disabled.getMessage(player, "{crate}", crateName));
+            }
+
+            return;
+        }
+
+        if (this.crateManager.isInOpeningList(player)) {
+            player.sendRichMessage(Messages.already_opening_crate.getMessage(player, "{crate}", crateName));
+
+            return;
+        }
+
+        boolean hasKey = false;
+        KeyType keyType = KeyType.virtual_key;
+
+        if (this.userManager.getVirtualKeys(uuid, crateName) >= 1) {
+            hasKey = true;
+        } else {
+            if (this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && this.userManager.hasPhysicalKey(uuid, crateName, false)) {
+                hasKey = true;
+                keyType = KeyType.physical_key;
+            }
+        }
+
+        if (!hasKey) {
+            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
+                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
+            }
+
+            player.sendRichMessage(Messages.no_virtual_key.getMessage(player, "{crate}", crateName));
+
+            return;
+        }
+
+        for (String world : this.config.getProperty(ConfigKeys.disabled_worlds)) {
+            if (world.equalsIgnoreCase(playerWorld)) {
+                player.sendRichMessage(Messages.world_disabled.getMessage(player, "{world}", playerWorld));
+
+                return;
+            }
+        }
+
+        if (MiscUtils.isInventoryFull(player)) {
+            player.sendRichMessage(Messages.inventory_not_empty.getMessage(player, "{crate}", crateName));
+
+            return;
+        }
+
+        this.crateManager.openCrate(player, crate, keyType, location, true, false);
     }
 
     private @NotNull String getCrates(@NotNull String option) {
@@ -163,103 +237,5 @@ public class CrateMainMenu extends InventoryBuilder {
         }
 
         return option;
-    }
-
-    public static class CrateMenuListener implements Listener {
-
-        private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-
-        private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-
-        private @NotNull final SettingsManager config = ConfigManager.getConfig();
-
-        private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
-
-        private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
-
-        @EventHandler
-        public void onInventoryClick(InventoryClickEvent event) {
-            final Inventory inventory = event.getInventory();
-
-            if (!(inventory.getHolder(false) instanceof CrateMainMenu holder)) return;
-
-            event.setCancelled(true);
-
-            final Player player = holder.getPlayer();
-            final Location location = player.getLocation();
-            final String playerWorld = player.getWorld().getName();
-            final UUID uuid = player.getUniqueId();
-
-            final ItemStack item = event.getCurrentItem();
-
-            if (item == null || item.getType() == Material.AIR) return;
-
-            if (!item.hasItemMeta()) return;
-
-            final Crate crate = this.crateManager.getCrateFromName(ItemUtils.getKey(item.getItemMeta()));
-
-            if (crate == null) return;
-
-            final String crateName = crate.getName();
-
-            if (event.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
-                if (crate.isPreviewEnabled()) {
-                    crate.playSound(player, location, "click-sound", "ui.button.click", SoundCategory.PLAYERS);
-
-                    player.closeInventory();
-
-                    this.inventoryManager.addViewer(player);
-                    this.inventoryManager.openNewCratePreview(player, crate);
-                } else {
-                    player.sendRichMessage(Messages.preview_disabled.getMessage(player, "{crate}", crateName));
-                }
-
-                return;
-            }
-
-            if (this.crateManager.isInOpeningList(player)) {
-                player.sendRichMessage(Messages.already_opening_crate.getMessage(player, "{crate}", crateName));
-
-                return;
-            }
-
-            boolean hasKey = false;
-            KeyType keyType = KeyType.virtual_key;
-
-            if (this.userManager.getVirtualKeys(uuid, crateName) >= 1) {
-                hasKey = true;
-            } else {
-                if (this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && this.userManager.hasPhysicalKey(uuid, crateName, false)) {
-                    hasKey = true;
-                    keyType = KeyType.physical_key;
-                }
-            }
-
-            if (!hasKey) {
-                if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                    player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
-                }
-
-                player.sendRichMessage(Messages.no_virtual_key.getMessage(player, "{crate}", crateName));
-
-                return;
-            }
-
-            for (String world : this.config.getProperty(ConfigKeys.disabled_worlds)) {
-                if (world.equalsIgnoreCase(playerWorld)) {
-                    player.sendRichMessage(Messages.world_disabled.getMessage(player, "{world}", playerWorld));
-
-                    return;
-                }
-            }
-
-            if (MiscUtils.isInventoryFull(player)) {
-                player.sendRichMessage(Messages.inventory_not_empty.getMessage(player, "{crate}", crateName));
-
-                return;
-            }
-
-            this.crateManager.openCrate(player, crate, keyType, location, true, false);
-        }
     }
 }

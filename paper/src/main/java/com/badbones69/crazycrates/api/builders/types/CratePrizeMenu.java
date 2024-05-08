@@ -18,7 +18,5 @@ public class CratePrizeMenu extends InventoryBuilder {
     }
 
     @Override
-    public void run(InventoryClickEvent event) {
-
-    }
+    public void run(InventoryClickEvent event) {}
 }

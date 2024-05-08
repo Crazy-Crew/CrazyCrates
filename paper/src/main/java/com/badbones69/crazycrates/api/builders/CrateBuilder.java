@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.items.ItemBuilder;
+import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
