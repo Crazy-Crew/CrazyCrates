@@ -126,7 +126,7 @@ public abstract class BaseCommand {
      * @param name the name of the crate.
      * @return the crate object or null if not found.
      */
-    protected @Nullable final Crate getCrate(@NotNull final CommandSender sender, @NotNull final String name, final boolean ignoreChecks) {
+    protected final Crate getCrate(@NotNull final CommandSender sender, @NotNull final String name, final boolean ignoreChecks) {
         if (name.isEmpty()) return null;
 
         Crate crate = this.crateManager.getCrateFromName(name);
@@ -142,7 +142,7 @@ public abstract class BaseCommand {
         return crate;
     }
 
-    protected @Nullable final Prize getPrize(@NotNull final CommandSender sender, @NotNull final String crateName, @NotNull final String name, final boolean ignoreChecks) {
+    protected final Prize getPrize(@NotNull final CommandSender sender, @NotNull final String crateName, @NotNull final String name, final boolean ignoreChecks) {
         if (crateName.isEmpty()) return null;
         if (name.isEmpty()) return null;
 

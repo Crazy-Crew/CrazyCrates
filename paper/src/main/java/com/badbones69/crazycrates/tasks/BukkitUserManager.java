@@ -110,7 +110,7 @@ public class BukkitUserManager extends UserManager {
     }
 
     @Override
-    public void addKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull KeyType keyType, int amount) {
+    public void addKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull final KeyType keyType, final int amount) {
         if (isPlayerNull(uuid)) {
             if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Player with the uuid " + uuid + " is null.");
 
@@ -198,7 +198,7 @@ public class BukkitUserManager extends UserManager {
     }
 
     @Override
-    public boolean takeKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull KeyType keyType, final int amount, final boolean checkHand) {
+    public boolean takeKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull final KeyType keyType, final int amount, final boolean checkHand) {
         if (isPlayerNull(uuid)) {
             if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Player with the uuid " + uuid + " is null.");
 

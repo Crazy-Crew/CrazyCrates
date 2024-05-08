@@ -298,7 +298,7 @@ public class Crate {
      * @param player the player that will be winning the prize.
      * @return the winning prize.
      */
-    public @Nullable final Prize pickPrize(@NotNull final Player player) {
+    public Prize pickPrize(@NotNull final Player player) {
         final List<Prize> prizes = new ArrayList<>();
         final List<Prize> usablePrizes = new ArrayList<>();
 
@@ -384,7 +384,7 @@ public class Crate {
      * @param tier The tier you wish the prize to be from.
      * @return the winning prize based on the crate's tiers.
      */
-    public @NotNull final Prize pickPrize(@NotNull final Player player, @NotNull final Tier tier) {
+    public final Prize pickPrize(@NotNull final Player player, @NotNull final Tier tier) {
         final List<Prize> prizes = new ArrayList<>();
         final List<Prize> usablePrizes = new ArrayList<>();
 
@@ -416,10 +416,8 @@ public class Crate {
      * @param location the location the firework will spawn at.
      * @return the winning prize.
      */
-    public @Nullable Prize pickPrize(@NotNull final Player player, @NotNull final Location location) {
+    public Prize pickPrize(@NotNull final Player player, @NotNull final Location location) {
         Prize prize = pickPrize(player);
-
-        if (prize == null) return null;
 
         if (prize.useFireworks()) MiscUtils.spawnFirework(location, null);
 

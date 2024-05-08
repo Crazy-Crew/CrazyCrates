@@ -781,7 +781,7 @@ public class CrateManager {
      * @param player the player you want to check.
      * @return the Crate of which the player is opening. May return null if no crate found.
      */
-    public @Nullable final Crate getOpeningCrate(@NotNull final Player player) {
+    public final Crate getOpeningCrate(@NotNull final Player player) {
         return this.playerOpeningCrates.get(player.getUniqueId());
     }
 

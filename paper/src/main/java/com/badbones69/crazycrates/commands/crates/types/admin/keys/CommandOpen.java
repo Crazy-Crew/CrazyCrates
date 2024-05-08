@@ -48,6 +48,14 @@ public class CommandOpen extends BaseCommand {
             return true;
         }
 
+        return false;
+    }
+
+    @Command("open")
+    @Permission(value = "crazycrates.open", def = PermissionDefault.OP)
+    public void open(Player player, @Suggestion("crates") String crateName, @Suggestion("keys") String type) {
+        if (isCancelled(player, crateName)) return;
+
         // Get the crate.
         Crate crate = getCrate(player, crateName, false);
 
@@ -55,7 +63,7 @@ public class CommandOpen extends BaseCommand {
         if (crate == null) {
             player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
 
-            return true;
+            return;
         }
 
         CrateType crateType = crate.getCrateType();
@@ -66,7 +74,7 @@ public class CommandOpen extends BaseCommand {
 
             this.plugin.getLogger().severe("An error has occurred: The crate type is null for the crate named " + crate.getName());
 
-            return true;
+            return;
         }
 
         // Prevent it from working with these crate types.
@@ -78,19 +86,10 @@ public class CommandOpen extends BaseCommand {
 
             player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
 
-            return true;
+            return;
         }
 
-        return false;
-    }
-
-    @Command("open")
-    @Permission(value = "crazycrates.open", def = PermissionDefault.OP)
-    public void open(Player player, @Suggestion("crates") String crateName, @Suggestion("keys") String type) {
-        if (isCancelled(player, crateName)) return;
-
         KeyType keyType = getKeyType(player, type);
-        Crate crate = getCrate(player, crateName, true);
 
         boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), crate.getName()) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1;
 
@@ -121,19 +120,46 @@ public class CommandOpen extends BaseCommand {
         // If the command is cancelled.
         if (isCancelled(player, crateName)) return;
 
-        AtomicReference<KeyType> keyType = new AtomicReference<>(getKeyType(sender, type));
+        // Get the crate.
+        Crate crate = getCrate(player, crateName, false);
 
-        if (sender == player && keyType.get() != KeyType.free_key) {
-            open(player, crateName, type);
+        // If crate is null, return.
+        if (crate == null) {
+            player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
 
             return;
         }
 
-        // If player is null, return.
-        if (player == null) return;
+        CrateType crateType = crate.getCrateType();
 
-        // Get the crate
-        Crate crate = getCrate(player, crateName, true);
+        // If crate type is null, we return.
+        if (crateType == null) {
+            player.sendRichMessage(Messages.internal_error.getMessage(player));
+
+            this.plugin.getLogger().severe("An error has occurred: The crate type is null for the crate named " + crate.getName());
+
+            return;
+        }
+
+        // Prevent it from working with these crate types.
+        if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
+            final Map<String, String> placeholders = new HashMap<>();
+
+            placeholders.put("{cratetype}", crate.getCrateType().getName());
+            placeholders.put("{crate}", crate.getName());
+
+            player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
+
+            return;
+        }
+
+        AtomicReference<KeyType> keyType = new AtomicReference<>(getKeyType(sender, type));
+
+        if (sender == player && keyType.get() != KeyType.free_key) {
+            open(player, crate.getName(), type);
+
+            return;
+        }
 
         flags.getFlagValue("f").ifPresent(arg -> {
             boolean isForced = Boolean.parseBoolean(arg);
@@ -167,12 +193,40 @@ public class CommandOpen extends BaseCommand {
         // If the command is cancelled.
         if (isCancelled(player, crateName)) return;
 
+        // Get the crate.
+        Crate crate = getCrate(player, crateName, false);
+
+        // If crate is null, return.
+        if (crate == null) {
+            player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
+
+            return;
+        }
+
+        CrateType crateType = crate.getCrateType();
+
+        // If crate type is null, we return.
+        if (crateType == null) {
+            player.sendRichMessage(Messages.internal_error.getMessage(player));
+
+            this.plugin.getLogger().severe("An error has occurred: The crate type is null for the crate named " + crate.getName());
+
+            return;
+        }
+
+        // Prevent it from working with these crate types.
+        if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
+            final Map<String, String> placeholders = new HashMap<>();
+
+            placeholders.put("{cratetype}", crate.getCrateType().getName());
+            placeholders.put("{crate}", crate.getName());
+
+            player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
+
+            return;
+        }
+
         final KeyType keyType = getKeyType(player, type);
-        final Crate crate = getCrate(player, crateName, true);
-
-        if (crate == null) return;
-
-        final CrateType crateType = crate.getCrateType();
 
         int keys = keyType == KeyType.physical_key ? this.userManager.getPhysicalKeys(player.getUniqueId(), crate.getName()) : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName());
         int used = 0;

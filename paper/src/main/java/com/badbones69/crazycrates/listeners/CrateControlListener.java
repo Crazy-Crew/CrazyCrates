@@ -179,7 +179,6 @@ public class CrateControlListener implements Listener {
         placeholders.put("{key}", keyName);
 
         if (hasKey) {
-            //todo() crate may be null here. add check
             // Checks if the player uses the quick crate again.
             if (this.crateManager.isInOpeningList(player) && this.crateManager.getOpeningCrate(player).getCrateType() == CrateType.quick_crate && this.crateManager.isCrateInUse(player) && this.crateManager.getCrateInUseLocation(player).equals(crateLocation.getLocation())) {
                 useQuickCrateAgain = true;

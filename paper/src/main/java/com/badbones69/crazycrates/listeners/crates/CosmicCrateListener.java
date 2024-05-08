@@ -65,6 +65,8 @@ public class CosmicCrateListener implements Listener {
         // Get opening crate.
         final Crate crate = this.crateManager.getOpeningCrate(player);
 
+        if (crate == null) return;
+
         // Check if player is in the opening list.
         if (!this.crateManager.isInOpeningList(player) || crate.getCrateType() != CrateType.cosmic) return;
 
@@ -126,6 +128,8 @@ public class CosmicCrateListener implements Listener {
 
         // Get opening crate.
         final Crate crate = this.crateManager.getOpeningCrate(player);
+
+        if (crate == null) return;
 
         // Check if player is in the opening list.
         if (!this.crateManager.isInOpeningList(player) || crate.getCrateType() != CrateType.cosmic) return;
@@ -189,6 +193,8 @@ public class CosmicCrateListener implements Listener {
 
         // Get opening crate.
         final Crate crate = this.crateManager.getOpeningCrate(player);
+
+        if (crate == null) return;
 
         // Check if player is in the opening list.
         if (!this.crateManager.isInOpeningList(player) || crate.getCrateType() != CrateType.cosmic) return;
@@ -302,7 +308,7 @@ public class CosmicCrateListener implements Listener {
         final int size = cosmicCrateManager.getPrizes(player).size();
 
         if (size >= totalPrizes) {
-            KeyType type = this.crateManager.getPlayerKeyType(player);
+            final KeyType type = this.crateManager.getPlayerKeyType(player) == null ? KeyType.virtual_key : this.crateManager.getPlayerKeyType(player);
 
             final boolean value = type == KeyType.physical_key && !this.userManager.hasPhysicalKey(uuid, crateName, this.crateManager.getHand(player));
 
