@@ -10,10 +10,15 @@ import com.ryderbelserion.vital.files.yaml.FileManager;
 import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import com.ryderbelserion.vital.util.DyeUtil;
 import com.ryderbelserion.vital.util.ItemUtil;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.meta.ArmorMeta;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
@@ -36,6 +41,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
@@ -661,39 +667,78 @@ public class Crate {
         final String tiers = getPath(prizeName, "Tiers");
         if (tiers.isEmpty()) return;
 
-        // The section already contains a prize name, so we return.
-        if (section.contains(prizeName)) {
-            section.set(path, null);
-            //section.set(path, nbt);
+        String material = itemStack.getType().getKey().getKey();
 
-            section.set(getPath(prizeName, "Chance"), chance);
-
-            if (!tier.isEmpty()) {
-                if (section.contains(tiers)) {
-                    final List<String> list = section.getStringList(tiers);
-                    list.add(tier);
-
-                    section.set(tiers, list);
-                } else {
-                    section.set(tiers, new ArrayList<>() {{
-                        add(tier);
-                    }});
-                }
-
-                saveFile();
-            }
-
-            return;
+        if (!section.contains(prizeName)) {
+            section.set(getPath(prizeName, "MaxRange"), 100);
         }
 
+        section.set(getPath(prizeName, "DisplayAmount"), itemStack.getAmount());
+        section.set(getPath(prizeName, "DisplayItem"), material);
         section.set(getPath(prizeName, "Chance"), chance);
-        section.set(getPath(prizeName, "MaxRange"), 100);
-        //section.set(path, nbt);
 
+        // The section already contains a prize name, so we update the tiers.
         if (!tier.isEmpty()) {
-            section.set(tiers, new ArrayList<>() {{
-                add(tier);
-            }});
+            if (section.contains(tiers)) {
+                final List<String> list = section.getStringList(tiers);
+                list.add(tier);
+
+                section.set(tiers, list);
+            } else {
+                section.set(tiers, new ArrayList<>() {{
+                    add(tier);
+                }});
+            }
+        }
+
+        if (itemStack.hasItemMeta()) {
+            itemStack.editMeta(itemMeta -> {
+                if (itemMeta instanceof final ArmorMeta armorMeta) {
+                    if (armorMeta.hasTrim()) {
+                        ArmorTrim trim = armorMeta.getTrim();
+
+                        if (trim != null) {
+                            section.set(getPath(prizeName, "DisplayTrim.Pattern"), trim.getPattern().key().value());
+                            section.set(getPath(prizeName, "DisplayTrim.Material"), trim.getMaterial().key().value());
+                        }
+                    }
+                }
+
+                if (itemMeta instanceof Damageable damageable) {
+                    if (damageable.hasDamage()) {
+                        section.set(getPath(prizeName, "DisplayDamage"), damageable.getDamage());
+                    }
+                }
+
+                if (itemMeta.hasEnchantmentGlintOverride()) {
+                    section.set(getPath(prizeName, "Glowing"), itemMeta.getEnchantmentGlintOverride());
+                }
+
+                section.set(getPath(prizeName, "Unbreakable"), itemMeta.isUnbreakable());
+
+                if (itemMeta.hasEnchants()) {
+                    List<String> enchantments = new ArrayList<>();
+
+                    for (Map.Entry<Enchantment, Integer> keys : itemMeta.getEnchants().entrySet()) {
+                        String enchantment = keys.getKey().getKey().getKey();
+                        int level = keys.getValue();
+
+                        enchantments.add(enchantment + ":" + level);
+                    }
+
+                    section.set(getPath(prizeName, "DisplayEnchantments"), enchantments);
+                }
+
+                if (itemMeta.hasLore()) {
+                    section.set(getPath(prizeName, "DisplayLore"), itemMeta.lore());
+                }
+
+                if (itemMeta.hasDisplayName()) {
+                    section.setRichMessage(getPath(prizeName, "DisplayName"), itemMeta.displayName());
+                } else {
+                    section.setRichMessage(getPath(prizeName, "DisplayName"), Component.translatable(itemStack.translationKey()));
+                }
+            });
         }
 
         saveFile();
