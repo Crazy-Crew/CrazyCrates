@@ -11,9 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandTransfer extends BaseCommand {
 
@@ -61,7 +61,7 @@ public class CommandTransfer extends BaseCommand {
         this.userManager.takeKeys(uuid, crate.getName(), KeyType.virtual_key, amount, false);
         this.userManager.addKeys(receiver, crate.getName(), KeyType.virtual_key, amount);
 
-        final Map<String, String> placeholders = new ConcurrentHashMap<>();
+        final Map<String, String> placeholders = new HashMap<>();
 
         placeholders.put("{crate}", crate.getName());
         placeholders.put("{amount}", String.valueOf(amount));

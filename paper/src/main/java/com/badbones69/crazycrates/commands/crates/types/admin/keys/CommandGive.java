@@ -15,8 +15,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandGive extends BaseCommand {
 
@@ -84,7 +84,7 @@ public class CommandGive extends BaseCommand {
             return;
         }
 
-        final Map<String, String> placeholders = new ConcurrentHashMap<>();
+        final Map<String, String> placeholders = new HashMap<>();
 
         placeholders.put("{amount}", String.valueOf(amount));
         placeholders.put("{keytype}", keyType.getFriendlyName());

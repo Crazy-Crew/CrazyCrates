@@ -65,6 +65,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -488,7 +489,7 @@ public class CrateManager {
             case cosmic -> crateBuilder = new CosmicCrate(crate, player, 27);
             case quad_crate -> {
                 if (virtualCrate) {
-                    final Map<String, String> placeholders = new ConcurrentHashMap<>();
+                    final Map<String, String> placeholders = new HashMap<>();
 
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
                     placeholders.put("{crate}", crate.getName());
@@ -513,7 +514,7 @@ public class CrateManager {
                 }
 
                 if (virtualCrate) {
-                    final Map<String, String> placeholders = new ConcurrentHashMap<>();
+                    final Map<String, String> placeholders = new HashMap<>();
 
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
                     placeholders.put("{crate}", crate.getName());
@@ -530,7 +531,7 @@ public class CrateManager {
 
             case crate_on_the_go -> {
                 if (virtualCrate) {
-                    final Map<String, String> placeholders = new ConcurrentHashMap<>();
+                    final Map<String, String> placeholders = new HashMap<>();
 
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
                     placeholders.put("{crate}", crate.getName());
@@ -555,7 +556,7 @@ public class CrateManager {
                 }
 
                 if (virtualCrate) {
-                    final Map<String, String> placeholders = new ConcurrentHashMap<>();
+                    final Map<String, String> placeholders = new HashMap<>();
 
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
                     placeholders.put("{crate}", crate.getName());

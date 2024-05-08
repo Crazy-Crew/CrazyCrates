@@ -39,11 +39,11 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 public class CosmicCrateListener implements Listener {
@@ -308,7 +308,7 @@ public class CosmicCrateListener implements Listener {
 
             // If they don't have enough keys.
             if (value) {
-                Map<String, String> placeholders = new ConcurrentHashMap<>();
+                Map<String, String> placeholders = new HashMap<>();
                 placeholders.put("{crate}", crate.getName());
                 placeholders.put("{key}", crate.getKeyName());
 

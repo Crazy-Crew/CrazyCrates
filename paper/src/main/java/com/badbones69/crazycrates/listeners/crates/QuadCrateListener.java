@@ -35,9 +35,9 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class QuadCrateListener implements Listener {
@@ -175,7 +175,7 @@ public class QuadCrateListener implements Listener {
         if (session != null && !player.hasPermission("crazycrates.admin")) {
             event.setCancelled(true);
 
-            Map<String, String> placeholders = new ConcurrentHashMap<>();
+            Map<String, String> placeholders = new HashMap<>();
 
             Crate crate = session.getCrate();
 
@@ -196,7 +196,7 @@ public class QuadCrateListener implements Listener {
         if (session != null && event.getCause() == TeleportCause.ENDER_PEARL) {
             event.setCancelled(true);
 
-            Map<String, String> placeholders = new ConcurrentHashMap<>();
+            Map<String, String> placeholders = new HashMap<>();
 
             Crate crate = session.getCrate();
 

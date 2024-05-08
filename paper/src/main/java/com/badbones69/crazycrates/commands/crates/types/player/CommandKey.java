@@ -16,7 +16,7 @@ public class CommandKey {
     @Command
     @Permission(value = "crazycrates.keys", def = PermissionDefault.TRUE)
     public void personal(Player player) {
-        /*Map<String, String> placeholders = new ConcurrentHashMap<>();
+        /*Map<String, String> placeholders = new HashMap<>();
 
         placeholders.put("{crates_opened}", String.valueOf(this.userManager.getTotalCratesOpened(player.getUniqueId())));
 
@@ -32,7 +32,7 @@ public class CommandKey {
             return;
         }
 
-        Map<String, String> placeholders = new ConcurrentHashMap<>();
+        Map<String, String> placeholders = new HashMap<>();
 
         placeholders.put("{player}", target.getName());
         placeholders.put("{crates_opened}", String.valueOf(this.userManager.getTotalCratesOpened(target.getUniqueId())));

@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.api;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.ryderbelserion.vital.enums.Support;
 import com.ryderbelserion.vital.util.builders.ItemBuilder;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -18,9 +17,9 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import org.jetbrains.annotations.Nullable;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 import static java.util.regex.Matcher.quoteReplacement;
 
@@ -47,7 +46,7 @@ public class PrizeManager {
         if (!prize.getItems().isEmpty()) {
             for (final ItemStack item : prize.getItems()) {
                 if (item == null) {
-                    final Map<String, String> placeholders = new ConcurrentHashMap<>();
+                    final Map<String, String> placeholders = new HashMap<>();
 
                     placeholders.put("{crate}", prize.getCrateName());
                     placeholders.put("{prize}", prize.getPrizeName());

@@ -17,9 +17,9 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class CrateAdminMenu extends InventoryBuilder {
 
@@ -86,7 +86,7 @@ public class CrateAdminMenu extends InventoryBuilder {
 
         final ClickType clickType = event.getClick();
 
-        final Map<String, String> placeholders = new ConcurrentHashMap<>();
+        final Map<String, String> placeholders = new HashMap<>();
 
         placeholders.put("{amount}", String.valueOf(1));
         placeholders.put("{key}", crate.getKeyName());

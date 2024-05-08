@@ -27,9 +27,9 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.platform.config.ConfigManager;
 import com.badbones69.crazycrates.platform.config.impl.ConfigKeys;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Command(value = "crazycrates", alias = {"crates", "crate"})
 public abstract class BaseCommand {
@@ -176,7 +176,7 @@ public abstract class BaseCommand {
 
         message.add(header);
 
-        final Map<Crate, Integer> keys = new ConcurrentHashMap<>();
+        final Map<Crate, Integer> keys = new HashMap<>();
 
         this.crateManager.getUsableCrates().forEach(crate -> keys.put(crate, this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName())));
 
@@ -186,7 +186,7 @@ public abstract class BaseCommand {
             final int amount = keys.get(crate);
 
             if (amount > 0) {
-                final Map<String, String> placeholders = new ConcurrentHashMap<>();
+                final Map<String, String> placeholders = new HashMap<>();
 
                 hasKeys = true;
 
@@ -242,7 +242,7 @@ public abstract class BaseCommand {
 
             this.userManager.takeKeys(player.getUniqueId(), crate.getName(), type, amount, false);
 
-            final Map<String, String> placeholders = new ConcurrentHashMap<>();
+            final Map<String, String> placeholders = new HashMap<>();
 
             placeholders.put("{amount}", String.valueOf(amount));
             placeholders.put("{keytype}", type.getFriendlyName());
@@ -254,7 +254,7 @@ public abstract class BaseCommand {
         }
 
         if (offlinePlayer != null) {
-            final Map<String, String> placeholders = new ConcurrentHashMap<>();
+            final Map<String, String> placeholders = new HashMap<>();
 
             placeholders.put("{amount}", String.valueOf(amount));
             placeholders.put("{keytype}", type.getFriendlyName());
@@ -281,7 +281,7 @@ public abstract class BaseCommand {
                 this.userManager.addKeys(player.getUniqueId(), crate.getName(), type, amount);
             }
 
-            final Map<String, String> placeholders = new ConcurrentHashMap<>();
+            final Map<String, String> placeholders = new HashMap<>();
 
             placeholders.put("{amount}", String.valueOf(amount));
             placeholders.put("{player}", player.getName());
@@ -308,7 +308,7 @@ public abstract class BaseCommand {
             if (!this.userManager.addOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), type, amount)) {
                 sender.sendRichMessage(Messages.internal_error.getMessage(sender));
             } else {
-                Map<String, String> placeholders = new ConcurrentHashMap<>();
+                Map<String, String> placeholders = new HashMap<>();
 
                 placeholders.put("{amount}", String.valueOf(amount));
                 placeholders.put("{keytype}", type.getFriendlyName());

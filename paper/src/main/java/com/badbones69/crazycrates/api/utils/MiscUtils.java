@@ -27,10 +27,10 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MiscUtils {
@@ -89,7 +89,7 @@ public class MiscUtils {
     // ElectronicBoy is the author.
     public static @Nullable Map<Integer, ItemStack> removeMultipleItemStacks(@NotNull final Inventory inventory, @NotNull final ItemStack... items) {
         if (items != null) {
-            Map<Integer, ItemStack> leftover = new ConcurrentHashMap<>();
+            Map<Integer, ItemStack> leftover = new HashMap<>();
 
             // TODO: optimization
 

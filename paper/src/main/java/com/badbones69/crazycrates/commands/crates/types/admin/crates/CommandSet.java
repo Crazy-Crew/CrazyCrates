@@ -12,8 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.platform.config.impl.ConfigKeys;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class CommandSet extends BaseCommand {
 
@@ -50,7 +50,7 @@ public class CommandSet extends BaseCommand {
 
         this.crateManager.addCrateLocation(block.getLocation(), crate);
 
-        final Map<String, String> placeholders = new ConcurrentHashMap<>();
+        final Map<String, String> placeholders = new HashMap<>();
 
         placeholders.put("{crate}", crate.getName());
         placeholders.put("{prefix}", MsgUtils.getPrefix());

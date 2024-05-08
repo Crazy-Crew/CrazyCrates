@@ -32,8 +32,8 @@ import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class CrateControlListener implements Listener {
 
@@ -153,7 +153,7 @@ public class CrateControlListener implements Listener {
         final int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), crate.getName());
 
         if (requiredKeys > 0 && totalKeys < requiredKeys) {
-            final Map<String, String> placeholders = new ConcurrentHashMap<>();
+            final Map<String, String> placeholders = new HashMap<>();
 
             placeholders.put("{key_amount}", String.valueOf(requiredKeys));
             placeholders.put("{crate}", crate.getPreviewName());
@@ -173,12 +173,13 @@ public class CrateControlListener implements Listener {
 
         if (this.config.getProperty(ConfigKeys.physical_accepts_virtual_keys) && this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) hasKey = true;
 
-        final Map<String, String> placeholders = new ConcurrentHashMap<>();
+        final Map<String, String> placeholders = new HashMap<>();
 
         placeholders.put("{crate}", crate.getName());
         placeholders.put("{key}", keyName);
 
         if (hasKey) {
+            //todo() crate may be null here. add check
             // Checks if the player uses the quick crate again.
             if (this.crateManager.isInOpeningList(player) && this.crateManager.getOpeningCrate(player).getCrateType() == CrateType.quick_crate && this.crateManager.isCrateInUse(player) && this.crateManager.getCrateInUseLocation(player).equals(crateLocation.getLocation())) {
                 useQuickCrateAgain = true;

@@ -27,10 +27,10 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 public class BukkitUserManager extends UserManager {
@@ -141,7 +141,7 @@ public class BukkitUserManager extends UserManager {
                     addVirtualKeys(player.getUniqueId(), crate.getName(), amount);
 
                     if (config.getProperty(ConfigKeys.notify_player_when_inventory_full)) {
-                        final Map<String, String> placeholders = new ConcurrentHashMap<>();
+                        final Map<String, String> placeholders = new HashMap<>();
 
                         placeholders.put("{amount}", String.valueOf(amount));
                         placeholders.put("{player}", player.getName());

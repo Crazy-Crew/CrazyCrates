@@ -22,8 +22,8 @@ import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.platform.config.impl.ConfigKeys;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CommandOpen extends BaseCommand {
@@ -71,7 +71,7 @@ public class CommandOpen extends BaseCommand {
 
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
-            final Map<String, String> placeholders = new ConcurrentHashMap<>();
+            final Map<String, String> placeholders = new HashMap<>();
 
             placeholders.put("{cratetype}", crate.getCrateType().getName());
             placeholders.put("{crate}", crate.getName());
@@ -100,7 +100,7 @@ public class CommandOpen extends BaseCommand {
                 player.playSound(player.getLocation(), ItemUtil.getSound(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
             }
 
-            Map<String, String> placeholders = new ConcurrentHashMap<>();
+            Map<String, String> placeholders = new HashMap<>();
 
             placeholders.put("{crate}", crate.getName());
             placeholders.put("{key}", crate.getKeyName());
@@ -153,7 +153,7 @@ public class CommandOpen extends BaseCommand {
 
         this.crateManager.openCrate(player, crate, keyType.get(), player.getLocation(), true, false);
 
-        final Map<String, String> placeholders = new ConcurrentHashMap<>();
+        final Map<String, String> placeholders = new HashMap<>();
 
         placeholders.put("{crate}", crate.getName());
         placeholders.put("{player}", player.getName());
@@ -169,6 +169,9 @@ public class CommandOpen extends BaseCommand {
 
         final KeyType keyType = getKeyType(player, type);
         final Crate crate = getCrate(player, crateName, true);
+
+        if (crate == null) return;
+
         final CrateType crateType = crate.getCrateType();
 
         int keys = keyType == KeyType.physical_key ? this.userManager.getPhysicalKeys(player.getUniqueId(), crate.getName()) : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName());
