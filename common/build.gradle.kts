@@ -1,5 +1,5 @@
 plugins {
-    `root-plugin`
+    `java-plugin`
 }
 
 repositories {
@@ -9,11 +9,11 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper", "paper-api", "1.20.6-R0.1-SNAPSHOT")
 
-    compileOnly(libs.config.me)
+    compileOnly("com.ryderbelserion", "vital-common", "1.20.6-snapshot")
 
-    compileOnly(libs.vital)
+    api("ch.jalu", "configme", "1.4.1")
 
-    api(project(":api"))
+    api(project(":crazycrates-api"))
 }

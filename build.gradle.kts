@@ -8,7 +8,7 @@ plugins {
 
     id("io.github.goooler.shadow")
 
-    `root-plugin`
+    `java-plugin`
 }
 
 val buildNumber: String = System.getenv("NEXT_BUILD_NUMBER") ?: "SNAPSHOT"

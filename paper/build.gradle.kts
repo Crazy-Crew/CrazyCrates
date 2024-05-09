@@ -13,25 +13,17 @@ repositories {
 dependencies {
     compileOnly(fileTree("$rootDir/libs/compile").include("*.jar"))
 
-    implementation(project(":common"))
+    //api(project(":common"))
 
-    implementation(libs.vital)
+    implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-ALPHA-10")
 
-    compileOnly(libs.head.database.api)
+    compileOnly("com.github.decentsoftware-eu", "decentholograms", "2.8.6")
 
-    compileOnly(libs.decent.holograms)
+    compileOnly("de.oliver", "FancyHolograms", "2.0.6")
 
-    compileOnly(libs.fancy.holograms)
+    compileOnly("me.clip", "placeholderapi", "2.11.5")
 
-    compileOnly(libs.placeholder.api)
-
-    compileOnly(libs.itemsadder.api)
-
-    compileOnly(libs.triumph.cmds)
-
-    compileOnly(libs.oraxen.api)
-
-    compileOnly(libs.config.me)
+    compileOnly("io.th0rgal", "oraxen", "1.171.0")
 }
 
 tasks {
@@ -57,7 +49,10 @@ tasks {
         archiveClassifier.set("")
 
         listOf(
-            "com.ryderbelserion.vital"
+            "com.ryderbelserion",
+            "org.yaml.snakeyaml",
+            "dev.triumphteam",
+            "ch.jalu"
         ).forEach {
             relocate(it, "libs.$it")
         }
