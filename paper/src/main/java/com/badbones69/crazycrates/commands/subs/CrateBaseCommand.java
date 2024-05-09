@@ -193,7 +193,7 @@ public class CrateBaseCommand extends BaseCommand {
     public void onDebug(Player player, @Suggestion("crates") String crateName) {
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
-        if (crate == null) {
+        if (crate == null || crate.getCrateType() == CrateType.menu) {
             player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
 
             return;
@@ -294,7 +294,7 @@ public class CrateBaseCommand extends BaseCommand {
 
         Crate crate = this.crateManager.getCrateFromName(crateName);
 
-        if (crate == null) {
+        if (crate == null || crate.getCrateType() == CrateType.menu) {
             player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
 
             return;
