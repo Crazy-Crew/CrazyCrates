@@ -218,7 +218,31 @@ Crate:
       DisplayAmount: 3
       Lore:
         - "<gradient:#8fcfa0:#32a852>A gradient lore!"
-      # The max range i.e. 25/100 = 25% chance to win.
+      # The max range i.e. 25/100 = 15% chance to win.
       MaxRange: 100
       # The chance to win i.e. 25%
       Chance: 25
+    '8':
+      # The display name of the item.
+      DisplayName: "<yellow>$1,000"
+      # The item to display in the gui.
+      # The enchanted book will function with the enchants properly in an anvil.
+      DisplayItem: "sunflower"
+      # The amount to display in the gui.
+      DisplayAmount: 5
+      # The lore of the item.
+      Lore:
+        - "<gray>Make it rain Money."
+        - "<bold><gold>Chance: <red>20%</bold>"
+      # The max range i.e. 20/100 = 25% chance to win.
+      MaxRange: 100
+      # The chance to win i.e. 20%
+      Chance: 20
+      # Spawn fireworks.
+      Firework: true
+      # Run commands when a prize is won.
+      Commands:
+        - "eco give %player% 1000"
+      # Override the global message.
+      Messages:
+        - "<gray>You just won <reset>%reward%."
