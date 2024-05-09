@@ -71,8 +71,8 @@ public class Prize {
             this.permissions.replaceAll(String::toLowerCase);
         }
 
-        this.displayItem = display();
-        this.prizeItem = new ItemBuilder(this.displayItem, true);
+        this.prizeItem = display();
+        this.displayItem = new ItemBuilder(this.prizeItem, true);
     }
 
     /**
