@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import java.io.File;
 import java.nio.file.Path;
+import java.util.List;
 
 /**
  * A class containing available methods to use.
@@ -29,9 +30,9 @@ public interface IServer {
     @NotNull File getCrateFolder();
 
     /**
-     * @return the array of files in the crates folder
+     * @return the list of files in the crates folder
      */
-    @NotNull File[] getCrateFiles();
+    List<String> getCrateFiles();
 
     /**
      * @return the user manager

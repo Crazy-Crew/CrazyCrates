@@ -208,8 +208,8 @@ public class CrateManager {
     public List<String> getCrateNames() {
         final List<String> files = new ArrayList<>();
 
-        for (File crate : this.plugin.getInstance().getCrateFiles()) {
-            String file = crate.getName().replace(".yml", "");
+        for (String crate : this.plugin.getInstance().getCrateFiles()) {
+            String file = crate.replace(".yml", "");
 
             files.add(file);
         }

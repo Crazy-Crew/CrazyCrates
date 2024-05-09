@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.platform;
 
 import com.badbones69.crazycrates.api.Settings;
 import com.ryderbelserion.vital.common.AbstractPlugin;
+import com.ryderbelserion.vital.common.util.FileUtil;
 import com.ryderbelserion.vital.files.yaml.FileManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
@@ -13,6 +14,7 @@ import us.crazycrew.crazycrates.platform.IServer;
 import com.badbones69.crazycrates.platform.config.ConfigManager;
 import java.io.File;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class Server extends AbstractPlugin implements IServer {
@@ -98,8 +100,8 @@ public class Server extends AbstractPlugin implements IServer {
     }
 
     @Override
-    public @NotNull final File[] getCrateFiles() {
-        return this.crateFolder.listFiles((dir, name) -> name.endsWith(".yml"));
+    public final List<String> getCrateFiles() {
+        return FileUtil.getFiles(this.crateFolder.toPath(), "crates", "yml", true);
     }
 
     @Override
