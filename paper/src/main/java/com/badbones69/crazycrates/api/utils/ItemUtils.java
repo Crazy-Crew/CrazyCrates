@@ -83,9 +83,9 @@ public class ItemUtils {
 
         builder.setUnbreakable(section.getBoolean("Unbreakable", false));
         
-        if (section.contains("Skull")) {
-            builder.setSkull(section.getString("Skull", ""), HeadDatabaseListener.getHeads());
-        }
+        //if (section.contains("Skull")) {
+        //    builder.setSkull(section.getString("Skull", ""), HeadDatabaseListener.getHeads());
+        //}
         
         if (section.contains("Player") && builder.isPlayerHead()) {
             builder.setPlayer(section.getString("Player", ""));
@@ -203,7 +203,6 @@ public class ItemUtils {
                         itemBuilder.setDamage(amount.map(Number::intValue).orElse(1));
                     }
                     case "lore" -> itemBuilder.setDisplayLore(List.of(value.split(",")));
-                    case "hdb" -> itemBuilder.setSkull(value, HeadDatabaseListener.getHeads());
                     case "player" -> itemBuilder.setPlayer(value);
                     case "unbreakable-item" -> itemBuilder.setUnbreakable(value.isEmpty() || value.equalsIgnoreCase("true"));
                     case "trim-pattern" -> itemBuilder.applyTrimPattern(value);
