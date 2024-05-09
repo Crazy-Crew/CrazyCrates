@@ -77,7 +77,7 @@ public class Prize {
         }
 
         this.prizeItem = display();
-        this.displayItem = this.prizeItem;
+        this.displayItem = new ItemBuilder(this.prizeItem, true);
     }
 
     /**
@@ -133,6 +133,13 @@ public class Prize {
         itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, this.prizeNumber));
 
         return itemStack;
+    }
+
+    /**
+     * @return the ItemBuilder of the display item.
+     */
+    public ItemBuilder getDisplayItemBuilder(Player player) {
+        return this.prizeItem.setTarget(player);
     }
 
     /**

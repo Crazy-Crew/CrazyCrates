@@ -44,6 +44,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -142,17 +144,27 @@ public class ItemBuilder {
     private boolean isBook;
 
     /**
-     * Deduplicate an item builder.
+     * Deconstructs an existing ItemBuilder without creating a new ItemStack.
      *
      * @param itemBuilder the item builder to deduplicate.
      */
     public ItemBuilder(ItemBuilder itemBuilder) {
+        this(itemBuilder, false);
+    }
+
+    /**
+     * Deconstructs an existing ItemBuilder with a toggle to create a new itemstack.
+     *
+     * @param itemBuilder the item builder to deduplicate.
+     */
+    public ItemBuilder(ItemBuilder itemBuilder, boolean createNewStack) {
         this.target = itemBuilder.target;
 
         this.tag = itemBuilder.tag;
 
+        this.itemStack = createNewStack ? new ItemStack(itemBuilder.itemStack) : itemBuilder.itemStack;
+
         this.material = itemBuilder.material;
-        this.itemStack = itemBuilder.itemStack;
 
         this.customMaterial = itemBuilder.customMaterial;
 
@@ -224,7 +236,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder(ItemStack itemStack) {
-        this.itemStack = itemStack;
+        this.itemStack = new ItemStack(itemStack);
 
         this.material = itemStack.getType();
 
