@@ -20,7 +20,7 @@ public class CommandTransfer extends BaseCommand {
     @Command("transfer")
     @Permission(value = "crazycrates.transfer", def = PermissionDefault.OP)
     public void transfer(Player player, @Suggestion("crates") String crateName, @Suggestion("players") Player target, @Suggestion("numbers") int amount) {
-        if (crateName.isEmpty() || crateName.isBlank()) {
+        if (crateName.isEmpty() || crateName.isBlank() || crateName.equalsIgnoreCase("Menu")) {
             player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
 
             return;

@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CommandOpen extends BaseCommand {
 
     private boolean isCancelled(Player player, String crateName) {
-        if (crateName.isEmpty() || crateName.isBlank()) {
+        if (crateName.isEmpty() || crateName.isBlank() || crateName.equalsIgnoreCase("Menu")) {
             player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
 
             return true;
@@ -69,10 +69,10 @@ public class CommandOpen extends BaseCommand {
         CrateType crateType = crate.getCrateType();
 
         // If crate type is null, we return.
-        if (crateType == null) {
+        if (crateType == null  || crate.getCrateType() == CrateType.menu) {
             player.sendRichMessage(Messages.internal_error.getMessage(player));
 
-            this.plugin.getLogger().severe("An error has occurred: The crate type is null for the crate named " + crate.getName());
+            this.plugin.getLogger().severe("An error has occurred: The crate type is null or Menu for the crate named " + crate.getName());
 
             return;
         }

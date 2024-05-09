@@ -10,6 +10,7 @@ import dev.triumphteam.cmd.core.annotations.Suggestion;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 
 public class CommandTake extends BaseCommand {
@@ -17,7 +18,7 @@ public class CommandTake extends BaseCommand {
     @Command("take")
     @Permission(value = "crazycrates.takekey", def = PermissionDefault.OP)
     public void take(CommandSender sender, @Suggestion("keys") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, @Suggestion("players") PlayerBuilder target) {
-        if (crateName.isEmpty() || crateName.isBlank()) {
+        if (crateName.isEmpty() || crateName.isBlank() || crateName.equalsIgnoreCase("Menu")) {
             sender.sendRichMessage(Messages.cannot_be_empty.getMessage(sender, "{value}", "crate name"));
 
             return;
@@ -27,7 +28,7 @@ public class CommandTake extends BaseCommand {
 
         final Crate crate = getCrate(sender, crateName, false);
 
-        if (crate == null) {
+        if (crate == null || crate.getCrateType() == CrateType.menu) {
             sender.sendRichMessage(Messages.not_a_crate.getMessage(sender, "{crate}", crateName));
 
             return;

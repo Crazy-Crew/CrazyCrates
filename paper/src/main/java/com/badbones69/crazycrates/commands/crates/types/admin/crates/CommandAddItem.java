@@ -10,13 +10,14 @@ import dev.triumphteam.cmd.core.annotations.Suggestion;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
 public class CommandAddItem extends BaseCommand {
 
     @Command("additem")
     @Permission(value = "crazycrates.additem", def = PermissionDefault.OP)
     public void add(Player player, @Suggestion("crates") String crateName, @Suggestion("prizes") String prizeName, @Suggestion("numbers") int chance, @Suggestion("tiers") @Optional String tier) {
-        if (crateName.isEmpty() || crateName.isBlank()) {
+        if (crateName.isEmpty() || crateName.isBlank() || crateName.equalsIgnoreCase("Menu")) {
             player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
 
             return;
@@ -32,7 +33,7 @@ public class CommandAddItem extends BaseCommand {
 
         final Crate crate = getCrate(player, crateName, false);
 
-        if (crate == null) {
+        if (crate == null || crate.getCrateType() == CrateType.menu) {
             player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
 
             return;
