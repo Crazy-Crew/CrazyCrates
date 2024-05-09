@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.api.hooks.HeadDatabaseListener;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import org.bukkit.Material;
@@ -24,6 +25,7 @@ public class Prize {
 
     private List<String> permissions = new ArrayList<>();
     private ItemBuilder displayItem = new ItemBuilder();
+    private ItemBuilder prizeItem = new ItemBuilder();
     private boolean firework = false;
     private String crateName = "";
     private int maxRange = 100;
@@ -70,6 +72,7 @@ public class Prize {
         }
 
         this.displayItem = display();
+        this.prizeItem = new ItemBuilder(this.displayItem, true);
     }
 
     /**
@@ -109,21 +112,21 @@ public class Prize {
      * @return the display item that is shown for the preview and the winning prize.
      */
     public @NotNull final ItemStack getDisplayItem() {
-        return getDisplayItemBuilder().setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
+        return this.displayItem.setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
     }
 
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
     public @NotNull final ItemStack getDisplayItem(@NotNull final Player player) {
-        return getDisplayItemBuilder().setPlayer(player).setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
+        return this.displayItem.setPlayer(player).setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
     }
 
     /**
      * @return the ItemBuilder of the display item.
      */
-    public @NotNull final ItemBuilder getDisplayItemBuilder() {
-        return this.displayItem;
+    public @NotNull final ItemBuilder getPrizeItem() {
+        return this.prizeItem;
     }
     
     /**
@@ -223,7 +226,47 @@ public class Prize {
             final String material = this.section.getString("DisplayItem", "red_terracotta");
             final int amount = this.section.getInt("DisplayAmount", 1);
 
-            return ItemUtils.getItem(this.section, builder.withType(material).setAmount(amount).setDisplayName(this.prizeName)).setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.section.getName());
+            builder.withType(material).setAmount(amount).setDisplayName(this.prizeName);
+
+            builder.setGlowing(this.section.contains("Glowing") ? section.getBoolean("Glowing") : null);
+
+            builder.setDamage(this.section.getInt("DisplayDamage", 0));
+
+            builder.setDisplayLore(this.section.getStringList("Lore"));
+
+            builder.addPatterns(this.section.getStringList("Patterns"));
+
+            builder.setItemFlags(this.section.getStringList("Flags"));
+
+            builder.setHidingItemFlags(this.section.getBoolean("HideItemFlags", false));
+
+            builder.setUnbreakable(section.getBoolean("Unbreakable", false));
+
+            if (this.section.contains("Skull")) {
+                builder.setSkull(section.getString("Skull", ""), HeadDatabaseListener.getHeads());
+            }
+
+            if (this.section.contains("Player") && builder.isPlayerHead()) {
+                builder.setPlayer(this.section.getString("Player", ""));
+            }
+
+            if (this.section.contains("DisplayTrim.Pattern") && builder.isArmor()) {
+                builder.applyTrimPattern(this.section.getString("DisplayTrim.Pattern", "sentry"));
+            }
+
+            if (this.section.contains("DisplayTrim.Material") && builder.isArmor()) {
+                builder.applyTrimMaterial(this.section.getString("DisplayTrim.Material", "quartz"));
+            }
+
+            if (this.section.contains("DisplayEnchantments")) {
+                for (String ench : this.section.getStringList("DisplayEnchantments")) {
+                    String[] value = ench.split(":");
+
+                    builder.addEnchantment(value[0], Integer.parseInt(value[1]), true);
+                }
+            }
+
+            return builder;
         } catch (Exception exception) {
             final List<String> list = new ArrayList<>() {{
                add("<red>There was an error with one of your prizes!");
