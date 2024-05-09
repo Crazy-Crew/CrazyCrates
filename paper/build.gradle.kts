@@ -15,8 +15,6 @@ dependencies {
 
     implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-ALPHA-10")
 
-    implementation("com.ryderbelserion", "vital-paper", "1.20.6-snapshot")
-
     compileOnly("com.github.decentsoftware-eu", "decentholograms", "2.8.6")
 
     compileOnly("de.oliver", "FancyHolograms", "2.0.6")
@@ -52,7 +50,6 @@ tasks {
 
         listOf(
             "com.ryderbelserion",
-            "org.yaml.snakeyaml",
             "dev.triumphteam",
             "ch.jalu"
         ).forEach {

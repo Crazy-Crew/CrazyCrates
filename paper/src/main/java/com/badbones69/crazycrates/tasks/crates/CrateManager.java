@@ -71,7 +71,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TimerTask;
 import java.util.UUID;
-import java.util.HashMap;
 import java.util.logging.Level;
 
 public class CrateManager {

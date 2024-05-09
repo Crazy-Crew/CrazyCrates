@@ -49,17 +49,19 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        this.instance = new Server(getPluginMeta().getName(), getDataFolder(), getLogger());
+        this.instance.enable();
+
         new VitalPaper(this);
 
         // Register permissions that we need.
         registerPermissions();
 
-        // Enable common/api module
-        this.instance = new Server(getPluginMeta().getName(), getDataFolder(), getLogger(), this.userManager = new BukkitUserManager());
-        this.instance.enable();
-
         this.inventoryManager = new InventoryManager();
         this.crateManager = new CrateManager();
+        this.userManager = new BukkitUserManager();
+
+        this.instance.setUserManager(this.userManager);
 
         // Load holograms.
         this.crateManager.loadHolograms();

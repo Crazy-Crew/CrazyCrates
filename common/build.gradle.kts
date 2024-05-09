@@ -9,9 +9,11 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper", "paper-api", "1.20.6-R0.1-SNAPSHOT")
 
-    compileOnly("com.ryderbelserion", "vital-paper", "1.20.6-snapshot")
+    api("com.ryderbelserion", "vital-paper", "1.20.6-snapshot")
 
-    api("ch.jalu", "configme", "1.4.1")
+    api("ch.jalu", "configme", "1.4.1") {
+        exclude("org.yaml")
+    }
 
     api(project(":crazycrates-api"))
 }

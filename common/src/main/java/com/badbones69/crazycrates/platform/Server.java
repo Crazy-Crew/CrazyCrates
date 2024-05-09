@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.api.Settings;
 import com.ryderbelserion.vital.common.AbstractPlugin;
 import com.ryderbelserion.vital.common.util.FileUtil;
 import com.ryderbelserion.vital.files.yaml.FileManager;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.users.UserManager;
@@ -18,17 +19,16 @@ import java.util.logging.Logger;
 public class Server extends AbstractPlugin implements IServer {
 
     private final FileManager fileManager;
-    private final UserManager userManager;
     private final File crateFolder;
     private final File dataFolder;
     private final Logger logger;
 
+    private UserManager userManager;
     private Settings settings;
 
-    public Server(String pluginName, File dataFolder, Logger logger, UserManager userManager) {
+    public Server(String pluginName, File dataFolder, Logger logger) {
         super(pluginName);
 
-        this.userManager = userManager;
         this.dataFolder = dataFolder;
         this.logger = logger;
 
@@ -69,6 +69,11 @@ public class Server extends AbstractPlugin implements IServer {
 
     public @NotNull final FileManager getFileManager() {
         return this.fileManager;
+    }
+
+    @ApiStatus.Internal
+    public void setUserManager(UserManager userManager) {
+        this.userManager = userManager;
     }
 
     @Override
