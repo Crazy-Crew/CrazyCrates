@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CommandOpen extends BaseCommand {
 
     private boolean isCancelled(Player player, String crateName) {
-        if (crateName.isEmpty() || crateName.isBlank() || crateName.equalsIgnoreCase("Menu")) {
+        if (crateName.isEmpty() || crateName.isBlank()) {
             player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
 
             return true;

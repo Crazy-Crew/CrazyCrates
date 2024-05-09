@@ -17,7 +17,7 @@ public class CommandAddItem extends BaseCommand {
     @Command("additem")
     @Permission(value = "crazycrates.additem", def = PermissionDefault.OP)
     public void add(Player player, @Suggestion("crates") String crateName, @Suggestion("prizes") String prizeName, @Suggestion("numbers") int chance, @Suggestion("tiers") @Optional String tier) {
-        if (crateName.isEmpty() || crateName.isBlank() || crateName.equalsIgnoreCase("Menu")) {
+        if (crateName.isEmpty() || crateName.isBlank()) {
             player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
 
             return;

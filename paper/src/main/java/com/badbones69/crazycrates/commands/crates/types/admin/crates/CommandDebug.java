@@ -16,7 +16,7 @@ public class CommandDebug extends BaseCommand {
     @Command("debug")
     @Permission(value = "crazycrates.debug", def = PermissionDefault.OP)
     public void debug(Player player, @Suggestion("crates") String crateName) {
-        if (crateName.isEmpty() || crateName.isBlank() || crateName.equalsIgnoreCase("Menu")) {
+        if (crateName.isEmpty() || crateName.isBlank()) {
             player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
 
             return;

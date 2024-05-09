@@ -16,7 +16,7 @@ public class CommandPreview extends BaseCommand {
     @Command("preview")
     @Permission(value = "crazycrates.preview", def = PermissionDefault.OP)
     public void preview(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("players") Player player) {
-        if (crateName.isEmpty() || crateName.isBlank() || crateName.equalsIgnoreCase("Menu")) {
+        if (crateName.isEmpty() || crateName.isBlank()) {
             sender.sendRichMessage(Messages.cannot_be_empty.getMessage(sender, "{value}", "crate name"));
 
             return;
