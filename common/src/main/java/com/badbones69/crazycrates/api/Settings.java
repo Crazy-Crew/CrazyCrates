@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.platform.config.ConfigManager;
 import com.badbones69.crazycrates.platform.config.impl.ConfigKeys;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.platform.ISettings;
-import java.util.Collections;
 import java.util.List;
 
 public class Settings implements ISettings {
@@ -29,6 +28,6 @@ public class Settings implements ISettings {
 
     @Override
     public final List<String> getDisabledWorlds() {
-        return Collections.unmodifiableList(this.config.getProperty(ConfigKeys.disabled_worlds));
+        return this.config.getProperty(ConfigKeys.disabled_worlds);
     }
 }
