@@ -98,7 +98,7 @@ public class Prize {
 
         this.section = section;
     }
-    
+
     /**
      * @return the name of the prize.
      */
