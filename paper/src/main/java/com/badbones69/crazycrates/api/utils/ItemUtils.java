@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.api.utils;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
-import com.badbones69.crazycrates.api.hooks.HeadDatabaseListener;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.common.util.StringUtil;
