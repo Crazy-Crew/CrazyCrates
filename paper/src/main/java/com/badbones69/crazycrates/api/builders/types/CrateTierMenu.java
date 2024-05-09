@@ -81,7 +81,7 @@ public class CrateTierMenu extends InventoryBuilder {
         if (container.has(PersistentKeys.preview_tier_button.getNamespacedKey())) {
             crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", SoundCategory.PLAYERS);
 
-            final String tierName = container.getOrDefault(PersistentKeys.preview_tier_button.getNamespacedKey(), PersistentDataType.STRING, "");
+            final String tierName = container.get(PersistentKeys.preview_tier_button.getNamespacedKey(), PersistentDataType.STRING);
 
             final Tier tier = crate.getTier(tierName);
 

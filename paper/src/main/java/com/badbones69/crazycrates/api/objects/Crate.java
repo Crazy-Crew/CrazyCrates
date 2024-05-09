@@ -18,7 +18,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
@@ -570,20 +572,27 @@ public class Crate {
      * @param name name of the prize you want.
      * @return the prize you asked for.
      */
-    public @Nullable final Prize getPrize(@NotNull final String name) {
-        if (name.isEmpty()) return null;
+    public final @Nullable Prize getPrize(@Nullable final String name) {
+        if (name != null && name.isEmpty()) return null;
 
-        for (final Prize prize : this.prizes) {
-            if (prize.getSectionName().equalsIgnoreCase(name)) return prize;
+        Prize prize = null;
+
+        for (final Prize key : this.prizes) {
+            if (!key.getSectionName().equalsIgnoreCase(name)) continue;
+
+            prize = key;
+            break;
         }
 
-        return null;
+        return prize;
     }
     
-    public @Nullable final Prize getPrize(@NotNull final ItemStack item) {
-        if (!item.hasItemMeta()) return null;
+    public final @Nullable Prize getPrize(@NotNull final ItemStack item) {
+        ItemMeta itemMeta = item.getItemMeta();
 
-        return getPrize(item.getItemMeta().getPersistentDataContainer().getOrDefault(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, ""));
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+
+        return getPrize(container.get(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING));
     }
     
     /**
@@ -783,14 +792,20 @@ public class Crate {
      * @param name name of the tier.
      * @return the tier object.
      */
-    public @Nullable final Tier getTier(final String name) {
+    public @Nullable final Tier getTier(@Nullable final String name) {
+        if (name == null) return null;
         if (name.isEmpty()) return null;
 
-        for (final Tier tier : this.tiers) {
-            if (tier.getName().equalsIgnoreCase(name)) return tier;
+        Tier tier = null;
+
+        for (final Tier key : this.tiers) {
+            if (!key.getName().equalsIgnoreCase(name)) continue;
+
+            tier = key;
+            break;
         }
 
-        return null;
+        return tier;
     }
 
     /**

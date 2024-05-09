@@ -369,11 +369,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @return the display item of the picked prize.
      */
     public ItemStack getDisplayItem() {
-        Prize prize = getCrate().pickPrize(getPlayer());
-
-        if (prize == null) return new ItemStack(Material.STONE);
-
-        return prize.getDisplayItem(getPlayer());
+        return getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer());
     }
 
     /**

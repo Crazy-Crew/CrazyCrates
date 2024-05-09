@@ -244,10 +244,7 @@ public class CosmicCrateListener implements Listener {
             // Check if prizes is less than or equal to totalPrizes before we change any items.
             if (size < totalPrizes) {
                 // Gets the tier name from the pdc.
-                final String tierName = container.getOrDefault(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING, "");
-
-                // If the tier is empty, return.
-                if (tierName.isEmpty()) return;
+                final String tierName = container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING);
 
                 // If the tier is null, return.
                 final Tier tier = crate.getTier(tierName);
@@ -275,10 +272,7 @@ public class CosmicCrateListener implements Listener {
             }
         } else if (container.has(PersistentKeys.cosmic_picked_crate.getNamespacedKey())) {
             // Gets the tier name from the pdc.
-            final String tierName = container.getOrDefault(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING, "");
-
-            // If the tier is empty, return.
-            if (tierName.isEmpty()) return;
+            final String tierName = container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING);
 
             // Get item builder.
             ItemBuilder builder = cosmicCrateManager.getMysteryCrate().setPlayer(player)

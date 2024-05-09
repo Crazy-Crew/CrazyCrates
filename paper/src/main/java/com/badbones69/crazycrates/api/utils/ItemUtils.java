@@ -45,8 +45,8 @@ public class ItemUtils {
         return crateManager.isKeyFromCrate(itemStack, crate);
     }
 
-    public static @NotNull String getKey(@NotNull final ItemMeta itemMeta) {
-        return itemMeta.getPersistentDataContainer().getOrDefault(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING, "");
+    public static String getKey(@NotNull final ItemMeta itemMeta) {
+        return itemMeta.getPersistentDataContainer().get(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
     }
 
     /**

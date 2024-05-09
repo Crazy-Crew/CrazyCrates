@@ -970,14 +970,20 @@ public class CrateManager {
      * @param name name of the crate.
      * @return the crate object.
      */
-    public @Nullable final Crate getCrateFromName(String name) {
+    public @Nullable final Crate getCrateFromName(@Nullable final String name) {
+        if (name == null) return null;
         if (name.isEmpty()) return null;
 
-        for (Crate crate : this.crates) {
-            if (crate.getName().equalsIgnoreCase(name)) return crate;
+        Crate crate = null;
+
+        for (Crate key : this.crates) {
+            if (!key.getName().equalsIgnoreCase(name)) continue;
+
+            crate = key;
+            break;
         }
 
-        return null;
+        return crate;
     }
 
     /**

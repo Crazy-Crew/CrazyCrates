@@ -12,11 +12,11 @@ import org.bukkit.persistence.PersistentDataContainer;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.HashMap;
 
 public class CosmicCrateManager extends AbstractCrateManager {
 
@@ -95,7 +95,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
             final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
             if (container.has(PersistentKeys.crate_tier.getNamespacedKey())) {
-                return crate.getTier(container.getOrDefault(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING, ""));
+                return crate.getTier(container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
             }
 
             // In case there is no tier.
@@ -112,7 +112,10 @@ public class CosmicCrateManager extends AbstractCrateManager {
      * @param itemBuilder the itembuilder
      * @param name the name of the tier
      */
-    public void setTier(@NotNull final ItemBuilder itemBuilder, @NotNull final String name) {
+    public void setTier(@NotNull final ItemBuilder itemBuilder, @Nullable final String name) {
+        if (name == null) return;
+        if (name.isEmpty()) return;
+
         itemBuilder.setPersistentString(PersistentKeys.crate_tier.getNamespacedKey(), name);
     }
 

@@ -76,9 +76,9 @@ public class PrizeManager {
             // Only give them the display item as a reward if prize commands are empty.
             if (prize.getCommands().isEmpty()) {
                 if (!MiscUtils.isInventoryFull(player)) {
-                    player.getInventory().addItem(prize.getDisplayItem(player));
+                    player.getInventory().addItem(prize.getPrizeItem().setPlayer(player).getStack());
                 } else {
-                    player.getWorld().dropItemNaturally(player.getLocation(), prize.getDisplayItem(player));
+                    player.getWorld().dropItemNaturally(player.getLocation(), prize.getPrizeItem().setPlayer(player).getStack());
                 }
             }
         }
@@ -136,7 +136,7 @@ public class PrizeManager {
 
         if (Support.placeholder_api.isEnabled() ) cmd = PlaceholderAPI.setPlaceholders(player, cmd);
 
-        final ItemBuilder builder = prize.getDisplayItemBuilder();
+        final ItemBuilder builder = prize.getPrizeItem();
 
         final String display = builder.getStrippedName();
 
@@ -150,7 +150,7 @@ public class PrizeManager {
     private static void sendMessage(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, String message) {
         if (message.isEmpty()) return;
 
-        final ItemBuilder builder = prize.getDisplayItemBuilder();
+        final ItemBuilder builder = prize.getPrizeItem();
 
         final String display = builder.getStrippedName();
 
