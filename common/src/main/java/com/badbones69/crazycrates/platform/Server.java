@@ -4,8 +4,6 @@ import com.badbones69.crazycrates.api.Settings;
 import com.ryderbelserion.vital.common.AbstractPlugin;
 import com.ryderbelserion.vital.common.util.FileUtil;
 import com.ryderbelserion.vital.files.yaml.FileManager;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.users.UserManager;
@@ -20,25 +18,26 @@ import java.util.logging.Logger;
 public class Server extends AbstractPlugin implements IServer {
 
     private final FileManager fileManager;
-    private final JavaPlugin plugin;
+    private final UserManager userManager;
     private final File crateFolder;
+    private final File dataFolder;
+    private final Logger logger;
 
     private Settings settings;
-    private UserManager userManager;
 
-    @ApiStatus.Internal
-    public Server(@NotNull final JavaPlugin plugin) {
-        super(plugin.getName());
+    public Server(String pluginName, File dataFolder, Logger logger, UserManager userManager) {
+        super(pluginName);
 
-        this.plugin = plugin;
+        this.userManager = userManager;
+        this.dataFolder = dataFolder;
+        this.logger = logger;
 
-        this.crateFolder = new File(this.plugin.getDataFolder(), "crates");
+        this.crateFolder = new File(dataFolder, "crates");
         this.fileManager = new FileManager(getDirectory(), getLogger());
     }
 
-    @ApiStatus.Internal
     public void enable() {
-        ConfigManager.load(this.plugin.getDataFolder());
+        ConfigManager.load(this.dataFolder);
 
         this.settings = new Settings();
 
@@ -63,20 +62,13 @@ public class Server extends AbstractPlugin implements IServer {
         CratesProvider.register(this);
     }
 
-    @ApiStatus.Internal
     public void disable() {
         // Unregister default provider.
         CratesProvider.unregister();
     }
 
-    @ApiStatus.Internal
     public @NotNull final FileManager getFileManager() {
         return this.fileManager;
-    }
-
-    @ApiStatus.Internal
-    public void setUserManager(UserManager userManager) {
-        this.userManager = userManager;
     }
 
     @Override
@@ -86,12 +78,12 @@ public class Server extends AbstractPlugin implements IServer {
 
     @Override
     public @NotNull final Path getDirectory() {
-        return this.plugin.getDataFolder().toPath();
+        return this.dataFolder.toPath();
     }
 
     @Override
     public @NotNull final Logger getLogger() {
-        return this.plugin.getLogger();
+        return this.logger;
     }
 
     @Override
@@ -100,7 +92,7 @@ public class Server extends AbstractPlugin implements IServer {
     }
 
     @Override
-    public final List<String> getCrateFiles() {
+    public @NotNull final List<String> getCrateFiles() {
         return FileUtil.getFiles(this.crateFolder.toPath(), "crates", "yml", true);
     }
 
@@ -110,7 +102,7 @@ public class Server extends AbstractPlugin implements IServer {
     }
 
     @Override
-    public @NotNull ISettings getSettings() {
+    public @NotNull final ISettings getSettings() {
         return this.settings;
     }
 }

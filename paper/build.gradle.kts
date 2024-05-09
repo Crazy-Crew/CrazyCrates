@@ -13,9 +13,9 @@ repositories {
 dependencies {
     compileOnly(fileTree("$rootDir/libs/compile").include("*.jar"))
 
-    //api(project(":common"))
-
     implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-ALPHA-10")
+
+    implementation("com.ryderbelserion", "vital-paper", "1.20.6-snapshot")
 
     compileOnly("com.github.decentsoftware-eu", "decentholograms", "2.8.6")
 
@@ -24,6 +24,8 @@ dependencies {
     compileOnly("me.clip", "placeholderapi", "2.11.5")
 
     compileOnly("io.th0rgal", "oraxen", "1.171.0")
+
+    implementation(project(":crazycrates-common"))
 }
 
 tasks {

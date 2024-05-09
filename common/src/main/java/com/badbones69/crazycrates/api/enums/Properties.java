@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.api.enums;
 import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.properties.Property;
 import ch.jalu.configme.resource.PropertyReader;
-import org.jetbrains.annotations.ApiStatus;
 import com.badbones69.crazycrates.platform.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.platform.config.impl.messages.CommandKeys;
 import com.badbones69.crazycrates.platform.config.impl.messages.CrateKeys;
@@ -16,7 +15,7 @@ import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
-@ApiStatus.Internal
+
 public enum Properties {
 
     enable_crate_menu(ConfigKeys.enable_crate_menu, newProperty("Settings.Enable-Crate-Menu", ConfigKeys.enable_crate_menu.getDefaultValue()), false),
