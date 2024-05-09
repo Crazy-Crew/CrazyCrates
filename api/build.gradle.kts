@@ -1,22 +1,14 @@
 plugins {
     id("io.github.goooler.shadow")
 
-    `root-plugin`
+    `java-plugin`
 }
 
 project.group = "us.crazycrew.crazycrates"
 project.version = "0.5"
 
-repositories {
-    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-
-    maven("https://repo.papermc.io/repository/maven-public")
-}
-
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT")
-
-    compileOnly(libs.vital)
+    compileOnly("net.kyori", "adventure-api", "4.17.0")
 }
 
 val javaComponent: SoftwareComponent = components["java"]
@@ -33,16 +25,10 @@ tasks {
         from(javadoc)
     }
 
-    javadoc {
-        options {
-            (this as CoreJavadocOptions).addBooleanOption("Xdoclint:all,-missing", true)
-        }
-    }
-
     publishing {
         repositories {
             maven {
-                url = uri("https://repo.crazycrew.us/releases")
+                url = uri("https://repo.crazycrew.us/releases/")
 
                 credentials {
                     this.username = System.getenv("gradle_username")
