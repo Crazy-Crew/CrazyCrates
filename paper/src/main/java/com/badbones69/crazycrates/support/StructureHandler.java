@@ -60,7 +60,7 @@ public class StructureHandler {
         this.structureBlocks.forEach(block -> {
             Location location = block.toBlockLocation();
 
-            location.getBlock().setType(Material.AIR, true);
+            plugin.getServer().getRegionScheduler().run(plugin, block.toBlockLocation(), scheduledTask -> location.getBlock().setType(Material.AIR, true));
         });
     }
 
@@ -73,6 +73,7 @@ public class StructureHandler {
                     List<Location> relativeBlocks = new ArrayList<>();
 
                     relativeBlocks.add(relativeLocation.getLocation());
+
                     this.structureBlocks.addAll(relativeBlocks);
 
                     this.structureBlocks.forEach(block -> {

@@ -64,18 +64,21 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.")
     public static final Property<Boolean> use_different_random = newProperty("root.use-different-random", false);
 
-    @Comment({
-            "Sends anonymous statistics about how the plugin is used to bstats.org.",
-            "bstats is a service for plugin developers to find out how the plugin being used,",
-            "This information helps us figure out how to better improve the plugin."
-    })
-    public static final Property<Boolean> toggle_metrics = newProperty("root.toggle_metrics", true);
+    //@Comment({
+    //        "Sends anonymous statistics about how the plugin is used to bstats.org.",
+    //        "bstats is a service for plugin developers to find out how the plugin being used,",
+    //        "This information helps us figure out how to better improve the plugin."
+    //})
+    //public static final Property<Boolean> toggle_metrics = newProperty("root.toggle_metrics", true);
+
+    @Comment("This will wipe the example folder on /crazycrates reload or plugin startup so you always have fresh examples to look at.")
+    public static final Property<Boolean> update_examples_folder = newProperty("root.update-examples-folder", true);
 
     @Comment("The prefix used in commands")
-    public static final Property<String> command_prefix = newProperty("root.command_prefix", "&8[&bCrazyCrates&8]: ");
+    public static final Property<String> command_prefix = newProperty("root.command_prefix", "<dark_gray>[<blue>CrazyCrates<dark_gray>]: ");
 
     @Comment("The prefix used in console")
-    public static final Property<String> console_prefix = newProperty("root.console_prefix", "&8[&bCrazyCrates&8] ");
+    public static final Property<String> console_prefix = newProperty("root.console_prefix", "<dark_gray>[<blue>CrazyCrates<dark_gray>] ");
 
     @Comment("If /crates should open the main menu. Warning: This will remove the menu button from crate previews.")
     public static final Property<Boolean> enable_crate_menu = newProperty("gui.toggle", true);
@@ -86,20 +89,11 @@ public class ConfigKeys implements SettingsHolder {
     //@Comment("Logs all crate actions to a .txt file if enabled. It is recommended to delete the file occasionally.")
     //public static final Property<Boolean> log_to_file = newProperty("crate.log-file", false);
 
-    @Comment({
-            "This option is unsupported and not recommended for use.",
-            "It is not very performant and is recommended to keep false",
-            "The option only here for niche use cases for the time being",
-            "If at some point it ever gets more difficult to maintain this",
-            "The option and code related will be completely removed and not added back."
-    })
-    public static final Property<Boolean> use_old_key_checks = newProperty("crate.unsupported-settings.old-key-checks", false);
-
     //@Comment("Logs all crate actions to console if enabled.")
     //public static final Property<Boolean> log_to_console = newProperty("crate.log-console", false);
 
     @Comment("The name of the gui.")
-    public static final Property<String> inventory_name = newProperty("gui.inventory.name", "&b&lCrazy &4&lCrates");
+    public static final Property<String> inventory_name = newProperty("gui.inventory.name", "<bold><blue>Crazy <dark_red>Crates</bold>");
 
     @Comment("The size of the gui. Valid sizes are 9,18,27,36,45")
     public static final Property<Integer> inventory_size = newProperty("gui.inventory.size", 45);
@@ -164,33 +158,33 @@ public class ConfigKeys implements SettingsHolder {
     public static final Property<List<String>> menu_button_command_list = newListProperty("gui.inventory.buttons.menu.override.list", List.of("see {player}"));
 
     @Comment("The name of the item.")
-    public static final Property<String> menu_button_name = newProperty("gui.inventory.buttons.menu.name", "&7&l>> &c&lMenu &7&l<<");
+    public static final Property<String> menu_button_name = newProperty("gui.inventory.buttons.menu.name", "<bold><gray>» <red>Menu <gray>«</bold>");
 
     @Comment("The lore of the item.")
     public static final Property<List<String>> menu_button_lore = newListProperty("gui.inventory.buttons.menu.lore", List.of(
-            "&7Return to the menu."
+            "<gray>Return to the menu."
     ));
 
     @Comment("The item the button should be.")
     public static final Property<String> next_button_item = newProperty("gui.inventory.buttons.next.item", "FEATHER");
 
     @Comment("The name of the item.")
-    public static final Property<String> next_button_name = newProperty("gui.inventory.buttons.next.name", "&6&lNext >>");
+    public static final Property<String> next_button_name = newProperty("gui.inventory.buttons.next.name", "<bold><gold>Next »</bold>");
 
     @Comment("The lore of the item.")
     public static final Property<List<String>> next_button_lore = newListProperty("gui.inventory.buttons.next.lore", List.of(
-            "&7&lPage: &b{page}"
+            "<bold><gray>Page:</bold> <blue>{page}"
     ));
 
     @Comment("The item the button should be.")
     public static final Property<String> back_button_item = newProperty("gui.inventory.buttons.back.item", "FEATHER");
 
     @Comment("The name of the item.")
-    public static final Property<String> back_button_name = newProperty("gui.inventory.buttons.back.name", "&6&l<< Back");
+    public static final Property<String> back_button_name = newProperty("gui.inventory.buttons.back.name", "<bold><gold>« Back</bold>");
 
     @Comment("The lore of the item.")
     public static final Property<List<String>> back_button_lore = newListProperty("gui.inventory.buttons.back.lore", List.of(
-            "&7&lPage: &b{page}"
+            "<bold><gray>Page:</bold> <blue>{page}"
     ));
 
     @Comment("Should the menu should be filled with one type of item?")

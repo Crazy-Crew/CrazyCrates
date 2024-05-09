@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.ryderbelserion.vital.enums.Support;
+import com.ryderbelserion.vital.util.MiscUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -33,7 +34,8 @@ public class CrateOpenListener implements Listener {
 
         if (crate.getCrateType() != CrateType.menu) {
             if (!crate.canWinPrizes(player)) {
-                player.sendMessage(Messages.no_prizes_found.getMessage("{crate}", crate.getName(), player));
+                player.sendRichMessage(Messages.no_prizes_found.getMessage(player, "{crate}", crate.getName()));
+
                 this.crateManager.removePlayerFromOpeningList(player);
                 this.crateManager.removePlayerKeyType(player);
 
@@ -44,7 +46,7 @@ public class CrateOpenListener implements Listener {
         }
 
         if (!player.hasPermission("crazycrates.open." + crate.getName()) || !player.hasPermission("crazycrates.open." + crate.getName().toLowerCase())) {
-            player.sendMessage(Messages.no_crate_permission.getMessage("{crate}", crate.getName(), player));
+            player.sendRichMessage(Messages.no_crate_permission.getMessage(player, "{crate}", crate.getName()));
 
             this.crateManager.removePlayerFromOpeningList(player);
             this.crateManager.removeCrateInUse(player);
@@ -63,9 +65,11 @@ public class CrateOpenListener implements Listener {
         String broadcastMessage = configuration.getString("Crate.BroadCast", "");
         boolean broadcastToggle = configuration.contains("Crate.OpeningBroadCast") && configuration.getBoolean("Crate.OpeningBroadCast");
 
-        if (broadcastToggle) {
+        if (broadcastToggle && crate.getCrateType() != CrateType.cosmic) {
             if (!broadcastMessage.isBlank()) {
-                this.plugin.getServer().broadcastMessage(MsgUtils.color(broadcastMessage.replaceAll("%prefix%", MsgUtils.getPrefix())).replaceAll("%player%", player.getName()));
+                String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
+
+                this.plugin.getServer().broadcast(MiscUtil.parse(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
             }
         }
 

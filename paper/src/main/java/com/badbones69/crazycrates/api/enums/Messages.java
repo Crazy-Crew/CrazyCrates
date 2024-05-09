@@ -4,6 +4,8 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
 import com.ryderbelserion.vital.common.util.StringUtil;
 import com.ryderbelserion.vital.enums.Support;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import us.crazycrew.crazycrates.platform.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.config.impl.messages.CommandKeys;
@@ -15,7 +17,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,7 @@ public enum Messages {
     needs_more_room(CrateKeys.needs_more_room),
     out_of_time(CrateKeys.out_of_time),
     not_a_crate(CrateKeys.not_a_crate),
+    not_a_key(CrateKeys.not_a_key),
     not_a_number(CrateKeys.not_a_number),
     preview_disabled(CrateKeys.preview_disabled),
     required_keys(CrateKeys.required_keys),
@@ -80,88 +82,99 @@ public enum Messages {
     other_player_no_keys(CommandKeys.other_player_no_keys),
     other_player_no_keys_header(CommandKeys.other_player_header, true),
     per_crate(CommandKeys.per_crate),
+
     help(CommandKeys.help, true),
     admin_help(CommandKeys.admin_help, true);
 
     private Property<String> property;
 
-    private Property<List<String>> listProperty;
-
-    private String message;
-
+    private Property<List<String>> properties;
     private boolean isList = false;
 
-    /**
-     * Used for strings
-     *
-     * @param property the property
-     */
     Messages(Property<String> property) {
         this.property = property;
     }
 
-    /**
-     * Used for string lists
-     *
-     * @param listProperty the list property
-     * @param isList Defines if it's a list or not.
-     */
-    Messages(Property<List<String>> listProperty, boolean isList) {
-        this.listProperty = listProperty;
-
+    Messages(Property<List<String>> properties, boolean isList) {
+        this.properties = properties;
         this.isList = isList;
     }
 
-    @NotNull
-    private final SettingsManager configuration = ConfigManager.getMessages();
+    private final @NotNull SettingsManager config = ConfigManager.getConfig();
+
+    private final @NotNull SettingsManager messages = ConfigManager.getMessages();
 
     private boolean isList() {
         return this.isList;
     }
 
-    private @NotNull List<String> getPropertyList(Property<List<String>> properties) {
-        return this.configuration.getProperty(properties);
+    public @NotNull String getString() {
+        return this.messages.getProperty(this.property);
     }
 
-    private @NotNull String getProperty(Property<String> property) {
-        return this.configuration.getProperty(property);
+    public @NotNull List<String> getList() {
+        return this.messages.getProperty(this.properties);
     }
 
-    public String getMessage(Map<String, String> placeholders) {
-        return getMessage(placeholders, null);
+    public String getMessage() {
+        return getMessage(null, new HashMap<>());
     }
 
     public String getMessage(CommandSender sender) {
         if (sender instanceof Player player) {
-            return getMessage(new HashMap<>(), player);
+            return getMessage(player, new HashMap<>());
         }
 
-        return getMessage(new HashMap<>(), null);
+        return getMessage(null, new HashMap<>());
     }
 
-    public String getMessage(String placeholder, String replacement, CommandSender sender) {
-        Map<String, String> placeholders = new HashMap<>();
-        placeholders.put(placeholder, replacement);
-
-        if (sender instanceof Player player) {
-            return getMessage(placeholders, player);
-        }
-
-        return getMessage(placeholders, null);
+    public String getMessage(Map<String, String> placeholders) {
+        return getMessage(null, placeholders);
     }
 
     public String getMessage(String placeholder, String replacement) {
-        return getMessage(placeholder, replacement, null);
+        return getMessage(null, placeholder, replacement);
     }
 
-    public String getMessage(Map<String, String> placeholders, CommandSender sender) {
-        // Get the string first.
+    public String getMessage(CommandSender sender, String placeholder, String replacement) {
+        Map<String, String> placeholders = new HashMap<>() {{
+            put(placeholder, replacement);
+        }};
+
+        if (sender instanceof Player player) {
+            return getMessage(player, placeholders);
+        }
+
+        return getMessage(null, placeholders);
+    }
+
+    public String getMessage(CommandSender sender, Map<String, String> placeholders) {
+        if (sender instanceof Player player) {
+            return getMessage(player, placeholders);
+        }
+
+        return getMessage(null, placeholders);
+    }
+
+    public String getMessage(Player player, Map<String, String> placeholders) {
+        String prefix = this.config.getProperty(ConfigKeys.command_prefix);
+
+        String message = parse(placeholders);
+
+        if (Support.placeholder_api.isEnabled() && player != null) {
+            return PlaceholderAPI.setPlaceholders(player, message.replaceAll("\\{prefix}", prefix));
+        }
+
+        return message.replaceAll("\\{prefix}", prefix);
+    }
+
+    private String parse(Map<String, String> placeholders) {
         String message;
 
         if (isList()) {
-            message = StringUtil.convertList(getPropertyList(this.listProperty));
+            message = StringUtils.chomp(StringUtil.convertList(getList()));
         } else {
-            message = getProperty(this.property);
+            message = getString();
         }
 
         if (!placeholders.isEmpty()) {
@@ -170,22 +183,6 @@ public enum Messages {
             }
         }
 
-        this.message = message;
-
-        return asString(sender);
-    }
-
-    private String asString(CommandSender sender) {
-        String prefix = ConfigManager.getConfig().getProperty(ConfigKeys.command_prefix);
-
-        String message = this.message.replaceAll("\\{prefix}", prefix);
-
-        if (sender instanceof Player player) {
-            if (Support.placeholder_api.isEnabled()) {
-                return PlaceholderAPI.setPlaceholders(player, MsgUtils.color(message));
-            }
-        }
-
-        return MsgUtils.color(message);
+        return message;
     }
 }

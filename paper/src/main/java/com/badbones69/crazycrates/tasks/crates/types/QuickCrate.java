@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Location;
@@ -13,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -26,11 +26,9 @@ import java.util.logging.Level;
 
 public class QuickCrate extends CrateBuilder {
 
-    @NotNull
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
-    @NotNull
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
     public QuickCrate(Crate crate, Player player, Location location) {
         super(crate, player, location);
@@ -147,12 +145,12 @@ public class QuickCrate extends CrateBuilder {
             if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(0.5, 1, .5), null);
 
             // Always end the crate.
-            addCrateTask(new BukkitRunnable() {
+            addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
                 @Override
                 public void run() {
                     crateManager.endQuickCrate(getPlayer(), getLocation(), getCrate(), false);
                 }
-            }.runTaskLater(this.plugin, 5 * 20));
+            }.runDelayed(this.plugin, 5 * 20));
 
             return;
         }
@@ -164,13 +162,14 @@ public class QuickCrate extends CrateBuilder {
         if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(0.5, 1, .5), null);
 
         // Always end the crate.
-        addCrateTask(new BukkitRunnable() {
+        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
             @Override
             public void run() {
                 crateManager.endQuickCrate(getPlayer(), getLocation(), getCrate(), false);
             }
-        }.runTaskLater(this.plugin, 40));
+        }.runDelayed(this.plugin, 40));
     }
+
     @Override
     public void run() {
 

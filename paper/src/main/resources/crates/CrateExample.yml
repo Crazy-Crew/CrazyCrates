@@ -4,17 +4,17 @@ Crate:
   # Make sure to check out the wiki for anything not explained here.
   # https://docs.crazycrew.us/crazycrates/home
 
-  # See CosmicCrateExample.yml to see how the Cosmic CrateType works.
+  # See CosmicCrateExample.yml or CasinoExample.yml to see how the Cosmic/Casino CrateType works.
   CrateType: CSGO
   # Name of the Inventory if a GUI crate.
-  CrateName: "&aBasic Crate"
+  CrateName: "<green>Basic Crate"
   # The name of the inventory that will be in the preview GUI.
-  Preview-Name: "&aBasic Crate Preview"
+  Preview-Name: "<green>Basic Crate Preview"
   # Starting amount of keys when the player 1st joins.
   StartingKeys: 0
   # The amount of keys required to use the crate.
   RequiredKeys: 0
-  #Max amount of crates that can be opened at once using /cc mass-open
+  # Max amount of crates that can be opened at once using /cc mass-open
   Max-Mass-Open: 10
   # If the crate shows in the /cc GUI.
   # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
@@ -24,7 +24,7 @@ Crate:
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
-  BroadCast: "%prefix%&6&l%player%&r &7is opening a &7&lBasic Crate."
+  BroadCast: "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><green>Basic Crate.</bold>"
   # This section is related to commands opening when a crate is opened.
   opening-command:
     # If the commands should be sent or not.
@@ -68,25 +68,25 @@ Crate:
       volume: 1.0
       # The speed of the sound.
       pitch: 1.0
-  # A default message if the prize doesn"t have any Messages
-  # i.e. Messages: [] or the value isn"t there.
+  # A default message if the prize doesn't have any Messages
+  # i.e. Messages: [] or the value isn't there.
   Prize-Message:
-    - "&7You have won &c%reward% &7from &c%crate%."
-  # A default command if the prize doesn"t have any commands
-  # i.e. Commands: [] or the value isn"t there.
+    - "<gray>You have won <red>%reward% <gray>from <red>%crate%."
+  # A default command if the prize doesn't have any commands
+  # i.e. Commands: [] or the value isn't there.
   Prize-Commands: []
   # Item the crate is in the GUI
   Item: "DIAMOND"
   # If the crate in the main /cc GUI is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
-  Name: "&a&lBasic Crate"
+  Name: "<bold><green>Basic Crate</bold>"
   # The lore of the item in the GUI.
   Lore:
-    - "&7This crate contains strange objects."
-    - "&7You have &6%keys% keys &7to open this crate with."
-    - "&7You have opened this crate: &6%crate_opened% times"
-    - "&7&l(&e&l!&7&l) Right click to view rewards."
+    - "<gray>This crate contains strange objects."
+    - "<gray>You have <gold>%keys% keys <gray>to open this crate with."
+    - "<gray>You have opened this crate: <gold>%crate_opened% times"
+    - "<gray>(<yellow>!<gray>) Right click to view rewards."
   Preview:
     # Turn on and off the preview for this crate.
     Toggle: true
@@ -101,40 +101,44 @@ Crate:
       Item: "GRAY_STAINED_GLASS_PANE"
   PhysicalKey:
     # Name of the Key.
-    Name: "&7&lBasic Crate &b&lKey"
+    Name: "<bold><green>Basic Crate Key</bold>"
     # Lore of the Key.
     Lore:
-      - "&7A special Key"
-      - "&7For a special Crate."
+      - "<gray>A special Key"
+      - "<gray>For a special Crate."
     # The item the key is.
     Item: "TRIPWIRE_HOOK"
     # Makes the key look enchanted.
     Glowing: true
-    # Settings for the holograms.
+  # Settings for the holograms.
   Hologram:
     # Toggle on and off the holograms for the crates.
     Toggle: true
     # The height of the hologram above the crate.
     Height: 1.5
-    # The distance the hologram can be seen. Only works with CMI and DecentHolograms
+    # The distance the hologram can be seen.
     Range: 8
-    # The message that will be displayed.
+    # The background color of the hologram. It uses hex colors. This only works with CMI/FancyHolograms
+    # Set the color to transparent if you don't want any color.
+    Color: "transparent"
+    # The message that will be displayed above the crate.
+    # Note: MiniMessage or Color Codes being supported is depending on the 'holograms' plugin.
     Message:
-      - "&7&lBasic Crate"
+      - "<bold><green>Basic Crate</bold>"
   # All the prizes that can be gotten in the Crate.
   Prizes:
     1:
       # Name of the item shown by the crate.
-      DisplayName: "&cAn example of a Player Head!"
+      DisplayName: "<red>An example of a Player Head!"
       # ITem shown by the crate.
       DisplayItem: "PLAYER_HEAD"
       # The amount displayed.
       DisplayAmount: 1
       # The lore in the crate preview
       Lore:
-        - "&7Want a player head?"
+        - "<gray>Want a player head?"
         - ""
-        - "&cChance: &e25%"
+        - "<red>Chance: <yellow>25%"
       # If you do not want a lore, Set the "Lore:" to look like the line below.
       # Lore: []
 
@@ -157,12 +161,12 @@ Crate:
       # Items: []
 
       Commands: # You can run any plugin command here.
-        - "broadcast &6&l%player%&r &7won %reward%! WOW"
+        - "broadcast <bold><gold>%player%</bold><reset> <gray>won %reward%! WOW"
       # If you do not want to send commands, Set the "Commands:" to look like the line below.
       # Commands: []
 
       Messages: # Send any message you want to the player.
-        - "&cYou won a &r%reward%!"
+        - "<red>You won a <reset>%reward%!"
       # If you do not want to send messages, Set the "Messages:" to look like the line below.
       # Messages: []
 
@@ -176,7 +180,7 @@ Crate:
         Commands: []
         Items: []
     2:
-      DisplayName: "&b&lCheap Helmet"
+      DisplayName: "<bold><gold><blue>Cheap Helmet</bold>"
       DisplayItem: "GOLDEN_HELMET"
       # Only works on items with durability. This will make the item appear more damaged.
       # It does not set the durability but subtracts this number from the durability is 100, It subtracts 50.
@@ -189,19 +193,19 @@ Crate:
         Pattern: "SENTRY"
       DisplayAmount: 1
       Lore:
-        - "&7Win a cheap helmet."
-        - "&6&lChance: &c&l60%"
+        - "<gray>Win a cheap helmet."
+        - "<bold><gold>Chance: <red>60%</bold>"
       MaxRange: 100
       Chance: 60
       Items:
-        - "Item:GOLDEN_HELMET, Amount:1, Damage:50, Trim-Pattern:SENTRY, Trim-Material:QUARTZ, Name:&bCheap Helmet, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1"
+        - "Item:GOLDEN_HELMET, Amount:1, Damage:50, Trim-Pattern:SENTRY, Trim-Material:QUARTZ, Name:<bold><blue>Cheap Helmet</bold>, PROTECTION_ENVIRONMENTAL:1, OXYGEN:1"
     3:
-      DisplayName: "&e&l$1,000"
+      DisplayName: "<bold><yellow>$1,000</bold>"
       DisplayItem: "SUNFLOWER"
       DisplayAmount: 1
       Lore:
-        - "&7Make it rain Money."
-        - "&6&lChance: &c&l20%"
+        - "<gray>Make it rain Money."
+        - "<bold><gold>Chance: <red>20%</bold>"
       MaxRange: 100
       Chance: 20
       Firework: true
@@ -209,29 +213,29 @@ Crate:
         - "eco give %player% 1000"
       # - "lp user %player% permission set crazycrates.blacklist.basic.3" -> This is the line where you would give the user the permission.
       Messages:
-        - "&7You just won &r%reward%."
+        - "<gray>You just won <reset>%reward%."
       BlackListed-Permissions:
         - "crazycrates.blacklist.basic.3"
       Alternative-Prize:
         Toggle: true
         Messages:
-          - "&r &8[&bCrazyCrates&8]: &7You have already won that prize, so enjoy some gold nuggets."
+          - "<reset> <dark_gray>[<blue>CrazyCrates<dark_gray>]: <gray>You have already won that prize, so enjoy some gold nuggets."
         Commands:
           - "give %player% gold_nugget 16"
     4:
-      DisplayName: "&d&lSharpness 5 / Looting 3"
+      DisplayName: "<bold><light_purple>Sharpness 5 / Looting 3</bold>"
       DisplayItem: "ENCHANTED_BOOK"
       DisplayAmount: 1
       DisplayEnchantments:
         - "SHARPNESS:5"
         - "LOOTING:3"
       Lore:
-        - "&7A sharp enchantment book."
-        - "&6&lChance: &c&l25%"
+        - "<gray>A sharp enchantment book."
+        - "<bold><gold>Chance: <red>25%</bold>"
       MaxRange: 100
       Chance: 25
       Firework: true
       Messages:
-        - "&7You just won &r%reward%."
+        - "<gray>You just won <reset>%reward%."
       Items:
         - "Item:ENCHANTED_BOOK, Amount:1, DAMAGE_ALL:5, LOOTING:3"

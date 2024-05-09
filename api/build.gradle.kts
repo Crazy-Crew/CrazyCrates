@@ -1,12 +1,18 @@
 plugins {
-    `paper-plugin`
+    id("io.github.goooler.shadow")
+
+    `root-plugin`
 }
 
 project.group = "us.crazycrew.crazycrates"
 project.version = "1.0-snapshot"
 
+repositories {
+    maven("https://repo.papermc.io/repository/maven-public/")
+}
+
 dependencies {
-    compileOnly(fileTree("libs/shade").include("*.jar"))
+    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
 
     compileOnly(libs.config.me)
 
@@ -37,7 +43,7 @@ tasks {
                 artifactId = project.name
                 version = "${project.version}"
 
-                artifact(reobfJar)
+                artifact(shadowJar)
             }
         }
     }

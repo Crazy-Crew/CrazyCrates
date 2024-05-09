@@ -3,7 +3,9 @@ package com.badbones69.crazycrates.api.objects;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
+import com.ryderbelserion.vital.files.FileManager;
 import com.ryderbelserion.vital.util.DyeUtil;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
@@ -11,13 +13,13 @@ import org.bukkit.Particle;
 import org.bukkit.Registry;
 import org.bukkit.SoundCategory;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.FileManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.AbstractCrateManager;
 import org.jetbrains.annotations.NotNull;
@@ -25,14 +27,12 @@ import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,7 +47,6 @@ public class Crate {
     private final String name;
     private String keyName;
     private ItemBuilder keyBuilder;
-    private ItemBuilder emptyKey;
     private int maxPage = 1;
     private int maxSlots;
     private String previewName;
@@ -77,6 +76,8 @@ public class Crate {
 
     private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
+
     private final @NotNull InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     private final @NotNull FileManager fileManager = this.plugin.getFileManager();
@@ -94,10 +95,9 @@ public class Crate {
      * @param prizes The prizes that can be won.
      * @param file The crate file.
      */
-    public Crate(String name, String previewName, CrateType crateType, ItemStack key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, List<String> prizeCommands, CrateHologram hologram) {
-        this.emptyKey = ItemBuilder.convertItemStack(key);
-        this.keyBuilder = ItemBuilder.convertItemStack(key).setCrateName(name);
-        this.keyName = keyName != null ? keyName : "Crate.PhysicalKey.Name is not in the " + name + ".yml";
+    public Crate(String name, String previewName, CrateType crateType, ItemBuilder key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, List<String> prizeCommands, CrateHologram hologram) {
+        this.keyBuilder = key.setName(keyName).setCrateName(name);
+        this.keyName = keyName;
 
         this.file = file;
         this.name = name;
@@ -116,7 +116,7 @@ public class Crate {
         this.previewTierBorderToggle = file != null && file.getBoolean("Crate.tier-preview.glass.toggle", false);
 
         setPreviewChestLines(file != null ? file.getInt("Crate.Preview.ChestLines", 6) : 6);
-        this.previewName = MsgUtils.sanitizeColor(previewName);
+        this.previewName = previewName;
         this.newPlayerKeys = newPlayerKeys;
         this.giveNewPlayerKeys = newPlayerKeys > 0;
 
@@ -124,13 +124,16 @@ public class Crate {
 
         for (int amount = this.preview.size(); amount > this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0); amount -= this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0), this.maxPage++) ;
 
-        this.crateInventoryName = file != null ? MsgUtils.sanitizeColor(file.getString("Crate.CrateName")) : "";
+        this.crateInventoryName = file != null ? file.getString("Crate.CrateName") : "";
 
-        String borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? MsgUtils.color(file.getString("Crate.Preview.Glass.Name")) : " ";
-        this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item", "GRAY_STAINED_GLASS_PANE")).setName(borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(borderName);
+        String borderName = file != null && file.contains("Crate.Preview.Glass.Name") ? file.getString("Crate.Preview.Glass.Name") : " ";
+        this.borderItem = file != null && file.contains("Crate.Preview.Glass.Item") ? new ItemBuilder().setMaterial(file.getString("Crate.Preview.Glass.Item", "GRAY_STAINED_GLASS_PANE"))
+                .hideItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
+                .setName(borderName) : new ItemBuilder().setMaterial(Material.AIR).setName(borderName);
 
-        String previewTierBorderName = file != null ? MsgUtils.color(file.getString("Crate.tier-preview.glass.name", " ")) : " ";
-        this.previewTierBorderItem = file != null ? new ItemBuilder().setMaterial(file.getString("Crate.tier-preview.glass.item", "GRAY_STAINED_GLASS_PANE")).setName(previewTierBorderName) : new ItemBuilder().setMaterial(Material.AIR).setName(previewTierBorderName);
+        String previewTierBorderName = file != null ? file.getString("Crate.tier-preview.glass.name", " ") : " ";
+        this.previewTierBorderItem = file != null ? new ItemBuilder().setMaterial(file.getString("Crate.tier-preview.glass.item", "GRAY_STAINED_GLASS_PANE")).hideItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
+                .setName(previewTierBorderName) : new ItemBuilder().setMaterial(Material.AIR).setName(previewTierBorderName);
 
         setTierPreviewRows(file != null ? file.getInt("Crate.tier-preview.rows", 5) : 5);
         this.previewTierMaxSlots = this.previewTierCrateRows * 9;
@@ -274,9 +277,11 @@ public class Crate {
 
         // ================= Blacklist Check ================= //
         if (player.isOp()) {
-            usablePrizes.addAll(getPrizes());
+            usablePrizes.addAll(getPrizes().stream().filter(prize -> prize.getChance() != -1).toList());
         } else {
             for (Prize prize : getPrizes()) {
+                if (prize.getChance() == -1) continue;
+
                 if (prize.hasPermission(player)) {
                     if (prize.hasAlternativePrize()) continue;
                 }
@@ -292,6 +297,7 @@ public class Crate {
             return prizes.get(MiscUtils.useOtherRandom() ? ThreadLocalRandom.current().nextInt(prizes.size()) : new Random().nextInt(prizes.size()));
         } catch (IllegalArgumentException exception) {
             this.plugin.getLogger().log(Level.WARNING, "Failed to find prize from the " + name + " crate for player " + player.getName() + ".", exception);
+
             return null;
         }
     }
@@ -324,7 +330,7 @@ public class Crate {
      * @param prizes list of prizes
      */
     public void setPrize(List<Prize> prizes) {
-        this.prizes = prizes;
+        this.prizes = prizes.stream().filter(prize -> prize.getChance() != -1).toList();;
     }
 
     /**
@@ -492,7 +498,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public ItemStack getKey(Player player) {
-        return this.keyBuilder.setTarget(player).build();
+        return this.userManager.addPlaceholders(this.keyBuilder.setTarget(player), this).build();
     }
 
     /**
@@ -512,29 +518,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public ItemStack getKey(int amount, Player player) {
-        ItemBuilder key = this.keyBuilder.setTarget(player).setAmount(amount);
-
-        return key.build();
-    }
-    
-    /**
-     * @return the key as an item stack with no nbt tags.
-     */
-    public ItemStack getEmptyKey() {
-        return this.emptyKey.build();
-    }
-    
-    /**
-     * @param amount the amount of keys you want.
-     *
-     * @return the key as an item stack with no nbt tags.
-     */
-    public ItemStack getEmptyKey(int amount) {
-        ItemBuilder key = this.emptyKey;
-
-        key.setAmount(amount);
-
-        return key.build();
+        return this.userManager.addPlaceholders(this.keyBuilder.setTarget(player).setAmount(amount), this).build();
     }
     
     /**
@@ -592,19 +576,11 @@ public class Crate {
      * @param item the ItemStack that is being added.
      */
     public void addEditorItem(String prize, ItemStack item, int chance) {
-        List<ItemStack> items = new ArrayList<>();
-        items.add(item);
-
         String path = "Crate.Prizes." + prize;
 
-        if (!this.file.contains(path)) {
-            setItem(item, chance, path);
-        } else {
-            // Must be checked as getList will return null if nothing is found.
-            if (this.file.contains(path + ".Editor-Items")) this.file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
-        }
+        setItem(item, chance, path);
 
-        saveFile(items, path);
+        saveFile();
     }
 
     /**
@@ -615,22 +591,13 @@ public class Crate {
      * @param path the path in the config to set the item at.
      */
     private void setItem(ItemStack item, int chance, String path) {
-        if (item.hasItemMeta()) {
-            ItemMeta itemMeta = item.getItemMeta();
+        net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
 
-            if (itemMeta.hasDisplayName()) this.file.set(path + ".DisplayName", itemMeta.getDisplayName());
-            if (itemMeta.hasLore()) this.file.set(path + ".Lore", itemMeta.getLore());
+        String tag = nmsItem.getOrCreateTag().getAsString();
 
-            this.file.set(path + ".Unbreakable", itemMeta.isUnbreakable());
+        if (!tag.isEmpty()) {
+            this.file.set(path + ".DisplayNbt", tag);
         }
-
-        List<String> enchantments = new ArrayList<>();
-
-        for (Enchantment enchantment : item.getEnchantments().keySet()) {
-            enchantments.add((enchantment.getKey().getKey() + ":" + item.getEnchantmentLevel(enchantment)));
-        }
-
-        if (!enchantments.isEmpty()) this.file.set(path + ".DisplayEnchantments", enchantments);
 
         this.file.set(path + ".DisplayItem", item.getType().name());
         this.file.set(path + ".DisplayAmount", item.getAmount());
@@ -640,13 +607,8 @@ public class Crate {
 
     /**
      * Saves item stacks to editor-items
-     *
-     * @param items list of items
-     * @param path the path in the config.
      */
-    private void saveFile(List<ItemStack> items, String path) {
-        this.file.set(path + ".Editor-Items", items);
-
+    private void saveFile() {
         File crates = new File(this.plugin.getDataFolder(), "crates");
 
         File crateFile = new File(crates, this.name + ".yml");
@@ -657,7 +619,7 @@ public class Crate {
             this.plugin.getLogger().log(Level.SEVERE, "Failed to save " + this.name + ".yml", exception);
         }
 
-        this.fileManager.getFile(this.name).reloadFile();
+        this.fileManager.getCustomFile(this.name).reload();
 
         this.plugin.getCrateManager().reloadCrate(this.plugin.getCrateManager().getCrateFromName(this.name));
     }
@@ -670,23 +632,15 @@ public class Crate {
      * @param tier the tier for the crate.
      */
     public void addEditorItem(String prize, ItemStack item, Tier tier, int chance) {
-        List<ItemStack> items = new ArrayList<>();
-        items.add(item);
-
         String path = "Crate.Prizes." + prize;
 
-        if (!this.file.contains(path)) {
-            setItem(item, chance, path);
+        setItem(item, chance, path);
 
-            this.file.set(path + ".Tiers", new ArrayList<>() {{
-                add(tier.getName());
-            }});
-        } else {
-            // Must be checked as getList will return null if nothing is found.
-            if (this.file.contains(path + ".Editor-Items")) this.file.getList(path + ".Editor-Items").forEach(listItem -> items.add((ItemStack) listItem));
-        }
+        this.file.set(path + ".Tiers", new ArrayList<>() {{
+            add(tier.getName());
+        }});
 
-        saveFile(items, path);
+        saveFile();
     }
     
     /**

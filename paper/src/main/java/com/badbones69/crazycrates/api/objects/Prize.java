@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +25,7 @@ public class Prize {
 
     private List<String> permissions = new ArrayList<>();
     private ItemBuilder displayItem = new ItemBuilder();
+    private ItemBuilder prizeItem = new ItemBuilder();
     private final List<String> commands;
     private final List<String> messages;
     private boolean firework = false;
@@ -76,7 +76,8 @@ public class Prize {
             this.permissions.replaceAll(String::toLowerCase);
         }
 
-        this.displayItem = display();
+        this.prizeItem = display();
+        this.displayItem = new ItemBuilder(this.prizeItem, true);
     }
 
     /**
@@ -137,8 +138,15 @@ public class Prize {
     /**
      * @return the ItemBuilder of the display item.
      */
+    public ItemBuilder getDisplayItemBuilder(Player player) {
+        return this.prizeItem.setTarget(player);
+    }
+
+    /**
+     * @return the ItemBuilder of the display item.
+     */
     public ItemBuilder getDisplayItemBuilder() {
-        return this.displayItem;
+        return this.prizeItem;
     }
     
     /**
@@ -238,8 +246,16 @@ public class Prize {
 
         try {
             String material = this.section.getString("DisplayItem", "RED_TERRACOTTA");
-
             int amount = this.section.getInt("DisplayAmount", 1);
+
+            String nbt = this.section.getString("DisplayNbt");
+
+            if (nbt != null && !nbt.isEmpty()) {
+                builder.setMaterial(material).setAmount(amount).setTag(nbt);
+
+                return builder;
+            }
+
             List<String> lore = this.section.getStringList("Lore");
             boolean isGlowing = this.section.getBoolean("Glowing", false);
             boolean isUnbreakable = this.section.getBoolean("Unbreakable", false);
@@ -258,14 +274,6 @@ public class Prize {
                     .addItemFlags(itemFlags)
                     .addPatterns(patterns)
                     .setPlayerName(playerName);
-
-            NamespacedKey cratePrize = PersistentKeys.crate_prize.getNamespacedKey();
-
-            ItemMeta itemMeta = builder.getItemMeta();
-
-            itemMeta.getPersistentDataContainer().set(cratePrize, PersistentDataType.STRING, this.section.getName());
-
-            builder.setItemMeta(itemMeta);
 
             int displayDamage = this.section.getInt("DisplayDamage", 0);
 
@@ -314,13 +322,13 @@ public class Prize {
             return builder;
         } catch (Exception exception) {
             List<String> list = new ArrayList<>() {{
-               add("&cThere was an error with one of your prizes!");
-               add("&cThe reward in question is labeled: &e" + section.getName() + " &cin crate: &e" + crateName);
-               add("&cName of the reward is " + section.getString("DisplayName"));
-               add("&cIf you are confused, Stop by our discord for support!");
+                add("<red>There was an error with one of your prizes!");
+                add("<red>The reward in question is labeled: <yellow>" + section.getName() + " <red>in crate: <yellow>" + crateName);
+                add("<red>Name of the reward is " + section.getString("DisplayName"));
+                add("<red>If you are confused, Stop by our discord for support!");
             }};
 
-            return new ItemBuilder(new ItemStack(Material.RED_TERRACOTTA)).setName("&c&lERROR").setLore(list);
+            return new ItemBuilder(new ItemStack(Material.RED_TERRACOTTA)).setName("<bold><red>ERROR</bold>").setLore(list);
         }
     }
 }

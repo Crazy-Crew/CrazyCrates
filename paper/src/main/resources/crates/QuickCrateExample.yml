@@ -4,19 +4,29 @@ Crate:
   # Make sure to check out the wiki for anything not explained here.
   # https://docs.crazycrew.us/crazycrates/home
 
-  # See CosmicCrateExample.yml to see how the Cosmic CrateType works.
+  # See CosmicCrateExample.yml or CasinoExample.yml to see how the Cosmic/Casino CrateType works.
 
   # QuickCrate simply allows you to speed open crates.
   CrateType: QuickCrate
-  CrateName: "&eClassic Crate"
-  Preview-Name: "&eClassic Crate Preview"
+  # Name of the Inventory if a GUI crate.
+  CrateName: "<yellow>Classic Crate"
+  # The name of the inventory that will be in the preview GUI.
+  Preview-Name: "<yellow>Classic Crate Preview"
+  # Starting amount of keys when the player 1st joins.
   StartingKeys: 0
+  # The amount of keys required to use the crate.
   RequiredKeys: 0
+  # Max amount of crates that can be opened at once using /cc mass-open
   Max-Mass-Open: 10
-  InGUI: false
+  # If the crate shows in the /cc GUI.
+  # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
+  InGUI: true
+  # Slot the item is in the GUI.
   Slot: 14
+  # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
-  BroadCast: "%prefix%&6&l%player%&r &7is opening a &e&lClassic Crate&7."
+  # Message that is broadcast when opening the crate.
+  BroadCast: "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><yellow>Classic Crate.</bold>"
   # This section is related to commands opening when a crate is opened.
   opening-command:
     # If the commands should be sent or not.
@@ -60,41 +70,66 @@ Crate:
       volume: 1.0
       # The speed of the sound.
       pitch: 1.0
+  # A default message if the prize doesn't have any Messages
+  # i.e. Messages: [] or the value isn't there.
   Prize-Message:
-    - "&7You have won &c%reward% &7from &c%crate%."
+    - "<gray>You have won <red>%reward% <gray>from <red>%crate%."
+  # A default command if the prize doesn't have any commands
+  # i.e. Commands: [] or the value isn't there.
   Prize-Commands: []
+  # Item the crate is in the GUI
   Item: "CHEST"
+  # If the crate in the main /cc GUI is glowing or not.
   Glowing: false
-  Name: "&e&lClassic Crate"
+  # Name of the item in the GUI.
+  Name: "<bold><yellow>Classic Crate</bold>"
+  # The lore of the item in the GUI.
   Lore:
-    - "&7This crate contains classic items."
-    - "&7You have &6%keys% keys &7to open this crate with."
-    - "&7You have opened this crate: &6%crate_opened% times"
-    - "&7&l(&e&l!&7&l) Right click to view rewards."
+    - "<gray>This crate contains strange objects."
+    - "<gray>You have <gold>%keys% keys <gray>to open this crate with."
+    - "<gray>You have opened this crate: <gold>%crate_opened% times"
+    - "<gray>(<yellow>!<gray>) Right click to view rewards."
   Preview:
+    # Turn on and off the preview for this crate.
     Toggle: true
+    # How many lines the Crate Preview should have. Including Header and Bottom (Between 3 and 6)
     ChestLines: 6
     Glass:
+      # Turn the glass border in the preview on and off.
       Toggle: true
       # The name of the border item.
       Name: " "
-      Item: "YELLOW_STAINED_GLASS_PANE"
+      # The item that shows in the border. Can be glass or any other item.
+      Item: "GRAY_STAINED_GLASS_PANE"
   PhysicalKey:
-    Name: "&e&lClassic Crate &c&lKey"
+    # Name of the Key.
+    Name: "<bold><yellow>Classic Crate Key</bold>"
+    # Lore of the Key.
     Lore:
-      - "&7A special Key"
-      - "&7For a special Crate."
+      - "<gray>A special Key"
+      - "<gray>For a special Crate."
+    # The item the key is.
     Item: "TRIPWIRE_HOOK"
-    Glowing: True
+    # Makes the key look enchanted.
+    Glowing: true
+  # Settings for the holograms.
   Hologram:
+    # Toggle on and off the holograms for the crates.
     Toggle: true
+    # The height of the hologram above the crate.
     Height: 1.5
+    # The distance the hologram can be seen.
     Range: 8
+    # The background color of the hologram. It uses hex colors. This only works with CMI/FancyHolograms
+    # Set the color to transparent if you don't want any color.
+    Color: "transparent"
+    # The message that will be displayed above the crate.
+    # Note: MiniMessage or Color Codes being supported is depending on the 'holograms' plugin.
     Message:
-      - "&e&lClassic Crate"
+      - "<bold><yellow>Classic Crate</bold>"
   Prizes:
     1:
-      DisplayName: "&a&lFancy Pants"
+      DisplayName: "<bold><green>Fancy Pants</bold>"
       DisplayItem: "CHAINMAIL_LEGGINGS"
       # Only works on items with durability. This will make the item appear more damaged.
       # It does not set the durability but subtracts this number from the durability is 100, It subtracts 75.
@@ -107,18 +142,18 @@ Crate:
         Pattern: "SENTRY"
       DisplayAmount: 1
       Lore:
-        - "&7Win a fancy pair of pants."
-        - "&6&lChance: &c&l40%"
+        - "<gray>Win a fancy pair of pants."
+        - "<bold><gold>Chance: <red>40%</bold>"
       DisplayEnchantments:
         - "PROTECTION_ENVIRONMENTAL:2"
       MaxRange: 100
       Chance: 40
       Items:
-        - "Item:CHAINMAIL_LEGGINGS, Amount:1, Damage:75, Trim-Pattern:SENTRY, Trim-Material:LAPIS, Name:&aFancy Pants, PROTECTION_ENVIRONMENTAL:2"
+        - "Item:CHAINMAIL_LEGGINGS, Amount:1, Damage:75, Trim-Pattern:SENTRY, Trim-Material:LAPIS, Name:<bold><green>Fancy Pants</bold>, PROTECTION_ENVIRONMENTAL:2"
       Messages:
-        - "&7You just won a &r%reward%."
+        - "<gray>You just won a <reset>%reward%."
     2:
-      DisplayName: "&b&lClassic Sword"
+      DisplayName: "<bold><blue>Classic Sword</bold>"
       DisplayItem: "DIAMOND_SWORD"
       # Only works on items with durability. This will make the item appear more damaged.
       # It does not set the durability but subtracts this number from the durability is 100, It subtracts 7.
@@ -126,28 +161,28 @@ Crate:
       DisplayDamage: 7
       DisplayAmount: 1
       Lore:
-        - "&7Win a old classic sword."
-        - "&6&lChance: &c&l35%"
+        - "<gray>Win a old classic sword."
+        - "<bold><gold>Chance: <red>35%</bold>"
       DisplayEnchantments:
         - "DAMAGE_ALL:2"
         - "FIRE_ASPECT:1"
       MaxRange: 100
       Chance: 35
       Items:
-        - "Item:DIAMOND_SWORD, Amount:1, Damage:7, Name:&bClassic Sword, DAMAGE_ALL:2, FIRE_ASPECT:1"
+        - "Item:DIAMOND_SWORD, Amount:1, Damage:7, Name:<bold><blue>Classic Sword</bold>, DAMAGE_ALL:2, FIRE_ASPECT:1"
       Messages:
-        - "&7You just won &r%reward%."
+        - "<gray>You just won <reset>%reward%."
     3:
-      DisplayName: "&e&l$100,000"
+      DisplayName: "<bold><yellow>$100,000</bold>"
       DisplayItem: "SUNFLOWER"
       DisplayAmount: 1
       Lore:
-        - "&7Make it rain a lot of Money."
-        - "&6&lChance: &c&l20%"
+        - "<gray>Make it rain a lot of Money."
+        - "<bold><gold>Chance: <red>20%</bold>"
       MaxRange: 100
       Chance: 20
       Firework: true
       Commands:
         - "eco give %player% 100000"
       Messages:
-        - "&7You just won &r%reward%."
+        - "<gray>You just won <reset>%reward%."

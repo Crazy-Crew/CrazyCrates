@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Material;
@@ -12,7 +13,6 @@ import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
@@ -22,11 +22,9 @@ import java.util.List;
 
 public class WonderCrate extends CrateBuilder {
 
-    @NotNull
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
-    @NotNull
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
     public WonderCrate(Crate crate, Player player, int size) {
         super(crate, player, size);
@@ -52,6 +50,7 @@ public class WonderCrate extends CrateBuilder {
 
         for (int index = 0; index < getSize(); index++) {
             Prize prize = getCrate().pickPrize(getPlayer());
+
             slots.add(String.valueOf(index));
 
             setItem(index, prize.getDisplayItem(getPlayer()));
@@ -59,7 +58,7 @@ public class WonderCrate extends CrateBuilder {
 
         getPlayer().openInventory(getInventory());
 
-        addCrateTask(new BukkitRunnable() {
+        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
             int time = 0;
             int full = 0;
 
@@ -86,6 +85,7 @@ public class WonderCrate extends CrateBuilder {
 
                     for (String slot : slots) {
                         this.prize = getCrate().pickPrize(getPlayer());
+
                         setItem(Integer.parseInt(slot), this.prize.getDisplayItem(getPlayer()));
                     }
 
@@ -113,6 +113,7 @@ public class WonderCrate extends CrateBuilder {
                     if (this.prize.useFireworks()) MiscUtils.spawnFirework(getPlayer().getLocation().add(0, 1, 0), null);
 
                     plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(getPlayer(), getCrate(), getCrate().getName(), this.prize));
+
                     crateManager.removePlayerFromOpeningList(getPlayer());
 
                     return;
@@ -123,7 +124,7 @@ public class WonderCrate extends CrateBuilder {
 
                 if (this.time > 2) this.time = 0;
             }
-        }.runTaskTimer(this.plugin, 0, 2));
+        }.runAtFixedRate(this.plugin, 0, 2));
     }
 
     @Override

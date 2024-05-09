@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.tasks.crates.types;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Material;
@@ -11,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
@@ -23,11 +23,9 @@ import java.util.Map;
 
 public class WheelCrate extends CrateBuilder {
 
-    @NotNull
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
-    @NotNull
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
     public WheelCrate(Crate crate, Player player, int size) {
         super(crate, player, size);
@@ -68,7 +66,7 @@ public class WheelCrate extends CrateBuilder {
 
         Material material = Material.LIME_STAINED_GLASS_PANE;
 
-        addCrateTask(new BukkitRunnable() {
+        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
             final List<Integer> slots = getBorder();
 
             int uh = 0;
@@ -176,6 +174,7 @@ public class WheelCrate extends CrateBuilder {
                         playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
 
                         getPlayer().closeInventory(InventoryCloseEvent.Reason.UNLOADED);
+
                         crateManager.removePlayerFromOpeningList(getPlayer());
                         crateManager.endCrate(getPlayer());
 
@@ -191,10 +190,11 @@ public class WheelCrate extends CrateBuilder {
 
                 if (this.open > 5) {
                     getPlayer().openInventory(getInventory());
+
                     this.open = 0;
                 }
             }
-        }.runTaskTimer(this.plugin, 1, 1));
+        }.runAtFixedRate(this.plugin, 1, 1));
     }
 
     private List<Integer> getBorder() {

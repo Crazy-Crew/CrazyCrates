@@ -1,9 +1,11 @@
 plugins {
-    id("com.github.johnrengelman.shadow")
-
     `java-library`
 
     `maven-publish`
+}
+
+base {
+    archivesName.set(rootProject.name)
 }
 
 repositories {

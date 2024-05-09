@@ -4,13 +4,13 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
@@ -21,11 +21,9 @@ import java.util.List;
 
 public class CsgoCrate extends CrateBuilder {
 
-    @NotNull
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
-    @NotNull
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
     public CsgoCrate(Crate crate, Player player, int size) {
         super(crate, player, size);
@@ -53,7 +51,7 @@ public class CsgoCrate extends CrateBuilder {
         // Open the inventory.
         getPlayer().openInventory(getInventory());
 
-        addCrateTask(new BukkitRunnable() {
+        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
             int time = 1;
 
             int full = 0;
@@ -64,6 +62,7 @@ public class CsgoCrate extends CrateBuilder {
             public void run() {
                 if (this.full <= 50) { // When Spinning
                     moveItemsAndSetGlass();
+
                     playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
                 }
 
@@ -71,6 +70,7 @@ public class CsgoCrate extends CrateBuilder {
 
                 if (this.open >= 5) {
                     getPlayer().openInventory(getInventory());
+
                     this.open = 0;
                 }
 
@@ -102,18 +102,18 @@ public class CsgoCrate extends CrateBuilder {
 
                         cancel();
 
-                        new BukkitRunnable() {
+                        new FoliaRunnable(getPlayer().getScheduler(), null) {
                             @Override
                             public void run() {
                                 if (getPlayer().getOpenInventory().getTopInventory().equals(getInventory())) getPlayer().closeInventory();
                             }
-                        }.runTaskLater(plugin, 40);
+                        }.runDelayed(plugin, 40);
                     } else if (this.time > 60) { // Added this due reports of the prizes spamming when low tps.
                         cancel();
                     }
                 }
             }
-        }.runTaskTimer(this.plugin, 1, 1));
+        }.runAtFixedRate(this.plugin, 1, 1));
     }
 
     private void populate() {
@@ -146,6 +146,7 @@ public class CsgoCrate extends CrateBuilder {
         setItem(3 + 18, glass.get(5));
 
         ItemStack itemStack = new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build();
+
         setItem(4, itemStack);
         setItem(4 + 18, itemStack);
 

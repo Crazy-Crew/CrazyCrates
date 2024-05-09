@@ -39,9 +39,11 @@ public class MiscUtils {
     public static void sendCommand(String command) {
         Server server = plugin.getServer();
 
-        ConsoleCommandSender console = server.getConsoleSender();
+        server.getGlobalRegionScheduler().run(plugin, scheduledTask -> {
+            ConsoleCommandSender console = server.getConsoleSender();
 
-        server.dispatchCommand(console, command);
+            server.dispatchCommand(console, command);
+        });
     }
 
     public static void spawnFirework(Location location, Color color) {
@@ -65,9 +67,7 @@ public class MiscUtils {
 
         fireworkData.set(PersistentKeys.no_firework_damage.getNamespacedKey(), PersistentDataType.BOOLEAN, true);
 
-        Server server = plugin.getServer();
-
-        server.getScheduler().scheduleSyncDelayedTask(plugin, firework::detonate, 3);
+        plugin.getServer().getRegionScheduler().runDelayed(plugin, location, scheduledTask -> firework.detonate(), 3L);
     }
 
     public static String location(Location location) {
@@ -81,18 +81,6 @@ public class MiscUtils {
      */
     public static boolean isInventoryFull(Player player) {
         return player.getInventory().firstEmpty() == -1;
-    }
-
-    /**
-     * Remove or subtract an item from a player's inventory.
-     */
-    public static void removeItemStack(Player player, ItemStack item) {
-        if (item.getAmount() <= 1) {
-            player.getInventory().removeItem(item);
-            return;
-        }
-
-        item.setAmount(item.getAmount() - 1);
     }
 
     // ElectronicBoy is the author.
@@ -183,21 +171,20 @@ public class MiscUtils {
         ).forEach(plugin.getLogger()::warning);
 
         List.of(
-                "&cAn issue has occurred when trying to take a key.",
-                "&cA list of potential reasons",
+                "<red>An issue has occurred when trying to take a key.",
+                "<red>A list of potential reasons",
                 "",
-                " &e-> &dNot enough keys.",
-                " &e-> &dKey is in off hand."
-        ).forEach(line -> player.sendMessage(MsgUtils.getPrefix(line)));
+                " <yellow>-> <light_purple>Not enough keys.",
+                " <yellow>-> <light_purple>Key is in off hand."
+        ).forEach(line -> player.sendRichMessage(MsgUtils.getPrefix(line)));
     }
 
     public static long pickNumber(long min, long max) {
         max++;
 
         try {
-            // new Random() does not have a nextLong(long bound) method.
             return min + ThreadLocalRandom.current().nextLong(max - min);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException exception) {
             return min;
         }
     }
@@ -216,8 +203,7 @@ public class MiscUtils {
                     return enchantment;
                 }
 
-                if (stripEnchantmentName(enchantment.getName()).equalsIgnoreCase(enchantmentName) || (enchantments.get(enchantment.getName()) != null &&
-                        stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
+                if (stripEnchantmentName(enchantment.getName()).equalsIgnoreCase(enchantmentName) || (enchantments.get(enchantment.getName()) != null && stripEnchantmentName(enchantments.get(enchantment.getName())).equalsIgnoreCase(enchantmentName))) {
                     return enchantment;
                 }
             } catch (Exception ignore) {}
@@ -286,21 +272,6 @@ public class MiscUtils {
                 Material.GRAY_STAINED_GLASS_PANE,
                 Material.LIME_STAINED_GLASS_PANE,
                 Material.PINK_STAINED_GLASS_PANE,
-                Material.RED_STAINED_GLASS_PANE,
-
-                Material.LIGHT_BLUE_STAINED_GLASS_PANE,
-                Material.MAGENTA_STAINED_GLASS_PANE,
-                Material.YELLOW_STAINED_GLASS_PANE,
-                Material.PURPLE_STAINED_GLASS_PANE,
-                Material.ORANGE_STAINED_GLASS_PANE,
-                Material.GREEN_STAINED_GLASS_PANE,
-                Material.BROWN_STAINED_GLASS_PANE,
-                Material.BLACK_STAINED_GLASS_PANE,
-                Material.BLUE_STAINED_GLASS_PANE,
-                Material.CYAN_STAINED_GLASS_PANE,
-                Material.GRAY_STAINED_GLASS_PANE,
-                Material.LIME_STAINED_GLASS_PANE,
-                Material.PINK_STAINED_GLASS_PANE,
                 Material.RED_STAINED_GLASS_PANE
         );
 
@@ -326,10 +297,6 @@ public class MiscUtils {
 
     public static boolean useOtherRandom() {
         return ConfigManager.getConfig().getProperty(ConfigKeys.use_different_random);
-    }
-
-    public static boolean useLegacyChecks() {
-        return ConfigManager.getConfig().getProperty(ConfigKeys.use_old_key_checks);
     }
 
     public static void registerPermissions() {

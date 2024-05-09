@@ -16,8 +16,7 @@ import com.badbones69.crazycrates.api.builders.CrateBuilder;
 
 public class CosmicCrate extends CrateBuilder {
 
-    @NotNull
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
     public CosmicCrate(Crate crate, Player player, int size) {
         super(crate, player, size, crate.getCrateInventoryName() + " - Choose");
@@ -42,9 +41,11 @@ public class CosmicCrate extends CrateBuilder {
 
             if (tier != null) {
                 itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING, tier.getName());
+
                 stack.setItemMeta(itemMeta);
 
                 setItem(index, stack);
+
                 slot++;
             }
         }

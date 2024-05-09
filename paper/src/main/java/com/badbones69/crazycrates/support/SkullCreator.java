@@ -50,7 +50,9 @@ public class SkullCreator {
         notNull(id, "id");
         
         SkullMeta meta = (SkullMeta) item.getItemMeta();
+
         meta.setOwningPlayer(plugin.getServer().getOfflinePlayer(id));
+
         item.setItemMeta(meta);
         
         return item;
@@ -106,6 +108,7 @@ public class SkullCreator {
         notNull(base64, "base64");
         
         UUID hashAsId = new UUID(base64.hashCode(), base64.hashCode());
+
         return plugin.getServer().getUnsafe().modifyItemStack(item,
         "{SkullOwner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}"
         );
@@ -122,7 +125,8 @@ public class SkullCreator {
         notNull(id, "id");
         
         setBlockType(block);
-        ((Skull) block.getState()).setOwningPlayer(Bukkit.getOfflinePlayer(id));
+
+        ((Skull) block.getState()).setOwningPlayer(plugin.getServer().getOfflinePlayer(id));
     }
     
     /**

@@ -1,5 +1,8 @@
 package us.crazycrew.crazycrates.api.crates;
 
+import com.ryderbelserion.vital.util.DyeUtil;
+import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +18,7 @@ public class CrateHologram {
     private final double height;
     private final int range;
     private final List<String> messages;
+    private final String backgroundColor;
 
     /**
      * Empty constructor
@@ -24,6 +28,7 @@ public class CrateHologram {
         this.height = 0.0;
         this.range = 8;
         this.messages = new ArrayList<>();
+        this.backgroundColor = "transparent";
     }
 
     /**
@@ -33,10 +38,11 @@ public class CrateHologram {
      * @param height of the hologram from the ground
      * @param messages the hologram will display
      */
-    public CrateHologram(boolean enabled, double height, int range, List<String> messages) {
+    public CrateHologram(boolean enabled, double height, int range, String color, List<String> messages) {
         this.enabled = enabled;
         this.height = height;
         this.range = range;
+        this.backgroundColor = color;
         this.messages = messages;
     }
 
@@ -65,6 +71,15 @@ public class CrateHologram {
      */
     public double getHeight() {
         return this.height;
+    }
+
+    /**
+     * Gets the background color of the hologram.
+     *
+     * @return the color
+     */
+    public String getBackgroundColor() {
+        return this.backgroundColor;
     }
 
     /**

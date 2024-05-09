@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.support.holograms.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.api.utils.MsgUtils;
 import eu.decentsoftware.holograms.api.DHAPI;
 import org.bukkit.Location;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
@@ -22,15 +21,21 @@ public class DecentHologramsSupport extends HologramManager {
 
         CrateHologram crateHologram = crate.getHologram();
 
-        if (!crateHologram.isEnabled()) return;
+        if (!crateHologram.isEnabled()) {
+            removeHologram(location);
+
+            return;
+        }
 
         Hologram hologram = DHAPI.createHologram(name(), location.clone().add(getVector(crate)));
 
-        crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, MsgUtils.color(line)));
+        DHAPI.addHologramPage(hologram, lines(crateHologram));
+
+        crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, color(line)));
 
         hologram.setDisplayRange(crateHologram.getRange());
 
-        this.holograms.put(MiscUtils.location(location), hologram);
+        this.holograms.putIfAbsent(MiscUtils.location(location), hologram);
     }
 
     @Override
@@ -43,9 +48,11 @@ public class DecentHologramsSupport extends HologramManager {
     }
 
     @Override
-    public void removeAllHolograms() {
-        this.holograms.forEach((key, value) -> value.destroy());
-        this.holograms.clear();
+    public void removeAllHolograms(boolean isShutdown) {
+        if (!isEmpty()) {
+            this.holograms.forEach((key, value) -> value.destroy());
+            this.holograms.clear();
+        }
     }
 
     @Override

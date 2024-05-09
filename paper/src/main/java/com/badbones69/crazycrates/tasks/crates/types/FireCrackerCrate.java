@@ -1,12 +1,12 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
@@ -17,11 +17,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class FireCrackerCrate extends CrateBuilder {
 
-    @NotNull
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
-    @NotNull
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
     public FireCrackerCrate(Crate crate, Player player, int size, Location location) {
         super(crate, player, size, location);
@@ -51,7 +49,7 @@ public class FireCrackerCrate extends CrateBuilder {
 
         List<Color> colors = Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.AQUA, Color.MAROON, Color.PURPLE);
 
-        addCrateTask(new BukkitRunnable() {
+        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
             final int random = ThreadLocalRandom.current().nextInt(colors.size());
             final Location location = getLocation().clone().add(.5, 25, .5);
 
@@ -60,7 +58,9 @@ public class FireCrackerCrate extends CrateBuilder {
             @Override
             public void run() {
                 this.location.subtract(0, 1, 0);
+
                 MiscUtils.spawnFirework(this.location, colors.get(this.random));
+
                 this.length++;
 
                 if (this.length == 25) {
@@ -71,7 +71,7 @@ public class FireCrackerCrate extends CrateBuilder {
                     quickCrate.open(KeyType.free_key, false);
                 }
             }
-        }.runTaskTimer(this.plugin, 0, 2));
+        }.runAtFixedRate(this.plugin, 0, 2));
     }
 
     @Override

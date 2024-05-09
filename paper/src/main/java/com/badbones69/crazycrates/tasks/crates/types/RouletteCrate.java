@@ -3,13 +3,13 @@ package com.badbones69.crazycrates.tasks.crates.types;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
@@ -17,11 +17,9 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 
 public class RouletteCrate extends CrateBuilder {
 
-    @NotNull
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
 
-    @NotNull
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
 
     public RouletteCrate(Crate crate, Player player, int size) {
         super(crate, player, size);
@@ -45,7 +43,7 @@ public class RouletteCrate extends CrateBuilder {
 
         setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
 
-        addCrateTask(new BukkitRunnable() {
+        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
             int full = 0;
             int time = 1;
 
@@ -59,10 +57,12 @@ public class RouletteCrate extends CrateBuilder {
                     setGlass();
 
                     playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
+
                     this.even++;
 
                     if (this.even >= 4) {
                         this.even = 0;
+
                         setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
                     }
                 }
@@ -71,6 +71,7 @@ public class RouletteCrate extends CrateBuilder {
 
                 if (this.open >= 5) {
                     getPlayer().openInventory(getInventory());
+
                     this.open = 0;
                 }
 
@@ -79,6 +80,7 @@ public class RouletteCrate extends CrateBuilder {
                 if (this.full > 16) {
                     if (MiscUtils.slowSpin(46, 9).contains(this.time)) {
                         setGlass();
+
                         setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
 
                         playSound("cycle-sound", SoundCategory.PLAYERS, "BLOCK_NOTE_BLOCK_XYLOPHONE");
@@ -88,6 +90,7 @@ public class RouletteCrate extends CrateBuilder {
 
                     if (this.time >= 23) {
                         playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
+
                         crateManager.endCrate(getPlayer());
 
                         ItemStack item = getInventory().getItem(13);
@@ -99,16 +102,16 @@ public class RouletteCrate extends CrateBuilder {
 
                         crateManager.removePlayerFromOpeningList(getPlayer());
 
-                        new BukkitRunnable() {
+                        new FoliaRunnable(getPlayer().getScheduler(), null) {
                             @Override
                             public void run() {
                                 if (getPlayer().getOpenInventory().getTopInventory().equals(getInventory())) getPlayer().closeInventory(InventoryCloseEvent.Reason.UNLOADED);
                             }
-                        }.runTaskLater(plugin, 40);
+                        }.runDelayed(plugin, 40);
                     }
                 }
             }
-        }.runTaskTimer(this.plugin, 2, 2));
+        }.runAtFixedRate(this.plugin, 2, 2));
     }
 
     private void setGlass() {

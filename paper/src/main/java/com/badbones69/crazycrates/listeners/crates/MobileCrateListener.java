@@ -42,7 +42,7 @@ public class MobileCrateListener implements Listener {
 
         if (item.getType() == Material.AIR) return;
 
-        if (!item.hasItemMeta() && !MiscUtils.useLegacyChecks()) return;
+        if (!item.hasItemMeta()) return;
 
         ItemMeta itemMeta = item.getItemMeta();
 

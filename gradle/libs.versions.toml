@@ -1,9 +1,8 @@
 [plugins]
-bukkit-convention = { id = "xyz.jpenilla.resource-factory-bukkit-convention", version = "1.0.0" }
 run-paper = { id = "xyz.jpenilla.run-paper", version = "2.2.3" }
 
 [versions]
-bundle = "1.20.4"
+minecraftVersion = "1.20.4"
 
 [libraries]
 itemsadder-api = { group = "com.github.LoneDev6", name = "api-itemsadder", version = "3.6.1" }
@@ -11,9 +10,10 @@ oraxen-api = { group = "io.th0rgal", name = "oraxen", version = "1.171.0" }
 placeholder-api = { group = "me.clip", name = "placeholderapi", version = "2.11.5" }
 head-database-api = { group = "com.arcaniax", name = "HeadDatabase-API", version = "1.3.1" }
 
-vital = { group = "com.ryderbelserion.vital", name = "paper", version = "1.1" }
+vital = { group = "com.ryderbelserion.vital", name = "paper", version = "0.1" }
 
 decent-holograms = { group = "com.github.decentsoftware-eu", name = "decentholograms", version = "2.8.6" }
+fancy-holograms = { group = "de.oliver", name = "FancyHolograms", version = "2.0.6" }
 
 triumph-cmds = { group = "dev.triumphteam", name = "triumph-cmd-bukkit", version = "2.0.0-SNAPSHOT" }
 triumph-gui = { group = "dev.triumphteam", name = "triumph-gui", version = "3.1.7" }

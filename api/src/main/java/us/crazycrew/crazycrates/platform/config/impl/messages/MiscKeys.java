@@ -22,24 +22,24 @@ public class MiscKeys implements SettingsHolder {
         conf.setComment("misc", header);
     }
 
-    @Comment("A list of available placeholders: {prefix}")
-    public static final Property<String> unknown_command = newProperty("misc.unknown-command", "{prefix}&cThis command is not known.");
+    @Comment("A list of available placeholders: {prefix}, {command}")
+    public static final Property<String> unknown_command = newProperty("misc.unknown-command", "{prefix}<red>{command} is not a known command.");
 
     @Comment("Only activates when you try to use an ender pearl while opening a crate.")
-    public static final Property<String> no_teleporting = newProperty("misc.no-teleporting", "{prefix}&cYou may not teleport away while opening a crate.");
+    public static final Property<String> no_teleporting = newProperty("misc.no-teleporting", "{prefix}<red>You may not teleport away while opening a crate.");
 
     @Comment("A list of available placeholders: {prefix}")
-    public static final Property<String> no_commands_while_using_crate = newProperty("misc.no-commands", "{prefix}&cYou are not allowed to use commands while opening crates.");
+    public static final Property<String> no_commands_while_using_crate = newProperty("misc.no-commands", "{prefix}<red>You are not allowed to use commands while opening crates.");
 
     @Comment("A list of available placeholders: {prefix}, {key}, {crate}")
-    public static final Property<String> no_keys = newProperty("misc.no-keys", "{prefix}&cYou must have a {key} &cto use &6{crate}.");
+    public static final Property<String> no_keys = newProperty("misc.no-keys", "{prefix}<red>You must have a {key} <red>in your hand to use <gold>{crate}.");
 
-    @Comment("A list of available placeholders: {prefix}, {key}, {crate}")
-    public static final Property<String> no_virtual_key = newProperty("misc.no-virtual-keys", "{prefix}&cYou need a virtual key to open &6{crate}.");
+    @Comment("A list of available placeholders: {prefix}, {crate}")
+    public static final Property<String> no_virtual_key = newProperty("misc.no-virtual-keys", "{prefix}<red>You need a virtual key to open <gold>{crate}.");
 
     @Comment("A list of available placeholders: {prefix}, {usage}")
-    public static final Property<String> correct_usage = newProperty("misc.correct-usage", "{prefix}&cThe correct usage for this command is &e{usage}");
+    public static final Property<String> correct_usage = newProperty("misc.correct-usage", "{prefix}<red>The correct usage for this command is <yellow>{usage}");
 
     @Comment("A list of available placeholders: {prefix}")
-    public static final Property<String> feature_disabled = newProperty("misc.feature-disabled", "{prefix}&cThis feature is disabled.");
+    public static final Property<String> feature_disabled = newProperty("misc.feature-disabled", "{prefix}<red>This feature is disabled.");
 }

@@ -27,7 +27,7 @@ public class Tier {
 
         this.lore = section.getStringList("Lore").isEmpty() ? Collections.emptyList() : section.getStringList("Lore");
 
-        this.item = new ItemBuilder().setMaterial(section.getString("Item", "CHEST"));
+        this.item = new ItemBuilder().setMaterial(section.getString("Item", "CHEST")).hideItemFlags(section.getBoolean("HideItemFlags", false));
 
         this.chance = section.getInt("Chance");
         this.maxRange = section.getInt("MaxRange", 100);

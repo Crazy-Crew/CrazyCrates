@@ -40,8 +40,9 @@ public class CosmicCrateManager extends AbstractCrateManager {
 
         this.mysteryCrate = new ItemBuilder()
         .setMaterial(file.getString(path + "Mystery-Crate.Item", "CHEST"))
-        .setName(file.getString(path + "Mystery-Crate.Name", "&f&l???"))
-        .setLore(file.contains(path + "Mystery-Crate.Lore") ? file.getStringList(path + "Mystery-Crate.Lore") : Collections.singletonList("&7You may choose 4 crates."));
+        .setName(file.getString(path + "Mystery-Crate.Name", "<bold><white>???</bold>"))
+        .hideItemFlags(file.getBoolean(path + "Mystery-Crate.HideItemFlags", false))
+        .setLore(file.contains(path + "Mystery-Crate.Lore") ? file.getStringList(path + "Mystery-Crate.Lore") : Collections.singletonList("<gray>You may choose 4 crates."));
 
         ItemMeta mysteryItemMeta = this.mysteryCrate.getItemMeta();
 
@@ -55,8 +56,9 @@ public class CosmicCrateManager extends AbstractCrateManager {
 
         this.pickedCrate = new ItemBuilder()
         .setMaterial(file.getString(path + "Picked-Crate.Item", Material.GLASS_PANE.toString()))
-        .setName(file.getString(path + "Picked-Crate.Name", "&f&l???"))
-        .setLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("&7You have chosen #%slot%."));
+        .setName(file.getString(path + "Picked-Crate.Name", "<bold><white>???</white>"))
+        .hideItemFlags(file.getBoolean(path + "Picked-Crate.HideItemFlags", false))
+        .setLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("<gray>You have chosen #%slot%."));
 
         ItemMeta pickedCrateMeta = this.pickedCrate.getItemMeta();
 

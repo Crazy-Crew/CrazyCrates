@@ -3,8 +3,10 @@ package com.badbones69.crazycrates.api.builders;
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
+import com.badbones69.crazycrates.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.SoundCategory;
@@ -14,8 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -24,7 +24,7 @@ import com.badbones69.crazycrates.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.List;
 
-public abstract class CrateBuilder extends BukkitRunnable {
+public abstract class CrateBuilder extends FoliaRunnable {
 
     protected final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
@@ -43,6 +43,8 @@ public abstract class CrateBuilder extends BukkitRunnable {
      * @param size size of inventory.
      */
     public CrateBuilder(Crate crate, Player player, int size) {
+        super(player.getScheduler(), null);
+
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
 
@@ -66,6 +68,8 @@ public abstract class CrateBuilder extends BukkitRunnable {
      * @param crateName crate name of crate.
      */
     public CrateBuilder(Crate crate, Player player, int size, String crateName) {
+        super(player.getScheduler(), null);
+
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
 
@@ -89,6 +93,8 @@ public abstract class CrateBuilder extends BukkitRunnable {
      * @param location location of player.
      */
     public CrateBuilder(Crate crate, Player player, int size, Location location) {
+        super(player.getScheduler(), null);
+
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
         Preconditions.checkNotNull(location, "Location can't be null.");
@@ -111,6 +117,8 @@ public abstract class CrateBuilder extends BukkitRunnable {
      * @param player player opening crate.
      */
     public CrateBuilder(Crate crate, Player player) {
+        super(player.getScheduler(), null);
+
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
 
@@ -133,6 +141,8 @@ public abstract class CrateBuilder extends BukkitRunnable {
      * @param location location of player.
      */
     public CrateBuilder(Crate crate, Player player, Location location) {
+        super(player.getScheduler(), null);
+
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
         Preconditions.checkNotNull(location, "Location can't be null.");
@@ -161,7 +171,7 @@ public abstract class CrateBuilder extends BukkitRunnable {
      *
      * @param task task to add.
      */
-    public void addCrateTask(BukkitTask task) {
+    public void addCrateTask(ScheduledTask task) {
         this.plugin.getCrateManager().addCrateTask(this.player, task);
     }
 
