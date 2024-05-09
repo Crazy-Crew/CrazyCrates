@@ -40,12 +40,12 @@ public class Server extends AbstractPlugin implements IServer {
 
         this.settings = new Settings();
 
-        this.fileManager.addDefaultFile("crates", "CrateExample.yml")
-                .addDefaultFile("crates", "QuadCrateExample.yml")
-                .addDefaultFile("crates", "QuickCrateExample.yml")
-                .addDefaultFile("crates", "WarCrateExample.yml")
-                .addDefaultFile("crates", "CosmicCrateExample.yml")
-                .addDefaultFile("crates", "CasinoExample.yml")
+        this.fileManager.addDefaultFile("crates", "CrateExample.yml").addDefaultFile("crates", "AdvancedExample.yml")
+                .addDefaultFile("crates/types", "CosmicCrateExample.yml")
+                .addDefaultFile("crates/types", "QuickCrateExample.yml")
+                .addDefaultFile("crates/types", "QuadCrateExample.yml")
+                .addDefaultFile("crates/types", "WarCrateExample.yml")
+                .addDefaultFile("crates/types", "CasinoExample.yml")
                 .addDefaultFile("schematics", "classic.nbt")
                 .addDefaultFile("schematics", "nether.nbt")
                 .addDefaultFile("schematics", "outdoors.nbt")
