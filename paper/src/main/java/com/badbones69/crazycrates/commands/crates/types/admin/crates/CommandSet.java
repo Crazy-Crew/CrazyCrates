@@ -11,7 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.platform.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import java.util.HashMap;
 import java.util.Map;
 

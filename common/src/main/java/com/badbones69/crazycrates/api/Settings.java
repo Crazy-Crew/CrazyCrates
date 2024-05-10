@@ -1,8 +1,8 @@
 package com.badbones69.crazycrates.api;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.platform.config.ConfigManager;
-import com.badbones69.crazycrates.platform.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.platform.ISettings;
 import java.util.List;

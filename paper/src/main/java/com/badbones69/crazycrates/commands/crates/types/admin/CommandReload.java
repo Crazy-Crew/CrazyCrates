@@ -8,8 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.permissions.PermissionDefault;
 import com.badbones69.crazycrates.api.enums.Files;
-import com.badbones69.crazycrates.platform.config.ConfigManager;
-import com.badbones69.crazycrates.platform.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 
 public class CommandReload extends BaseCommand {
 
