@@ -5,9 +5,7 @@ import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.permissions.PermissionDefault;
-import com.badbones69.crazycrates.api.enums.Files;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 
@@ -16,7 +14,7 @@ public class CommandReload extends BaseCommand {
     @Command("reload")
     @Permission(value = "crazycrates.reload", def = PermissionDefault.OP)
     public void reload(CommandSender sender) {
-        ConfigManager.reload();
+        ConfigManager.refresh();
 
         //this.fileManager.apply();
 

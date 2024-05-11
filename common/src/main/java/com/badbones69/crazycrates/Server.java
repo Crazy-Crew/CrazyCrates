@@ -2,7 +2,6 @@ package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.common.AbstractPlugin;
-import com.ryderbelserion.vital.common.configuration.YamlManager;
 import com.ryderbelserion.vital.common.util.FileUtil;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +20,6 @@ public class Server extends AbstractPlugin implements IServer {
     private final Logger logger;
     private final File crates;
 
-    private YamlManager yamlManager;
     private UserManager userManager;
     private Settings settings;
 
@@ -36,27 +34,6 @@ public class Server extends AbstractPlugin implements IServer {
         ConfigManager.load();
 
         this.settings = new Settings();
-
-        this.yamlManager = new YamlManager();
-        this.yamlManager
-                .addDefaultFile("crates", "CrateExample.yml")
-                .addDefaultFile("crates", "AdvancedExample.yml")
-                //.addDefaultFile("crates/types", "CosmicCrateExample.yml")
-                //.addDefaultFile("crates/types", "QuickCrateExample.yml")
-                //.addDefaultFile("crates/types", "QuadCrateExample.yml")
-                //.addDefaultFile("crates/types", "WarCrateExample.yml")
-                //.addDefaultFile("crates/types", "CasinoExample.yml")
-                .addDefaultFile("schematics", "classic.nbt")
-                .addDefaultFile("schematics", "nether.nbt")
-                .addDefaultFile("schematics", "outdoors.nbt")
-                .addDefaultFile("schematics", "sea.nbt")
-                .addDefaultFile("schematics", "soul.nbt")
-                .addDefaultFile("schematics", "wooden.nbt")
-                //.addStaticFile("locations.yml")
-                //.addStaticFile("data.yml")
-                .addFolder("crates")
-                .addFolder("schematics")
-                .init();
 
         // Register default provider.
         CratesProvider.register(this);
@@ -80,7 +57,7 @@ public class Server extends AbstractPlugin implements IServer {
      */
     @Override
     public void reload() {
-        ConfigManager.reload();
+        ConfigManager.refresh();
     }
 
     /**

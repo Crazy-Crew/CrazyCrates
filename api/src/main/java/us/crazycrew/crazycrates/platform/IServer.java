@@ -3,7 +3,6 @@ package us.crazycrew.crazycrates.platform;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import java.io.File;
-import java.nio.file.Path;
 import java.util.List;
 
 /**
