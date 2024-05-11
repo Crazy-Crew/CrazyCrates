@@ -2,9 +2,12 @@ package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
+import com.ryderbelserion.vital.common.configuration.YamlCustomFile;
+import com.ryderbelserion.vital.common.util.AdvUtil;
 import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import com.ryderbelserion.vital.util.DyeUtil;
 import com.ryderbelserion.vital.util.ItemUtil;
@@ -12,7 +15,6 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.SoundCategory;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.Damageable;
@@ -22,6 +24,8 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
+import org.simpleyaml.configuration.ConfigurationSection;
+import org.simpleyaml.configuration.file.FileConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
@@ -29,7 +33,6 @@ import com.badbones69.crazycrates.tasks.crates.other.AbstractCrateManager;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import org.bukkit.Location;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -733,7 +736,7 @@ public class Crate {
                 }
 
                 if (itemMeta.hasDisplayName()) {
-                    section.setRichMessage(getPath(prizeName, "DisplayName"), itemMeta.displayName());
+                    section.set(getPath(prizeName, "DisplayName"), AdvUtil.getRichMessage(itemMeta.displayName()));
                 } else {
                     section.set(getPath(prizeName, "DisplayName"), material.isBlock() ? "<lang:" + material.getBlockTranslationKey() + ">" : "<lang:" + material.getItemTranslationKey() + ">");
                 }
@@ -765,9 +768,9 @@ public class Crate {
             this.plugin.getLogger().log(Level.SEVERE, "Failed to save " + this.name + ".yml", exception);
         }
 
-        //CustomFile customFile = this.fileManager.getCustomFile(this.name);
+        YamlCustomFile customFile = ConfigManager.getYamlManager().getCustomFile(this.name);
 
-        //if (customFile != null) customFile.reload();
+        if (customFile != null) customFile.reload();
 
         this.crateManager.reloadCrate(this.crateManager.getCrateFromName(this.name));
     }

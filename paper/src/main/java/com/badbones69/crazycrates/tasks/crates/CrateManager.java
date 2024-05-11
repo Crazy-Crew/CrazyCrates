@@ -19,18 +19,22 @@ import com.badbones69.crazycrates.tasks.crates.types.RouletteCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WonderCrate;
+import com.ryderbelserion.vital.common.configuration.YamlCustomFile;
+import com.ryderbelserion.vital.common.configuration.YamlManager;
 import com.ryderbelserion.vital.common.util.FileUtil;
 import com.ryderbelserion.vital.enums.Support;
 import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
+import org.simpleyaml.configuration.ConfigurationSection;
+import org.simpleyaml.configuration.file.FileConfiguration;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
@@ -46,7 +50,6 @@ import com.badbones69.crazycrates.api.objects.Tier;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -59,6 +62,7 @@ import com.badbones69.crazycrates.support.holograms.types.CMIHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.DecentHologramsSupport;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,8 +78,7 @@ public class CrateManager {
 
     private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
     private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-
-    //private @NotNull final FileManager fileManager = this.plugin.getFileManager();
+    private @NotNull final YamlManager yamlManager = ConfigManager.getYamlManager();
 
     private final List<CrateLocation> crateLocations = new ArrayList<>();
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
@@ -245,11 +248,12 @@ public class CrateManager {
 
         for (final String crateName : getCrateNames()) {
             try {
-                //final @Nullable CustomFile customFile = this.fileManager.getCustomFile(crateName);
+                final @Nullable YamlCustomFile customFile = this.yamlManager.getCustomFile(crateName);
 
-                //if (customFile == null) return;
+                if (customFile == null) return;
 
-                final FileConfiguration file = null;
+                //todo() change this
+                final FileConfiguration file = customFile.getConfiguration();
 
                 final CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType", "CSGO"));
 
@@ -358,7 +362,13 @@ public class CrateManager {
             ).forEach(line -> this.plugin.getLogger().info(line));
         }
 
-        final FileConfiguration locations = null;
+        //todo() change this
+        final FileConfiguration locations;
+        try {
+            locations = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "config.yml"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         int loadedAmount = 0;
         int brokeAmount = 0;
 
@@ -1255,7 +1265,13 @@ public class CrateManager {
 
     // Cleans the data file.
     private void cleanDataFile() {
-        final FileConfiguration data = null;
+        //todo() change this
+        final FileConfiguration data;
+        try {
+            data = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "config.yml"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         if (!data.contains("Players")) return;
 

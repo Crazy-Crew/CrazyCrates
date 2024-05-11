@@ -21,6 +21,7 @@ public class Server extends AbstractPlugin implements IServer {
     private final File crates;
 
     private UserManager userManager;
+    private boolean isLogging;
     private Settings settings;
 
     public Server(@NotNull final File directory, @NotNull final Logger logger) {
@@ -32,6 +33,8 @@ public class Server extends AbstractPlugin implements IServer {
     @ApiStatus.Internal
     public void apply() {
         ConfigManager.load();
+
+        this.isLogging = ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging);
 
         this.settings = new Settings();
 
@@ -58,6 +61,8 @@ public class Server extends AbstractPlugin implements IServer {
     @Override
     public void reload() {
         ConfigManager.refresh();
+
+        this.isLogging = ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging);
     }
 
     /**
@@ -105,7 +110,7 @@ public class Server extends AbstractPlugin implements IServer {
      */
     @Override
     public final boolean isLogging() {
-        return ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging);
+        return this.isLogging;
     }
 
     /**

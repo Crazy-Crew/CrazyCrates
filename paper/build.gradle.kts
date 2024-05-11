@@ -23,7 +23,7 @@ dependencies {
 
     implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-ALPHA-10")
 
-    implementation("com.ryderbelserion", "vital-paper", "1.0")
+    implementation("com.ryderbelserion", "vital-paper", "1.1")
 
     implementation(project(":crazycrates-common"))
 }
