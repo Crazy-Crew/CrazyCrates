@@ -18,12 +18,12 @@ public class CommandReload extends BaseCommand {
     public void reload(CommandSender sender) {
         ConfigManager.reload();
 
-        this.fileManager.apply();
+        //this.fileManager.apply();
 
-        final FileConfiguration locations = Files.locations.getFile(this.fileManager);
-        final FileConfiguration data = Files.data.getFile(this.fileManager);
+        //final FileConfiguration locations = Files.locations.getFile(this.fileManager);
+        //final FileConfiguration data = Files.data.getFile(this.fileManager);
 
-        if (!locations.contains("Locations")) {
+        /*if (!locations.contains("Locations")) {
             locations.set("Locations.Clear", null);
 
             Files.locations.save(this.fileManager);
@@ -33,7 +33,7 @@ public class CommandReload extends BaseCommand {
             data.set("Players.Clear", null);
 
             Files.data.save(this.fileManager);
-        }
+        }*/
 
         if (this.config.getProperty(ConfigKeys.take_out_of_preview)) {
             this.plugin.getServer().getOnlinePlayers().forEach(player -> {

@@ -21,8 +21,6 @@ import com.badbones69.crazycrates.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WonderCrate;
 import com.ryderbelserion.vital.common.util.FileUtil;
 import com.ryderbelserion.vital.enums.Support;
-import com.ryderbelserion.vital.files.yaml.CustomFile;
-import com.ryderbelserion.vital.files.yaml.FileManager;
 import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.apache.commons.lang.WordUtils;
@@ -78,7 +76,7 @@ public class CrateManager {
     private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
     private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
-    private @NotNull final FileManager fileManager = this.plugin.getFileManager();
+    //private @NotNull final FileManager fileManager = this.plugin.getFileManager();
 
     private final List<CrateLocation> crateLocations = new ArrayList<>();
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
@@ -248,11 +246,11 @@ public class CrateManager {
 
         for (final String crateName : getCrateNames()) {
             try {
-                final @Nullable CustomFile customFile = this.fileManager.getCustomFile(crateName);
+                //final @Nullable CustomFile customFile = this.fileManager.getCustomFile(crateName);
 
-                if (customFile == null) return;
+                //if (customFile == null) return;
 
-                final FileConfiguration file = customFile.getConfiguration();
+                final FileConfiguration file = null;
 
                 final CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType", "CSGO"));
 
@@ -361,7 +359,7 @@ public class CrateManager {
             ).forEach(line -> this.plugin.getLogger().info(line));
         }
 
-        final FileConfiguration locations = Files.locations.getFile(this.fileManager);
+        final FileConfiguration locations = null;
         int loadedAmount = 0;
         int brokeAmount = 0;
 
@@ -848,8 +846,8 @@ public class CrateManager {
                 getUsableCrates().stream()
                         .filter(Crate :: doNewPlayersGetKeys)
                         .forEach(crate -> {
-                            Files.data.getFile(this.fileManager).set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());
-                            Files.data.save(this.fileManager);
+                            //Files.data.getFile(this.fileManager).set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());
+                            //Files.data.save(this.fileManager);
                         });
             }
         }
@@ -891,7 +889,7 @@ public class CrateManager {
      * @param crate the crate which you would like to set it to.
      */
     public void addCrateLocation(@NotNull final Location location, @NotNull final Crate crate) {
-        final FileConfiguration locations = Files.locations.getFile(this.fileManager);
+        final FileConfiguration locations = null;
         String id = "1"; // Location ID
 
         for (int i = 1; locations.contains("Locations." + i); i++) {
@@ -912,7 +910,7 @@ public class CrateManager {
         locations.set("Locations." + id + ".Y", location.getBlockY());
         locations.set("Locations." + id + ".Z", location.getBlockZ());
 
-        Files.locations.save(this.fileManager);
+        //Files.locations.save(this.fileManager);
 
         addLocation(new CrateLocation(id, crate, location));
 
@@ -925,8 +923,8 @@ public class CrateManager {
      * @param id the id of the location.
      */
     public void removeCrateLocation(@NotNull final String id) {
-        Files.locations.getFile(this.fileManager).set("Locations." + id, null);
-        Files.locations.save(this.fileManager);
+        //Files.locations.getFile(this.fileManager).set("Locations." + id, null);
+        //Files.locations.save(this.fileManager);
 
         CrateLocation location = null;
 
@@ -1258,7 +1256,7 @@ public class CrateManager {
 
     // Cleans the data file.
     private void cleanDataFile() {
-        final FileConfiguration data = Files.data.getFile(this.fileManager);
+        final FileConfiguration data = null;
 
         if (!data.contains("Players")) return;
 
@@ -1301,7 +1299,7 @@ public class CrateManager {
 
         if (MiscUtils.isLogging()) this.plugin.getLogger().info("The data.yml file has been cleaned.");
 
-        Files.data.save(this.fileManager);
+        //Files.data.save(this.fileManager);
     }
 
     // War Crate

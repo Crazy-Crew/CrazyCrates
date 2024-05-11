@@ -13,8 +13,6 @@ repositories {
 dependencies {
     compileOnly(fileTree("$rootDir/libs/compile").include("*.jar"))
 
-    implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-ALPHA-10")
-
     compileOnly("com.github.decentsoftware-eu", "decentholograms", "2.8.6")
 
     compileOnly("de.oliver", "FancyHolograms", "2.0.6")
@@ -22,6 +20,10 @@ dependencies {
     compileOnly("me.clip", "placeholderapi", "2.11.5")
 
     compileOnly("io.th0rgal", "oraxen", "1.171.0")
+
+    implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-ALPHA-10")
+
+    implementation("com.ryderbelserion", "vital-paper", "1.0")
 
     implementation(project(":crazycrates-common"))
 }

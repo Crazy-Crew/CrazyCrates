@@ -1,8 +1,5 @@
 package com.badbones69.crazycrates.api.enums;
 
-import com.ryderbelserion.vital.files.yaml.FileManager;
-import org.bukkit.configuration.file.FileConfiguration;
-
 public enum Files {
 
     /**
@@ -28,21 +25,21 @@ public enum Files {
     /**
      * @return the file configuration
      */
-    public FileConfiguration getFile(FileManager fileManager) {
+    /*public FileConfiguration getFile(FileManager fileManager) {
         return fileManager.getStaticFile(this.fileName);
     }
 
     /**
      * Saves a file from the enum.
-     */
+
     public void save(FileManager fileManager) {
-        fileManager.saveStaticFile(this.fileName);
+        //fileManager.saveStaticFile(this.fileName);
     }
 
     /**
      * Reloads a file from the enum.
-     */
+
     public void reload(FileManager fileManager) {
-        fileManager.reloadStaticFile(this.fileName);
-    }
+        //fileManager.reloadStaticFile(this.fileName);
+    }*/
 }

@@ -5,8 +5,6 @@ import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
-import com.ryderbelserion.vital.files.yaml.CustomFile;
-import com.ryderbelserion.vital.files.yaml.FileManager;
 import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import com.ryderbelserion.vital.util.DyeUtil;
 import com.ryderbelserion.vital.util.ItemUtil;
@@ -97,7 +95,7 @@ public class Crate {
 
     private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
-    private @NotNull final FileManager fileManager = this.plugin.getFileManager();
+    //private @NotNull final FileManager fileManager = this.plugin.getFileManager();
 
     /**
      * @param name The name of the crate.
@@ -767,9 +765,9 @@ public class Crate {
             this.plugin.getLogger().log(Level.SEVERE, "Failed to save " + this.name + ".yml", exception);
         }
 
-        CustomFile customFile = this.fileManager.getCustomFile(this.name);
+        //CustomFile customFile = this.fileManager.getCustomFile(this.name);
 
-        if (customFile != null) customFile.reload();
+        //if (customFile != null) customFile.reload();
 
         this.crateManager.reloadCrate(this.crateManager.getCrateFromName(this.name));
     }

@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public class CommandTeleport extends BaseCommand {
 
-    private @NotNull final FileConfiguration locations = Files.locations.getFile(this.fileManager);
+    //private @NotNull final FileConfiguration locations = Files.locations.getFile(this.fileManager);
 
     @Command("teleport")
     @Permission(value = "crazycrates.teleport", def = PermissionDefault.OP)
@@ -29,17 +29,17 @@ public class CommandTeleport extends BaseCommand {
             return;
         }
 
-        final ConfigurationSection section = this.locations.getConfigurationSection("Locations");
+       // final ConfigurationSection section = this.locations.getConfigurationSection("Locations");
 
-        if (section == null) {
-            this.locations.set("Locations.Clear", null);
+        //if (section == null) {
+            //this.locations.set("Locations.Clear", null);
 
-            Files.locations.save(this.fileManager);
+            //Files.locations.save(this.fileManager);
 
-            return;
-        }
+            //return;
+        //}
 
-        for (final String name : section.getKeys(false)) {
+        /*for (final String name : section.getKeys(false)) {
             if (name.equalsIgnoreCase(id)) {
                 final World world = this.plugin.getServer().getWorld(Objects.requireNonNull(this.locations.getString("Locations." + name + ".World")));
 
@@ -55,7 +55,7 @@ public class CommandTeleport extends BaseCommand {
 
                 return;
             }
-        }
+        }*/
 
         player.sendRichMessage(MsgUtils.getPrefix("<red>There is no location called <gold>" + id + "."));
     }

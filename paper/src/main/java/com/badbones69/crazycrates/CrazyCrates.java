@@ -15,18 +15,15 @@ import com.badbones69.crazycrates.listeners.crates.MobileCrateListener;
 import com.badbones69.crazycrates.listeners.crates.QuadCrateListener;
 import com.badbones69.crazycrates.listeners.crates.WarCrateListener;
 import com.badbones69.crazycrates.listeners.other.EntityDamageListener;
-import com.badbones69.crazycrates.config.ConfigManager;
-import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.VitalPaper;
 import com.ryderbelserion.vital.enums.Support;
-import com.ryderbelserion.vital.files.yaml.FileManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Timer;
 import static com.badbones69.crazycrates.api.utils.MiscUtils.registerPermissions;
@@ -48,10 +45,8 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.instance = new Server(getPluginMeta().getName(), getDataFolder(), getLogger());
-        this.instance.enable();
-
-        new VitalPaper(this);
+        this.instance = new Server(getDataFolder(), getLogger());
+        this.instance.apply();
 
         // Register permissions that we need.
         registerPermissions();
@@ -94,14 +89,14 @@ public class CrazyCrates extends JavaPlugin {
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
 
         if (MiscUtils.isLogging()) {
-            final String prefix = ConfigManager.getConfig().getProperty(ConfigKeys.console_prefix);
+            //final String prefix = ConfigManager.getConfig().getProperty(ConfigKeys.console_prefix);
 
             // Print dependency garbage
             for (final Support value : Support.values()) {
                 if (value.isEnabled()) {
-                    getServer().getConsoleSender().sendRichMessage(prefix + "<bold><gold>" + value.getName() + " <green>FOUND");
+                    //getServer().getConsoleSender().sendRichMessage(prefix + "<bold><gold>" + value.getName() + " <green>FOUND");
                 } else {
-                    getServer().getConsoleSender().sendRichMessage(prefix + "<bold><gold>" + value.getName() + " <red>NOT FOUND");
+                    //getServer().getConsoleSender().sendRichMessage(prefix + "<bold><gold>" + value.getName() + " <red>NOT FOUND");
                 }
             }
         }
@@ -152,9 +147,10 @@ public class CrazyCrates extends JavaPlugin {
         return this.crateManager;
     }
 
-    public @NotNull final FileManager getFileManager() {
-        return this.instance.getFileManager();
-    }
+    //public @Nullable final FileManager getFileManager() {
+    //    return null;
+        //return this.instance.getFileManager();
+    //}
 
     public @NotNull final Server getInstance() {
         return this.instance;

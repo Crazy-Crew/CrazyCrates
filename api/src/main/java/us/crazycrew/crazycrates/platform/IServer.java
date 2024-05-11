@@ -20,11 +20,6 @@ public interface IServer {
     void reload();
 
     /**
-     * @return the plugin directory
-     */
-    @NotNull Path getDirectory();
-
-    /**
      * @return the crates folder
      */
     @NotNull File getCrateFolder();
