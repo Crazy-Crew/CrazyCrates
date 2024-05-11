@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.config;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.api.enums.CustomFiles;
 import com.badbones69.crazycrates.config.migrate.ConfigMigration;
 import com.badbones69.crazycrates.config.migrate.LocaleMigration;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
@@ -48,7 +49,7 @@ public class ConfigManager {
      * Refreshes configuration files.
      */
     public static void refresh() {
-        // Reload static files
+        // Refresh all files
         getYamlManager().reloadFiles();
     }
 
@@ -56,14 +57,14 @@ public class ConfigManager {
      * @return gets config.yml
      */
     public static SettingsManager getConfig() {
-        return getYamlManager().getFile("config.yml");
+        return CustomFiles.config.getSettingsManager();
     }
 
     /**
      * @return gets messages.yml
      */
     public static SettingsManager getMessages() {
-        return getYamlManager().getFile("messages.yml");
+        return CustomFiles.messages.getSettingsManager();
     }
 
     /**
