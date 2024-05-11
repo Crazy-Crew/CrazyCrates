@@ -3,8 +3,11 @@ package com.badbones69.crazycrates.api.objects;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.ryderbelserion.vital.util.builders.ItemBuilder;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -224,6 +227,16 @@ public class Prize {
         try {
             final String material = this.section.getString("DisplayItem", "red_terracotta");
             final int amount = this.section.getInt("DisplayAmount", 1);
+
+            final String nbt = this.section.getString("DisplayNbt");
+
+            if (nbt != null && !nbt.isEmpty()) {
+                CompoundTag tag = TagParser.parseTag(nbt);
+
+                net.minecraft.world.item.ItemStack item = CraftItemStack.asNMSCopy(builder.withType(material).setAmount(amount).getStack());
+
+                return builder;
+            }
 
             builder.withType(material).setAmount(amount).setDisplayName(this.prizeName);
 
