@@ -33,7 +33,7 @@ public class Server extends AbstractPlugin implements IServer {
 
     @ApiStatus.Internal
     public void apply() {
-        ConfigManager.load(this.directory);
+        ConfigManager.load();
 
         this.settings = new Settings();
 

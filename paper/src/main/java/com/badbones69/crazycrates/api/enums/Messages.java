@@ -104,9 +104,9 @@ public enum Messages {
         this.isList = isList;
     }
 
-    private @NotNull final SettingsManager config = ConfigManager.getConfig();
+    private final SettingsManager config = ConfigManager.getConfig();
 
-    private @NotNull final SettingsManager messages = ConfigManager.getMessages();
+    private final SettingsManager messages = ConfigManager.getMessages();
 
     private boolean isList() {
         return this.isList;
