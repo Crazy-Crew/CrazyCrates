@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates;
 
-import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.common.AbstractPlugin;
 import com.ryderbelserion.vital.common.util.FileUtil;
 import org.jetbrains.annotations.ApiStatus;
@@ -21,7 +20,6 @@ public class Server extends AbstractPlugin implements IServer {
     private final File crates;
 
     private UserManager userManager;
-    private boolean isLogging;
     private Settings settings;
 
     public Server(@NotNull final File directory, @NotNull final Logger logger) {
@@ -33,8 +31,6 @@ public class Server extends AbstractPlugin implements IServer {
     @ApiStatus.Internal
     public void apply() {
         ConfigManager.load();
-
-        this.isLogging = ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging);
 
         this.settings = new Settings();
 
@@ -61,8 +57,6 @@ public class Server extends AbstractPlugin implements IServer {
     @Override
     public void reload() {
         ConfigManager.refresh();
-
-        this.isLogging = ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging);
     }
 
     /**
@@ -103,14 +97,6 @@ public class Server extends AbstractPlugin implements IServer {
     @Override
     public @NotNull final File getDirectory() {
         return this.directory;
-    }
-
-    /**
-     * @return true or false
-     */
-    @Override
-    public final boolean isLogging() {
-        return this.isLogging;
     }
 
     /**
