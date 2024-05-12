@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.config;
 
+import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.enums.CustomFiles;
 import com.badbones69.crazycrates.config.migrate.ConfigMigration;
@@ -24,22 +25,19 @@ public class ConfigManager {
     public static void load() {
         if (yamlManager == null) yamlManager = new YamlManager();
 
-        yamlManager.addFile("messages.yml", new LocaleMigration(), MiscKeys.class, ErrorKeys.class, PlayerKeys.class, CrateKeys.class, CommandKeys.class)
-                .addFile("config.yml", new ConfigMigration(), ConfigKeys.class).addDefaultFile("crates", "CrateExample.yml")
+        // Create directory
+        yamlManager.createPluginDirectory();
+
+        // Add file
+        yamlManager.addFile("messages.yml", new LocaleMigration(), MiscKeys.class, ErrorKeys.class, PlayerKeys.class, CrateKeys.class, CommandKeys.class).addFile("config.yml", new ConfigMigration(), ConfigKeys.class)
+                .addDefaultFile("crates", "CrateExample.yml")
                 .addDefaultFile("crates", "AdvancedExample.yml")
-                //.addDefaultFile("crates/types", "CosmicCrateExample.yml")
-                //.addDefaultFile("crates/types", "QuickCrateExample.yml")
-                //.addDefaultFile("crates/types", "QuadCrateExample.yml")
-                //.addDefaultFile("crates/types", "WarCrateExample.yml")
-                //.addDefaultFile("crates/types", "CasinoExample.yml")
                 .addDefaultFile("schematics", "classic.nbt")
                 .addDefaultFile("schematics", "nether.nbt")
                 .addDefaultFile("schematics", "outdoors.nbt")
                 .addDefaultFile("schematics", "sea.nbt")
                 .addDefaultFile("schematics", "soul.nbt")
                 .addDefaultFile("schematics", "wooden.nbt")
-                //.addStaticFile("locations.yml")
-                //.addStaticFile("data.yml")
                 .addFolder("crates")
                 .addFolder("schematics")
                 .init();
