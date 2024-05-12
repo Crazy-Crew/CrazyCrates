@@ -2,16 +2,10 @@ plugins {
     `java-plugin`
 }
 
-repositories {
-    //maven("https://repo.papermc.io/repository/maven-public/")
-}
-
 dependencies {
-    //compileOnly("io.papermc.paper", "paper-api", "1.20.6-R0.1-SNAPSHOT")
+    compileOnly(libs.vital.common)
 
-    compileOnly("com.ryderbelserion", "vital-common", "1.1")
-
-    compileOnly("org.jetbrains", "annotations", "24.1.0")
+    compileOnly(libs.annotations)
 
     api(project(":crazycrates-api"))
 }
