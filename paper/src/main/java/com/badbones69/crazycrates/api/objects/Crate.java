@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
-import com.ryderbelserion.vital.common.configuration.YamlCustomFile;
+import com.ryderbelserion.vital.common.configuration.objects.CustomFile;
 import com.ryderbelserion.vital.common.util.AdvUtil;
 import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import com.ryderbelserion.vital.util.DyeUtil;
@@ -768,7 +768,7 @@ public class Crate {
             this.plugin.getLogger().log(Level.SEVERE, "Failed to save " + this.name + ".yml", exception);
         }
 
-        YamlCustomFile customFile = ConfigManager.getYamlManager().getCustomFile(this.name);
+        CustomFile customFile = ConfigManager.getYamlManager().getCustomFile(this.name);
 
         if (customFile != null) customFile.reload();
 

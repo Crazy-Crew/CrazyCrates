@@ -19,8 +19,9 @@ import com.badbones69.crazycrates.tasks.crates.types.RouletteCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WonderCrate;
-import com.ryderbelserion.vital.common.configuration.YamlCustomFile;
+import com.ryderbelserion.vital.common.configuration.YamlFile;
 import com.ryderbelserion.vital.common.configuration.YamlManager;
+import com.ryderbelserion.vital.common.configuration.objects.CustomFile;
 import com.ryderbelserion.vital.common.util.FileUtil;
 import com.ryderbelserion.vital.enums.Support;
 import com.ryderbelserion.vital.util.builders.ItemBuilder;
@@ -248,12 +249,12 @@ public class CrateManager {
 
         for (final String crateName : getCrateNames()) {
             try {
-                final @Nullable YamlCustomFile customFile = this.yamlManager.getCustomFile(crateName);
+                final @Nullable CustomFile customFile = this.yamlManager.getCustomFile(crateName);
 
                 if (customFile == null) return;
 
                 //todo() change this
-                final FileConfiguration file = customFile.getConfiguration();
+                final YamlFile file = customFile.getYamlFile();
 
                 final CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType", "CSGO"));
 
