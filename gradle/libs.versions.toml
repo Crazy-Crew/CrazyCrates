@@ -1,5 +1,5 @@
 [plugins]
-run-paper = { id = "xyz.jpenilla.run-paper", version = "2.2.4" }
+run-paper = { id = "xyz.jpenilla.run-paper", version = "2.3.0" }
 
 [versions]
 vital = "1.1"
