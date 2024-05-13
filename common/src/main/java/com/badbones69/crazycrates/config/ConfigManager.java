@@ -30,14 +30,6 @@ public class ConfigManager {
         // Add file
 
         yamlManager.addFile("messages.yml", new LocaleMigration(), MiscKeys.class, ErrorKeys.class, PlayerKeys.class, CrateKeys.class, CommandKeys.class).addFile("config.yml", new ConfigMigration(), ConfigKeys.class)
-                .addDefaultFile("crates", "CrateExample.yml")
-                .addDefaultFile("crates", "AdvancedExample.yml")
-                .addDefaultFile("schematics", "classic.nbt")
-                .addDefaultFile("schematics", "nether.nbt")
-                .addDefaultFile("schematics", "outdoors.nbt")
-                .addDefaultFile("schematics", "sea.nbt")
-                .addDefaultFile("schematics", "soul.nbt")
-                .addDefaultFile("schematics", "wooden.nbt")
                 .addOtherFile("locations.yml")
                 .addOtherFile("data.yml")
                 .addFolder("crates")

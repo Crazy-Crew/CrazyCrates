@@ -246,8 +246,6 @@ public class CrateManager {
 
                 if (customFile == null) return;
 
-                this.plugin.getLogger().warning("Custom File: " + customFile.getFileName());
-
                 final YamlFile file = customFile.getYamlFile();
 
                 final CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType", "CSGO"));
