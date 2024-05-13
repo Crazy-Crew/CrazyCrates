@@ -7,6 +7,7 @@ import java.io.File;
  *
  * @author Ryder Belserion
  * @version 0.5
+ * @since 0.1
  *
  * @param schematicName the name of the file
  * @param schematicFile the file object

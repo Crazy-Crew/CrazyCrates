@@ -10,31 +10,37 @@ import java.util.List;
  *
  * @author Ryder Belserion
  * @version 0.5
+ * @since 0.5
  */
 public interface IServer {
 
     /**
      * Reloads the plugin
+     * @since 0.5
      */
     void reload();
 
     /**
-     * @return the crates folder
+     * @return {@link File}
+     * @since 0.5
      */
     @NotNull File getCrateFolder();
 
     /**
-     * @return the list of files in the crates folder
+     * @return {@link List<String>}
+     * @since 0.5
      */
     List<String> getCrateFiles();
 
     /**
-     * @return the user manager
+     * @return {@link UserManager}
+     * @since 0.5
      */
     @NotNull UserManager getUserManager();
 
     /**
-     * @return available config options
+     * @return {@link ISettings}
+     * @since 0.5
      */
     @NotNull ISettings getSettings();
 

@@ -1,5 +1,6 @@
 package us.crazycrew.crazycrates.api.crates;
 
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import java.util.List;
  *
  * @author Ryder Belserion
  * @version 0.5
+ * @since 0.1
  */
 public class CrateHologram {
     
@@ -31,13 +33,13 @@ public class CrateHologram {
     /**
      * A secondary constructor to build a hologram.
      *
-     * @param enabled if the hologram enabled or not.
-     * @param height height of the hologram from the ground.
-     * @param range range the hologram can be seen.
+     * @param enabled if the hologram enabled or not
+     * @param height height of the hologram from the ground
+     * @param range range the hologram can be seen
      * @param color the background color
-     * @param messages the hologram will display.
+     * @param messages the hologram will display
      */
-    public CrateHologram(boolean enabled, double height, int range, String color, List<String> messages) {
+    public CrateHologram(final boolean enabled, final double height, final int range, @NotNull final String color, @NotNull final List<String> messages) {
         this.enabled = enabled;
         this.height = height;
         this.range = range;
@@ -48,7 +50,7 @@ public class CrateHologram {
     /**
      * Check if the hologram is enabled or not.
      *
-     * @return true if yes otherwise false.
+     * @return true if yes otherwise false
      */
     public boolean isEnabled() {
         return this.enabled;

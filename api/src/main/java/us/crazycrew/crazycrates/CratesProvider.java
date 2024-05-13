@@ -9,13 +9,15 @@ import us.crazycrew.crazycrates.platform.IServer;
  *
  * @author Ryder Belserion
  * @version 0.5
+ * @since 0.4
  */
 public class CratesProvider {
 
     private static IServer instance;
 
     /**
-     * @return the server object instance
+     * @return {@link IServer}
+     * @since 0.4
      */
     public static IServer get() {
         if (instance == null) {
@@ -30,6 +32,11 @@ public class CratesProvider {
         throw new UnsupportedOperationException("This class cannot be instantiated");
     }
 
+    /**
+     * Creates {@link IServer} instance.
+     *
+     * @param instance the {@link IServer} instance
+     */
     @ApiStatus.Internal
     public static void register(@NotNull final IServer instance) {
         if (CratesProvider.instance != null) return;
@@ -37,6 +44,9 @@ public class CratesProvider {
         CratesProvider.instance = instance;
     }
 
+    /**
+     * Unregisters {@link IServer} instance.
+     */
     @ApiStatus.Internal
     public static void unregister() {
         CratesProvider.instance = null;
