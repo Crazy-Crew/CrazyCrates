@@ -25,7 +25,6 @@ import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.enums.Support;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Timer;
 import static com.badbones69.crazycrates.api.utils.MiscUtils.registerPermissions;

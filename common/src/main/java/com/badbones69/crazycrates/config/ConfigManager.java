@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.config;
 
-import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.enums.CustomFiles;
 import com.badbones69.crazycrates.config.migrate.ConfigMigration;
@@ -29,6 +28,7 @@ public class ConfigManager {
         yamlManager.createPluginDirectory();
 
         // Add file
+
         yamlManager.addFile("messages.yml", new LocaleMigration(), MiscKeys.class, ErrorKeys.class, PlayerKeys.class, CrateKeys.class, CommandKeys.class).addFile("config.yml", new ConfigMigration(), ConfigKeys.class)
                 .addDefaultFile("crates", "CrateExample.yml")
                 .addDefaultFile("crates", "AdvancedExample.yml")
@@ -38,6 +38,8 @@ public class ConfigManager {
                 .addDefaultFile("schematics", "sea.nbt")
                 .addDefaultFile("schematics", "soul.nbt")
                 .addDefaultFile("schematics", "wooden.nbt")
+                .addOtherFile("locations.yml")
+                .addOtherFile("data.yml")
                 .addFolder("crates")
                 .addFolder("schematics")
                 .init();
@@ -47,8 +49,14 @@ public class ConfigManager {
      * Refreshes configuration files.
      */
     public static void refresh() {
-        // Refresh all files
+        // Refresh configme files
         getYamlManager().reloadFiles();
+
+        // Refresh custom files
+        getYamlManager().reloadCustomFiles();
+
+        // Refresh other files.
+        getYamlManager().reloadOtherFiles();
     }
 
     /**
