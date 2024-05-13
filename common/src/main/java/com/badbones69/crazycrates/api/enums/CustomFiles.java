@@ -6,10 +6,8 @@ import org.jetbrains.annotations.NotNull;
 
 public enum CustomFiles {
 
-    locations("locations.yml"),
     messages("messages.yml"),
-    config("config.yml"),
-    data("data.yml");
+    config("config.yml");
 
     private final SettingsManager settingsManager;
     private final String fileName;

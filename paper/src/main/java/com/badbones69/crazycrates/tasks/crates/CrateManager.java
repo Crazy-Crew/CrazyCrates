@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.tasks.crates;
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
+import com.badbones69.crazycrates.api.enums.DataFiles;
 import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
 import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
@@ -206,15 +207,7 @@ public class CrateManager {
      * @return a list of crate names.
      */
     public List<String> getCrateNames() {
-        final List<String> files = new ArrayList<>();
-
-        for (String crate : this.plugin.getInstance().getCrateFiles()) {
-            String file = crate.replace(".yml", "");
-
-            files.add(file);
-        }
-
-        return Collections.unmodifiableList(files);
+        return new ArrayList<>(this.plugin.getInstance().getCrateFiles());
     }
 
     /**
@@ -253,7 +246,8 @@ public class CrateManager {
 
                 if (customFile == null) return;
 
-                //todo() change this
+                this.plugin.getLogger().warning("Custom File: " + customFile.getFileName());
+
                 final YamlFile file = customFile.getYamlFile();
 
                 final CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType", "CSGO"));
@@ -262,6 +256,7 @@ public class CrateManager {
                 final List<Tier> tiers = new ArrayList<>();
 
                 final String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name", "") : file.getString("Crate.CrateName", "");
+
                 final int maxMassOpen = file.getInt("Crate.Max-Mass-Open", 10);
                 final int requiredKeys = file.getInt("Crate.RequiredKeys", 0);
 
@@ -363,13 +358,8 @@ public class CrateManager {
             ).forEach(line -> this.plugin.getLogger().info(line));
         }
 
-        //todo() change this
-        final FileConfiguration locations;
-        try {
-            locations = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "config.yml"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        final YamlFile locations = DataFiles.locations.getYamlFile();
+
         int loadedAmount = 0;
         int brokeAmount = 0;
 
@@ -899,7 +889,7 @@ public class CrateManager {
      * @param crate the crate which you would like to set it to.
      */
     public void addCrateLocation(@NotNull final Location location, @NotNull final Crate crate) {
-        final FileConfiguration locations = null;
+        final YamlFile locations = DataFiles.locations.getYamlFile();
         String id = "1"; // Location ID
 
         for (int i = 1; locations.contains("Locations." + i); i++) {
@@ -920,7 +910,7 @@ public class CrateManager {
         locations.set("Locations." + id + ".Y", location.getBlockY());
         locations.set("Locations." + id + ".Z", location.getBlockZ());
 
-        //Files.locations.save(this.fileManager);
+        DataFiles.locations.save();
 
         addLocation(new CrateLocation(id, crate, location));
 
@@ -933,8 +923,8 @@ public class CrateManager {
      * @param id the id of the location.
      */
     public void removeCrateLocation(@NotNull final String id) {
-        //Files.locations.getFile(this.fileManager).set("Locations." + id, null);
-        //Files.locations.save(this.fileManager);
+        DataFiles.locations.getYamlFile().set("Locations." + id, null);
+        DataFiles.locations.save();
 
         CrateLocation location = null;
 
@@ -984,10 +974,11 @@ public class CrateManager {
         Crate crate = null;
 
         for (Crate key : this.crates) {
-            if (!key.getName().equalsIgnoreCase(name)) continue;
+            if (key.getName().equalsIgnoreCase(name)) {
+                crate = key;
 
-            crate = key;
-            break;
+                break;
+            }
         }
 
         return crate;
@@ -1266,13 +1257,7 @@ public class CrateManager {
 
     // Cleans the data file.
     private void cleanDataFile() {
-        //todo() change this
-        final FileConfiguration data;
-        try {
-            data = YamlConfiguration.loadConfiguration(new File(this.plugin.getDataFolder(), "config.yml"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        final YamlFile data = DataFiles.data.getYamlFile();
 
         if (!data.contains("Players")) return;
 
@@ -1315,7 +1300,7 @@ public class CrateManager {
 
         if (MiscUtils.isLogging()) this.plugin.getLogger().info("The data.yml file has been cleaned.");
 
-        //Files.data.save(this.fileManager);
+        DataFiles.data.save();
     }
 
     // War Crate

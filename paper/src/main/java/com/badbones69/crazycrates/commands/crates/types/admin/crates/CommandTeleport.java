@@ -1,17 +1,24 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates;
 
+import com.badbones69.crazycrates.api.enums.DataFiles;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
+import com.ryderbelserion.vital.common.configuration.YamlFile;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
+import org.jetbrains.annotations.NotNull;
+import org.simpleyaml.configuration.ConfigurationSection;
+import java.util.Objects;
 
 public class CommandTeleport extends BaseCommand {
 
-    //private @NotNull final FileConfiguration locations = Files.locations.getFile(this.fileManager);
+    private @NotNull final YamlFile locations = DataFiles.locations.getYamlFile();
 
     @Command("teleport")
     @Permission(value = "crazycrates.teleport", def = PermissionDefault.OP)
@@ -22,17 +29,17 @@ public class CommandTeleport extends BaseCommand {
             return;
         }
 
-       // final ConfigurationSection section = this.locations.getConfigurationSection("Locations");
+       final ConfigurationSection section = this.locations.getConfigurationSection("Locations");
 
-        //if (section == null) {
-            //this.locations.set("Locations.Clear", null);
+        if (section == null) {
+            this.locations.set("Locations.Clear", null);
 
-            //Files.locations.save(this.fileManager);
+            DataFiles.locations.save();
 
-            //return;
-        //}
+            return;
+        }
 
-        /*for (final String name : section.getKeys(false)) {
+        for (final String name : section.getKeys(false)) {
             if (name.equalsIgnoreCase(id)) {
                 final World world = this.plugin.getServer().getWorld(Objects.requireNonNull(this.locations.getString("Locations." + name + ".World")));
 
@@ -48,7 +55,7 @@ public class CommandTeleport extends BaseCommand {
 
                 return;
             }
-        }*/
+        }
 
         player.sendRichMessage(MsgUtils.getPrefix("<red>There is no location called <gold>" + id + "."));
     }

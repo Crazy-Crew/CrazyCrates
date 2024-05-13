@@ -63,7 +63,7 @@ public abstract class BaseCommand {
      * @param keyType the type of key.
      * @param amount the amount of keys.
      */
-    protected void addKey(@NotNull final CommandSender sender, @NotNull final OfflinePlayer player, @NotNull final Crate crate, @NotNull final KeyType keyType, final int amount) {
+    protected void addKey(@NotNull final CommandSender sender, @Nullable final OfflinePlayer player, @NotNull final Crate crate, @NotNull final KeyType keyType, final int amount) {
         addKey(sender, null, player, crate, keyType, amount);
     }
 
@@ -89,7 +89,7 @@ public abstract class BaseCommand {
      * @param keyType the type of key.
      * @param amount the amount of keys.
      */
-    protected void takeKey(@NotNull final CommandSender sender, @NotNull final OfflinePlayer player, @NotNull final Crate crate, @NotNull final KeyType keyType, final int amount) {
+    protected void takeKey(@NotNull final CommandSender sender, @Nullable final OfflinePlayer player, @NotNull final Crate crate, @NotNull final KeyType keyType, final int amount) {
         takeKey(sender, null, player, crate, keyType, amount);
     }
 
