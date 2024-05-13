@@ -3,11 +3,11 @@ package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.ryderbelserion.vital.util.structures.StructureManager;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.SoundCategory;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
@@ -228,7 +228,7 @@ public class QuadCrateManager {
 
                     this.tickTillSpawn++;
                 } else {
-                    crate.playSound(player, player.getLocation(), "cycle-sound", "BLOCK_STONE_STEP", SoundCategory.PLAYERS);
+                    crate.playSound(player, player.getLocation(), "cycle-sound", "BLOCK_STONE_STEP", Sound.Source.PLAYER);
 
                     Block chest = crateLocations.get(crateNumber).getBlock();
 
@@ -257,7 +257,7 @@ public class QuadCrateManager {
 
                 player.sendRichMessage(Messages.out_of_time.getMessage(player, "{crate}", crate.getName()));
 
-                crate.playSound(player, player.getLocation(), "stop-sound", "entity.player.levelup", SoundCategory.PLAYERS);
+                crate.playSound(player, player.getLocation(), "stop-sound", "entity.player.levelup", Sound.Source.PLAYER);
             }
         }.runDelayed(this.plugin, ConfigManager.getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20));
     }

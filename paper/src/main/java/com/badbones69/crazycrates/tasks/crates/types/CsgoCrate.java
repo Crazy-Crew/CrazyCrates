@@ -7,8 +7,8 @@ import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
-import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -69,7 +69,7 @@ public class CsgoCrate extends CrateBuilder {
                 if (this.full <= 50) { // When Spinning
                     moveItemsAndSetGlass();
 
-                    playSound("cycle-sound", SoundCategory.PLAYERS, "block.note_block.xylophone");
+                    playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
                 }
 
                 this.open++;
@@ -86,13 +86,13 @@ public class CsgoCrate extends CrateBuilder {
                     if (MiscUtils.slowSpin(120, 15).contains(this.time)) { // When Slowing Down
                         moveItemsAndSetGlass();
 
-                        playSound("cycle-sound", SoundCategory.PLAYERS, "block.note_block.xylophone");
+                        playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
                     }
 
                     this.time++;
 
                     if (this.time == 60) { // When done
-                        playSound("stop-sound", SoundCategory.PLAYERS, "entity.player.levelup");
+                        playSound("stop-sound", Sound.Source.PLAYER, "entity.player.levelup");
 
                         crateManager.endCrate(player);
 

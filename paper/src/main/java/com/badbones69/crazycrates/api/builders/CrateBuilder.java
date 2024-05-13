@@ -9,9 +9,9 @@ import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -381,11 +381,11 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * Plays a sound at different volume levels with fallbacks.
      *
-     * @param type i.e. stop, cycle or click sound.
-     * @param category sound category to respect client settings.
-     * @param fallback fallback sound in case no sound is found.
+     * @param type i.e. stop, cycle or click sound
+     * @param source sound category to respect client settings
+     * @param fallback fallback sound in case no sound is found
      */
-    public void playSound(@NotNull final String type, @NotNull final SoundCategory category, @NotNull final String fallback) {
+    public void playSound(@NotNull final String type, @NotNull final Sound.Source source, @NotNull final String fallback) {
         if (type.isEmpty() && fallback.isEmpty()) return;
 
         ConfigurationSection section = getFile().getConfigurationSection("Crate.sound");
@@ -397,7 +397,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
                     section,
                     type,
                     fallback,
-                    category
+                    source
             );
 
             sound.play(player, player.getLocation());

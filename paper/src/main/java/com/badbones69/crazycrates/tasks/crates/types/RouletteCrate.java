@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.api.PrizeManager;
 import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import org.bukkit.SoundCategory;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
@@ -62,7 +62,7 @@ public class RouletteCrate extends CrateBuilder {
                     setItem(13, crate.pickPrize(player).getDisplayItem(player));
                     setGlass();
 
-                    playSound("cycle-sound", SoundCategory.PLAYERS, "block.note_block.xylophone");
+                    playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
 
                     this.even++;
 
@@ -89,13 +89,13 @@ public class RouletteCrate extends CrateBuilder {
 
                         setItem(13, crate.pickPrize(player).getDisplayItem(player));
 
-                        playSound("cycle-sound", SoundCategory.PLAYERS, "block.note_block.xylophone");
+                        playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
                     }
 
                     this.time++;
 
                     if (this.time >= 23) {
-                        playSound("stop-sound", SoundCategory.PLAYERS, "entity.player.levelup");
+                        playSound("stop-sound", Sound.Source.PLAYER, "entity.player.levelup");
 
                         crateManager.endCrate(player);
 

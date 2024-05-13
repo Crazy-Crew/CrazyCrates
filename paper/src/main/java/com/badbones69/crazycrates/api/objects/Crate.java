@@ -11,11 +11,10 @@ import com.ryderbelserion.vital.common.util.AdvUtil;
 import com.ryderbelserion.vital.util.DyeUtil;
 import com.ryderbelserion.vital.util.ItemUtil;
 import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
-import com.ryderbelserion.vital.util.builders.items.NbtBuilder;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.SoundCategory;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.Damageable;
@@ -921,13 +920,13 @@ public class Crate {
     }
 
     /**
-     * Plays a sound at different volume levels with fallbacks.
+     * Plays a sound at different volume levels with fallbacks
      *
-     * @param type i.e. stop, cycle or click sound.
-     * @param category sound category to respect client settings.
-     * @param fallback fallback sound in case no sound is found.
+     * @param type i.e. stop, cycle or click sound
+     * @param source sound category to respect client settings
+     * @param fallback fallback sound in case no sound is found
      */
-    public void playSound(@NotNull final Player player, @NotNull final Location location, @NotNull final String type, @NotNull final String fallback, @NotNull final SoundCategory category) {
+    public void playSound(@NotNull final Player player, @NotNull final Location location, @NotNull final String type, @NotNull final String fallback, @NotNull final Sound.Source source) {
         if (type.isEmpty() && fallback.isEmpty()) return;
 
         ConfigurationSection section = getFile().getConfigurationSection("Crate.sound");
@@ -937,7 +936,7 @@ public class Crate {
                     section,
                     type,
                     fallback,
-                    category
+                    source
             );
 
             sound.play(player, location);

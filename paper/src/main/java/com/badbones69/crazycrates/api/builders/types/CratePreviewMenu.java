@@ -5,8 +5,8 @@ import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.tasks.InventoryManager;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
-import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -131,7 +131,7 @@ public class CratePreviewMenu extends InventoryBuilder {
             if (this.inventoryManager.inCratePreview(player)) {
                 if (holder.overrideMenu()) return;
 
-                crate.playSound(player, player.getLocation(), "click-sound","ui.button.click", SoundCategory.PLAYERS);
+                crate.playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
 
                 if (crate.isPreviewTierToggle() && crate.getCrateType() == CrateType.casino || crate.getCrateType() == CrateType.cosmic) {
                     player.openInventory(crate.getTierPreview(player));
@@ -152,7 +152,7 @@ public class CratePreviewMenu extends InventoryBuilder {
 
         if (container.has(PersistentKeys.next_button.getNamespacedKey())) {  // Clicked the next button.
             if (this.inventoryManager.getPage(player) < crate.getMaxPage()) {
-                crate.playSound(player, player.getLocation(), "click-sound","ui.button.click", SoundCategory.PLAYERS);
+                crate.playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
 
                 this.inventoryManager.nextPage(player);
 
@@ -164,7 +164,7 @@ public class CratePreviewMenu extends InventoryBuilder {
 
         if (container.has(PersistentKeys.back_button.getNamespacedKey())) {  // Clicked the back button.
             if (this.inventoryManager.getPage(player) > 1 && this.inventoryManager.getPage(player) <= crate.getMaxPage()) {
-                crate.playSound(player, player.getLocation(), "click-sound","ui.button.click", SoundCategory.PLAYERS);
+                crate.playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
 
                 this.inventoryManager.backPage(player);
 

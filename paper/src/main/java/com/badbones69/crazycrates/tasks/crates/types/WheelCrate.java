@@ -6,8 +6,8 @@ import com.badbones69.crazycrates.api.PrizeManager;
 import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
-import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
@@ -102,7 +102,7 @@ public class WheelCrate extends CrateBuilder {
                     }
 
                     if (this.full == this.timer + 47) {
-                        playSound("stop-sound", SoundCategory.PLAYERS, "entity.player.levelup");
+                        playSound("stop-sound", Sound.Source.PLAYER, "entity.player.levelup");
                     }
 
                     if (this.full >= this.timer + 47) {
@@ -127,7 +127,7 @@ public class WheelCrate extends CrateBuilder {
 
                         PrizeManager.givePrize(player, crate, prize);
 
-                        playSound("stop-sound", SoundCategory.PLAYERS, "entity.player.levelup");
+                        playSound("stop-sound", Sound.Source.PLAYER, "entity.player.levelup");
 
                         player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
 
@@ -160,7 +160,7 @@ public class WheelCrate extends CrateBuilder {
 
                 setItem(this.slots.get(this.what), rewards.get(otherSlot));
 
-                playSound("cycle-sound", SoundCategory.MUSIC, "block.note_block.xylophone");
+                playSound("cycle-sound", Sound.Source.MUSIC, "block.note_block.xylophone");
 
                 this.uh++;
                 this.what++;

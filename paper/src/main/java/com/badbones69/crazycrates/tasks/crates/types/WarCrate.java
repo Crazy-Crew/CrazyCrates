@@ -5,8 +5,8 @@ import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
-import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -67,7 +67,7 @@ public class WarCrate extends CrateBuilder {
                 if (this.full < 25) {
                     setRandomPrizes();
 
-                    playSound("cycle-sound", SoundCategory.PLAYERS, "block.lava.pop");
+                    playSound("cycle-sound", Sound.Source.PLAYER, "block.lava.pop");
                 }
 
                 this.open++;
@@ -81,7 +81,7 @@ public class WarCrate extends CrateBuilder {
                 this.full++;
 
                 if (this.full == 26) {
-                    playSound("stop-sound", SoundCategory.PLAYERS, "block.lava.pop");
+                    playSound("stop-sound", Sound.Source.PLAYER, "block.lava.pop");
 
                     setRandomGlass();
 

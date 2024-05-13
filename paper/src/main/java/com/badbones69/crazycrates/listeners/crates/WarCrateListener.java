@@ -5,8 +5,8 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
-import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -63,7 +63,7 @@ public class WarCrateListener implements Listener {
                     this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
                     this.crateManager.removePlayerFromOpeningList(player);
 
-                    crate.playSound(player, player.getLocation(), "cycle-sound", "block.anvil.land", SoundCategory.PLAYERS);
+                    crate.playSound(player, player.getLocation(), "cycle-sound", "block.anvil.land", Sound.Source.PLAYER);
 
                     this.crateManager.addCrateTask(player, new FoliaRunnable(player.getScheduler(), null) {
                         @Override

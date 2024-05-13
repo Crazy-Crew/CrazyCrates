@@ -9,10 +9,10 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.ryderbelserion.vital.common.util.StringUtil;
 import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -163,7 +163,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
         if (event.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
             if (crate.isPreviewEnabled()) {
-                crate.playSound(player, location, "click-sound", "ui.button.click", SoundCategory.PLAYERS);
+                crate.playSound(player, location, "click-sound", "ui.button.click", Sound.Source.PLAYER);
 
                 player.closeInventory();
 
@@ -197,7 +197,9 @@ public class CrateMainMenu extends InventoryBuilder {
         if (!hasKey) {
             //todo() convert this to a bean property!
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
+                Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
+
+                player.playSound(sound);
             }
 
             player.sendRichMessage(Messages.no_virtual_key.getMessage(player, "{crate}", crateName));

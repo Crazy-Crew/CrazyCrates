@@ -9,7 +9,7 @@ import com.badbones69.crazycrates.api.PrizeManager;
 import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import org.bukkit.SoundCategory;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -46,7 +46,7 @@ public class CasinoCrate extends CrateBuilder {
         }
 
         if (this.counter <= 50) { // When the crate is currently spinning.
-            playSound("cycle-sound", SoundCategory.PLAYERS, "block.note_block.xylophone");
+            playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
 
             cycle();
         }
@@ -63,7 +63,7 @@ public class CasinoCrate extends CrateBuilder {
 
         if (this.counter > 51) {
             if (MiscUtils.slowSpin(120, 15).contains(this.time)) {
-                playSound("cycle-sound", SoundCategory.PLAYERS, "block.note_block.xylophone");
+                playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
 
                 cycle();
             }
@@ -71,7 +71,7 @@ public class CasinoCrate extends CrateBuilder {
             this.time++;
 
             if (this.time >= 60) { // When the crate task is finished.
-                playSound("stop-sound", SoundCategory.PLAYERS, "entity.player.levelup");
+                playSound("stop-sound", Sound.Source.PLAYER, "entity.player.levelup");
 
                 this.crateManager.endCrate(player);
 

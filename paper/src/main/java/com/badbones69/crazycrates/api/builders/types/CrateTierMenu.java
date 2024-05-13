@@ -7,8 +7,8 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
-import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -65,7 +65,7 @@ public class CrateTierMenu extends InventoryBuilder {
             if (this.inventoryManager.inCratePreview(player)) {
                 if (holder.overrideMenu()) return;
 
-                crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", SoundCategory.PLAYERS);
+                crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", Sound.Source.PLAYER);
 
                 this.inventoryManager.removeViewer(player);
                 this.inventoryManager.closeCratePreview(player);
@@ -79,7 +79,7 @@ public class CrateTierMenu extends InventoryBuilder {
         }
 
         if (container.has(PersistentKeys.preview_tier_button.getNamespacedKey())) {
-            crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", SoundCategory.PLAYERS);
+            crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", Sound.Source.PLAYER);
 
             final String tierName = container.get(PersistentKeys.preview_tier_button.getNamespacedKey(), PersistentDataType.STRING);
 

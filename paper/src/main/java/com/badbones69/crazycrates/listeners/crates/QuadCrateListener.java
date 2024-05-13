@@ -3,8 +3,8 @@ package com.badbones69.crazycrates.listeners.crates;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
-import org.bukkit.SoundCategory;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -122,7 +122,7 @@ public class QuadCrateListener implements Listener {
                     public void run() {
                         session.endCrate(false);
 
-                        crate.playSound(player, block.getLocation(), "stop-sound", "block.anvil.land", SoundCategory.BLOCKS);
+                        crate.playSound(player, block.getLocation(), "stop-sound", "block.anvil.land", Sound.Source.BLOCK);
                     }
                 }.runDelayed(this.plugin, 60);
             }
