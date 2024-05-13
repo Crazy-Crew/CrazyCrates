@@ -72,7 +72,7 @@ public class Server extends AbstractPlugin implements IServer {
      */
     @Override
     public @NotNull final List<String> getCrateFiles() {
-        return FileUtil.getFiles(getCrateFolder().toPath(), "crates", "yml", true);
+        return FileUtil.getFiles(getCrateFolder().toPath(), ".yml", true);
     }
 
     /**
