@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
-import com.ryderbelserion.vital.util.builders.ItemBuilder;
+import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;

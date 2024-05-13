@@ -8,7 +8,7 @@ import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.ryderbelserion.vital.common.util.StringUtil;
-import com.ryderbelserion.vital.util.builders.ItemBuilder;
+import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;

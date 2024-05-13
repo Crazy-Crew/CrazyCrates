@@ -40,7 +40,7 @@ public class CommandAddItem extends BaseCommand {
         }
 
         if (tier != null) {
-            crate.addEditorItem(item, player, prizeName, tier, chance);
+            crate.addEditorItem(item, prizeName, tier, chance);
 
             return;
         }

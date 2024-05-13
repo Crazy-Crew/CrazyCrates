@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.util.builders.ItemBuilder;
+import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;

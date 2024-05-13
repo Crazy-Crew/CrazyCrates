@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.common.util.StringUtil;
-import com.ryderbelserion.vital.util.builders.ItemBuilder;
+import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.util.DyeUtil;
 import com.ryderbelserion.vital.util.ItemUtil;
 import org.bukkit.DyeColor;

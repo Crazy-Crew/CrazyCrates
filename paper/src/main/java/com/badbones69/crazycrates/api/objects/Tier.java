@@ -1,7 +1,8 @@
 package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
-import com.ryderbelserion.vital.util.builders.ItemBuilder;
+import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.util.builders.items.NbtBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;

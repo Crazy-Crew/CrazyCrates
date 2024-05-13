@@ -24,7 +24,7 @@ import com.ryderbelserion.vital.common.configuration.YamlManager;
 import com.ryderbelserion.vital.common.configuration.objects.CustomFile;
 import com.ryderbelserion.vital.common.util.FileUtil;
 import com.ryderbelserion.vital.enums.Support;
-import com.ryderbelserion.vital.util.builders.ItemBuilder;
+import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.inventory.meta.ItemMeta;

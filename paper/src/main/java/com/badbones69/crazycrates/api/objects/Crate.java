@@ -8,9 +8,10 @@ import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.ryderbelserion.vital.common.configuration.objects.CustomFile;
 import com.ryderbelserion.vital.common.util.AdvUtil;
-import com.ryderbelserion.vital.util.builders.ItemBuilder;
 import com.ryderbelserion.vital.util.DyeUtil;
 import com.ryderbelserion.vital.util.ItemUtil;
+import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.util.builders.items.NbtBuilder;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -624,7 +625,7 @@ public class Crate {
 
         if (section == null) return;
 
-        setItem(itemStack, player, prizeName, section, chance, "");
+        setItem(itemStack, prizeName, section, chance, "");
     }
 
     /**
@@ -635,14 +636,14 @@ public class Crate {
      * @param tier the tier to add.
      * @param chance the chance to add.
      */
-    public void addEditorItem(@Nullable final ItemStack itemStack, @NotNull final Player player, @NotNull final String prizeName, @NotNull final String tier, final int chance) {
+    public void addEditorItem(@Nullable final ItemStack itemStack, @NotNull final String prizeName, @NotNull final String tier, final int chance) {
         if (itemStack == null || tier.isEmpty() || prizeName.isEmpty() || chance <= 0) return;
 
         final ConfigurationSection section = getPrizeSection();
 
         if (section == null) return;
 
-        setItem(itemStack, player, prizeName, section, chance, tier);
+        setItem(itemStack, prizeName, section, chance, tier);
     }
 
     /**
@@ -664,7 +665,7 @@ public class Crate {
      * @param section the prizes section.
      * @param chance the chance of the prize.
      */
-    private void setItem(@Nullable final ItemStack itemStack, @NotNull final Player player, @NotNull final String prizeName, @Nullable final ConfigurationSection section, final int chance, final String tier) {
+    private void setItem(@Nullable final ItemStack itemStack, @NotNull final String prizeName, @Nullable final ConfigurationSection section, final int chance, final String tier) {
         if (itemStack == null || prizeName.isEmpty() || section == null || chance <= 0) return;
 
         final String tiers = getPath(prizeName, "Tiers");
