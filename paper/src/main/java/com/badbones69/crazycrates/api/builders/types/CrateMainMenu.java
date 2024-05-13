@@ -195,6 +195,7 @@ public class CrateMainMenu extends InventoryBuilder {
         }
 
         if (!hasKey) {
+            //todo() convert this to a bean property!
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
                 player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
             }

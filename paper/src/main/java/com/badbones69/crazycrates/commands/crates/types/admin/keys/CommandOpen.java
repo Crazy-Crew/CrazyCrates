@@ -95,6 +95,7 @@ public class CommandOpen extends BaseCommand {
 
         // If no key, run this.
         if (!hasKey) {
+            //todo() convert this to a bean property!
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
                 player.playSound(player.getLocation(), ItemUtil.getSound(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
             }
@@ -170,7 +171,12 @@ public class CommandOpen extends BaseCommand {
         boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType.get() == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), crate.getName()) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1;
 
         if (!hasKey && keyType.get() != KeyType.free_key) {
-            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) player.playSound(player.getLocation(), ItemUtil.getSound(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
+            //todo() convert this to a bean property!
+            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
+                Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
+
+                player.playSound(sound);
+            }
 
             sender.sendRichMessage(Messages.no_virtual_key.getMessage(sender, "{crate}", crate.getName()));
 

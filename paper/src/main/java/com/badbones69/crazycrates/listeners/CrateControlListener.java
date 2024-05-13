@@ -221,6 +221,7 @@ public class CrateControlListener implements Listener {
         if (crate.getCrateType() != CrateType.crate_on_the_go) {
             if (this.config.getProperty(ConfigKeys.knock_back)) knockBack(player, clickedBlock.getLocation());
 
+            //todo() convert this to a bean property!
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
                 player.playSound(player.getLocation(), Sound.valueOf(this.config.getProperty(ConfigKeys.need_key_sound)), SoundCategory.PLAYERS, 1f, 1f);
             }

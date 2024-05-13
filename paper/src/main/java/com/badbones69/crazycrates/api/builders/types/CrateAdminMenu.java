@@ -97,6 +97,7 @@ public class CrateAdminMenu extends InventoryBuilder {
 
                 player.getInventory().addItem(key);
 
+                //todo() make this configurable?
                 player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 
                 placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
@@ -109,6 +110,7 @@ public class CrateAdminMenu extends InventoryBuilder {
 
                 player.getInventory().addItem(key);
 
+                //todo() make this configurable?
                 player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 
                 placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
@@ -120,6 +122,7 @@ public class CrateAdminMenu extends InventoryBuilder {
             case RIGHT -> {
                 this.userManager.addKeys(uuid, crateName, KeyType.virtual_key, 1);
 
+                //todo() make this configurable?
                 player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 
                 placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
@@ -130,6 +133,7 @@ public class CrateAdminMenu extends InventoryBuilder {
             case SHIFT_RIGHT -> {
                 this.userManager.addKeys(uuid, crateName, KeyType.virtual_key, 8);
 
+                //todo() make this configurable?
                 player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 
                 placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
