@@ -1,10 +1,10 @@
 Crate:
-  # Type of crate -> CSGO/Casino/Cosmic/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War
+  # https://docs.crazycrew.us/docs/plugins/crazycrates/misc/crate-types
 
   # Make sure to check out the wiki for anything not explained here.
-  # https://docs.crazycrew.us/crazycrates/home
+  # https://docs.crazycrew.us/docs/category/crazycrates
 
-  # See CosmicCrateExample.yml or CasinoExample.yml to see how the Cosmic/Casino CrateType works.
+  # See CosmicCrate.yml or CasinoCrate.yml to see how the Cosmic/Casino CrateType works.
   CrateType: CSGO
   # Name of the Inventory if a GUI crate.
   CrateName: "<light_purple>Advanced Crate"
@@ -14,13 +14,13 @@ Crate:
   StartingKeys: 0
   # The amount of keys required to use the crate.
   RequiredKeys: 0
-  # Max amount of crates that can be opened at once using /cc mass-open
+  # Max amount of crates that can be opened at once using /crates mass-open
   Max-Mass-Open: 10
-  # If the crate shows in the /cc GUI.
+  # If the crate shows in /crates.
   # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
   InGUI: true
   # Slot the item is in the GUI.
-  Slot: 16
+  Slot: 14
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
@@ -39,7 +39,7 @@ Crate:
     cycle-sound:
       # If sound should be enabled or not.
       toggle: true
-      # The type of sound to use.
+      # The type of sound to use. Custom sounds from texture packs are supported!
       # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
       value: "block.note_block.xylophone"
       # The volume of the pitch.
@@ -50,7 +50,7 @@ Crate:
     click-sound:
       # If sound should be enabled or not.
       toggle: true
-      # The type of sound to use.
+      # The type of sound to use. Custom sounds from texture packs are supported!
       # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
       value: "ui.button.click"
       # The volume of the pitch.
@@ -61,7 +61,7 @@ Crate:
     stop-sound:
       # If sound should be enabled or not.
       toggle: true
-      # The type of sound to use.
+      # The type of sound to use. Custom sounds from texture packs are supported!
       # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
       value: "entity.player.levelup"
       # The volume of the pitch.
@@ -138,10 +138,11 @@ Crate:
       DisplayEnchantments:
         - "protection:5"
         - "unbreaking:3"
+      # https://docs.crazycrew.us/docs/plugins/crazycrates/guides/prizes/items/armor-trim
       DisplayTrim:
-        # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
+        # The list of materials to use can be found on the link above
         Material: "redstone"
-        # Available Patterns: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimPattern.html
+        # The list of patterns to use can be found on the link above
         Pattern: "sentry"
       # The amount to display in the gui.
       DisplayAmount: 1

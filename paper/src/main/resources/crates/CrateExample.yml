@@ -1,10 +1,10 @@
 Crate:
-  # Type of crate -> CSGO/Casino/Cosmic/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War
+  # https://docs.crazycrew.us/docs/plugins/crazycrates/misc/crate-types
 
   # Make sure to check out the wiki for anything not explained here.
-  # https://docs.crazycrew.us/crazycrates/home
+  # https://docs.crazycrew.us/docs/category/crazycrates
 
-  # See CosmicCrateExample.yml or CasinoExample.yml to see how the Cosmic/Casino CrateType works.
+  # See CosmicCrate.yml or CasinoCrate.yml to see how the Cosmic/Casino CrateType works.
   CrateType: CSGO
   # Name of the Inventory if a GUI crate.
   CrateName: "<green>Basic Crate"
@@ -50,7 +50,7 @@ Crate:
     click-sound:
       # If sound should be enabled or not.
       toggle: true
-      # The type of sound to use.
+      # The type of sound to use. Custom sounds from texture packs are supported!
       # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
       value: "ui.button.click"
       # The volume of the pitch.
@@ -61,7 +61,7 @@ Crate:
     stop-sound:
       # If sound should be enabled or not.
       toggle: true
-      # The type of sound to use.
+      # The type of sound to use. Custom sounds from texture packs are supported!
       # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
       value: "entity.player.levelup"
       # The volume of the pitch.
@@ -130,19 +130,7 @@ Crate:
   # They will give the prizes based on what's already below.
   # See the AdvancedExample.yml for a more advanced crate.
   Prizes:
-    # An example prize of how to use a shulker box.
     '1':
-      # The name of the item to display in the gui.
-      DisplayName: "<light_purple>Shulker Box"
-      # The item to display in the gui.
-      DisplayItem: "shulker_box"
-      # The amount to display in the gui.
-      DisplayAmount: 1
-      # The max range i.e. 5/100 = 5% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 5%
-      Chance: 5
-    '2':
       # The name of the item to display in the gui.
       DisplayName: "<gold>Ryder Belserion"
       # The item to display in the gui.
@@ -151,13 +139,13 @@ Crate:
       DisplayAmount: 1
       # The max range i.e. 1/100 = 1% chance to win.
       MaxRange: 100
+      # The chance to win i.e. 1%
+      Chance: 1
       # An example of a custom player head.
       # This can be a player head as well.
       # https://minecraft-heads.com/
       Player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
-      # The chance to win i.e. 1%
-      Chance: 1
-    '3':
+    '2':
       # The name of the item to display in the gui.
       DisplayName: "<gold>Rukkhadevata"
       # The item to display in the gui.
@@ -166,11 +154,11 @@ Crate:
       DisplayAmount: 1
       # The max range i.e. 7/100 = 7% chance to win.
       MaxRange: 100
-      # An example of a custom player head using minecraft players.
-      Player: "rukkhadevata"
       # The chance to win i.e. 7%
       Chance: 7
-    '4':
+      # An example of a custom player head using minecraft players.
+      Player: "rukkhadevata"
+    '3':
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Sword"
       # The enchants to display in the gui.
@@ -185,16 +173,17 @@ Crate:
       MaxRange: 100
       # The chance to win i.e. 15%
       Chance: 15
-    '5':
+    '4':
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Helmet"
       DisplayEnchantments:
         - "protection:5"
         - "unbreaking:3"
+      # https://docs.crazycrew.us/docs/plugins/crazycrates/guides/prizes/items/armor-trim
       DisplayTrim:
-        # Available Materials: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimMaterial.html
+        # The list of materials to use can be found on the link above
         Material: "quartz"
-        # Available Patterns: https://jd.papermc.io/paper/1.20/org/bukkit/inventory/meta/trim/TrimPattern.html
+        # The list of patterns to use can be found on the link above
         Pattern: "sentry"
       # The item to display in the gui.
       DisplayItem: "diamond_helmet"
@@ -207,7 +196,7 @@ Crate:
       MaxRange: 100
       # The chance to win i.e. 15%
       Chance: 15
-    '6':
+    '5':
       # The enchants to be stored on the book.
       DisplayEnchantments:
         - "protection:5"
@@ -224,7 +213,7 @@ Crate:
       MaxRange: 100
       # The chance to win i.e. 25%
       Chance: 25
-    '8':
+    '6':
       # The display name of the item.
       DisplayName: "<yellow>$1,000"
       # The item to display in the gui.
