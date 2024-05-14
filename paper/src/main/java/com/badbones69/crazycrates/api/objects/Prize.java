@@ -3,17 +3,12 @@ package com.badbones69.crazycrates.api.objects;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.TagParser;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.simpleyaml.configuration.ConfigurationSection;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -229,18 +224,6 @@ public class Prize {
         try {
             final String material = this.section.getString("DisplayItem", "red_terracotta");
             final int amount = this.section.getInt("DisplayAmount", 1);
-
-            // This will be kept until the next major version of Minecraft.
-            final String nbt = this.section.getString("DisplayNbt");
-            if (nbt != null && !nbt.isEmpty()) {
-                CompoundTag tag = TagParser.parseTag(nbt);
-
-                net.minecraft.world.item.ItemStack item = CraftItemStack.asNMSCopy(builder.withType(material).setAmount(amount).getStack());
-
-                item.set(DataComponentType.builder().build(), tag);
-
-                return new ItemBuilder(CraftItemStack.asBukkitCopy(item));
-            }
 
             builder.withType(material).setAmount(amount).setDisplayName(this.prizeName);
 
