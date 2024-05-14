@@ -23,6 +23,9 @@ public class MsgUtils {
         if (!prefix.isEmpty() && prefixToggle) commandSender.sendRichMessage(message.replaceAll("%prefix%", quoteReplacement(prefix)).replaceAll("%Prefix%", quoteReplacement(prefix))); else commandSender.sendRichMessage(message);
     }
 
+    /**
+     * @return the {@link String}
+     */
     public static @NotNull String getPrefix() {
         return ConfigManager.getConfig().getProperty(ConfigKeys.command_prefix);
     }

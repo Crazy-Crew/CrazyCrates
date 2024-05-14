@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.common.configuration.YamlFile;
 import com.ryderbelserion.vital.common.util.StringUtil;
 import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.util.DyeUtil;
@@ -19,7 +20,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.simpleyaml.configuration.ConfigurationSection;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -32,6 +32,12 @@ public class ItemUtils {
 
     private static @NotNull final CrateManager crateManager = plugin.getCrateManager();
 
+    /**
+     * Removes an {@link ItemStack} from a {@link Player}'s inventory.
+     *
+     * @param item the {@link ItemStack}
+     * @param player the {@link Player}
+     */
     public static void removeItem(@NotNull final ItemStack item, @NotNull final Player player) {
         try {
             if (item.getAmount() <= 1) {
@@ -42,32 +48,43 @@ public class ItemUtils {
         } catch (Exception ignored) {}
     }
 
+    /**
+     * Checks if the {@link ItemStack} is a {@link Crate}.
+     *
+     * @param itemStack the {@link ItemStack}
+     * @param crate the {@link Crate}
+     * @return true or false
+     */
     public static boolean isSimilar(@NotNull final ItemStack itemStack, @NotNull final Crate crate) {
         return crateManager.isKeyFromCrate(itemStack, crate);
     }
 
+    /**
+     * @param itemMeta the {@link ItemMeta}
+     * @return the {@link String}
+     */
     public static String getKey(@NotNull final ItemMeta itemMeta) {
         return itemMeta.getPersistentDataContainer().get(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
     }
 
     /**
-     * Updates the builder object from a configuration section with a player attached.
+     * Updates the {@link ItemBuilder} from a {@link ConfigurationSection} with a {@link Player} attached.
      *
-     * @param section the section in the config.
-     * @param builder the current builder object.
-     * @param player the player to set.
-     * @return the builder object with updated data.
+     * @param section the section in the {@link YamlFile}
+     * @param builder the {@link ItemBuilder}
+     * @param player the {@link Player}
+     * @return the {@link ItemBuilder}
      */
     public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder, @NotNull final Player player) {
         return getItem(section, builder.setPlayer(player));
     }
 
     /**
-     * Updates the builder object from a configuration section.
+     * Updates the {@link ItemBuilder} from a {@link ConfigurationSection}.
      *
-     * @param section the section in the config.
-     * @param builder the current builder object.
-     * @return the builder object with updated data.
+     * @param section the section in the {@link YamlFile}
+     * @param builder the {@link ItemBuilder}
+     * @return the {@link ItemBuilder}
      */
     public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder) {
         builder.setGlowing(section.contains("Glowing") ? section.getBoolean("Glowing") : null);
@@ -112,11 +129,11 @@ public class ItemUtils {
     }
 
     /**
-     * Converts an item stack to an itembuilder
+     * Converts an {@link ItemStack} to an {@link ItemBuilder}.
      *
-     * @param player the player.
-     * @param itemStack the itemstack.
-     * @return the itembuilder.
+     * @param player {@link Player}
+     * @param itemStack the {@link ItemStack}
+     * @return the {@link ItemBuilder}
      */
     public static ItemBuilder convertItemStack(Player player, ItemStack itemStack) {
         ItemBuilder itemBuilder = new ItemBuilder(itemStack.getType(), itemStack.getAmount());
@@ -129,52 +146,52 @@ public class ItemUtils {
     }
 
     /**
-     * Converts an itemstack without a player.
+     * Converts an {@link ItemStack} without a {@link Player}.
      *
-     * @param itemStack the itemstack.
-     * @return the itembuilder.
+     * @param itemStack the {@link ItemStack}
+     * @return the {@link ItemBuilder}
      */
     public static ItemBuilder convertItemStack(ItemStack itemStack) {
         return convertItemStack(null, itemStack);
     }
 
     /**
-     * Converts a list of Strings to a list of ItemBuilders.
+     * Converts a {@link List<String>} to a list of {@link ItemBuilder}.
      *
-     * @param itemStrings the list of Strings.
-     * @return the list of ItemBuilders.
+     * @param itemStrings the {@link List<String>}
+     * @return list of {@link ItemBuilder}
      */
     public static List<ItemBuilder> convertStringList(List<String> itemStrings) {
         return convertStringList(itemStrings, null);
     }
 
     /**
-     * Converts a list of Strings to a list of ItemBuilders with a placeholder for errors.
+     * Converts a {@link List<String>} to a list of {@link ItemBuilder}.
      *
-     * @param itemStrings the list of strings.
-     * @param section the placeholder for errors.
-     * @return the list of ItemBuilders.
+     * @param itemStrings the {@link List<String>}
+     * @param section the section in the {@link YamlFile}
+     * @return list of {@link ItemBuilder}
      */
     public static List<ItemBuilder> convertStringList(List<String> itemStrings, String section) {
         return itemStrings.stream().map(itemString -> convertString(itemString, section)).collect(Collectors.toList());
     }
 
     /**
-     * Converts a String to an ItemBuilder.
+     * Converts a {@link String} to an {@link ItemBuilder}.
      *
-     * @param itemString the string you wish to convert.
-     * @return the string as an ItemBuilder.
+     * @param itemString the {@link String} you wish to convert
+     * @return the {@link ItemBuilder}
      */
     public static ItemBuilder convertString(String itemString) {
         return convertString(itemString, null);
     }
 
     /**
-     * Converts a string to an ItemBuilder with a placeholder for errors.
+     * Converts a {@link List<String>} to a list of {@link ItemBuilder}.
      *
-     * @param itemString the string you wish to convert.
-     * @param section the placeholder to use if there is an error.
-     * @return the string as an ItemBuilder.
+     * @param itemString the {@link String} you wish to convert
+     * @param section the section in the {@link YamlFile}
+     * @return the {@link ItemBuilder}
      */
     public static ItemBuilder convertString(String itemString, String section) {
         ItemBuilder itemBuilder = new ItemBuilder();
