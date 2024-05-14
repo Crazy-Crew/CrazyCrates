@@ -11,7 +11,7 @@ root:
   verbose_logging: true
   # This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.
   use-different-random: false
-  # This will wipe the example folder on /crazycrates reload or plugin startup so you always have fresh examples to look at.
+  # This will wipe the example folder on /crazycrates reload or plugin startup, so you always have fresh examples to look at.
   update-examples-folder: true
   # The prefix used in commands
   command_prefix: "<dark_gray>[<blue>CrazyCrates<dark_gray>]: "
