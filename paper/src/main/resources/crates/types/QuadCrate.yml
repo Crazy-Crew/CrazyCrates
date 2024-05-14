@@ -157,3 +157,66 @@ Crate:
       # This can be a player head as well.
       # https://minecraft-heads.com/
       Player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
+    "2":
+      # The name of the item to display in the gui.
+      DisplayName: "<bold><green>Fancy Pants</bold>"
+      # The item to display in the gui.
+      DisplayItem: "chainmail_leggings"
+      # The enchants on the item.
+      DisplayEnchantments:
+        - "protection:2"
+      # Only works on items with durability. This will make the item appear more damaged.
+      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 75.
+      # It cannot be 0.
+      DisplayDamage: 75
+      # https://docs.crazycrew.us/docs/plugins/crazycrates/guides/prizes/items/armor-trim
+      DisplayTrim:
+        # The list of materials to use can be found on the link above
+        Material: "lapis"
+        # The list of patterns to use can be found on the link above
+        Pattern: "sentry"
+      # The amount to display in the gui.
+      DisplayAmount: 1
+      # The max range i.e. 40/1000 = 4% chance to win.
+      MaxRange: 1000
+      # The chance to win i.e. 4%
+      Chance: 40
+      # The lore of the item.
+      Lore:
+        - "<gray>Win a fancy pair of pants."
+        - "<bold><gold>Chance: <red>4%</bold>"
+      # The items to win.
+      Items:
+        - "Item:chainmail_leggings, Amount:1, Damage:75, Trim-Pattern:sentry, Trim-Material:lapis, Name:<bold><green>Fancy Pants</bold>, protection:2"
+      # The messages to send.
+      Messages:
+        - "<gray>You just won a <reset>%reward%."
+    "3":
+      # The name of the item to display in the gui.
+      DisplayName: "<bold><blue>Classic Sword</bold>"
+      # The item to display in the gui.
+      DisplayItem: "diamond_sword"
+      # The enchants on the item.
+      DisplayEnchantments:
+        - "sharpness:2"
+        - "fire_aspect:1"
+      # Only works on items with durability. This will make the item appear more damaged.
+      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 7.
+      # It cannot be 0.
+      DisplayDamage: 7
+      # The amount to display in the gui.
+      DisplayAmount: 1
+      # The lore of the item.
+      Lore:
+        - "<gray>Win a old classic sword."
+        - "<bold><gold>Chance: <red>3.5%</bold>"
+      # The max range i.e. 35/1000 = 3.5% chance to win.
+      MaxRange: 1000
+      # The chance to win i.e. 3.5%.
+      Chance: 35
+      # The items to win.
+      Items:
+        - "Item:diamond_sword, Amount:1, Damage:7, Name:<bold><blue>Classic Sword</bold>, sharpness:2, fire_aspect:1"
+      # The messages to send.
+      Messages:
+        - "<gray>You just won <reset>%reward%."
