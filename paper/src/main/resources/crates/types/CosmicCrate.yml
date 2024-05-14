@@ -1,10 +1,10 @@
 Crate:
-  # Type of crate -> CSGO/Casino/Cosmic/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War
+  # https://docs.crazycrew.us/docs/plugins/crazycrates/misc/crate-types
 
   # Make sure to check out the wiki for anything not explained here.
-  # https://docs.crazycrew.us/crazycrates/home
+  # https://docs.crazycrew.us/docs/category/crazycrates
 
-  # See CasinoExample.yml to see how the Casino CrateType works.
+  # See CasinoCrate.yml to see how the Cosmic/Casino CrateType works.
   CrateType: Cosmic
   # Name of the Inventory if a GUI crate.
   CrateName: "<light_purple>Cosmic Crate"
