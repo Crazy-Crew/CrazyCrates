@@ -1,58 +1,73 @@
-## Breaking Changes:
-- Added minimessage support which replaces legacy color codes like &7 or &c
-  - CMI/DecentHolograms do not support MiniMessage so you still have to use legacy color codes for that.
-
-- [b290d54](https://github.com/Crazy-Crew/CrazyCrates/commit/b290d54) Updated /cc additem to be much more precise and friendly
-
-> Previously added rewards will still work until the next major version of Minecraft. The new /cc additem currently only supports 1 item at a time but it's an improvement from before. DisplayAmount is what tells the plugin how much of the item to give so that is required. It will default to 1!
->
-> If you add an `Items:` section, It will use that instead for rewards and treat the nbt tag as if it was just purely for display.
-
 ## Additions:
-- Added [folia](https://github.com/Crazy-Crew/CrazyCrates/pull/658) support.
-- Added the ability to color the background using hex colors of holograms. It only works with CMI and FancyHolograms.
-  - You can check the examples/crates folder under Hologram section for an example of how to add colors.
-  - `transparent` is an option that can be used as well for see through holograms which is the default.
-- Add the option to HideItemFlags in filler glass and crate preview items.
-- Add config option to turn off the auto updating of examples folder.
+* Added missing messages to the `messages.yml`
+  * Ability to customize the output of /crazycrates list
+* Support for PlaceholderAPI in lores/displaynames for keys
+* You no longer have to include `https://textures.minecraft.net/texture/` when using custom heads.
+  * You can simply use `1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e` in the `Player` field.
+  * You can find an example in the `examples/crates` directory!
+* Added a warning if trying to add AIR to a crate using `/crates additem`
+* 
 
-## Extra Item Options:
-```yml
-    1:
-      DisplayName: '<red>Porkchop'
-      DisplayItem: 'PORKCHOP'
-      DisplayAmount: 4
-      Chance: 60
-```
+## Breaking Changes:
+### Permissions:
+* Command / General Permissions have been updated!
+  * You can find a list of permissions @ https://docs.crazycrew.us/docs/1.20.6/plugins/crazycrates/commands/permissions
+  * They will not change again but easier to type.
 
-> If you simply want to give basic items without the need for using `Items:` or `Commands:`, You can configure a prize like this and it will give 4 porkchop.
->
-> DisplayAmount defines how many items to give, DisplayItem defines the material to give to the player.
->
-> You cannot have `commands` or `items` while using these type of format for giving items.
+### In-game editor:
+* All previous iterations of the in-game editor **do not** work anymore. All added prizes using the old methods WILL not work.
+  * You **must** update all your prizes as a lot of the internals have changed for **1.20.5-1.20.6**
 
-## Removal:
-- Removed the config option crate.unsupported-settings.old-key-checks as a bug I fixed broke what this setting was used for.
+### Item IDS
+* All items ids used for potions, materials, blocks, trim materials/patterns and sounds etc. have all been changed.
+  * A list of sounds: https://minecraft.wiki/w/Sounds.json#Java_Edition_values, **Custom Sounds from resource packs are also supported!**
+* Enchantments instead of `PROTECTION_ENVIRONMENTAL` and `DAMAGE_ALL`, It would be `protection` and `sharpness`
+  * <details>
+    <summary>List of Enchantments</summary>
 
-## Plugin Support:
-- Add placeholder api support to broadcast message in each crate file.
-- Added support for FancyHolograms by Oliver.
-- Add support for PlaceholderAPI in key displayname/lores.
+    * protection
+    * fire_protection
+    * feather_falling
+    * blast_protection
+    * projectile_protection
+    * respiration
+    * aqua_affinity
+    * thorns
+    * depth_strider
+    * frost_walker
+    * binding_curse
+    * sharpness
+    * smite
+    * bane_of_arthropods
+    * knockback
+    * fire_aspect
+    * looting
+    * sweeping_edge
+    * efficiency
+    * silk_touch
+    * unbreaking
+    * fortune
+    * power
+    * punch
+    * flame
+    * infinity
+    * luck_of_the_sea
+    * lure
+    * loyalty
+    * impaling
+    * riptide
+    * channeling
+    * multishot
+    * quick_charge
+    * piercing
+    * mending
+    * vanishing_curse
+    * soul_speed
+    * swift_sneak
+  </details>
 
-## Changes:
-- Updated how holograms are handled. FancyHolograms should be less finnicky and CMI should perform better.
-- Ability to set `Chance` in crate fiels to -1 to use filler items.
-
-## Fixes:
-- Fixed double lines with decentholograms.
-- Fixed an issue where list messages would have an extra line at the end.
-- Fixed an issue with materials not being recognized.
-- Fixed a bug where keys did not have lores.
-
-## Previous Fixes:
-- Fixed an issue where if display names matched, it would not give the right prize.
-- Fixed an issue with casino crate where you could open a casino crate without the key.
-- Temp fix for double message when trying to open a crate with key in off hand. This means for the time being, Keys cannot be used in off hand for physical crates.
+* You can find a list of updated trim materials/patterns below!
+  * https://docs.crazycrew.us/docs/1.20.6/plugins/crazycrates/guides/prizes/items/armor-trim
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/discussions/categories/features)
