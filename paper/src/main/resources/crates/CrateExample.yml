@@ -142,7 +142,6 @@ Crate:
       MaxRange: 100
       # The chance to win i.e. 5%
       Chance: 5
-      # An example prize of how to use a shulker box.
     '2':
       # The name of the item to display in the gui.
       DisplayName: "<gold>Ryder Belserion"
@@ -248,4 +247,4 @@ Crate:
         - "eco give %player% 1000"
       # Override the global message.
       Messages:
-        - "<gray>You just won <reset>%reward%."
+        - "<gray>You won <reset>%reward%."
