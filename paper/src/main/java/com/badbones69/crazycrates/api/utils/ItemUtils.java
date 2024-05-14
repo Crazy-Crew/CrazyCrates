@@ -121,14 +121,6 @@ public class ItemUtils {
     public static ItemBuilder convertItemStack(Player player, ItemStack itemStack) {
         ItemBuilder itemBuilder = new ItemBuilder(itemStack.getType(), itemStack.getAmount());
 
-        if (itemStack.hasItemMeta()) {
-            itemStack.editMeta(itemMeta -> {
-                if (itemMeta.hasEnchants()) {
-                    itemMeta.getEnchants().forEach((enchantment, level) -> itemBuilder.addEnchantment(enchantment.translationKey(), level, true));
-                }
-            });
-        }
-
         if (player != null) {
             itemBuilder.setPlayer(player);
         }
