@@ -6,13 +6,12 @@
   * You can simply use `1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e` in the `Player` field.
   * You can find an example in the `examples/crates` directory!
 * Added a warning if trying to add AIR to a crate using `/crates additem`
-* 
 
 ## Breaking Changes:
 ### Permissions:
 * Command / General Permissions have been updated!
   * You can find a list of permissions @ https://docs.crazycrew.us/docs/1.20.6/plugins/crazycrates/commands/permissions
-  * They will not change again but easier to type.
+  * They will not change again, but they are easier to type.
 
 ### In-game editor:
 * All previous iterations of the in-game editor **do not** work anymore. All added prizes using the old methods WILL not work.
