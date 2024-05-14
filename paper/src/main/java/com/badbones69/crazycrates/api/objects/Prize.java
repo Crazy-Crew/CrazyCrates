@@ -14,7 +14,6 @@ import java.util.List;
 
 public class Prize {
 
-    private final List<ItemStack> items = new ArrayList<>();
     private final ConfigurationSection section;
     private final List<ItemBuilder> builders;
     private final List<String> commands;
@@ -39,14 +38,6 @@ public class Prize {
         this.sectionName = section.getName();
 
         this.crateName = crateName;
-
-        List<?> list = section.getList("Editor-Items");
-
-        if (list != null) {
-            for (Object key : list) {
-                this.items.add((ItemStack) key);
-            }
-        }
 
         this.builders = ItemUtils.convertStringList(this.section.getStringList("Items"), this.sectionName);
 
@@ -147,13 +138,6 @@ public class Prize {
      */
     public @NotNull final List<String> getCommands() {
         return this.commands;
-    }
-    
-    /**
-     * @return the Editor ItemStacks that are given to the player that wins.
-     */
-    public @NotNull final List<ItemStack> getItems() {
-        return this.items;
     }
     
     /**

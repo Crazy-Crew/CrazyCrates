@@ -7,7 +7,6 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.api.enums.Messages;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -17,8 +16,6 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import org.jetbrains.annotations.Nullable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import static java.util.regex.Matcher.quoteReplacement;
@@ -42,27 +39,6 @@ public class PrizeManager {
         }
 
         prize = prize.hasPermission(player) ? prize.getAlternativePrize() : prize;
-
-        if (!prize.getItems().isEmpty()) {
-            for (final ItemStack item : prize.getItems()) {
-                if (item == null) {
-                    final Map<String, String> placeholders = new HashMap<>();
-
-                    placeholders.put("{crate}", prize.getCrateName());
-                    placeholders.put("{prize}", prize.getPrizeName());
-
-                    player.sendRichMessage(Messages.prize_error.getMessage(player, placeholders));
-
-                    continue;
-                }
-
-                if (!MiscUtils.isInventoryFull(player)) {
-                    player.getInventory().addItem(item);
-                } else {
-                    player.getWorld().dropItemNaturally(player.getLocation(), item);
-                }
-            }
-        }
 
         if (!prize.getItemBuilders().isEmpty()) {
             for (final ItemBuilder item : prize.getItemBuilders()) {
