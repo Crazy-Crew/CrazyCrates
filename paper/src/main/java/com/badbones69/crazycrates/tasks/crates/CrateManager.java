@@ -36,7 +36,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 import org.simpleyaml.configuration.ConfigurationSection;
 import org.simpleyaml.configuration.file.FileConfiguration;
-import org.simpleyaml.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
@@ -64,7 +63,6 @@ import com.badbones69.crazycrates.support.holograms.types.CMIHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.DecentHologramsSupport;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -113,7 +111,7 @@ public class CrateManager {
             crate.purge();
 
             // Profit?
-            List<Prize> prizes = new ArrayList<>();
+            ArrayList<Prize> prizes = new ArrayList<>();
 
             ConfigurationSection prizesSection = file.getConfigurationSection("Crate.Prizes");
 
@@ -250,7 +248,7 @@ public class CrateManager {
 
                 final CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType", "CSGO"));
 
-                final List<Prize> prizes = new ArrayList<>();
+                final ArrayList<Prize> prizes = new ArrayList<>();
                 final List<Tier> tiers = new ArrayList<>();
 
                 final String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name", "") : file.getString("Crate.CrateName", "");

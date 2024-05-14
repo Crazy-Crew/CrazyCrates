@@ -45,8 +45,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 public class Crate {
 
@@ -73,7 +75,7 @@ public class Crate {
 
     private final CrateType crateType;
     private FileConfiguration file;
-    private List<Prize> prizes;
+    private ArrayList<Prize> prizes;
     private String crateInventoryName;
     private boolean giveNewPlayerKeys;
     private int previewChestLines;
@@ -81,7 +83,7 @@ public class Crate {
     private List<Tier> tiers;
     private CrateHologram hologram;
 
-    private List<ItemStack> preview;
+    private ArrayList<ItemStack> preview;
 
     private int maxMassOpen;
     private int requiredKeys;
@@ -112,7 +114,7 @@ public class Crate {
                  @NotNull final CrateType crateType,
                  @NotNull final ItemBuilder key,
                  @NotNull final String keyName,
-                 @NotNull final List<Prize> prizes,
+                 @NotNull final ArrayList<Prize> prizes,
                  @NotNull final FileConfiguration file,
                  final int newPlayerKeys,
                  @NotNull final List<Tier> tiers,
@@ -359,8 +361,15 @@ public class Crate {
      *
      * @param prizes list of prizes
      */
-    public void setPrize(@NotNull final List<Prize> prizes) {
-        this.prizes = prizes.stream().filter(prize -> prize.getChance() != -1).toList();;
+    public void setPrize(@NotNull final ArrayList<Prize> prizes) {
+        // Purge everything for this crate.
+        purge();
+
+        // Add new prizes.
+        this.prizes.addAll(prizes.stream().filter(prize -> prize.getChance() != -1).toList());
+
+        // Set new display items.
+        setPreviewItems(getPreviewItems());
     }
 
     /**
@@ -376,7 +385,7 @@ public class Crate {
      *
      * @param itemStacks list of items
      */
-    public void setPreviewItems(@NotNull final List<ItemStack> itemStacks) {
+    public void setPreviewItems(@NotNull final ArrayList<ItemStack> itemStacks) {
         this.preview = itemStacks;
     }
 
@@ -565,7 +574,7 @@ public class Crate {
     /**
      * @return the prizes in the crate.
      */
-    public @NotNull final List<Prize> getPrizes() {
+    public @NotNull final ArrayList<Prize> getPrizes() {
         return this.prizes;
     }
     
@@ -758,19 +767,9 @@ public class Crate {
     private void saveFile() {
         if (this.name.isEmpty()) return;
 
-        File crates = new File(this.plugin.getDataFolder(), "crates");
-
-        File crateFile = new File(crates, this.name + ".yml");
-
-        try {
-            this.file.save(crateFile);
-        } catch (IOException exception) {
-            this.plugin.getLogger().log(Level.SEVERE, "Failed to save " + this.name + ".yml", exception);
-        }
-
         CustomFile customFile = ConfigManager.getYamlManager().getCustomFile(this.name);
 
-        if (customFile != null) customFile.reload();
+        if (customFile != null) customFile.save();
 
         this.crateManager.reloadCrate(this.crateManager.getCrateFromName(this.name));
     }
@@ -858,8 +857,8 @@ public class Crate {
      *
      * @return a list of all the preview items that were created.
      */
-    public @NotNull final List<ItemStack> getPreviewItems() {
-        List<ItemStack> items = new ArrayList<>();
+    public @NotNull final ArrayList<ItemStack> getPreviewItems() {
+        ArrayList<ItemStack> items = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
             ItemStack stack = prize.getDisplayItem();
