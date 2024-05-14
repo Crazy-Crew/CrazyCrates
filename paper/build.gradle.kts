@@ -11,21 +11,21 @@ repositories {
 }
 
 dependencies {
-    compileOnly(fileTree("$rootDir/libs/compile").include("*.jar"))
+    implementation(project(":crazycrates-common"))
 
-    compileOnly("com.github.decentsoftware-eu", "decentholograms", "2.8.6")
-
-    compileOnly("de.oliver", "FancyHolograms", "2.0.6")
-
-    compileOnly("me.clip", "placeholderapi", "2.11.5")
-
-    compileOnly("io.th0rgal", "oraxen", "1.171.0")
-
-    implementation("dev.triumphteam", "triumph-cmd-bukkit", "2.0.0-ALPHA-10")
+    implementation(libs.triumph.cmds)
 
     implementation(libs.vital.paper)
 
-    implementation(project(":crazycrates-common"))
+    compileOnly(fileTree("$rootDir/libs/compile").include("*.jar"))
+
+    compileOnly(libs.decent.holograms)
+
+    compileOnly(libs.fancy.holograms)
+
+    compileOnly(libs.placeholder.api)
+
+    compileOnly(libs.oraxen.api)
 }
 
 tasks {
