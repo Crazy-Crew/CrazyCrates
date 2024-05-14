@@ -28,6 +28,9 @@ public class Server extends AbstractPlugin implements IServer {
         this.logger = logger;
     }
 
+    /**
+     * Loads the plugin.
+     */
     @ApiStatus.Internal
     public void apply() {
         ConfigManager.load();
@@ -45,6 +48,9 @@ public class Server extends AbstractPlugin implements IServer {
         this.userManager = userManager;
     }
 
+    /**
+     * Disables the plugin.
+     */
     @ApiStatus.Internal
     public void disable() {
         // Unregister default provider.
@@ -52,7 +58,7 @@ public class Server extends AbstractPlugin implements IServer {
     }
 
     /**
-     * Reloads the plugin
+     * Reloads the plugin.
      */
     @Override
     public void reload() {

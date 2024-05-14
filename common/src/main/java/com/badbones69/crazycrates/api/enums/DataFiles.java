@@ -19,7 +19,7 @@ public enum DataFiles {
      */
     DataFiles(@NotNull final String fileName) {
         this.fileName = fileName;
-        this.yamlFile = ConfigManager.getYamlManager().getOtherFile(this.fileName);
+        this.yamlFile = ConfigManager.getYamlManager().getStaticFile(this.fileName);
     }
 
     /**
@@ -37,6 +37,6 @@ public enum DataFiles {
     }
 
     public void save() {
-        ConfigManager.getYamlManager().saveOtherFile(getFileName());
+        ConfigManager.getYamlManager().saveStaticFile(getFileName());
     }
 }

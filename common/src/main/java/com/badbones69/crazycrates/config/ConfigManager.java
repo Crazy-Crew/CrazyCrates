@@ -27,11 +27,10 @@ public class ConfigManager {
         // Create directory
         yamlManager.createPluginDirectory();
 
-        // Add file
-
+        // Add files
         yamlManager.addFile("messages.yml", new LocaleMigration(), MiscKeys.class, ErrorKeys.class, PlayerKeys.class, CrateKeys.class, CommandKeys.class).addFile("config.yml", new ConfigMigration(), ConfigKeys.class)
-                .addOtherFile("locations.yml")
-                .addOtherFile("data.yml")
+                .addStaticFile("locations.yml")
+                .addStaticFile("data.yml")
                 .addFolder("crates")
                 .addFolder("schematics")
                 .init();
@@ -41,14 +40,14 @@ public class ConfigManager {
      * Refreshes configuration files.
      */
     public static void refresh() {
-        // Refresh configme files
+        // Refresh configme files.
         getYamlManager().reloadFiles();
 
-        // Refresh custom files
+        // Refresh custom files.
         getYamlManager().reloadCustomFiles();
 
         // Refresh other files.
-        getYamlManager().reloadOtherFiles();
+        getYamlManager().reloadStaticFiles();
     }
 
     /**
