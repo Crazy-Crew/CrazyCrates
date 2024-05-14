@@ -10,6 +10,7 @@ import com.ryderbelserion.vital.util.DyeUtil;
 import com.ryderbelserion.vital.util.ItemUtil;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.block.banner.PatternType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -228,7 +229,11 @@ public class ItemUtils {
                             DyeColor color = DyeUtil.getDyeColor(value);
 
                             if (color != null) {
-                                itemBuilder.addPattern(ItemUtil.getPatternType(option), color);
+                                PatternType patternType = ItemUtil.getPatternType(option);
+
+                                if (patternType != null) {
+                                    itemBuilder.addPattern(patternType, color);
+                                }
                             }
                         } catch (Exception ignored) {}
                     }
