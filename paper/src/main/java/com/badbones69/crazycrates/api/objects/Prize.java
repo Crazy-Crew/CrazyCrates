@@ -229,7 +229,7 @@ public class Prize {
             //    builder.setSkull(section.getString("Skull", ""), HeadDatabaseListener.getHeads());
             //}
 
-            if (this.section.contains("Player") && builder.isPlayerHead()) {
+            if (this.section.contains("Player")) {
                 builder.setPlayer(this.section.getString("Player", ""));
             }
 
