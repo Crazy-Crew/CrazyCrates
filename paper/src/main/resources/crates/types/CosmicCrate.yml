@@ -20,7 +20,7 @@ Crate:
   # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
   InGUI: true
   # Slot the item is in the GUI.
-  Slot: 20
+  Slot: 30
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
@@ -221,7 +221,7 @@ Crate:
   Prizes:
     "1":
       # The name of the item to display in the gui.
-      DisplayName: "<gold>Ryder Belserion"
+      DisplayName: "<gold>BadBones69"
       # The item to display in the gui.
       DisplayItem: "player_head"
       # The amount to display in the gui.

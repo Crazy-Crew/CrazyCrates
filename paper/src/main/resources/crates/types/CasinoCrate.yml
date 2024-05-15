@@ -200,7 +200,7 @@ Crate:
   Prizes:
     '1':
       # The name of the item to display in the gui.
-      DisplayName: "<gold>Ryder Belserion"
+      DisplayName: "<gold>BadBones69"
       # The item to display in the gui.
       DisplayItem: "player_head"
       # The amount to display in the gui.
