@@ -14,9 +14,9 @@ Crate:
   StartingKeys: 0
   # The amount of keys required to use the crate.
   RequiredKeys: 0
-  # Max amount of crates that can be opened at once using /cc mass-open
+  # Max amount of crates that can be opened at once using /crates mass-open
   Max-Mass-Open: 10
-  # If the crate shows in the /cc GUI.
+  # If the crate shows in the /crates GUI.
   # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
   InGUI: true
   # Slot the item is in the GUI.
@@ -77,7 +77,7 @@ Crate:
   Prize-Commands: []
   # Item the crate is in the GUI
   Item: "DIAMOND"
-  # If the crate in the main /cc GUI is glowing or not.
+  # If the crate in the main /crates GUI is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
   Name: "<bold><green>Basic Crate</bold>"
