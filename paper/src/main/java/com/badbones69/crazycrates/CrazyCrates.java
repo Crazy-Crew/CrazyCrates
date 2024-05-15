@@ -148,11 +148,6 @@ public class CrazyCrates extends JavaPlugin {
         return this.crateManager;
     }
 
-    //public @Nullable final FileManager getFileManager() {
-    //    return null;
-        //return this.instance.getFileManager();
-    //}
-
     public @NotNull final Server getInstance() {
         return this.instance;
     }
