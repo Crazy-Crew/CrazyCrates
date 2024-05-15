@@ -65,12 +65,12 @@ public class Crate {
 
     private final CrateType crateType;
     private FileConfiguration file;
-    private List<Prize> prizes;
+    private ArrayList<Prize> prizes;
     private String crateInventoryName;
     private boolean giveNewPlayerKeys;
     private int previewChestLines;
     private int newPlayerKeys;
-    private List<ItemStack> preview;
+    private ArrayList<ItemStack> preview;
     private List<Tier> tiers;
     private CrateHologram hologram;
 
@@ -95,7 +95,7 @@ public class Crate {
      * @param prizes The prizes that can be won.
      * @param file The crate file.
      */
-    public Crate(String name, String previewName, CrateType crateType, ItemBuilder key, String keyName, List<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, List<String> prizeCommands, CrateHologram hologram) {
+    public Crate(String name, String previewName, CrateType crateType, ItemBuilder key, String keyName, ArrayList<Prize> prizes, FileConfiguration file, int newPlayerKeys, List<Tier> tiers, int maxMassOpen, int requiredKeys, List<String> prizeMessage, List<String> prizeCommands, CrateHologram hologram) {
         this.keyBuilder = key.setName(keyName).setCrateName(name);
         this.keyName = keyName;
 
@@ -329,8 +329,15 @@ public class Crate {
      *
      * @param prizes list of prizes
      */
-    public void setPrize(List<Prize> prizes) {
-        this.prizes = prizes.stream().filter(prize -> prize.getChance() != -1).toList();;
+    public void setPrize(ArrayList<Prize> prizes) {
+        // Purge everything for this crate.
+        purge();
+
+        // Add new prizes.
+        this.prizes.addAll(prizes.stream().filter(prize -> prize.getChance() != -1).toList());
+
+        // Set new display items.
+        setPreviewItems(getPreviewItems());
     }
 
     /**
@@ -346,7 +353,7 @@ public class Crate {
      *
      * @param itemStacks list of items
      */
-    public void setPreviewItems(List<ItemStack> itemStacks) {
+    public void setPreviewItems(ArrayList<ItemStack> itemStacks) {
         this.preview = itemStacks;
     }
 
@@ -720,8 +727,8 @@ public class Crate {
      *
      * @return a list of all the preview items that were created.
      */
-    public List<ItemStack> getPreviewItems() {
-        List<ItemStack> items = new ArrayList<>();
+    public ArrayList<ItemStack> getPreviewItems() {
+        ArrayList<ItemStack> items = new ArrayList<>();
 
         for (Prize prize : getPrizes()) {
             items.add(prize.getDisplayItem());
