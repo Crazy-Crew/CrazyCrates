@@ -13,9 +13,9 @@ plugins {
 
 val buildNumber: String = System.getenv("NEXT_BUILD_NUMBER") ?: "SNAPSHOT"
 
-val isSnapshot = false
+val isSnapshot = true
 
-rootProject.version = if (isSnapshot) "3.0-$buildNumber" else "3.0"
+rootProject.version = if (isSnapshot) "1.20.6-$buildNumber" else "3.0"
 
 val content: String = if (isSnapshot) {
     formatLog(latestCommitHash(), latestCommitMessage(), rootProject.name)
