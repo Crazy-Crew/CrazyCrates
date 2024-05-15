@@ -15,6 +15,7 @@ import com.badbones69.crazycrates.listeners.crates.MobileCrateListener;
 import com.badbones69.crazycrates.listeners.crates.QuadCrateListener;
 import com.badbones69.crazycrates.listeners.crates.WarCrateListener;
 import com.badbones69.crazycrates.listeners.other.EntityDamageListener;
+import com.badbones69.crazycrates.support.MetricsWrapper;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
@@ -78,12 +79,7 @@ public class CrazyCrates extends JavaPlugin {
         // Load commands.
         CommandManager.load();
 
-        //this.metrics = new MetricsManager();
-
-        // Load metrics.
-        //if (ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics)) {
-            //this.metrics.start();
-        //}
+        new MetricsWrapper(this, 4514).start();
 
         List.of(
                 // Menu listeners.
