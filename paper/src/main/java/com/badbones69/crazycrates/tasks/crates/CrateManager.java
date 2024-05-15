@@ -98,7 +98,7 @@ public class CrateManager {
             crate.purge();
 
             // Profit?
-            List<Prize> prizes = new ArrayList<>();
+            ArrayList<Prize> prizes = new ArrayList<>();
 
             ConfigurationSection prizesSection = file.getConfigurationSection("Crate.Prizes");
 
@@ -239,7 +239,7 @@ public class CrateManager {
 
                 CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType"));
 
-                List<Prize> prizes = new ArrayList<>();
+                ArrayList<Prize> prizes = new ArrayList<>();
                 List<Tier> tiers = new ArrayList<>();
 
                 String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name") : file.getString("Crate.CrateName");
