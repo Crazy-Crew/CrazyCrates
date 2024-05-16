@@ -39,23 +39,19 @@ import org.bukkit.inventory.ItemStack;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 public class Crate {
 
     private ItemBuilder previewTierBorderItem;
     private ItemBuilder borderItem;
     private ItemBuilder keyBuilder;
-    
+
     private AbstractCrateManager manager;
     private final String name;
     private String keyName;
@@ -80,10 +76,9 @@ public class Crate {
     private boolean giveNewPlayerKeys;
     private int previewChestLines;
     private int newPlayerKeys;
+    private ArrayList<ItemStack> preview;
     private List<Tier> tiers;
     private CrateHologram hologram;
-
-    private ArrayList<ItemStack> preview;
 
     private int maxMassOpen;
     private int requiredKeys;
@@ -773,7 +768,7 @@ public class Crate {
 
         this.crateManager.reloadCrate(this.crateManager.getCrateFromName(this.name));
     }
-    
+
     /**
      * @return the max page for the preview.
      */
