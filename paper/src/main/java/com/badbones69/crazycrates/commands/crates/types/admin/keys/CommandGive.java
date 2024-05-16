@@ -29,7 +29,7 @@ public class CommandGive extends BaseCommand {
             return;
         }
 
-        final KeyType keyType = getKeyType(sender, type);
+        final KeyType keyType = getKeyType(type, false);
 
         if (amount <= 0) {
             sender.sendRichMessage(Messages.not_a_number.getMessage(sender, "{number}", String.valueOf(amount)));
@@ -68,7 +68,7 @@ public class CommandGive extends BaseCommand {
             return;
         }
 
-        final KeyType keyType = getKeyType(sender, type);
+        final KeyType keyType = getKeyType(type, false);
 
         if (amount <= 0) {
             sender.sendRichMessage(Messages.not_a_number.getMessage(sender, "{number}", String.valueOf(amount)));

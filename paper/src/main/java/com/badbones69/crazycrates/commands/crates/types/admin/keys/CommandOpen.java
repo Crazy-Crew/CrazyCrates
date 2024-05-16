@@ -9,11 +9,7 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
-import dev.triumphteam.cmd.core.annotations.CommandFlags;
-import dev.triumphteam.cmd.core.annotations.Flag;
-import dev.triumphteam.cmd.core.annotations.Optional;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
-import dev.triumphteam.cmd.core.argument.keyed.Flags;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.command.CommandSender;
@@ -24,7 +20,6 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class CommandOpen extends BaseCommand {
 
@@ -89,7 +84,7 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
-        KeyType keyType = getKeyType(player, type);
+        KeyType keyType = getKeyType(type, false);
 
         boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), crate.getName()) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1;
 
@@ -117,9 +112,8 @@ public class CommandOpen extends BaseCommand {
     }
 
     @Command("open-others")
-    @CommandFlags({@Flag(flag = "f", argument = boolean.class)})
-    @Permission(value = "crazycrates.open-others", def = PermissionDefault.TRUE)
-    public void others(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("players") Player player, @Suggestion("keys") String type, @Suggestion("numbers") int amount, @Optional Flags flags) {
+    @Permission(value = "crazycrates.open-others", def = PermissionDefault.OP)
+    public void others(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("players") Player player, @Suggestion("admin-keys") String type) {
         // If the command is cancelled.
         if (isCancelled(player, crateName)) return;
 
@@ -156,23 +150,17 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
-        AtomicReference<KeyType> keyType = new AtomicReference<>(getKeyType(sender, type));
+        KeyType keyType = getKeyType(type, true);
 
-        if (sender == player && keyType.get() != KeyType.free_key) {
+        if (sender == player && keyType != KeyType.free_key) {
             open(player, crate.getName(), type);
 
             return;
         }
 
-        flags.getFlagValue("f").ifPresent(arg -> {
-            boolean isForced = Boolean.parseBoolean(arg);
+        boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), crate.getName()) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1;
 
-            if (isForced) keyType.set(KeyType.free_key);
-        });
-
-        boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType.get() == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), crate.getName()) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1;
-
-        if (!hasKey && keyType.get() != KeyType.free_key) {
+        if (!hasKey && keyType != KeyType.free_key) {
             //todo() convert this to a bean property!
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
                 Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
@@ -185,7 +173,7 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
-        this.crateManager.openCrate(player, crate, keyType.get(), player.getLocation(), true, false);
+        this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
 
         final Map<String, String> placeholders = new HashMap<>();
 
@@ -234,7 +222,7 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
-        final KeyType keyType = getKeyType(player, type);
+        final KeyType keyType = getKeyType(type, false);
 
         int keys = keyType == KeyType.physical_key ? this.userManager.getPhysicalKeys(player.getUniqueId(), crate.getName()) : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName());
         int used = 0;

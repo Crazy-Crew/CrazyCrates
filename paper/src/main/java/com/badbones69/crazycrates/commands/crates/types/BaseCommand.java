@@ -7,7 +7,6 @@ import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.api.utils.MsgUtils;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
@@ -96,18 +95,15 @@ public abstract class BaseCommand {
     /**
      * Get the key type from string
      *
-     * @param sender the sender requesting to give keys.
      * @param type the keytype to check.
      * @return the keytype or virtual key if none found.
      */
-    protected @NotNull final KeyType getKeyType(@NotNull final CommandSender sender, @NotNull final String type) {
+    protected @NotNull final KeyType getKeyType(@NotNull final String type, boolean openOthers) {
         if (type.isEmpty()) return KeyType.virtual_key;
 
         KeyType keyType = KeyType.getFromName(type);
 
-        if (keyType == null || keyType == KeyType.free_key) {
-            sender.sendRichMessage(MsgUtils.getPrefix("<red>You did not specify a key type, Defaulting to key type virtual"));
-
+        if (keyType == null || keyType == KeyType.free_key && !openOthers) {
             return KeyType.virtual_key;
         }
 
