@@ -113,7 +113,7 @@ public class CommandOpen extends BaseCommand {
 
     @Command("open-others")
     @Permission(value = "crazycrates.open-others", def = PermissionDefault.OP)
-    public void others(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("players") Player player, @Suggestion("admin-keys") String type) {
+    public void others(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("players") Player player, @Suggestion("keys") String type) {
         // If the command is cancelled.
         if (isCancelled(player, crateName)) return;
 
@@ -152,7 +152,21 @@ public class CommandOpen extends BaseCommand {
 
         KeyType keyType = getKeyType(type, true);
 
-        if (sender == player && keyType != KeyType.free_key) {
+        // Check if key type is free.
+        if (keyType == KeyType.free_key) {
+            this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
+
+            Map<String, String> placeholders = new HashMap<>();
+
+            placeholders.put("{crate}", crate.getName());
+            placeholders.put("{player}", player.getName());
+
+            player.sendRichMessage(Messages.opened_a_crate.getMessage(player, placeholders));
+
+            return;
+        }
+
+        if (sender == player) {
             open(player, crate.getName(), type);
 
             return;
@@ -160,7 +174,7 @@ public class CommandOpen extends BaseCommand {
 
         boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), crate.getName()) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1;
 
-        if (!hasKey && keyType != KeyType.free_key) {
+        if (!hasKey) {
             //todo() convert this to a bean property!
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
                 Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
@@ -181,6 +195,13 @@ public class CommandOpen extends BaseCommand {
         placeholders.put("{player}", player.getName());
 
         player.sendRichMessage(Messages.opened_a_crate.getMessage(player, placeholders));
+    }
+
+
+    @Command("forceopen")
+    @Permission(value = "crazycrates.forceopen", def = PermissionDefault.OP)
+    public void forceopen(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("players") Player player) {
+        others(sender, crateName, player, "free");
     }
 
     @Command("mass-open")
