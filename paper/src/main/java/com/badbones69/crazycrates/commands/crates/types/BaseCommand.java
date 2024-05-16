@@ -98,9 +98,7 @@ public abstract class BaseCommand {
      * @param type the keytype to check.
      * @return the keytype or virtual key if none found.
      */
-    protected @NotNull final KeyType getKeyType(@NotNull final String type, boolean forceOpen) {
-        if (forceOpen) return KeyType.free_key;
-
+    protected @NotNull final KeyType getKeyType(@NotNull final String type) {
         if (type.isEmpty()) return KeyType.virtual_key;
 
         KeyType keyType = KeyType.getFromName(type);

@@ -24,7 +24,7 @@ public class CommandTake extends BaseCommand {
             return;
         }
 
-        final KeyType keyType = getKeyType(type, false);
+        final KeyType keyType = getKeyType(type);
 
         final Crate crate = getCrate(sender, crateName, false);
 
