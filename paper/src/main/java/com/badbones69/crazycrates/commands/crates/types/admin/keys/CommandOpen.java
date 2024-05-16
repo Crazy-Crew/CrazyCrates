@@ -120,6 +120,7 @@ public class CommandOpen extends BaseCommand {
     @CommandFlags({@Flag(flag = "f", argument = boolean.class)})
     @Permission(value = "crazycrates.open-others", def = PermissionDefault.TRUE)
     public void others(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("players") Player player, @Suggestion("keys") String type, @Suggestion("numbers") int amount, @Optional Flags flags) {
+    @Permission(value = "crazycrates.open-others", def = PermissionDefault.OP)
         // If the command is cancelled.
         if (isCancelled(player, crateName)) return;
 
