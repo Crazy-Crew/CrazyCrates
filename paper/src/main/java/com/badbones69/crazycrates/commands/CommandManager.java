@@ -52,6 +52,8 @@ public class CommandManager {
 
         commandManager.registerSuggestion(SuggestionKey.of("keys"), (sender, context) -> List.of("virtual", "v", "physical", "p"));
 
+        commandManager.registerSuggestion(SuggestionKey.of("admin-keys"), (sender, context) -> List.of("virtual", "v", "physical", "p", "free", "f"));
+
         commandManager.registerSuggestion(SuggestionKey.of("players"), (sender, context) -> plugin.getServer().getOnlinePlayers().stream().map(Player::getName).toList());
 
         commandManager.registerSuggestion(SuggestionKey.of("locations"), (sender, context) -> crateManager.getCrateLocations().stream().map(CrateLocation::getID).toList());

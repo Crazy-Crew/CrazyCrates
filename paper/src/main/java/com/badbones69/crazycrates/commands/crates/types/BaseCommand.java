@@ -100,6 +100,7 @@ public abstract class BaseCommand {
      */
     protected @NotNull final KeyType getKeyType(@NotNull final String type, boolean forceOpen) {
         if (forceOpen) return KeyType.free_key;
+
         if (type.isEmpty()) return KeyType.virtual_key;
 
         KeyType keyType = KeyType.getFromName(type);
