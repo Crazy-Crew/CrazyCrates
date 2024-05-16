@@ -162,6 +162,8 @@ public class CommandOpen extends BaseCommand {
             placeholders.put("{player}", player.getName());
 
             player.sendRichMessage(Messages.opened_a_crate.getMessage(player, placeholders));
+
+            return;
         }
 
         if (sender == player) {
