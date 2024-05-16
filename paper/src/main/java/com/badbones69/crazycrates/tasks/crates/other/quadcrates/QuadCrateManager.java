@@ -228,7 +228,7 @@ public class QuadCrateManager {
 
                     this.tickTillSpawn++;
                 } else {
-                    crate.playSound(player, player.getLocation(), "cycle-sound", "BLOCK_STONE_STEP", Sound.Source.PLAYER);
+                    crate.playSound(player, player.getLocation(), "cycle-sound", "block.stone.step", Sound.Source.PLAYER);
 
                     Block chest = crateLocations.get(crateNumber).getBlock();
 
