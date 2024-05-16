@@ -90,6 +90,21 @@ crates:
       - "<gray>To remove the crate shift break in creative to remove."
     # A list of available placeholders: {prefix}, {id}
     removed: "{prefix}<gray>You have removed <gold>{id}."
+  list:
+    # The format for the /crazycrates list command
+    format:
+      - "<bold><gold>━━━━━━━━━━━━━━━━━━━ Crate Statistics ━━━━━━━━━━━━━━━━━━━</gold></bold>"
+      - "<dark_gray>»</dark_gray> <green>Active Crates: "
+      - " ⤷ {active_crates}</green>"
+      - "<dark_gray>»</dark_gray> <red>Broken Crates: "
+      - " ⤷ {broken_crates}</red>"
+      - "<dark_gray>»</dark_gray> <yellow>Crate Locations: "
+      - " ⤷ {active_locations}</yellow>"
+      - ""
+      - "{locations}"
+      - ""
+      - "<bold><gold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</gold></bold>"
+    per-crate: "<dark_gray>[<blue>{id}<dark_gray>]: <red>{crate_name}<dark_gray>, <red>{world}<dark_gray>, <red>{x}<dark_gray>, <red>{y}<dark_gray>, <red>{z}"
 # All messages related to commands.
 command:
   open:
@@ -144,19 +159,19 @@ command:
       no-virtual-keys: "{prefix}<bold><dark_gray>(<dark_red>!<dark_gray>)</bold> <gray>The player {player} does not have any keys."
       # A list of available placeholders: {player}, {crates_opened}
       virtual-keys-header:
-        - "<bold><dark_gray>(<gold>!<dark_gray>)</bold> <gray>List of {player}""s current number of keys."
+        - "<bold><dark_gray>(<gold>!<dark_gray>)</bold> <gray>List of {player}''s current number of keys."
         - " <yellow> -> Total Crates Opened: <red>{crates_opened}"
         - ""
     # A list of available placeholders: {crate}, {keys}, {crate_opened}
     crate-format: "{crate} <bold><gray>><dark_gray>></bold> <gold>{keys} keys <gray>: Opened <gold>{crate_opened} times"
-  # This requires crazycrates.command.help
+  # This requires crazycrates.help
   player-help:
     - "<bold><yellow>Crazy Crates Player Help</bold>"
     - ""
     - "<gold>/keys view [player] <gray>- <yellow>Check the number of keys a player has."
     - "<gold>/keys <gray>- <yellow>Shows how many keys you have."
     - "<gold>/crates <gray>- <yellow>Opens the menu."
-  # This requires crazycrates.command.admin.help
+  # This requires crazycrates.admin
   admin-help:
     - "<bold><red>Crazy Crates Admin Help</bold>"
     - ""

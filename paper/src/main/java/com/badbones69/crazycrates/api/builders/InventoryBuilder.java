@@ -5,20 +5,25 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
+import com.badbones69.crazycrates.tasks.InventoryManager;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.enums.Support;
 import com.ryderbelserion.vital.util.MiscUtil;
-import io.papermc.paper.adventure.AdventureComponent;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundOpenScreenPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.MenuType;
-import org.bukkit.craftbukkit.v1_20_R3.entity.CraftHumanEntity;
-import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftContainer;
-import org.bukkit.craftbukkit.v1_20_R3.util.CraftChatMessage;
+import org.bukkit.Server;
+import org.bukkit.craftbukkit.entity.CraftHumanEntity;
+import org.bukkit.craftbukkit.inventory.CraftContainer;
+import org.bukkit.craftbukkit.util.CraftChatMessage;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import us.crazycrew.crazycrates.platform.config.ConfigManager;
-import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -28,44 +33,51 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import static java.util.regex.Matcher.quoteReplacement;
 
-@SuppressWarnings("ALL")
-public abstract class InventoryBuilder implements InventoryHolder {
+public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
-    protected final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    protected @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final Inventory inventory;
-    private final Player player;
+    protected @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+
+    protected @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
+
+    protected @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+
+    protected @NotNull final Server server = this.plugin.getServer();
+
+    private Inventory inventory;
+    private Player player;
     private String title;
     private Crate crate;
     private int size;
     private int page;
     private List<Tier> tiers;
 
-    public InventoryBuilder(Player player, int size, String title) {
-        this.title = title;
+    public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size) {
         this.player = player;
+        this.title = title;
         this.size = size;
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        this.inventory = this.plugin.getServer().createInventory(this, this.size, MiscUtil.parse(inventoryTitle));
+        this.inventory = this.server.createInventory(this, this.size, MiscUtil.parse(inventoryTitle));
     }
 
-    public InventoryBuilder(Crate crate, Player player, int size, String title) {
-        this.title = title;
+    public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, @NotNull final Crate crate) {
         this.player = player;
+        this.title = title;
         this.size = size;
 
         this.crate = crate;
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        this.inventory = this.plugin.getServer().createInventory(this, this.size, MiscUtil.parse(inventoryTitle));
+        this.inventory = this.server.createInventory(this, this.size, MiscUtil.parse(inventoryTitle));
     }
 
-    public InventoryBuilder(Crate crate, Player player, int size, int page, String title) {
-        this.title = title;
+    public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, final int page, @NotNull final Crate crate) {
         this.player = player;
+        this.title = title;
         this.size = size;
         this.page = page;
 
@@ -73,22 +85,23 @@ public abstract class InventoryBuilder implements InventoryHolder {
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        this.inventory = this.plugin.getServer().createInventory(this, this.size, MiscUtil.parse(inventoryTitle));
+        this.inventory = this.server.createInventory(this, this.size, MiscUtil.parse(inventoryTitle));
     }
 
-    public InventoryBuilder(List<Tier> tiers, Crate crate, Player player, int size, String title) {
-        this.title = title;
+    public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, @NotNull final Crate crate, @NotNull final List<Tier> tiers) {
         this.player = player;
+        this.title = title;
         this.size = size;
 
         this.crate = crate;
-
         this.tiers = tiers;
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        this.inventory = this.plugin.getServer().createInventory(this, this.size, MiscUtil.parse(inventoryTitle));
+        this.inventory = this.server.createInventory(this, this.size, MiscUtil.parse(inventoryTitle));
     }
+
+    public InventoryBuilder() {}
 
     public boolean overrideMenu() {
         SettingsManager config = ConfigManager.getConfig();
@@ -98,8 +111,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
 
             if (!commands.isEmpty()) {
                 commands.forEach(value -> {
-                    String command = value.replaceAll("%player%", quoteReplacement(player.getName()))
-                            .replaceAll("%crate%", quoteReplacement(crate.getName()));
+                    String command = value.replaceAll("%player%", quoteReplacement(this.player.getName())).replaceAll("%crate%", quoteReplacement(this.crate.getName()));
 
                     MiscUtils.sendCommand(command);
                 });
@@ -117,43 +129,50 @@ public abstract class InventoryBuilder implements InventoryHolder {
 
     public abstract InventoryBuilder build();
 
-    public void size(int size) {
+    public abstract void run(InventoryClickEvent event);
+
+    @EventHandler
+    public void onPlayerClick(InventoryClickEvent event) {
+        run(event);
+    }
+
+    public void size(final int size) {
         this.size = size;
     }
 
-    public int getSize() {
+    public final int getSize() {
         return this.size;
     }
 
-    public void setPage(int page) {
+    public void setPage(final int page) {
         this.page = page;
     }
 
-    public int getPage() {
+    public final int getPage() {
         return this.page;
     }
 
-    public Crate getCrate() {
+    public @NotNull final Crate getCrate() {
         return this.crate;
     }
 
-    public void title(String title) {
+    public void title(@NotNull final String title) {
         this.title = title;
     }
 
-    public boolean contains(String message) {
+    public final boolean contains(@NotNull final String message) {
         return this.title.contains(message);
     }
 
-    public Player getPlayer() {
+    public @NotNull final Player getPlayer() {
         return this.player;
     }
 
-    public List<Tier> getTiers() {
+    public @NotNull final List<Tier> getTiers() {
         return this.tiers;
     }
 
-    public InventoryView getView() {
+    public @NotNull final InventoryView getView() {
         return getPlayer().getOpenInventory();
     }
 
@@ -166,8 +185,7 @@ public abstract class InventoryBuilder implements InventoryHolder {
     }
 
     @Override
-    @NotNull
-    public Inventory getInventory() {
+    public @NotNull final Inventory getInventory() {
         return this.inventory;
     }
 }

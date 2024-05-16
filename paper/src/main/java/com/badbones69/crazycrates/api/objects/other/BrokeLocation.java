@@ -5,8 +5,11 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BrokeLocation {
+
+    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     /**
      * Empty values that get instantiated below.
@@ -14,9 +17,7 @@ public class BrokeLocation {
     private int x, y, z;
     private final String world;
     private final String locationName;
-    private Crate crate;
-
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final Crate crate;
 
     /**
      * Builds a location that represents a broken crate.
@@ -29,7 +30,7 @@ public class BrokeLocation {
      * @param z the Z coordinate
      * @param world the world name
      */
-    public BrokeLocation(String locationName, Crate crate, int x, int y, int z, String world) {
+    public BrokeLocation(@NotNull final String locationName, @Nullable final Crate crate, final int x, final int y, final int z, @NotNull final String world) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -41,80 +42,43 @@ public class BrokeLocation {
     /**
      * @return the location name
      */
-    public String getLocationName() {
+    public final String getLocationName() {
         return this.locationName;
     }
 
     /**
      * @return the X coordinate
      */
-    public int getX() {
+    public final int getX() {
         return this.x;
-    }
-
-    /**
-     * Set the X coordinate.
-     *
-     * @param x the new X coordinate
-     */
-    public void setX(int x) {
-        this.x = x;
     }
 
     /**
      * @return the Y coordinate
      */
-    public int getY() {
+    public final int getY() {
         return this.y;
-    }
-
-
-    /**
-     * Set the Y coordinate.
-     *
-     * @param y the new Y coordinate
-     */
-    public void setY(int y) {
-        this.y = y;
     }
 
     /**
      * @return the Z coordinate
      */
-    public int getZ() {
+    public final int getZ() {
         return this.z;
-    }
-
-    /**
-     * Set the Z coordinate.
-     *
-     * @param z the new Z coordinate
-     */
-    public void setZ(int z) {
-        this.z = z;
     }
 
     /**
      * @return the world name
      */
-    public String getWorld() {
+    public @NotNull final String getWorld() {
         return this.world;
     }
 
     /**
-     * @return the crate object
+     * @return the crate plugin
      */
     public Crate getCrate() {
         return this.crate;
-    }
-
-    /**
-     * Set the crate object.
-     *
-     * @param crate the new crate object
-     */
-    public void setCrate(Crate crate) {
-        this.crate = crate;
     }
 
     /**
@@ -122,7 +86,7 @@ public class BrokeLocation {
      *
      * @return the location of the broken crate
      */
-    public Location getLocation() {
+    public @NotNull final Location getLocation() {
         return new Location(this.plugin.getServer().getWorld(this.world), this.x, this.y, this.z);
     }
 }

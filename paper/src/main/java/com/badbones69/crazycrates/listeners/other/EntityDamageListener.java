@@ -12,10 +12,10 @@ public class EntityDamageListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onFireworkDamage(EntityDamageEvent event) {
-        Entity directEntity = event.getDamageSource().getDirectEntity();
+        final Entity directEntity = event.getDamageSource().getDirectEntity();
 
-        if (directEntity instanceof Firework firework) {
-            PersistentDataContainer container = firework.getPersistentDataContainer();
+        if (directEntity instanceof final Firework firework) {
+            final PersistentDataContainer container = firework.getPersistentDataContainer();
 
             if (container.has(PersistentKeys.no_firework_damage.getNamespacedKey())) {
                 event.setCancelled(true);

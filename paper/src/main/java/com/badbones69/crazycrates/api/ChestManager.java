@@ -7,24 +7,25 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.EnderChest;
 import org.bukkit.block.data.Directional;
+import org.jetbrains.annotations.NotNull;
 
 public class ChestManager {
 
-    public static void openChest(Block block, boolean forceUpdate) {
+    public static void openChest(@NotNull final Block block, final boolean forceUpdate) {
         if (block.getType() != Material.CHEST || block.getType() != Material.TRAPPED_CHEST || block.getType() != Material.ENDER_CHEST) return;
 
-        BlockState blockState = block.getState();
+        final BlockState blockState = block.getState();
 
         switch (block.getType()) {
             case ENDER_CHEST -> {
-                EnderChest enderChest = (EnderChest) blockState;
+                final EnderChest enderChest = (EnderChest) blockState;
 
                 if (!enderChest.isOpen()) enderChest.open();
                 blockState.update(forceUpdate);
             }
 
             case CHEST, TRAPPED_CHEST -> {
-                Chest chest = (Chest) blockState;
+                final Chest chest = (Chest) blockState;
 
                 if (!chest.isOpen()) chest.open();
                 blockState.update(forceUpdate);
@@ -32,14 +33,14 @@ public class ChestManager {
         }
     }
 
-    public static void closeChest(Block block, boolean forceUpdate) {
+    public static void closeChest(@NotNull final Block block, final boolean forceUpdate) {
         if (block.getType() != Material.CHEST || block.getType() != Material.TRAPPED_CHEST || block.getType() != Material.ENDER_CHEST) return;
 
-        BlockState blockState = block.getState();
+        final BlockState blockState = block.getState();
 
         switch (block.getType()) {
             case ENDER_CHEST -> {
-                EnderChest enderChest = (EnderChest) blockState;
+                final EnderChest enderChest = (EnderChest) blockState;
 
                 if (enderChest.isOpen()) {
                     enderChest.close();
@@ -49,7 +50,7 @@ public class ChestManager {
             }
 
             case CHEST, TRAPPED_CHEST -> {
-                Chest chest = (Chest) blockState;
+                final Chest chest = (Chest) blockState;
 
                 if (chest.isOpen()) {
                     chest.close();
@@ -60,8 +61,8 @@ public class ChestManager {
         }
     }
 
-    public static void rotateChest(Block block, int direction) {
-        BlockFace blockFace = switch (direction) {
+    public static void rotateChest(@NotNull final Block block, final int direction) {
+        final BlockFace blockFace = switch (direction) {
             case 0 -> // West
                     BlockFace.WEST;
             case 1 -> // North
@@ -73,7 +74,7 @@ public class ChestManager {
             default -> BlockFace.DOWN;
         };
 
-        Directional blockData = (Directional) block.getBlockData();
+        final Directional blockData = (Directional) block.getBlockData();
 
         blockData.setFacing(blockFace);
 
@@ -82,22 +83,22 @@ public class ChestManager {
         block.getState().update(true);
     }
 
-    public static boolean isChestOpen(Block block) {
+    public static boolean isChestOpen(@NotNull final Block block) {
         if (block.getType() != Material.CHEST || block.getType() != Material.TRAPPED_CHEST || block.getType() != Material.ENDER_CHEST) return false;
 
-        BlockState blockState = block.getState();
+        final BlockState blockState = block.getState();
 
         boolean isOpen = false;
 
         switch (block.getType()) {
             case ENDER_CHEST -> {
-                EnderChest enderChest = (EnderChest) blockState;
+                final EnderChest enderChest = (EnderChest) blockState;
 
                 isOpen = enderChest.isOpen();
             }
 
             case CHEST, TRAPPED_CHEST -> {
-                Chest chest = (Chest) blockState;
+                final Chest chest = (Chest) blockState;
 
                 isOpen = chest.isOpen();
             }

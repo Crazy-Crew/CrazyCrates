@@ -4,14 +4,14 @@
 # Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
 # Features: https://github.com/Crazy-Crew/CrazyCrates/issues
 # 
-# List of all sounds: https://jd.papermc.io/paper/1.20/org/bukkit/Sound.html
+# List of all sounds: https://minecraft.wiki/w/Sounds.json#Java_Edition_values
 # List of all enchantments: https://jd.papermc.io/paper/1.20/org/bukkit/enchantments/Enchantment.html
 root:
   # Whether you want CrazyCrates to shut up or not, This option is ignored by errors.
   verbose_logging: true
   # This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.
   use-different-random: false
-  # This will wipe the example folder on /crazycrates reload or plugin startup so you always have fresh examples to look at.
+  # This will wipe the example folder on /crazycrates reload or plugin startup, so you always have fresh examples to look at.
   update-examples-folder: true
   # The prefix used in commands
   command_prefix: "<dark_gray>[<blue>CrazyCrates<dark_gray>]: "
@@ -32,7 +32,7 @@ gui:
       # The main menu button.
       menu:
         # The item the button should be.
-        item: "COMPASS"
+        item: "compass"
         override:
           # This will disable our current functionality of our main menu button in crate previews.
           # It allows you to override and use a menu of your choice from your plugin using a command.
@@ -48,7 +48,7 @@ gui:
       # The next button.
       next:
         # The item the button should be.
-        item: "FEATHER"
+        item: "feather"
         # The name of the item.
         name: "<bold><gold>Next »</bold>"
         # The lore of the item.
@@ -57,7 +57,7 @@ gui:
       # The back button.
       back:
         # The item the button should be.
-        item: "FEATHER"
+        item: "feather"
         # The name of the item.
         name: "<bold><gold>« Back</bold>"
         # The lore of the item.
@@ -67,7 +67,7 @@ gui:
         # Should the menu should be filled with one type of item?
         toggle: false
         # The item to fill the menu with.
-        item: "BLACK_STAINED_GLASS_PANE"
+        item: "black_stained_glass_pane"
         # The name of the item.
         name: " "
         # The lore of the item.
@@ -77,48 +77,48 @@ gui:
         toggle: true
         # The items to set to the gui.
         items:
-          - "slot:1, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:2, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:3, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:4, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:5, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:6, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:7, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:8, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:9, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:37, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:38, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:39, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:40, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:41, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:42, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:43, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:44, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:45, item:RED_STAINED_GLASS_PANE, name: "
-          - "slot:10, item:BLUE_STAINED_GLASS_PANE, name: "
-          - "slot:19, item:BLUE_STAINED_GLASS_PANE, name: "
-          - "slot:28, item:BLUE_STAINED_GLASS_PANE, name: "
-          - "slot:18, item:BLUE_STAINED_GLASS_PANE, name: "
-          - "slot:27, item:BLUE_STAINED_GLASS_PANE, name: "
-          - "slot:36, item:BLUE_STAINED_GLASS_PANE, name: "
-          - "slot:11, item:CYAN_STAINED_GLASS_PANE, name: "
-          - "slot:13, item:CYAN_STAINED_GLASS_PANE, name: "
-          - "slot:15, item:CYAN_STAINED_GLASS_PANE, name: "
-          - "slot:25, item:CYAN_STAINED_GLASS_PANE, name: "
-          - "slot:17, item:CYAN_STAINED_GLASS_PANE, name: "
-          - "slot:20, item:CYAN_STAINED_GLASS_PANE, name: "
-          - "slot:21, item:CYAN_STAINED_GLASS_PANE, name: "
-          - "slot:22, item:CYAN_STAINED_GLASS_PANE, name: "
-          - "slot:23, item:CYAN_STAINED_GLASS_PANE, name: "
-          - "slot:24, item:CYAN_STAINED_GLASS_PANE, name: "
-          - "slot:25, item:CYAN_STAINED_GLASS_PANE, name: "
-          - "slot:26, item:CYAN_STAINED_GLASS_PANE, name: "
-          - "slot:29, item:CYAN_STAINED_GLASS_PANE, name: "
-          - "slot:31, item:CYAN_STAINED_GLASS_PANE, name: "
-          - "slot:32, item:CYAN_STAINED_GLASS_PANE, name: "
-          - "slot:33, item:CYAN_STAINED_GLASS_PANE, name: "
-          - "slot:34, item:CYAN_STAINED_GLASS_PANE, name: "
-          - "slot:35, item:CYAN_STAINED_GLASS_PANE, name: "
+          - "slot:1, item:red_stained_glass_pane, name: "
+          - "slot:2, item:red_stained_glass_pane, name: "
+          - "slot:3, item:red_stained_glass_pane, name: "
+          - "slot:4, item:red_stained_glass_pane, name: "
+          - "slot:5, item:red_stained_glass_pane, name: "
+          - "slot:6, item:red_stained_glass_pane, name: "
+          - "slot:7, item:red_stained_glass_pane, name: "
+          - "slot:8, item:red_stained_glass_pane, name: "
+          - "slot:9, item:red_stained_glass_pane, name: "
+          - "slot:37, item:red_stained_glass_pane, name: "
+          - "slot:38, item:red_stained_glass_pane, name: "
+          - "slot:39, item:red_stained_glass_pane, name: "
+          - "slot:40, item:red_stained_glass_pane, name: "
+          - "slot:41, item:red_stained_glass_pane, name: "
+          - "slot:42, item:red_stained_glass_pane, name: "
+          - "slot:43, item:red_stained_glass_pane, name: "
+          - "slot:44, item:red_stained_glass_pane, name: "
+          - "slot:45, item:red_stained_glass_pane, name: "
+          - "slot:10, item:blue_stained_glass_pane, name: "
+          - "slot:19, item:blue_stained_glass_pane, name: "
+          - "slot:28, item:blue_stained_glass_pane, name: "
+          - "slot:18, item:blue_stained_glass_pane, name: "
+          - "slot:27, item:blue_stained_glass_pane, name: "
+          - "slot:36, item:blue_stained_glass_pane, name: "
+          - "slot:11, item:cyan_stained_glass_pane, name: "
+          - "slot:13, item:cyan_stained_glass_pane, name: "
+          - "slot:15, item:cyan_stained_glass_pane, name: "
+          - "slot:25, item:cyan_stained_glass_pane, name: "
+          - "slot:17, item:cyan_stained_glass_pane, name: "
+          - "slot:20, item:cyan_stained_glass_pane, name: "
+          - "slot:21, item:cyan_stained_glass_pane, name: "
+          - "slot:22, item:cyan_stained_glass_pane, name: "
+          - "slot:23, item:cyan_stained_glass_pane, name: "
+          - "slot:24, item:cyan_stained_glass_pane, name: "
+          - "slot:25, item:cyan_stained_glass_pane, name: "
+          - "slot:26, item:cyan_stained_glass_pane, name: "
+          - "slot:29, item:cyan_stained_glass_pane, name: "
+          - "slot:31, item:cyan_stained_glass_pane, name: "
+          - "slot:32, item:cyan_stained_glass_pane, name: "
+          - "slot:33, item:cyan_stained_glass_pane, name: "
+          - "slot:34, item:cyan_stained_glass_pane, name: "
+          - "slot:35, item:cyan_stained_glass_pane, name: "
 # Settings related to crates.
 crate:
   # Whether to show the display item when opening QuickCrate
@@ -151,7 +151,7 @@ crate:
     physical-crate-accepts-physical-keys: true
     # Should a physical crate accept physical keys?
     virtual-crate-accepts-physical-keys: true
-    # Settings related to a player"s inventory is not empty.
+    # Settings related to a player's inventory is not empty.
     inventory-settings:
       # Should the player should be given virtual keys if inventory is not empty? If you leave it as false, All keys will be dropped on the ground.
       give-virtual-keys: false
@@ -160,8 +160,9 @@ crate:
     key-sound:
       # Should a sound should be played if they have no key?
       toggle: true
-      # The sound to play.
-      name: "ENTITY_VILLAGER_NO"
+      # The type of sound to use.
+      # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+      name: "entity.villager.no"
   # Settings related to QuadCrate
   quad-crate:
     # How long should the quad crate be active?

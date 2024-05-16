@@ -3,14 +3,13 @@ package com.badbones69.crazycrates.tasks;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.platform.config.ConfigManager;
-import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
+import org.jetbrains.annotations.Nullable;
+import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,90 +17,58 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@SuppressWarnings("unchecked")
 public class InventoryManager {
 
-    @NotNull
-    private final SettingsManager config = ConfigManager.getConfig();
+    private @NotNull final SettingsManager config = ConfigManager.getConfig();
 
     private ItemBuilder menuButton;
     private ItemBuilder nextButton;
     private ItemBuilder backButton;
 
     public void loadButtons() {
-        this.menuButton = new ItemBuilder()
-                .setMaterial(this.config.getProperty(ConfigKeys.menu_button_item))
-                .setName(this.config.getProperty(ConfigKeys.menu_button_name))
-                .setLore(this.config.getProperty(ConfigKeys.menu_button_lore));
+        this.menuButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.menu_button_item))
+                .setDisplayName(this.config.getProperty(ConfigKeys.menu_button_name))
+                .setDisplayLore(this.config.getProperty(ConfigKeys.menu_button_lore))
+                .setPersistentString(PersistentKeys.main_menu_button.getNamespacedKey(), "none");
 
-        ItemMeta menuMeta = this.menuButton.getItemMeta();
+        this.nextButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.next_button_item))
+                .setDisplayName(this.config.getProperty(ConfigKeys.next_button_name))
+                .setDisplayLore(this.config.getProperty(ConfigKeys.next_button_lore))
+                .setPersistentString(PersistentKeys.next_button.getNamespacedKey(), "none");
 
-        PersistentDataContainer menuContainer = menuMeta.getPersistentDataContainer();
-
-        PersistentKeys main_menu_button = PersistentKeys.main_menu_button;
-
-        menuContainer.set(main_menu_button.getNamespacedKey(), main_menu_button.getType(), "none");
-
-        this.menuButton.setItemMeta(menuMeta);
-
-        this.nextButton = new ItemBuilder()
-                .setMaterial(this.config.getProperty(ConfigKeys.next_button_item))
-                .setName(this.config.getProperty(ConfigKeys.next_button_name))
-                .setLore(this.config.getProperty(ConfigKeys.next_button_lore));
-
-        ItemMeta nextMeta = this.nextButton.getItemMeta();
-
-        PersistentDataContainer nextContainer = nextMeta.getPersistentDataContainer();
-
-        PersistentKeys next_button = PersistentKeys.next_button;
-
-        nextContainer.set(next_button.getNamespacedKey(), next_button.getType(), "none");
-
-        this.nextButton.setItemMeta(nextMeta);
-
-        this.backButton = new ItemBuilder()
-                .setMaterial(this.config.getProperty(ConfigKeys.back_button_item))
-                .setName(this.config.getProperty(ConfigKeys.back_button_name))
-                .setLore(this.config.getProperty(ConfigKeys.back_button_lore));
-
-        ItemMeta backMeta = this.backButton.getItemMeta();
-
-        PersistentDataContainer backContainer = backMeta.getPersistentDataContainer();
-
-        PersistentKeys back_button = PersistentKeys.back_button;
-
-        backContainer.set(back_button.getNamespacedKey(), back_button.getType(), "none");
-
-        this.backButton.setItemMeta(backMeta);
+        this.backButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.back_button_item))
+                .setDisplayName(this.config.getProperty(ConfigKeys.back_button_name))
+                .setDisplayLore(this.config.getProperty(ConfigKeys.back_button_lore))
+                .setPersistentString(PersistentKeys.back_button.getNamespacedKey(), "none");
     }
 
-    public ItemStack getMenuButton(Player player) {
-        return this.menuButton.setTarget(player).build();
+    public @NotNull final ItemStack getMenuButton(@NotNull final Player player) {
+        return this.menuButton.setPlayer(player).getStack();
     }
 
-    public ItemStack getNextButton(Player player) {
+    public @NotNull final ItemStack getNextButton(@Nullable final Player player) {
         ItemBuilder button = new ItemBuilder(this.nextButton);
 
         if (player != null) {
-            button.addLorePlaceholder("{page}", (getPage(player) + 1) + "");
+            button.setPlayer(player).addLorePlaceholder("{page}", (getPage(player) + 1) + "");
         }
 
-        return button.setTarget(player).build();
+        return button.getStack();
     }
 
-    public ItemStack getBackButton(Player player) {
+    public @NotNull final ItemStack getBackButton(@Nullable final Player player) {
         ItemBuilder button = new ItemBuilder(this.backButton);
 
         if (player != null) {
-            button.addLorePlaceholder("{page}", (getPage(player) - 1) + "");
+            button.setPlayer(player).addLorePlaceholder("{page}", (getPage(player) - 1) + "");
         }
 
-        return button.setTarget(player).build();
+        return button.getStack();
     }
 
     private final Map<UUID, Crate> crateViewers = new HashMap<>();
 
-    public void openNewCratePreview(Player player, Crate crate) {
+    public void openNewCratePreview(@NotNull final Player player, @NotNull final Crate crate) {
         this.crateViewers.put(player.getUniqueId(), crate);
 
         if (crate.isPreviewTierToggle()) {
@@ -115,17 +82,17 @@ public class InventoryManager {
         player.openInventory(crate.getPreview(player));
     }
 
-    public void addCrateViewer(Player player, Crate crate) {
+    public void addCrateViewer(@NotNull final Player player, @NotNull final Crate crate) {
         this.crateViewers.put(player.getUniqueId(), crate);
     }
 
-    public void openCratePreview(Player player, Crate crate) {
+    public void openCratePreview(@NotNull final Player player, @NotNull final Crate crate) {
         this.crateViewers.put(player.getUniqueId(), crate);
 
         player.openInventory(crate.getPreview(player));
     }
 
-    public void closeCratePreview(Player player) {
+    public void closeCratePreview(@NotNull final Player player) {
         this.pageViewers.remove(player.getUniqueId());
         this.viewers.remove(player.getUniqueId());
         this.crateViewers.remove(player.getUniqueId());
@@ -133,37 +100,37 @@ public class InventoryManager {
         player.closeInventory();
     }
 
-    public Crate getCratePreview(Player player) {
+    public @Nullable final Crate getCratePreview(@NotNull final Player player) {
         return this.crateViewers.get(player.getUniqueId());
     }
 
-    public void removeCrateViewer(Player player) {
+    public void removeCrateViewer(@NotNull final Player player) {
         this.crateViewers.remove(player.getUniqueId());
     }
 
-    public void removePageViewer(Player player) {
+    public void removePageViewer(@NotNull final Player player) {
         this.pageViewers.remove(player.getUniqueId());
     }
 
-    public boolean inCratePreview(Player player) {
+    public final boolean inCratePreview(@NotNull final Player player) {
         return this.crateViewers.containsKey(player.getUniqueId());
     }
 
     private final Map<UUID, Integer> pageViewers = new HashMap<>();
 
-    public void nextPage(Player player) {
+    public void nextPage(@NotNull final Player player) {
         setPage(player, getPage(player) + 1);
     }
 
-    public void backPage(Player player) {
+    public void backPage(@NotNull final Player player) {
         setPage(player, getPage(player) - 1);
     }
 
-    public int getPage(Player player) {
+    public int getPage(@NotNull final Player player) {
         return this.pageViewers.getOrDefault(player.getUniqueId(), 1);
     }
 
-    public void setPage(Player player, int page) {
+    public void setPage(@NotNull final Player player, int page) {
         int max = this.crateViewers.get(player.getUniqueId()).getMaxPage();
 
         if (page < 1) {
@@ -177,11 +144,11 @@ public class InventoryManager {
 
     private final List<UUID> viewers = new ArrayList<>();
 
-    public void addViewer(Player player) {
+    public void addViewer(@NotNull final Player player) {
         this.viewers.add(player.getUniqueId());
     }
 
-    public void removeViewer(Player player) {
+    public void removeViewer(@NotNull final Player player) {
         this.viewers.remove(player.getUniqueId());
     }
 
@@ -189,7 +156,7 @@ public class InventoryManager {
         this.viewers.clear();
     }
 
-    public List<UUID> getViewers() {
+    public @NotNull final List<UUID> getViewers() {
         return Collections.unmodifiableList(this.viewers);
     }
 }

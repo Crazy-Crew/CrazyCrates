@@ -12,41 +12,47 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import java.util.UUID;
 
 public class CrateOnTheGo extends CrateBuilder {
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
+    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    public CrateOnTheGo(Crate crate, Player player) {
+    public CrateOnTheGo(@NotNull final Crate crate, @NotNull final Player player) {
         super(crate, player);
     }
 
     @Override
-    public void open(KeyType type, boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand) {
         // Crate event failed so we return.
         if (isCrateEventValid(KeyType.physical_key, checkHand)) {
             return;
         }
 
-        boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), KeyType.physical_key, true);
+        final Player player = getPlayer();
+        final UUID uuid = player.getUniqueId();
+        final Crate crate = getCrate();
+        final String crateName = crate.getName();
+
+        final boolean keyCheck = this.userManager.takeKeys(uuid, crateName, KeyType.physical_key, 1, true);
 
         if (!keyCheck) {
             // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(getPlayer());
+            this.crateManager.removePlayerFromOpeningList(player);
 
             return;
         }
 
-        Prize prize = getCrate().pickPrize(getPlayer());
-        PrizeManager.givePrize(getPlayer(), prize, getCrate());
+        final Prize prize = crate.pickPrize(player);
+        PrizeManager.givePrize(player, prize, crate);
 
-        if (prize.useFireworks()) MiscUtils.spawnFirework(getPlayer().getLocation().add(0, 1, 0), null);
+        if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
-        this.crateManager.removePlayerKeyType(getPlayer());
+        this.crateManager.removePlayerKeyType(player);
     }
 
     @Override

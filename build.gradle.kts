@@ -8,14 +8,14 @@ plugins {
 
     id("io.github.goooler.shadow")
 
-    `root-plugin`
+    `java-plugin`
 }
 
-val buildNumber: String? = System.getenv("NEXT_BUILD_NUMBER")
+val buildNumber: String = System.getenv("NEXT_BUILD_NUMBER") ?: "SNAPSHOT"
 
-rootProject.version = if (buildNumber != null) "2.1.1-$buildNumber" else "2.1.2"
+val isSnapshot = true
 
-val isSnapshot = false
+rootProject.version = if (isSnapshot) "3.0-$buildNumber" else "3.0"
 
 val content: String = if (isSnapshot) {
     formatLog(latestCommitHash(), latestCommitMessage(), rootProject.name)
@@ -42,8 +42,7 @@ modrinth {
     uploadFile.set(rootProject.projectDir.resolve("jars/${rootProject.name}-${rootProject.version}.jar"))
 
     gameVersions.set(listOf(
-        "1.20.4"
-        //"1.20.5"
+        "1.20.6"
     ))
 
     loaders.add("paper")
@@ -75,8 +74,7 @@ hangarPublish {
                 jar.set(rootProject.projectDir.resolve("jars/${rootProject.name}-${rootProject.version}.jar"))
 
                 platformVersions.set(listOf(
-                    "1.20.4"
-                    //"1.20.5"
+                    "1.20.6"
                 ))
 
                 dependencies {

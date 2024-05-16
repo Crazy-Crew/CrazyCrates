@@ -3,20 +3,22 @@ package com.badbones69.crazycrates.api.builders;
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.badbones69.crazycrates.scheduler.FoliaRunnable;
+import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.SoundCategory;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.simpleyaml.configuration.ConfigurationSection;
+import org.simpleyaml.configuration.file.FileConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.CrazyCrates;
@@ -26,7 +28,9 @@ import java.util.List;
 
 public abstract class CrateBuilder extends FoliaRunnable {
 
-    protected final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    protected @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+
+    protected @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
     private final InventoryBuilder builder;
     private final Inventory inventory;
@@ -42,7 +46,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param player player opening crate.
      * @param size size of inventory.
      */
-    public CrateBuilder(Crate crate, Player player, int size) {
+    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(player.getScheduler(), null);
 
         Preconditions.checkNotNull(crate, "Crate can't be null.");
@@ -55,7 +59,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
         this.player = player;
         this.size = size;
 
-        this.builder = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
+        this.builder = new CratePrizeMenu(player, crate.getCrateInventoryName(), size, crate);
         this.inventory = this.builder.build().getInventory();
     }
 
@@ -67,7 +71,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param size size of inventory.
      * @param crateName crate name of crate.
      */
-    public CrateBuilder(Crate crate, Player player, int size, String crateName) {
+    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final String crateName) {
         super(player.getScheduler(), null);
 
         Preconditions.checkNotNull(crate, "Crate can't be null.");
@@ -80,7 +84,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
         this.player = player;
         this.size = size;
 
-        this.builder = new CratePrizeMenu(crate, player, size, crateName);
+        this.builder = new CratePrizeMenu(player, crateName, size, crate);
         this.inventory = this.builder.build().getInventory();
     }
 
@@ -92,7 +96,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param size size of inventory.
      * @param location location of player.
      */
-    public CrateBuilder(Crate crate, Player player, int size, Location location) {
+    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final Location location) {
         super(player.getScheduler(), null);
 
         Preconditions.checkNotNull(crate, "Crate can't be null.");
@@ -106,7 +110,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
         this.player = player;
         this.size = size;
 
-        this.builder = new CratePrizeMenu(crate, player, size, crate.getCrateInventoryName());
+        this.builder = new CratePrizeMenu(player, crate.getCrateInventoryName(), size, crate);
         this.inventory = this.builder.build().getInventory();
     }
 
@@ -116,7 +120,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param crate crate opened by player.
      * @param player player opening crate.
      */
-    public CrateBuilder(Crate crate, Player player) {
+    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player) {
         super(player.getScheduler(), null);
 
         Preconditions.checkNotNull(crate, "Crate can't be null.");
@@ -140,7 +144,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param player player opening crate.
      * @param location location of player.
      */
-    public CrateBuilder(Crate crate, Player player, Location location) {
+    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location) {
         super(player.getScheduler(), null);
 
         Preconditions.checkNotNull(crate, "Crate can't be null.");
@@ -164,22 +168,22 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param type type of key.
      * @param checkHand whether to check hands or not.
      */
-    public abstract void open(KeyType type, boolean checkHand);
+    public abstract void open(@NotNull final KeyType type, final boolean checkHand);
 
     /**
      * Add a new crate task.
      *
      * @param task task to add.
      */
-    public void addCrateTask(ScheduledTask task) {
-        this.plugin.getCrateManager().addCrateTask(this.player, task);
+    public void addCrateTask(@NotNull final ScheduledTask task) {
+        this.crateManager.addCrateTask(this.player, task);
     }
 
     /**
      * Remove crate task.
      */
     public void removeTask() {
-        this.plugin.getCrateManager().removeCrateTask(this.player);
+        this.crateManager.removeCrateTask(this.player);
     }
 
     /**
@@ -187,7 +191,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      */
     public void cancelCrateTask() {
         // Cancel
-        this.plugin.getCrateManager().getCrateTask(this.player).cancel();
+        this.crateManager.getCrateTask(this.player).cancel();
 
         // Remove the task.
         removeTask();
@@ -196,38 +200,35 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * @return true or false.
      */
-    public boolean hasCrateTask() {
-        return this.plugin.getCrateManager().hasCrateTask(this.player);
+    public final boolean hasCrateTask() {
+        return this.crateManager.hasCrateTask(this.player);
     }
 
     /**
      * @return crate that is being opened.
      */
-    @NotNull
-    public Crate getCrate() {
+    public @NotNull final Crate getCrate() {
         return this.crate;
     }
 
     /**
      * @return title of the crate.
      */
-    @NotNull
-    public String getTitle() {
+    public @NotNull final String getTitle() {
         return this.crate.getCrateInventoryName();
     }
 
     /**
      * @return player opening the crate.
      */
-    @NotNull
-    public Player getPlayer() {
+    public @NotNull final Player getPlayer() {
         return this.player;
     }
 
     /**
      * @return inventory size.
      */
-    public int getSize() {
+    public final int getSize() {
         return this.size;
     }
 
@@ -236,7 +237,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      *
      * @return true or false.
      */
-    public boolean isFireCracker() {
+    public final boolean isFireCracker() {
         return this.crate.getCrateType() == CrateType.fire_cracker;
     }
 
@@ -245,14 +246,13 @@ public abstract class CrateBuilder extends FoliaRunnable {
      *
      * @return true or false.
      */
-    public boolean isCosmicCrate() {
+    public final boolean isCosmicCrate() {
         return this.crate.getCrateType() == CrateType.cosmic;
     }
 
     /**
      * @return file configuration of crate.
      */
-    @NotNull
     public FileConfiguration getFile() {
         return this.crate.getFile();
     }
@@ -260,7 +260,6 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * @return inventory of the crate.
      */
-    @NotNull
     public Inventory getInventory() {
         return this.inventory;
     }
@@ -270,7 +269,6 @@ public abstract class CrateBuilder extends FoliaRunnable {
      *
      * @return location in the world.
      */
-    @NotNull
     public Location getLocation() {
         return this.location;
     }
@@ -278,7 +276,6 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * @return instance of this class.
      */
-    @NotNull
     public InventoryBuilder getMenu() {
         return this.builder.build();
     }
@@ -289,7 +286,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param item item to set.
      * @param slot slot to set at.
      */
-    public void setItem(int slot, ItemStack item) {
+    public void setItem(final int slot, @NotNull final ItemStack item) {
         getInventory().setItem(slot, item);
     }
 
@@ -301,10 +298,8 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param name name of item.
      * @param lore lore of item.
      */
-    public void setItem(int slot, Material material, String name, List<String> lore) {
-        ItemBuilder builder = new ItemBuilder(new ItemStack(material)).setName(name).setLore(lore).setTarget(getPlayer());
-
-        getInventory().setItem(slot, builder.build());
+    public void setItem(final int slot, @NotNull final Material material, @NotNull final String name, @NotNull final List<String> lore) {
+        getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).setDisplayLore(lore).getStack());
     }
 
     /**
@@ -314,10 +309,8 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param material material to use.
      * @param name name of item.
      */
-    public void setItem(int slot, Material material, String name) {
-        ItemBuilder builder = new ItemBuilder(new ItemStack(material)).setName(name).setTarget(getPlayer());
-
-        getInventory().setItem(slot, builder.build());
+    public void setItem(final int slot, @NotNull final Material material, @NotNull final String name) {
+        getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).getStack());
     }
 
     /**
@@ -325,12 +318,15 @@ public abstract class CrateBuilder extends FoliaRunnable {
      *
      * @param slot slot to set at.
      */
-    public void setCustomGlassPane(int slot) {
+    public void setCustomGlassPane(final int slot) {
         getInventory().setItem(slot, getRandomGlassPane());
     }
 
-    public ItemStack getRandomGlassPane() {
-        return MiscUtils.getRandomPaneColor().setName(" ").build();
+    /**
+     * @return the itemstack
+     */
+    public @NotNull final ItemStack getRandomGlassPane() {
+        return MiscUtils.getRandomPaneColor().setDisplayName(" ").getStack();
     }
 
     /**
@@ -340,7 +336,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param checkHand true or false.
      * @return true if cancelled otherwise false.
      */
-    public boolean isCrateEventValid(KeyType keyType, boolean checkHand) {
+    public final boolean isCrateEventValid(@NotNull final KeyType keyType, final boolean checkHand) {
         CrateOpenEvent event = new CrateOpenEvent(this.player, this.crate, keyType, checkHand, this.crate.getFile());
         event.callEvent();
 
@@ -378,29 +374,33 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * @return the display item of the picked prize with a tier.
      */
-    public ItemStack getDisplayItem(Tier tier) {
+    public ItemStack getDisplayItem(@NotNull final Tier tier) {
         return getCrate().pickPrize(getPlayer(), tier).getDisplayItem(getPlayer());
     }
 
     /**
      * Plays a sound at different volume levels with fallbacks.
      *
-     * @param type i.e. stop, cycle or click sound.
-     * @param category sound category to respect client settings.
-     * @param fallback fallback sound in case no sound is found.
+     * @param type i.e. stop, cycle or click sound
+     * @param source sound category to respect client settings
+     * @param fallback fallback sound in case no sound is found
      */
-    public void playSound(String type, SoundCategory category, String fallback) {
+    public void playSound(@NotNull final String type, @NotNull final Sound.Source source, @NotNull final String fallback) {
+        if (type.isEmpty() && fallback.isEmpty()) return;
+
         ConfigurationSection section = getFile().getConfigurationSection("Crate.sound");
 
         if (section != null) {
+            Player player = getPlayer();
+
             SoundEffect sound = new SoundEffect(
                     section,
                     type,
                     fallback,
-                    category
+                    source
             );
 
-            sound.play(getPlayer(), getPlayer().getLocation());
+            sound.play(player, player.getLocation());
         }
     }
 }

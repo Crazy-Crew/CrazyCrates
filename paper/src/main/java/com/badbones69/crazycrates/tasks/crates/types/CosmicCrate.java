@@ -6,54 +6,53 @@ import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 
 public class CosmicCrate extends CrateBuilder {
 
-    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    public CosmicCrate(Crate crate, Player player, int size) {
+    public CosmicCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size, crate.getCrateInventoryName() + " - Choose");
     }
 
     @Override
-    public void open(KeyType type, boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand) {
         // If the crate event failed.
         if (isCrateEventValid(type, checkHand)) {
             return;
         }
 
-        CosmicCrateManager manager = (CosmicCrateManager) getCrate().getManager();
+        final Player player = getPlayer();
+        final Crate crate = getCrate();
+
+        final CosmicCrateManager manager = (CosmicCrateManager) crate.getManager();
         int slot = 1;
 
         for (int index = 0; index < getSize(); index++) {
-            ItemStack stack = manager.getMysteryCrate().setTarget(getPlayer()).setAmount(slot).addNamePlaceholder("%Slot%", String.valueOf(slot)).addLorePlaceholder("%Slot%", String.valueOf(slot)).build();
+            final ItemBuilder stack = manager.getMysteryCrate().setPlayer(player).addNamePlaceholder("%Slot%", String.valueOf(slot)).addLorePlaceholder("%Slot%", String.valueOf(slot));
 
-            ItemMeta itemMeta = stack.getItemMeta();
+            stack.setAmount(slot);
 
-            Tier tier = PrizeManager.getTier(getCrate());
+            final Tier tier = PrizeManager.getTier(crate);
 
             if (tier != null) {
-                itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING, tier.getName());
+                stack.setPersistentString(PersistentKeys.crate_tier.getNamespacedKey(), tier.getName());
 
-                stack.setItemMeta(itemMeta);
-
-                setItem(index, stack);
+                setItem(index, stack.getStack());
 
                 slot++;
             }
         }
 
-        this.crateManager.addPlayerKeyType(getPlayer(), type);
-        this.crateManager.addHands(getPlayer(), checkHand);
+        this.crateManager.addPlayerKeyType(player, type);
+        this.crateManager.addHands(player, checkHand);
 
-        getPlayer().openInventory(getInventory());
+        player.openInventory(getInventory());
     }
 
     @Override

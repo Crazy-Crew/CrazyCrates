@@ -59,6 +59,7 @@ A list of things necessary to make sure you can build CrazyCrates properly.
 * Intellij IDEA
     * > https://www.jetbrains.com/idea/download/
 * Gradle
+* Java 21
 
 ### Installation
 1. Clone the repo
@@ -66,20 +67,26 @@ A list of things necessary to make sure you can build CrazyCrates properly.
    git clone https://github.com/Crazy-Crew/CrazyCrates.git
    ```
 2. Open the repository using Intellij IDEA & wait until it finishes downloading/indexing.
-3. Run the clean assemble task.
+3. Run the assemble task.
    ```gradle
-   ./gradlew clean assemble
+   ./gradlew assemble
    ```
+4. Open the `jars` directory in your root folder.
+5. Profit!
 
 ## Roadmap
 Check our public [trello board](https://trello.com/b/bzQ5TwXo) for our current plans, any bugs and general tracking of the project progress.
 
-## Contributing
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/yourfeature`)
-3. Commit your Changes (`git commit -m 'your amazing feature.'`)
-4. Push to the Branch (`git push`)
-5. Open a Pull Request to the `dev` branch to add your feature/fix.
+## Support the Developers
+Ryder Belserion on:
+* [Github Sponsors](https://github.com/sponsors/ryderbelserion)
+* [Kofi](https://ko-fi.com/ryderbelserion)
+
+TDL on:
+* [Kofi](https://ko-fi.com/truedarklord)
+
+BadBones on:
+* [Paypal](https://www.paypal.me/joewojcik/)
 
 ## License
 Distributed under the MIT License. See [`LICENSE`](/LICENSE) for more information.

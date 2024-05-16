@@ -21,7 +21,7 @@ public class KeyCheckEvent extends Event implements Cancellable {
      * @param player player being checked.
      * @param crateLocation crate location that is being used.
      */
-    public KeyCheckEvent(Player player, CrateLocation crateLocation) {
+    public KeyCheckEvent(@NotNull final Player player, @NotNull final CrateLocation crateLocation) {
         this.player = player;
         this.crateLocation = crateLocation;
         this.isCancelled = false;
@@ -35,21 +35,21 @@ public class KeyCheckEvent extends Event implements Cancellable {
         return handlers;
     }
     
-    public Player getPlayer() {
+    public @NotNull final Player getPlayer() {
         return this.player;
     }
     
-    public CrateLocation getCrateLocation() {
+    public @NotNull final CrateLocation getCrateLocation() {
         return this.crateLocation;
     }
     
     @Override
-    public boolean isCancelled() {
+    public final boolean isCancelled() {
         return this.isCancelled;
     }
     
     @Override
-    public void setCancelled(boolean isCancelled) {
+    public void setCancelled(final boolean isCancelled) {
         this.isCancelled = isCancelled;
     }
 }

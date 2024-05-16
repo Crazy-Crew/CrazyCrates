@@ -1,16 +1,12 @@
 package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.enums.Support;
-import com.ryderbelserion.vital.util.MiscUtil;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.apache.commons.lang.WordUtils;
+import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.api.enums.Messages;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -19,15 +15,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
-import java.util.HashMap;
-import java.util.Map;
+import org.jetbrains.annotations.Nullable;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class PrizeManager {
     
-    private static final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private static @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     /**
      * Gets the prize for the player.
@@ -36,7 +31,7 @@ public class PrizeManager {
      * @param crate the player is opening.
      * @param prize the player is being given.
      */
-    public static void givePrize(Player player, Prize prize, Crate crate) {
+    public static void givePrize(@NotNull final Player player, @Nullable Prize prize, @NotNull final Crate crate) {
         if (prize == null) {
             if (MiscUtils.isLogging()) plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
 
@@ -45,73 +40,51 @@ public class PrizeManager {
 
         prize = prize.hasPermission(player) ? prize.getAlternativePrize() : prize;
 
-        if (!prize.getItems().isEmpty()) {
-            for (ItemStack item : prize.getItems()) {
-                if (item == null) {
-                    Map<String, String> placeholders = new HashMap<>();
-
-                    placeholders.put("{crate}", prize.getCrateName());
-                    placeholders.put("{prize}", prize.getPrizeName());
-
-                    player.sendRichMessage(Messages.prize_error.getMessage(player, placeholders));
-
-                    continue;
-                }
-
-                if (!MiscUtils.isInventoryFull(player)) {
-                    player.getInventory().addItem(item);
-                } else {
-                    player.getWorld().dropItemNaturally(player.getLocation(), item);
-                }
-            }
-        }
-
         if (!prize.getItemBuilders().isEmpty()) {
-            for (ItemBuilder item : prize.getItemBuilders()) {
-                ItemBuilder clone = new ItemBuilder(item).setTarget(player);
-
+            for (final ItemBuilder item : prize.getItemBuilders()) {
                 if (!MiscUtils.isInventoryFull(player)) {
-                    player.getInventory().addItem(clone.build());
+                    player.getInventory().addItem(item.setPlayer(player).getStack());
                 } else {
-                    player.getWorld().dropItemNaturally(player.getLocation(), clone.build());
+                    player.getWorld().dropItemNaturally(player.getLocation(), item.setPlayer(player).getStack());
                 }
             }
         } else {
             // Only give them the display item as a reward if prize commands are empty.
             if (prize.getCommands().isEmpty()) {
                 if (!MiscUtils.isInventoryFull(player)) {
-                    player.getInventory().addItem(prize.getDisplayItemBuilder(player).build());
+                    player.getInventory().addItem(prize.getPrizeItem().setPlayer(player).getStack());
                 } else {
-                    player.getWorld().dropItemNaturally(player.getLocation(), prize.getDisplayItemBuilder(player).build());
+                    player.getWorld().dropItemNaturally(player.getLocation(), prize.getPrizeItem().setPlayer(player).getStack());
                 }
             }
         }
 
-        for (String command : crate.getPrizeCommands()) {
+        for (final String command : crate.getPrizeCommands()) {
             runCommands(player, prize, crate, command);
         }
 
-        for (String command : prize.getCommands()) {
+        for (final String command : prize.getCommands()) {
             runCommands(player, prize, crate, command);
         }
 
         if (!crate.getPrizeMessage().isEmpty() && prize.getMessages().isEmpty()) {
-            for (String message : crate.getPrizeMessage()) {
+            for (final String message : crate.getPrizeMessage()) {
                 sendMessage(player, prize, crate, message);
             }
 
             return;
         }
 
-        for (String message : prize.getMessages()) {
+        for (final String message : prize.getMessages()) {
             sendMessage(player, prize, crate, message);
         }
     }
 
-    private static void runCommands(Player player, Prize prize, Crate crate, String command) {
-        if (command.contains("%random%:")) {
-            String cmd = command;
-            StringBuilder commandBuilder = new StringBuilder();
+    private static void runCommands(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, @NotNull String command) {
+        String cmd = command;
+
+        if (cmd.contains("%random%:")) {
+            final StringBuilder commandBuilder = new StringBuilder();
 
             for (String word : cmd.split(" ")) {
                 if (word.startsWith("%random%:")) {// /give %player% iron %random%:1-64
@@ -133,32 +106,34 @@ public class PrizeManager {
                 }
             }
 
-            command = commandBuilder.toString();
-            command = command.substring(0, command.length() - 1);
+            cmd = commandBuilder.toString();
+            cmd = cmd.substring(0, cmd.length() - 1);
         }
 
-        if (Support.placeholder_api.isEnabled() ) command = PlaceholderAPI.setPlaceholders(player, command);
+        if (Support.placeholder_api.isEnabled() ) cmd = PlaceholderAPI.setPlaceholders(player, cmd);
 
-        String display = prize.getDisplayItemBuilder().getName();
+        final ItemBuilder builder = prize.getPrizeItem();
 
-        String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
+        final String display = builder.getStrippedName();
 
-        MiscUtils.sendCommand(command
+        MiscUtils.sendCommand(cmd
                 .replaceAll("%player%", quoteReplacement(player.getName()))
-                .replaceAll("%reward%", quoteReplacement(name))
-                .replaceAll("%reward_stripped%", quoteReplacement(PlainTextComponentSerializer.plainText().serialize(MiscUtil.parse(name))))
+                .replaceAll("%reward%", quoteReplacement(builder.getDisplayName()))
+                .replaceAll("%reward_stripped%", quoteReplacement(display))
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())));
     }
 
-    private static void sendMessage(Player player, Prize prize, Crate crate, String message) {
-        String display = prize.getDisplayItemBuilder().getName();
+    private static void sendMessage(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, String message) {
+        if (message.isEmpty()) return;
 
-        String name = display == null || display.isEmpty() ? WordUtils.capitalizeFully(prize.getDisplayItemBuilder().getMaterial().getKey().getKey().replaceAll("_", " ")) : display;
+        final ItemBuilder builder = prize.getPrizeItem();
 
-        String defaultMessage = message
+        final String display = builder.getStrippedName();
+
+        final String defaultMessage = message
                 .replaceAll("%player%", quoteReplacement(player.getName()))
-                .replaceAll("%reward%", quoteReplacement(name))
-                .replaceAll("%reward_stripped%", quoteReplacement(PlainTextComponentSerializer.plainText().serialize(MiscUtil.parse(name))))
+                .replaceAll("%reward%", quoteReplacement(builder.getDisplayName()))
+                .replaceAll("%reward_stripped%", quoteReplacement(display))
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName()));
 
         MsgUtils.sendMessage(player, Support.placeholder_api.isEnabled()  ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
@@ -171,7 +146,7 @@ public class PrizeManager {
      * @param crate the player is opening.
      * @param prize the player is being given.
      */
-    public static void givePrize(Player player, Crate crate, Prize prize) {
+    public static void givePrize(@NotNull final Player player, @NotNull final Crate crate, @Nullable final Prize prize) {
         if (prize != null) {
             givePrize(player, prize, crate);
 
@@ -183,23 +158,23 @@ public class PrizeManager {
         }
     }
 
-    public static void getPrize(Crate crate, Inventory inventory, int slot, Player player) {
-        ItemStack item = inventory.getItem(slot);
+    public static void getPrize(@NotNull final Crate crate, @NotNull final Inventory inventory, final int slot, @NotNull final Player player) {
+        final ItemStack item = inventory.getItem(slot);
 
         if (item == null) return;
 
-        Prize prize = crate.getPrize(item);
+        final Prize prize = crate.getPrize(item);
 
         givePrize(player, prize, crate);
     }
 
-    public static Tier getTier(Crate crate) {
-        if (crate.getTiers() != null && !crate.getTiers().isEmpty()) {
+    public static @Nullable Tier getTier(@NotNull final Crate crate) {
+        if (!crate.getTiers().isEmpty()) {
             for (int stopLoop = 0; stopLoop <= 100; stopLoop++) {
-                for (Tier tier : crate.getTiers()) {
-                    int chance = tier.getChance();
+                for (final Tier tier : crate.getTiers()) {
+                    final int chance = tier.getChance();
 
-                    int num = MiscUtils.useOtherRandom() ? ThreadLocalRandom.current().nextInt(tier.getMaxRange()) : new Random().nextInt(tier.getMaxRange());
+                    final int num = MiscUtils.useOtherRandom() ? ThreadLocalRandom.current().nextInt(tier.getMaxRange()) : new Random().nextInt(tier.getMaxRange());
 
                     if (num >= 1 && num <= chance) {
                         return tier;

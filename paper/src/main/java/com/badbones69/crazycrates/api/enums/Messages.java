@@ -5,18 +5,18 @@ import ch.jalu.configme.properties.Property;
 import com.ryderbelserion.vital.common.util.StringUtil;
 import com.ryderbelserion.vital.enums.Support;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import us.crazycrew.crazycrates.platform.config.ConfigManager;
-import us.crazycrew.crazycrates.platform.config.impl.messages.CommandKeys;
-import us.crazycrew.crazycrates.platform.config.impl.messages.CrateKeys;
-import us.crazycrew.crazycrates.platform.config.impl.messages.ErrorKeys;
-import us.crazycrew.crazycrates.platform.config.impl.messages.MiscKeys;
-import us.crazycrew.crazycrates.platform.config.impl.messages.PlayerKeys;
+import org.jetbrains.annotations.Nullable;
+import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.config.impl.messages.CommandKeys;
+import com.badbones69.crazycrates.config.impl.messages.CrateKeys;
+import com.badbones69.crazycrates.config.impl.messages.ErrorKeys;
+import com.badbones69.crazycrates.config.impl.messages.MiscKeys;
+import com.badbones69.crazycrates.config.impl.messages.PlayerKeys;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +34,8 @@ public enum Messages {
     no_schematics_found(ErrorKeys.no_schematics_found),
     no_prizes_found(ErrorKeys.no_prizes_found),
     prize_error(ErrorKeys.prize_error),
+    cannot_be_empty(ErrorKeys.cannot_be_empty),
+    cannot_be_air(ErrorKeys.cannot_be_air),
     not_online(PlayerKeys.not_online),
 
     no_permission(PlayerKeys.no_permission),
@@ -61,6 +63,8 @@ public enum Messages {
     required_keys(CrateKeys.required_keys),
     created_physical_crate(CrateKeys.created_physical_crate, true),
     removed_physical_crate(CrateKeys.removed_physical_crate),
+    crate_locations(CrateKeys.crate_locations, true),
+    crate_locations_format(CrateKeys.crate_location_format),
     reloaded_forced_out_of_preview(CrateKeys.reloaded_forced_out_of_preview),
 
     gave_a_player_keys(CommandKeys.gave_a_player_keys),
@@ -91,28 +95,28 @@ public enum Messages {
     private Property<List<String>> properties;
     private boolean isList = false;
 
-    Messages(Property<String> property) {
+    Messages(@NotNull final Property<String> property) {
         this.property = property;
     }
 
-    Messages(Property<List<String>> properties, boolean isList) {
+    Messages(@NotNull final Property<List<String>> properties, final boolean isList) {
         this.properties = properties;
         this.isList = isList;
     }
 
-    private final @NotNull SettingsManager config = ConfigManager.getConfig();
+    private final SettingsManager config = ConfigManager.getConfig();
 
-    private final @NotNull SettingsManager messages = ConfigManager.getMessages();
+    private final SettingsManager messages = ConfigManager.getMessages();
 
     private boolean isList() {
         return this.isList;
     }
 
-    public @NotNull String getString() {
+    public String getString() {
         return this.messages.getProperty(this.property);
     }
 
-    public @NotNull List<String> getList() {
+    public List<String> getList() {
         return this.messages.getProperty(this.properties);
     }
 
@@ -120,7 +124,7 @@ public enum Messages {
         return getMessage(null, new HashMap<>());
     }
 
-    public String getMessage(CommandSender sender) {
+    public String getMessage(@Nullable final CommandSender sender) {
         if (sender instanceof Player player) {
             return getMessage(player, new HashMap<>());
         }
@@ -128,15 +132,15 @@ public enum Messages {
         return getMessage(null, new HashMap<>());
     }
 
-    public String getMessage(Map<String, String> placeholders) {
+    public String getMessage(@NotNull final Map<String, String> placeholders) {
         return getMessage(null, placeholders);
     }
 
-    public String getMessage(String placeholder, String replacement) {
+    public String getMessage(@NotNull final String placeholder, @NotNull final String replacement) {
         return getMessage(null, placeholder, replacement);
     }
 
-    public String getMessage(CommandSender sender, String placeholder, String replacement) {
+    public String getMessage(@Nullable final CommandSender sender, @NotNull final String placeholder, @NotNull final String replacement) {
         Map<String, String> placeholders = new HashMap<>() {{
             put(placeholder, replacement);
         }};
@@ -148,7 +152,7 @@ public enum Messages {
         return getMessage(null, placeholders);
     }
 
-    public String getMessage(CommandSender sender, Map<String, String> placeholders) {
+    public String getMessage(@Nullable final CommandSender sender, @NotNull final Map<String, String> placeholders) {
         if (sender instanceof Player player) {
             return getMessage(player, placeholders);
         }
@@ -156,7 +160,7 @@ public enum Messages {
         return getMessage(null, placeholders);
     }
 
-    public String getMessage(Player player, Map<String, String> placeholders) {
+    public String getMessage(@Nullable final Player player, @NotNull final Map<String, String> placeholders) {
         String prefix = this.config.getProperty(ConfigKeys.command_prefix);
 
         String message = parse(placeholders);
@@ -168,7 +172,7 @@ public enum Messages {
         return message.replaceAll("\\{prefix}", prefix);
     }
 
-    private String parse(Map<String, String> placeholders) {
+    private @NotNull String parse(@NotNull final Map<String, String> placeholders) {
         String message;
 
         if (isList()) {

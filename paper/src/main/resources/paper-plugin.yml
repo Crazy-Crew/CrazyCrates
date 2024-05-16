@@ -1,8 +1,6 @@
 name: '${name}'
 main: '${group}.CrazyCrates'
 
-loader: '${group}.LibraryLoader'
-
 version: '${version}'
 api-version: '1.20'
 description: '${description}'
@@ -20,19 +18,15 @@ dependencies:
       load: BEFORE
       required: false
       join-classpath: true
+    CMI:
+      load: BEFORE
+      required: false
+      join-classpath: true
     PlaceholderAPI:
      load: BEFORE
      required: false
      join-classpath: true
-    ItemsAdder:
-     load: BEFORE
-     required: false
-     join-classpath: true
     Oraxen:
-     load: BEFORE
-     required: false
-     join-classpath: true
-    CMI:
      load: BEFORE
      required: false
      join-classpath: true

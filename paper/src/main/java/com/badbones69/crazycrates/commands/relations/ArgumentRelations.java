@@ -2,83 +2,76 @@ package com.badbones69.crazycrates.commands.relations;
 
 import com.badbones69.crazycrates.commands.MessageManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
+import dev.triumphteam.cmd.core.extention.meta.MetaKey;
 import dev.triumphteam.cmd.core.message.MessageKey;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.enums.Messages;
+import java.util.Optional;
 
 public class ArgumentRelations extends MessageManager {
 
-    private String getContext(String subCommand, String commandOrder) {
-        String correctUsage = null;
+    private String getContext(String command, String order) {
+        if (command.isEmpty() || order.isEmpty()) return "";
 
-        switch (subCommand) {
-            case "transfer" -> correctUsage = commandOrder + "<crate-name> <player-name> <amount>";
-            case "debug", "open", "set" -> correctUsage = commandOrder + "<crate-name>";
-            case "tp" -> correctUsage = commandOrder + "<id>";
-            case "additem" -> correctUsage = commandOrder + "<crate-name> <prize-number> <chance> [tier]";
-            case "preview", "forceopen" -> correctUsage = commandOrder + "<crate-name> <player-name>";
-            case "open-others" -> correctUsage = commandOrder + "<crate-name> <player-name> [key-type]";
-            case "mass-open" -> correctUsage = commandOrder + "<crate-name> <key-type> <amount>";
-            case "give-random" -> correctUsage = commandOrder + "<key-type> <amount> <player-name>";
-            case "give", "take" -> correctUsage = commandOrder + "<key-type> <crate-name> <amount> <player-name>";
-            case "giveall" -> correctUsage = commandOrder + "<key-type> <crate-name> <amount>";
+        String usage = null;
+
+        switch (command) {
+            case "transfer" -> usage = order + " <crate-name> <player-name> <amount>";
+            case "debug", "open", "set" -> usage = order + " <crate-name>";
+            case "tp" -> usage = order + "<id>";
+            case "additem" -> usage = order + " <crate-name> <prize-number> <chance> [tier]";
+            case "preview", "forceopen" -> usage = order + " <crate-name> <player-name>";
+            case "open-others" -> usage = order + " <crate-name> <player-name> [key-type]";
+            case "mass-open" -> usage = order + " <crate-name> <key-type> <amount>";
+            case "give-random" -> usage = order + " <key-type> <amount> <player-name>";
+            case "give", "take" -> usage = order + " <key-type> <crate-name> <amount> <player-name>";
+            case "giveall" -> usage = order + " <key-type> <crate-name> <amount>";
+            case "admin" -> usage = order;
         }
 
-        return correctUsage;
+        return usage;
     }
 
     @Override
     public void build() {
-        commandManager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
-            String command = context.getCommand();
-            String subCommand = context.getSubCommand();
+        this.commandManager.registerMessage(BukkitMessageKey.UNKNOWN_COMMAND, (sender, context) -> send(sender, Messages.unknown_command.getMessage(sender, "{command}", context.getInvalidInput())));
 
-            String commandOrder = "/" + command + " " + subCommand + " ";
+        this.commandManager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
+            Optional<String> meta = context.getMeta().get(MetaKey.NAME);
 
-            String correctUsage = null;
+            meta.ifPresent(key -> {
+                if (key.equalsIgnoreCase("view")) {
+                    send(sender, Messages.correct_usage.getMessage(sender, "{usage}", getContext(key, "/keys " + key)));
 
-            switch (command) {
-                case "crates" -> correctUsage = getContext(subCommand, commandOrder);
-                case "keys" -> {
-                    if (subCommand.equals("view")) correctUsage = "/keys " + subCommand;
+                    return;
                 }
-            }
 
-            if (correctUsage != null) {
-                send(sender, Messages.correct_usage.getMessage(sender, "{usage}", correctUsage));
-            }
+                send(sender, Messages.correct_usage.getMessage(sender, "{usage}", getContext(key, "/crazycrates " + key)));
+            });
         });
 
-        commandManager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
-            String command = context.getCommand();
-            String subCommand = context.getSubCommand();
+        this.commandManager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
+            Optional<String> meta = context.getMeta().get(MetaKey.NAME);
 
-            String commandOrder = "/" + command + " " + subCommand + " ";
+            meta.ifPresent(key -> {
+                if (key.equalsIgnoreCase("view")) {
+                    send(sender, Messages.correct_usage.getMessage(sender, "{usage}", getContext(key, "/keys " + key)));
 
-            String correctUsage = null;
-
-            switch (command) {
-                case "crates" -> correctUsage = getContext(subCommand, commandOrder);
-                case "keys" -> {
-                    if (subCommand.equals("view")) correctUsage = "/keys " + subCommand + " <player-name>";
+                    return;
                 }
-            }
 
-            if (correctUsage != null) {
-                send(sender, Messages.correct_usage.getMessage(sender, "{usage}", correctUsage));
-            }
+                send(sender, Messages.correct_usage.getMessage(sender, "{usage}", getContext(key, "/crazycrates " + key)));
+            });
         });
 
-        commandManager.registerMessage(MessageKey.UNKNOWN_COMMAND, (sender, context) -> send(sender, Messages.unknown_command.getMessage(sender)));
+        this.commandManager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> send(sender, Messages.correct_usage.getMessage(sender, "{usage}", context.getArgumentName())));
 
-        commandManager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> send(sender, Messages.correct_usage.getMessage(sender, "{usage}", context.getTypedArgument())));
+        this.commandManager.registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> send(sender, Messages.no_permission.getMessage(sender, "{permission}", context.getPermission().toString())));
 
-        commandManager.registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> send(sender, Messages.no_permission.getMessage(sender)));
+        this.commandManager.registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> send(sender, Messages.must_be_a_player.getMessage(sender)));
 
-        commandManager.registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> send(sender, Messages.must_be_a_player.getMessage(sender)));
-
-        commandManager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> send(sender, Messages.must_be_console_sender.getMessage(sender)));
+        this.commandManager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> send(sender, Messages.must_be_console_sender.getMessage(sender)));
     }
 
     @Override

@@ -24,17 +24,17 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
 public class MiscListener implements Listener {
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
+    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    private final @NotNull InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
         // Set new keys if we have to.
         this.crateManager.setNewPlayerKeys(player);
@@ -65,7 +65,7 @@ public class MiscListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
         this.inventoryManager.removeViewer(player);
         this.inventoryManager.removeCrateViewer(player);
@@ -90,7 +90,7 @@ public class MiscListener implements Listener {
 
     @EventHandler
     public void onInventoryDragEvent(InventoryDragEvent event) {
-        Inventory inventory = event.getView().getTopInventory();
+        final Inventory inventory = event.getView().getTopInventory();
 
         if (inventory.getHolder(false) instanceof CrateAdminMenu || inventory.getHolder(false) instanceof CrateMainMenu || inventory.getHolder(false) instanceof CratePreviewMenu || inventory.getHolder(false) instanceof CratePrizeMenu) {
             event.setCancelled(true);

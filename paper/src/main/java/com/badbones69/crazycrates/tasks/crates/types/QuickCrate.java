@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.scheduler.FoliaRunnable;
+import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Location;
@@ -17,25 +17,26 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import us.crazycrew.crazycrates.platform.config.ConfigManager;
-import us.crazycrew.crazycrates.platform.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class QuickCrate extends CrateBuilder {
 
-    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
+    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    public QuickCrate(Crate crate, Player player, Location location) {
+    public QuickCrate(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location) {
         super(crate, player, location);
     }
 
     @Override
-    public void open(KeyType type, boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand) {
         // If the crate type is not fire cracker.
         if (!isFireCracker()) {
             // If the crate event failed.
@@ -44,68 +45,73 @@ public class QuickCrate extends CrateBuilder {
             }
         }
 
-        this.crateManager.addCrateInUse(getPlayer(), getLocation());
+        final Player player = getPlayer();
+        final UUID uuid = player.getUniqueId();
+        final Crate crate = getCrate();
+        final String crateName = crate.getName();
+
+        this.crateManager.addCrateInUse(player, getLocation());
 
         int keys = switch (type) {
-            case virtual_key -> this.userManager.getVirtualKeys(getPlayer().getUniqueId(), getCrate().getName());
-            case physical_key -> this.userManager.getPhysicalKeys(getPlayer().getUniqueId(), getCrate().getName());
+            case virtual_key -> this.userManager.getVirtualKeys(uuid, crateName);
+            case physical_key -> this.userManager.getPhysicalKeys(uuid, crateName);
             default -> 1;
         };
 
-        if (getPlayer().isSneaking() && keys > 1) {
+        if (player.isSneaking() && keys > 1) {
             int used = 0;
 
             for (;keys > 0; keys--) {
-                if (MiscUtils.isInventoryFull(getPlayer())) break;
-                if (used >= getCrate().getMaxMassOpen()) break;
+                if (MiscUtils.isInventoryFull(player)) break;
+                if (used >= crate.getMaxMassOpen()) break;
 
-                Prize prize = getCrate().pickPrize(getPlayer());
-                PrizeManager.givePrize(getPlayer(), prize, getCrate());
+                Prize prize = crate.pickPrize(player);
+                PrizeManager.givePrize(player, prize, crate);
 
-                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(getPlayer(), getCrate(), getCrate().getName(), prize));
+                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crateName, prize));
 
                 if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(.5, 1, .5), null);
 
                 used++;
             }
 
-            boolean keyCheck = this.userManager.takeKeys(used, getPlayer().getUniqueId(), getCrate().getName(), type, false);
+            final boolean keyCheck = this.userManager.takeKeys(uuid, crateName, type, used, false);
 
             if (!keyCheck) {
                 // Remove from opening list.
-                this.crateManager.removePlayerFromOpeningList(getPlayer());
+                this.crateManager.removePlayerFromOpeningList(player);
 
                 return;
             }
 
-            this.crateManager.endQuickCrate(getPlayer(), getLocation(), getCrate(), true);
+            this.crateManager.endQuickCrate(player, getLocation(), crate, true);
 
             return;
         }
 
-        boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, true);
+        final boolean keyCheck = this.userManager.takeKeys(uuid, crateName, type, 1, true);
 
         if (!keyCheck) {
             // Send the message about failing to take the key.
-            MiscUtils.failedToTakeKey(getPlayer(), getCrate().getName());
+            MiscUtils.failedToTakeKey(player, crateName);
 
             // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(getPlayer());
+            this.crateManager.removePlayerFromOpeningList(player);
 
             return;
         }
 
-        Prize prize = getCrate().pickPrize(getPlayer(), getLocation().clone().add(.5, 1.3, .5));
-        PrizeManager.givePrize(getPlayer(), prize, getCrate());
+        Prize prize = crate.pickPrize(player, getLocation().clone().add(.5, 1.3, .5));
+        PrizeManager.givePrize(player, prize, crate);
 
-        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(getPlayer(), getCrate(), getCrate().getName(), prize));
+        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crateName, prize));
 
-        boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
+        final boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
 
         // Only related to the item above the crate.
         if (showQuickCrateItem) {
             // Get the display item.
-            ItemStack display = prize.getDisplayItem(getPlayer());
+            ItemStack display = prize.getDisplayItem(player);
 
             // Get the item meta.
             ItemMeta itemMeta = display.getItemMeta();
@@ -122,7 +128,7 @@ public class QuickCrate extends CrateBuilder {
             Item reward;
 
             try {
-                reward = getPlayer().getWorld().dropItem(getLocation().clone().add(.5, 1, .5), display);
+                reward = player.getWorld().dropItem(getLocation().clone().add(.5, 1, .5), display);
             } catch (IllegalArgumentException exception) {
                 this.plugin.getLogger().warning("A prize could not be given due to an invalid display item for this prize.");
                 this.plugin.getLogger().log(Level.WARNING, "Crate: " + prize.getCrateName() + " Prize: " + prize.getPrizeName(), exception);
@@ -132,11 +138,11 @@ public class QuickCrate extends CrateBuilder {
 
             reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(this.plugin, true));
             reward.setVelocity(new Vector(0, .2, 0));
-            reward.setCustomName(itemMeta.getDisplayName());
+            reward.customName(display.displayName());
             reward.setCustomNameVisible(true);
             reward.setPickupDelay(-1);
 
-            this.crateManager.addReward(getPlayer(), reward);
+            this.crateManager.addReward(player, reward);
 
             // Always open the chest.
             ChestManager.openChest(getLocation().getBlock(), true);
@@ -145,10 +151,10 @@ public class QuickCrate extends CrateBuilder {
             if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(0.5, 1, .5), null);
 
             // Always end the crate.
-            addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
+            addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
                 @Override
                 public void run() {
-                    crateManager.endQuickCrate(getPlayer(), getLocation(), getCrate(), false);
+                    crateManager.endQuickCrate(player, getLocation(), crate, false);
                 }
             }.runDelayed(this.plugin, 5 * 20));
 
@@ -162,10 +168,10 @@ public class QuickCrate extends CrateBuilder {
         if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(0.5, 1, .5), null);
 
         // Always end the crate.
-        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
+        addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
             @Override
             public void run() {
-                crateManager.endQuickCrate(getPlayer(), getLocation(), getCrate(), false);
+                crateManager.endQuickCrate(player, getLocation(), crate, false);
             }
         }.runDelayed(this.plugin, 40));
     }

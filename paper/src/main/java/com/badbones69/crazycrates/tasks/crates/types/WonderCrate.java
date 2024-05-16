@@ -4,12 +4,12 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.badbones69.crazycrates.scheduler.FoliaRunnable;
+import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
-import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
@@ -19,25 +19,31 @@ import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class WonderCrate extends CrateBuilder {
 
-    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
+    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    public WonderCrate(Crate crate, Player player, int size) {
+    public WonderCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size);
     }
 
     @Override
-    public void open(KeyType type, boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand) {
         // Crate event failed so we return.
         if (isCrateEventValid(type, checkHand)) {
             return;
         }
 
-        boolean keyCheck = this.userManager.takeKeys(1, getPlayer().getUniqueId(), getCrate().getName(), type, checkHand);
+        final Player player = getPlayer();
+        final UUID uuid = player.getUniqueId();
+        final Crate crate = getCrate();
+        final String crateName = crate.getName();
+
+        final boolean keyCheck = this.userManager.takeKeys(uuid, crateName, type, 1, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
@@ -49,16 +55,16 @@ public class WonderCrate extends CrateBuilder {
         final List<String> slots = new ArrayList<>();
 
         for (int index = 0; index < getSize(); index++) {
-            Prize prize = getCrate().pickPrize(getPlayer());
+            final Prize prize = crate.pickPrize(player);
 
             slots.add(String.valueOf(index));
 
-            setItem(index, prize.getDisplayItem(getPlayer()));
+            setItem(index, prize.getDisplayItem(player));
         }
 
-        getPlayer().openInventory(getInventory());
+        player.openInventory(getInventory());
 
-        addCrateTask(new FoliaRunnable(getPlayer().getScheduler(), null) {
+        addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
             int time = 0;
             int full = 0;
 
@@ -78,15 +84,15 @@ public class WonderCrate extends CrateBuilder {
                     other.add(this.slot1);
                     other.add(this.slot2);
 
-                    ItemStack material = new ItemBuilder().setMaterial(Material.BLACK_STAINED_GLASS_PANE).setName(" ").build();
+                    final ItemStack material = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(" ").getStack();
 
                     setItem(this.slot1, material);
                     setItem(this.slot2, material);
 
                     for (String slot : slots) {
-                        this.prize = getCrate().pickPrize(getPlayer());
+                        this.prize = crate.pickPrize(player);
 
-                        setItem(Integer.parseInt(slot), this.prize.getDisplayItem(getPlayer()));
+                        setItem(Integer.parseInt(slot), this.prize.getDisplayItem(player));
                     }
 
                     this.slot1++;
@@ -99,22 +105,22 @@ public class WonderCrate extends CrateBuilder {
                     }
                 }
 
-                getPlayer().openInventory(getInventory());
+                player.openInventory(getInventory());
 
                 if (this.full > 100) {
-                    crateManager.endCrate(getPlayer());
+                    crateManager.endCrate(player);
 
                     getPlayer().closeInventory(InventoryCloseEvent.Reason.UNLOADED);
 
-                    PrizeManager.givePrize(getPlayer(), this.prize, getCrate());
+                    PrizeManager.givePrize(player, this.prize, crate);
 
-                    playSound("stop-sound", SoundCategory.PLAYERS, "ENTITY_PLAYER_LEVELUP");
+                    playSound("stop-sound", Sound.Source.PLAYER, "entity.player.levelup");
 
                     if (this.prize.useFireworks()) MiscUtils.spawnFirework(getPlayer().getLocation().add(0, 1, 0), null);
 
-                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(getPlayer(), getCrate(), getCrate().getName(), this.prize));
+                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crateName, this.prize));
 
-                    crateManager.removePlayerFromOpeningList(getPlayer());
+                    crateManager.removePlayerFromOpeningList(player);
 
                     return;
                 }

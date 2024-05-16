@@ -6,20 +6,21 @@ import eu.decentsoftware.holograms.api.DHAPI;
 import org.bukkit.Location;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
 
 public class DecentHologramsSupport extends HologramManager {
 
     private final Map<String, Hologram> holograms = new HashMap<>();
 
     @Override
-    public void createHologram(Location location, Crate crate) {
+    public void createHologram(@NotNull final Location location, @NotNull final Crate crate) {
         if (crate.getCrateType() == CrateType.menu) return;
 
-        CrateHologram crateHologram = crate.getHologram();
+        final CrateHologram crateHologram = crate.getHologram();
 
         if (!crateHologram.isEnabled()) {
             removeHologram(location);
@@ -27,7 +28,7 @@ public class DecentHologramsSupport extends HologramManager {
             return;
         }
 
-        Hologram hologram = DHAPI.createHologram(name(), location.clone().add(getVector(crate)));
+        final Hologram hologram = DHAPI.createHologram(name(), location.clone().add(getVector(crate)));
 
         DHAPI.addHologramPage(hologram, lines(crateHologram));
 
@@ -39,8 +40,8 @@ public class DecentHologramsSupport extends HologramManager {
     }
 
     @Override
-    public void removeHologram(Location location) {
-        Hologram hologram = this.holograms.remove(MiscUtils.location(location));
+    public void removeHologram(@NotNull final Location location) {
+        final Hologram hologram = this.holograms.remove(MiscUtils.location(location));
 
         if (hologram != null) {
             hologram.destroy();
@@ -48,7 +49,7 @@ public class DecentHologramsSupport extends HologramManager {
     }
 
     @Override
-    public void removeAllHolograms(boolean isShutdown) {
+    public void removeAllHolograms(final boolean isShutdown) {
         if (!isEmpty()) {
             this.holograms.forEach((key, value) -> value.destroy());
             this.holograms.clear();
@@ -56,7 +57,7 @@ public class DecentHologramsSupport extends HologramManager {
     }
 
     @Override
-    public boolean isEmpty() {
+    public final boolean isEmpty() {
         return this.holograms.isEmpty();
     }
 }

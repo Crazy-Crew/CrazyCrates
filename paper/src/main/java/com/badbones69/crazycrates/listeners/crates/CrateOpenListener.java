@@ -9,28 +9,28 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.ryderbelserion.vital.enums.Support;
 import com.ryderbelserion.vital.util.MiscUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.simpleyaml.configuration.file.FileConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.List;
 
 public class CrateOpenListener implements Listener {
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private final @NotNull BukkitUserManager userManager = this.plugin.getUserManager();
+    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
     @EventHandler
     public void onCrateOpen(CrateOpenEvent event) {
-        Player player = event.getPlayer();
-        Crate crate = event.getCrate();
+        final Player player = event.getPlayer();
+        final Crate crate = event.getCrate();
 
         if (crate.getCrateType() != CrateType.menu) {
             if (!crate.canWinPrizes(player)) {
@@ -60,23 +60,23 @@ public class CrateOpenListener implements Listener {
 
         if (crate.getCrateType() != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), crate.getName());
 
-        FileConfiguration configuration = event.getConfiguration();
+        final FileConfiguration configuration = event.getConfiguration();
 
-        String broadcastMessage = configuration.getString("Crate.BroadCast", "");
-        boolean broadcastToggle = configuration.contains("Crate.OpeningBroadCast") && configuration.getBoolean("Crate.OpeningBroadCast");
+        final String broadcastMessage = configuration.getString("Crate.BroadCast", "");
+        final boolean broadcastToggle = configuration.contains("Crate.OpeningBroadCast") && configuration.getBoolean("Crate.OpeningBroadCast");
 
         if (broadcastToggle && crate.getCrateType() != CrateType.cosmic) {
             if (!broadcastMessage.isBlank()) {
-                String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
+                final String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
                 this.plugin.getServer().broadcast(MiscUtil.parse(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
             }
         }
 
-        boolean commandToggle = configuration.contains("Crate.opening-command") && configuration.getBoolean("Crate.opening-command.toggle");
+        final boolean commandToggle = configuration.contains("Crate.opening-command") && configuration.getBoolean("Crate.opening-command.toggle");
 
         if (commandToggle) {
-            List<String> commands = configuration.getStringList("Crate.opening-command.commands");
+            final List<String> commands = configuration.getStringList("Crate.opening-command.commands");
 
             if (!commands.isEmpty()) {
                 commands.forEach(line -> {

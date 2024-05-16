@@ -1,13 +1,13 @@
 package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import org.bukkit.configuration.ConfigurationSection;
+import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.util.builders.items.NbtBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
-import java.util.Collections;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.simpleyaml.configuration.ConfigurationSection;
 import java.util.List;
 
 public class Tier {
@@ -20,14 +20,14 @@ public class Tier {
     private final int chance;
     private final int slot;
 
-    public Tier(String tier, ConfigurationSection section) {
+    public Tier(@NotNull final String tier, @NotNull final ConfigurationSection section) {
         this.name = tier;
 
         this.coloredName = section.getString("Name", "");
 
-        this.lore = section.getStringList("Lore").isEmpty() ? Collections.emptyList() : section.getStringList("Lore");
+        this.lore = section.getStringList("Lore"); // this returns an empty list if not found anyway.
 
-        this.item = new ItemBuilder().setMaterial(section.getString("Item", "CHEST")).hideItemFlags(section.getBoolean("HideItemFlags", false));
+        this.item = new ItemBuilder().withType(section.getString("Item", "chest")).setHidingItemFlags(section.getBoolean("HideItemFlags", false));
 
         this.chance = section.getInt("Chance");
         this.maxRange = section.getInt("MaxRange", 100);
@@ -38,66 +38,51 @@ public class Tier {
     /**
      * @return name of the tier.
      */
-    public String getName() {
+    public @NotNull final String getName() {
         return this.name;
     }
 
     /**
      * @return colored name of the tier.
      */
-    public String getColoredName() {
+    public @NotNull final String getColoredName() {
         return this.coloredName;
     }
 
     /**
      * @return the colored glass pane.
      */
-    public ItemBuilder getItem() {
+    public @NotNull final ItemBuilder getItem() {
         return this.item;
     }
     
     /**
      * @return the chance of being picked.
      */
-    public int getChance() {
+    public final int getChance() {
         return this.chance;
     }
     
     /**
      * @return the range of max possible chances.
      */
-    public int getMaxRange() {
+    public final int getMaxRange() {
         return this.maxRange;
     }
 
     /**
      * @return slot in the inventory.
      */
-    public int getSlot() {
+    public final int getSlot() {
         return this.slot;
     }
 
     /**
      * @return the tier item shown in the preview.
      */
-    public ItemStack getTierItem(Player target) {
-        this.item.setTarget(target);
+    public @NotNull final ItemStack getTierItem(final @Nullable Player target) {
+        if (target != null) this.item.setPlayer(target);
 
-        this.item.setName(this.coloredName);
-
-        this.item.setLore(this.lore);
-
-        ItemMeta itemMeta = this.item.getItemMeta();
-
-        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-
-        PersistentKeys key = PersistentKeys.preview_tier_button;
-
-        //noinspection unchecked
-        container.set(key.getNamespacedKey(), key.getType(), this.name);
-
-        this.item.setItemMeta(itemMeta);
-
-        return this.item.build();
+        return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).setPersistentString(PersistentKeys.preview_tier_button.getNamespacedKey(), this.name).getStack();
     }
 }

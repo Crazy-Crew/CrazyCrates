@@ -7,13 +7,14 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import net.Zrips.CMILib.Container.CMILocation;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
 
 public class CMIHologramsSupport extends HologramManager {
 
@@ -22,10 +23,10 @@ public class CMIHologramsSupport extends HologramManager {
     private final Map<String, CMIHologram> holograms = new HashMap<>();
 
     @Override
-    public void createHologram(Location location, Crate crate) {
+    public void createHologram(@NotNull final Location location, @NotNull final Crate crate) {
         if (crate.getCrateType() == CrateType.menu) return;
 
-        CrateHologram crateHologram = crate.getHologram();
+        final CrateHologram crateHologram = crate.getHologram();
 
         if (!crateHologram.isEnabled()) {
             removeHologram(location);
@@ -33,37 +34,12 @@ public class CMIHologramsSupport extends HologramManager {
             return;
         }
 
-        //todo() make this work eventually, it's just not properly updating.
-        /*String loc = MiscUtils.location(location);
-
-        if (this.holograms.containsKey(loc)) {
-            CMIHologram hologram = this.hologramManager.getByLoc(this.holograms.get(loc).getLocation());
-
-            String color = crateHologram.getBackgroundColor();
-
-            if (color.equalsIgnoreCase("transparent")) {
-                hologram.setBackgroundAlpha(0);
-            } else {
-                hologram.setBackgroundColor(CMIChatColor.getByHex(color));
-            }
-
-            hologram.setShowRange(crateHologram.getRange());
-
-            hologram.setLines(lines(crateHologram));
-
-            location.getNearbyEntitiesByType(Player.class, crateHologram.getRange()).forEach(player -> this.hologramManager.handleHoloUpdates(player, hologram.getLocation()));
-
-            this.holograms.put(loc, hologram);
-
-            return;
-        }*/
-
-        CMIHologram hologram = new CMIHologram(name(), new CMILocation(location.clone().add(getVector(crate))));
+        final CMIHologram hologram = new CMIHologram(name(), new CMILocation(location.clone().add(getVector(crate))));
 
         hologram.setNewDisplayMethod(true);
         hologram.setBillboard(CMIBillboard.CENTER);
 
-        String color = crateHologram.getBackgroundColor();
+        final String color = crateHologram.getBackgroundColor();
 
         if (color.equalsIgnoreCase("transparent")) {
             hologram.setBackgroundAlpha(0);
@@ -82,8 +58,8 @@ public class CMIHologramsSupport extends HologramManager {
     }
 
     @Override
-    public void removeHologram(Location location) {
-        CMIHologram hologram = this.holograms.remove(MiscUtils.location(location));
+    public void removeHologram(@NotNull final Location location) {
+        final CMIHologram hologram = this.holograms.remove(MiscUtils.location(location));
 
         if (hologram != null) {
             hologram.remove();
@@ -91,7 +67,7 @@ public class CMIHologramsSupport extends HologramManager {
     }
 
     @Override
-    public void removeAllHolograms(boolean isShutdown) {
+    public void removeAllHolograms(final boolean isShutdown) {
         if (!isEmpty()) {
             this.holograms.forEach((key, value) -> value.remove());
             this.holograms.clear();
@@ -99,7 +75,7 @@ public class CMIHologramsSupport extends HologramManager {
     }
 
     @Override
-    public boolean isEmpty() {
+    public final boolean isEmpty() {
         return this.holograms.isEmpty();
     }
 }

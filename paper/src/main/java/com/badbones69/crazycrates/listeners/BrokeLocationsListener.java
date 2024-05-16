@@ -17,9 +17,9 @@ import java.util.List;
 // Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
 public class BrokeLocationsListener implements Listener {
 
-    private final @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private final @NotNull CrateManager crateManager = this.plugin.getCrateManager();
+    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
     
     @EventHandler
     public void onWorldLoad(WorldLoadEvent event) {
@@ -27,10 +27,10 @@ public class BrokeLocationsListener implements Listener {
 
         int fixedAmount = 0;
 
-        List<BrokeLocation> fixedWorlds = new ArrayList<>();
+        final List<BrokeLocation> fixedWorlds = new ArrayList<>();
 
-        for (BrokeLocation brokeLocation : this.crateManager.getBrokeLocations()) {
-            Location location = brokeLocation.getLocation();
+        for (final BrokeLocation brokeLocation : this.crateManager.getBrokeLocations()) {
+            final Location location = brokeLocation.getLocation();
 
             if (location.getWorld() != null) {
                 if (brokeLocation.getCrate() != null) {
