@@ -1,3 +1,10 @@
 package com.badbones69.crazycrates.tasks.crates.other;
 
-public abstract class AbstractCrateManager {}
+import com.badbones69.crazycrates.CrazyCrates;
+import org.bukkit.plugin.java.JavaPlugin;
+
+public abstract class AbstractCrateManager {
+
+    protected final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+
+}

@@ -80,7 +80,7 @@ public class CosmicCrateListener implements Listener {
                 final ItemStack item = inventory.getItem(key);
 
                 if (item != null) {
-                    Tier tier = getTier(crate, item);
+                    final Tier tier = getTier(crate, item);
 
                     if (tier != null) {
                         Prize prize = crate.pickPrize(player, tier);
@@ -98,7 +98,7 @@ public class CosmicCrateListener implements Listener {
         }
 
         // Play sound.
-        if (playSound) crate.playSound(player, player.getLocation(), "click-sound", "UI_BUTTON_CLICK", Sound.Source.PLAYER);
+        if (playSound) crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", Sound.Source.PLAYER);
 
         // Remove opening stuff.
         this.crateManager.removePlayerFromOpeningList(player);
@@ -392,7 +392,7 @@ public class CosmicCrateListener implements Listener {
                             // Check if event is cancelled.
                             if (!event.isCancelled()) {
                                 // Add the keys
-                                userManager.addKeys(uuid, crateName, type, 1);
+                                userManager.addKeys(uuid, crateName, type == null ? KeyType.virtual_key : type, 1);
 
                                 // Remove opening stuff.
                                 crateManager.removePlayerFromOpeningList(player);
@@ -493,8 +493,14 @@ public class CosmicCrateListener implements Listener {
     }
 
     private Tier getTier(final Crate crate, final ItemStack item) {
-        for (Tier tier : crate.getTiers()) {
-            if (tier.getTierItem(null).isSimilar(item)) return tier;
+        if (!item.hasItemMeta()) return null;
+
+        ItemMeta itemMeta = item.getItemMeta();
+
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+
+        if (container.has(PersistentKeys.crate_tier.getNamespacedKey())) {
+            return crate.getTier(container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
         }
 
         return null;
