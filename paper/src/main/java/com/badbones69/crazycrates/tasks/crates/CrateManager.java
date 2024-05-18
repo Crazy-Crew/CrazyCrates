@@ -703,7 +703,11 @@ public class CrateManager {
      * @param player player that the crate is being ended for.
      */
     public void removeCrateTask(@NotNull final Player player) {
-        this.timerTasks.remove(player.getUniqueId()).cancel();
+        TimerTask task = this.timerTasks.remove(player.getUniqueId());
+
+        if (task != null) {
+            task.cancel();
+        }
     }
 
     /**
