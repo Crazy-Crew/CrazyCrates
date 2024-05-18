@@ -94,8 +94,8 @@ jobs:
           title: A new version of CrazyCrates is ready.
           color: 0xE91E63
           description: |
-            * <:hangar:1139326635313733652> https://hangar.papermc.io/CrazyCrew/CrazyCrates/versions/2.1-${{env.NEXT_BUILD_NUMBER}}
-            * <:modrinth:1115307870473420800> https://modrinth.com/plugin/crazycrates/version/2.1-${{env.NEXT_BUILD_NUMBER}}
+            * <:hangar:1139326635313733652> https://hangar.papermc.io/CrazyCrew/CrazyCrates/versions/3.0-${{env.NEXT_BUILD_NUMBER}}
+            * <:modrinth:1115307870473420800> https://modrinth.com/plugin/crazycrates/version/3.0-${{env.NEXT_BUILD_NUMBER}}
 
       - name: Build Failed
         uses: sarisia/actions-status-discord@v1
