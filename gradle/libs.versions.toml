@@ -2,7 +2,7 @@
 run-paper = { id = "xyz.jpenilla.run-paper", version = "2.3.0" }
 
 [versions]
-vital = "1.1"
+vital = "1.0-snapshot"
 
 [libraries]
 itemsadder-api = { group = "com.github.LoneDev6", name = "api-itemsadder", version = "3.6.1" }
@@ -10,8 +10,8 @@ oraxen-api = { group = "io.th0rgal", name = "oraxen", version = "1.171.0" }
 placeholder-api = { group = "me.clip", name = "placeholderapi", version = "2.11.5" }
 head-database-api = { group = "com.arcaniax", name = "HeadDatabase-API", version = "1.3.1" }
 
-vital-common = { group = "com.ryderbelserion", name = "vital-common", version.ref = "vital" }
-vital-paper = { group = "com.ryderbelserion", name = "vital-paper", version.ref = "vital" }
+vital-paper = { group = "com.ryderbelserion.vital", name = "paper", version.ref = "vital" }
+vital-core = { group = "com.ryderbelserion.vital", name = "core", version.ref = "vital" }
 
 annotations = { group = "org.jetbrains", name = "annotations", version = "24.1.0" }
 

@@ -7,11 +7,11 @@ plugins {
 }
 
 repositories {
-    maven("https://repo.fancyplugins.de/releases/")
+    maven("https://repo.fancyplugins.de/releases")
 }
 
 dependencies {
-    implementation(project(":crazycrates-common"))
+    api(project(":crazycrates-common"))
 
     implementation(libs.triumph.cmds)
 
@@ -21,9 +21,9 @@ dependencies {
 
     compileOnly(libs.decent.holograms)
 
-    compileOnly(libs.fancy.holograms)
-
     compileOnly(libs.placeholder.api)
+
+    compileOnly(libs.fancy.holograms)
 
     compileOnly(libs.oraxen.api)
 }

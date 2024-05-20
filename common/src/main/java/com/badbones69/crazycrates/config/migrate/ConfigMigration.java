@@ -3,11 +3,9 @@ package com.badbones69.crazycrates.config.migrate;
 import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.migration.PlainMigrationService;
 import ch.jalu.configme.resource.PropertyReader;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.enums.FileProperty;
 
-@ApiStatus.Internal
 public class ConfigMigration extends PlainMigrationService {
 
     @Override

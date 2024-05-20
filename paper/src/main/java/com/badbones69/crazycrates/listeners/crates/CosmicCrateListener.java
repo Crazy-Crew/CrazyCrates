@@ -2,9 +2,9 @@ package com.badbones69.crazycrates.listeners.crates;
 
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
-import com.ryderbelserion.vital.enums.Support;
-import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
-import com.ryderbelserion.vital.util.MiscUtil;
+import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.paper.enums.Support;
+import com.ryderbelserion.vital.paper.util.MiscUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.plugin.java.JavaPlugin;

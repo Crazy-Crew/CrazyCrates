@@ -5,11 +5,11 @@ plugins {
 }
 
 repositories {
-    maven("https://repo.codemc.io/repository/maven-public/")
+    maven("https://repo.codemc.io/repository/maven-public")
 
-    maven("https://repo.crazycrew.us/releases/")
+    maven("https://repo.crazycrew.us/snapshots")
 
-    maven("https://jitpack.io/")
+    maven("https://jitpack.io")
 
     flatDir { dirs("libs") }
 

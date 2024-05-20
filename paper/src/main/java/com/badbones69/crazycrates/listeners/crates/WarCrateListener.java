@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
+import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

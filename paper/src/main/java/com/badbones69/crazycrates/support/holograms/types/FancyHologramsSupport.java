@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.support.holograms.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
+import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import de.oliver.fancyholograms.api.FancyHologramsPlugin;
 import de.oliver.fancyholograms.api.Hologram;

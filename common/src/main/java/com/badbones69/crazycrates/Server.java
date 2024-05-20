@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates;
 
-import com.ryderbelserion.vital.common.AbstractPlugin;
-import com.ryderbelserion.vital.common.util.FileUtil;
+import com.ryderbelserion.vital.core.AbstractPlugin;
+import com.ryderbelserion.vital.core.util.FileUtil;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
@@ -33,7 +33,7 @@ public class Server extends AbstractPlugin implements IServer {
      */
     @ApiStatus.Internal
     public void apply() {
-        ConfigManager.load();
+        ConfigManager.load(this.directory);
 
         this.settings = new Settings();
 

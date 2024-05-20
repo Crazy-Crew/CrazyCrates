@@ -5,7 +5,9 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
+import com.badbones69.crazycrates.support.holograms.HologramManager;
+import com.ryderbelserion.vital.core.util.AdvUtil;
+import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Location;
@@ -110,6 +112,12 @@ public class QuickCrate extends CrateBuilder {
 
         // Only related to the item above the crate.
         if (showQuickCrateItem) {
+            final HologramManager manager = this.crateManager.getHolograms();
+
+            if (manager != null) {
+                manager.removeHologram(getLocation());
+            }
+
             // Get the display item.
             ItemStack display = prize.getDisplayItem(player);
 
@@ -138,7 +146,7 @@ public class QuickCrate extends CrateBuilder {
 
             reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(this.plugin, true));
             reward.setVelocity(new Vector(0, .2, 0));
-            reward.customName(display.displayName());
+            reward.customName(AdvUtil.parse(prize.getPrizeName()));
             reward.setCustomNameVisible(true);
             reward.setPickupDelay(-1);
 

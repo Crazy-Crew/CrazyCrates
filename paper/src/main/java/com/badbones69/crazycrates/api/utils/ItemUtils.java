@@ -4,11 +4,11 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.common.configuration.YamlFile;
-import com.ryderbelserion.vital.common.util.StringUtil;
-import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
-import com.ryderbelserion.vital.util.DyeUtil;
-import com.ryderbelserion.vital.util.ItemUtil;
+import com.ryderbelserion.vital.core.config.YamlFile;
+import com.ryderbelserion.vital.core.util.StringUtil;
+import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.paper.util.DyeUtil;
+import com.ryderbelserion.vital.paper.util.ItemUtil;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.banner.PatternType;
@@ -24,7 +24,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
-import static com.ryderbelserion.vital.util.ItemUtil.getEnchantment;
+
+import static com.ryderbelserion.vital.paper.util.ItemUtil.getEnchantment;
 
 public class ItemUtils {
 
