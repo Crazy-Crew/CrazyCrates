@@ -7,7 +7,7 @@ plugins {
 repositories {
     maven("https://repo.codemc.io/repository/maven-public")
 
-    maven("https://repo.crazycrew.us/snapshots")
+    maven("https://repo.crazycrew.us/releases")
 
     maven("https://jitpack.io")
 

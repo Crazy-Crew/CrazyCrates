@@ -2,7 +2,7 @@
 run-paper = { id = "xyz.jpenilla.run-paper", version = "2.3.0" }
 
 [versions]
-vital = "1.0-snapshot"
+vital = "1.1"
 
 [libraries]
 itemsadder-api = { group = "com.github.LoneDev6", name = "api-itemsadder", version = "3.6.1" }
