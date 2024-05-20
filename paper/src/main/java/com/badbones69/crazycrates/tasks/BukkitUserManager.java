@@ -1,14 +1,14 @@
 package com.badbones69.crazycrates.tasks;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.api.enums.DataFiles;
+import com.badbones69.crazycrates.api.enums.CustomFiles;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.common.configuration.YamlFile;
-import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.core.config.YamlFile;
+import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 import org.simpleyaml.configuration.ConfigurationSection;
@@ -38,7 +38,7 @@ public class BukkitUserManager extends UserManager {
 
     private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private @NotNull final DataFiles data = DataFiles.data;
+    private @NotNull final CustomFiles data = CustomFiles.data;
     private @NotNull final YamlFile configuration = data.getYamlFile();
 
     @Override

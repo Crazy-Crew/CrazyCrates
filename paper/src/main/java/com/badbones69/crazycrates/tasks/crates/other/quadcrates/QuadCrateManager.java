@@ -1,8 +1,8 @@
 package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 
-import com.ryderbelserion.vital.util.scheduler.FoliaRunnable;
+import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.ryderbelserion.vital.util.structures.StructureManager;
+import com.ryderbelserion.vital.paper.util.structures.StructureManager;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Color;
 import org.bukkit.Location;

@@ -1,16 +1,16 @@
 package com.badbones69.crazycrates.api.enums;
 
-import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.config.ConfigManager;
+import com.ryderbelserion.vital.core.config.YamlFile;
 import org.jetbrains.annotations.NotNull;
 
 public enum CustomFiles {
 
-    messages("messages.yml"),
-    config("config.yml");
+    locations("locations.yml"),
+    data("data.yml");
 
-    private final SettingsManager settingsManager;
     private final String fileName;
+    private final YamlFile yamlFile;
 
     /**
      * A constructor to build a file
@@ -19,34 +19,24 @@ public enum CustomFiles {
      */
     CustomFiles(@NotNull final String fileName) {
         this.fileName = fileName;
-        this.settingsManager = ConfigManager.getYamlManager().getFile(this.fileName);
+        this.yamlFile = ConfigManager.getYamlManager().getFile(this.fileName);
     }
 
     /**
-     * @return the file name
+     * @return {@link String}
      */
     public @NotNull final String getFileName() {
         return this.fileName;
     }
 
     /**
-     * @return the file configuration
+     * @return {@link YamlFile}
      */
-    public @NotNull final SettingsManager getSettingsManager() {
-        return this.settingsManager;
+    public @NotNull final YamlFile getYamlFile() {
+        return this.yamlFile;
     }
 
-    /**
-     * Save the file
-     */
     public void save() {
-        getSettingsManager().save();
-    }
-
-    /**
-     * Reload the file
-     */
-    public void reload() {
-        getSettingsManager().reload();
+        ConfigManager.getYamlManager().saveFile(getFileName());
     }
 }

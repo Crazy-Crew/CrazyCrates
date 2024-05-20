@@ -1,8 +1,8 @@
 package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.ryderbelserion.vital.enums.Support;
-import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.paper.enums.Support;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;

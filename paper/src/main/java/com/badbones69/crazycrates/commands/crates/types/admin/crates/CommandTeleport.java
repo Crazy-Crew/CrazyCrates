@@ -1,10 +1,10 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates;
 
-import com.badbones69.crazycrates.api.enums.DataFiles;
+import com.badbones69.crazycrates.api.enums.CustomFiles;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
-import com.ryderbelserion.vital.common.configuration.YamlFile;
+import com.ryderbelserion.vital.core.config.YamlFile;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public class CommandTeleport extends BaseCommand {
 
-    private @NotNull final YamlFile locations = DataFiles.locations.getYamlFile();
+    private @NotNull final YamlFile locations = CustomFiles.locations.getYamlFile();
 
     @Command("teleport")
     @Permission(value = "crazycrates.teleport", def = PermissionDefault.OP)
@@ -34,7 +34,7 @@ public class CommandTeleport extends BaseCommand {
         if (section == null) {
             this.locations.set("Locations.Clear", null);
 
-            DataFiles.locations.save();
+            CustomFiles.locations.save();
 
             return;
         }

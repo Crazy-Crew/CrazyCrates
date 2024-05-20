@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.tasks.crates;
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.api.enums.DataFiles;
+import com.badbones69.crazycrates.api.enums.CustomFiles;
 import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
 import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
@@ -20,12 +20,12 @@ import com.badbones69.crazycrates.tasks.crates.types.RouletteCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WonderCrate;
-import com.ryderbelserion.vital.common.configuration.YamlFile;
-import com.ryderbelserion.vital.common.configuration.YamlManager;
-import com.ryderbelserion.vital.common.configuration.objects.CustomFile;
-import com.ryderbelserion.vital.common.util.FileUtil;
-import com.ryderbelserion.vital.enums.Support;
-import com.ryderbelserion.vital.util.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.core.config.YamlFile;
+import com.ryderbelserion.vital.core.config.YamlManager;
+import com.ryderbelserion.vital.core.config.objects.CustomFile;
+import com.ryderbelserion.vital.core.util.FileUtil;
+import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.paper.enums.Support;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -354,7 +354,7 @@ public class CrateManager {
             ).forEach(line -> this.plugin.getLogger().info(line));
         }
 
-        final YamlFile locations = DataFiles.locations.getYamlFile();
+        final YamlFile locations = CustomFiles.locations.getYamlFile();
 
         int loadedAmount = 0;
         int brokeAmount = 0;
@@ -889,7 +889,7 @@ public class CrateManager {
      * @param crate the crate which you would like to set it to.
      */
     public void addCrateLocation(@NotNull final Location location, @NotNull final Crate crate) {
-        final YamlFile locations = DataFiles.locations.getYamlFile();
+        final YamlFile locations = CustomFiles.locations.getYamlFile();
         String id = "1"; // Location ID
 
         for (int i = 1; locations.contains("Locations." + i); i++) {
@@ -910,7 +910,7 @@ public class CrateManager {
         locations.set("Locations." + id + ".Y", location.getBlockY());
         locations.set("Locations." + id + ".Z", location.getBlockZ());
 
-        DataFiles.locations.save();
+        CustomFiles.locations.save();
 
         addLocation(new CrateLocation(id, crate, location));
 
@@ -923,8 +923,8 @@ public class CrateManager {
      * @param id the id of the location.
      */
     public void removeCrateLocation(@NotNull final String id) {
-        DataFiles.locations.getYamlFile().set("Locations." + id, null);
-        DataFiles.locations.save();
+        CustomFiles.locations.getYamlFile().set("Locations." + id, null);
+        CustomFiles.locations.save();
 
         CrateLocation location = null;
 
@@ -1257,7 +1257,7 @@ public class CrateManager {
 
     // Cleans the data file.
     private void cleanDataFile() {
-        final YamlFile data = DataFiles.data.getYamlFile();
+        final YamlFile data = CustomFiles.data.getYamlFile();
 
         if (!data.contains("Players")) return;
 
@@ -1300,7 +1300,7 @@ public class CrateManager {
 
         if (MiscUtils.isLogging()) this.plugin.getLogger().info("The data.yml file has been cleaned.");
 
-        DataFiles.data.save();
+        CustomFiles.data.save();
     }
 
     // War Crate

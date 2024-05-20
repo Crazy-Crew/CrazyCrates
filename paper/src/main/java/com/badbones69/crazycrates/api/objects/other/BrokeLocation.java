@@ -14,7 +14,7 @@ public class BrokeLocation {
     /**
      * Empty values that get instantiated below.
      */
-    private int x, y, z;
+    private final int x, y, z;
     private final String world;
     private final String locationName;
     private final Crate crate;
