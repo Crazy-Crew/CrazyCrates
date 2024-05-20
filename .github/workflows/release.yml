@@ -94,8 +94,8 @@ jobs:
           title: A new version of CrazyCrates is ready.
           color: 0xE91E63
           description: |
-            * <:hangar:1139326635313733652> https://hangar.papermc.io/CrazyCrew/CrazyCrates/versions/3.0-${{env.NEXT_BUILD_NUMBER}}
-            * <:modrinth:1115307870473420800> https://modrinth.com/plugin/crazycrates/version/3.0-${{env.NEXT_BUILD_NUMBER}}
+            * <:hangar:1139326635313733652> https://hangar.papermc.io/CrazyCrew/CrazyCrates/versions/${{ env.version }}-${{ env.NEXT_BUILD_NUMBER }}
+            * <:modrinth:1115307870473420800> https://modrinth.com/plugin/crazycrates/version/${{ env.version }}-${{ env.NEXT_BUILD_NUMBER }}
 
       - name: Build Failed
         uses: sarisia/actions-status-discord@v1
@@ -107,8 +107,8 @@ jobs:
           title: The build didn't survive.
           color: 0xff0000
           description: |
-            Version 2.1 build ${{env.NEXT_BUILD_NUMBER}} has died.
-            Click [here](${{github.server_url}}/${{github.repository}}/actions/runs/${{ github.run_id }}) to view the run.
+            Version ${{ env.version }} build ${{ env.NEXT_BUILD_NUMBER }} has died.
+            Click [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) to view the run.
 
       # https://github.com/granny/Pl3xMap/blob/1df593e5706444de28fc61855df5a7552afcd3c7/.github/workflows/build.yml#L95
       - uses: actions/github-script@v6
