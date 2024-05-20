@@ -317,11 +317,13 @@ public class Crate {
             }
         }
 
+        Random random = MiscUtils.useOtherRandom() ? ThreadLocalRandom.current() : new Random();
+
         // ================= Chance Check ================= //
-        chanceCheck(prizes, usablePrizes);
+        chanceCheck(prizes, usablePrizes, random);
 
         try {
-            return prizes.get(MiscUtils.useOtherRandom() ? ThreadLocalRandom.current().nextInt(prizes.size()) : new Random().nextInt(prizes.size()));
+            return prizes.get(random.nextInt(prizes.size()));
         } catch (IllegalArgumentException exception) {
             this.plugin.getLogger().log(Level.WARNING, "Failed to find prize from the " + name + " crate for player " + player.getName() + ".", exception);
 
@@ -332,10 +334,11 @@ public class Crate {
     /**
      * Checks the chances and returns usable prizes.
      *
-     * @param prizes The prizes to check
+     * @param prizes       The prizes to check
      * @param usablePrizes The usable prizes to check
+     * @param random The random variable
      */
-    private void chanceCheck(@NotNull final List<Prize> prizes, @NotNull final List<Prize> usablePrizes) {
+    private void chanceCheck(@NotNull final List<Prize> prizes, @NotNull final List<Prize> usablePrizes, Random random) {
         for (int stop = 0; prizes.isEmpty() && stop <= 2000; stop++) {
             for (Prize prize : usablePrizes) {
                 int max = prize.getMaxRange();
@@ -343,7 +346,7 @@ public class Crate {
                 int num;
 
                 for (int counter = 1; counter <= 1; counter++) {
-                    num = MiscUtils.useOtherRandom() ? 1 + ThreadLocalRandom.current().nextInt(max) : 1 + new Random().nextInt(max);
+                    num = 1 + random.nextInt(max);
 
                     if (num <= chance) prizes.add(prize);
                 }
@@ -410,10 +413,12 @@ public class Crate {
             }
         }
 
-        // ================= Chance Check ================= //
-        chanceCheck(prizes, usablePrizes);
+        Random random = MiscUtils.useOtherRandom() ? ThreadLocalRandom.current() : new Random();
 
-        return prizes.get(MiscUtils.useOtherRandom() ? ThreadLocalRandom.current().nextInt(prizes.size()) : new Random().nextInt(prizes.size()));
+        // ================= Chance Check ================= //
+        chanceCheck(prizes, usablePrizes, random);
+
+        return prizes.get(random.nextInt(prizes.size()));
     }
     
     /**
