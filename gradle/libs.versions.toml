@@ -15,7 +15,7 @@ vital-core = { group = "com.ryderbelserion.vital", name = "core", version.ref = 
 
 annotations = { group = "org.jetbrains", name = "annotations", version = "24.1.0" }
 
-decent-holograms = { group = "com.github.decentsoftware-eu", name = "decentholograms", version = "2.8.6" }
+decent-holograms = { group = "com.github.decentsoftware-eu", name = "decentholograms", version = "2.8.8" }
 fancy-holograms = { group = "de.oliver", name = "FancyHolograms", version = "2.0.6" }
 
 triumph-cmds = { group = "dev.triumphteam", name = "triumph-cmd-bukkit", version = "2.0.0-ALPHA-10" }
