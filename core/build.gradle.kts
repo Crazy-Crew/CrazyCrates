@@ -3,9 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":crazycrates-api"))
-
     compileOnly(libs.vital.core)
 
-    compileOnly(libs.annotations)
+    api(libs.crazycrates)
 }
