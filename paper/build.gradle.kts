@@ -17,7 +17,7 @@ dependencies {
 
     implementation(libs.vital.paper)
 
-    compileOnly(fileTree("$rootDir/libs/compile").include("*.jar"))
+    compileOnly(fileTree("$projectDir/libs/compile").include("*.jar"))
 
     compileOnly(libs.decent.holograms)
 
