@@ -1,14 +1,6 @@
-[plugins]
-run-paper = { id = "xyz.jpenilla.run-paper", version = "2.3.0" }
-
 [versions]
-# Kotlin
-kotlin = "1.9.24"
-
 # Minecraft
 paper = "1.20.6-R0.1-SNAPSHOT"
-paperweight = "1.7.1"
-adventure = "4.17.0"
 
 # Plugins
 itemsadder = "3.6.3-beta-14"
@@ -17,7 +9,6 @@ placeholderapi = "2.11.5"
 oraxen = "1.171.0"
 
 # Core
-annotations = "24.1.0"
 crazycrates = "0.5"
 jalu = "1.4.1"
 yaml = "1.8.4"
@@ -30,6 +21,17 @@ triumph-cmd = "2.0.0-ALPHA-10"
 tirumph-gui = "3.1.7"
 
 vault = "1.7.1"
+
+shadowJar = "8.1.7"
+runPaper = "2.3.0"
+minotaur = "2.+"
+hangar = "0.1.2"
+
+[plugins]
+hangar = { id = "io.papermc.hangar-publish-plugin", version.ref = "hangar" }
+shadowJar = { id = "io.github.goooler.shadow", version.ref = "shadowJar" }
+runPaper = { id = "xyz.jpenilla.run-paper", version.ref = "runPaper" }
+minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }
 
 [libraries]
 # Paper

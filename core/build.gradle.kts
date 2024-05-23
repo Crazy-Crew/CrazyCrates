@@ -1,4 +1,6 @@
 plugins {
+    alias(libs.plugins.shadowJar)
+
     `java-plugin`
 }
 

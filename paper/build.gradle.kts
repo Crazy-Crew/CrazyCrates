@@ -1,5 +1,5 @@
 plugins {
-    id("io.github.goooler.shadow")
+    alias(libs.plugins.shadowJar)
 
     alias(libs.plugins.run.paper)
 
