@@ -12,7 +12,6 @@ import com.badbones69.crazycrates.config.impl.messages.ErrorKeys;
 import com.badbones69.crazycrates.config.impl.messages.MiscKeys;
 import com.badbones69.crazycrates.config.impl.messages.PlayerKeys;
 import com.ryderbelserion.vital.core.config.YamlManager;
-import org.jetbrains.annotations.ApiStatus;
 import java.io.File;
 
 public class ConfigManager {
@@ -26,7 +25,6 @@ public class ConfigManager {
     /**
      * Loads configuration files.
      */
-    @ApiStatus.Internal
     public static void load(File dataFolder) {
         YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
 

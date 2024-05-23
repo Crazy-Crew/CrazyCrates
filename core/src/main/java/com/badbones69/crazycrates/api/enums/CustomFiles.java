@@ -17,7 +17,7 @@ public enum CustomFiles {
      *
      * @param fileName the name of the file
      */
-    CustomFiles(@NotNull final String fileName) {
+    CustomFiles(final String fileName) {
         this.fileName = fileName;
         this.yamlFile = ConfigManager.getYamlManager().getFile(this.fileName);
     }

@@ -30,8 +30,6 @@ public class DecentHologramsSupport extends HologramManager {
 
         final Hologram hologram = DHAPI.createHologram(name(), location.clone().add(getVector(crate)));
 
-        DHAPI.addHologramPage(hologram, lines(crateHologram));
-
         crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, color(line)));
 
         hologram.setDisplayRange(crateHologram.getRange());

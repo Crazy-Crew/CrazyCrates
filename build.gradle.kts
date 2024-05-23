@@ -1,12 +1,10 @@
-import git.formatLog
-import git.latestCommitHash
-import git.latestCommitMessage
+import com.ryderbelserion.feather.tools.formatLog
+import com.ryderbelserion.feather.tools.latestCommitHash
+import com.ryderbelserion.feather.tools.latestCommitMessage
 
 plugins {
-    id("io.papermc.hangar-publish-plugin") version "0.1.2"
-    id("com.modrinth.minotaur") version "2.+"
-
-    id("io.github.goooler.shadow")
+    alias(libs.plugins.minotaur)
+    alias(libs.plugins.hangar)
 
     `java-plugin`
 }
@@ -18,7 +16,7 @@ val isSnapshot = true
 rootProject.version = if (isSnapshot) "3.0-$buildNumber" else "3.0"
 
 val content: String = if (isSnapshot) {
-    formatLog(latestCommitHash(), latestCommitMessage(), rootProject.name)
+    formatLog(latestCommitHash(), latestCommitMessage(), rootProject.name, "Crazy-Crew")
 } else {
     rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 }

@@ -1,31 +1,38 @@
 plugins {
-    id("io.github.goooler.shadow")
-
-    alias(libs.plugins.run.paper)
+    alias(libs.plugins.paperweight)
+    alias(libs.plugins.shadowJar)
+    alias(libs.plugins.runPaper)
 
     `paper-plugin`
 }
 
-repositories {
-    maven("https://repo.fancyplugins.de/releases")
+feather {
+    repository("https://repo.fancyplugins.de/releases")
 }
 
 dependencies {
-    api(project(":crazycrates-common"))
+    paperweight.paperDevBundle(libs.versions.paper)
 
     implementation(libs.triumph.cmds)
 
-    implementation(libs.vital.paper)
+    // org.yaml is already bundled with Paper
+    implementation(libs.vital.paper) {
+        exclude("org.yaml")
+    }
 
-    compileOnly(fileTree("$rootDir/libs/compile").include("*.jar"))
+    compileOnly(fileTree("$projectDir/libs/compile").include("*.jar"))
 
     compileOnly(libs.decent.holograms)
 
-    compileOnly(libs.placeholder.api)
-
     compileOnly(libs.fancy.holograms)
 
-    compileOnly(libs.oraxen.api)
+    compileOnly(libs.placeholderapi)
+
+    api(projects.crazycratesCore)
+}
+
+paperweight {
+    reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 }
 
 tasks {
@@ -38,6 +45,8 @@ tasks {
     }
 
     assemble {
+        dependsOn(shadowJar)
+
         doLast {
             copy {
                 from(shadowJar.get())

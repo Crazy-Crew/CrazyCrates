@@ -1,14 +1,19 @@
+import com.ryderbelserion.feather.includeProject
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 rootProject.name = "CrazyCrates"
 
-listOf("common", "paper", "api").forEach(::includeProject)
+pluginManagement {
+    repositories {
+        maven("https://repo.crazycrew.us/releases")
 
-fun includeProject(name: String) {
-    include(name) {
-        this.name = "${rootProject.name.lowercase()}-$name"
+        gradlePluginPortal()
     }
 }
 
-fun include(name: String, block: ProjectDescriptor.() -> Unit) {
-    include(name)
-    project(":$name").apply(block)
+plugins {
+    id("com.ryderbelserion.feather-settings") version "0.0.1"
 }
+
+listOf("paper", "core").forEach(::includeProject)
