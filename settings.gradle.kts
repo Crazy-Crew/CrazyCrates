@@ -1,6 +1,6 @@
 rootProject.name = "CrazyCrates"
 
-listOf("common", "paper", "api").forEach(::includeProject)
+listOf("paper", "core").forEach(::includeProject)
 
 fun includeProject(name: String) {
     include(name) {
