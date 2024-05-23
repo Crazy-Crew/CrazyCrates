@@ -12,8 +12,6 @@ oraxen = "1.171.0"
 # Core
 annotations = "24.1.0"
 crazycrates = "0.6"
-jalu = "1.4.1"
-yaml = "1.8.4"
 gson = "2.10.1"
 vital = "1.2"
 
