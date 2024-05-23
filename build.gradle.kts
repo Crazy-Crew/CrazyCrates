@@ -1,7 +1,3 @@
-import com.ryderbelserion.feather.tools.formatLog
-import com.ryderbelserion.feather.tools.latestCommitHash
-import com.ryderbelserion.feather.tools.latestCommitMessage
-
 plugins {
     alias(libs.plugins.minotaur)
     alias(libs.plugins.hangar)
@@ -11,15 +7,11 @@ plugins {
 
 val buildNumber: String = System.getenv("NEXT_BUILD_NUMBER") ?: "SNAPSHOT"
 
-val isSnapshot = true
+val isSnapshot = false
 
-rootProject.version = if (isSnapshot) "3.0-$buildNumber" else "3.0"
+rootProject.version = "3.0"
 
-val content: String = if (isSnapshot) {
-    formatLog(latestCommitHash(), latestCommitMessage(), rootProject.name, "Crazy-Crew")
-} else {
-    rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
-}
+val content: String = rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 
 subprojects.filter { it.name != "api" }.forEach {
     it.project.version = rootProject.version
