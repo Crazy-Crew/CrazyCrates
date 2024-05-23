@@ -27,7 +27,6 @@ import com.ryderbelserion.vital.core.util.FileUtil;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.paper.enums.Support;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
