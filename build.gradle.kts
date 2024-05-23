@@ -6,8 +6,6 @@ plugins {
     id("io.papermc.hangar-publish-plugin") version "0.1.2"
     id("com.modrinth.minotaur") version "2.+"
 
-    id("io.github.goooler.shadow")
-
     `java-plugin`
 }
 
