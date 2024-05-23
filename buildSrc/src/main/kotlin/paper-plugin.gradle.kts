@@ -16,5 +16,5 @@ feather {
 }
 
 dependencies {
-    compileOnly(libs.papermc)
+    compileOnly(libs.paper)
 }

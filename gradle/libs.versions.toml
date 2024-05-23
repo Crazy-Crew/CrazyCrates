@@ -1,6 +1,7 @@
 [versions]
 # Minecraft
 paper = "1.20.6-R0.1-SNAPSHOT"
+minecraft = "1.20.6"
 
 # Plugins
 itemsadder = "3.6.3-beta-14"
@@ -12,6 +13,7 @@ oraxen = "1.171.0"
 crazycrates = "0.5"
 jalu = "1.4.1"
 yaml = "1.8.4"
+gson = "2.10.1"
 vital = "1.2"
 
 decentholograms = "2.8.8"
@@ -34,8 +36,9 @@ runPaper = { id = "xyz.jpenilla.run-paper", version.ref = "runPaper" }
 minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }
 
 [libraries]
-# Paper
-papermc = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
+# Servers
+minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
 
 # Plugins
 decent-holograms = { module = "com.github.decentsoftware-eu:decentholograms", version.ref = "decentholograms" }
@@ -57,6 +60,8 @@ crazycrates = { module = "us.crazycrew.crazycrates:api", version.ref = "crazycra
 
 vital-paper = { module = "com.ryderbelserion.vital:paper", version.ref = "vital" }
 vital-core = { module = "com.ryderbelserion.vital:core", version.ref = "vital" }
+
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
 [bundles]
 holograms = ["decent-holograms", "fancy-holograms"]
