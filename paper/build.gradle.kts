@@ -6,8 +6,8 @@ plugins {
     `paper-plugin`
 }
 
-repositories {
-    maven("https://repo.fancyplugins.de/releases")
+feather {
+    repository("https://repo.fancyplugins.de/releases")
 }
 
 dependencies {

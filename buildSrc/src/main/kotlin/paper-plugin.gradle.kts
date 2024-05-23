@@ -14,7 +14,3 @@ feather {
 
     repository(Repository.Paper.url)
 }
-
-dependencies {
-    compileOnly(libs.paper)
-}
