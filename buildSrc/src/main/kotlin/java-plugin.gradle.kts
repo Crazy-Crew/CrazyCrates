@@ -17,6 +17,10 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    compileOnlyApi(libs.annotations)
+}
+
 feather {
     repository("https://repo.codemc.io/repository/maven-public")
 
