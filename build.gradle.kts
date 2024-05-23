@@ -3,8 +3,8 @@ import com.ryderbelserion.feather.tools.latestCommitHash
 import com.ryderbelserion.feather.tools.latestCommitMessage
 
 plugins {
-    id("io.papermc.hangar-publish-plugin") version "0.1.2"
-    id("com.modrinth.minotaur") version "2.+"
+    alias(libs.plugins.minotaur)
+    alias(libs.plugins.hangar)
 
     `java-plugin`
 }
