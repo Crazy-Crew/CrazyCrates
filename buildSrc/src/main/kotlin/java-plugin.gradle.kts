@@ -21,16 +21,31 @@ dependencies {
     compileOnlyApi(libs.annotations)
 }
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
+}
+
+tasks {
+    compileJava {
+        options.encoding = Charsets.UTF_8.name()
+        options.release.set(21)
+    }
+
+    javadoc {
+        options.encoding = Charsets.UTF_8.name()
+    }
+
+    processResources {
+        filteringCharset = Charsets.UTF_8.name()
+    }
+}
+
 feather {
     repository("https://repo.codemc.io/repository/maven-public")
 
     repository(Repository.CrazyCrewReleases.url)
 
     repository(Repository.Jitpack.url)
-
-    configureJava {
-        javaSource(JvmVendorSpec.AMAZON)
-
-        javaVersion(21)
-    }
 }
