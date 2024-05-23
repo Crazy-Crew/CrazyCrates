@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.shadowJar)
-
-    alias(libs.plugins.run.paper)
+    alias(libs.plugins.runPaper)
 
     `paper-plugin`
 }
