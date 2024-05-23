@@ -11,8 +11,6 @@ repositories {
 }
 
 dependencies {
-    api(project(":crazycrates-common"))
-
     implementation(libs.triumph.cmds)
 
     implementation(libs.vital.paper)
@@ -21,11 +19,9 @@ dependencies {
 
     compileOnly(libs.decent.holograms)
 
-    compileOnly(libs.placeholder.api)
-
     compileOnly(libs.fancy.holograms)
 
-    compileOnly(libs.oraxen.api)
+    compileOnly(libs.placeholderapi)
 
     api(projects.crazycratesCore)
 }
