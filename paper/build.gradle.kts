@@ -26,6 +26,8 @@ dependencies {
     compileOnly(libs.fancy.holograms)
 
     compileOnly(libs.oraxen.api)
+
+    api(projects.crazycratesCore)
 }
 
 tasks {
