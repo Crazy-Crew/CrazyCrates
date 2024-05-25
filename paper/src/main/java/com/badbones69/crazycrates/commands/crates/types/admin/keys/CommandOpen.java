@@ -230,7 +230,7 @@ public class CommandOpen extends BaseCommand {
         placeholders.put("{crate}", crate.getName());
         placeholders.put("{player}", player.getName());
 
-        player.sendRichMessage(Messages.opened_a_crate.getMessage(player, placeholders));
+        sender.sendRichMessage(Messages.opened_a_crate.getMessage(player, placeholders));
     }
 
     @Command("mass-open")

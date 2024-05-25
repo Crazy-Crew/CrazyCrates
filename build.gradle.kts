@@ -5,8 +5,6 @@ plugins {
     `java-plugin`
 }
 
-val buildNumber: String = System.getenv("NEXT_BUILD_NUMBER") ?: "SNAPSHOT"
-
 val isSnapshot = false
 
 rootProject.version = "3.0"
