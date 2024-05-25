@@ -168,7 +168,7 @@ public class CommandOpen extends BaseCommand {
                 player.playSound(sound);
             }
 
-            sender.sendRichMessage(Messages.no_virtual_key.getMessage(sender, "{crate}", crate.getName()));
+            sender.sendRichMessage(Messages.no_keys.getMessage(sender, "{crate}", crate.getName()));
 
             return;
         }
@@ -278,7 +278,7 @@ public class CommandOpen extends BaseCommand {
         int used = 0;
 
         if (keys == 0) {
-            player.sendRichMessage(Messages.no_virtual_key.getMessage(player, "{crate}", crate.getName()));
+            player.sendRichMessage(Messages.no_keys.getMessage(player, "{crate}", crate.getName()));
 
             return;
         }
