@@ -15,6 +15,7 @@ repositories {
     flatDir { dirs("libs") }
 
     mavenCentral()
+    //mavenLocal()
 }
 
 dependencies {

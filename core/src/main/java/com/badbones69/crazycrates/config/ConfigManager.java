@@ -59,11 +59,11 @@ public class ConfigManager {
         config.reload();
         messages.reload();
 
+        // Refresh custom files.
+        getYamlManager().init();
+
         // Refresh static files.
         getYamlManager().reloadFiles();
-
-        // Refresh custom files.
-        getYamlManager().reloadCustomFiles();
     }
 
     /**
