@@ -13,7 +13,7 @@ oraxen = "1.171.0"
 annotations = "24.1.0"
 crazycrates = "0.6"
 gson = "2.10.1"
-vital = "1.2"
+vital = "1.5.1"
 
 decentholograms = "2.8.8"
 fancyholograms = "2.0.6"
