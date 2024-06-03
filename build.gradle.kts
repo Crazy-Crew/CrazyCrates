@@ -7,8 +7,6 @@ plugins {
 
 val isSnapshot = false
 
-rootProject.version = "3.0"
-
 val content: String = rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 
 subprojects.filter { it.name != "api" }.forEach {

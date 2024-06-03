@@ -8,10 +8,13 @@ import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.ryderbelserion.vital.core.config.objects.CustomFile;
 import com.ryderbelserion.vital.core.util.AdvUtil;
+import com.ryderbelserion.vital.core.util.StringUtil;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.paper.util.DyeUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import net.kyori.adventure.sound.Sound;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -741,7 +744,15 @@ public class Crate {
                 }
 
                 if (itemMeta.hasLore()) {
-                    section.set(getPath(prizeName, "DisplayLore"), itemMeta.lore());
+                    List<Component> lores = itemMeta.lore();
+
+                    if (lores != null) {
+                        List<String> lore = new ArrayList<>();
+
+                        lores.forEach(line -> lore.add(JSONComponentSerializer.json().serialize(line)));
+
+                        section.set(getPath(prizeName, "DisplayLore"), lore);
+                    }
                 }
 
                 if (itemMeta.hasDisplayName()) {
