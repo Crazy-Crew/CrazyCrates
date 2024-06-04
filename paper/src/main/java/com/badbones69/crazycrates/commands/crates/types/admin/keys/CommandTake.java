@@ -24,7 +24,7 @@ public class CommandTake extends BaseCommand {
             return;
         }
 
-        final KeyType keyType = getKeyType(type);
+        if (amount <= 0) {
 
         final Crate crate = getCrate(sender, crateName, false);
 
@@ -34,7 +34,7 @@ public class CommandTake extends BaseCommand {
             return;
         }
 
-        if (amount <= 0) {
+        final KeyType keyType = getKeyType(type);
             sender.sendRichMessage(Messages.not_a_number.getMessage(sender, "{number}", String.valueOf(amount)));
 
             return;
