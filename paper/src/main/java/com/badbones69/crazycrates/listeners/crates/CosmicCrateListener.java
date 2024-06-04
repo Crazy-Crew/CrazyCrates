@@ -367,7 +367,7 @@ public class CosmicCrateListener implements Listener {
             FileConfiguration configuration = crate.getFile();
 
             final String broadcastMessage = configuration.getString("Crate.BroadCast", "");
-            final boolean broadcastToggle = configuration.contains("Crate.OpeningBroadCast") && configuration.getBoolean("Crate.OpeningBroadCast");
+            final boolean broadcastToggle = configuration.getBoolean("Crate.OpeningBroadCast", false);
 
             if (broadcastToggle) {
                 if (!broadcastMessage.isBlank()) {
