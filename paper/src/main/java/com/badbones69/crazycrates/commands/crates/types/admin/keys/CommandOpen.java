@@ -30,15 +30,15 @@ public class CommandOpen extends BaseCommand {
             return true;
         }
 
-        if (MiscUtils.isInventoryFull(player)) {
-            player.sendRichMessage(Messages.inventory_not_empty.getMessage(player, "{crate}", crateName));
+        // Check if player is in opening list first.
+        if (this.crateManager.isInOpeningList(player)) {
+            player.sendRichMessage(Messages.already_opening_crate.getMessage(player, "{crate}", crateName));
 
             return true;
         }
 
-        // Check if player is in opening list first.
-        if (this.crateManager.isInOpeningList(player)) {
-            player.sendRichMessage(Messages.already_opening_crate.getMessage(player, "{crate}", crateName));
+        if (MiscUtils.isInventoryFull(player)) {
+            player.sendRichMessage(Messages.inventory_not_empty.getMessage(player, "{crate}", crateName));
 
             return true;
         }
