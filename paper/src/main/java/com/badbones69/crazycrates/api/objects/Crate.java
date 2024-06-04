@@ -804,8 +804,7 @@ public class Crate {
      * @return the tier object.
      */
     public @Nullable final Tier getTier(@Nullable final String name) {
-        if (name == null) return null;
-        if (name.isEmpty()) return null;
+        if (name == null || name.isEmpty()) return null;
 
         Tier tier = null;
 
