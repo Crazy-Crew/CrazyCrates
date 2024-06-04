@@ -844,8 +844,8 @@ public class CrateManager {
                 getUsableCrates().stream()
                         .filter(Crate :: doNewPlayersGetKeys)
                         .forEach(crate -> {
-                            //Files.data.getFile(this.fileManager).set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());
-                            //Files.data.save(this.fileManager);
+                            CustomFiles.data.getYamlFile().set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());
+                            CustomFiles.data.save();
                         });
             }
         }
