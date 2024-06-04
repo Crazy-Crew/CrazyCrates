@@ -1,6 +1,12 @@
 ## Fixes:
-* Fixed an issue where if you removed a file and ran /crazycrates reload, It would tell about file not found
-  * I didn't remove the file from the cache... It should now.
+* Fixed an issue where new players if the config option `Crate.StartingKeys` is not 0 weren't getting keys
+  * While I was working on improving the FileManager... I forgot to uncomment this bit of code.
+
+## Changes:
+* Removed `unsupported-settings` from the example `config.yml`
+
+## Minor Optimizations:
+* Update the order some if checks go in to prevent potentially unnecessarily heavy calls when not needed.
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/discussions/categories/features)

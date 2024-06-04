@@ -63,7 +63,7 @@ public class CrateOpenListener implements Listener {
         final FileConfiguration configuration = event.getConfiguration();
 
         final String broadcastMessage = configuration.getString("Crate.BroadCast", "");
-        final boolean broadcastToggle = configuration.contains("Crate.OpeningBroadCast") && configuration.getBoolean("Crate.OpeningBroadCast");
+        final boolean broadcastToggle = configuration.getBoolean("Crate.OpeningBroadCast", false);
 
         if (broadcastToggle && crate.getCrateType() != CrateType.cosmic) {
             if (!broadcastMessage.isBlank()) {

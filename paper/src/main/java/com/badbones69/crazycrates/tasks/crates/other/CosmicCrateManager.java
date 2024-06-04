@@ -113,8 +113,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
      * @param name the name of the tier
      */
     public void setTier(@NotNull final ItemBuilder itemBuilder, @Nullable final String name) {
-        if (name == null) return;
-        if (name.isEmpty()) return;
+        if (name == null || name.isEmpty()) return;
 
         itemBuilder.setPersistentString(PersistentKeys.crate_tier.getNamespacedKey(), name);
     }

@@ -237,7 +237,7 @@ public class Crate {
     public void setPreviewChestLines(final int amount) {
         int finalAmount;
 
-        if (amount < 3 && this.borderToggle) {
+        if (this.borderToggle && amount < 3) {
             finalAmount = 3;
         } else finalAmount = Math.min(amount, 6);
 
@@ -252,7 +252,7 @@ public class Crate {
     public void setTierPreviewRows(final int amount) {
         int finalAmount;
 
-        if (amount < 3 && this.borderToggle) {
+        if (this.borderToggle && amount < 3) {
             finalAmount = 3;
         } else finalAmount = Math.min(amount, 6);
 
@@ -648,7 +648,7 @@ public class Crate {
      * @param chance the chance to add.
      */
     public void addEditorItem(@Nullable final ItemStack itemStack, @NotNull final String prizeName, @NotNull final String tier, final int chance) {
-        if (itemStack == null || tier.isEmpty() || prizeName.isEmpty() || chance <= 0) return;
+        if (tier.isEmpty() || prizeName.isEmpty() || chance <= 0 || itemStack == null) return;
 
         final ConfigurationSection section = getPrizeSection();
 
@@ -677,11 +677,11 @@ public class Crate {
      * @param chance the chance of the prize.
      */
     private void setItem(@Nullable final ItemStack itemStack, @NotNull final String prizeName, @Nullable final ConfigurationSection section, final int chance, final String tier) {
-        if (itemStack == null || prizeName.isEmpty() || section == null || chance <= 0) return;
+        if (prizeName.isEmpty() || section == null || chance <= 0 || itemStack == null) return;
 
         final String tiers = getPath(prizeName, "Tiers");
 
-        Material material = itemStack.getType();
+        final Material material = itemStack.getType();
 
         if (!section.contains(prizeName)) {
             section.set(getPath(prizeName, "MaxRange"), 100);
@@ -804,8 +804,7 @@ public class Crate {
      * @return the tier object.
      */
     public @Nullable final Tier getTier(@Nullable final String name) {
-        if (name == null) return null;
-        if (name.isEmpty()) return null;
+        if (name == null || name.isEmpty()) return null;
 
         Tier tier = null;
 

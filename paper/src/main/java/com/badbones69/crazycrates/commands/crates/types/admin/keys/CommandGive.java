@@ -29,13 +29,12 @@ public class CommandGive extends BaseCommand {
             return;
         }
 
-        final KeyType keyType = getKeyType(type);
-
         if (amount <= 0) {
             sender.sendRichMessage(Messages.not_a_number.getMessage(sender, "{number}", String.valueOf(amount)));
 
             return;
         }
+
 
         final Crate crate = getCrate(sender, crateName, false);
 
@@ -44,6 +43,8 @@ public class CommandGive extends BaseCommand {
 
             return;
         }
+
+        final KeyType keyType = getKeyType(type);
 
         if (target.getPlayer() != null) {
             addKey(sender, target.getPlayer(), crate, keyType, amount);
@@ -68,8 +69,6 @@ public class CommandGive extends BaseCommand {
             return;
         }
 
-        final KeyType keyType = getKeyType(type);
-
         if (amount <= 0) {
             sender.sendRichMessage(Messages.not_a_number.getMessage(sender, "{number}", String.valueOf(amount)));
 
@@ -83,6 +82,8 @@ public class CommandGive extends BaseCommand {
 
             return;
         }
+
+        final KeyType keyType = getKeyType(type);
 
         final Map<String, String> placeholders = new HashMap<>();
 

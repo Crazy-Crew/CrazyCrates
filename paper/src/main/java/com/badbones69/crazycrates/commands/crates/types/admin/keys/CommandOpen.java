@@ -30,15 +30,15 @@ public class CommandOpen extends BaseCommand {
             return true;
         }
 
-        if (MiscUtils.isInventoryFull(player)) {
-            player.sendRichMessage(Messages.inventory_not_empty.getMessage(player, "{crate}", crateName));
+        // Check if player is in opening list first.
+        if (this.crateManager.isInOpeningList(player)) {
+            player.sendRichMessage(Messages.already_opening_crate.getMessage(player, "{crate}", crateName));
 
             return true;
         }
 
-        // Check if player is in opening list first.
-        if (this.crateManager.isInOpeningList(player)) {
-            player.sendRichMessage(Messages.already_opening_crate.getMessage(player, "{crate}", crateName));
+        if (MiscUtils.isInventoryFull(player)) {
+            player.sendRichMessage(Messages.inventory_not_empty.getMessage(player, "{crate}", crateName));
 
             return true;
         }
@@ -64,7 +64,7 @@ public class CommandOpen extends BaseCommand {
         CrateType crateType = crate.getCrateType();
 
         // If crate type is null, we return.
-        if (crateType == null  || crate.getCrateType() == CrateType.menu) {
+        if (crateType == null || crate.getCrateType() == CrateType.menu) {
             player.sendRichMessage(Messages.internal_error.getMessage(player));
 
             this.plugin.getLogger().severe("An error has occurred: The crate type is null or Menu for the crate named " + crate.getName());

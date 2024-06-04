@@ -247,8 +247,6 @@ public class CrateManager {
 
                 final CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType", "CSGO"));
 
-                this.plugin.getLogger().warning("Type: " + crateType.getName());
-
                 final ArrayList<Prize> prizes = new ArrayList<>();
                 final List<Tier> tiers = new ArrayList<>();
 
@@ -846,8 +844,8 @@ public class CrateManager {
                 getUsableCrates().stream()
                         .filter(Crate :: doNewPlayersGetKeys)
                         .forEach(crate -> {
-                            //Files.data.getFile(this.fileManager).set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());
-                            //Files.data.save(this.fileManager);
+                            CustomFiles.data.getYamlFile().set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());
+                            CustomFiles.data.save();
                         });
             }
         }

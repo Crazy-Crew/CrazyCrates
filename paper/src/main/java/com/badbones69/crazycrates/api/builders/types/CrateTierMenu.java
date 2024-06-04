@@ -61,7 +61,7 @@ public class CrateTierMenu extends InventoryBuilder {
 
         final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
-        if (container.has(PersistentKeys.main_menu_button.getNamespacedKey()) && this.config.getProperty(ConfigKeys.enable_crate_menu)) {
+        if (this.config.getProperty(ConfigKeys.enable_crate_menu) && container.has(PersistentKeys.main_menu_button.getNamespacedKey())) {
             if (this.inventoryManager.inCratePreview(player)) {
                 if (holder.overrideMenu()) return;
 
@@ -114,6 +114,6 @@ public class CrateTierMenu extends InventoryBuilder {
             }
         }
 
-        if (this.inventoryManager.inCratePreview(player) && this.config.getProperty(ConfigKeys.enable_crate_menu)) inventory.setItem(crate.getAbsolutePreviewItemPosition(4), this.inventoryManager.getMenuButton(player));
+        if (this.config.getProperty(ConfigKeys.enable_crate_menu) && this.inventoryManager.inCratePreview(player)) inventory.setItem(crate.getAbsolutePreviewItemPosition(4), this.inventoryManager.getMenuButton(player));
     }
 }

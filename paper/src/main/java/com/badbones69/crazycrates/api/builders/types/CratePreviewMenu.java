@@ -82,7 +82,7 @@ public class CratePreviewMenu extends InventoryBuilder {
 
         final int page = this.inventoryManager.getPage(player);
 
-        if (this.inventoryManager.inCratePreview(player) && ConfigManager.getConfig().getProperty(ConfigKeys.enable_crate_menu)) {
+        if (this.config.getProperty(ConfigKeys.enable_crate_menu) && this.inventoryManager.inCratePreview(player)) {
             inventory.setItem(crate.getAbsoluteItemPosition(4), this.inventoryManager.getMenuButton(player));
         }
 

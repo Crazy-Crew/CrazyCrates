@@ -123,14 +123,6 @@ gui:
 crate:
   # Whether to show the display item when opening QuickCrate
   quickcrate-display-item: true
-  # Settings that are not supported and can be removed at anytime.
-  unsupported-settings:
-    # This option is unsupported and not recommended for use.
-    # It is not very performant and is recommended to keep false
-    # The option only here for niche use cases for the time being
-    # If at some point it ever gets more difficult to maintain this
-    # The option and code related will be completely removed and not added back.
-    old-key-checks: false
   # If crates should knock you back if you have no keys.
   knock-back: true
   # The preview settings.
