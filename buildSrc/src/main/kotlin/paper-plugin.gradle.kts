@@ -12,5 +12,7 @@ feather {
 
     repository("https://repo.triumphteam.dev/snapshots")
 
+    repository("https://repo.oraxen.com/releases")
+
     repository(Repository.Paper.url)
 }
