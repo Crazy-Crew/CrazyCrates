@@ -247,8 +247,6 @@ public class CrateManager {
 
                 final CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType", "CSGO"));
 
-                this.plugin.getLogger().warning("Type: " + crateType.getName());
-
                 final ArrayList<Prize> prizes = new ArrayList<>();
                 final List<Tier> tiers = new ArrayList<>();
 
