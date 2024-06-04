@@ -95,6 +95,17 @@ public class CustomMetrics {
     }
 
     /**
+     * Checks if bstats is enabled.
+     *
+     * @return true or false
+     */
+    protected boolean isEnabled() {
+        if (this.metricsBase == null) return false;
+
+        return this.metricsBase.enabled;
+    }
+
+    /**
      * Adds a custom chart.
      *
      * @param chart The chart to add.

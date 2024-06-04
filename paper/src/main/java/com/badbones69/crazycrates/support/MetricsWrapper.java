@@ -24,6 +24,9 @@ public class MetricsWrapper extends CustomMetrics {
     }
 
     public void start() {
+        // If it's not enabled, we do nothing!
+        if (!isEnabled()) return;
+
         List<Crate> crates = new ArrayList<>(this.crateManager.getCrates());
 
         crates.forEach(crate -> {
