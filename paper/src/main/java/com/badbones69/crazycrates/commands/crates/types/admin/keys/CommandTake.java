@@ -25,6 +25,10 @@ public class CommandTake extends BaseCommand {
         }
 
         if (amount <= 0) {
+            sender.sendRichMessage(Messages.not_a_number.getMessage(sender, "{number}", String.valueOf(amount)));
+
+            return;
+        }
 
         final Crate crate = getCrate(sender, crateName, false);
 
@@ -35,10 +39,6 @@ public class CommandTake extends BaseCommand {
         }
 
         final KeyType keyType = getKeyType(type);
-            sender.sendRichMessage(Messages.not_a_number.getMessage(sender, "{number}", String.valueOf(amount)));
-
-            return;
-        }
 
         if (target.getPlayer() != null) {
             final Player player = target.getPlayer();
