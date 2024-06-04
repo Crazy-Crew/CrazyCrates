@@ -64,7 +64,7 @@ public class CommandOpen extends BaseCommand {
         CrateType crateType = crate.getCrateType();
 
         // If crate type is null, we return.
-        if (crateType == null  || crate.getCrateType() == CrateType.menu) {
+        if (crateType == null || crate.getCrateType() == CrateType.menu) {
             player.sendRichMessage(Messages.internal_error.getMessage(player));
 
             this.plugin.getLogger().severe("An error has occurred: The crate type is null or Menu for the crate named " + crate.getName());
