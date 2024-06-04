@@ -237,7 +237,7 @@ public class Crate {
     public void setPreviewChestLines(final int amount) {
         int finalAmount;
 
-        if (amount < 3 && this.borderToggle) {
+        if (this.borderToggle && amount < 3) {
             finalAmount = 3;
         } else finalAmount = Math.min(amount, 6);
 
@@ -252,7 +252,7 @@ public class Crate {
     public void setTierPreviewRows(final int amount) {
         int finalAmount;
 
-        if (amount < 3 && this.borderToggle) {
+        if (this.borderToggle && amount < 3) {
             finalAmount = 3;
         } else finalAmount = Math.min(amount, 6);
 
