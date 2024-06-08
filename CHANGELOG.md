@@ -1,6 +1,6 @@
 ## Fixes:
-* Temporarily commented out code for direct ItemsAdder support until LoneDev is finished making any changes they would like to.
-  * The manual way using CustomModelData will still work.
+* Fix files not loading on linux ( I love file systems! )
+* Uppercase player name in default files to avoid some stupid error.
 
 ## Other:
 * [Feature Requests](https://github.com/Crazy-Crew/CrazyCrates/discussions/categories/features)
