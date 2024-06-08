@@ -157,7 +157,7 @@ Crate:
       # The chance to win i.e. 7%
       Chance: 7
       # An example of a custom player head using minecraft players.
-      Player: "rukkhadevata"
+      Player: "Rukkhadevata"
     '3':
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Sword"
