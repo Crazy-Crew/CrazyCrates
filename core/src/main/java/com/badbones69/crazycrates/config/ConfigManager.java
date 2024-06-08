@@ -25,7 +25,7 @@ public class ConfigManager {
     /**
      * Loads configuration files.
      */
-    public static void load(File dataFolder) {
+    public static void load(final File dataFolder) {
         YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
 
         config = SettingsManagerBuilder
