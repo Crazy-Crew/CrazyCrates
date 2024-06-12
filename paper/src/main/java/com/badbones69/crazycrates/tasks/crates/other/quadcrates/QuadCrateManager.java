@@ -218,9 +218,9 @@ public class QuadCrateManager {
         }
 
         // Paste the structure in.
-        this.handler.pasteStructure(this.spawnLocation.clone(), true);
+        this.handler.pasteStructure(this.spawnLocation, true);
 
-        player.teleportAsync(this.spawnLocation.toCenterLocation().add(0, 1.0, 0));
+        this.player.teleportAsync(this.spawnLocation.toCenterLocation().add(0, 1.0, 0));
 
         this.crateManager.addQuadCrateTask(this.player, new FoliaRunnable(getPlayer().getScheduler(), null) {
             double radius = 0.0; // Radius of the particle spiral.
