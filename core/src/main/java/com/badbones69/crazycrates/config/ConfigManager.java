@@ -11,12 +11,9 @@ import com.badbones69.crazycrates.config.impl.messages.CrateKeys;
 import com.badbones69.crazycrates.config.impl.messages.ErrorKeys;
 import com.badbones69.crazycrates.config.impl.messages.MiscKeys;
 import com.badbones69.crazycrates.config.impl.messages.PlayerKeys;
-import com.ryderbelserion.vital.core.config.YamlManager;
 import java.io.File;
 
 public class ConfigManager {
-
-    private static YamlManager yamlManager;
 
     private static SettingsManager config;
 
@@ -39,17 +36,6 @@ public class ConfigManager {
                 .migrationService(new LocaleMigration())
                 .configurationData(MiscKeys.class, ErrorKeys.class, PlayerKeys.class, CrateKeys.class, CommandKeys.class)
                 .create();
-
-        if (yamlManager == null) yamlManager = new YamlManager();
-
-        // Create directory
-        yamlManager.createPluginDirectory();
-
-        // Add files
-        yamlManager.addFile("locations.yml").addFile("data.yml")
-                .addFolder("crates")
-                .addFolder("schematics")
-                .init();
     }
 
     /**
@@ -58,12 +44,6 @@ public class ConfigManager {
     public static void refresh() {
         config.reload();
         messages.reload();
-
-        // Refresh custom files.
-        getYamlManager().init();
-
-        // Refresh static files.
-        getYamlManager().reloadFiles();
     }
 
     /**
@@ -78,12 +58,5 @@ public class ConfigManager {
      */
     public static SettingsManager getMessages() {
         return messages;
-    }
-
-    /**
-     * @return yamlmanager object
-     */
-    public static YamlManager getYamlManager() {
-        return yamlManager;
     }
 }

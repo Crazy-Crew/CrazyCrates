@@ -1,12 +1,12 @@
 package com.badbones69.crazycrates.api.events;
 
 import com.badbones69.crazycrates.api.objects.Crate;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
-import org.simpleyaml.configuration.file.FileConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 
 public class CrateOpenEvent extends Event implements Cancellable {

@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.core.config.YamlFile;
 import com.ryderbelserion.vital.core.util.StringUtil;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.paper.util.DyeUtil;
@@ -12,6 +11,7 @@ import com.ryderbelserion.vital.paper.util.ItemUtil;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.banner.PatternType;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -19,7 +19,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import org.simpleyaml.configuration.ConfigurationSection;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -71,7 +70,7 @@ public class ItemUtils {
     /**
      * Updates the {@link ItemBuilder} from a {@link ConfigurationSection} with a {@link Player} attached.
      *
-     * @param section the section in the {@link YamlFile}
+     * @param section the section in the {@link org.bukkit.configuration.file.YamlConfiguration}
      * @param builder the {@link ItemBuilder}
      * @param player the {@link Player}
      * @return the {@link ItemBuilder}
@@ -83,7 +82,7 @@ public class ItemUtils {
     /**
      * Updates the {@link ItemBuilder} from a {@link ConfigurationSection}.
      *
-     * @param section the section in the {@link YamlFile}
+     * @param section the section in the {@link org.bukkit.configuration.file.YamlConfiguration}
      * @param builder the {@link ItemBuilder}
      * @return the {@link ItemBuilder}
      */
@@ -170,7 +169,7 @@ public class ItemUtils {
      * Converts a {@link List<String>} to a list of {@link ItemBuilder}.
      *
      * @param itemStrings the {@link List<String>}
-     * @param section the section in the {@link YamlFile}
+     * @param section the section in the {@link org.bukkit.configuration.file.YamlConfiguration}
      * @return list of {@link ItemBuilder}
      */
     public static List<ItemBuilder> convertStringList(List<String> itemStrings, String section) {
@@ -191,7 +190,7 @@ public class ItemUtils {
      * Converts a {@link List<String>} to a list of {@link ItemBuilder}.
      *
      * @param itemString the {@link String} you wish to convert
-     * @param section the section in the {@link YamlFile}
+     * @param section the section in the {@link org.bukkit.configuration.file.YamlConfiguration}
      * @return the {@link ItemBuilder}
      */
     public static ItemBuilder convertString(String itemString, String section) {

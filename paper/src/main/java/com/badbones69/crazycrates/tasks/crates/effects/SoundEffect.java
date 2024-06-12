@@ -3,9 +3,9 @@ package com.badbones69.crazycrates.tasks.crates.effects;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.simpleyaml.configuration.ConfigurationSection;
 
 public class SoundEffect {
 
@@ -25,7 +25,9 @@ public class SoundEffect {
         this.isEnabled = section.getBoolean(type + ".toggle", false);
 
         if (this.isEnabled) {
-            this.sound = Sound.sound(Key.key(section.getString(type + ".value", fallback)), source, (float) section.getDouble(type + ".volume", 1.0), (float) section.getDouble(type + ".pitch", 1.0));
+            final String key = section.getString(type + ".value", fallback);
+
+            this.sound = Sound.sound(Key.key(key), source, (float) section.getDouble(type + ".volume", 1.0), (float) section.getDouble(type + ".pitch", 1.0));
         }
     }
 
