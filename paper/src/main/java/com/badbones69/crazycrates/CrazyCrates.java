@@ -55,7 +55,7 @@ public class CrazyCrates extends JavaPlugin {
         this.fileManager = new FileManager();
         this.fileManager.addFile("locations.yml").addFile("data.yml")
                 .addFolder("crates")
-                .addFile("schematics")
+                .addFolder("schematics")
                 .init();
 
         // Register permissions that we need.
