@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
-
 import static com.ryderbelserion.vital.paper.util.ItemUtil.getEnchantment;
 
 public class ItemUtils {
@@ -46,6 +45,102 @@ public class ItemUtils {
                 item.setAmount(item.getAmount() - 1);
             }
         } catch (Exception ignored) {}
+    }
+
+    /**
+     * Converts {@link org.bukkit.enchantments.Enchantment} to mojang mapped ids.
+     *
+     * @param enchant the {@link org.bukkit.enchantments.Enchantment} to convert
+     * @return the mojang mapped id
+     */
+    public static String getEnchant(String enchant) {
+        if (enchant.isEmpty()) return "";
+
+        switch (enchant) {
+            case "PROTECTION_ENVIRONMENTAL" -> {
+                return "protection";
+            }
+
+            case "PROTECTION_FIRE" -> {
+                return "fire_protection";
+            }
+
+            case "PROTECTION_FALL" -> {
+                return "feather_falling";
+            }
+
+            case "PROTECTION_EXPLOSIONS" -> {
+                return "blast_protection";
+            }
+
+            case "PROTECTION_PROJECTILE" -> {
+                return "projectile_protection";
+            }
+
+            case "OXYGEN" -> {
+                return "respiration";
+            }
+
+            case "WATER_WORKER" -> {
+                return "aqua_affinity";
+            }
+
+            case "DAMAGE_ALL" -> {
+                return "sharpness";
+            }
+
+            case "DAMAGE_UNDEAD" -> {
+                return "smite";
+            }
+
+            case "DAMAGE_ARTHROPODS" -> {
+                return "bane_of_arthropods";
+            }
+
+            case "LOOT_BONUS_MOBS" -> {
+                return "looting";
+            }
+
+            case "SWEEPING_EDGE" -> {
+                return "sweeping";
+            }
+
+            case "DIG_SPEED" -> {
+                return "efficiency";
+            }
+
+            case "DURABILITY" -> {
+                return "unbreaking";
+            }
+
+            case "LOOT_BONUS_BLOCKS" -> {
+                return "fortune";
+            }
+
+            case "ARROW_DAMAGE" -> {
+                return "power";
+            }
+
+            case "ARROW_KNOCKBACK" -> {
+                return "punch";
+            }
+
+            case "ARROW_FIRE" -> {
+                return "flame";
+            }
+
+            case "ARROW_INFINITE" -> {
+                return "infinity";
+            }
+
+            case "LUCK" -> {
+                return "luck_of_the_sea";
+            }
+
+            default -> {
+                return enchant.toLowerCase();
+            }
+        }
     }
 
     /**

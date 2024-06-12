@@ -49,11 +49,14 @@ public class CommandKeys implements SettingsHolder {
     @Comment("A list of available placeholders: {prefix}, {crate}, {prize}")
     public static final Property<String> added_item_with_editor = newProperty("command.additem.add-item-from-hand", "{prefix}<gray>The item has been added to the {crate} in prize #{prize}.");
 
-    public static final Property<String> no_files_to_convert = newProperty("command.convert.no-files-to-convert", "<red>No available plugins to convert files.");
+    @Comment("A list of available placeholders: {prefix}, {file}, {type}, {reason}")
+    public static final Property<String> error_migrating = newProperty("command.migrate.error", "{prefix}<red>We could not migrate <green>{file} <red>using <green>{type} <red>migration for <green>{reason}.");
 
-    public static final Property<String> error_converting_files = newProperty("command.convert.error-converting-files", "<red>An error has occurred while trying to convert files. We could not convert <green>{file} <red>so please check the console.");
+    @Comment("A list of available placeholders: {prefix}")
+    public static final Property<String> migration_not_available = newProperty("command.migrate.not-available", "{prefix}This migration type is not available.");
 
-    public static final Property<String> successfully_converted_files = newProperty("command.successfully-converted-files", "<green>Plugin Conversion has succeeded!");
+    @Comment("A list of available placeholders: {prefix}, {file}, {type}")
+    public static final Property<String> successfully_migrated = newProperty("command.migrate.success", "{prefix}<green>Successfully migrated {file} using {type} migration.");
 
     @Comment("A list of available placeholders: {prefix}")
     public static final Property<String> reloaded_plugin = newProperty("command.reload.completed", "{prefix}<dark_aqua>You have reloaded the Config and Data Files.");
