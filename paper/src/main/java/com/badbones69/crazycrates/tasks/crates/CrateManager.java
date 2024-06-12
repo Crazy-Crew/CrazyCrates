@@ -7,6 +7,8 @@ import com.badbones69.crazycrates.api.enums.Files;
 import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
 import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.support.holograms.types.CMIHologramsSupport;
+import com.badbones69.crazycrates.support.holograms.types.DecentHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.FancyHologramsSupport;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
@@ -58,8 +60,6 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import us.crazycrew.crazycrates.api.crates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.support.holograms.types.CMIHologramsSupport;
-import com.badbones69.crazycrates.support.holograms.types.DecentHologramsSupport;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import java.io.File;
 import java.nio.file.Path;
@@ -80,8 +80,7 @@ public class CrateManager {
     private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
     private @NotNull final FileManager yamlManager = this.plugin.getFileManager();
 
-    private final Map<String, CrateLocation> crateLocations = new HashMap<>();
-
+    private final List<CrateLocation> crateLocations = new ArrayList<>();
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
     private final List<BrokeLocation> brokeLocations = new ArrayList<>();
     private final Map<UUID, Location> cratesInUse = new HashMap<>();
@@ -399,16 +398,18 @@ public class CrateManager {
 
         // Checking if all physical locations loaded
         if (MiscUtils.isLogging()) {
+            final Logger logger = this.plugin.getLogger();
+
             if (loadedAmount > 0 || brokeAmount > 0) {
                 if (brokeAmount <= 0) {
-                    this.plugin.getLogger().info("All physical crate locations have been loaded.");
+                    logger.info("All physical crate locations have been loaded.");
                 } else {
-                    this.plugin.getLogger().info("Loaded " + loadedAmount + " physical crate locations.");
-                    this.plugin.getLogger().info("Failed to load " + brokeAmount + " physical crate locations.");
+                    logger.info("Loaded " + loadedAmount + " physical crate locations.");
+                    logger.info("Failed to load " + brokeAmount + " physical crate locations.");
                 }
             }
 
-            this.plugin.getLogger().info("Searching for schematics to load.");
+            logger.info("Searching for schematics to load.");
         }
 
         // Loading schematic files
@@ -1040,8 +1041,12 @@ public class CrateManager {
     public @Nullable final CrateLocation getCrateLocation(@NotNull final Location location) {
         CrateLocation crateLocation = null;
 
+        String asString = MiscUtils.location(location);
+
         for (CrateLocation key : this.crateLocations) {
-            if (key.getLocation().equals(location)) {
+            String locationAsString = MiscUtils.location(key.getLocation());
+
+            if (locationAsString.equals(asString)) {
                 crateLocation = key;
 
                 break;
@@ -1051,11 +1056,21 @@ public class CrateManager {
         return crateLocation;
     }
 
+    /**
+     * Gets the crate from location.
+     *
+     * @param location location you are checking.
+     * @return {@link Crate}
+     */
     public @Nullable final Crate getCrateFromLocation(@NotNull final Location location) {
         Crate crate = null;
 
+        String asString = MiscUtils.location(location);
+
         for (CrateLocation key : this.crateLocations) {
-            if (key.getLocation().equals(location)) {
+            String locationAsString = MiscUtils.location(key.getLocation());
+
+            if (locationAsString.equals(asString)) {
                 crate = key.getCrate();
 
                 break;
@@ -1257,7 +1272,7 @@ public class CrateManager {
 
     // Cleans the data file.
     private void cleanDataFile() {
-        final YamlFile data = CustomFiles.data.getYamlFile();
+        final YamlConfiguration data = Files.data.getConfiguration();
 
         if (!data.contains("Players")) return;
 
@@ -1300,7 +1315,7 @@ public class CrateManager {
 
         if (MiscUtils.isLogging()) this.plugin.getLogger().info("The data.yml file has been cleaned.");
 
-        CustomFiles.data.save();
+        Files.data.save();
     }
 
     // War Crate
