@@ -234,7 +234,7 @@ public class CrateManager {
 
         // Removes all holograms so that they can be replaced.
         if (this.holograms != null) {
-            this.holograms.removeAllHolograms(false);
+            this.holograms.purge(false);
         }
 
         if (MiscUtils.isLogging()) this.plugin.getLogger().info("Loading all crate information...");
@@ -383,7 +383,7 @@ public class CrateManager {
                         this.crateLocations.add(new CrateLocation(locationName, crate, location));
 
                         if (this.holograms != null) {
-                            this.holograms.createHologram(location, crate);
+                            this.holograms.createHologram(location, crate, locationName);
                         }
 
                         loadedAmount++;
@@ -914,7 +914,7 @@ public class CrateManager {
 
         addLocation(new CrateLocation(id, crate, location));
 
-        if (this.holograms != null) this.holograms.createHologram(location, crate);
+        if (this.holograms != null) this.holograms.createHologram(location, crate, id);
     }
 
     /**
@@ -939,7 +939,7 @@ public class CrateManager {
         if (location != null) {
             removeLocation(location);
 
-            if (this.holograms != null) this.holograms.removeHologram(location.getLocation());
+            if (this.holograms != null && location.getCrate().getHologram().isEnabled()) this.holograms.removeHologram(location.getID());
         }
     }
 
@@ -1378,7 +1378,11 @@ public class CrateManager {
         removePlayerFromOpeningList(player);
 
         if (!useQuickCrateAgain) {
-            if (crate != null && getHolograms() != null) getHolograms().createHologram(location, crate);
+            if (this.holograms != null && crate != null && crate.getHologram().isEnabled()) {
+                final CrateLocation crateLocation = getCrateLocation(location);
+
+                if (crateLocation != null) this.holograms.createHologram(location, crate, crateLocation.getID());
+            }
         }
     }
 

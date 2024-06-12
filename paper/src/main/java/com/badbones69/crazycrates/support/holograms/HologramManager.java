@@ -21,13 +21,11 @@ public abstract class HologramManager {
 
     protected CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
     
-    public abstract void createHologram(Location location, Crate crate);
+    public abstract void createHologram(final Location location, final Crate crate, final String id);
 
-    public abstract void removeHologram(Location location);
+    public abstract void removeHologram(final String id);
 
-    public abstract void removeAllHolograms(boolean isShutdown);
-
-    public abstract boolean isEmpty();
+    public abstract void purge(final boolean isShutdown);
 
     protected @NotNull final String name() {
         return this.plugin.getName().toLowerCase() + "-" + UUID.randomUUID();

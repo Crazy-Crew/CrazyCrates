@@ -53,9 +53,12 @@ public class QuadCrate extends CrateBuilder {
         handler.applyStructure(crateSchematic.schematicFile());
 
         final CrateLocation crateLocation = this.crateManager.getCrateLocation(this.location);
-        final QuadCrateManager session = new QuadCrateManager(getPlayer(), getCrate(), type, crateLocation.getLocation(), checkHand, handler);
 
-        session.startCrate();
+        if (crateLocation != null) {
+            final QuadCrateManager session = new QuadCrateManager(getPlayer(), getCrate(), type, crateLocation.getLocation(), checkHand, handler);
+
+            session.startCrate();
+        }
     }
 
     @Override
