@@ -39,6 +39,6 @@ public enum Files {
     }
 
     public void save() {
-        this.plugin.getFileManager().saveFile(this.strippedName);
+        this.plugin.getFileManager().saveFile(this.fileName);
     }
 }

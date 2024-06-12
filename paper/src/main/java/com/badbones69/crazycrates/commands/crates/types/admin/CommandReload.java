@@ -17,6 +17,10 @@ public class CommandReload extends BaseCommand {
     public void reload(CommandSender sender) {
         this.plugin.getInstance().reload();
 
+        this.fileManager.init();
+
+        this.fileManager.reloadFiles();
+
         final YamlConfiguration locations = Files.locations.getConfiguration();
         final YamlConfiguration data = Files.data.getConfiguration();
 
