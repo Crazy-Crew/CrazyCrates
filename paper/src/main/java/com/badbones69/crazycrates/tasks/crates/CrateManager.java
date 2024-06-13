@@ -1338,7 +1338,7 @@ public class CrateManager {
     }
 
     public boolean isPicker(@NotNull final Player player) {
-        return this.canPick.get(player.getUniqueId());
+        return this.canPick.getOrDefault(player.getUniqueId(), false);
     }
 
     public void removePicker(@NotNull final Player player) {
