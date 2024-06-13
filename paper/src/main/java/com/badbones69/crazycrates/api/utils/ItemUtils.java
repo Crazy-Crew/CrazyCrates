@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.core.config.YamlFile;
 import com.ryderbelserion.vital.core.util.StringUtil;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.paper.util.DyeUtil;
@@ -12,6 +11,7 @@ import com.ryderbelserion.vital.paper.util.ItemUtil;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.banner.PatternType;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -19,12 +19,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import org.simpleyaml.configuration.ConfigurationSection;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
-
 import static com.ryderbelserion.vital.paper.util.ItemUtil.getEnchantment;
 
 public class ItemUtils {
@@ -50,6 +48,112 @@ public class ItemUtils {
     }
 
     /**
+     * Converts {@link org.bukkit.enchantments.Enchantment} to mojang mapped ids.
+     *
+     * @param enchant the {@link org.bukkit.enchantments.Enchantment} to convert
+     * @return the mojang mapped id
+     */
+    public static String getEnchant(String enchant) {
+        if (enchant.isEmpty()) return "";
+
+        switch (enchant) {
+            case "PROTECTION_ENVIRONMENTAL" -> {
+                return "protection";
+            }
+
+            case "PROTECTION_FIRE" -> {
+                return "fire_protection";
+            }
+
+            case "PROTECTION_FALL" -> {
+                return "feather_falling";
+            }
+
+            case "PROTECTION_EXPLOSIONS" -> {
+                return "blast_protection";
+            }
+
+            case "PROTECTION_PROJECTILE" -> {
+                return "projectile_protection";
+            }
+
+            case "OXYGEN" -> {
+                return "respiration";
+            }
+
+            case "WATER_WORKER" -> {
+                return "aqua_affinity";
+            }
+
+            case "DAMAGE_ALL" -> {
+                return "sharpness";
+            }
+
+            case "DAMAGE_UNDEAD" -> {
+                return "smite";
+            }
+
+            case "DAMAGE_ARTHROPODS" -> {
+                return "bane_of_arthropods";
+            }
+
+            case "LOOT_BONUS_MOBS" -> {
+                return "looting";
+            }
+
+            case "SWEEPING_EDGE" -> {
+                return "sweeping";
+            }
+
+            case "DIG_SPEED" -> {
+                return "efficiency";
+            }
+
+            case "DURABILITY" -> {
+                return "unbreaking";
+            }
+
+            case "LOOT_BONUS_BLOCKS" -> {
+                return "fortune";
+            }
+
+            case "ARROW_DAMAGE" -> {
+                return "power";
+            }
+
+            case "ARROW_KNOCKBACK" -> {
+                return "punch";
+            }
+
+            case "ARROW_FIRE" -> {
+                return "flame";
+            }
+
+            case "ARROW_INFINITE" -> {
+                return "infinity";
+            }
+
+            case "LUCK" -> {
+                return "luck_of_the_sea";
+            }
+
+            default -> {
+                return enchant.toLowerCase();
+            }
+        }
+    }
+
+    /**
+     * Converts {@link org.bukkit.potion.PotionEffectType} to mojang mapped ids.
+     *
+     * @param potion the {@link org.bukkit.potion.PotionEffectType} to convert
+     * @return the mojang mapped id
+     */
+    public static String getPotion(String potion) {
+        return potion.isEmpty() ? "" : potion.toLowerCase();
+    }
+
+    /**
      * Checks if the {@link ItemStack} is a {@link Crate}.
      *
      * @param itemStack the {@link ItemStack}
@@ -71,7 +175,7 @@ public class ItemUtils {
     /**
      * Updates the {@link ItemBuilder} from a {@link ConfigurationSection} with a {@link Player} attached.
      *
-     * @param section the section in the {@link YamlFile}
+     * @param section the section in the {@link org.bukkit.configuration.file.YamlConfiguration}
      * @param builder the {@link ItemBuilder}
      * @param player the {@link Player}
      * @return the {@link ItemBuilder}
@@ -83,7 +187,7 @@ public class ItemUtils {
     /**
      * Updates the {@link ItemBuilder} from a {@link ConfigurationSection}.
      *
-     * @param section the section in the {@link YamlFile}
+     * @param section the section in the {@link org.bukkit.configuration.file.YamlConfiguration}
      * @param builder the {@link ItemBuilder}
      * @return the {@link ItemBuilder}
      */
@@ -170,7 +274,7 @@ public class ItemUtils {
      * Converts a {@link List<String>} to a list of {@link ItemBuilder}.
      *
      * @param itemStrings the {@link List<String>}
-     * @param section the section in the {@link YamlFile}
+     * @param section the section in the {@link org.bukkit.configuration.file.YamlConfiguration}
      * @return list of {@link ItemBuilder}
      */
     public static List<ItemBuilder> convertStringList(List<String> itemStrings, String section) {
@@ -191,7 +295,7 @@ public class ItemUtils {
      * Converts a {@link List<String>} to a list of {@link ItemBuilder}.
      *
      * @param itemString the {@link String} you wish to convert
-     * @param section the section in the {@link YamlFile}
+     * @param section the section in the {@link org.bukkit.configuration.file.YamlConfiguration}
      * @return the {@link ItemBuilder}
      */
     public static ItemBuilder convertString(String itemString, String section) {

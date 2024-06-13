@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
-import com.ryderbelserion.vital.paper.util.MiscUtil;
+import com.ryderbelserion.vital.paper.util.AdvUtil;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -102,7 +102,7 @@ public class CrateAdminMenu extends InventoryBuilder {
 
                 placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
 
-                player.sendActionBar(MiscUtil.parse(Messages.obtaining_keys.getMessage(player, placeholders)));
+                player.sendActionBar(AdvUtil.parse(Messages.obtaining_keys.getMessage(player, placeholders)));
             }
 
             case SHIFT_LEFT -> {
@@ -116,7 +116,7 @@ public class CrateAdminMenu extends InventoryBuilder {
                 placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
                 placeholders.put("{amount}", "8");
 
-                player.sendActionBar(MiscUtil.parse(Messages.obtaining_keys.getMessage(player, placeholders)));
+                player.sendActionBar(AdvUtil.parse(Messages.obtaining_keys.getMessage(player, placeholders)));
             }
 
             case RIGHT -> {
@@ -127,7 +127,7 @@ public class CrateAdminMenu extends InventoryBuilder {
 
                 placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
 
-                player.sendActionBar(MiscUtil.parse(Messages.obtaining_keys.getMessage(player, placeholders)));
+                player.sendActionBar(AdvUtil.parse(Messages.obtaining_keys.getMessage(player, placeholders)));
             }
 
             case SHIFT_RIGHT -> {
@@ -139,7 +139,7 @@ public class CrateAdminMenu extends InventoryBuilder {
                 placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
                 placeholders.put("{amount}", "8");
 
-                player.sendActionBar(MiscUtil.parse(Messages.obtaining_keys.getMessage(player, placeholders)));
+                player.sendActionBar(AdvUtil.parse(Messages.obtaining_keys.getMessage(player, placeholders)));
             }
         }
     }

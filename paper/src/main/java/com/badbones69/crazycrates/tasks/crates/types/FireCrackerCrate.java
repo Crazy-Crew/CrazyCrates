@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
@@ -52,8 +53,12 @@ public class FireCrackerCrate extends CrateBuilder {
 
         final HologramManager manager = this.crateManager.getHolograms();
 
-        if (manager != null) {
-            manager.removeHologram(getLocation());
+        if (manager != null && crate.getHologram().isEnabled()) {
+            CrateLocation crateLocation = this.crateManager.getCrateLocation(getLocation());
+
+            if (crateLocation != null) {
+                manager.removeHologram(crateLocation.getID());
+            }
         }
 
         final List<Color> colors = Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.AQUA, Color.MAROON, Color.PURPLE);

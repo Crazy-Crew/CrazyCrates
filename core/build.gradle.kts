@@ -7,5 +7,5 @@ plugins {
 dependencies {
     compileOnly(libs.vital.core)
 
-    api(libs.crazycrates)
+    api(projects.crazycratesApi)
 }

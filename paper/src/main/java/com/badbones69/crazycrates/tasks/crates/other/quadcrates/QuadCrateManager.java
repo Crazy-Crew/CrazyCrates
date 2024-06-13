@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 
+import com.badbones69.crazycrates.api.objects.other.CrateLocation;
+import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.ryderbelserion.vital.paper.util.structures.StructureManager;
@@ -145,7 +147,6 @@ public class QuadCrateManager {
 
         // Loop through the blocks and check if the blacklist contains the block type.
         // Do not open the crate if the block is not able to be changed.
-        assert structureLocations != null;
         for (Location loc : structureLocations) {
             if (this.handler.getBlockBlacklist().contains(loc.getBlock().getType())) {
                 this.player.sendRichMessage(Messages.needs_more_room.getMessage(player));
@@ -188,7 +189,15 @@ public class QuadCrateManager {
             return;
         }
 
-        if (this.crateManager.getHolograms() != null) this.crateManager.getHolograms().removeHologram(this.spawnLocation);
+        final HologramManager manager = this.crateManager.getHolograms();
+
+        if (manager != null && this.crate.getHologram().isEnabled()) {
+            CrateLocation crateLocation = this.crateManager.getCrateLocation(this.spawnLocation);
+
+            if (crateLocation != null) {
+                manager.removeHologram(crateLocation.getID());
+            }
+        }
 
         // Shove other players away from the player opening the crate.
         shovePlayers.forEach(entity -> entity.getLocation().toVector().subtract(this.spawnLocation.clone().toVector()).normalize().setY(1));
@@ -209,9 +218,9 @@ public class QuadCrateManager {
         }
 
         // Paste the structure in.
-        this.handler.pasteStructure(this.spawnLocation.clone(), true);
+        this.handler.pasteStructure(this.spawnLocation, true);
 
-        player.teleportAsync(this.spawnLocation.toCenterLocation().add(0, 1.0, 0));
+        this.player.teleportAsync(this.spawnLocation.toCenterLocation().add(0, 1.0, 0));
 
         this.crateManager.addQuadCrateTask(this.player, new FoliaRunnable(getPlayer().getScheduler(), null) {
             double radius = 0.0; // Radius of the particle spiral.
@@ -286,7 +295,15 @@ public class QuadCrateManager {
                 // Restore the old blocks.
                 oldBlocks.keySet().forEach(location -> plugin.getServer().getRegionScheduler().run(plugin, location, schedulerTask -> oldBlocks.get(location).update(true, false)));
 
-                if (crate.getHologram().isEnabled() && crateManager.getHolograms() != null) crateManager.getHolograms().createHologram(spawnLocation, crate);
+                final HologramManager manager = crateManager.getHolograms();
+
+                if (manager != null && crate.getHologram().isEnabled()) {
+                    CrateLocation crateLocation = crateManager.getCrateLocation(spawnLocation);
+
+                    if (crateLocation != null) {
+                        manager.createHologram(spawnLocation, crate, crateLocation.getID());
+                    }
+                }
 
                 // End the crate.
                 crateManager.endCrate(player);

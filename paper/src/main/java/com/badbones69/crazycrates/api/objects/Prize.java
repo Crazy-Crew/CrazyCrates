@@ -3,14 +3,15 @@ package com.badbones69.crazycrates.api.objects;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.paper.util.ItemUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.simpleyaml.configuration.ConfigurationSection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -266,14 +267,12 @@ public class Prize {
 
             return builder;
         } catch (Exception exception) {
-            final List<String> list = new ArrayList<>() {{
-               add("<red>There was an error with one of your prizes!");
-               add("<red>The reward in question is labeled: <yellow>" + section.getName() + " <red>in crate: <yellow>" + crateName);
-               add("<red>Name of the reward is " + section.getString("DisplayName"));
-               add("<red>If you are confused, Stop by our discord for support!");
-            }};
-
-            return new ItemBuilder(Material.RED_TERRACOTTA).setDisplayName("<bold><red>ERROR</bold>").setDisplayLore(list);
+            return new ItemBuilder(Material.RED_TERRACOTTA).setDisplayName("<bold><red>ERROR</bold>").setDisplayLore(new ArrayList<>() {{
+                add("<red>There was an error with one of your prizes!");
+                add("<red>The reward in question is labeled: <yellow>" + section.getName() + " <red>in crate: <yellow>" + crateName);
+                add("<red>Name of the reward is " + section.getString("DisplayName"));
+                add("<red>If you are confused, Stop by our discord for support!");
+            }});
         }
     }
 }

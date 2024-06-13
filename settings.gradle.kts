@@ -16,4 +16,4 @@ plugins {
     id("com.ryderbelserion.feather-settings") version "0.0.1"
 }
 
-listOf("paper", "core").forEach(::includeProject)
+listOf("paper", "core", "api").forEach(::includeProject)

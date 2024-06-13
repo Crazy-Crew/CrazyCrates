@@ -11,12 +11,11 @@ oraxen = "1.171.0"
 
 # Core
 annotations = "24.1.0"
-crazycrates = "0.6"
 gson = "2.10.1"
-vital = "1.5.5"
+vital = "1.5.8"
 
 decentholograms = "2.8.8"
-fancyholograms = "2.0.6"
+fancyholograms = "2.2.0"
 
 triumph-cmd = "2.0.0-ALPHA-10"
 tirumph-gui = "3.1.7"
@@ -56,8 +55,6 @@ oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }
 # Libraries
 triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmd" }
 triumph-gui = { module = "dev.triumphteam:triumph-gui", version.ref = "tirumph-gui" }
-
-crazycrates = { module = "us.crazycrew.crazycrates:api", version.ref = "crazycrates" }
 
 annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
 

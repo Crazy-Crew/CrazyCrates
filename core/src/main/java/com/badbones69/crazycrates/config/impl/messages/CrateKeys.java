@@ -70,6 +70,9 @@ public class CrateKeys implements SettingsHolder {
             "<gray>To remove the crate shift break in creative to remove."
     ));
 
+    @Comment("A list of available placeholders: {prefix}, {crate}")
+    public static final Property<String> physical_crate_already_exists = newProperty("crates.physical-crate.exists", "{prefix}<gray>This location already has a crate named <gold>{crate} <gray>with id: <gold>{id}.");
+
     @Comment("A list of available placeholders: {prefix}, {id}")
     public static final Property<String> removed_physical_crate = newProperty("crates.physical-crate.removed", "{prefix}<gray>You have removed <gold>{id}.");
 

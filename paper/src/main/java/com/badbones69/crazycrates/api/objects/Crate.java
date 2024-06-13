@@ -1,23 +1,24 @@
 package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
+import com.badbones69.crazycrates.api.crates.CrateHologram;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
-import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
-import com.ryderbelserion.vital.core.config.objects.CustomFile;
-import com.ryderbelserion.vital.core.util.AdvUtil;
-import com.ryderbelserion.vital.core.util.StringUtil;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.paper.files.config.CustomFile;
 import com.ryderbelserion.vital.paper.util.DyeUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.Damageable;
@@ -27,14 +28,11 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
-import org.simpleyaml.configuration.ConfigurationSection;
-import org.simpleyaml.configuration.file.FileConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.AbstractCrateManager;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -756,7 +754,11 @@ public class Crate {
                 }
 
                 if (itemMeta.hasDisplayName()) {
-                    section.set(getPath(prizeName, "DisplayName"), AdvUtil.getRichMessage(itemMeta.displayName()));
+                    Component display = itemMeta.displayName();
+
+                    if (display != null) {
+                        section.set(getPath(prizeName, "DisplayName"), MiniMessage.miniMessage().serialize(display));
+                    }
                 } else {
                     section.set(getPath(prizeName, "DisplayName"), material.isBlock() ? "<lang:" + material.getBlockTranslationKey() + ">" : "<lang:" + material.getItemTranslationKey() + ">");
                 }
@@ -778,7 +780,7 @@ public class Crate {
     private void saveFile() {
         if (this.name.isEmpty()) return;
 
-        CustomFile customFile = ConfigManager.getYamlManager().getCustomFile(this.name);
+        CustomFile customFile = this.plugin.getFileManager().getCustomFile(this.name);
 
         if (customFile != null) customFile.save();
 

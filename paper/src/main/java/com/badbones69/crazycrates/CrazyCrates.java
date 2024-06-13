@@ -24,6 +24,7 @@ import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.enums.Support;
+import com.ryderbelserion.vital.paper.files.config.FileManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
@@ -42,6 +43,7 @@ public class CrazyCrates extends JavaPlugin {
     private InventoryManager inventoryManager;
     private BukkitUserManager userManager;
     private CrateManager crateManager;
+    private FileManager fileManager;
 
     private Server instance;
 
@@ -49,6 +51,12 @@ public class CrazyCrates extends JavaPlugin {
     public void onEnable() {
         this.instance = new Server(getDataFolder(), getLogger());
         this.instance.apply();
+
+        this.fileManager = new FileManager();
+        this.fileManager.addFile("locations.yml").addFile("data.yml")
+                .addFolder("crates")
+                .addFolder("schematics")
+                .init();
 
         // Register permissions that we need.
         registerPermissions();
@@ -129,8 +137,8 @@ public class CrazyCrates extends JavaPlugin {
 
             final HologramManager holograms = this.crateManager.getHolograms();
 
-            if (holograms != null && !holograms.isEmpty()) {
-                holograms.removeAllHolograms(true);
+            if (holograms != null) {
+                holograms.purge(true);
             }
         }
 
@@ -149,6 +157,10 @@ public class CrazyCrates extends JavaPlugin {
 
     public @NotNull final CrateManager getCrateManager() {
         return this.crateManager;
+    }
+
+    public @NotNull final FileManager getFileManager() {
+        return this.fileManager;
     }
 
     public @NotNull final Server getInstance() {

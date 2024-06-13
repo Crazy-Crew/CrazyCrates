@@ -1,9 +1,11 @@
 package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.support.holograms.HologramManager;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -34,9 +36,17 @@ public class BrokeLocationsListener implements Listener {
 
             if (location.getWorld() != null) {
                 if (brokeLocation.getCrate() != null) {
-                    this.crateManager.addLocation(new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location));
+                    CrateLocation crateLocation = new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location);
 
-                    if (brokeLocation.getCrate().getHologram().isEnabled() && this.crateManager.getHolograms() != null) this.crateManager.getHolograms().createHologram(location, brokeLocation.getCrate());
+                    this.crateManager.addLocation(crateLocation);
+
+                    final HologramManager manager = this.crateManager.getHolograms();
+
+                    final Crate crate = crateLocation.getCrate();
+
+                    if (manager != null && crate.getHologram().isEnabled()) {
+                        manager.createHologram(location, crate, crateLocation.getID());
+                    }
 
                     fixedWorlds.add(brokeLocation);
                     fixedAmount++;

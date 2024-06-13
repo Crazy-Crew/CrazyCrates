@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.support.holograms;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.api.crates.CrateHologram;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -8,7 +9,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,16 +21,20 @@ public abstract class HologramManager {
 
     protected CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
     
-    public abstract void createHologram(Location location, Crate crate);
+    public abstract void createHologram(final Location location, final Crate crate, final String id);
 
-    public abstract void removeHologram(Location location);
+    public abstract void removeHologram(final String id);
 
-    public abstract void removeAllHolograms(boolean isShutdown);
+    public abstract boolean exists(final String id);
 
-    public abstract boolean isEmpty();
+    public abstract void purge(final boolean isShutdown);
 
     protected @NotNull final String name() {
         return this.plugin.getName().toLowerCase() + "-" + UUID.randomUUID();
+    }
+
+    protected @NotNull final String name(final String id) {
+        return this.plugin.getName().toLowerCase() + "-" + id;
     }
 
     protected @NotNull final Vector getVector(@NotNull final Crate crate) {

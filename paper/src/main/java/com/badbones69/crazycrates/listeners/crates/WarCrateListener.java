@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,7 +37,7 @@ public class WarCrateListener implements Listener {
 
         event.setCancelled(true);
 
-        if (this.crateManager.containsPicker(player) && this.crateManager.isInOpeningList(player)) {
+        if (this.crateManager.isPicker(player) && this.crateManager.isInOpeningList(player)) {
             final Crate crate = this.crateManager.getOpeningCrate(player);
 
             if (crate.getCrateType() == CrateType.war && this.crateManager.isPicker(player)) {
@@ -99,23 +98,6 @@ public class WarCrateListener implements Listener {
                             }.runDelayed(plugin, 30));
                         }
                     }.runDelayed(this.plugin,30));
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onInventoryClose(InventoryCloseEvent event) {
-        final Player player = (Player) event.getPlayer();
-
-        if (this.crateManager.containsPicker(player) && this.crateManager.isPicker(player)) {
-            for (final Crate crate : this.crateManager.getUsableCrates()) {
-                if (crate.getCrateType() == CrateType.war && event.getInventory().getHolder(false) instanceof CratePrizeMenu) {
-                    if (this.crateManager.hasCrateTask(player)) {
-                        this.crateManager.removeCloser(player);
-
-                        this.crateManager.endCrate(player);
-                    }
                 }
             }
         }
