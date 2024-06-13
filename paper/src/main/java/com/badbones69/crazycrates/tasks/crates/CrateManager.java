@@ -37,6 +37,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
@@ -1409,5 +1410,19 @@ public class CrateManager {
 
     public void purgeRewards() {
         if (!this.allRewards.isEmpty()) this.allRewards.stream().filter(Objects::nonNull).forEach(Entity::remove);
+    }
+
+    public Tier getTier(final Crate crate, final ItemStack item) {
+        if (!item.hasItemMeta()) return null;
+
+        ItemMeta itemMeta = item.getItemMeta();
+
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+
+        if (container.has(PersistentKeys.crate_tier.getNamespacedKey())) {
+            return crate.getTier(container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
+        }
+
+        return null;
     }
 }
