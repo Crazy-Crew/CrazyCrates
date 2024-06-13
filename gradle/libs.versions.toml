@@ -11,7 +11,6 @@ oraxen = "1.171.0"
 
 # Core
 annotations = "24.1.0"
-crazycrates = "0.7"
 gson = "2.10.1"
 vital = "1.5.8"
 
@@ -56,8 +55,6 @@ oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }
 # Libraries
 triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmd" }
 triumph-gui = { module = "dev.triumphteam:triumph-gui", version.ref = "tirumph-gui" }
-
-crazycrates = { module = "us.crazycrew.crazycrates:api", version.ref = "crazycrates" }
 
 annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
 
