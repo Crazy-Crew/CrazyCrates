@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.commands.crates.types.admin.crates;
 
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -44,6 +45,18 @@ public class CommandSet extends BaseCommand {
 
         if (block.isEmpty()) {
             player.sendRichMessage(Messages.must_be_looking_at_block.getMessage(player));
+
+            return;
+        }
+
+        if (this.crateManager.isCrateLocation(block.getLocation())) {
+            player.sendRichMessage(Messages.physical_crate_already_exists.getMessage(player, new HashMap<>() {{
+                put("{crate}", crate.getName());
+
+                final CrateLocation crateLocation = crateManager.getCrateLocation(block.getLocation());
+
+                put("{id}", crateLocation != null ? crateLocation.getID() : "N/A");
+            }}));
 
             return;
         }
