@@ -105,10 +105,11 @@ public class MiscListener implements Listener {
 
         switch (crate.getCrateType()) {
             case war -> {
-                if (!this.crateManager.containsPicker(player) && !this.crateManager.isPicker(player)) return;
-
                 if (this.crateManager.hasCrateTask(player)) {
                     this.crateManager.removeCloser(player);
+
+                    this.crateManager.removePlayerFromOpeningList(player);
+                    this.crateManager.removePlayerKeyType(player);
 
                     this.crateManager.endCrate(player);
                 }

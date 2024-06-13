@@ -30,6 +30,8 @@ public class WarCrate extends CrateBuilder {
         super(crate, player, size);
     }
 
+    private boolean isOpen = false;
+
     @Override
     public void open(@NotNull final KeyType type, final boolean checkHand) {
         // Crate event failed so we return.
@@ -58,6 +60,10 @@ public class WarCrate extends CrateBuilder {
         this.crateManager.addPicker(player, false);
         this.crateManager.addCloser(player, false);
 
+        setRandomPrizes();
+
+        player.openInventory(getInventory());
+
         addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
             int full = 0;
             int open = 0;
@@ -73,7 +79,7 @@ public class WarCrate extends CrateBuilder {
                 this.open++;
 
                 if (this.open >= 3) {
-                    player.openInventory(getInventory());
+                    player.updateInventory();
 
                     this.open = 0;
                 }

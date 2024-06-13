@@ -37,7 +37,7 @@ public class WarCrateListener implements Listener {
 
         event.setCancelled(true);
 
-        if (this.crateManager.containsPicker(player) && this.crateManager.isInOpeningList(player)) {
+        if (this.crateManager.isPicker(player) && this.crateManager.isInOpeningList(player)) {
             final Crate crate = this.crateManager.getOpeningCrate(player);
 
             if (crate.getCrateType() == CrateType.war && this.crateManager.isPicker(player)) {
