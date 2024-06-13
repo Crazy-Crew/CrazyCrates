@@ -3,14 +3,16 @@ package com.badbones69.crazycrates.support.holograms.types;
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.Display.CMIBillboard;
 import com.Zrips.CMI.Modules.Holograms.CMIHologram;
+import com.badbones69.crazycrates.api.crates.CrateHologram;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import net.Zrips.CMILib.Container.CMILocation;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CMIHologramsSupport extends HologramManager {
 

@@ -11,7 +11,7 @@ oraxen = "1.171.0"
 
 # Core
 annotations = "24.1.0"
-crazycrates = "0.6"
+crazycrates = "0.7"
 gson = "2.10.1"
 vital = "1.5.8"
 

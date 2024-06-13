@@ -1,17 +1,19 @@
 package com.badbones69.crazycrates.support.holograms.types;
 
+import com.badbones69.crazycrates.api.crates.CrateHologram;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
+import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import de.oliver.fancyholograms.api.FancyHologramsPlugin;
-import de.oliver.fancyholograms.api.data.DisplayHologramData;
 import de.oliver.fancyholograms.api.data.TextHologramData;
 import de.oliver.fancyholograms.api.hologram.Hologram;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
-import us.crazycrew.crazycrates.api.crates.CrateHologram;
+import org.bukkit.Server;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FancyHologramsSupport extends HologramManager {
 

@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.support.holograms;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.api.crates.CrateHologram;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -8,7 +9,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import us.crazycrew.crazycrates.api.crates.CrateHologram;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
