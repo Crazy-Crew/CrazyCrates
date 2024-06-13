@@ -144,6 +144,16 @@ public class ItemUtils {
     }
 
     /**
+     * Converts {@link org.bukkit.potion.PotionEffectType} to mojang mapped ids.
+     *
+     * @param potion the {@link org.bukkit.potion.PotionEffectType} to convert
+     * @return the mojang mapped id
+     */
+    public static String getPotion(String potion) {
+        return potion.isEmpty() ? "" : potion.toLowerCase();
+    }
+
+    /**
      * Checks if the {@link ItemStack} is a {@link Crate}.
      *
      * @param itemStack the {@link ItemStack}
