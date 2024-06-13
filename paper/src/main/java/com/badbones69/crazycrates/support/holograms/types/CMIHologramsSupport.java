@@ -19,7 +19,7 @@ public class CMIHologramsSupport extends HologramManager {
     private final com.Zrips.CMI.Modules.Holograms.HologramManager hologramManager = CMI.getInstance().getHologramManager();
 
     @Override
-    public void createHologram(Location location, Crate crate, String id) {
+    public void createHologram(final Location location, final Crate crate, final String id) {
         if (crate.getCrateType() == CrateType.menu) return;
 
         final CrateHologram crateHologram = crate.getHologram();
@@ -30,7 +30,10 @@ public class CMIHologramsSupport extends HologramManager {
             return;
         }
 
-        final CMIHologram hologram = new CMIHologram("crazycrates-" + id, new CMILocation(location.clone().add(getVector(crate))));
+        // We don't want to create a new one if one already exists.
+        if (exists(id)) return;
+
+        final CMIHologram hologram = new CMIHologram(name(id), new CMILocation(location.clone().add(getVector(crate))));
 
         hologram.setNewDisplayMethod(true);
         hologram.setBillboard(CMIBillboard.CENTER);
@@ -52,26 +55,29 @@ public class CMIHologramsSupport extends HologramManager {
     }
 
     @Override
-    public void removeHologram(String id) {
+    public void removeHologram(final String id) {
         final CMIHologram hologram = this.hologramManager.getByName(id);
 
         if (hologram != null) {
             hologram.remove();
-
-            this.hologramManager.removeHolo(hologram);
         }
     }
 
     @Override
-    public void purge(boolean isShutdown) {
-        this.hologramManager.getHolograms().forEach((id, hologram) -> {
-            if (!isShutdown) {
-                this.plugin.getServer().getOnlinePlayers().forEach(player -> hologram.hide(player.getUniqueId()));
-            }
+    public boolean exists(final String id) {
+        return this.hologramManager.getByName(name(id)) != null;
+    }
 
-            hologram.remove();
+    @Override
+    public void purge(final boolean isShutdown) {
+        final List<String> holograms = new ArrayList<>() {{
+            hologramManager.getHolograms().forEach((id, hologram) -> {
+                if (id.startsWith(plugin.getName().toLowerCase() + "-")) {
+                    add(id);
+                }
+            });
+        }};
 
-            this.hologramManager.removeHolo(hologram);
-        });
+        holograms.forEach(this::removeHologram);
     }
 }

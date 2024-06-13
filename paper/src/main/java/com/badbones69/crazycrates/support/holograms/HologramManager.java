@@ -25,10 +25,16 @@ public abstract class HologramManager {
 
     public abstract void removeHologram(final String id);
 
+    public abstract boolean exists(final String id);
+
     public abstract void purge(final boolean isShutdown);
 
     protected @NotNull final String name() {
         return this.plugin.getName().toLowerCase() + "-" + UUID.randomUUID();
+    }
+
+    protected @NotNull final String name(final String id) {
+        return this.plugin.getName().toLowerCase() + "-" + id;
     }
 
     protected @NotNull final Vector getVector(@NotNull final Crate crate) {
