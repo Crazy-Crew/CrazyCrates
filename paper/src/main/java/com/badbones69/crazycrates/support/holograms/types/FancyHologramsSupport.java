@@ -94,7 +94,7 @@ public class FancyHologramsSupport extends HologramManager {
                 final String id = hologram.getName();
 
                 if (id.startsWith(plugin.getName().toLowerCase() + "-")) {
-                    add(id);
+                    add(id.replace(plugin.getName().toLowerCase() + "-", ""));
                 }
             });
         }};

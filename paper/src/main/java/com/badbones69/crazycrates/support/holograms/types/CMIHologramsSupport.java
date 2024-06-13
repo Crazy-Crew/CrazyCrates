@@ -60,7 +60,7 @@ public class CMIHologramsSupport extends HologramManager {
 
     @Override
     public void removeHologram(final String id) {
-        final CMIHologram hologram = this.hologramManager.getByName(id);
+        final CMIHologram hologram = this.hologramManager.getByName(name(id));
 
         if (hologram != null) {
             hologram.remove();
@@ -77,7 +77,7 @@ public class CMIHologramsSupport extends HologramManager {
         final List<String> holograms = new ArrayList<>() {{
             hologramManager.getHolograms().forEach((id, hologram) -> {
                 if (id.startsWith(plugin.getName().toLowerCase() + "-")) {
-                    add(id);
+                    add(id.replace(plugin.getName().toLowerCase() + "-", ""));
                 }
             });
         }};
