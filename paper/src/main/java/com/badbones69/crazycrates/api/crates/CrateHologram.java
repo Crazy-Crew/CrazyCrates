@@ -19,6 +19,7 @@ public class CrateHologram {
     private final int range;
     private final List<String> messages;
     private final String backgroundColor;
+    private final int updateInterval;
 
     /**
      * Empty constructor
@@ -29,6 +30,7 @@ public class CrateHologram {
         this.range = 8;
         this.messages = new ArrayList<>();
         this.backgroundColor = "transparent";
+        this.updateInterval = -1;
     }
 
     /**
@@ -38,13 +40,15 @@ public class CrateHologram {
      * @param height height of the hologram from the ground
      * @param range range the hologram can be seen
      * @param color the background color
+     * @param updateInterval the update interval
      * @param messages the hologram will display
      */
-    public CrateHologram(final boolean enabled, final double height, final int range, @NotNull final String color, @NotNull final List<String> messages) {
+    public CrateHologram(final boolean enabled, final double height, final int range, @NotNull final String color, final int updateInterval, @NotNull final List<String> messages) {
         this.enabled = enabled;
         this.height = height;
         this.range = range;
         this.backgroundColor = color;
+        this.updateInterval = updateInterval;
         this.messages = messages;
     }
 
@@ -82,6 +86,15 @@ public class CrateHologram {
      */
     public String getBackgroundColor() {
         return this.backgroundColor;
+    }
+
+    /**
+     * Gets the update interval.
+     *
+     * @return the update interval
+     */
+    public int getUpdateInterval() {
+        return this.updateInterval;
     }
 
     /**

@@ -49,6 +49,10 @@ public class CMIHologramsSupport extends HologramManager {
         hologram.setShowRange(crateHologram.getRange());
         hologram.setLines(lines(crateHologram));
 
+        if (crateHologram.getUpdateInterval() != -1) {
+            hologram.setUpdateIntervalSec(crateHologram.getUpdateInterval());
+        }
+
         this.hologramManager.addHologram(hologram);
 
         location.getNearbyEntitiesByType(Player.class, crateHologram.getRange()).forEach(player -> this.hologramManager.handleHoloUpdates(player, hologram.getLocation()));

@@ -43,6 +43,10 @@ public class DecentHologramsSupport extends HologramManager {
 
         hologram.setDisplayRange(crateHologram.getRange());
 
+        if (crateHologram.getUpdateInterval() != -1) {
+            hologram.setUpdateInterval(crateHologram.getUpdateInterval());
+        }
+
         this.holograms.putIfAbsent(name(id), hologram);
     }
 

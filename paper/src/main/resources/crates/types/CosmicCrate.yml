@@ -188,6 +188,8 @@ Crate:
     Height: 1.5
     # The distance the hologram can be seen.
     Range: 8
+    # How often should the hologram update? -1 is disabled.
+    Update-Interval: -1
     # The background color of the hologram. It uses hex colors. This only works with CMI/FancyHolograms
     # Set the color to transparent if you don't want any color.
     Color: "transparent"

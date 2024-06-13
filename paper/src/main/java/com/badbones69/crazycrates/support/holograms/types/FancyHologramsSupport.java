@@ -53,6 +53,10 @@ public class FancyHologramsSupport extends HologramManager {
 
         hologramData.setText(crateHologram.getMessages());
 
+        if (crateHologram.getUpdateInterval() != -1) {
+            hologramData.setTextUpdateInterval(crateHologram.getUpdateInterval());
+        }
+
         final Hologram hologram = this.manager.create(hologramData);
 
         hologram.createHologram();
