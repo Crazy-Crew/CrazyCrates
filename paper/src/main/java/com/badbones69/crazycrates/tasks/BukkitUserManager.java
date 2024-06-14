@@ -399,9 +399,9 @@ public class BukkitUserManager extends UserManager {
                 return true;
             }
 
-            //this.configuration.set("Offline-Players." + uuid + "." + crate.getName(), this.configuration.getInt("Offline-Players." + uuid + "." + crate.getName()) - keys);
+            this.configuration.set("Offline-Players." + uuid + "." + crate.getName(), this.configuration.getInt("Offline-Players." + uuid + "." + crate.getName()) - keys);
 
-            //this.data.save(this.fileManager);
+            this.data.save();
 
             return true;
         } catch (Exception exception) {

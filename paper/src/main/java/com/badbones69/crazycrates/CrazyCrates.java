@@ -23,6 +23,7 @@ import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.paper.VitalPaper;
 import com.ryderbelserion.vital.paper.enums.Support;
 import com.ryderbelserion.vital.paper.files.config.FileManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -49,6 +50,8 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        new VitalPaper(this);
+
         this.instance = new Server(getDataFolder(), getLogger());
         this.instance.apply();
 
