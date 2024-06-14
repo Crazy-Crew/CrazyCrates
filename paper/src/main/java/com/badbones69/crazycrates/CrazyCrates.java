@@ -50,8 +50,6 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        new VitalPaper(this);
-
         this.instance = new Server(getDataFolder(), getLogger());
         this.instance.apply();
 

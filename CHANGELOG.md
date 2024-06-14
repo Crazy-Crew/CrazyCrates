@@ -1,2 +1,2 @@
-### Fixed:
-- Virtual Keys were not being taken from offline players.
+### Changes:
+- Allow left/right-clicking for locations created by /crazycrates set Menu.
