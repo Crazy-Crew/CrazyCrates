@@ -281,7 +281,10 @@ public class CommandOpen extends BaseCommand {
         int used = 0;
 
         if (keys == 0) {
-            player.sendRichMessage(Messages.no_keys.getMessage(player, "{crate}", crate.getName()));
+            player.sendRichMessage(Messages.no_keys.getMessage(player, new HashMap<>() {{
+                put("{crate}", crate.getName());
+                put("{key}", crate.getKeyName());
+            }}));
 
             return;
         }

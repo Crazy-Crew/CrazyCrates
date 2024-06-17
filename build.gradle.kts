@@ -5,6 +5,10 @@ plugins {
     `java-plugin`
 }
 
+val buildNumber: String? = System.getenv("BUILD_NUMBER")
+
+rootProject.version = if (buildNumber != null) "3.2.1-$buildNumber" else "3.2.1"
+
 val isSnapshot = false
 
 val content: String = rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)

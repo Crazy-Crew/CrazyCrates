@@ -1,2 +1,2 @@
-### Added:
-- Support for heads from HeadDatabase by Arcaniax!
+### Fixed:
+- Missing placeholder {key} in /crates mass-open
