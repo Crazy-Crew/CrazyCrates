@@ -7,7 +7,5 @@ plugins {
 }
 
 dependencies {
-    implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
-
     feather("0.0.1")
 }
