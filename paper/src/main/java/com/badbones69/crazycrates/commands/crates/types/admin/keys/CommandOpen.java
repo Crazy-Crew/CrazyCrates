@@ -168,7 +168,10 @@ public class CommandOpen extends BaseCommand {
                 player.playSound(sound);
             }
 
-            sender.sendRichMessage(Messages.no_keys.getMessage(sender, "{crate}", crate.getName()));
+            sender.sendRichMessage(Messages.no_keys.getMessage(sender, new HashMap<>() {{
+                put("{crate}", crate.getName());
+                put("{key}", crate.getKeyName());
+            }}));
 
             return;
         }
