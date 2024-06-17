@@ -206,9 +206,9 @@ public class ItemUtils {
 
         builder.setUnbreakable(section.getBoolean("Unbreakable", false));
         
-        //if (section.contains("Skull")) {
-        //    builder.setSkull(section.getString("Skull", ""), HeadDatabaseListener.getHeads());
-        //}
+        if (section.contains("Skull") && plugin.getApi() != null) {
+            builder.setSkull(section.getString("Skull", ""), plugin.getApi());
+        }
         
         if (section.contains("Player") && builder.isPlayerHead()) {
             builder.setPlayer(section.getString("Player", ""));

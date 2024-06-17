@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api.objects;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
@@ -10,12 +11,15 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Prize {
+
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private final ConfigurationSection section;
     private final List<ItemBuilder> builders;
@@ -241,9 +245,9 @@ public class Prize {
 
             builder.setUnbreakable(section.getBoolean("Unbreakable", false));
 
-            //if (this.section.contains("Skull")) {
-            //    builder.setSkull(section.getString("Skull", ""), HeadDatabaseListener.getHeads());
-            //}
+            if (section.contains("Skull") && this.plugin.getApi() != null) {
+                builder.setSkull(section.getString("Skull", ""), this.plugin.getApi());
+            }
 
             if (this.section.contains("Player")) {
                 builder.setPlayer(this.section.getString("Player", ""));

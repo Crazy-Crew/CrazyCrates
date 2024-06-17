@@ -1,2 +1,2 @@
-### Changes:
-- add {key} placeholder to /crazycrates open-others
+### Added:
+- Support for heads from HeadDatabase by Arcaniax!

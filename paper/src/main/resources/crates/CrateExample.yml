@@ -160,6 +160,8 @@ Crate:
       Chance: 7
       # An example of a custom player head using minecraft players.
       Player: "Rukkhadevata"
+      # Only uncomment this if using HeadDatabase by Arcaniax
+      # Skull: "7129"
     '3':
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Sword"
