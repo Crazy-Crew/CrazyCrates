@@ -12,7 +12,7 @@
 <big>**Create as many crates as you like with multiple crate types to pick from**</big>
 
 ### **Quick Links**
-[Request Features](https://github.com/Crazy-Crew/CrazyCrates/discussions/categories/features)<br>
+[Request Features](https://github.com/Crazy-Crew/CrazyCrates/issues)<br>
 [Documentation](https://docs.crazycrew.us/docs/category/crazycrates)<br>
 [Developer API](https://docs.crazycrew.us/docs/plugins/crazycrates/guides/api/intro)<br>
 [Report Bugs](https://github.com/Crazy-Crew/CrazyCrates/issues)<br>
