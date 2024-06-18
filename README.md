@@ -25,7 +25,7 @@
 ### **Initial Plugin Setup**
 CrazyCrates as first install will come with a set of default files in the `crates` folder which are to help you figure out how to use the plugin.
 You can simply create more crates by copying the files or creating new ones than doing `/crazycrates reload`<br>
-Testing your crates is even easier, If you simply want to test prizes. We have a command for that called `/crazycrates debug <crate>`
+Testing your crates is even easier, if you simply want to test prizes. We have a command for that called `/crazycrates debug <crate>`
 
 ![Features Banner](https://raw.githubusercontent.com/Crazy-Crew/Branding/main/crazycrates/banner/webp/features.webp)
 
@@ -47,7 +47,7 @@ A list of placeholders to display the *statistics* can be found [here](https://d
 
 **Multiple crate types to choose from with unique animations or functions for each crate type.**<br>
 **Ability to add items to currently available crates, `/crazycrates additem` which takes the item in your hand and adds it to a crate.**<br>
-**Ability to add alternative prizes a player can win if they already won a previous prize**<br>
+**Ability to add alternative prizes a player could win if they already won a previous prize**<br>
 **Ability to display or give custom items/custom heads using Oraxen, ItemsAdder or HeadDatabase**<br>
 **Ability to use physical or virtual crates or both**<br>
 
