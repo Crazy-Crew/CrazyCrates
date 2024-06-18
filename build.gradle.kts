@@ -43,6 +43,8 @@ modrinth {
 
     loaders.addAll(listOf("purpur", "paper", "folia"))
 
+    syncBodyFrom.set(rootProject.file("README.md").readText(Charsets.UTF_8))
+
     autoAddDependsOn.set(false)
     detectLoaders.set(false)
 
