@@ -120,8 +120,9 @@ public class CommandMigrate extends BaseCommand {
             });
 
             case EXCELLENT_CRATES -> {
-                if (MiscUtils.isExcellentCratesEnabled()) {
-                    // send message about plugin not enabled.
+                if (!MiscUtils.isExcellentCratesEnabled()) {
+                    sender.sendRichMessage(Messages.migration_plugin_not_enabled.getMessage(sender, "{name}", type.getName()));
+
                     return;
                 }
 
