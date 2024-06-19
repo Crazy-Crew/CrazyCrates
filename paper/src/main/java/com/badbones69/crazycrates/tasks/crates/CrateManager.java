@@ -310,6 +310,26 @@ public class CrateManager {
                                 }
                             }
 
+                            if (prizeSection.contains("DisplayData")) {
+                                if (prizeSection.contains("Items")) {
+                                    final List<String> list = prizeSection.getStringList("Items");
+
+                                    if (!list.contains("Data:" + prizeSection.getString("DisplayData"))) {
+                                        list.add("Data:" + prizeSection.getString("DisplayData"));
+
+                                        prizeSection.set("Items", list);
+
+                                        customFile.save();
+                                    }
+                                } else {
+                                    prizeSection.set("Items", new ArrayList<>() {{
+                                        add("Data:" + prizeSection.getString("DisplayData"));
+                                    }});
+
+                                    customFile.save();
+                                }
+                            }
+
                             prizes.add(new Prize(prizeSection, tierPrizes, crateName, alternativePrize));
                         }
                     }
