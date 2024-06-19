@@ -308,6 +308,7 @@ public class ItemUtils {
 
                 switch (option.toLowerCase()) {
                     case "item" -> itemBuilder.withType(value);
+                    case "data" -> itemBuilder = itemBuilder.fromBase64(value);
                     case "name" -> itemBuilder.setDisplayName(value);
                     case "amount" -> {
                         final Optional<Number> amount = StringUtil.tryParseInt(value);

@@ -3,9 +3,9 @@ package com.badbones69.crazycrates.api.objects;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
+import com.ryderbelserion.vital.paper.util.ItemUtil;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -51,9 +51,24 @@ public class Prize {
 
         this.alternativePrize = alternativePrize;
 
-        Material material = new ItemBuilder().withType(section.getString("DisplayItem", "stone")).getType();
+        Material material = null;
 
-        this.prizeName = section.getString("DisplayName", material.isBlock() ? "<lang:" + material.getBlockTranslationKey() + ">" : "<lang:" + material.getItemTranslationKey() + ">");
+        if (section.contains("DisplayItem")) {
+            material = ItemUtil.getMaterial(section.getString("DisplayItem", "stone"));
+        }
+
+        // Only run this if DisplayItem isn't found.
+        if (section.contains("DisplayData") && !section.contains("DisplayItem")) {
+            material = ItemUtil.fromBase64(section.getString("DisplayData", "")).getType();
+        }
+
+        String key = "";
+
+        if (material != null) {
+            key = material.isBlock() ? "<lang:" + material.getBlockTranslationKey() + ">" : "<lang:" + material.getItemTranslationKey() + ">";
+        }
+
+        this.prizeName = section.getString("DisplayName", key.isBlank() ? "<red>No valid display name found." : key);
         this.maxRange = section.getInt("MaxRange", 100);
         this.chance = section.getInt("Chance", 50);
         this.firework = section.getBoolean("Firework", false);
@@ -213,26 +228,31 @@ public class Prize {
 
         try {
             if (this.section.contains("DisplayData")) {
-                return builder.fromBase64(this.section.getString("DisplayData"));
+                builder = builder.fromBase64(this.section.getString("DisplayData"));
             }
 
-            final String material = this.section.getString("DisplayItem", "red_terracotta");
-            final int amount = this.section.getInt("DisplayAmount", 1);
+            if (this.section.contains("DisplayItem")) {
+                builder.withType(this.section.getString("DisplayItem", "red_terracotta"));
+            }
 
-            builder.withType(material).setAmount(amount).setDisplayName(this.prizeName);
+            if (this.section.contains("DisplayAmount")) {
+                builder.setAmount(this.section.getInt("DisplayAmount", 1));
+            }
 
-            if (this.section.contains("DisplayLore")) {
-                // Temp fix until I update the ItemBuilder
-                List<Component> displayLore = new ArrayList<>();
+            builder.setDisplayName(this.prizeName);
 
-                this.section.getStringList("DisplayLore").forEach(line -> displayLore.add(JSONComponentSerializer.json().deserialize(line)));
+            if (this.section.contains("DisplayLore") && !this.section.contains("Lore")) {
+                builder.setDisplayLore(this.section.getStringList("DisplayLore"));
+            }
 
-                ItemStack itemStack = builder.getStack();
+            if (this.section.contains("Lore")) {
+                if (MiscUtils.isLogging()) {
+                    List.of(
+                            "Detected deprecated usage of Lore in " + this.sectionName + ", please change Lore to DisplayLore",
+                            "Lore will be removed in the next major version of Minecraft in favor of DisplayLore."
+                    ).forEach(this.plugin.getLogger()::warning);
+                }
 
-                itemStack.editMeta(itemMeta -> itemMeta.lore(displayLore));
-
-                builder = new ItemBuilder(itemStack);
-            } else {
                 builder.setDisplayLore(this.section.getStringList("Lore"));
             }
 
@@ -248,7 +268,7 @@ public class Prize {
 
             builder.setUnbreakable(section.getBoolean("Unbreakable", false));
 
-            if (section.contains("Skull") && this.plugin.getApi() != null) {
+            if (this.section.contains("Skull") && this.plugin.getApi() != null) {
                 builder.setSkull(section.getString("Skull", ""), this.plugin.getApi());
             }
 

@@ -237,7 +237,7 @@ Crate:
       # The amount to display in the gui.
       DisplayAmount: 1
       # The lore of the item.
-      Lore:
+      DisplayLore:
         - "<gray>Win the warlord's set."
         - "<bold><gold>Chance: <red>40%</bold>"
       # The max range i.e. 40/100 = 40% chance to win.
@@ -286,7 +286,7 @@ Crate:
       # The amount to display in the gui.
       DisplayAmount: 3
       # The lore of the item.
-      Lore:
+      DisplayLore:
         - "<gradient:#8fcfa0:#32a852>A gradient lore!"
       # The max range i.e. 25/100 = 15% chance to win.
       MaxRange: 100
@@ -326,7 +326,7 @@ Crate:
         - "Basic"
         - "UnCommon"
       # The lore of the item.
-      Lore:
+      DisplayLore:
         - "<gray>Win a fancy pair of pants."
         - "<bold><gold>Chance: <red>4%</bold>"
       # The items to win.
@@ -351,7 +351,7 @@ Crate:
       # The amount to display in the gui.
       DisplayAmount: 1
       # The lore of the item.
-      Lore:
+      DisplayLore:
         - "<gray>Win a old classic sword."
         - "<bold><gold>Chance: <red>3.5%</bold>"
       # The max range i.e. 35/1000 = 3.5% chance to win.
