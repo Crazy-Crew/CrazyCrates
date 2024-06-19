@@ -26,9 +26,19 @@ import java.util.List;
 public class CommandMigrate extends BaseCommand {
 
     public enum MigrationType {
-        MOJANG_MAPPED,
-        SPECIALIZED_CRATES,
-        EXCELLENT_CRATES
+        MOJANG_MAPPED("MojangMapped"),
+        SPECIALIZED_CRATES("SpecializedCrates"),
+        EXCELLENT_CRATES("ExcellentCrates");
+
+        private final String name;
+
+        MigrationType(String name) {
+            this.name = name;
+        }
+
+        public final String getName() {
+            return this.name;
+        }
     }
 
     @Command("migrate")
@@ -41,7 +51,7 @@ public class CommandMigrate extends BaseCommand {
                 if (customFile == null) {
                     sender.sendRichMessage(Messages.error_migrating.getMessage(sender, new HashMap<>() {{
                         put("{file}", name);
-                        put("{type}", String.valueOf(type));
+                        put("{type}", type.getName());
                         put("{reason}", "File was not loaded properly.");
                     }}));
 
@@ -55,7 +65,7 @@ public class CommandMigrate extends BaseCommand {
                 if (crate == null) {
                     sender.sendRichMessage(Messages.error_migrating.getMessage(sender, new HashMap<>() {{
                         put("{file}", name);
-                        put("{type}", String.valueOf(type));
+                        put("{type}", type.getName());
                         put("{reason}", "File could not be found in our data, likely invalid yml file that didn't load properly.");
                     }}));
 
@@ -105,7 +115,7 @@ public class CommandMigrate extends BaseCommand {
 
                 sender.sendRichMessage(Messages.successfully_migrated.getMessage(sender, new HashMap<>() {{
                     put("{file}", name);
-                    put("{type}", String.valueOf(type));
+                    put("{type}", type.getName());
                 }}));
             });
 
