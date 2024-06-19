@@ -2,15 +2,23 @@ package com.badbones69.crazycrates.commands.crates.types.admin.crates;
 
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import com.ryderbelserion.vital.paper.files.config.CustomFile;
+import com.ryderbelserion.vital.paper.util.ItemUtil;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.permissions.PermissionDefault;
+import org.jetbrains.annotations.Nullable;
+import su.nightexpress.excellentcrates.CratesAPI;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,39 +27,34 @@ public class CommandMigrate extends BaseCommand {
 
     public enum MigrationType {
         MOJANG_MAPPED,
-        SPECIALIZED_CRATES
+        SPECIALIZED_CRATES,
+        EXCELLENT_CRATES
     }
 
     @Command("migrate")
     @Permission(value = "crazycrates.migrate", def = PermissionDefault.OP)
-    public void migrate(final CommandSender sender, @Suggestion("crates") final String crateName, final MigrationType type) {
-        if (crateName.isEmpty() || crateName.isBlank()) {
-            sender.sendRichMessage(Messages.cannot_be_empty.getMessage(sender, "{value}", "crate name"));
-
-            return;
-        }
-
-        final CustomFile file = this.fileManager.getCustomFile(crateName);
-
-        if (file == null) {
-            sender.sendRichMessage(Messages.error_migrating.getMessage(sender, new HashMap<>() {{
-                put("{file}", crateName);
-                put("{type}", String.valueOf(type));
-                put("{reason}", "File was not loaded properly.");
-            }}));
-
-            return;
-        }
-
+    public void migrate(final CommandSender sender, final MigrationType type) {
         switch (type) {
-            case MOJANG_MAPPED -> {
-                final YamlConfiguration configuration = file.getConfiguration();
+            case MOJANG_MAPPED -> this.plugin.getInstance().getCrateFiles().forEach(name -> {
+                final CustomFile customFile = this.fileManager.getCustomFile(name);
+
+                if (customFile == null) {
+                    sender.sendRichMessage(Messages.error_migrating.getMessage(sender, new HashMap<>() {{
+                        put("{file}", name);
+                        put("{type}", String.valueOf(type));
+                        put("{reason}", "File was not loaded properly.");
+                    }}));
+
+                    return;
+                }
+
+                final YamlConfiguration configuration = customFile.getConfiguration();
 
                 final ConfigurationSection crate = configuration.getConfigurationSection("Crate");
 
                 if (crate == null) {
                     sender.sendRichMessage(Messages.error_migrating.getMessage(sender, new HashMap<>() {{
-                        put("{file}", crateName);
+                        put("{file}", name);
                         put("{type}", String.valueOf(type));
                         put("{reason}", "File could not be found in our data, likely invalid yml file that didn't load properly.");
                     }}));
@@ -98,7 +101,84 @@ public class CommandMigrate extends BaseCommand {
                     });
                 }
 
-                file.save();
+                customFile.save();
+
+                sender.sendRichMessage(Messages.successfully_migrated.getMessage(sender, new HashMap<>() {{
+                    put("{file}", name);
+                    put("{type}", String.valueOf(type));
+                }}));
+            });
+
+            case EXCELLENT_CRATES -> {
+                if (MiscUtils.isExcellentCratesEnabled()) {
+                    // send message about plugin not enabled.
+                    return;
+                }
+
+                File dir = new File(this.plugin.getDataFolder(), "crates");
+
+                if (!dir.exists()) dir.mkdirs();
+
+                CratesAPI.getCrateManager().getCrates().forEach(crate -> {
+                    final String name = crate.getName();
+
+                    File crateFile = new File(dir, name);
+
+                    if (crateFile.exists()) {
+                        try {
+                            crateFile.createNewFile();
+                        } catch (IOException e) {
+                            this.plugin.getLogger().severe("Failed to create " + name + ".yml");
+                        }
+                    }
+
+                    this.fileManager.addCustomFile(new CustomFile(dir).apply(name));
+
+                    @Nullable CustomFile customFile = this.fileManager.getCustomFile(name);
+
+                    if (customFile != null) {
+                        final YamlConfiguration configuration = customFile.getConfiguration();
+
+                        configuration.set("Crates.CrateType", "CSGO");
+
+                        crate.getRewards().forEach(reward -> {
+                            final String previewItem = ItemUtil.toBase64(reward.getPreview());
+
+                            final ConfigurationSection section = configuration.getConfigurationSection("Crates");
+
+                            if (section == null) return;
+
+                            section.set("Prizes." + reward.getId() + ".DisplayData", previewItem);
+
+                            ConfigurationSection prize = section.getConfigurationSection(reward.getId());
+
+                            reward.getItems().forEach(itemStack -> {
+                                final String toBase64 = ItemUtil.toBase64(itemStack);
+
+                                if (prize != null) {
+                                    if (prize.contains("Items")) {
+                                        final List<String> list = prize.getStringList("Items");
+
+                                        list.add("Data: " + toBase64);
+
+                                        prize.set("Items", list);
+                                    } else {
+                                        prize.set("Items", new ArrayList<>() {{
+                                            add("Data: " + toBase64);
+                                        }});
+                                    }
+                                }
+                            });
+                        });
+
+                        customFile.save();
+
+                        sender.sendRichMessage(Messages.successfully_migrated.getMessage(sender, new HashMap<>() {{
+                            put("{file}", name);
+                            put("{type}", String.valueOf(type));
+                        }}));
+                    }
+                });
             }
 
             case SPECIALIZED_CRATES -> sender.sendRichMessage(Messages.migration_not_available.getMessage());

@@ -261,4 +261,8 @@ public class MiscUtils {
     public static boolean isLogging() {
         return ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging);
     }
+
+    public static boolean isExcellentCratesEnabled() {
+        return plugin.getServer().getPluginManager().isPluginEnabled("ExcellentCrates");
+    }
 }
