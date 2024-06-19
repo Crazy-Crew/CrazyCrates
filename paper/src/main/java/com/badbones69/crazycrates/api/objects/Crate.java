@@ -671,13 +671,27 @@ public class Crate {
 
         final String tiers = getPath(prizeName, "Tiers");
 
-        final Material material = itemStack.getType();
-
         if (!section.contains(prizeName)) {
             section.set(getPath(prizeName, "MaxRange"), 100);
         }
 
-        section.set(getPath(prizeName, "DisplayData"), ItemUtil.toBase64(itemStack));
+        String toBase64 = ItemUtil.toBase64(itemStack);
+
+        section.set(getPath(prizeName, "DisplayData"), toBase64);
+
+        final String items = getPath(prizeName, "Items");
+
+        if (section.contains(items)) {
+            final List<String> list = section.getStringList(items);
+
+            list.add(toBase64);
+
+            section.set(items, list);
+        } else {
+            section.set(items, new ArrayList<>() {{
+                add(toBase64);
+            }});
+        }
 
         section.set(getPath(prizeName, "Chance"), chance);
 
