@@ -53,7 +53,9 @@ public class CommandKeys implements SettingsHolder {
     public static final Property<String> error_migrating = newProperty("command.migrate.error", "{prefix}<red>We could not migrate <green>{file} <red>using <green>{type} <red>migration for <green>{reason}.");
 
     @Comment("A list of available placeholders: {prefix}")
-    public static final Property<String> migration_not_available = newProperty("command.migrate.not-available", "{prefix}This migration type is not available.");
+    public static final Property<String> migration_not_available = newProperty("command.migrate.not-available", "{prefix}<green>This migration type is not available.");
+
+    public static final Property<String> migration_plugin_not_enabled = newProperty("command.migrate.plugin-not-available", "{prefix}<green>The plugin <red>{name} <green>is not enabled. Cannot use as migration!");
 
     @Comment("A list of available placeholders: {prefix}, {file}, {type}")
     public static final Property<String> successfully_migrated = newProperty("command.migrate.success", "{prefix}<green>Successfully migrated {file} using {type} migration.");
