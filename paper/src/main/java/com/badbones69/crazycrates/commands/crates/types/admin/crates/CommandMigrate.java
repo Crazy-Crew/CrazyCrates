@@ -8,10 +8,8 @@ import com.ryderbelserion.vital.paper.files.config.CustomFile;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
-import dev.triumphteam.cmd.core.annotations.Suggestion;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.Nullable;
@@ -22,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CommandMigrate extends BaseCommand {
 
@@ -135,7 +134,7 @@ public class CommandMigrate extends BaseCommand {
 
                     File crateFile = new File(dir, name);
 
-                    if (crateFile.exists()) {
+                    if (!crateFile.exists()) {
                         try {
                             crateFile.createNewFile();
                         } catch (IOException e) {
@@ -183,11 +182,6 @@ public class CommandMigrate extends BaseCommand {
                         });
 
                         customFile.save();
-
-                        sender.sendRichMessage(Messages.successfully_migrated.getMessage(sender, new HashMap<>() {{
-                            put("{file}", name);
-                            put("{type}", String.valueOf(type));
-                        }}));
                     }
                 });
             }
