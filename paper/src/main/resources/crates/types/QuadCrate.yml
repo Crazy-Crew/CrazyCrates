@@ -179,14 +179,14 @@ Crate:
         Pattern: "sentry"
       # The amount to display in the gui.
       DisplayAmount: 1
+      # The lore of the item.
+      DisplayLore:
+        - "<gray>Win a fancy pair of pants."
+        - "<bold><gold>Chance: <red>4%</bold>"
       # The max range i.e. 40/1000 = 4% chance to win.
       MaxRange: 1000
       # The chance to win i.e. 4%
       Chance: 40
-      # The lore of the item.
-      Lore:
-        - "<gray>Win a fancy pair of pants."
-        - "<bold><gold>Chance: <red>4%</bold>"
       # The items to win.
       Items:
         - "Item:chainmail_leggings, Amount:1, Damage:75, Trim-Pattern:sentry, Trim-Material:lapis, Name:<bold><green>Fancy Pants</bold>, protection:2"
@@ -209,7 +209,7 @@ Crate:
       # The amount to display in the gui.
       DisplayAmount: 1
       # The lore of the item.
-      Lore:
+      DisplayLore:
         - "<gray>Win a old classic sword."
         - "<bold><gold>Chance: <red>3.5%</bold>"
       # The max range i.e. 35/1000 = 3.5% chance to win.

@@ -12,13 +12,15 @@ oraxen = "1.171.0"
 # Core
 annotations = "24.1.0"
 gson = "2.10.1"
-vital = "1.5.8"
 
 decentholograms = "2.8.8"
 fancyholograms = "2.2.0"
 
 triumph-cmd = "2.0.0-ALPHA-10"
 tirumph-gui = "3.1.7"
+jetbrains = "24.1.0"
+kyori = "4.17.0"
+vital = "1.6"
 
 vault = "1.7.1"
 
