@@ -685,8 +685,8 @@ public class Crate {
             section.set(getPath(prizeName, "MaxRange"), 100);
         }
 
-        section.set(getPath(prizeName, "DisplayAmount"), itemStack.getAmount());
-        section.set(getPath(prizeName, "DisplayItem"), material.getKey().getKey());
+        section.set(getPath(prizeName, "DisplayData"), ItemUtil.toBase64(itemStack));
+
         section.set(getPath(prizeName, "Chance"), chance);
 
         // The section already contains a prize name, so we update the tiers.
@@ -701,68 +701,6 @@ public class Crate {
                     add(tier);
                 }});
             }
-        }
-
-        if (itemStack.hasItemMeta()) {
-            itemStack.editMeta(itemMeta -> {
-                if (itemMeta instanceof final ArmorMeta armorMeta) {
-                    if (armorMeta.hasTrim()) {
-                        ArmorTrim trim = armorMeta.getTrim();
-
-                        if (trim != null) {
-                            section.set(getPath(prizeName, "DisplayTrim.Pattern"), trim.getPattern().key().value());
-                            section.set(getPath(prizeName, "DisplayTrim.Material"), trim.getMaterial().key().value());
-                        }
-                    }
-                }
-
-                if (itemMeta instanceof Damageable damageable) {
-                    if (damageable.hasDamage()) {
-                        section.set(getPath(prizeName, "DisplayDamage"), damageable.getDamage());
-                    }
-                }
-
-                if (itemMeta.hasEnchantmentGlintOverride()) {
-                    section.set(getPath(prizeName, "Glowing"), itemMeta.getEnchantmentGlintOverride());
-                }
-
-                section.set(getPath(prizeName, "Unbreakable"), itemMeta.isUnbreakable());
-
-                if (itemMeta.hasEnchants()) {
-                    List<String> enchantments = new ArrayList<>();
-
-                    for (Map.Entry<Enchantment, Integer> keys : itemMeta.getEnchants().entrySet()) {
-                        String enchantment = keys.getKey().getKey().getKey();
-                        int level = keys.getValue();
-
-                        enchantments.add(enchantment + ":" + level);
-                    }
-
-                    section.set(getPath(prizeName, "DisplayEnchantments"), enchantments);
-                }
-
-                if (itemMeta.hasLore()) {
-                    List<Component> lores = itemMeta.lore();
-
-                    if (lores != null) {
-                        List<String> lore = new ArrayList<>();
-
-                        lores.forEach(line -> lore.add(JSONComponentSerializer.json().serialize(line)));
-
-                        section.set(getPath(prizeName, "DisplayLore"), lore);
-                    }
-                }
-
-                if (itemMeta.hasDisplayName()) {
-                    Component display = itemMeta.displayName();
-
-                    if (display != null) {
-                        section.set(getPath(prizeName, "DisplayName"), MiniMessage.miniMessage().serialize(display));
-                    }
-                } else {
-                    section.set(getPath(prizeName, "DisplayName"), material.isBlock() ? "<lang:" + material.getBlockTranslationKey() + ">" : "<lang:" + material.getItemTranslationKey() + ">");
-                }
-            });
         }
 
         saveFile();

@@ -212,6 +212,10 @@ public class Prize {
         ItemBuilder builder = new ItemBuilder();
 
         try {
+            if (this.section.contains("DisplayData")) {
+                return builder.fromBase64(this.section.getString("DisplayData"));
+            }
+
             final String material = this.section.getString("DisplayItem", "red_terracotta");
             final int amount = this.section.getInt("DisplayAmount", 1);
 
