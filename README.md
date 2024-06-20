@@ -27,6 +27,8 @@ CrazyCrates as first install will come with a set of default files in the `crate
 You can simply create more crates by copying the files or creating new ones than doing `/crazycrates reload`<br>
 Testing your crates is even easier, if you simply want to test prizes. We have a command for that called `/crazycrates debug <crate>`
 
+[![Partnered with ApexHosting](https://raw.githubusercontent.com/Crazy-Crew/Branding/main/apex-banner-transparent.webp)](https://billing.apexminecrafthosting.com/aff.php?aff=5511)
+
 ![Features Banner](https://raw.githubusercontent.com/Crazy-Crew/Branding/main/crazycrates/banner/webp/features.webp)
 
 **The ability to customize the entirety of CrazyCrates along with PlaceholderAPI support everywhere**<br>
