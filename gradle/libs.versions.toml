@@ -1,34 +1,34 @@
 [versions]
 # Minecraft
-paper = "1.20.6-R0.1-SNAPSHOT"
-minecraft = "1.20.6"
+paper = "1.21-R0.1-SNAPSHOT"
+minecraft = "1.21"
 
 # Plugins
 itemsadder = "3.6.3-beta-14"
 headdatabaseapi = "1.3.1"
 placeholderapi = "2.11.6"
-oraxen = "1.171.0"
-
-# Core
-annotations = "24.1.0"
-gson = "2.10.1"
-
 decentholograms = "2.8.8"
 fancyholograms = "2.2.0"
+oraxen = "1.171.0"
+vault = "1.7.1"
 
+# Libraries
 triumph-cmd = "2.0.0-ALPHA-10"
 tirumph-gui = "3.1.7"
 jetbrains = "24.1.0"
 kyori = "4.17.0"
 vital = "1.6"
 
-vault = "1.7.1"
-
+# Paper
 paperweight="1.7.1"
-shadowJar = "8.1.7"
 runPaper = "2.3.0"
-minotaur = "2.+"
 hangar = "0.1.2"
+
+# Other
+shadowJar = "8.1.7"
+
+# Modrinth
+minotaur = "2.+"
 
 [plugins]
 paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }
@@ -41,6 +41,9 @@ minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }
 # Servers
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
+
+# Paper
+kyori = { module = "net.kyori:adventure-api", version.ref = "kyori" }
 
 # Plugins
 decent-holograms = { module = "com.github.decentsoftware-eu:decentholograms", version.ref = "decentholograms" }
@@ -58,16 +61,12 @@ oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }
 triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmd" }
 triumph-gui = { module = "dev.triumphteam:triumph-gui", version.ref = "tirumph-gui" }
 
-annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
+jetbrains = { module = "org.jetbrains:annotations", version.ref = "jetbrains" }
 
 vital-paper = { module = "com.ryderbelserion.vital:paper", version.ref = "vital" }
 vital-core = { module = "com.ryderbelserion.vital:core", version.ref = "vital" }
 
-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
-
 [bundles]
 holograms = ["decent-holograms", "fancy-holograms"]
-
 triumph = ["triumph-cmds", "triumph-gui"]
-
 items = ["itemsadder", "oraxen"]
