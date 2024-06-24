@@ -7,23 +7,25 @@ import java.io.File;
 
 public class StorageManager {
 
-    private static CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private static final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private static Sqlite locationData;
+    private static Sqlite crates;
 
-    public static void load() {
+    public static void open() {
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException e) {
-            plugin.getLogger().warning("SQLITE was not found on the classpath.");
+            plugin.getLogger().warning("Sqlite was not found on the classpath.");
         }
 
-        locationData = new Sqlite(new File(plugin.getDataFolder(), "locations.db"));
-
-        plugin.getLogger().warning("Status: " + locationData.isOpen());
+        crates = new Sqlite(new File(plugin.getDataFolder(), "crazycrates.db"));
     }
 
-    public static Sqlite getLocationData() {
-        return locationData;
+    public static void close() {
+        crates.close();
+    }
+
+    public static Sqlite getData() {
+        return crates;
     }
 }

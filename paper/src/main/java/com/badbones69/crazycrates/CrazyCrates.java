@@ -30,7 +30,6 @@ import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
 import java.util.Timer;
 import static com.badbones69.crazycrates.api.utils.MiscUtils.registerPermissions;
@@ -57,7 +56,8 @@ public class CrazyCrates extends JavaPlugin {
         this.instance = new Server(getDataFolder(), getLogger());
         this.instance.apply();
 
-        StorageManager.load();
+        // Load database
+        StorageManager.open();
 
         this.fileManager = new FileManager();
         this.fileManager.addFile("locations.yml").addFile("data.yml")
@@ -156,6 +156,9 @@ public class CrazyCrates extends JavaPlugin {
         if (this.instance != null) {
             this.instance.disable();
         }
+
+        // Close database
+        StorageManager.close();
     }
 
     public @NotNull final InventoryManager getInventoryManager() {

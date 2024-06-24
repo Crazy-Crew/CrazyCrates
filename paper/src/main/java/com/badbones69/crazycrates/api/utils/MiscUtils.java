@@ -25,7 +25,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
