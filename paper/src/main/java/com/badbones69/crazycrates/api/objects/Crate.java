@@ -684,12 +684,12 @@ public class Crate {
         if (section.contains(items)) {
             final List<String> list = section.getStringList(items);
 
-            list.add(toBase64);
+            list.add("Data:" + toBase64);
 
             section.set(items, list);
         } else {
             section.set(items, new ArrayList<>() {{
-                add(toBase64);
+                add("Data:" + toBase64);
             }});
         }
 
