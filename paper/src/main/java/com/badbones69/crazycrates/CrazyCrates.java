@@ -23,6 +23,7 @@ import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.badbones69.crazycrates.tasks.storage.StorageManager;
 import com.ryderbelserion.vital.paper.enums.Support;
 import com.ryderbelserion.vital.paper.files.config.FileManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
@@ -55,6 +56,8 @@ public class CrazyCrates extends JavaPlugin {
     public void onEnable() {
         this.instance = new Server(getDataFolder(), getLogger());
         this.instance.apply();
+
+        StorageManager.load();
 
         this.fileManager = new FileManager();
         this.fileManager.addFile("locations.yml").addFile("data.yml")
