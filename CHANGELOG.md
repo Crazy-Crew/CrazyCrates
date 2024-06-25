@@ -1,2 +1,2 @@
 ### Fixed:
-- Issue with items given through `Items` not stacking with items obtained through vanilla means.
+- `/crazycrates giveall` did not have a permission requirement.
