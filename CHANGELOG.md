@@ -1,2 +1,2 @@
 ### Fixed:
-- `/crazycrates giveall` did not have a permission requirement.
+- Player Heads were not stacking previously, they should now.
