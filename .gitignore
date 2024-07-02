@@ -1,13 +1,12 @@
 .gradle
 .idea
-
 build
 
 buildSrc/.gradle
 buildSrc/build
 
-common/.gradle
-common/build
+core/.gradle
+core/build
 
 api/.gradle
 api/build

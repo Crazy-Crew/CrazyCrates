@@ -1,18 +1,14 @@
 plugins {
     alias(libs.plugins.shadowJar)
 
-    `java-plugin`
+    `paper-plugin`
 }
 
 project.group = "us.crazycrew.crazycrates"
 project.version = "0.7"
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    compileOnly("net.kyori", "adventure-api", "4.17.0")
+    compileOnly(libs.paper)
 }
 
 val javaComponent: SoftwareComponent = components["java"]

@@ -62,6 +62,7 @@ public class CommandGive extends BaseCommand {
     }
 
     @Command("giveall")
+    @Permission(value = "crazycrates.giveall", def = PermissionDefault.OP)
     public void all(CommandSender sender, @Suggestion("keys") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount) {
         if (crateName.isEmpty()) {
             sender.sendRichMessage(Messages.not_a_crate.getMessage(sender, "{crate}", crateName));

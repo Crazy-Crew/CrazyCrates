@@ -6,16 +6,14 @@ plugins {
     `paper-plugin`
 }
 
-feather {
-    repository("https://repo.fancyplugins.de/releases")
+repositories {
+    maven("https://repo.fancyplugins.de/releases")
 }
 
 dependencies {
     paperweight.paperDevBundle(libs.versions.paper)
 
     implementation(libs.triumph.cmds)
-
-    implementation(libs.vital.paper)
 
     compileOnly(fileTree("$projectDir/libs/compile").include("*.jar"))
 
@@ -36,7 +34,7 @@ tasks {
 
         defaultCharacterEncoding = Charsets.UTF_8.name()
 
-        minecraftVersion("1.20.6")
+        minecraftVersion(libs.versions.minecraft.get())
     }
 
     assemble {
@@ -56,8 +54,7 @@ tasks {
 
         listOf(
             "com.ryderbelserion",
-            "dev.triumphteam",
-            "ch.jalu"
+            "dev.triumphteam"
         ).forEach {
             relocate(it, "libs.$it")
         }
@@ -67,6 +64,7 @@ tasks {
         inputs.properties("name" to rootProject.name)
         inputs.properties("version" to project.version)
         inputs.properties("group" to project.group)
+        inputs.properties("apiVersion" to libs.versions.minecraft.get())
         inputs.properties("description" to project.properties["description"])
         inputs.properties("website" to project.properties["website"])
 

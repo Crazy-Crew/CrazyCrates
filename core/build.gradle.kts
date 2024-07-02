@@ -1,11 +1,11 @@
 plugins {
-    alias(libs.plugins.shadowJar)
-
-    `java-plugin`
+    `paper-plugin`
 }
 
 dependencies {
-    compileOnly(libs.vital.core)
+    compileOnly(libs.paper)
 
     api(projects.crazycratesApi)
+
+    api(libs.vital.paper)
 }
