@@ -98,8 +98,10 @@ public class PrizeManager {
                     } catch (Exception e) {
                         commandBuilder.append("1 ");
 
-                        plugin.getLogger().warning("The prize " + prize.getPrizeName() + " in the " + prize.getCrateName() + " crate has caused an error when trying to run a command.");
-                        plugin.getLogger().warning("Command: " + cmd);
+                        if (MiscUtils.isLogging()) {
+                            plugin.getLogger().warning("The prize " + prize.getPrizeName() + " in the " + prize.getCrateName() + " crate has caused an error when trying to run a command.");
+                            plugin.getLogger().warning("Command: " + cmd);
+                        }
                     }
                 } else {
                     commandBuilder.append(word).append(" ");

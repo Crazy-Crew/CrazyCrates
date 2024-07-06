@@ -349,7 +349,8 @@ public class CosmicCrateListener implements Listener {
 
                                 // Send refund notices.
                                 player.sendRichMessage(MsgUtils.getPrefix("<red>An issue has occurred and so a key refund was given."));
-                                plugin.getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + crate.getName() + " crate and so they were issued a key refund.", exception);
+
+                                if (MiscUtils.isLogging()) plugin.getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + crate.getName() + " crate and so they were issued a key refund.", exception);
 
                                 // Play a sound
                                 crate.playSound(player, player.getLocation(), "stop-sound", "block.anvil.place", Sound.Source.PLAYER);

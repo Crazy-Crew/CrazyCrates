@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.support.placeholders;
 
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.apache.commons.lang3.StringUtils;
@@ -87,7 +88,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         final Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null) {
-            this.plugin.getLogger().warning("Crate: " + crateName + " is not a valid crate name.");
+            if (MiscUtils.isLogging()) this.plugin.getLogger().warning("Crate: " + crateName + " is not a valid crate name.");
 
             return "N/A";
         }

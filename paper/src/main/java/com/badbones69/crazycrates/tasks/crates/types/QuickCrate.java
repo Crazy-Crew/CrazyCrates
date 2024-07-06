@@ -143,8 +143,10 @@ public class QuickCrate extends CrateBuilder {
             try {
                 reward = player.getWorld().dropItem(getLocation().clone().add(.5, 1, .5), display);
             } catch (IllegalArgumentException exception) {
-                this.plugin.getLogger().warning("A prize could not be given due to an invalid display item for this prize.");
-                this.plugin.getLogger().log(Level.WARNING, "Crate: " + prize.getCrateName() + " Prize: " + prize.getPrizeName(), exception);
+                if (MiscUtils.isLogging()) {
+                    this.plugin.getLogger().warning("A prize could not be given due to an invalid display item for this prize.");
+                    this.plugin.getLogger().log(Level.WARNING, "Crate: " + prize.getCrateName() + " Prize: " + prize.getPrizeName(), exception);
+                }
 
                 return;
             }

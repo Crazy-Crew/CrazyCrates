@@ -167,7 +167,8 @@ public class CrateManager {
             this.inventoryManager.purge();
         } catch (Exception exception) {
             this.brokeCrates.add(crate.getName());
-            this.plugin.getLogger().log(Level.WARNING, "There was an error while loading the " + crate.getName() + ".yml file.", exception);
+
+            if (MiscUtils.isLogging()) this.plugin.getLogger().log(Level.WARNING, "There was an error while loading the " + crate.getName() + ".yml file.", exception);
         }
     }
 
@@ -367,7 +368,8 @@ public class CrateManager {
                 }
             } catch (Exception exception) {
                 this.brokeCrates.add(crateName);
-                this.plugin.getLogger().log(Level.WARNING, "There was an error while loading the " + crateName + ".yml file.", exception);
+
+                if (MiscUtils.isLogging()) this.plugin.getLogger().log(Level.WARNING, "There was an error while loading the " + crateName + ".yml file.", exception);
             }
         }
 

@@ -364,7 +364,7 @@ public class BukkitUserManager extends UserManager {
 
             return true;
         } catch (Exception exception) {
-            this.plugin.getLogger().log(Level.SEVERE, "Could not add keys to offline player with uuid: " + uuid, exception);
+            if (MiscUtils.isLogging()) this.plugin.getLogger().log(Level.SEVERE, "Could not add keys to offline player with uuid: " + uuid, exception);
 
             return false;
         }
@@ -405,7 +405,7 @@ public class BukkitUserManager extends UserManager {
 
             return true;
         } catch (Exception exception) {
-            this.plugin.getLogger().log(Level.SEVERE, "Could not take keys from offline player with uuid: " + uuid, exception);
+            if (MiscUtils.isLogging()) this.plugin.getLogger().log(Level.SEVERE, "Could not take keys from offline player with uuid: " + uuid, exception);
 
             return false;
         }

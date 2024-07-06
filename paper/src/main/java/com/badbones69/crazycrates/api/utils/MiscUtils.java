@@ -148,7 +148,7 @@ public class MiscUtils {
 
             return leftover;
         } else {
-            plugin.getLogger().info("Items cannot be null.");
+            if (MiscUtils.isLogging()) plugin.getLogger().info("Items cannot be null.");
         }
 
         return null;
@@ -174,19 +174,21 @@ public class MiscUtils {
     }
 
     public static void failedToTakeKey(@NotNull final CommandSender player, @NotNull final String crateName) {
-        List.of(
-                "An error has occurred while trying to take a key from a player.",
-                "Player: " + player.getName(),
-                "Key: " + crateName
-        ).forEach(plugin.getLogger()::warning);
+        if (MiscUtils.isLogging()) {
+            List.of(
+                    "An error has occurred while trying to take a key from a player.",
+                    "Player: " + player.getName(),
+                    "Key: " + crateName
+            ).forEach(plugin.getLogger()::warning);
 
-        List.of(
-                "<red>An issue has occurred when trying to take a key.",
-                "<red>A list of potential reasons",
-                "",
-                " <yellow>-> <light_purple>Not enough keys.",
-                " <yellow>-> <light_purple>Key is in off hand."
-        ).forEach(line -> player.sendRichMessage(MsgUtils.getPrefix(line)));
+            List.of(
+                    "<red>An issue has occurred when trying to take a key.",
+                    "<red>A list of potential reasons",
+                    "",
+                    " <yellow>-> <light_purple>Not enough keys.",
+                    " <yellow>-> <light_purple>Key is in off hand."
+            ).forEach(line -> player.sendRichMessage(MsgUtils.getPrefix(line)));
+        }
     }
 
     public static long pickNumber(long min, long max) {
