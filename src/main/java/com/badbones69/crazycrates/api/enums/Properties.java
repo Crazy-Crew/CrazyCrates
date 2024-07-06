@@ -15,7 +15,7 @@ import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
-public enum FileProperty {
+public enum Properties {
 
     enable_crate_menu(ConfigKeys.enable_crate_menu, newProperty("Settings.Enable-Crate-Menu", ConfigKeys.enable_crate_menu.getDefaultValue()), false),
 
@@ -133,7 +133,7 @@ public enum FileProperty {
      * @param newString the new property
      * @param oldString the old property
      */
-    FileProperty(Property<String> newString, Property<String> oldString) {
+    Properties(Property<String> newString, Property<String> oldString) {
         this.newString = newString;
         this.oldString = oldString;
     }
@@ -165,7 +165,7 @@ public enum FileProperty {
      * @param oldBoolean the old property
      * @param dummy only to differentiate from previous constructors
      */
-    FileProperty(Property<Boolean> newBoolean, Property<Boolean> oldBoolean, boolean dummy) {
+    Properties(Property<Boolean> newBoolean, Property<Boolean> oldBoolean, boolean dummy) {
         this.newBoolean = newBoolean;
         this.oldBoolean = oldBoolean;
     }
@@ -197,7 +197,7 @@ public enum FileProperty {
      * @param oldInteger the old property
      * @param dummy only to differentiate from previous constructors
      */
-    FileProperty(Property<Integer> newInteger, Property<Integer> oldInteger, int dummy) {
+    Properties(Property<Integer> newInteger, Property<Integer> oldInteger, int dummy) {
         this.newInteger = newInteger;
         this.oldInteger = oldInteger;
     }
@@ -229,7 +229,7 @@ public enum FileProperty {
      * @param oldList the old property
      * @param dummy only to differentiate from previous constructors
      */
-    FileProperty(Property<List<String>> newList, Property<List<String>> oldList, List<String> dummy) {
+    Properties(Property<List<String>> newList, Property<List<String>> oldList, List<String> dummy) {
         this.newList = newList;
         this.oldList = oldList;
     }
