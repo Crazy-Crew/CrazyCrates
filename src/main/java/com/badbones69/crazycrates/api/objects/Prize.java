@@ -269,6 +269,8 @@ public class Prize {
 
             builder.setUnbreakable(section.getBoolean("Unbreakable", false));
 
+            builder.setCustomModelData(this.section.getInt("Settings.Custom-Model-Data", -1));
+
             if (this.section.contains("Skull") && this.plugin.getApi() != null) {
                 builder.setSkull(section.getString("Skull", ""), this.plugin.getApi());
             }

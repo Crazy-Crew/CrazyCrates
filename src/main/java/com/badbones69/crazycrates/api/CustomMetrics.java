@@ -2,11 +2,9 @@ package com.badbones69.crazycrates.api;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;

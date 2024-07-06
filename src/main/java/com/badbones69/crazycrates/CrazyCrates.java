@@ -53,7 +53,7 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.instance = new Server(getDataFolder(), getLogger());
+        this.instance = new Server(getDataFolder(), getComponentLogger());
         this.instance.apply();
 
         this.fileManager = new FileManager();

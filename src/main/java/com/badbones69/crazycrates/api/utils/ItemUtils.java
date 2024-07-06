@@ -213,6 +213,8 @@ public class ItemUtils {
         if (section.contains("Player") && builder.isPlayerHead()) {
             builder.setPlayer(section.getString("Player", ""));
         }
+
+        builder.setCustomModelData(section.getInt("Custom-Model-Data", -1));
         
         if (section.contains("DisplayTrim.Pattern") && builder.isArmor()) {
             builder.applyTrimPattern(section.getString("DisplayTrim.Pattern", "sentry"));
@@ -321,6 +323,7 @@ public class ItemUtils {
                     case "lore" -> itemBuilder.setDisplayLore(List.of(value.split(",")));
                     case "player" -> itemBuilder.setPlayer(value);
                     case "skull" -> itemBuilder.setSkull(value, plugin.getApi());
+                    case "custom-model-data" -> itemBuilder.setCustomModelData(StringUtil.tryParseInt(value).orElse(-1).intValue());
                     case "unbreakable-item" -> itemBuilder.setUnbreakable(value.isEmpty() || value.equalsIgnoreCase("true"));
                     case "trim-pattern" -> itemBuilder.applyTrimPattern(value);
                     case "trim-material" -> itemBuilder.applyTrimMaterial(value);

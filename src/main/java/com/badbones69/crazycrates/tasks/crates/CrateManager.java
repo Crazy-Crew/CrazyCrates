@@ -1291,12 +1291,13 @@ public class CrateManager {
     // Internal methods.
     private ItemBuilder getKey(@NotNull final FileConfiguration file) {
         final String name = file.getString("Crate.PhysicalKey.Name", "");
+        final int customModelData = file.getInt("Crate.PhysicalKey.Custom-Model-Data", -1);
         final List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
         final String id = file.getString("Crate.PhysicalKey.Item", "tripwire_hook");
         final boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
-        return new ItemBuilder().withType(id).setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setHidingItemFlags(hideFlags);
+        return new ItemBuilder().withType(id).setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setHidingItemFlags(hideFlags).setCustomModelData(customModelData);
     }
 
     // Cleans the data file.

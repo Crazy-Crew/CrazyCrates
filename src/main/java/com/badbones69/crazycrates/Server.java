@@ -3,6 +3,8 @@ package com.badbones69.crazycrates;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.core.Vital;
 import com.ryderbelserion.vital.core.util.FileUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
@@ -17,13 +19,13 @@ import java.util.logging.Logger;
 public class Server extends Vital implements IServer {
 
     private final File directory;
-    private final Logger logger;
+    private final ComponentLogger logger;
     private final File crates;
 
     private UserManager userManager;
     private Settings settings;
 
-    public Server(@NotNull final File directory, @NotNull final Logger logger) {
+    public Server(@NotNull final File directory, @NotNull final ComponentLogger logger) {
         this.directory = directory;
         this.crates = new File(this.directory, "crates");
         this.logger = logger;
@@ -110,7 +112,7 @@ public class Server extends Vital implements IServer {
      * @return the plugin logger
      */
     @Override
-    public @NotNull final Logger getLogger() {
+    public @NotNull final ComponentLogger getLogger() {
         return this.logger;
     }
 

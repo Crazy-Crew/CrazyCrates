@@ -77,6 +77,8 @@ Crate:
   Prize-Commands: []
   # Item the crate is in the GUI
   Item: "ender_chest"
+  # The custom model data of the item, -1 is disabled.
+  Custom-Model-Data: -1
   # If the crate in the main /crates is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
@@ -97,6 +99,8 @@ Crate:
       Toggle: true
       # The name of the border item.
       Name: " "
+      # The custom model data of the item, -1 is disabled.
+      Custom-Model-Data: -1
       # The item that shows in the border. Can be glass or any other item.
       Item: "gray_stained_glass_pane"
   tier-preview:
@@ -109,6 +113,8 @@ Crate:
       toggle: true
       # The name of the border item.
       name: " "
+      # The custom model data of the item, -1 is disabled.
+      custom-model-data: -1
       # The item that shows in the border. Can be glass or any other item.
       item: "red_stained_glass_pane"
   # Tier related settings only for Casino.
@@ -135,6 +141,8 @@ Crate:
         - "<gray>A basic tier."
       # The item used for the secondary gui when you right-click for the preview.
       Item: "chest"
+      # The custom model data of the item, -1 is disabled.
+      Custom-Model-Data: -1
       # Chance of that item getting picked. It would be 80/100 chance because MaxRange is 100.
       Chance: 50
       # The max range that the chance will go though.
@@ -149,6 +157,8 @@ Crate:
         - "<green>An uncommon tier."
       # The item used for the secondary gui when you right-click for the preview.
       Item: "chest"
+      # The custom model data of the item, -1 is disabled.
+      Custom-Model-Data: -1
       # Chance of that item getting picked. It would be 35/100 chance because MaxRange is 100.
       Chance: 35
       # The max range that the chance will go though.
@@ -163,6 +173,8 @@ Crate:
         - "<red>A rare tier."
       # The item used for the secondary gui when you right-click for the preview.
       Item: "ender_chest"
+      # The custom model data of the item, -1 is disabled.
+      Custom-Model-Data: -1
       # Chance of that item getting picked. It would be 25/100 chance because MaxRange is 100.
       Chance: 25
       # The max range that the chance will go though.
@@ -172,6 +184,8 @@ Crate:
   PhysicalKey:
     # Name of the Key.
     Name: "<bold><light_purple>Cosmic Crate Key</bold>"
+    # The custom model data of the item, -1 is disabled.
+    Custom-Model-Data: -1
     # Lore of the Key.
     Lore:
       - "<gray>A special Key"
@@ -205,6 +219,8 @@ Crate:
     Mystery-Crate:
       # The item of the mystery crate.
       Item: "chest"
+      # The custom model data of the item, -1 is disabled.
+      Custom-Model-Data: -1
       # The name of the mystery crate.
       Name: "<bold><white>???</bold>"
       # The lore of the mystery crate.
@@ -214,6 +230,8 @@ Crate:
     Picked-Crate:
       # The item of the picked crate.
       Item: "glass_pane"
+      # The custom model data of the item, -1 is disabled.
+      Custom-Model-Data: -1
       # The name of the picked crate.
       Name: "<bold><white>???</bold>"
       # The lore of the picked crate.
@@ -226,6 +244,10 @@ Crate:
       DisplayName: "<gold>BadBones69"
       # The item to display in the gui.
       DisplayItem: "player_head"
+      # Prize settings
+      Settings:
+        # The custom model data of the item, -1 is disabled.
+        Custom-Model-Data: -1
       # The amount to display in the gui.
       DisplayAmount: 1
       # The max range i.e. 1/100 = 1% chance to win.
@@ -243,6 +265,10 @@ Crate:
     "2":
       DisplayName: "<bold><blue>Cheap Helmet</bold>"
       DisplayItem: "golden_helmet"
+      # Prize settings
+      Settings:
+        # The custom model data of the item, -1 is disabled.
+        Custom-Model-Data: -1
       DisplayEnchantments:
         - "protection:1"
         - "aqua_affinity:1"
@@ -279,6 +305,10 @@ Crate:
       DisplayName: "<bold><yellow>$1,000</bold>"
       # The item to display in the gui.
       DisplayItem: "sunflower"
+      # Prize settings
+      Settings:
+        # The custom model data of the item, -1 is disabled.
+        Custom-Model-Data: -1
       # The amount to display in the gui.
       DisplayAmount: 1
       # The max range i.e. 20/100 = 20% chance to win.
@@ -304,6 +334,10 @@ Crate:
       DisplayName: "<bold><blue>Crazy <dark_red>Sword</bold>"
       # The item to display in the gui.
       DisplayItem: "golden_sword"
+      # Prize settings
+      Settings:
+        # The custom model data of the item, -1 is disabled.
+        Custom-Model-Data: -1
       # The enchants on the item.
       DisplayEnchantments:
         - "sharpness:5"
@@ -332,6 +366,10 @@ Crate:
       DisplayName: "<bold><yellow>$1,000,000</bold>"
       # The item to display in the gui.
       DisplayItem: "sunflower"
+      # Prize settings
+      Settings:
+        # The custom model data of the item, -1 is disabled.
+        Custom-Model-Data: -1
       # The amount to display in the gui.
       DisplayAmount: 1
       # The max range i.e. 20/100 = 20% chance to win.
@@ -355,6 +393,10 @@ Crate:
       DisplayName: "<bold><blue>Crazy Crate <gold>Key <gray>(x2)</bold>"
       # The item to display in the gui.
       DisplayItem: "lime_dye"
+      # Prize settings
+      Settings:
+        # The custom model data of the item, -1 is disabled.
+        Custom-Model-Data: -1
       # The amount to display in the gui.
       DisplayAmount: 2
       # The max range i.e. 10/1000 = 1.0% chance to win.

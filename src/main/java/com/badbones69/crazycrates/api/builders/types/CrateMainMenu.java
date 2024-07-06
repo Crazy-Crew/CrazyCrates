@@ -53,7 +53,7 @@ public class CrateMainMenu extends InventoryBuilder {
             final String name = this.config.getProperty(ConfigKeys.filler_name);
             final List<String> lore = this.config.getProperty(ConfigKeys.filler_lore);
 
-            final ItemStack item = new ItemBuilder().withType(id).setDisplayName(name).setDisplayLore(lore).setPlayer(getPlayer()).getStack();
+            final ItemStack item = new ItemBuilder().withType(id).setDisplayName(name).setDisplayLore(lore).setPlayer(getPlayer()).setCustomModelData(this.config.getProperty(ConfigKeys.filler_model_data)).getStack();
 
             for (int i = 0; i < getSize(); i++) {
                 inventory.setItem(i, item);
@@ -84,9 +84,11 @@ public class CrateMainMenu extends InventoryBuilder {
                                 }
                             }
 
+                            case "custom-model-data" -> item.setCustomModelData(StringUtil.tryParseInt(value).orElse(-1).intValue());
+
                             case "glowing" -> item.setGlowing(StringUtil.tryParseBoolean(value).orElse(null));
 
-                            case "slot" -> slot = Integer.parseInt(value);
+                            case "slot" -> slot = StringUtil.tryParseInt(value).orElse(-1).intValue();
 
                             case "unbreakable-item" -> item.setUnbreakable(StringUtil.tryParseBoolean(value).orElse(false));
 
@@ -121,6 +123,7 @@ public class CrateMainMenu extends InventoryBuilder {
                     final ItemBuilder builder = new ItemBuilder()
                             .withType(section.getString("Item", "chest"))
                             .setDisplayName(section.getString("CrateName", crateName))
+                            .setCustomModelData(section.getInt("Custom-Model-Data", -1))
                             .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)))
                             .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, crateName)))
                             .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, crateName)))

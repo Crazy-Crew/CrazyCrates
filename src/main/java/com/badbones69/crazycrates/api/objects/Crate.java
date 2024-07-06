@@ -145,6 +145,7 @@ public class Crate {
 
         this.borderItem = new ItemBuilder()
                 .withType(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane"))
+                .setCustomModelData(file.getInt("Crate.Preview.Glass.Custom-Model-Data", -1))
                 .setHidingItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
                 .setDisplayName(borderName);
 
@@ -152,6 +153,7 @@ public class Crate {
 
         this.previewTierBorderItem = new ItemBuilder()
                 .withType(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane"))
+                .setCustomModelData(file.getInt("Crate.tier-preview.glass.custom-model-data", -1))
                 .setHidingItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
                 .setDisplayName(previewTierBorderName);
 
