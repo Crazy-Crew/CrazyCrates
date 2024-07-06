@@ -248,8 +248,9 @@ public class Prize {
             if (this.section.contains("Lore")) {
                 if (MiscUtils.isLogging()) {
                     List.of(
-                            "Detected deprecated usage of Lore in " + this.sectionName + ", please change Lore to DisplayLore",
-                            "Lore will be removed in the next major version of Minecraft in favor of DisplayLore."
+                            "Detected deprecated usage of Lore in Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
+                            "Lore will be removed in the next major version of Minecraft in favor of DisplayLore.",
+                            "This does not apply to ANYWHERE outside of the Prizes, It also does not apply to the Items section in prizes."
                     ).forEach(this.plugin.getLogger()::warning);
                 }
 

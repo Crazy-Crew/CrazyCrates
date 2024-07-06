@@ -1,2 +1,2 @@
 ### Changes:
-- `verbose_logging` in `config.yml` now applies to everything including errors, turn it on if something isn't working.
+- Deprecation warning for `Lore` -> `DisplayLore` is now more verbose, it'll tell you the prize name and crate file now.
