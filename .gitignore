@@ -8,14 +8,7 @@ buildSrc/build
 api/.gradle
 api/build
 
-run/
-
-!run/config/paper-global.yml
-!run/config/paper-world-defaults.yml
-!run/bukkit.yml
 !run/eula.txt
-!run/ops.json
-!run/server.properties
-!run/spigot.yml
+run
 
 jars
