@@ -5,23 +5,10 @@ build
 buildSrc/.gradle
 buildSrc/build
 
-core/.gradle
-core/build
-
 api/.gradle
 api/build
 
-paper/.gradle
-paper/build
-
-paper/run/
-
-!paper/run/config/paper-global.yml
-!paper/run/config/paper-world-defaults.yml
-!paper/run/bukkit.yml
-!paper/run/eula.txt
-!paper/run/ops.json
-!paper/run/server.properties
-!paper/run/spigot.yml
+!run/eula.txt
+run
 
 jars
