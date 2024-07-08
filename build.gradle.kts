@@ -1,7 +1,3 @@
-import com.ryderbelserion.feather.tools.formatLog
-import com.ryderbelserion.feather.tools.latestCommitHash
-import com.ryderbelserion.feather.tools.latestCommitMessage
-
 plugins {
     alias(libs.plugins.paperweight)
     alias(libs.plugins.shadowJar)
@@ -16,13 +12,9 @@ val buildNumber: String? = System.getenv("BUILD_NUMBER")
 
 rootProject.version = if (buildNumber != null) "${libs.versions.minecraft.get()}-$buildNumber" else "3.4.7"
 
-val isSnapshot = false
+val isSnapshot = true
 
-val content: String = if (isSnapshot) {
-    formatLog(latestCommitHash(), latestCommitMessage(), rootProject.name, "Crazy-Crew")
-} else {
-    rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
-}
+val content: String = rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 
 repositories {
     maven("https://repo.fancyplugins.de/releases")
