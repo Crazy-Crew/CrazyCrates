@@ -11,10 +11,10 @@ import net.kyori.adventure.sound.Sound;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -50,10 +50,25 @@ public class CrateControlListener implements Listener {
     private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
     @EventHandler
-    public void onLeftClickCrate(PlayerInteractEvent event) {
+    public void onGroundClick(PlayerInteractEvent event) {
         final Player player = event.getPlayer();
 
-        if (event.getAction() != Action.LEFT_CLICK_BLOCK) return;
+        if (!event.getAction().isRightClick()) return;
+
+        final Block clickedBlock = event.getClickedBlock();
+
+        if (clickedBlock == null) return;
+
+        final boolean isKey = event.getHand() == EquipmentSlot.OFF_HAND ? this.crateManager.isKey(player.getInventory().getItemInOffHand()) : this.crateManager.isKey(player.getInventory().getItemInMainHand());
+
+        if (isKey) {
+            event.setUseItemInHand(Event.Result.DENY);
+        }
+    }
+
+    @EventHandler
+    public void onCrateInteract(PlayerInteractEvent event) {
+        final Player player = event.getPlayer();
 
         final Block clickedBlock = event.getClickedBlock();
 
@@ -61,19 +76,13 @@ public class CrateControlListener implements Listener {
 
         final CrateLocation crateLocation = this.crateManager.getCrateLocation(clickedBlock.getLocation());
 
+        // If location is null, return.
         if (crateLocation == null) return;
 
-        final boolean isKey = event.getHand() == EquipmentSlot.OFF_HAND ? this.crateManager.isKey(player.getInventory().getItemInOffHand()) : this.crateManager.isKey(player.getInventory().getItemInMainHand());
+        event.setUseInteractedBlock(Event.Result.DENY);
+        event.setUseItemInHand(Event.Result.DENY);
 
-        if (isKey) {
-            event.setCancelled(true);
-
-            player.updateInventory();
-
-            return;
-        }
-
-        event.setCancelled(true);
+        final Crate crate = crateLocation.getCrate();
 
         if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin")) {
             if (crateLocation.getLocation().equals(clickedBlock.getLocation())) {
@@ -85,35 +94,6 @@ public class CrateControlListener implements Listener {
             return;
         }
 
-        if (crateLocation.getCrateType() == CrateType.menu) return;
-
-        final Crate crate = crateLocation.getCrate();
-
-        if (crate.isPreviewEnabled()) {
-            this.inventoryManager.addViewer(player);
-            this.inventoryManager.openNewCratePreview(player, crateLocation.getCrate());
-        } else {
-            player.sendRichMessage(Messages.preview_disabled.getMessage(player, "{crate}", crate.getName()));
-        }
-    }
-
-    @EventHandler
-    public void onInteract(PlayerInteractEvent event) {
-        final Player player = event.getPlayer();
-
-        final Block clickedBlock = event.getClickedBlock();
-
-        if (clickedBlock == null) return;
-
-        final CrateLocation crateLocation = this.crateManager.getCrateLocation(clickedBlock.getLocation());
-
-        // If location is null, return.
-        if (crateLocation == null) return;
-
-        final Crate crate = crateLocation.getCrate();
-
-        event.setCancelled(true);
-
         if (crate.getCrateType() == CrateType.menu) {
             // this is to stop players in QuadCrate to not be able to try and open a crate set to menu.
             if (!this.crateManager.isInOpeningList(player) && this.config.getProperty(ConfigKeys.enable_crate_menu)) {
@@ -122,6 +102,13 @@ public class CrateControlListener implements Listener {
                 player.openInventory(crateMainMenu.build().getInventory());
             } else {
                 player.sendRichMessage(Messages.feature_disabled.getMessage(player));
+            }
+        } else {
+            if (crate.isPreviewEnabled()) {
+                this.inventoryManager.addViewer(player);
+                this.inventoryManager.openNewCratePreview(player, crateLocation.getCrate());
+            } else {
+                player.sendRichMessage(Messages.preview_disabled.getMessage(player, "{crate}", crate.getName()));
             }
         }
     }
@@ -133,7 +120,7 @@ public class CrateControlListener implements Listener {
     public void onRightClick(PlayerInteractEvent event) {
         final Player player = event.getPlayer();
 
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK || event.getHand() != EquipmentSlot.HAND) return;
+        if (!event.getAction().isRightClick() || event.getHand() != EquipmentSlot.HAND) return;
 
         final Block clickedBlock = event.getClickedBlock();
 
@@ -141,7 +128,6 @@ public class CrateControlListener implements Listener {
 
         final CrateLocation crateLocation = this.crateManager.getCrateLocation(clickedBlock.getLocation());
 
-        // If location is null, return.
         if (crateLocation == null) return;
 
         final Crate crate = crateLocation.getCrate();
@@ -150,12 +136,10 @@ public class CrateControlListener implements Listener {
 
         final boolean isKey = event.getHand() == EquipmentSlot.OFF_HAND ? ItemUtils.isSimilar(player.getInventory().getItemInOffHand(), crate) : ItemUtils.isSimilar(player.getInventory().getItemInMainHand(), crate);
 
-        if (isKey) {
-            event.setCancelled(true);
-            player.updateInventory();
-        }
+        if (!isKey) return;
 
-        event.setCancelled(true);
+        event.setUseInteractedBlock(Event.Result.DENY);
+        event.setUseItemInHand(Event.Result.DENY);
 
         final KeyCheckEvent keyCheckEvent = new KeyCheckEvent(player, crateLocation);
         player.getServer().getPluginManager().callEvent(keyCheckEvent);
@@ -186,17 +170,17 @@ public class CrateControlListener implements Listener {
 
         final ItemStack itemStack = player.getInventory().getItemInMainHand();
 
-        if (crate.getCrateType() != CrateType.crate_on_the_go && isKey && ItemUtils.isSimilar(itemStack, crate) && this.config.getProperty(ConfigKeys.physical_accepts_physical_keys)) {
+        if (crate.getCrateType() != CrateType.crate_on_the_go && ItemUtils.isSimilar(itemStack, crate) && this.config.getProperty(ConfigKeys.physical_accepts_physical_keys)) {
             hasKey = true;
             isPhysical = true;
         }
 
         if (this.config.getProperty(ConfigKeys.physical_accepts_virtual_keys) && this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) hasKey = true;
 
-        final Map<String, String> placeholders = new HashMap<>();
-
-        placeholders.put("{crate}", crate.getName());
-        placeholders.put("{key}", keyName);
+        final Map<String, String> placeholders = new HashMap<>() {{
+            put("{crate}", crate.getName());
+            put("{key}", keyName);
+        }};
 
         if (hasKey) {
             // Checks if the player uses the quick crate again.
