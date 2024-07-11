@@ -110,7 +110,7 @@ modrinth {
     detectLoaders.set(false)
 
     dependencies {
-        optional.version("fancyholograms", "2.0.6")
+        optional.version("fancyholograms", "2.3.0")
     }
 }
 
