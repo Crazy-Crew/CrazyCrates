@@ -1,5 +1,5 @@
 ### Changed:
-- Updated how interaction with crates has been handled.
+- Use component logger for startup dependencies
 
 ### Fixed:
-- Prevents placeable blocks from being placed on blocks if a key like tripwire hook or candle.
+- Issue with PlaceholderAPI
