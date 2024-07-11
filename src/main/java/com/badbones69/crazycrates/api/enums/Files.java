@@ -1,8 +1,10 @@
 package com.badbones69.crazycrates.api.enums;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.ryderbelserion.vital.paper.files.config.FileManager;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 public enum Files {
 
@@ -11,9 +13,10 @@ public enum Files {
 
     private final String fileName;
     private final String strippedName;
-    private final YamlConfiguration configuration;
 
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+
+    private @NotNull final FileManager fileManager = this.plugin.getFileManager();
 
     /**
      * A constructor to build a file
@@ -23,22 +26,25 @@ public enum Files {
     Files(final String fileName) {
         this.fileName = fileName;
         this.strippedName = this.fileName.replace(".yml", "");
-        this.configuration = this.plugin.getFileManager().getFile(this.fileName);
     }
 
-    public final String getFileName() {
-        return this.fileName;
+    public final YamlConfiguration getConfiguration() {
+        return this.fileManager.getFile(this.fileName);
     }
 
     public final String getStrippedName() {
         return this.strippedName;
     }
 
-    public final YamlConfiguration getConfiguration() {
-        return this.configuration;
+    public final String getFileName() {
+        return this.fileName;
     }
 
     public void save() {
-        this.plugin.getFileManager().saveFile(this.fileName);
+        this.fileManager.saveFile(this.fileName);
+    }
+
+    public void reload() {
+        this.fileManager.reloadFile(this.fileName);
     }
 }
