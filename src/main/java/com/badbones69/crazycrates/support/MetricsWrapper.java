@@ -1,14 +1,14 @@
 package com.badbones69.crazycrates.support;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.CustomMetrics;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.paper.bStats;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MetricsWrapper extends CustomMetrics {
+public class MetricsWrapper extends bStats {
 
     private final CrateManager crateManager;
 
