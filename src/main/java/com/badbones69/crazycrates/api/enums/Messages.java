@@ -167,22 +167,26 @@ public enum Messages {
     public String getMessage(@Nullable final Player player, @NotNull final Map<String, String> placeholders) {
         String prefix = this.config.getProperty(ConfigKeys.command_prefix);
 
-        String message = parse(placeholders);
-
-        if (Support.placeholder_api.isEnabled() && player != null) {
-            return PlaceholderAPI.setPlaceholders(player, message.replaceAll("\\{prefix}", prefix));
+        if (player != null) {
+            return parse(player, placeholders).replaceAll("\\{prefix}", prefix);
         }
 
-        return message.replaceAll("\\{prefix}", prefix);
+        return parse(null, placeholders).replaceAll("\\{prefix}", prefix);
     }
 
-    private @NotNull String parse(@NotNull final Map<String, String> placeholders) {
+    private @NotNull String parse(@Nullable final Player player, @NotNull final Map<String, String> placeholders) {
         String message;
 
         if (isList()) {
             message = StringUtils.chomp(StringUtil.convertList(getList()));
         } else {
             message = getString();
+        }
+
+        if (player != null) {
+            if (Support.placeholder_api.isEnabled()) {
+                message = PlaceholderAPI.setPlaceholders(player, message);
+            }
         }
 
         if (!placeholders.isEmpty()) {
