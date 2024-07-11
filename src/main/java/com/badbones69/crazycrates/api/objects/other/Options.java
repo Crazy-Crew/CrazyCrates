@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates;
+package com.badbones69.crazycrates.api.objects.other;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.config.ConfigManager;
@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.platform.ISettings;
 import java.util.List;
 
-public class Settings implements ISettings {
+public class Options implements ISettings {
 
     private @NotNull final SettingsManager config = ConfigManager.getConfig();
 

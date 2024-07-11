@@ -1,9 +1,8 @@
-package com.badbones69.crazycrates;
+package com.badbones69.crazycrates.api.objects.other;
 
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.core.Vital;
 import com.ryderbelserion.vital.core.util.FileUtil;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +13,6 @@ import us.crazycrew.crazycrates.platform.IServer;
 import com.badbones69.crazycrates.config.ConfigManager;
 import java.io.File;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class Server extends Vital implements IServer {
 
@@ -23,7 +21,7 @@ public class Server extends Vital implements IServer {
     private final File crates;
 
     private UserManager userManager;
-    private Settings settings;
+    private Options options;
 
     public Server(@NotNull final File directory, @NotNull final ComponentLogger logger) {
         this.directory = directory;
@@ -38,7 +36,7 @@ public class Server extends Vital implements IServer {
      */
     @ApiStatus.Internal
     public void apply() {
-        this.settings = new Settings();
+        this.options = new Options();
 
         // Register default provider.
         CratesProvider.register(this);
@@ -97,7 +95,7 @@ public class Server extends Vital implements IServer {
      */
     @Override
     public @NotNull final ISettings getSettings() {
-        return this.settings;
+        return this.options;
     }
 
     /**
