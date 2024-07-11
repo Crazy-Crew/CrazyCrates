@@ -77,9 +77,6 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("The prefix used in commands")
     public static final Property<String> command_prefix = newProperty("root.command_prefix", "<dark_gray>[<blue>CrazyCrates<dark_gray>]: ");
 
-    @Comment("The prefix used in console")
-    public static final Property<String> console_prefix = newProperty("root.console_prefix", "<dark_gray>[<blue>CrazyCrates<dark_gray>] ");
-
     @Comment("If /crates should open the main menu. Warning: This will remove the menu button from crate previews.")
     public static final Property<Boolean> enable_crate_menu = newProperty("gui.toggle", true);
 
