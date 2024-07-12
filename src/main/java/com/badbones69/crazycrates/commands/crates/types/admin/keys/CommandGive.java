@@ -105,7 +105,7 @@ public class CommandGive extends BaseCommand {
             player.sendRichMessage(Messages.obtaining_keys.getMessage(player, placeholders));
 
             if (crate.getCrateType() == CrateType.crate_on_the_go) {
-                player.getInventory().addItem(crate.getKey(amount, player));
+                MiscUtils.addItem(player, crate.getKey(amount, player));
 
                 return;
             }

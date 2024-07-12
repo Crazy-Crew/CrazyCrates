@@ -226,6 +226,13 @@ public class MiscUtils {
         return new ItemBuilder(panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
     }
 
+    public static void addItem(final Player player, final ItemStack... items) {
+        final Inventory inventory = player.getInventory();
+
+        inventory.setMaxStackSize(64);
+        inventory.addItem(items);
+    }
+
     /**
      * Decides when the crate should start to slow down.
      */

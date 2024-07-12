@@ -206,7 +206,7 @@ public abstract class BaseCommand {
             if (event.isCancelled()) return;
 
             if (crate.getCrateType() == CrateType.crate_on_the_go) {
-                player.getInventory().addItem(crate.getKey(amount, player));
+                MiscUtils.addItem(player, crate.getKey(amount, player));
             } else {
                 this.userManager.addKeys(player.getUniqueId(), crate.getName(), type, amount);
             }

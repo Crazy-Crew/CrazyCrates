@@ -129,7 +129,7 @@ public class BukkitUserManager extends UserManager {
         switch (keyType) {
             case physical_key -> {
                 if (!MiscUtils.isInventoryFull(player)) {
-                    player.getInventory().addItem(crate.getKey(amount, player));
+                    MiscUtils.addItem(player, crate.getKey(amount, player));
 
                     return;
                 }
@@ -475,7 +475,7 @@ public class BukkitUserManager extends UserManager {
                 // If the crate type is on the go.
                 if (crate.getCrateType() == CrateType.crate_on_the_go) {
                     // If the inventory not full, add to inventory.
-                    player.getInventory().addItem(crate.getKey(amount, player));
+                    MiscUtils.addItem(player, crate.getKey(amount, player));
                 } else {
                     // Otherwise add virtual keys.
                     addVirtualKeys(uuid, crate.getName(), amount);
@@ -507,7 +507,7 @@ public class BukkitUserManager extends UserManager {
                 }
 
                 // If the inventory not full, add to inventory.
-                player.getInventory().addItem(crate.getKey(keysGiven, player));
+                MiscUtils.addItem(player, crate.getKey(keysGiven, player));
 
                 // If keys given is greater or equal than, remove data.
                 if (keysGiven >= amount) this.configuration.set("Offline-Players." + uuid + ".Physical." + crate.getName(), null);

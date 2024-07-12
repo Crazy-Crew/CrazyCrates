@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.api.builders.types;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import org.bukkit.Material;
@@ -93,9 +94,7 @@ public class CrateAdminMenu extends InventoryBuilder {
 
         switch (clickType) {
             case LEFT -> {
-                ItemStack key = crate.getKey(player);
-
-                player.getInventory().addItem(key);
+                MiscUtils.addItem(player, crate.getKey(player));
 
                 //todo() make this configurable?
                 player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
@@ -106,9 +105,7 @@ public class CrateAdminMenu extends InventoryBuilder {
             }
 
             case SHIFT_LEFT -> {
-                ItemStack key = crate.getKey(8, player);
-
-                player.getInventory().addItem(key);
+                MiscUtils.addItem(player, crate.getKey(8, player));
 
                 //todo() make this configurable?
                 player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);

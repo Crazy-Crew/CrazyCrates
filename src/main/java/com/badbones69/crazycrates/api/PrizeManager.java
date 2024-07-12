@@ -43,7 +43,7 @@ public class PrizeManager {
         if (!prize.getItemBuilders().isEmpty()) {
             for (final ItemBuilder item : prize.getItemBuilders()) {
                 if (!MiscUtils.isInventoryFull(player)) {
-                    player.getInventory().addItem(item.setPlayer(player).getStack());
+                    MiscUtils.addItem(player, item.setPlayer(player).getStack());
                 } else {
                     player.getWorld().dropItemNaturally(player.getLocation(), item.setPlayer(player).getStack());
                 }
@@ -52,7 +52,7 @@ public class PrizeManager {
             // Only give them the display item as a reward if prize commands are empty.
             if (prize.getCommands().isEmpty()) {
                 if (!MiscUtils.isInventoryFull(player)) {
-                    player.getInventory().addItem(prize.getPrizeItem().setPlayer(player).getStack());
+                    MiscUtils.addItem(player, prize.getPrizeItem().setPlayer(player).getStack());
                 } else {
                     player.getWorld().dropItemNaturally(player.getLocation(), prize.getPrizeItem().setPlayer(player).getStack());
                 }
