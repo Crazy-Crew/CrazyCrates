@@ -12,7 +12,6 @@ public enum Files {
     data("data.yml");
 
     private final String fileName;
-    private final String strippedName;
 
     private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
@@ -25,26 +24,17 @@ public enum Files {
      */
     Files(final String fileName) {
         this.fileName = fileName;
-        this.strippedName = this.fileName.replace(".yml", "");
     }
 
     public final YamlConfiguration getConfiguration() {
         return this.fileManager.getFile(this.fileName);
     }
 
-    public final String getStrippedName() {
-        return this.strippedName;
-    }
-
-    public final String getFileName() {
-        return this.fileName;
+    public void reload() {
+        this.fileManager.reloadFile(this.fileName);
     }
 
     public void save() {
         this.fileManager.saveFile(this.fileName);
-    }
-
-    public void reload() {
-        this.fileManager.reloadFile(this.fileName);
     }
 }
