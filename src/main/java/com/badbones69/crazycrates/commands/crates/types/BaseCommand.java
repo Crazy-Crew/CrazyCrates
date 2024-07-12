@@ -134,25 +134,6 @@ public abstract class BaseCommand {
         return crate;
     }
 
-    protected final Prize getPrize(@NotNull final CommandSender sender, @NotNull final String crateName, @NotNull final String name, final boolean ignoreChecks) {
-        if (crateName.isEmpty()) return null;
-        if (name.isEmpty()) return null;
-
-        Crate crate = getCrate(sender, crateName, false);
-
-        if (crate == null) return null;
-
-        Prize prize = crate.getPrize(name);
-
-        if (prize == null) {
-            //todo() add better message.
-
-            return null;
-        }
-
-        return prize;
-    }
-
     @ApiStatus.Internal
     private void takeKey(@NotNull final CommandSender sender, @Nullable final Player player, @Nullable final OfflinePlayer offlinePlayer, @NotNull final Crate crate, @NotNull final KeyType type, int amount) {
         if (player != null) {
