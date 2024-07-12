@@ -531,7 +531,13 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey(Player player) {
-        return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).getStack();
+        final ItemStack itemStack = this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).getStack();
+
+        if (itemStack.hasItemMeta()) {
+            itemStack.editMeta(itemMeta -> itemMeta.setMaxStackSize(64));
+        }
+
+        return itemStack;
     }
 
     /**
@@ -539,11 +545,14 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey(int amount) {
-        ItemBuilder key = this.keyBuilder;
+        final ItemStack itemStack = this.keyBuilder.getStack();
+        itemStack.setAmount(amount);
 
-        key.setAmount(amount);
+        if (itemStack.hasItemMeta()) {
+            itemStack.editMeta(itemMeta -> itemMeta.setMaxStackSize(64));
+        }
 
-        return key.getStack();
+        return itemStack;
     }
     
     /**
@@ -552,11 +561,14 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey(int amount, Player player) {
-        ItemBuilder key = this.keyBuilder;
+        final ItemStack itemStack = this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).getStack();
+        itemStack.setAmount(amount);
 
-        key.setAmount(amount);
+        if (itemStack.hasItemMeta()) {
+            itemStack.editMeta(itemMeta -> itemMeta.setMaxStackSize(64));
+        }
 
-        return this.userManager.addPlaceholders(key.setPlayer(player), this).getStack();
+        return itemStack;
     }
 
     /**
@@ -586,6 +598,7 @@ public class Crate {
             if (!key.getSectionName().equalsIgnoreCase(name)) continue;
 
             prize = key;
+
             break;
         }
 
