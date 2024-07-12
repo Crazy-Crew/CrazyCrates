@@ -530,13 +530,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey(Player player) {
-        final ItemStack itemStack = this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).getStack();
-
-        if (itemStack.hasItemMeta()) {
-            itemStack.editMeta(itemMeta -> itemMeta.setMaxStackSize(64));
-        }
-
-        return itemStack;
+        return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).getStack();
     }
 
     /**
@@ -544,14 +538,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey(int amount) {
-        final ItemStack itemStack = this.keyBuilder.getStack();
-        itemStack.setAmount(amount);
-
-        if (itemStack.hasItemMeta()) {
-            itemStack.editMeta(itemMeta -> itemMeta.setMaxStackSize(64));
-        }
-
-        return itemStack;
+        return this.keyBuilder.setAmount(amount).getStack();
     }
     
     /**
@@ -560,14 +547,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey(int amount, Player player) {
-        final ItemStack itemStack = this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).getStack();
-        itemStack.setAmount(amount);
-
-        if (itemStack.hasItemMeta()) {
-            itemStack.editMeta(itemMeta -> itemMeta.setMaxStackSize(64));
-        }
-
-        return itemStack;
+        return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).setAmount(amount).getStack();
     }
 
     /**
@@ -831,13 +811,7 @@ public class Crate {
         ArrayList<ItemStack> items = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
-            ItemStack stack = prize.getDisplayItem();
-
-            if (stack.hasItemMeta()) {
-                stack.editMeta(itemMeta -> itemMeta.setMaxStackSize(64));
-            }
-
-            items.add(stack);
+            items.add(prize.getDisplayItem());
         }
 
         return items;
@@ -852,13 +826,7 @@ public class Crate {
         List<ItemStack> items = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
-            ItemStack stack = prize.getDisplayItem(player);
-
-            if (stack.hasItemMeta()) {
-                stack.editMeta(itemMeta -> itemMeta.setMaxStackSize(64));
-            }
-
-            items.add(stack);
+            items.add(prize.getDisplayItem(player));
         }
 
         return items;
@@ -875,13 +843,7 @@ public class Crate {
 
         for (final Prize prize : getPrizes()) {
             if (prize.getTiers().contains(tier)) {
-                ItemStack stack = prize.getDisplayItem(player);
-
-                if (stack.hasItemMeta()) {
-                    stack.editMeta(itemMeta -> itemMeta.setMaxStackSize(64));
-                }
-
-                prizes.add(stack);
+                prizes.add(prize.getDisplayItem(player));
             }
         }
 
