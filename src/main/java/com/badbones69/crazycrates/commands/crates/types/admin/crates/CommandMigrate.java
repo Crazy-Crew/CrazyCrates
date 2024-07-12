@@ -101,7 +101,7 @@ public class CommandMigrate extends BaseCommand {
                 file.save();
             }
 
-            case SPECIALIZED_CRATES -> sender.sendRichMessage(Messages.migration_not_available.getMessage());
+            case SPECIALIZED_CRATES -> sender.sendRichMessage(Messages.migration_not_available.getMessage(sender));
         }
     }
 

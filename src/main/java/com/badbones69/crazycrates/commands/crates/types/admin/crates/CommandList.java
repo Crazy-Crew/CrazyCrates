@@ -42,7 +42,7 @@ public class CommandList extends BaseCommand {
             placeholders.put("{z}", String.valueOf(z));
             placeholders.put("{world}", world);
 
-            crates.add(Messages.crate_locations_format.getMessage(placeholders));
+            crates.add(Messages.crate_locations_format.getMessage(sender, placeholders));
         }
 
         final Map<String, String> placeholders = new HashMap<>();

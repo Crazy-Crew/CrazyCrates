@@ -124,39 +124,23 @@ public enum Messages {
         return this.messages.getProperty(this.properties);
     }
 
-    public String getMessage() {
-        return getMessage(null, new HashMap<>());
-    }
-
-    public String getMessage(@Nullable final CommandSender sender) {
+    public String getMessage(@NotNull final CommandSender sender) {
         return getMessage(sender, new HashMap<>());
     }
 
-    public String getMessage(@NotNull final Map<String, String> placeholders) {
-        return getMessage(null, placeholders);
-    }
-
-    public String getMessage(@NotNull final String placeholder, @NotNull final String replacement) {
-        return getMessage(null, placeholder, replacement);
-    }
-
-    public String getMessage(@Nullable final CommandSender sender, @NotNull final String placeholder, @NotNull final String replacement) {
+    public String getMessage(@NotNull final CommandSender sender, @NotNull final String placeholder, @NotNull final String replacement) {
         Map<String, String> placeholders = new HashMap<>() {{
             put(placeholder, replacement);
         }};
 
-        if (sender instanceof Player player) {
-            return getMessage(player, placeholders);
-        }
-
-        return getMessage(null, placeholders);
+        return getMessage(sender, placeholders);
     }
 
-    public String getMessage(@Nullable final CommandSender sender, @NotNull final Map<String, String> placeholders) {
+    public String getMessage(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
         return parse(sender, placeholders).replaceAll("\\{prefix}", this.config.getProperty(ConfigKeys.command_prefix));
     }
 
-    private @NotNull String parse(CommandSender sender, @NotNull final Map<String, String> placeholders) {
+    private @NotNull String parse(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
         String message;
 
         if (isList()) {

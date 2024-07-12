@@ -54,9 +54,9 @@ public class CommandKey {
         placeholders.put("{player}", target.getName());
         placeholders.put("{crates_opened}", String.valueOf(this.userManager.getTotalCratesOpened(target.getUniqueId())));
 
-        String header = Messages.other_player_no_keys_header.getMessage(null, placeholders);
+        String header = Messages.other_player_no_keys_header.getMessage(target, placeholders);
 
-        String content = Messages.other_player_no_keys.getMessage(null, "{player}", target.getName());
+        String content = Messages.other_player_no_keys.getMessage(target, "{player}", target.getName());
 
         getKeys(target, sender, header, content);
     }
