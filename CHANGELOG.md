@@ -1,5 +1,6 @@
 ### Fixed:
-- Apply max stack size to the getKey methods which when you do /crazycrates givekey blahblah 99, it will now split the stack into 64/35
+- Apply `MaxStackSize` to the player's inventory when using Player#addItem, so now instead of 99 items popping up in the inventory if giving 99 keys or any items, it'll split 64/35
+  - Spigot for some odd reason made Player#addItem use the max stack size for the inventories. #hardforkwhen
 
 ### Changes:
-- Clean up the papi parsing in messages.
+- Simplified parsing messages internally with placeholders
