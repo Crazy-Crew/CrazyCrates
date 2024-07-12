@@ -12,7 +12,6 @@ import com.ryderbelserion.vital.paper.util.DyeUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Color;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -634,7 +633,7 @@ public class Crate {
      * @param prizeName the name of the prize.
      * @param chance the chance to add.
      */
-    public void addEditorItem(@Nullable final ItemStack itemStack, @NotNull final Player player, @NotNull final String prizeName, final int chance) {
+    public void addEditorItem(@Nullable final ItemStack itemStack, @NotNull final String prizeName, final int chance) {
         if (itemStack == null || prizeName.isEmpty() || chance <= 0) return;
 
         ConfigurationSection section = getPrizeSection();

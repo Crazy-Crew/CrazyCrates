@@ -45,6 +45,6 @@ public class CommandAddItem extends BaseCommand {
             return;
         }
 
-        crate.addEditorItem(item, player, prizeName, chance);
+        crate.addEditorItem(item, prizeName, chance);
     }
 }
