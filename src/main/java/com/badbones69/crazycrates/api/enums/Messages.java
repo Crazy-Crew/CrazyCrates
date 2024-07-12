@@ -129,11 +129,7 @@ public enum Messages {
     }
 
     public String getMessage(@Nullable final CommandSender sender) {
-        if (sender instanceof Player player) {
-            return getMessage(player, new HashMap<>());
-        }
-
-        return getMessage(null, new HashMap<>());
+        return getMessage(sender, new HashMap<>());
     }
 
     public String getMessage(@NotNull final Map<String, String> placeholders) {
@@ -157,24 +153,10 @@ public enum Messages {
     }
 
     public String getMessage(@Nullable final CommandSender sender, @NotNull final Map<String, String> placeholders) {
-        if (sender instanceof Player player) {
-            return getMessage(player, placeholders);
-        }
-
-        return getMessage(null, placeholders);
+        return parse(sender, placeholders).replaceAll("\\{prefix}", this.config.getProperty(ConfigKeys.command_prefix));
     }
 
-    public String getMessage(@Nullable final Player player, @NotNull final Map<String, String> placeholders) {
-        String prefix = this.config.getProperty(ConfigKeys.command_prefix);
-
-        if (player != null) {
-            return parse(player, placeholders).replaceAll("\\{prefix}", prefix);
-        }
-
-        return parse(null, placeholders).replaceAll("\\{prefix}", prefix);
-    }
-
-    private @NotNull String parse(@Nullable final Player player, @NotNull final Map<String, String> placeholders) {
+    private @NotNull String parse(CommandSender sender, @NotNull final Map<String, String> placeholders) {
         String message;
 
         if (isList()) {
@@ -183,7 +165,7 @@ public enum Messages {
             message = getString();
         }
 
-        if (player != null) {
+        if (sender instanceof Player player) {
             if (Support.placeholder_api.isEnabled()) {
                 message = PlaceholderAPI.setPlaceholders(player, message);
             }
