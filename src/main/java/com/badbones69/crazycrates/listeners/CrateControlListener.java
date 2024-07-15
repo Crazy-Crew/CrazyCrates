@@ -70,6 +70,8 @@ public class CrateControlListener implements Listener {
     public void onCrateInteract(PlayerInteractEvent event) {
         final Player player = event.getPlayer();
 
+        if (!event.getAction().isLeftClick()) return;
+
         final Block clickedBlock = event.getClickedBlock();
 
         if (clickedBlock == null) return;
@@ -136,7 +138,32 @@ public class CrateControlListener implements Listener {
 
         final boolean isKey = event.getHand() == EquipmentSlot.OFF_HAND ? ItemUtils.isSimilar(player.getInventory().getItemInOffHand(), crate) : ItemUtils.isSimilar(player.getInventory().getItemInMainHand(), crate);
 
-        if (!isKey) return;
+        if (!isKey) {
+            final String keyName = crate.getKeyName();
+
+            final Map<String, String> placeholders = new HashMap<>() {{
+                put("{crate}", crate.getName());
+                put("{key}", keyName);
+            }};
+
+            if (crate.getCrateType() != CrateType.crate_on_the_go) {
+                if (this.config.getProperty(ConfigKeys.knock_back)) knockBack(player, clickedBlock.getLocation());
+
+                //todo() convert this to a bean property!
+                if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
+                    net.kyori.adventure.sound.Sound sound = net.kyori.adventure.sound.Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
+
+                    player.playSound(sound);
+                }
+
+                player.sendRichMessage(Messages.no_keys.getMessage(player, placeholders));
+            }
+
+            event.setUseInteractedBlock(Event.Result.DENY);
+            event.setUseItemInHand(Event.Result.DENY);
+
+            return;
+        }
 
         event.setUseInteractedBlock(Event.Result.DENY);
         event.setUseItemInHand(Event.Result.DENY);
@@ -149,8 +176,6 @@ public class CrateControlListener implements Listener {
         boolean hasKey = false;
         boolean isPhysical = false;
         boolean useQuickCrateAgain = false;
-
-        final String keyName = crate.getKeyName();
 
         final int requiredKeys = crate.getRequiredKeys();
 
@@ -176,11 +201,6 @@ public class CrateControlListener implements Listener {
         }
 
         if (this.config.getProperty(ConfigKeys.physical_accepts_virtual_keys) && this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) hasKey = true;
-
-        final Map<String, String> placeholders = new HashMap<>() {{
-            put("{crate}", crate.getName());
-            put("{key}", keyName);
-        }};
 
         if (hasKey) {
             // Checks if the player uses the quick crate again.
@@ -220,19 +240,6 @@ public class CrateControlListener implements Listener {
             this.crateManager.openCrate(player, crate, keyType, crateLocation.getLocation(), false, true);
 
             return;
-        }
-
-        if (crate.getCrateType() != CrateType.crate_on_the_go) {
-            if (this.config.getProperty(ConfigKeys.knock_back)) knockBack(player, clickedBlock.getLocation());
-
-            //todo() convert this to a bean property!
-            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                net.kyori.adventure.sound.Sound sound = net.kyori.adventure.sound.Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
-
-                player.playSound(sound);
-            }
-
-            player.sendRichMessage(Messages.no_keys.getMessage(player, placeholders));
         }
     }
 
