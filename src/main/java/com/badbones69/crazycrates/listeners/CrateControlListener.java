@@ -136,42 +136,13 @@ public class CrateControlListener implements Listener {
 
         if (crate.getCrateType() == CrateType.menu) return;
 
-        final boolean isKey = event.getHand() == EquipmentSlot.OFF_HAND ? ItemUtils.isSimilar(player.getInventory().getItemInOffHand(), crate) : ItemUtils.isSimilar(player.getInventory().getItemInMainHand(), crate);
-
-        if (!isKey) {
-            final String keyName = crate.getKeyName();
-
-            final Map<String, String> placeholders = new HashMap<>() {{
-                put("{crate}", crate.getName());
-                put("{key}", keyName);
-            }};
-
-            if (crate.getCrateType() != CrateType.crate_on_the_go) {
-                if (this.config.getProperty(ConfigKeys.knock_back)) knockBack(player, clickedBlock.getLocation());
-
-                //todo() convert this to a bean property!
-                if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                    net.kyori.adventure.sound.Sound sound = net.kyori.adventure.sound.Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
-
-                    player.playSound(sound);
-                }
-
-                player.sendRichMessage(Messages.no_keys.getMessage(player, placeholders));
-            }
-
-            event.setUseInteractedBlock(Event.Result.DENY);
-            event.setUseItemInHand(Event.Result.DENY);
-
-            return;
-        }
-
         event.setUseInteractedBlock(Event.Result.DENY);
         event.setUseItemInHand(Event.Result.DENY);
 
-        final KeyCheckEvent keyCheckEvent = new KeyCheckEvent(player, crateLocation);
-        player.getServer().getPluginManager().callEvent(keyCheckEvent);
+        final KeyCheckEvent key = new KeyCheckEvent(player, crateLocation);
+        player.getServer().getPluginManager().callEvent(key);
 
-        if (keyCheckEvent.isCancelled()) return;
+        if (key.isCancelled()) return;
 
         boolean hasKey = false;
         boolean isPhysical = false;
@@ -189,6 +160,8 @@ public class CrateControlListener implements Listener {
             placeholders.put("{amount}", String.valueOf(totalKeys));
 
             player.sendRichMessage(Messages.required_keys.getMessage(player, placeholders));
+
+            key.setCancelled(true);
 
             return;
         }
@@ -241,6 +214,28 @@ public class CrateControlListener implements Listener {
 
             return;
         }
+
+        final String keyName = crate.getKeyName();
+
+        final Map<String, String> placeholders = new HashMap<>() {{
+            put("{crate}", crate.getName());
+            put("{key}", keyName);
+        }};
+
+        if (crate.getCrateType() != CrateType.crate_on_the_go) {
+            if (this.config.getProperty(ConfigKeys.knock_back)) knockBack(player, clickedBlock.getLocation());
+
+            //todo() convert this to a bean property!
+            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
+                net.kyori.adventure.sound.Sound sound = net.kyori.adventure.sound.Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
+
+                player.playSound(sound);
+            }
+
+            player.sendRichMessage(Messages.no_keys.getMessage(player, placeholders));
+        }
+
+        key.setCancelled(true);
     }
 
     @EventHandler

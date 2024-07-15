@@ -1,5 +1,3 @@
-### Changes:
-- The fix below required preview to be only opened through left click so right click can function as for only opening the crate.
-
 ### Fixed:
-- The key check on right-clicking a crate was working, however we didn't inform the player they had no key.
+- Cancel the key check event if the checks find a player does not have enough keys.
+- Simplify key checks so virtual keys can work, this removes an unneeded physical key check as we were checking it twice? why...
