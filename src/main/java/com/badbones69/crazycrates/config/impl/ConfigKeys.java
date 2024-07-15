@@ -114,10 +114,10 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("Should a physical crate accept virtual keys?")
     public static final Property<Boolean> physical_accepts_virtual_keys = newProperty("crate.keys.physical-crate-accepts-virtual-keys", true);
 
-    @Comment("Should a virtual crate ( /crates ) accept physical keys?")
+    @Comment("Should a physical crate accept physical keys?")
     public static final Property<Boolean> physical_accepts_physical_keys = newProperty("crate.keys.physical-crate-accepts-physical-keys", true);
 
-    @Comment("Should a physical crate accept physical keys?")
+    @Comment("Should a virtual crate accept physical keys?")
     public static final Property<Boolean> virtual_accepts_physical_keys = newProperty("crate.keys.virtual-crate-accepts-physical-keys", true);
 
     @Comment("Should the player should be given virtual keys if inventory is not empty? If you leave it as false, All keys will be dropped on the ground.")

@@ -168,12 +168,12 @@ public class CrateControlListener implements Listener {
 
         final ItemStack itemStack = player.getInventory().getItemInMainHand();
 
-        if (crate.getCrateType() != CrateType.crate_on_the_go && ItemUtils.isSimilar(itemStack, crate) && this.config.getProperty(ConfigKeys.physical_accepts_physical_keys)) {
+        if (this.config.getProperty(ConfigKeys.physical_accepts_physical_keys) && crate.getCrateType() != CrateType.crate_on_the_go && ItemUtils.isSimilar(itemStack, crate)) {
             hasKey = true;
             isPhysical = true;
+        } else if (this.config.getProperty(ConfigKeys.physical_accepts_virtual_keys) && this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) {
+            hasKey = true;
         }
-
-        if (this.config.getProperty(ConfigKeys.physical_accepts_virtual_keys) && this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) hasKey = true;
 
         if (hasKey) {
             // Checks if the player uses the quick crate again.
