@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.ryderbelserion.vital.paper.util.AdvUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -114,28 +115,20 @@ public class PrizeManager {
 
         if (Support.placeholder_api.isEnabled() ) cmd = PlaceholderAPI.setPlaceholders(player, cmd);
 
-        final ItemBuilder builder = prize.getPrizeItem();
-
-        final String display = builder.getStrippedName();
-
         MiscUtils.sendCommand(cmd
                 .replaceAll("%player%", quoteReplacement(player.getName()))
-                .replaceAll("%reward%", quoteReplacement(builder.getDisplayName()))
-                .replaceAll("%reward_stripped%", quoteReplacement(display))
+                .replaceAll("%reward%", quoteReplacement(prize.getPrizeName()))
+                .replaceAll("%reward_stripped%", quoteReplacement(prize.getStrippedName()))
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())));
     }
 
     private static void sendMessage(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, String message) {
         if (message.isEmpty()) return;
 
-        final ItemBuilder builder = prize.getPrizeItem();
-
-        final String display = builder.getStrippedName();
-
         final String defaultMessage = message
                 .replaceAll("%player%", quoteReplacement(player.getName()))
-                .replaceAll("%reward%", quoteReplacement(builder.getDisplayName()))
-                .replaceAll("%reward_stripped%", quoteReplacement(display))
+                .replaceAll("%reward%", quoteReplacement(prize.getPrizeName()))
+                .replaceAll("%reward_stripped%", quoteReplacement(prize.getStrippedName()))
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName()));
 
         MsgUtils.sendMessage(player, Support.placeholder_api.isEnabled()  ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);

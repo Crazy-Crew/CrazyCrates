@@ -5,7 +5,9 @@ import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -51,24 +53,7 @@ public class Prize {
 
         this.alternativePrize = alternativePrize;
 
-        Material material = null;
-
-        if (section.contains("DisplayItem")) {
-            material = ItemUtil.getMaterial(section.getString("DisplayItem", "stone"));
-        }
-
-        // Only run this if DisplayItem isn't found.
-        if (section.contains("DisplayData") && !section.contains("DisplayItem")) {
-            material = ItemUtil.fromBase64(section.getString("DisplayData", "")).getType();
-        }
-
-        String key = "";
-
-        if (material != null) {
-            key = material.isBlock() ? "<lang:" + material.getBlockTranslationKey() + ">" : "<lang:" + material.getItemTranslationKey() + ">";
-        }
-
-        this.prizeName = section.getString("DisplayName", key.isBlank() ? "<red>No valid display name found." : key);
+        this.prizeName = section.getString("DisplayName", "");
         this.maxRange = section.getInt("MaxRange", 100);
         this.chance = section.getInt("Chance", 50);
         this.firework = section.getBoolean("Firework", false);
@@ -109,7 +94,11 @@ public class Prize {
      * @return the name of the prize.
      */
     public @NotNull final String getPrizeName() {
-        return this.prizeName;
+        return this.prizeName.isEmpty() ? "<lang:" + this.displayItem.getType().getItemTranslationKey() + ">" : this.prizeName;
+    }
+
+    public @NotNull final String getStrippedName() {
+        return PlainTextComponentSerializer.plainText().serialize(AdvUtil.parse(getPrizeName()));
     }
 
     /**
@@ -231,6 +220,10 @@ public class Prize {
                 builder = builder.fromBase64(this.section.getString("DisplayData"));
             }
 
+            if (this.section.contains("DisplayName")) {
+                builder.setDisplayName(this.prizeName);
+            }
+
             if (this.section.contains("DisplayItem")) {
                 builder.withType(this.section.getString("DisplayItem", "red_terracotta"));
             }
@@ -238,8 +231,6 @@ public class Prize {
             if (this.section.contains("DisplayAmount")) {
                 builder.setAmount(this.section.getInt("DisplayAmount", 1));
             }
-
-            builder.setDisplayName(this.prizeName);
 
             if (this.section.contains("DisplayLore") && !this.section.contains("Lore")) {
                 builder.setDisplayLore(this.section.getStringList("DisplayLore"));
