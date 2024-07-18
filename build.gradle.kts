@@ -23,15 +23,21 @@ repositories {
 dependencies {
     paperweight.paperDevBundle(libs.versions.paper)
 
-    implementation(libs.triumph.cmds)
-
-    implementation(libs.vital.paper)
-
     compileOnly(fileTree("$projectDir/libs/compile").include("*.jar"))
 
     compileOnly(libs.decent.holograms)
 
     compileOnly(libs.fancy.holograms)
+
+    compileOnly(libs.headdatabaseapi)
+
+    compileOnly(libs.placeholderapi)
+
+    compileOnly(libs.triumph.cmds)
+
+    compileOnly(libs.vital.paper)
+
+    compileOnly(libs.oraxen)
 
     api(project(":api"))
 }
@@ -63,13 +69,6 @@ tasks {
     shadowJar {
         archiveBaseName.set(rootProject.name)
         archiveClassifier.set("")
-
-        listOf(
-            "com.ryderbelserion",
-            "dev.triumphteam"
-        ).forEach {
-            relocate(it, "libs.$it")
-        }
     }
 
     processResources {
@@ -156,4 +155,13 @@ tasks {
             }
         }
     }
+}
+
+tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
+    javaLauncher = javaToolchains.launcherFor {
+        vendor = JvmVendorSpec.JETBRAINS
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+
+    jvmArgs("-XX:+AllowEnhancedClassRedefinition", "-XX:+AllowRedefinitionToAddDeleteMethods")
 }
