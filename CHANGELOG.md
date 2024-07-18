@@ -13,6 +13,8 @@
 ```
 - Applied a bandaid to quadcrates
 - Use correct crate name for {crate} when a crate location already exists in `/crazycrates set <crate>`
+- Fixed npe with /keys view, player name wasn't supplied, so it freaked out.
+- Fixed npe with placeholder parsing in messages.
 
 ### Changes:
 - Optimize display reward above quad/quick crate
