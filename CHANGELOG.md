@@ -12,3 +12,7 @@
       Chance: 25
 ```
 - Applied a bandaid to quadcrates
+- Use correct crate name for {crate} when a crate location already exists in `/crazycrates set <crate>`
+
+### Changes:
+- Optimize display reward above quad/quick crate
