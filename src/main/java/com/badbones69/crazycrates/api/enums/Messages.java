@@ -157,7 +157,14 @@ public enum Messages {
 
         if (!placeholders.isEmpty()) {
             for (Map.Entry<String, String> placeholder : placeholders.entrySet()) {
-                message = message.replace(placeholder.getKey(), placeholder.getValue()).replace(placeholder.getKey().toLowerCase(), placeholder.getValue());
+                if (placeholder != null) {
+                    final String key = placeholder.getKey();
+                    final String value = placeholder.getValue();
+
+                    if (key != null && value != null) {
+                        message = message.replace(key, value).replace(key.toLowerCase(), value);
+                    }
+                }
             }
         }
 
