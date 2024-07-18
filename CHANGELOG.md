@@ -1,6 +1,5 @@
 ### Fixed:
-- Re-worked how display names are handled for items/previews
-
+- Re-worked how display names are handled for items/previews, This format now works properly and stacks with vanilla items.
 ```yml
     '1':
       # The item to display/give in the gui.
@@ -12,4 +11,4 @@
       # The chance to win i.e. 25%
       Chance: 25
 ```
-This format now works properly and stacks with vanilla items.
+- Applied a bandaid to quadcrates
