@@ -151,11 +151,11 @@ public class QuickCrate extends CrateBuilder {
                 return;
             }
 
-            reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(this.plugin, true));
             reward.setVelocity(new Vector(0, .2, 0));
             reward.customName(AdvUtil.parse(prize.getPrizeName()));
             reward.setCustomNameVisible(true);
-            reward.setPickupDelay(-1);
+            reward.setCanMobPickup(false);
+            reward.setCanPlayerPickup(false);
 
             this.crateManager.addReward(player, reward);
 

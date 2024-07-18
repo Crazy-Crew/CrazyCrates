@@ -96,18 +96,17 @@ public class QuadCrateListener implements Listener {
             display.setItemMeta(itemMeta);
 
             // Convert the item stack to item builder.
-            // The max integer prevents it from stacking.
-            final ItemStack itemStack = ItemUtils.convertItemStack(display).addDisplayLore(ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE) + "").getStack();
+            final ItemStack itemStack = ItemUtils.convertItemStack(display).getStack();
 
             // Drop the item.
             final Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), itemStack);
 
             // Set data
-            reward.setMetadata("betterdrops_ignore", new FixedMetadataValue(plugin, true));
             reward.setVelocity(new Vector(0, .2, 0));
             reward.customName(itemMeta.displayName());
             reward.setCustomNameVisible(true);
-            reward.setPickupDelay(Integer.MAX_VALUE);
+            reward.setCanMobPickup(false);
+            reward.setCanPlayerPickup(false);
 
             // Add open crates
             session.getCratesOpened().put(block.getLocation(), true);
