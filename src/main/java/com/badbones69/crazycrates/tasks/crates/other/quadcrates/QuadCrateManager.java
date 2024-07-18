@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
@@ -220,7 +221,7 @@ public class QuadCrateManager {
         // Paste the structure in.
         this.handler.pasteStructure(this.spawnLocation, true);
 
-        this.player.teleportAsync(this.spawnLocation.add(0, 1.0, 0).subtract(-2.5, 0, -2.5));
+        this.player.teleportAsync(this.spawnLocation.clone().toCenterLocation().add(0, 1.0, 0));
 
         this.crateManager.addQuadCrateTask(this.player, new FoliaRunnable(this.player.getScheduler(), null) {
             double radius = 0.0; // Radius of the particle spiral.
