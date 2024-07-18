@@ -220,9 +220,9 @@ public class QuadCrateManager {
         // Paste the structure in.
         this.handler.pasteStructure(this.spawnLocation, true);
 
-        this.player.teleportAsync(this.spawnLocation.toCenterLocation().add(0, 1.0, 0));
+        this.player.teleportAsync(this.spawnLocation.add(0, 1.0, 0).subtract(-2.5, 0, -2.5));
 
-        this.crateManager.addQuadCrateTask(this.player, new FoliaRunnable(getPlayer().getScheduler(), null) {
+        this.crateManager.addQuadCrateTask(this.player, new FoliaRunnable(this.player.getScheduler(), null) {
             double radius = 0.0; // Radius of the particle spiral.
             int crateNumber = 0; // The crate number that spawns next.
             int tickTillSpawn = 0; // At tick 60 the crate will spawn and then reset the tick.
