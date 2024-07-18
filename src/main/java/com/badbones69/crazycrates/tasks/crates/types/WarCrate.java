@@ -30,8 +30,6 @@ public class WarCrate extends CrateBuilder {
         super(crate, player, size);
     }
 
-    private boolean isOpen = false;
-
     @Override
     public void open(@NotNull final KeyType type, final boolean checkHand) {
         // Crate event failed so we return.
