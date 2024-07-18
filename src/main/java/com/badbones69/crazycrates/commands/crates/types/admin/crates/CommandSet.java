@@ -51,11 +51,10 @@ public class CommandSet extends BaseCommand {
 
         if (this.crateManager.isCrateLocation(block.getLocation())) {
             player.sendRichMessage(Messages.physical_crate_already_exists.getMessage(player, new HashMap<>() {{
-                put("{crate}", crate.getName());
-
                 final CrateLocation crateLocation = crateManager.getCrateLocation(block.getLocation());
 
                 put("{id}", crateLocation != null ? crateLocation.getID() : "N/A");
+                put("{crate}", crateLocation != null ? crateLocation.getCrate().getName() : "N/A");
             }}));
 
             return;
