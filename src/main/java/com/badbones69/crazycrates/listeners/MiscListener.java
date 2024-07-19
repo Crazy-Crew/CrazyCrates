@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
+import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
@@ -9,6 +10,9 @@ import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.PaginationManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import net.kyori.adventure.sound.Sound;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Firework;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
@@ -21,6 +25,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
@@ -45,6 +50,19 @@ public class MiscListener implements Listener {
         this.userManager.loadOldOfflinePlayersKeys(player, this.crateManager.getUsableCrates());
 
         this.userManager.loadOfflinePlayersKeys(player, this.crateManager.getUsableCrates());
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onFireworkDamage(EntityDamageEvent event) {
+        final Entity directEntity = event.getDamageSource().getDirectEntity();
+
+        if (directEntity instanceof final Firework firework) {
+            final PersistentDataContainer container = firework.getPersistentDataContainer();
+
+            if (container.has(PersistentKeys.no_firework_damage.getNamespacedKey())) {
+                event.setCancelled(true);
+            }
+        }
     }
 
     @EventHandler(ignoreCancelled = true)

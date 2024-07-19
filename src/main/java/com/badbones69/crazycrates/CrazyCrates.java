@@ -100,7 +100,6 @@ public class CrazyCrates extends JavaPlugin {
                 // Other listeners.
                 new BrokeLocationsListener(),
                 new CrateControlListener(),
-                new EntityDamageListener(),
                 new MobileCrateListener(),
                 new CosmicCrateListener(),
                 new QuadCrateListener(),
