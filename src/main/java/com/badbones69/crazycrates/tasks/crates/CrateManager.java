@@ -33,6 +33,7 @@ import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -108,7 +109,15 @@ public class CrateManager {
             FileConfiguration file = crate.getFile();
 
             // Close previews
-            //this.plugin.getServer().getOnlinePlayers().forEach(this.inventoryManager::closeCratePreview);
+            this.plugin.getServer().getOnlinePlayers().forEach(player -> {
+                if (this.paginationManager.isInventory(player.getOpenInventory().getTopInventory())) {
+                    player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+
+                    if (ConfigManager.getConfig().getProperty(ConfigKeys.send_preview_taken_out_message)) {
+                        player.sendRichMessage(Messages.reloaded_forced_out_of_preview.getMessage(player));
+                    }
+                }
+            });
 
             // Purge the crate stuff
             crate.purge();
