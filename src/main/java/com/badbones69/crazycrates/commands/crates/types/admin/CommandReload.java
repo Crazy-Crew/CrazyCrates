@@ -36,13 +36,13 @@ public class CommandReload extends BaseCommand {
 
         if (this.config.getProperty(ConfigKeys.take_out_of_preview)) {
             this.plugin.getServer().getOnlinePlayers().forEach(player -> {
-                if (this.inventoryManager.inCratePreview(player)) {
+                /*if (this.inventoryManager.inCratePreview(player)) {
                     this.inventoryManager.closeCratePreview(player);
 
                     if (this.config.getProperty(ConfigKeys.send_preview_taken_out_message)) {
                         player.sendRichMessage(Messages.reloaded_forced_out_of_preview.getMessage(player));
                     }
-                }
+                }*/
             });
         }
 
