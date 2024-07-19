@@ -20,7 +20,7 @@ public enum PersistentKeys {
     crate_tier("crate_tier", PersistentDataType.STRING),
     crate_key("crate_key", PersistentDataType.STRING);
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private final String NamespacedKey;
     private final PersistentDataType type;
@@ -30,11 +30,11 @@ public enum PersistentKeys {
         this.type = type;
     }
 
-    public @NotNull final NamespacedKey getNamespacedKey() {
+    public final NamespacedKey getNamespacedKey() {
         return new NamespacedKey(this.plugin, this.plugin.getName().toLowerCase() + "_" + this.NamespacedKey);
     }
 
-    public @NotNull final PersistentDataType getType() {
+    public final PersistentDataType getType() {
         return this.type;
     }
 }

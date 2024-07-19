@@ -27,9 +27,9 @@ import static com.ryderbelserion.vital.paper.util.ItemUtil.getEnchantment;
 
 public class ItemUtils {
 
-    private static @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private static final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private static @NotNull final CrateManager crateManager = plugin.getCrateManager();
+    private static final CrateManager crateManager = plugin.getCrateManager();
 
     /**
      * Removes an {@link ItemStack} from a {@link Player}'s inventory.

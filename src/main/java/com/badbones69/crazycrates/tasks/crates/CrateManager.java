@@ -78,11 +78,11 @@ import java.util.logging.Logger;
 
 public class CrateManager {
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private final PaginationManager paginationManager = this.plugin.getPaginationManager();
 
-    private @NotNull final FileManager yamlManager = this.plugin.getFileManager();
+    private final FileManager yamlManager = this.plugin.getFileManager();
 
     private final List<CrateLocation> crateLocations = new ArrayList<>();
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();

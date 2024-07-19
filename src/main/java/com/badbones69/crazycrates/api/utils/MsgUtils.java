@@ -9,7 +9,7 @@ import static java.util.regex.Matcher.quoteReplacement;
 
 public class MsgUtils {
 
-    public static void sendMessage(CommandSender commandSender, @NotNull final String message, final boolean prefixToggle) {
+    public static void sendMessage(@NotNull final CommandSender commandSender, @NotNull final String message, final boolean prefixToggle) {
         if (message.isEmpty()) return;
 
         String prefix = getPrefix();
@@ -26,11 +26,11 @@ public class MsgUtils {
     /**
      * @return the {@link String}
      */
-    public static @NotNull String getPrefix() {
+    public static String getPrefix() {
         return ConfigManager.getConfig().getProperty(ConfigKeys.command_prefix);
     }
 
-    public static @NotNull String getPrefix(@NotNull final String msg) {
+    public static String getPrefix(@NotNull final String msg) {
         if (msg.isEmpty()) return "";
 
         return getPrefix() + msg;

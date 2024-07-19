@@ -28,17 +28,17 @@ import java.util.Map;
 @Command(value = "crazycrates", alias = {"crates", "crate"})
 public abstract class BaseCommand {
 
-    protected @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    protected final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    protected @NotNull final PaginationManager paginationManager = this.plugin.getPaginationManager();
+    protected final PaginationManager paginationManager = this.plugin.getPaginationManager();
 
-    protected @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+    protected final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    protected @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    protected final CrateManager crateManager = this.plugin.getCrateManager();
 
-    protected @NotNull final FileManager fileManager = this.plugin.getFileManager();
+    protected final FileManager fileManager = this.plugin.getFileManager();
 
-    protected @NotNull final SettingsManager config = ConfigManager.getConfig();
+    protected final SettingsManager config = ConfigManager.getConfig();
 
     /**
      * Add keys to a player who is online.

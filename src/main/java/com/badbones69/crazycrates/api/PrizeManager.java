@@ -23,7 +23,7 @@ import static java.util.regex.Matcher.quoteReplacement;
 
 public class PrizeManager {
     
-    private static @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private static final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     /**
      * Gets the prize for the player.

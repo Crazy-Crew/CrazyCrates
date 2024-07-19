@@ -27,10 +27,10 @@ import java.util.Map;
 @Description("Views the amount of keys you/others have.")
 public class CommandKey {
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @Command
     @Permission(value = "crazycrates.keys", def = PermissionDefault.TRUE)

@@ -35,7 +35,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class MiscUtils {
 
-    private static @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private static final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     public static void sendCommand(@NotNull final String command) {
         if (command.isEmpty()) return;
@@ -73,13 +73,13 @@ public class MiscUtils {
         plugin.getServer().getRegionScheduler().runDelayed(plugin, location, scheduledTask -> firework.detonate(), 3L);
     }
 
-    public static @NotNull String location(@NotNull final Location location, boolean getName) {
+    public static String location(@NotNull final Location location, boolean getName) {
         String name = getName ? location.getWorld().getName() : String.valueOf(location.getWorld().getUID());
 
         return name + "," + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ();
     }
 
-    public static @NotNull String location(@NotNull final Location location) {
+    public static String location(@NotNull final Location location) {
         return location(location, false);
     }
 

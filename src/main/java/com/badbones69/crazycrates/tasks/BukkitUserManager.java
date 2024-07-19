@@ -34,11 +34,11 @@ import java.util.logging.Level;
 
 public class BukkitUserManager extends UserManager {
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private @NotNull final Files data = Files.data;
+    private final Files data = Files.data;
 
     @Override
     public Player getUser(@NotNull final UUID uuid) {

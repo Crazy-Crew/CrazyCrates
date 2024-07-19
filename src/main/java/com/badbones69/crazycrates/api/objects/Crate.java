@@ -85,9 +85,9 @@ public class Crate {
 
     private List<String> prizeCommands = new ArrayList<>();
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
     private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
@@ -141,7 +141,7 @@ public class Crate {
 
         this.crateInventoryName = file.getString("Crate.CrateName", " ");
 
-        @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
+        final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
         this.borderItem = new ItemBuilder()
                 .withType(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane"))
@@ -149,7 +149,7 @@ public class Crate {
                 .setHidingItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
                 .setDisplayName(borderName);
 
-        @NotNull final String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
+        final String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
 
         this.previewTierBorderItem = new ItemBuilder()
                 .withType(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane"))

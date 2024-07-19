@@ -23,9 +23,9 @@ import java.util.HashMap;
 
 public class WheelCrate extends CrateBuilder {
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     public WheelCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size);
@@ -152,7 +152,7 @@ public class WheelCrate extends CrateBuilder {
             }
 
             private void populateMenu() {
-                @NotNull ItemStack itemStack = rewards.get(this.slots.get(this.uh));
+                final ItemStack itemStack = rewards.get(this.slots.get(this.uh));
 
                 setItem(this.slots.get(this.uh), itemStack.withType(material));
 

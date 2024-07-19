@@ -156,15 +156,15 @@ public class CrazyCrates extends JavaPlugin {
         return this.paginationManager;
     }
 
-    public @NotNull final BukkitUserManager getUserManager() {
+    public final BukkitUserManager getUserManager() {
         return this.userManager;
     }
 
-    public @NotNull final CrateManager getCrateManager() {
+    public final CrateManager getCrateManager() {
         return this.crateManager;
     }
 
-    public @NotNull final FileManager getFileManager() {
+    public final FileManager getFileManager() {
         return this.fileManager;
     }
 
@@ -176,11 +176,11 @@ public class CrazyCrates extends JavaPlugin {
         return this.api;
     }
 
-    public @NotNull final Server getInstance() {
+    public final Server getInstance() {
         return this.instance;
     }
 
-    public @NotNull final Timer getTimer() {
+    public final Timer getTimer() {
         return this.timer;
     }
 }
