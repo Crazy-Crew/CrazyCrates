@@ -2,9 +2,9 @@ package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
-import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
-import com.badbones69.crazycrates.api.builders.types.core.CratesMenu;
+import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
+import com.badbones69.crazycrates.tasks.PaginationManager;
 import com.badbones69.crazycrates.api.objects.other.Server;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
@@ -21,7 +21,6 @@ import com.badbones69.crazycrates.support.MetricsWrapper;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.enums.Support;
 import com.ryderbelserion.vital.paper.files.config.FileManager;
@@ -43,7 +42,7 @@ public class CrazyCrates extends JavaPlugin {
         this.timer = new Timer();
     }
 
-    private InventoryManager inventoryManager;
+    private PaginationManager paginationManager;
     private BukkitUserManager userManager;
     private CrateManager crateManager;
     private FileManager fileManager;
@@ -69,7 +68,7 @@ public class CrazyCrates extends JavaPlugin {
             this.api = new HeadDatabaseAPI();
         }
 
-        this.inventoryManager = new InventoryManager();
+        this.paginationManager = new PaginationManager();
         this.crateManager = new CrateManager();
         this.userManager = new BukkitUserManager();
 
@@ -79,7 +78,7 @@ public class CrazyCrates extends JavaPlugin {
         this.crateManager.loadHolograms();
 
         // Load the buttons.
-        this.inventoryManager.loadButtons();
+        this.paginationManager.loadButtons();
 
         // Load the crates.
         this.crateManager.loadCrates();
@@ -97,7 +96,6 @@ public class CrazyCrates extends JavaPlugin {
 
                 // Settings menus
                 new CrateAdminMenu(),
-                new CratesMenu(),
 
                 // Other listeners.
                 new BrokeLocationsListener(),
@@ -156,8 +154,8 @@ public class CrazyCrates extends JavaPlugin {
         }
     }
 
-    public @NotNull final InventoryManager getInventoryManager() {
-        return this.inventoryManager;
+    public final PaginationManager getPaginationManager() {
+        return this.paginationManager;
     }
 
     public @NotNull final BukkitUserManager getUserManager() {
