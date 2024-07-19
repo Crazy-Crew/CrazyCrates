@@ -166,16 +166,6 @@ public class CrateManager {
 
             crate.setPrize(prizes);
             crate.setPreviewItems(crate.getPreviewItems());
-
-            /*for (UUID uuid : this.plugin.getInventoryManager().getViewers()) {
-                final Player player = this.plugin.getServer().getPlayer(uuid);
-
-                if (player != null) {
-                    this.inventoryManager.openNewCratePreview(player, crate);
-                }
-            }
-
-            this.inventoryManager.purge();*/
         } catch (Exception exception) {
             this.brokeCrates.add(crate.getName());
 
