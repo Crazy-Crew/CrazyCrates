@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
+import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
 import org.bukkit.entity.Player;
@@ -15,8 +16,8 @@ public class CommandDebug extends BaseCommand {
 
     @Command("debug")
     @Permission(value = "crazycrates.debug", def = PermissionDefault.OP)
-    public void debug(Player player, @Suggestion("crates") String crateName) {
-        if (crateName.isEmpty() || crateName.isBlank()) {
+    public void debug(Player player, @ArgName("crate") @Suggestion("crates") String crateName) {
+        if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
             player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
 
             return;

@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
+import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
 import net.kyori.adventure.key.Key;
@@ -24,7 +25,7 @@ import java.util.Map;
 public class CommandOpen extends BaseCommand {
 
     private boolean isCancelled(Player player, String crateName) {
-        if (crateName.isEmpty() || crateName.isBlank()) {
+        if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
             player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
 
             return true;
@@ -48,7 +49,7 @@ public class CommandOpen extends BaseCommand {
 
     @Command("open")
     @Permission(value = "crazycrates.open", def = PermissionDefault.OP)
-    public void open(Player player, @Suggestion("crates") String crateName, @Suggestion("keys") String type) {
+    public void open(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("key_type") @Suggestion("keys") String type) {
         if (isCancelled(player, crateName)) return;
 
         // Get the crate.
@@ -113,7 +114,7 @@ public class CommandOpen extends BaseCommand {
 
     @Command("open-others")
     @Permission(value = "crazycrates.open-others", def = PermissionDefault.OP)
-    public void others(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("players") Player player, @Suggestion("keys") String type) {
+    public void others(CommandSender sender, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("player") @Suggestion("players") Player player, @ArgName("key_type") @Suggestion("keys") String type) {
         // If the command is cancelled.
         if (isCancelled(player, crateName)) return;
 
@@ -189,7 +190,7 @@ public class CommandOpen extends BaseCommand {
 
     @Command("forceopen")
     @Permission(value = "crazycrates.forceopen", def = PermissionDefault.OP)
-    public void forceopen(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("players") Player player) {
+    public void forceopen(CommandSender sender, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("player") @Suggestion("players") Player player) {
         // If the command is cancelled.
         if (isCancelled(player, crateName)) return;
 
@@ -238,7 +239,7 @@ public class CommandOpen extends BaseCommand {
 
     @Command("mass-open")
     @Permission(value = "crazycrates.massopen", def = PermissionDefault.OP)
-    public void mass(Player player, @Suggestion("crates") String crateName, @Suggestion("keys") String type, @Suggestion("numbers") int amount) {
+    public void mass(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("key_type") @Suggestion("keys") String type, @ArgName("amount") @Suggestion("numbers") int amount) {
         // If the command is cancelled.
         if (isCancelled(player, crateName)) return;
 

@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.enums.Support;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
+import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Description;
 import dev.triumphteam.cmd.core.annotations.Optional;
@@ -43,7 +44,7 @@ public class CommandKey {
 
     @Command("view")
     @Permission("crazycrates.keys-others")
-    public void view(CommandSender sender, @Optional @Suggestion("players") Player target) {
+    public void view(CommandSender sender, @ArgName("player") @Optional @Suggestion("players") Player target) {
         if (target == null) {
             if (sender instanceof Player player) {
                 personal(player);

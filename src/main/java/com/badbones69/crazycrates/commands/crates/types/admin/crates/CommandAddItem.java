@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
+import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Optional;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
@@ -16,8 +17,8 @@ public class CommandAddItem extends BaseCommand {
 
     @Command("additem")
     @Permission(value = "crazycrates.additem", def = PermissionDefault.OP)
-    public void add(Player player, @Suggestion("crates") String crateName, @Suggestion("prizes") String prizeName, @Suggestion("numbers") int chance, @Suggestion("tiers") @Optional String tier) {
-        if (crateName.isEmpty() || crateName.isBlank()) {
+    public void add(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("prize") @Suggestion("prizes") String prizeName, @ArgName("chance") @Suggestion("numbers") int chance, @ArgName("tier") @Suggestion("tiers") @Optional String tier) {
+        if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
             player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
 
             return;

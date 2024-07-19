@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
+import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
 import org.bukkit.command.CommandSender;
@@ -15,8 +16,8 @@ public class CommandPreview extends BaseCommand {
 
     @Command("preview")
     @Permission(value = "crazycrates.preview", def = PermissionDefault.OP)
-    public void preview(CommandSender sender, @Suggestion("crates") String crateName, @Suggestion("players") Player player) {
-        if (crateName.isEmpty() || crateName.isBlank()) {
+    public void preview(CommandSender sender, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("player") @Suggestion("players") Player player) {
+        if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
             sender.sendRichMessage(Messages.cannot_be_empty.getMessage(sender, "{value}", "crate name"));
 
             return;

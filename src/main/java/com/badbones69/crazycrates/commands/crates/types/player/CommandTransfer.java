@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
+import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
 import org.bukkit.entity.Player;
@@ -19,7 +20,7 @@ public class CommandTransfer extends BaseCommand {
 
     @Command("transfer")
     @Permission(value = "crazycrates.transfer", def = PermissionDefault.OP)
-    public void transfer(Player player, @Suggestion("crates") String crateName, @Suggestion("players") Player target, @Suggestion("numbers") int amount) {
+    public void transfer(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("player") @Suggestion("players") Player target, @ArgName("amount") @Suggestion("numbers") int amount) {
         if (crateName.isEmpty() || crateName.isBlank()) {
             player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
 

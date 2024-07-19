@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
+import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Optional;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
@@ -23,7 +24,7 @@ public class CommandTeleport extends BaseCommand {
 
     @Command("teleport")
     @Permission(value = "crazycrates.teleport", def = PermissionDefault.OP)
-    public void teleport(Player player, @Optional @Suggestion("locations") String id) {
+    public void teleport(Player player, @ArgName("crate_id") @Optional @Suggestion("locations") String id) {
         if (id == null || id.isEmpty() || id.isBlank()) {
             player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate location id"));
 

@@ -17,17 +17,18 @@ public class ArgumentRelations extends MessageManager {
         String usage = null;
 
         switch (command) {
-            case "transfer" -> usage = order + " <crate-name> <player-name> <amount>";
-            case "debug", "set" -> usage = order + " <crate-name>";
-            case "open" -> usage = order + " <crate-name> <key-type>";
+            case "transfer" -> usage = order + " <crate_name> <player_name> <amount>";
+            case "debug", "set" -> usage = order + " <crate_name>";
+            case "open" -> usage = order + " <crate_name> <key_type>";
             case "tp" -> usage = order + "<id>";
-            case "additem" -> usage = order + " <crate-name> <prize-number> <chance> [tier]";
-            case "preview", "forceopen" -> usage = order + " <crate-name> <player-name>";
-            case "open-others" -> usage = order + " <crate-name> <player-name> [key-type]";
-            case "mass-open" -> usage = order + " <crate-name> <key-type> <amount>";
-            case "give-random" -> usage = order + " <key-type> <amount> <player-name>";
-            case "give", "take" -> usage = order + " <key-type> <crate-name> <amount> <player-name>";
-            case "giveall" -> usage = order + " <key-type> <crate-name> <amount>";
+            case "additem" -> usage = order + " <crate_name> <prize_number> <chance> [tier]";
+            case "preview", "forceopen" -> usage = order + " <crate_name> <player_name>";
+            case "open-others" -> usage = order + " <crate_name> <player_name> [key_type]";
+            case "mass-open" -> usage = order + " <crate_name> <key_type> <amount>";
+            case "give-random" -> usage = order + " <key_type> <amount> <player_name>";
+            case "give", "take" -> usage = order + " <key_type> <crate_name> <amount> <player_name>";
+            case "giveall" -> usage = order + " <key_type> <crate-name> <amount>";
+            case "migrate" -> usage = order + "<migration_type> [crate_name]";
             case "admin" -> usage = order;
         }
 
@@ -66,7 +67,7 @@ public class ArgumentRelations extends MessageManager {
             });
         });
 
-        this.commandManager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> send(sender, Messages.correct_usage.getMessage(sender, "{usage}", context.getArgumentName())));
+        this.commandManager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> send(sender, Messages.correct_usage.getMessage(sender, "{usage}", context.getSyntax())));
 
         this.commandManager.registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> send(sender, Messages.no_permission.getMessage(sender, "{permission}", context.getPermission().toString())));
 
