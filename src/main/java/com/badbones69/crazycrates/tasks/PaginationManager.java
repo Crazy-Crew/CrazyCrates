@@ -2,7 +2,9 @@ package com.badbones69.crazycrates.tasks;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
+import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
@@ -12,6 +14,8 @@ import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -275,5 +279,17 @@ public class PaginationManager {
      */
     public int getMaxPages(final Crate crate) {
         return (int) Math.ceil((double) crate.getPreview().size() / crate.getPerPage());
+    }
+
+    /**
+     * Checks if inventory is one of our holders.
+     *
+     * @param inventory {@link Inventory}
+     * @return true or false
+     */
+    public boolean isInventory(final Inventory inventory) {
+        final InventoryHolder holder = inventory.getHolder(false);
+
+        return holder instanceof CrateAdminMenu || holder instanceof CrateMainMenu || holder instanceof CratePreviewMenu || holder instanceof CrateTierMenu;
     }
 }
