@@ -19,4 +19,12 @@ public class CratePrizeMenu extends InventoryBuilder {
 
     @Override
     public void run(InventoryClickEvent event) {}
+    @Override
+    public void run(InventoryDragEvent event) {
+        final Inventory inventory = event.getView().getTopInventory();
+
+        if (!(inventory.getHolder(false) instanceof CratePrizeMenu)) return;
+
+        event.setCancelled(true);
+    }
 }

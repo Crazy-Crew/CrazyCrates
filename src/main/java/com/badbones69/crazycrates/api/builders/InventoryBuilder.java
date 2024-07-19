@@ -21,6 +21,7 @@ import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
@@ -131,8 +132,15 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
     public abstract void run(InventoryClickEvent event);
 
+    public abstract void run(InventoryDragEvent event);
+
     @EventHandler
     public void onPlayerClick(InventoryClickEvent event) {
+        run(event);
+    }
+
+    @EventHandler
+    public void onPlayerDrag(InventoryDragEvent event) {
         run(event);
     }
 

@@ -10,7 +10,9 @@ import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -76,6 +78,15 @@ public class CrateTierMenu extends InventoryBuilder {
 
             this.paginationManager.buildInventory(player, crate, 0, crate.getTier(container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING)));
         }
+    }
+
+    @Override
+    public void run(InventoryDragEvent event) {
+        final Inventory inventory = event.getView().getTopInventory();
+
+        if (!(inventory.getHolder(false) instanceof CrateTierMenu)) return;
+
+        event.setCancelled(true);
     }
 
     private void setDefaultItems() {

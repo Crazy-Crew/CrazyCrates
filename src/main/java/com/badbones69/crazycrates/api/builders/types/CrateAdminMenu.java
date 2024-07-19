@@ -140,4 +140,13 @@ public class CrateAdminMenu extends InventoryBuilder {
             }
         }
     }
+
+    @Override
+    public void run(InventoryDragEvent event) {
+        final Inventory inventory = event.getView().getTopInventory();
+
+        if (!(inventory.getHolder(false) instanceof CrateAdminMenu)) return;
+
+        event.setCancelled(true);
+    }
 }

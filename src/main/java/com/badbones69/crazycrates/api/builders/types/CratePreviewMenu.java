@@ -108,9 +108,16 @@ public class CratePreviewMenu extends InventoryBuilder {
             crate.playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
 
             this.manager.nextPage(player, crate, container.getOrDefault(PersistentKeys.next_button.getNamespacedKey(), PersistentDataType.INTEGER, 1));
-
-            return;
         }
+    }
+
+    @Override
+    public void run(InventoryDragEvent event) {
+        final Inventory inventory = event.getView().getTopInventory();
+
+        if (!(inventory.getHolder(false) instanceof CratePreviewMenu)) return;
+
+        event.setCancelled(true);
     }
 
     private void setDefaultItems(@NotNull final Inventory inventory) {

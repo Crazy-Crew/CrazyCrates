@@ -229,6 +229,15 @@ public class CrateMainMenu extends InventoryBuilder {
         this.crateManager.openCrate(player, crate, keyType, location, true, false);
     }
 
+    @Override
+    public void run(InventoryDragEvent event) {
+        final Inventory inventory = event.getView().getTopInventory();
+
+        if (!(inventory.getHolder(false) instanceof CrateMainMenu)) return;
+
+        event.setCancelled(true);
+    }
+
     private @NotNull String getCrates(@NotNull String option) {
         if (option.isEmpty()) return "";
 
