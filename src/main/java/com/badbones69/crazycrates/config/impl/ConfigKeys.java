@@ -64,13 +64,6 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.")
     public static final Property<Boolean> use_different_random = newProperty("root.use-different-random", false);
 
-    //@Comment({
-    //        "Sends anonymous statistics about how the plugin is used to bstats.org.",
-    //        "bstats is a service for plugin developers to find out how the plugin being used,",
-    //        "This information helps us figure out how to better improve the plugin."
-    //})
-    //public static final Property<Boolean> toggle_metrics = newProperty("root.toggle_metrics", true);
-
     @Comment("This will wipe the example folder on /crazycrates reload or plugin startup so you always have fresh examples to look at.")
     public static final Property<Boolean> update_examples_folder = newProperty("root.update-examples-folder", true);
 
