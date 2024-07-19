@@ -5,10 +5,9 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.badbones69.crazycrates.tasks.InventoryManager;
+import com.badbones69.crazycrates.tasks.PaginationManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.files.config.FileManager;
 import dev.triumphteam.cmd.core.annotations.Command;
@@ -31,7 +30,7 @@ public abstract class BaseCommand {
 
     protected @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    protected @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    protected @NotNull final PaginationManager paginationManager = this.plugin.getPaginationManager();
 
     protected @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 

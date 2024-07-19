@@ -39,5 +39,7 @@ public class CommandPreview extends BaseCommand {
 
         this.inventoryManager.addViewer(player);
         this.inventoryManager.openNewCratePreview(player, crate);
+
+        this.plugin.getPaginationManager().buildInventory(player, crate, 0);
     }
 }

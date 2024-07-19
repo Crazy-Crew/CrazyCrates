@@ -2,9 +2,9 @@ package com.badbones69.crazycrates.api.builders.types;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
+import com.badbones69.crazycrates.tasks.PaginationManager;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import net.kyori.adventure.sound.Sound;
@@ -22,10 +22,12 @@ import java.util.List;
 
 public class CrateTierMenu extends InventoryBuilder {
 
+    private final PaginationManager paginationManager = this.plugin.getPaginationManager();
+
     private @NotNull final SettingsManager config = ConfigManager.getConfig();
 
-    public CrateTierMenu(@NotNull final Player player, @NotNull final String title, final int size, @NotNull final Crate crate, @NotNull final List<Tier> tiers) {
-        super(player, title, size, crate, tiers);
+    public CrateTierMenu(@NotNull final Player player, @NotNull final Crate crate) {
+        super(player, crate.getPreviewName(), crate.getPreviewTierMaxSlots(), crate, crate.getTiers());
     }
 
     public CrateTierMenu() {}
@@ -53,27 +55,18 @@ public class CrateTierMenu extends InventoryBuilder {
 
         if (!item.hasItemMeta()) return;
 
-        final Crate crate = this.inventoryManager.getCratePreview(player);
-
-        if (crate == null) return;
+        final Crate crate = holder.getCrate();
 
         final ItemMeta itemMeta = item.getItemMeta();
 
         final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
         if (this.config.getProperty(ConfigKeys.enable_crate_menu) && container.has(PersistentKeys.main_menu_button.getNamespacedKey())) {
-            if (this.inventoryManager.inCratePreview(player)) {
-                if (holder.overrideMenu()) return;
+            if (holder.overrideMenu()) return;
 
-                crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", Sound.Source.PLAYER);
+            crate.playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
 
-                this.inventoryManager.removeViewer(player);
-                this.inventoryManager.closeCratePreview(player);
-
-                final CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_size));
-
-                player.openInventory(crateMainMenu.build().getInventory());
-            }
+            this.paginationManager.buildMainMenu(player, this.config);
 
             return;
         }
@@ -81,13 +74,7 @@ public class CrateTierMenu extends InventoryBuilder {
         if (container.has(PersistentKeys.crate_tier.getNamespacedKey())) {
             crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", Sound.Source.PLAYER);
 
-            final String tierName = container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING);
-
-            final Tier tier = crate.getTier(tierName);
-
-            final Inventory cratePreviewMenu = crate.getPreview(player, this.inventoryManager.getPage(player), true, tier);
-
-            player.openInventory(cratePreviewMenu);
+            this.paginationManager.buildInventory(player, crate, 0, crate.getTier(container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING)));
         }
     }
 
@@ -114,6 +101,6 @@ public class CrateTierMenu extends InventoryBuilder {
             }
         }
 
-        if (this.config.getProperty(ConfigKeys.enable_crate_menu) && this.inventoryManager.inCratePreview(player)) inventory.setItem(crate.getAbsolutePreviewItemPosition(4), this.inventoryManager.getMenuButton(player));
+        if (this.config.getProperty(ConfigKeys.enable_crate_menu)) inventory.setItem(crate.getAbsolutePreviewItemPosition(4), this.paginationManager.getMenuButton(player));
     }
 }

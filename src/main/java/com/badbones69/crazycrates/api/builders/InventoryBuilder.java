@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.badbones69.crazycrates.tasks.InventoryManager;
+import com.badbones69.crazycrates.tasks.PaginationManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
@@ -39,7 +39,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
     protected @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    protected @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    protected @NotNull final PaginationManager manager = this.plugin.getPaginationManager();
 
     protected @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 

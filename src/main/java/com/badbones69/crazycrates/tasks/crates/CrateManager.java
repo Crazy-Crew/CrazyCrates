@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.tasks.crates;
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
+import com.badbones69.crazycrates.tasks.PaginationManager;
 import com.badbones69.crazycrates.api.crates.CrateHologram;
 import com.badbones69.crazycrates.api.crates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.api.enums.Files;
@@ -12,7 +13,6 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.support.holograms.types.CMIHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.DecentHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.FancyHologramsSupport;
-import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CosmicCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CrateOnTheGo;
@@ -78,7 +78,9 @@ import java.util.logging.Logger;
 public class CrateManager {
 
     private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-    private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
+
+    private final PaginationManager paginationManager = this.plugin.getPaginationManager();
+
     private @NotNull final FileManager yamlManager = this.plugin.getFileManager();
 
     private final List<CrateLocation> crateLocations = new ArrayList<>();
@@ -458,7 +460,7 @@ public class CrateManager {
 
         cleanDataFile();
 
-        this.inventoryManager.loadButtons();
+        this.paginationManager.loadButtons();
     }
 
     // The crate that the player is opening.

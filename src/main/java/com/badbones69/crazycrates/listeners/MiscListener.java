@@ -3,13 +3,13 @@ package com.badbones69.crazycrates.listeners;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
-import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
+import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.badbones69.crazycrates.tasks.InventoryManager;
+import com.badbones69.crazycrates.tasks.PaginationManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -34,23 +34,20 @@ public class MiscListener implements Listener {
 
     private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
+    private final PaginationManager paginationManager = this.plugin.getPaginationManager();
+
     private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
     private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
-
-    private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
 
-        // Set new keys if we have to.
         this.crateManager.setNewPlayerKeys(player);
 
-        // Just in case any old data is in there.
         this.userManager.loadOldOfflinePlayersKeys(player, this.crateManager.getUsableCrates());
 
-        // Also add the new data.
         this.userManager.loadOfflinePlayersKeys(player, this.crateManager.getUsableCrates());
     }
 
@@ -63,10 +60,8 @@ public class MiscListener implements Listener {
         }
 
         if (this.crateManager.isInOpeningList(event.getPlayer())) {
-            // DrBot Start
-            if (this.crateManager.getOpeningCrate(event.getPlayer()).getCrateType().equals(CrateType.quick_crate)) return;
+            if (this.crateManager.getOpeningCrate(event.getPlayer()).getCrateType().equals(CrateType.quick_crate)) return; //drbot
 
-            // DrBot End
             event.setCancelled(true);
         }
     }
@@ -75,16 +70,15 @@ public class MiscListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         final Player player = event.getPlayer();
 
-        this.inventoryManager.removeViewer(player);
-        this.inventoryManager.removeCrateViewer(player);
-        this.inventoryManager.removePageViewer(player);
+        // remove player from the page viewers
+        this.paginationManager.remove(player);
 
+        // stop the crate tasks.
         this.crateManager.endQuickCrate(player, player.getLocation(), this.crateManager.getOpeningCrate(player), false);
-
-        // End just in case.
         this.crateManager.endCrate(player);
         this.crateManager.endQuadCrate(player);
 
+        // remove all data related to crates.
         this.crateManager.removeCloser(player);
         this.crateManager.removeHands(player);
         this.crateManager.removePicker(player);
@@ -92,7 +86,15 @@ public class MiscListener implements Listener {
     }
 
     @EventHandler
-    public void onInventoryCloseEvent(InventoryCloseEvent event) {
+    public void onPagedMenuClose(InventoryCloseEvent event) {
+        if (!(event.getPlayer() instanceof Player player)) return;
+
+        // remove player from the page viewers
+        this.paginationManager.remove(player);
+    }
+
+    @EventHandler
+    public void onCrateMenuClose(InventoryCloseEvent event) {
         final Inventory inventory = event.getInventory();
 
         if (!(inventory.getHolder(false) instanceof CratePrizeMenu holder)) return;
@@ -170,7 +172,10 @@ public class MiscListener implements Listener {
     public void onInventoryDragEvent(InventoryDragEvent event) {
         final Inventory inventory = event.getView().getTopInventory();
 
-        if (inventory.getHolder(false) instanceof CrateAdminMenu || inventory.getHolder(false) instanceof CrateMainMenu || inventory.getHolder(false) instanceof CratePreviewMenu || inventory.getHolder(false) instanceof CratePrizeMenu) {
+        if (inventory.getHolder(false) instanceof CrateAdminMenu ||
+                inventory.getHolder(false) instanceof CrateMainMenu ||
+                inventory.getHolder(false) instanceof CratePreviewMenu ||
+                inventory.getHolder(false) instanceof CratePrizeMenu) {
             event.setCancelled(true);
         }
     }

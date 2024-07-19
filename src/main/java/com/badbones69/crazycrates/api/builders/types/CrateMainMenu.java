@@ -16,7 +16,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -24,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.text.NumberFormat;
 import java.util.List;
@@ -164,14 +164,17 @@ public class CrateMainMenu extends InventoryBuilder {
 
         final String crateName = crate.getName();
 
-        if (event.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
+        if (event.isRightClick()) { // Right-clicked the item
             if (crate.isPreviewEnabled()) {
                 crate.playSound(player, location, "click-sound", "ui.button.click", Sound.Source.PLAYER);
 
-                player.closeInventory();
+                if (crate.getCrateType() == CrateType.casino || crate.getCrateType() == CrateType.cosmic) {
+                    this.manager.buildTierMenu(player, crate);
 
-                this.inventoryManager.addViewer(player);
-                this.inventoryManager.openNewCratePreview(player, crate);
+                    return;
+                }
+
+                this.manager.buildInventory(player, crate, 0);
             } else {
                 player.sendRichMessage(Messages.preview_disabled.getMessage(player, "{crate}", crateName));
             }
@@ -198,7 +201,6 @@ public class CrateMainMenu extends InventoryBuilder {
         }
 
         if (!hasKey) {
-            //todo() convert this to a bean property!
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
                 Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
 
