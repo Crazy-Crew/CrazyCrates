@@ -62,9 +62,9 @@ public class CratePreviewMenu extends InventoryBuilder {
 
     @Override
     public void run(InventoryClickEvent event) {
-        final Inventory inventory = event.getClickedInventory();
+        final Inventory inventory = event.getInventory();
 
-        if (inventory == null || !(inventory.getHolder(false) instanceof CratePreviewMenu holder)) return;
+        if (!(inventory.getHolder(false) instanceof CratePreviewMenu holder)) return;
 
         final Player player = holder.getPlayer();
 
