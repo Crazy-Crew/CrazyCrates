@@ -309,7 +309,7 @@ public class ItemUtils {
                 String value = optionString.replace(option + ":", "").replace(option, "");
 
                 switch (option.toLowerCase()) {
-                    case "item" -> itemBuilder.withType(value);
+                    case "item" -> itemBuilder.withType(value.toLowerCase());
                     case "data" -> itemBuilder = itemBuilder.fromBase64(value);
                     case "name" -> itemBuilder.setDisplayName(value);
                     case "amount" -> {
@@ -328,10 +328,10 @@ public class ItemUtils {
                     case "trim-pattern" -> itemBuilder.applyTrimPattern(value);
                     case "trim-material" -> itemBuilder.applyTrimMaterial(value);
                     default -> {
-                        if (getEnchantment(option) != null) {
+                        if (getEnchantment(option.toLowerCase()) != null) {
                             final Optional<Number> amount = StringUtil.tryParseInt(value);
 
-                            itemBuilder.addEnchantment(option, amount.map(Number::intValue).orElse(1), true);
+                            itemBuilder.addEnchantment(option.toLowerCase(), amount.map(Number::intValue).orElse(1), true);
 
                             break;
                         }
