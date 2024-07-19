@@ -62,13 +62,13 @@ public class CratePreviewMenu extends InventoryBuilder {
 
     @Override
     public void run(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player player)) return;
-
         final Inventory inventory = event.getClickedInventory();
 
-        if (inventory == null) return;
+        if (inventory == null || !(inventory.getHolder(false) instanceof CratePreviewMenu holder)) return;
 
-        if (!(inventory.getHolder(false) instanceof CratePreviewMenu holder)) return;
+        final Player player = holder.getPlayer();
+
+        event.setCancelled(true);
 
         final ItemStack itemStack = event.getCurrentItem();
 
@@ -79,8 +79,6 @@ public class CratePreviewMenu extends InventoryBuilder {
         final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
         final Crate crate = holder.getCrate();
-
-        event.setCancelled(true);
 
         if (container.has(PersistentKeys.main_menu_button.getNamespacedKey()) && this.config.getProperty(ConfigKeys.enable_crate_menu)) { // Clicked the menu button.
             if (holder.overrideMenu()) return;
