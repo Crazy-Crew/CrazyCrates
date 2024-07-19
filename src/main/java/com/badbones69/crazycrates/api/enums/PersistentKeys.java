@@ -14,8 +14,8 @@ public enum PersistentKeys {
     cosmic_picked_crate("cosmic_picked_crate", PersistentDataType.INTEGER),
     main_menu_button("main_menu_button", PersistentDataType.STRING),
     selector_wand("selector_wand", PersistentDataType.STRING),
-    back_button("back_button", PersistentDataType.STRING),
-    next_button("next_button", PersistentDataType.STRING),
+    back_button("back_button", PersistentDataType.INTEGER),
+    next_button("next_button", PersistentDataType.INTEGER),
     crate_prize("crate_prize", PersistentDataType.STRING),
     crate_tier("crate_tier", PersistentDataType.STRING),
     crate_key("crate_key", PersistentDataType.STRING);
