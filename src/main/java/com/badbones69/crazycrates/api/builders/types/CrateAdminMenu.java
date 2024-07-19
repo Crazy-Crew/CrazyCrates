@@ -9,9 +9,11 @@ import com.ryderbelserion.vital.paper.util.AdvUtil;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
@@ -96,7 +98,6 @@ public class CrateAdminMenu extends InventoryBuilder {
             case LEFT -> {
                 MiscUtils.addItem(player, crate.getKey(player));
 
-                //todo() make this configurable?
                 player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 
                 placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
@@ -107,7 +108,6 @@ public class CrateAdminMenu extends InventoryBuilder {
             case SHIFT_LEFT -> {
                 MiscUtils.addItem(player, crate.getKey(8, player));
 
-                //todo() make this configurable?
                 player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 
                 placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
@@ -119,7 +119,6 @@ public class CrateAdminMenu extends InventoryBuilder {
             case RIGHT -> {
                 this.userManager.addKeys(uuid, crateName, KeyType.virtual_key, 1);
 
-                //todo() make this configurable?
                 player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 
                 placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
@@ -130,7 +129,6 @@ public class CrateAdminMenu extends InventoryBuilder {
             case SHIFT_RIGHT -> {
                 this.userManager.addKeys(uuid, crateName, KeyType.virtual_key, 8);
 
-                //todo() make this configurable?
                 player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 
                 placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
