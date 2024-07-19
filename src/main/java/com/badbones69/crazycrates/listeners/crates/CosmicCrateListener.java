@@ -61,14 +61,13 @@ public class CosmicCrateListener implements Listener {
 
         if (!(inventory.getHolder(false) instanceof CratePrizeMenu holder)) return;
 
+        // Get the player.
         final Player player = holder.getPlayer();
-
-        // Cancel event.
-        event.setCancelled(true);
 
         // Get opening crate.
         final Crate crate = this.crateManager.getOpeningCrate(player);
 
+        // Check if null.
         if (crate == null) return;
 
         // Check if player is in the opening list.
@@ -127,9 +126,6 @@ public class CosmicCrateListener implements Listener {
 
         final Player player = holder.getPlayer();
         final UUID uuid = player.getUniqueId();
-
-        // Cancel event.
-        event.setCancelled(true);
 
         // Get opening crate.
         final Crate crate = this.crateManager.getOpeningCrate(player);
