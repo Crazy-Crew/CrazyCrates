@@ -26,8 +26,6 @@ public class CratePreviewMenu extends InventoryBuilder {
 
     public CratePreviewMenu(@NotNull final Player player, final Crate crate, final int size, final int page) {
         super(player, crate.getPreviewName(), size, page, crate);
-
-        this.plugin.getLogger().warning("Page Constructor: " + getPage());
     }
 
     private Tier tier = null;
@@ -36,8 +34,6 @@ public class CratePreviewMenu extends InventoryBuilder {
         super(player, crate.getPreviewName(), size, page, crate);
 
         this.tier = tier;
-
-        this.plugin.getLogger().warning("Page Constructor: " + getPage());
     }
 
     public CratePreviewMenu() {}
@@ -112,6 +108,8 @@ public class CratePreviewMenu extends InventoryBuilder {
             crate.playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
 
             this.manager.nextPage(player, crate, container.getOrDefault(PersistentKeys.next_button.getNamespacedKey(), PersistentDataType.INTEGER, 1));
+
+            return;
         }
     }
 
@@ -119,7 +117,9 @@ public class CratePreviewMenu extends InventoryBuilder {
         final Player player = getPlayer();
         final Crate crate = getCrate();
 
-        if (crate.isBorderToggle()) {
+        final boolean isBorderToggled = crate.isBorderToggle();
+
+        if (isBorderToggled) {
             final List<Integer> borderItems = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8);
 
             final ItemStack itemStack = crate.getBorderItem().setPlayer(player).getStack();
@@ -142,15 +142,15 @@ public class CratePreviewMenu extends InventoryBuilder {
         }
 
         if (page == 1) {
-            if (crate.isBorderToggle()) {
+            if (isBorderToggled) {
                 inventory.setItem(crate.getAbsoluteItemPosition(3), crate.getBorderItem().setPlayer(player).getStack());
             }
         } else {
             inventory.setItem(crate.getAbsoluteItemPosition(3), this.manager.getBackButton(player));
         }
 
-        if (page == this.manager.getMaxPrizePages(crate)) {
-            if (crate.isBorderToggle()) {
+        if (page == this.manager.getMaxPages(crate)) {
+            if (isBorderToggled) {
                 inventory.setItem(crate.getAbsoluteItemPosition(5), crate.getBorderItem().setPlayer(player).getStack());
             }
         } else {

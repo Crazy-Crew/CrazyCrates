@@ -94,13 +94,13 @@ public class CrateTierMenu extends InventoryBuilder {
                 inventory.setItem(item, itemStack);
             }
 
-            borderItems.replaceAll(crate::getAbsolutePreviewItemPosition);
+            borderItems.replaceAll(crate::getAbsoluteTierItemPosition);
 
             for (int item : borderItems) { // Bottom border slots
                 inventory.setItem(item, itemStack);
             }
         }
 
-        if (this.config.getProperty(ConfigKeys.enable_crate_menu)) inventory.setItem(crate.getAbsolutePreviewItemPosition(4), this.paginationManager.getMenuButton(player));
+        if (this.config.getProperty(ConfigKeys.enable_crate_menu)) inventory.setItem(crate.getAbsoluteTierItemPosition(4), this.paginationManager.getMenuButton(player));
     }
 }

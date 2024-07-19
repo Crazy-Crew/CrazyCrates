@@ -72,11 +72,13 @@ public class PaginationManager {
         if (page <= 0) page = 1;
 
         final List<ItemStack> prizes = !isTier && tier == null ? crate.getPreviewItems(player) : crate.getPreviewItems(tier, player);
+
         final int count = prizes.size();
 
-        final int max = crate.getPreviewChestLines() * 9;
+        final int max = crate.getPerPage();
 
         int startIndex = page * max - max;
+
         int endIndex = Math.min(startIndex + max, count);
 
         for (;startIndex < endIndex; startIndex++) {
@@ -152,7 +154,7 @@ public class PaginationManager {
     public void nextPage(final Player player, final Crate crate, final int page) {
         setPage(player, crate, page);
 
-        buildInventory(player, crate, 0);
+        buildInventory(player, crate, page);
     }
 
     /**
@@ -165,7 +167,7 @@ public class PaginationManager {
     public void backPage(final Player player, final Crate crate, final int page) {
         setPage(player, crate, page);
 
-        buildInventory(player, crate, 0);
+        buildInventory(player, crate, page);
     }
 
     /**
@@ -256,9 +258,7 @@ public class PaginationManager {
      * @param page page number
      */
     public void setPage(final Player player, final Crate crate, int page) {
-        int max = getMaxPrizePages(crate);
-
-        this.plugin.getLogger().warning("Max: " + max);
+        int max = getMaxPages(crate);
 
         if (page > max) {
             page = max;
@@ -273,14 +273,7 @@ public class PaginationManager {
      * @param crate the {@link Crate}
      * @return a number
      */
-    public int getMaxPrizePages(final Crate crate) {
-        int size = crate.getPreview().size();
-
-        int slots = crate.getMaxSlots();
-
-        this.plugin.getLogger().warning("Size: " + size);
-        this.plugin.getLogger().warning("Slots: " + slots);
-
-        return Math.max(1, size % slots > 0 ? (size / slots) + 1 : size / slots);
+    public int getMaxPages(final Crate crate) {
+        return (int) Math.ceil((double) crate.getPreview().size() / crate.getPerPage());
     }
 }

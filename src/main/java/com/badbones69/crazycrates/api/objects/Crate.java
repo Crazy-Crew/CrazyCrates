@@ -45,6 +45,7 @@ public class Crate {
     private AbstractCrateManager manager;
     private String keyName;
     private int maxSlots;
+    private int perPage;
 
     private boolean borderToggle;
 
@@ -136,6 +137,7 @@ public class Crate {
         this.giveNewPlayerKeys = newPlayerKeys > 0;
 
         this.maxSlots = this.previewChestLines * 9;
+        this.perPage = this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0);
 
         this.crateInventoryName = file.getString("Crate.CrateName", " ");
 
@@ -156,6 +158,7 @@ public class Crate {
                 .setDisplayName(previewTierBorderName);
 
         setTierPreviewRows(file.getInt("Crate.tier-preview.rows", 5));
+
         this.previewTierMaxSlots = this.previewTierCrateRows * 9;
 
         if (crateType == CrateType.quad_crate) {
@@ -270,7 +273,16 @@ public class Crate {
     public final int getMaxSlots() {
         return this.maxSlots;
     }
-    
+
+    /**
+     * Get the max amount of items per page.
+     *
+     * @return max amount of items per page
+     */
+    public final int getPerPage() {
+        return this.perPage;
+    }
+
     /**
      * Check to see if a player can win a prize from a crate.
      *
@@ -753,7 +765,7 @@ public class Crate {
 
     /**
      * @param baseSlot - default slot to use.
-     * @return the finalized slot.
+     * @return the finalized slot
      */
     public final int getAbsoluteItemPosition(final int baseSlot) {
         return baseSlot + (this.previewChestLines > 1 ? this.previewChestLines - 1 : 1) * 9;
@@ -763,7 +775,7 @@ public class Crate {
      * @param baseSlot - default slot to use.
      * @return the finalized slot.
      */
-    public final int getAbsolutePreviewItemPosition(final int baseSlot) {
+    public final int getAbsoluteTierItemPosition(final int baseSlot) {
         return baseSlot + (this.previewTierCrateRows > 1 ? this.previewTierCrateRows - 1 : 1) * 9;
     }
 
