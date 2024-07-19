@@ -6,11 +6,11 @@ import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.badbones69.crazycrates.config.migrate.ConfigMigration;
 import com.badbones69.crazycrates.config.migrate.LocaleMigration;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.config.impl.messages.CommandKeys;
-import com.badbones69.crazycrates.config.impl.messages.CrateKeys;
-import com.badbones69.crazycrates.config.impl.messages.ErrorKeys;
-import com.badbones69.crazycrates.config.impl.messages.MiscKeys;
-import com.badbones69.crazycrates.config.impl.messages.PlayerKeys;
+import com.badbones69.crazycrates.config.impl.locale.CommandKeys;
+import com.badbones69.crazycrates.config.impl.locale.CrateKeys;
+import com.badbones69.crazycrates.config.impl.locale.ErrorKeys;
+import com.badbones69.crazycrates.config.impl.locale.MiscKeys;
+import com.badbones69.crazycrates.config.impl.locale.PlayerKeys;
 import java.io.File;
 
 public class ConfigManager {
