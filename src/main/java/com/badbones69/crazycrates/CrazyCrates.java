@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
+import com.badbones69.crazycrates.api.builders.types.core.CratesMenu;
 import com.badbones69.crazycrates.api.objects.other.Server;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
@@ -91,9 +92,12 @@ public class CrazyCrates extends JavaPlugin {
         List.of(
                 // Menu listeners.
                 new CratePreviewMenu(),
-                new CrateAdminMenu(),
                 new CrateMainMenu(),
                 new CrateTierMenu(),
+
+                // Settings menus
+                new CrateAdminMenu(),
+                new CratesMenu(),
 
                 // Other listeners.
                 new BrokeLocationsListener(),
