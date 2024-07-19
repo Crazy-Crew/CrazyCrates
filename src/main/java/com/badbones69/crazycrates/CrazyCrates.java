@@ -17,7 +17,6 @@ import com.badbones69.crazycrates.listeners.crates.CrateOpenListener;
 import com.badbones69.crazycrates.listeners.crates.MobileCrateListener;
 import com.badbones69.crazycrates.listeners.crates.QuadCrateListener;
 import com.badbones69.crazycrates.listeners.crates.WarCrateListener;
-import com.badbones69.crazycrates.listeners.other.EntityDamageListener;
 import com.badbones69.crazycrates.support.MetricsWrapper;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
