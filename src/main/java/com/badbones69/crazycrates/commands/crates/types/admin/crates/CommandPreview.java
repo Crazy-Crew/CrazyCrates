@@ -38,8 +38,11 @@ public class CommandPreview extends BaseCommand {
             return;
         }
 
-        this.inventoryManager.addViewer(player);
-        this.inventoryManager.openNewCratePreview(player, crate);
+        if (player == null) {
+            this.plugin.getPaginationManager().buildInventory((Player) sender, crate, 0);
+
+            return;
+        }
 
         this.plugin.getPaginationManager().buildInventory(player, crate, 0);
     }
