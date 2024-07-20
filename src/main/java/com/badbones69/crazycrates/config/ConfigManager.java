@@ -36,6 +36,12 @@ public class ConfigManager {
                 .migrationService(new LocaleMigration())
                 .configurationData(MiscKeys.class, ErrorKeys.class, PlayerKeys.class, CrateKeys.class, CommandKeys.class)
                 .create();
+
+        final File file = new File(dataFolder, "guis");
+
+        if (!file.exists()) {
+            file.mkdirs();
+        }
     }
 
     /**
