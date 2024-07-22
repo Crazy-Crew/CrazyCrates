@@ -254,3 +254,26 @@ Crate:
       # Override the global message.
       Messages:
         - "<gray>You won <reset>%reward%."
+    '6':
+      # The name of the item to display in the gui.
+      DisplayName: "<green>Fancy Shield"
+      # The enchants to display in the gui.
+      DisplayItem: 'shield'
+      # A list of patterns: https://jd.papermc.io/paper/1.21/org/bukkit/block/banner/PatternType.html
+      Patterns:
+        - 'HALF_HORIZONTAL:RED'
+        - 'RHOMBUS_MIDDLE:BLACK'
+        - 'STRIPE_TOP:RED'
+        - 'STRIPE_BOTTOM:WHITE'
+        - 'STRIPE_MIDDLE:BLACK'
+        - 'CIRCLE_MIDDLE:WHITE'
+      # Prize settings
+      Settings:
+        # The custom model data of the item, -1 is disabled.
+        Custom-Model-Data: -1
+      # The amount to display in the gui.
+      DisplayAmount: 1
+      # The max range i.e. 15/100 = 15% chance to win.
+      MaxRange: 100
+      # The chance to win i.e. 15%
+      Chance: 15
