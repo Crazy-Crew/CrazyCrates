@@ -10,6 +10,7 @@ import com.ryderbelserion.vital.paper.util.ItemUtil;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -261,6 +262,14 @@ public class Prize {
             builder.setUnbreakable(section.getBoolean("Unbreakable", false));
 
             builder.setCustomModelData(this.section.getInt("Settings.Custom-Model-Data", -1));
+
+            if (this.section.contains("Settings.Mob-Type")) {
+                final EntityType type = ItemUtil.getEntity(this.section.getString("Settings.Mob-Type", "cow"));
+
+                if (type != null) {
+                    builder.setEntityType(type);
+                }
+            }
 
             if (this.section.contains("Skull") && this.plugin.getApi() != null) {
                 builder.setSkull(section.getString("Skull", ""), this.plugin.getApi());

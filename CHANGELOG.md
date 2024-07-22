@@ -1,3 +1,27 @@
+### Added:
+- Ability to define spawner type in prizes
+```yml
+    '1':
+      # The name of the item to display in the gui.
+      DisplayName: "<green>Creeper Spawner"
+      # The enchants to display in the gui.
+      DisplayItem: "spawner"
+      # Prize settings
+      Settings:
+        # The custom model data of the item, -1 is disabled.
+        Custom-Model-Data: -1
+        # The type of mob for the spawner.
+        Mob-Type: creeper
+      # The amount to display in the gui.
+      DisplayAmount: 1
+      # The max range i.e. 15/100 = 15% chance to win.
+      MaxRange: 100
+      # The chance to win i.e. 15%
+      Chance: 23
+      Items:
+        - 'Item: spawner, Mob: creeper'
+```
+
 ### Changes:
 - Play knockback/sounds if they don't have the required keys.
 - Removed runtime dependency loader.
