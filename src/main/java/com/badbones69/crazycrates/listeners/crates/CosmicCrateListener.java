@@ -28,7 +28,6 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -55,7 +54,7 @@ public class CosmicCrateListener implements Listener {
     private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
     @EventHandler
-    public void onInventoryClickPrize(InventoryClickEvent event) {
+    public void onPrizeReceive(InventoryClickEvent event) {
         // Get the inventory.
         final Inventory inventory = event.getInventory();
 
@@ -94,7 +93,7 @@ public class CosmicCrateListener implements Listener {
         // Check if null or air.
         if (itemStack == null || itemStack.getType() == Material.AIR) return;
 
-        final Tier tier = this.crateManager.getTier(crate, itemStack);
+        final Tier tier = this.crateManager.getTier(player, slot);
 
         // If tier is null, return
         if (tier == null) return;
@@ -119,7 +118,7 @@ public class CosmicCrateListener implements Listener {
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
+    public void onMysteryBoxClick(InventoryClickEvent event) {
         // Get the inventory.
         final Inventory inventory = event.getInventory();
 
@@ -183,12 +182,14 @@ public class CosmicCrateListener implements Listener {
 
             // Check if prizes is less than or equal to totalPrizes before we change any items.
             if (size < totalPrizes) {
-                // Gets the tier name from the pdc.
-                final String tierName = container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING);
+                final Tier tier = this.crateManager.getTier(player, pickedSlot);
 
-                // If the tier is null, return.
-                final Tier tier = crate.getTier(tierName);
-                if (tier == null) return;
+                if (tier == null) {
+                    return;
+                }
+
+                // Gets the tier name.
+                final String tierName = tier.getName();
 
                 // Get item builder.
                 ItemBuilder builder = cosmicCrateManager.getPickedCrate().setPlayer(player)
@@ -205,14 +206,13 @@ public class CosmicCrateListener implements Listener {
                 event.setCurrentItem(builder.getStack());
 
                 // Add the picked prize.
-                cosmicCrateManager.addPickedPrize(player, slot, tier);
+                cosmicCrateManager.addPickedPrize(player, pickedSlot, tier);
 
                 // Play a sound to indicate they clicked a chest.
                 holder.getCrate().playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
             }
         } else if (container.has(PersistentKeys.cosmic_picked_crate.getNamespacedKey())) {
-            // Gets the tier name from the pdc.
-            final String tierName = container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING);
+            final Tier tier = this.crateManager.getTier(player, pickedSlot);
 
             // Get item builder.
             ItemBuilder builder = cosmicCrateManager.getMysteryCrate().setPlayer(player)
@@ -222,6 +222,9 @@ public class CosmicCrateListener implements Listener {
             // Set the amount.
             builder.setAmount(pickedSlot);
 
+            // Gets the tier name.
+            final String tierName = tier.getName();
+
             // Set the tier name from before to the pdc if it exists.
             cosmicCrateManager.setTier(builder, tierName);
 
@@ -229,7 +232,7 @@ public class CosmicCrateListener implements Listener {
             event.setCurrentItem(builder.getStack());
 
             // Remove slot if we click it.
-            cosmicCrateManager.removePickedPrize(player, slot);
+            cosmicCrateManager.removePickedPrize(player, pickedSlot);
 
             // Play a sound to indicate they clicked a chest.
             holder.getCrate().playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
@@ -259,6 +262,8 @@ public class CosmicCrateListener implements Listener {
                 this.crateManager.removePlayerFromOpeningList(player);
                 this.crateManager.removePlayerKeyType(player);
 
+                this.crateManager.removeTier(player);
+
                 // Remove hand checks.
                 this.crateManager.removeHands(player);
 
@@ -281,6 +286,8 @@ public class CosmicCrateListener implements Listener {
                 // Remove opening stuff.
                 this.crateManager.removePlayerFromOpeningList(player);
                 this.crateManager.removePlayerKeyType(player);
+
+                this.crateManager.removeTier(player);
 
                 // Remove hand checks.
                 this.crateManager.removeHands(player);
@@ -337,6 +344,8 @@ public class CosmicCrateListener implements Listener {
                                 // Remove opening stuff.
                                 crateManager.removePlayerFromOpeningList(player);
                                 crateManager.removePlayerKeyType(player);
+
+                                crateManager.removeTier(player);
 
                                 // Cancel crate task.
                                 crateManager.removeCrateTask(player);
@@ -396,7 +405,7 @@ public class CosmicCrateListener implements Listener {
         player.updateInventory();
     }
 
-    private void showRewards(final Player player, final InventoryView view, final CratePrizeMenu cosmic, final CosmicCrateManager crateManager) {
+    private void showRewards(final Player player, final InventoryView view, final CratePrizeMenu cosmic, final CosmicCrateManager cosmicCrateManager) {
         final String rewardsName = cosmic.getCrate().getCrateInventoryName() + " - Prizes";
 
         cosmic.title(rewardsName);
@@ -404,7 +413,7 @@ public class CosmicCrateListener implements Listener {
 
         view.getTopInventory().clear();
 
-        crateManager.getPrizes(player).forEach((slot, tier) -> {
+        cosmicCrateManager.getPrizes(player).forEach((slot, tier) -> {
             Inventory inventory = view.getTopInventory();
 
             inventory.setItem(slot, tier.getTierItem(player));
@@ -419,7 +428,9 @@ public class CosmicCrateListener implements Listener {
                     // Close inventory.
                     player.getScheduler().run(plugin, scheduledTask -> player.closeInventory(InventoryCloseEvent.Reason.UNLOADED), null);
 
-                    crateManager.removePickedPlayer(player);
+                    crateManager.removeTier(player);
+
+                    cosmicCrateManager.removePickedPlayer(player);
 
                     // Log it
                     if (MiscUtils.isLogging()) {

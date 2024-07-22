@@ -72,6 +72,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TimerTask;
 import java.util.UUID;
+import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -87,6 +88,32 @@ public class CrateManager {
     private final Map<UUID, Location> cratesInUse = new HashMap<>();
     private final List<String> brokeCrates = new ArrayList<>();
     private final List<Crate> crates = new ArrayList<>();
+
+    private final Map<UUID, Map<Integer, Tier>> tiers = new WeakHashMap<>();
+
+    public void addTier(final Player player, final int slot, final Tier tier) {
+        if (this.tiers.containsKey(player.getUniqueId())) {
+            this.tiers.get(player.getUniqueId()).put(slot, tier);
+
+            return;
+        }
+
+        this.tiers.put(player.getUniqueId(), new WeakHashMap<>() {{
+            put(slot, tier);
+        }});
+    }
+
+    public void removeTier(final Player player) {
+        this.tiers.remove(player.getUniqueId());
+    }
+
+    public final Tier getTier(final Player player, final int slot) {
+        return this.tiers.get(player.getUniqueId()).get(slot);
+    }
+
+    public Map<UUID, Map<Integer, Tier>> getTiers() {
+        return Collections.unmodifiableMap(this.tiers);
+    }
 
     private HologramManager holograms;
 

@@ -41,7 +41,7 @@ public class CosmicCrate extends CrateBuilder {
             final Tier tier = PrizeManager.getTier(crate);
 
             if (tier != null) {
-                stack.setPersistentString(PersistentKeys.crate_tier.getNamespacedKey(), tier.getName());
+                this.crateManager.addTier(player, index, tier);
 
                 setItem(index, stack.getStack());
 
