@@ -258,15 +258,15 @@ Crate:
       # The name of the item to display in the gui.
       DisplayName: "<green>Fancy Shield"
       # The enchants to display in the gui.
-      DisplayItem: 'shield'
+      DisplayItem: "shield"
       # A list of patterns: https://jd.papermc.io/paper/1.21/org/bukkit/block/banner/PatternType.html
       Patterns:
-        - 'HALF_HORIZONTAL:RED'
-        - 'RHOMBUS_MIDDLE:BLACK'
-        - 'STRIPE_TOP:RED'
-        - 'STRIPE_BOTTOM:WHITE'
-        - 'STRIPE_MIDDLE:BLACK'
-        - 'CIRCLE_MIDDLE:WHITE'
+        - "HALF_HORIZONTAL:RED"
+        - "RHOMBUS_MIDDLE:BLACK"
+        - "STRIPE_TOP:RED"
+        - "STRIPE_BOTTOM:WHITE"
+        - "STRIPE_MIDDLE:BLACK"
+        - "CIRCLE_MIDDLE:WHITE"
       # Prize settings
       Settings:
         # The custom model data of the item, -1 is disabled.
