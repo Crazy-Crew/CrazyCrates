@@ -1,9 +1,6 @@
 package com.badbones69.crazycrates.api.objects.other;
 
-import com.badbones69.crazycrates.config.impl.ConfigKeys;
-import com.ryderbelserion.vital.core.Vital;
 import com.ryderbelserion.vital.core.util.FileUtil;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
@@ -14,19 +11,17 @@ import com.badbones69.crazycrates.config.ConfigManager;
 import java.io.File;
 import java.util.List;
 
-public class Server extends Vital implements IServer {
+public class Server implements IServer {
 
     private final File directory;
-    private final ComponentLogger logger;
     private final File crates;
 
     private UserManager userManager;
     private Options options;
 
-    public Server(@NotNull final File directory, @NotNull final ComponentLogger logger) {
+    public Server(@NotNull final File directory) {
         this.directory = directory;
         this.crates = new File(this.directory, "crates");
-        this.logger = logger;
 
         ConfigManager.load(this.directory);
     }
@@ -75,6 +70,14 @@ public class Server extends Vital implements IServer {
     }
 
     /**
+     * @return the data folder
+     */
+    @Override
+    public @NotNull File getDataFolder() {
+        return this.directory;
+    }
+
+    /**
      * @return the list of files in the crates folder
      */
     @Override
@@ -96,26 +99,5 @@ public class Server extends Vital implements IServer {
     @Override
     public @NotNull final ISettings getSettings() {
         return this.options;
-    }
-
-    /**
-     * @return the plugin directory
-     */
-    @Override
-    public @NotNull final File getDirectory() {
-        return this.directory;
-    }
-
-    /**
-     * @return the plugin logger
-     */
-    @Override
-    public @NotNull final ComponentLogger getLogger() {
-        return this.logger;
-    }
-
-    @Override
-    public boolean isLogging() {
-        return ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging);
     }
 }

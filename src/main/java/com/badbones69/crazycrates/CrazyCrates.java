@@ -52,7 +52,9 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.instance = new Server(getDataFolder(), getComponentLogger());
+        new VitalPaper(this);
+
+        this.instance = new Server(getDataFolder());
         this.instance.apply();
 
         this.fileManager = new FileManager();
