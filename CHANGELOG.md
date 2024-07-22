@@ -19,7 +19,7 @@
       # The chance to win i.e. 15%
       Chance: 23
       Items:
-        - 'Item: spawner, Mob: creeper'
+        - 'Item:spawner, Mob:creeper'
 ```
 
 ### Changes:
