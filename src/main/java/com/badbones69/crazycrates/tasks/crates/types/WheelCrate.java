@@ -101,10 +101,6 @@ public class WheelCrate extends CrateBuilder {
                         populateMenu();
                     }
 
-                    if (this.full == this.timer + 47) {
-                        playSound("stop-sound", Sound.Source.PLAYER, "entity.player.levelup");
-                    }
-
                     if (this.full >= this.timer + 47) {
                         this.slow++;
 
@@ -160,7 +156,7 @@ public class WheelCrate extends CrateBuilder {
 
                 setItem(this.slots.get(this.what), rewards.get(otherSlot));
 
-                playSound("cycle-sound", Sound.Source.MUSIC, "block.note_block.xylophone");
+                playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
 
                 this.uh++;
                 this.what++;
