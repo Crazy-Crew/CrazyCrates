@@ -95,6 +95,8 @@ public class WonderCrate extends CrateBuilder {
                         setItem(Integer.parseInt(slot), this.prize.getDisplayItem(player));
                     }
 
+                    playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
+
                     this.slot1++;
                     this.slot2--;
                 }
@@ -103,6 +105,8 @@ public class WonderCrate extends CrateBuilder {
                     for (int slot : this.other) {
                         setCustomGlassPane(slot);
                     }
+
+                    playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
                 }
 
                 player.openInventory(getInventory());
