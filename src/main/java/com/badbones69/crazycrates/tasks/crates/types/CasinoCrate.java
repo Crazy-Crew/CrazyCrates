@@ -121,10 +121,10 @@ public class CasinoCrate extends CrateBuilder {
 
                 if (row_uno.isEmpty() || row_dos.isEmpty() || row_tres.isEmpty()) {
                     if (MiscUtils.isLogging()) {
-                        this.plugin.getLogger().warning("One of your tiers in the config is empty.");
-                        this.plugin.getLogger().warning("Tier 1: " + row_uno);
-                        this.plugin.getLogger().warning("Tier 2: " + row_dos);
-                        this.plugin.getLogger().warning("Tier 3:" + row_tres);
+                        this.plugin.getComponentLogger().warn("One of your tiers in the config is empty.");
+                        this.plugin.getComponentLogger().warn("Tier 1: {}", row_uno);
+                        this.plugin.getComponentLogger().warn("Tier 2: {}", row_dos);
+                        this.plugin.getComponentLogger().warn("Tier 3: {}", row_tres);
                     }
 
                     return;

@@ -30,6 +30,7 @@ import com.ryderbelserion.vital.paper.enums.Support;
 import com.ryderbelserion.vital.paper.files.config.CustomFile;
 import com.ryderbelserion.vital.paper.files.config.FileManager;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -195,7 +196,7 @@ public class CrateManager {
         } catch (Exception exception) {
             this.brokeCrates.add(crate.getName());
 
-            if (MiscUtils.isLogging()) this.plugin.getLogger().log(Level.WARNING, "There was an error while loading the " + crate.getName() + ".yml file.", exception);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("There was an error while loading the {}.yml file.", crate.getName(), exception);
         }
     }
 
@@ -210,22 +211,22 @@ public class CrateManager {
         if (Support.decent_holograms.isEnabled()) {
             this.holograms = new DecentHologramsSupport();
 
-            if (MiscUtils.isLogging()) this.plugin.getLogger().info("DecentHolograms support has been enabled.");
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("DecentHolograms support has been enabled.");
         } else if (Support.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
             this.holograms = new CMIHologramsSupport();
 
-            if (MiscUtils.isLogging()) this.plugin.getLogger().info("CMI Hologram support has been enabled.");
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("CMI Hologram support has been enabled.");
         } else if (Support.fancy_holograms.isEnabled()) {
             this.holograms = new FancyHologramsSupport();
 
-            if (MiscUtils.isLogging()) this.plugin.getLogger().info("FancyHolograms support has been enabled.");
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("FancyHolograms support has been enabled.");
         } else {
             if (MiscUtils.isLogging()) {
                 List.of(
                         "There was no hologram plugin found on the server. If you are using CMI",
                         "Please make sure you enabled the hologram module in modules.yml",
                         "You can run /crazycrates reload if using CMI otherwise restart your server."
-                ).forEach(this.plugin.getLogger()::warning);
+                ).forEach(this.plugin.getComponentLogger()::warn);
             }
         }
     }
@@ -245,15 +246,15 @@ public class CrateManager {
             Path path = this.plugin.getDataFolder().toPath();
             Class<? extends @NotNull CrazyCrates> classObject = this.plugin.getClass();
 
-            FileUtil.extracts(classObject, "/crates/", path.resolve("examples").resolve("crates"), true);
-            FileUtil.extracts(classObject, "/schematics/", path.resolve("examples").resolve("schematics"), true);
-
             List.of(
                     "config.yml",
                     "data.yml",
                     "locations.yml",
                     "messages.yml"
-            ).forEach(file -> FileUtil.extract(classObject, file, path.resolve("examples"), true));
+            ).forEach(file -> FileUtil.extract(file, "examples", true));
+
+            FileUtil.extracts(classObject, "/crates/", path.resolve("examples").resolve("crates"), true);
+            FileUtil.extracts(classObject, "/schematics/", path.resolve("examples").resolve("schematics"), true);
         }
 
         this.giveNewPlayersKeys = false;
@@ -265,7 +266,7 @@ public class CrateManager {
             this.holograms.purge(false);
         }
 
-        if (MiscUtils.isLogging()) this.plugin.getLogger().info("Loading all crate information...");
+        if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("Loading all crate information...");
 
         for (final String crateName : getCrateNames()) {
             try {
@@ -304,7 +305,7 @@ public class CrateManager {
                 if (isTiersEmpty && tiers.isEmpty()) {
                     this.brokeCrates.add(crateName);
 
-                    if (MiscUtils.isLogging()) this.plugin.getLogger().warning("No tiers were found for " + crateName + ".yml file.");
+                    if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("No tiers were found for {}.yml file.", crateName);
 
                     continue;
                 }
@@ -396,7 +397,7 @@ public class CrateManager {
             } catch (Exception exception) {
                 this.brokeCrates.add(crateName);
 
-                if (MiscUtils.isLogging()) this.plugin.getLogger().log(Level.WARNING, "There was an error while loading the " + crateName + ".yml file.", exception);
+                if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("There was an error while loading the {}.yml file.", crateName, exception);
             }
         }
 
@@ -406,7 +407,7 @@ public class CrateManager {
             List.of(
                     "All crate information has been loaded.",
                     "Loading all the physical crate locations."
-            ).forEach(line -> this.plugin.getLogger().info(line));
+            ).forEach(line -> this.plugin.getComponentLogger().info(line));
         }
 
         final YamlConfiguration locations = Files.locations.getConfiguration();
@@ -454,14 +455,14 @@ public class CrateManager {
 
         // Checking if all physical locations loaded
         if (MiscUtils.isLogging()) {
-            final Logger logger = this.plugin.getLogger();
+            final ComponentLogger logger = this.plugin.getComponentLogger();
 
             if (loadedAmount > 0 || brokeAmount > 0) {
                 if (brokeAmount <= 0) {
                     logger.info("All physical crate locations have been loaded.");
                 } else {
-                    logger.info("Loaded " + loadedAmount + " physical crate locations.");
-                    logger.info("Failed to load " + brokeAmount + " physical crate locations.");
+                    logger.info("Loaded {} physical crate locations.", loadedAmount);
+                    logger.info("Failed to load {} physical crate locations.", brokeAmount);
                 }
             }
 
@@ -476,12 +477,12 @@ public class CrateManager {
                 if (schematicName.endsWith(".nbt")) {
                     this.crateSchematics.add(new CrateSchematic(schematicName, new File(plugin.getDataFolder() + "/schematics/" + schematicName)));
 
-                    if (MiscUtils.isLogging()) this.plugin.getLogger().info(schematicName + " was successfully found and loaded.");
+                    if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("{} was successfully found and loaded.", schematicName);
                 }
             }
         }
 
-        if (MiscUtils.isLogging()) this.plugin.getLogger().info("All schematics were found and loaded.");
+        if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("All schematics were found and loaded.");
 
         cleanDataFile();
 
@@ -629,7 +630,7 @@ public class CrateManager {
                             crate.getName() + " has an invalid crate type. Your Value: " + crate.getFile().getString("Crate.CrateType", "CSGO"),
                             "We will use " + CrateType.csgo.getName() + " until you change the crate type.",
                             "Valid Crate Types: CSGO/Casino/Cosmic/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War"
-                    ).forEach(line -> this.plugin.getLogger().warning(line));
+                    ).forEach(line -> this.plugin.getComponentLogger().warn(line));
                 }
             }
         }
@@ -1333,7 +1334,7 @@ public class CrateManager {
 
         if (!data.contains("Players")) return;
 
-        if (MiscUtils.isLogging()) this.plugin.getLogger().info("Cleaning up the data.yml file.");
+        if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("Cleaning up the data.yml file.");
 
         final List<String> removePlayers = new ArrayList<>();
 
@@ -1363,14 +1364,14 @@ public class CrateManager {
         }
 
         if (!removePlayers.isEmpty()) {
-            if (MiscUtils.isLogging()) this.plugin.getLogger().info(removePlayers.size() + " player's data has been marked to be removed.");
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("{} player's data has been marked to be removed.", removePlayers.size());
 
             removePlayers.forEach(uuid -> data.set("Players." + uuid, null));
 
-            if (MiscUtils.isLogging()) this.plugin.getLogger().info("All empty player data has been removed.");
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("All empty player data has been removed.");
         }
 
-        if (MiscUtils.isLogging()) this.plugin.getLogger().info("The data.yml file has been cleaned.");
+        if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("The data.yml file has been cleaned.");
 
         Files.data.save();
     }

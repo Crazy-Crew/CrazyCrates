@@ -33,7 +33,7 @@ public class PrizeManager {
      */
     public static void givePrize(@NotNull final Player player, @Nullable Prize prize, @NotNull final Crate crate) {
         if (prize == null) {
-            if (MiscUtils.isLogging()) plugin.getLogger().warning("No prize was found when giving " + player.getName() + " a prize.");
+            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("No prize was found when giving {} a prize.", player.getName());
 
             return;
         }
@@ -99,8 +99,8 @@ public class PrizeManager {
                         commandBuilder.append("1 ");
 
                         if (MiscUtils.isLogging()) {
-                            plugin.getLogger().warning("The prize " + prize.getPrizeName() + " in the " + prize.getCrateName() + " crate has caused an error when trying to run a command.");
-                            plugin.getLogger().warning("Command: " + cmd);
+                            plugin.getComponentLogger().warn("The prize {} in the {} crate has caused an error when trying to run a command.", prize.getPrizeName(), prize.getCrateName());
+                            plugin.getComponentLogger().warn("Command: {}", cmd);
                         }
                     }
                 } else {

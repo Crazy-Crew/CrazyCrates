@@ -361,7 +361,7 @@ public class ItemUtils {
         } catch (Exception exception) {
             itemBuilder.withType(Material.RED_TERRACOTTA).setDisplayName("<red>Error found!, Prize Name: " + section);
 
-            if (MiscUtils.isLogging()) plugin.getLogger().log(Level.WARNING, "An error has occurred with the item builder: ", exception);
+            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("An error has occurred with the item builder: ", exception);
         }
 
         return itemBuilder;

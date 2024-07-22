@@ -242,7 +242,7 @@ public class Prize {
                             "Detected deprecated usage of Lore in Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
                             "Lore will be removed in the next major version of Minecraft in favor of DisplayLore.",
                             "This does not apply to ANYWHERE outside of the Prizes, It also does not apply to the Items section in prizes."
-                    ).forEach(this.plugin.getLogger()::warning);
+                    ).forEach(this.plugin.getComponentLogger()::warn);
                 }
 
                 builder.setDisplayLore(this.section.getStringList("Lore"));

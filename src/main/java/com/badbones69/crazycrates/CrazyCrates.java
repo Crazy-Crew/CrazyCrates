@@ -22,6 +22,7 @@ import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.paper.VitalPaper;
 import com.ryderbelserion.vital.paper.enums.Support;
 import com.ryderbelserion.vital.paper.files.config.FileManager;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
@@ -30,14 +31,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import static com.badbones69.crazycrates.api.utils.MiscUtils.registerPermissions;
 
 public class CrazyCrates extends JavaPlugin {
 
     private final Timer timer;
+    private final long startTime;
 
     public CrazyCrates() {
+        this.startTime = System.nanoTime();
+
         // Create timer object.
         this.timer = new Timer();
     }
@@ -121,12 +126,16 @@ public class CrazyCrates extends JavaPlugin {
         }
 
         if (Support.placeholder_api.isEnabled()) {
-            if (MiscUtils.isLogging()) getLogger().info("PlaceholderAPI support is enabled!");
+            if (MiscUtils.isLogging()) getComponentLogger().info("PlaceholderAPI support is enabled!");
 
             new PlaceholderAPISupport().register();
         }
 
-        if (MiscUtils.isLogging()) getLogger().info("You can disable logging by going to the plugin-config.yml and setting verbose to false.");
+        if (MiscUtils.isLogging()) {
+            getComponentLogger().info("You can disable logging by going to the plugin-config.yml and setting verbose to false.");
+
+            getComponentLogger().info("Done ({})!", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
+        }
     }
 
     @Override

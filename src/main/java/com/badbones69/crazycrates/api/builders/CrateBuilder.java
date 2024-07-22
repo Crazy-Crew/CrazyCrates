@@ -348,7 +348,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
                         "",
                         " 1) No valid prizes can be found, Likely a yaml issue.",
                         " 2) The player does not have the permission to open the crate."
-                ).forEach(this.plugin.getLogger()::warning);
+                ).forEach(this.plugin.getComponentLogger()::warn);
             }
         }
 
