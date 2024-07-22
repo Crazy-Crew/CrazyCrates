@@ -12,7 +12,7 @@ val buildNumber: String? = System.getenv("BUILD_NUMBER")
 
 rootProject.version = if (buildNumber != null) "${libs.versions.minecraft.get()}-$buildNumber" else "3.5.8"
 
-val isSnapshot = true
+val isSnapshot = false
 
 val content: String = rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 
@@ -25,6 +25,10 @@ dependencies {
 
     compileOnly(fileTree("$projectDir/libs/compile").include("*.jar"))
 
+    implementation(libs.triumph.cmds)
+
+    implementation(libs.vital.paper)
+
     compileOnly(libs.decent.holograms)
 
     compileOnly(libs.fancy.holograms)
@@ -32,10 +36,6 @@ dependencies {
     compileOnly(libs.headdatabaseapi)
 
     compileOnly(libs.placeholderapi)
-
-    compileOnly(libs.triumph.cmds)
-
-    compileOnly(libs.vital.paper)
 
     compileOnly(libs.oraxen)
 
@@ -69,6 +69,13 @@ tasks {
     shadowJar {
         archiveBaseName.set(rootProject.name)
         archiveClassifier.set("")
+
+        listOf(
+            "com.ryderbelserion.vital",
+            "dev.triumphteam.cmds"
+        ).forEach {
+            relocate(it, "libs.$it")
+        }
     }
 
     processResources {
