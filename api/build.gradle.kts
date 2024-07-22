@@ -5,7 +5,7 @@ plugins {
 }
 
 project.group = "us.crazycrew.crazycrates"
-project.version = "0.7"
+project.version = "0.8"
 
 dependencies {
     compileOnly(libs.paper)
