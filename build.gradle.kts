@@ -12,7 +12,7 @@ val buildNumber: String? = System.getenv("BUILD_NUMBER")
 
 rootProject.version = if (buildNumber != null) "${libs.versions.minecraft.get()}-$buildNumber" else "3.5.8"
 
-val isSnapshot = false
+val isSnapshot = true
 
 val content: String = rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 
