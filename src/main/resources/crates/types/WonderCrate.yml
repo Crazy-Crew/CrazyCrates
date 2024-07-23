@@ -5,11 +5,11 @@ Crate:
   # https://docs.crazycrew.us/docs/category/crazycrates
 
   # See CosmicCrate.yml or CasinoCrate.yml to see how the Cosmic/Casino CrateType works.
-  CrateType: CSGO
+  CrateType: Wonder
   # Name of the Inventory if a GUI crate.
-  CrateName: "<green>Basic Crate"
+  CrateName: "<light_purple>Wonder Crate"
   # The name of the inventory that will be in the preview GUI.
-  Preview-Name: "<green>Basic Crate Preview"
+  Preview-Name: "<light_purple>Wonder Crate Preview"
   # Starting amount of keys when the player 1st joins.
   StartingKeys: 0
   # The amount of keys required to use the crate.
@@ -20,11 +20,11 @@ Crate:
   # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
   InGUI: true
   # Slot the item is in the GUI.
-  Slot: 12
+  Slot: 34
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
-  BroadCast: "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><green>Basic Crate.</bold>"
+  BroadCast: "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><light_purple>Wonder Crate.</bold>"
   # This section is related to commands opening when a crate is opened.
   opening-command:
     # If the commands should be sent or not.
@@ -82,7 +82,7 @@ Crate:
   # If the crate in the main /crates is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
-  Name: "<bold><green>Basic Crate</bold>"
+  Name: "<bold><light_purple>Wonder Crate</bold>"
   # The lore of the item in the GUI.
   Lore:
     - "<gray>This crate contains strange objects."
@@ -105,7 +105,7 @@ Crate:
       Custom-Model-Data: -1
   PhysicalKey:
     # Name of the Key.
-    Name: "<bold><green>Basic Crate Key</bold>"
+    Name: "<bold><light_purple>Wonder Crate Key</bold>"
     # Lore of the Key.
     Lore:
       - "<gray>A special Key"
@@ -132,7 +132,7 @@ Crate:
     # The message that will be displayed above the crate.
     # Note: MiniMessage or Color Codes being supported is depending on the 'holograms' plugin.
     Message:
-      - "<bold><green>Basic Crate</bold>"
+      - "<bold><light_purple>Wonder Crate</bold>"
   # All the prizes that can be obtained in the Crate.
   # These prizes do not require any extra configuration
   # They will give the prizes based on what's already below.
@@ -254,45 +254,3 @@ Crate:
       # Override the global message.
       Messages:
         - "<gray>You won <reset>%reward%."
-    '6':
-      # The name of the item to display in the gui.
-      DisplayName: "<green>Fancy Shield"
-      # The enchants to display in the gui.
-      DisplayItem: "shield"
-      # A list of patterns: https://jd.papermc.io/paper/1.21/org/bukkit/block/banner/PatternType.html
-      Patterns:
-        - "HALF_HORIZONTAL:RED"
-        - "RHOMBUS_MIDDLE:BLACK"
-        - "STRIPE_TOP:RED"
-        - "STRIPE_BOTTOM:WHITE"
-        - "STRIPE_MIDDLE:BLACK"
-        - "CIRCLE_MIDDLE:WHITE"
-      # Prize settings
-      Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
-      # The amount to display in the gui.
-      DisplayAmount: 1
-      # The max range i.e. 15/100 = 15% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 15%
-      Chance: 15
-    '7':
-      # The name of the item to display in the gui.
-      DisplayName: "<green>Creeper Spawner"
-      # The enchants to display in the gui.
-      DisplayItem: "spawner"
-      # Prize settings
-      Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
-        # The type of mob for the spawner.
-        Mob-Type: creeper
-      # The amount to display in the gui.
-      DisplayAmount: 1
-      # The max range i.e. 15/100 = 15% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 15%
-      Chance: 23
-      Items:
-        - 'Item:spawner, Mob:creeper'

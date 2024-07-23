@@ -10,6 +10,7 @@ import com.ryderbelserion.vital.paper.util.ItemUtil;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -242,7 +243,7 @@ public class Prize {
                             "Detected deprecated usage of Lore in Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
                             "Lore will be removed in the next major version of Minecraft in favor of DisplayLore.",
                             "This does not apply to ANYWHERE outside of the Prizes, It also does not apply to the Items section in prizes."
-                    ).forEach(this.plugin.getLogger()::warning);
+                    ).forEach(this.plugin.getComponentLogger()::warn);
                 }
 
                 builder.setDisplayLore(this.section.getStringList("Lore"));
@@ -261,6 +262,14 @@ public class Prize {
             builder.setUnbreakable(section.getBoolean("Unbreakable", false));
 
             builder.setCustomModelData(this.section.getInt("Settings.Custom-Model-Data", -1));
+
+            if (this.section.contains("Settings.Mob-Type")) {
+                final EntityType type = ItemUtil.getEntity(this.section.getString("Settings.Mob-Type", "cow"));
+
+                if (type != null) {
+                    builder.setEntityType(type);
+                }
+            }
 
             if (this.section.contains("Skull") && this.plugin.getApi() != null) {
                 builder.setSkull(section.getString("Skull", ""), this.plugin.getApi());

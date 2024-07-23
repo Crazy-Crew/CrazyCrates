@@ -139,7 +139,7 @@ public abstract class BaseCommand {
             final int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), crate.getName());
 
             if (totalKeys < 1) {
-                if (MiscUtils.isLogging()) this.plugin.getLogger().warning("The player " + player.getName() + " does not have enough keys to take.");
+                if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("The player {} does not have enough keys to take.", player.getName());
 
                 sender.sendRichMessage(Messages.cannot_take_keys.getMessage(sender, "{player}", player.getName()));
 

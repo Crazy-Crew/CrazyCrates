@@ -158,6 +158,8 @@ public class CrateControlListener implements Listener {
 
             player.sendRichMessage(Messages.required_keys.getMessage(player, placeholders));
 
+            lackingKey(player, crate, clickedBlock, false);
+
             key.setCancelled(true);
 
             return;
@@ -212,24 +214,7 @@ public class CrateControlListener implements Listener {
             return;
         }
 
-        final String keyName = crate.getKeyName();
-
-        final Map<String, String> placeholders = new HashMap<>() {{
-            put("{crate}", crate.getName());
-            put("{key}", keyName);
-        }};
-
-        if (crate.getCrateType() != CrateType.crate_on_the_go) {
-            if (this.config.getProperty(ConfigKeys.knock_back)) knockBack(player, clickedBlock.getLocation());
-
-            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                net.kyori.adventure.sound.Sound sound = net.kyori.adventure.sound.Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
-
-                player.playSound(sound);
-            }
-
-            player.sendRichMessage(Messages.no_keys.getMessage(player, placeholders));
-        }
+        lackingKey(player, crate, clickedBlock, true);
 
         key.setCancelled(true);
     }
@@ -274,7 +259,28 @@ public class CrateControlListener implements Listener {
 
         if (this.crateManager.isInOpeningList(player)) this.crateManager.removePlayerFromOpeningList(player);
     }
-    
+
+    private void lackingKey(final Player player, final Crate crate, final Block clickedBlock, final boolean sendMessage) {
+        final String keyName = crate.getKeyName();
+
+        final Map<String, String> placeholders = new HashMap<>() {{
+            put("{crate}", crate.getName());
+            put("{key}", keyName);
+        }};
+
+        if (crate.getCrateType() != CrateType.crate_on_the_go) {
+            if (this.config.getProperty(ConfigKeys.knock_back)) knockBack(player, clickedBlock.getLocation());
+
+            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
+                net.kyori.adventure.sound.Sound sound = net.kyori.adventure.sound.Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
+
+                player.playSound(sound);
+            }
+
+            if (sendMessage) player.sendRichMessage(Messages.no_keys.getMessage(player, placeholders));
+        }
+    }
+
     private void knockBack(final Player player, final Location location) {
         final Vector vector = player.getLocation().toVector().subtract(location.toVector()).normalize().multiply(1).setY(.1);
 

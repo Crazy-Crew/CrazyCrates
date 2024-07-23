@@ -1,6 +1,5 @@
 name: '${name}'
 main: '${group}.CrazyCrates'
-loader: '${group}.support.DependencyLoader'
 
 version: '${version}'
 api-version: '${apiVersion}'

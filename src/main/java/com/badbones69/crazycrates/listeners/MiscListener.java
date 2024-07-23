@@ -88,6 +88,8 @@ public class MiscListener implements Listener {
         this.paginationManager.remove(player);
 
         // stop the crate tasks.
+        this.crateManager.removeTier(player);
+
         this.crateManager.endQuickCrate(player, player.getLocation(), this.crateManager.getOpeningCrate(player), false);
         this.crateManager.endCrate(player);
         this.crateManager.endQuadCrate(player);
@@ -164,6 +166,8 @@ public class MiscListener implements Listener {
                 // Remove opening stuff.
                 this.crateManager.removePlayerFromOpeningList(player);
                 this.crateManager.removePlayerKeyType(player);
+
+                this.crateManager.removeTier(player);
 
                 // Cancel crate task just in case.
                 this.crateManager.removeCrateTask(player);

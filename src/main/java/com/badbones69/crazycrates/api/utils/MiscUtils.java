@@ -148,7 +148,7 @@ public class MiscUtils {
 
             return leftover;
         } else {
-            if (MiscUtils.isLogging()) plugin.getLogger().info("Items cannot be null.");
+            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Items cannot be null.");
         }
 
         return null;
@@ -179,7 +179,7 @@ public class MiscUtils {
                     "An error has occurred while trying to take a key from a player.",
                     "Player: " + player.getName(),
                     "Key: " + crateName
-            ).forEach(plugin.getLogger()::warning);
+            ).forEach(plugin.getComponentLogger()::warn);
 
             List.of(
                     "<red>An issue has occurred when trying to take a key.",

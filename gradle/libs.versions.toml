@@ -17,7 +17,7 @@ triumph-cmd = "2.0.0-ALPHA-10"
 tirumph-gui = "3.1.7"
 jetbrains = "24.1.0"
 kyori = "4.17.0"
-vital = "1.9.15"
+vital = "2.0.2"
 
 # Paper
 paperweight = "1.7.1"

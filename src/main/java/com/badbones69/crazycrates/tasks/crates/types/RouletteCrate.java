@@ -62,7 +62,9 @@ public class RouletteCrate extends CrateBuilder {
                     setItem(13, crate.pickPrize(player).getDisplayItem(player));
                     setGlass();
 
-                    playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
+                    if (this.full >= 2) {
+                        playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
+                    }
 
                     this.even++;
 

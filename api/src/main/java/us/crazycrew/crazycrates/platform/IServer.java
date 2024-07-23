@@ -27,6 +27,12 @@ public interface IServer {
     @NotNull File getCrateFolder();
 
     /**
+     * @return {@link File}
+     * @since 0.8
+     */
+    @NotNull File getDataFolder();
+
+    /**
      * @return {@link List<String>}
      * @since 0.5
      */

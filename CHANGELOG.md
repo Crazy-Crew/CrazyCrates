@@ -1,8 +1,6 @@
-### Fixed:
-- Issue with /crazycrates migrator.
-- Multiple null checks in commands.
-- Issue with invalid argument output not outputting the proper syntax.
-
-### Changes:
-- Updated migrator command format.
-- Updated invalid argument output to just describe it better.
+### Added:
+- Ability the ability to make items glow in `Items`
+```yml
+Items:
+  - 'Item:spawner, Glowing:true'
+```

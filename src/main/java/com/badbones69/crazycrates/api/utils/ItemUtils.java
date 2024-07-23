@@ -12,6 +12,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -312,6 +313,14 @@ public class ItemUtils {
                     case "item" -> itemBuilder.withType(value.toLowerCase());
                     case "data" -> itemBuilder = itemBuilder.fromBase64(value);
                     case "name" -> itemBuilder.setDisplayName(value);
+                    case "mob" -> {
+                        final EntityType type = ItemUtil.getEntity(value);
+
+                        if (type != null) {
+                            itemBuilder.setEntityType(type);
+                        }
+                    }
+                    case "glowing" -> itemBuilder.setGlowing(Boolean.valueOf(value));
                     case "amount" -> {
                         final Optional<Number> amount = StringUtil.tryParseInt(value);
                         itemBuilder.setAmount(amount.map(Number::intValue).orElse(1));
@@ -347,12 +356,10 @@ public class ItemUtils {
                         try {
                             DyeColor color = DyeUtil.getDyeColor(value);
 
-                            if (color != null) {
-                                PatternType patternType = ItemUtil.getPatternType(option);
+                            PatternType patternType = ItemUtil.getPatternType(option);
 
-                                if (patternType != null) {
-                                    itemBuilder.addPattern(patternType, color);
-                                }
+                            if (patternType != null) {
+                                itemBuilder.addPattern(patternType, color);
                             }
                         } catch (Exception ignored) {}
                     }
@@ -361,7 +368,7 @@ public class ItemUtils {
         } catch (Exception exception) {
             itemBuilder.withType(Material.RED_TERRACOTTA).setDisplayName("<red>Error found!, Prize Name: " + section);
 
-            if (MiscUtils.isLogging()) plugin.getLogger().log(Level.WARNING, "An error has occurred with the item builder: ", exception);
+            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("An error has occurred with the item builder: ", exception);
         }
 
         return itemBuilder;

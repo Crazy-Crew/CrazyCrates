@@ -68,7 +68,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null || crate.getCrateType() == CrateType.menu) {
             player.sendRichMessage(Messages.internal_error.getMessage(player));
 
-            if (MiscUtils.isLogging()) this.plugin.getLogger().severe("An error has occurred: The crate type is null or Menu for the crate named " + crate.getName());
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null or Menu for the crate named {}", crate.getName());
 
             return;
         }
@@ -134,7 +134,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null) {
             player.sendRichMessage(Messages.internal_error.getMessage(player));
 
-            if (MiscUtils.isLogging()) this.plugin.getLogger().severe("An error has occurred: The crate type is null for the crate named " + crate.getName());
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crate.getName());
 
             return;
         }
@@ -210,7 +210,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null) {
             player.sendRichMessage(Messages.internal_error.getMessage(player));
 
-            if (MiscUtils.isLogging()) this.plugin.getLogger().severe("An error has occurred: The crate type is null for the crate named " + crate.getName());
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crate.getName());
 
             return;
         }
@@ -259,7 +259,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null) {
             player.sendRichMessage(Messages.internal_error.getMessage(player));
 
-            if (MiscUtils.isLogging()) this.plugin.getLogger().severe("An error has occurred: The crate type is null for the crate named " + crate.getName());
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crate.getName());
 
             return;
         }

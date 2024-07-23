@@ -334,7 +334,7 @@ public class Crate {
         try {
             return prizes.get(random.nextInt(prizes.size()));
         } catch (IllegalArgumentException exception) {
-            if (MiscUtils.isLogging()) this.plugin.getLogger().log(Level.WARNING, "Failed to find prize from the " + name + " crate for player " + player.getName() + ".", exception);
+            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Failed to find prize from the {} crate for player {}.", name, player.getName(), exception);
 
             return null;
         }
