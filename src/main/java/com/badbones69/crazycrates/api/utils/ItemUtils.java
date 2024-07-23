@@ -320,6 +320,7 @@ public class ItemUtils {
                             itemBuilder.setEntityType(type);
                         }
                     }
+                    case "glowing" -> itemBuilder.setGlowing(Boolean.valueOf(value));
                     case "amount" -> {
                         final Optional<Number> amount = StringUtil.tryParseInt(value);
                         itemBuilder.setAmount(amount.map(Number::intValue).orElse(1));
