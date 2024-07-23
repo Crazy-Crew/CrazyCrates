@@ -356,7 +356,7 @@ public class ItemUtils {
                         try {
                             DyeColor color = DyeUtil.getDyeColor(value);
 
-                            PatternType patternType = ItemUtil.getPatternType(option);
+                            PatternType patternType = ItemUtil.getPatternType(option.toLowerCase());
 
                             if (patternType != null) {
                                 itemBuilder.addPattern(patternType, color);

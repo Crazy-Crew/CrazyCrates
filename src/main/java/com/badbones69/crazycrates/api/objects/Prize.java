@@ -253,7 +253,11 @@ public class Prize {
 
             builder.setDamage(this.section.getInt("DisplayDamage", 0));
 
-            builder.addPatterns(this.section.getStringList("Patterns"));
+            if (this.section.contains("Patterns")) {
+                for (final String pattern : this.section.getStringList("Patterns")) {
+                    builder.addPattern(pattern.toLowerCase());
+                }
+            }
 
             builder.setItemFlags(this.section.getStringList("Flags"));
 
