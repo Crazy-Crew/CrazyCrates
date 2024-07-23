@@ -263,7 +263,7 @@ Crate:
       # The patterns don't need to be uppercased. you can type them lowercased along with the colors.
       # Patterns have to be laid out in a specific order, otherwise it won't look right.
       # This also applies to the Items section.
-      Patterns:
+      DisplayPatterns:
         - "base:white"
         - "gradient_up:light_gray"
         - "straight_cross:light_blue"

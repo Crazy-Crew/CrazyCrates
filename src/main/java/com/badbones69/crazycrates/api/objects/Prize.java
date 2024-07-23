@@ -240,9 +240,9 @@ public class Prize {
             if (this.section.contains("Lore")) {
                 if (MiscUtils.isLogging()) {
                     List.of(
-                            "Detected deprecated usage of Lore in Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
-                            "Lore will be removed in the next major version of Minecraft in favor of DisplayLore.",
-                            "This does not apply to ANYWHERE outside of the Prizes, It also does not apply to the Items section in prizes."
+                            "Deprecated usage of Patterns in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
+                            "Lore will be removed in the next major version of Minecraft in favor of DisplayLore",
+                            "You can turn my nagging off in config.yml, verbose_logging: true -> false"
                     ).forEach(this.plugin.getComponentLogger()::warn);
                 }
 
@@ -254,7 +254,21 @@ public class Prize {
             builder.setDamage(this.section.getInt("DisplayDamage", 0));
 
             if (this.section.contains("Patterns")) {
+                if (MiscUtils.isLogging()) {
+                    List.of(
+                            "Deprecated usage of Patterns in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Patterns to DisplayPatterns",
+                            "Patterns will be removed in the next major version of Minecraft in favor of DisplayPattern",
+                            "You can turn my nagging off in config.yml, verbose_logging: true -> false"
+                    ).forEach(this.plugin.getComponentLogger()::warn);
+                }
+
                 for (final String pattern : this.section.getStringList("Patterns")) {
+                    builder.addPattern(pattern.toLowerCase());
+                }
+            }
+
+            if (this.section.contains("DisplayPatterns")) {
+                for (final String pattern : this.section.getStringList("DisplayPatterns")) {
                     builder.addPattern(pattern.toLowerCase());
                 }
             }
