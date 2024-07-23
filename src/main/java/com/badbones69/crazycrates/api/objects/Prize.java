@@ -257,7 +257,7 @@ public class Prize {
                 if (MiscUtils.isLogging()) {
                     List.of(
                             "Deprecated usage of Patterns in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Patterns to DisplayPatterns",
-                            "Patterns will be removed in the next major version of Minecraft in favor of DisplayPattern",
+                            "Patterns will be removed in the next major version of Minecraft in favor of DisplayPatterns",
                             "You can turn my nagging off in config.yml, verbose_logging: true -> false"
                     ).forEach(this.plugin.getComponentLogger()::warn);
                 }
