@@ -339,7 +339,7 @@ public class CrateManager {
                                 }
                             }
 
-                            if (prizeSection.contains("DisplayData")) {
+                            /*if (prizeSection.contains("DisplayData")) {
                                 if (prizeSection.contains("Items")) {
                                     final List<String> list = prizeSection.getStringList("Items");
 
@@ -357,7 +357,7 @@ public class CrateManager {
 
                                     customFile.save();
                                 }
-                            }
+                            }*/
 
                             prizes.add(new Prize(prizeSection, tierPrizes, crateName, alternativePrize));
                         }
