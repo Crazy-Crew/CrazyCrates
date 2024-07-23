@@ -7,6 +7,8 @@ import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.objects.other.Server;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
+import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
@@ -55,12 +57,16 @@ public class CrazyCrates extends JavaPlugin {
 
     private Server instance;
 
+    private VitalPaper paper;
+
     @Override
     public void onEnable() {
-        new VitalPaper(this);
+        this.paper = new VitalPaper(this);
 
         this.instance = new Server(getDataFolder());
         this.instance.apply();
+
+        this.paper.setLogging(ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging));
 
         this.fileManager = new FileManager();
         this.fileManager.addFile("locations.yml").addFile("data.yml")
@@ -193,5 +199,9 @@ public class CrazyCrates extends JavaPlugin {
 
     public @NotNull final Timer getTimer() {
         return this.timer;
+    }
+
+    public final VitalPaper getPaper() {
+        return this.paper;
     }
 }

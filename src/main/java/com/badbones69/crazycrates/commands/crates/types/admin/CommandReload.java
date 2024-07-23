@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.commands.crates.types.admin;
 import com.badbones69.crazycrates.api.enums.Files;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
+import com.badbones69.crazycrates.config.ConfigManager;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.command.CommandSender;
@@ -18,6 +19,8 @@ public class CommandReload extends BaseCommand {
         this.plugin.getInstance().reload();
 
         this.fileManager.reloadFiles().init();
+
+        this.plugin.getPaper().setLogging(ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging));
 
         final YamlConfiguration locations = Files.locations.getConfiguration();
         final YamlConfiguration data = Files.data.getConfiguration();
