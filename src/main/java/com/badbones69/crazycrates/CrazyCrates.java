@@ -2,8 +2,10 @@ package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
-import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
+import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
+import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
+import com.badbones69.crazycrates.tasks.PaginationManager;
 import com.badbones69.crazycrates.api.objects.other.Server;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
@@ -17,12 +19,10 @@ import com.badbones69.crazycrates.listeners.crates.CrateOpenListener;
 import com.badbones69.crazycrates.listeners.crates.MobileCrateListener;
 import com.badbones69.crazycrates.listeners.crates.QuadCrateListener;
 import com.badbones69.crazycrates.listeners.crates.WarCrateListener;
-import com.badbones69.crazycrates.listeners.other.EntityDamageListener;
 import com.badbones69.crazycrates.support.MetricsWrapper;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.VitalPaper;
 import com.ryderbelserion.vital.paper.enums.Support;
@@ -49,7 +49,7 @@ public class CrazyCrates extends JavaPlugin {
         this.timer = new Timer();
     }
 
-    private InventoryManager inventoryManager;
+    private PaginationManager paginationManager;
     private BukkitUserManager userManager;
     private CrateManager crateManager;
     private FileManager fileManager;
@@ -81,7 +81,7 @@ public class CrazyCrates extends JavaPlugin {
             this.api = new HeadDatabaseAPI();
         }
 
-        this.inventoryManager = new InventoryManager();
+        this.paginationManager = new PaginationManager();
         this.crateManager = new CrateManager();
         this.userManager = new BukkitUserManager();
 
@@ -91,7 +91,7 @@ public class CrazyCrates extends JavaPlugin {
         this.crateManager.loadHolograms();
 
         // Load the buttons.
-        this.inventoryManager.loadButtons();
+        this.paginationManager.loadButtons();
 
         // Load the crates.
         this.crateManager.loadCrates();
@@ -105,13 +105,13 @@ public class CrazyCrates extends JavaPlugin {
                 // Menu listeners.
                 new CratePreviewMenu(),
                 new CrateAdminMenu(),
+                new CratePrizeMenu(),
                 new CrateMainMenu(),
                 new CrateTierMenu(),
 
                 // Other listeners.
                 new BrokeLocationsListener(),
                 new CrateControlListener(),
-                new EntityDamageListener(),
                 new MobileCrateListener(),
                 new CosmicCrateListener(),
                 new QuadCrateListener(),
@@ -169,19 +169,19 @@ public class CrazyCrates extends JavaPlugin {
         }
     }
 
-    public @NotNull final InventoryManager getInventoryManager() {
-        return this.inventoryManager;
+    public final PaginationManager getPaginationManager() {
+        return this.paginationManager;
     }
 
-    public @NotNull final BukkitUserManager getUserManager() {
+    public final BukkitUserManager getUserManager() {
         return this.userManager;
     }
 
-    public @NotNull final CrateManager getCrateManager() {
+    public final CrateManager getCrateManager() {
         return this.crateManager;
     }
 
-    public @NotNull final FileManager getFileManager() {
+    public final FileManager getFileManager() {
         return this.fileManager;
     }
 
@@ -193,11 +193,11 @@ public class CrazyCrates extends JavaPlugin {
         return this.api;
     }
 
-    public @NotNull final Server getInstance() {
+    public final Server getInstance() {
         return this.instance;
     }
 
-    public @NotNull final Timer getTimer() {
+    public final Timer getTimer() {
         return this.timer;
     }
 

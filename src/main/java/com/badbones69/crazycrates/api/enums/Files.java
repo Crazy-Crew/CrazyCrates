@@ -13,9 +13,9 @@ public enum Files {
 
     private final String fileName;
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private @NotNull final FileManager fileManager = this.plugin.getFileManager();
+    private final FileManager fileManager = this.plugin.getFileManager();
 
     /**
      * A constructor to build a file

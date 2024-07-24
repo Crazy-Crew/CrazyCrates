@@ -47,11 +47,11 @@ import java.util.logging.Level;
 
 public class CosmicCrateListener implements Listener {
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     @EventHandler
     public void onPrizeReceive(InventoryClickEvent event) {
@@ -60,14 +60,13 @@ public class CosmicCrateListener implements Listener {
 
         if (!(inventory.getHolder(false) instanceof CratePrizeMenu holder)) return;
 
+        // Get the player.
         final Player player = holder.getPlayer();
-
-        // Cancel event.
-        event.setCancelled(true);
 
         // Get opening crate.
         final Crate crate = this.crateManager.getOpeningCrate(player);
 
+        // Check if null.
         if (crate == null) return;
 
         // Check if player is in the opening list.
@@ -126,9 +125,6 @@ public class CosmicCrateListener implements Listener {
 
         final Player player = holder.getPlayer();
         final UUID uuid = player.getUniqueId();
-
-        // Cancel event.
-        event.setCancelled(true);
 
         // Get opening crate.
         final Crate crate = this.crateManager.getOpeningCrate(player);

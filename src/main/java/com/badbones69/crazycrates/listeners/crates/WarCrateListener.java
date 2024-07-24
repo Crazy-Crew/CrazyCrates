@@ -23,9 +23,9 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 
 public class WarCrateListener implements Listener {
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {

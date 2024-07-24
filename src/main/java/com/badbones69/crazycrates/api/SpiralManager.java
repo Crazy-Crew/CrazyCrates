@@ -9,7 +9,7 @@ import java.util.List;
 
 public class SpiralManager {
 
-    private static @NotNull List<Location> getLocations(@NotNull final Location center, final boolean clockWise) {
+    private static List<Location> getLocations(@NotNull final Location center, final boolean clockWise) {
         final World world = center.getWorld();
 
         double downWardsDistance = .05;
@@ -57,11 +57,11 @@ public class SpiralManager {
         return Collections.unmodifiableList(locations);
     }
 
-    public static @NotNull List<Location> getSpiralLocationClockwise(@NotNull final Location center) {
+    public static List<Location> getSpiralLocationClockwise(@NotNull final Location center) {
         return getLocations(center, true);
     }
 
-    public static @NotNull List<Location> getSpiralLocationCounterClockwise(@NotNull final Location center) {
+    public static List<Location> getSpiralLocationCounterClockwise(@NotNull final Location center) {
         return getLocations(center, false);
     }
 }

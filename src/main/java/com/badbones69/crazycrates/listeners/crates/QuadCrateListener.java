@@ -37,13 +37,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class QuadCrateListener implements Listener {
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private @NotNull final SessionManager sessionManager = new SessionManager();
+    private final SessionManager sessionManager = new SessionManager();
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {

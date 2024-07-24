@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.api.objects;
 
-import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.crates.CrateHologram;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
@@ -27,10 +26,7 @@ import com.badbones69.crazycrates.tasks.crates.other.AbstractCrateManager;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import com.badbones69.crazycrates.tasks.InventoryManager;
-import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,21 +36,24 @@ import java.util.logging.Level;
 
 public class Crate {
 
+    private final String name;
+
     private ItemBuilder previewTierBorderItem;
     private ItemBuilder borderItem;
     private ItemBuilder keyBuilder;
 
     private AbstractCrateManager manager;
-    private final String name;
     private String keyName;
-    private int maxPage = 1;
     private int maxSlots;
-    private String previewName;
-    private boolean previewToggle;
+    private int perPage;
+
     private boolean borderToggle;
 
-    private boolean previewTierToggle;
+    private boolean previewToggle;
+    private String previewName;
+
     private boolean previewTierBorderToggle;
+    private boolean previewTierToggle;
     private int previewTierCrateRows;
     private int previewTierMaxSlots;
 
@@ -63,13 +62,20 @@ public class Crate {
 
     private final CrateType crateType;
     private FileConfiguration file;
-    private ArrayList<Prize> prizes;
+
+    private List<Prize> prizes;
+
     private String crateInventoryName;
+
     private boolean giveNewPlayerKeys;
+
     private int previewChestLines;
     private int newPlayerKeys;
-    private ArrayList<ItemStack> preview;
+
+    private List<ItemStack> preview;
+
     private List<Tier> tiers;
+
     private CrateHologram hologram;
 
     private int maxMassOpen;
@@ -79,15 +85,11 @@ public class Crate {
 
     private List<String> prizeCommands = new ArrayList<>();
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
     private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
-
-    private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-
-    //private @NotNull final FileManager fileManager = this.plugin.getFileManager();
 
     /**
      * @param name The name of the crate.
@@ -101,7 +103,7 @@ public class Crate {
                  @NotNull final CrateType crateType,
                  @NotNull final ItemBuilder key,
                  @NotNull final String keyName,
-                 @NotNull final ArrayList<Prize> prizes,
+                 @NotNull final List<Prize> prizes,
                  @NotNull final FileConfiguration file,
                  final int newPlayerKeys,
                  @NotNull final List<Tier> tiers,
@@ -135,12 +137,11 @@ public class Crate {
         this.giveNewPlayerKeys = newPlayerKeys > 0;
 
         this.maxSlots = this.previewChestLines * 9;
-
-        for (int amount = this.preview.size(); amount > this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= this.preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0); amount -= this.maxSlots - (this.borderToggle ? 18 : 0), this.maxPage++) ;
+        this.perPage = this.maxSlots - (this.borderToggle ? 18 : this.maxSlots >= preview.size() ? 0 : this.maxSlots != 9 ? 9 : 0);
 
         this.crateInventoryName = file.getString("Crate.CrateName", " ");
 
-        @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
+        final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
         this.borderItem = new ItemBuilder()
                 .withType(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane"))
@@ -148,7 +149,7 @@ public class Crate {
                 .setHidingItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
                 .setDisplayName(borderName);
 
-        @NotNull final String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
+        final String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
 
         this.previewTierBorderItem = new ItemBuilder()
                 .withType(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane"))
@@ -157,6 +158,7 @@ public class Crate {
                 .setDisplayName(previewTierBorderName);
 
         setTierPreviewRows(file.getInt("Crate.tier-preview.rows", 5));
+
         this.previewTierMaxSlots = this.previewTierCrateRows * 9;
 
         if (crateType == CrateType.quad_crate) {
@@ -249,7 +251,11 @@ public class Crate {
 
         this.previewTierCrateRows = finalAmount;
     }
-    
+
+    public final int getPreviewTierMaxSlots() {
+        return this.previewTierMaxSlots;
+    }
+
     /**
      * Get the amount of lines the preview will show.
      *
@@ -267,7 +273,16 @@ public class Crate {
     public final int getMaxSlots() {
         return this.maxSlots;
     }
-    
+
+    /**
+     * Get the max amount of items per page.
+     *
+     * @return max amount of items per page
+     */
+    public final int getPerPage() {
+        return this.perPage;
+    }
+
     /**
      * Check to see if a player can win a prize from a crate.
      *
@@ -353,7 +368,7 @@ public class Crate {
      *
      * @param prizes list of prizes
      */
-    public void setPrize(@NotNull final ArrayList<Prize> prizes) {
+    public void setPrize(@NotNull final List<Prize> prizes) {
         // Purge everything for this crate.
         purge();
 
@@ -377,7 +392,7 @@ public class Crate {
      *
      * @param itemStacks list of items
      */
-    public void setPreviewItems(@NotNull final ArrayList<ItemStack> itemStacks) {
+    public void setPreviewItems(@NotNull final List<ItemStack> itemStacks) {
         this.preview = itemStacks;
     }
 
@@ -481,37 +496,6 @@ public class Crate {
     }
     
     /**
-     * Gets the inventory of a preview of prizes for the crate.
-     *
-     * @return the preview as an Inventory object.
-     */
-    public @NotNull final Inventory getPreview(Player player) {
-        return getPreview(player, this.inventoryManager.getPage(player), false, null);
-    }
-    
-    /**
-     * Gets the inventory of a preview of prizes for the crate.
-     *
-     * @return the preview as an Inventory object.
-     */
-    public @NotNull final Inventory getPreview(Player player, int page, boolean isTier, @Nullable Tier tier) {
-        CratePreviewMenu cratePreviewMenu = new CratePreviewMenu(player, this.previewName, !this.borderToggle && (this.inventoryManager.inCratePreview(player) || this.maxPage > 1) && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, page, this, isTier, tier);
-
-        return cratePreviewMenu.build().getInventory();
-    }
-
-    /**
-     * Gets the inventory of a tier preview of prizes for the crate.
-     *
-     * @return the tier preview as an Inventory object.
-     */
-    public @NotNull final Inventory getTierPreview(Player player) {
-        CrateTierMenu crateTierMenu = new CrateTierMenu(player, this.previewName, !this.previewTierBorderToggle && (this.inventoryManager.inCratePreview(player)) && this.previewTierMaxSlots == 9 ? this.previewTierMaxSlots + 9 : this.previewTierMaxSlots, this, this.tiers);
-
-        return crateTierMenu.build().getInventory();
-    }
-    
-    /**
      * @return the crate type of the crate.
      */
     public final CrateType getCrateType() {
@@ -560,7 +544,7 @@ public class Crate {
     /**
      * @return the prizes in the crate.
      */
-    public @NotNull final ArrayList<Prize> getPrizes() {
+    public @NotNull final List<Prize> getPrizes() {
         return this.prizes;
     }
     
@@ -724,13 +708,6 @@ public class Crate {
 
         this.crateManager.reloadCrate(this.crateManager.getCrateFromName(this.name));
     }
-
-    /**
-     * @return the max page for the preview.
-     */
-    public final int getMaxPage() {
-        return this.maxPage;
-    }
     
     /**
      * @return a list of the tiers for the crate. Will be empty if there are none.
@@ -788,7 +765,7 @@ public class Crate {
 
     /**
      * @param baseSlot - default slot to use.
-     * @return the finalized slot.
+     * @return the finalized slot
      */
     public final int getAbsoluteItemPosition(final int baseSlot) {
         return baseSlot + (this.previewChestLines > 1 ? this.previewChestLines - 1 : 1) * 9;
@@ -798,7 +775,7 @@ public class Crate {
      * @param baseSlot - default slot to use.
      * @return the finalized slot.
      */
-    public final int getAbsolutePreviewItemPosition(final int baseSlot) {
+    public final int getAbsoluteTierItemPosition(final int baseSlot) {
         return baseSlot + (this.previewTierCrateRows > 1 ? this.previewTierCrateRows - 1 : 1) * 9;
     }
 
@@ -807,8 +784,8 @@ public class Crate {
      *
      * @return a list of all the preview items that were created.
      */
-    public @NotNull final ArrayList<ItemStack> getPreviewItems() {
-        ArrayList<ItemStack> items = new ArrayList<>();
+    public @NotNull final List<ItemStack> getPreviewItems() {
+        List<ItemStack> items = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
             items.add(prize.getDisplayItem());

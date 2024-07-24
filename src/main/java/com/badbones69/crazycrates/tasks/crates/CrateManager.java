@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.tasks.crates;
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
+import com.badbones69.crazycrates.tasks.PaginationManager;
 import com.badbones69.crazycrates.api.crates.CrateHologram;
 import com.badbones69.crazycrates.api.crates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.api.enums.Files;
@@ -12,7 +13,6 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.support.holograms.types.CMIHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.DecentHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.FancyHologramsSupport;
-import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CosmicCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CrateOnTheGo;
@@ -34,6 +34,7 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -79,9 +80,11 @@ import java.util.logging.Logger;
 
 public class CrateManager {
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-    private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-    private @NotNull final FileManager yamlManager = this.plugin.getFileManager();
+    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+
+    private final PaginationManager paginationManager = this.plugin.getPaginationManager();
+
+    private final FileManager yamlManager = this.plugin.getFileManager();
 
     private final List<CrateLocation> crateLocations = new ArrayList<>();
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
@@ -134,7 +137,15 @@ public class CrateManager {
             FileConfiguration file = crate.getFile();
 
             // Close previews
-            this.plugin.getServer().getOnlinePlayers().forEach(this.inventoryManager::closeCratePreview);
+            this.plugin.getServer().getOnlinePlayers().forEach(player -> {
+                if (this.paginationManager.isInventory(player.getOpenInventory().getTopInventory())) {
+                    player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+
+                    if (ConfigManager.getConfig().getProperty(ConfigKeys.send_preview_taken_out_message)) {
+                        player.sendRichMessage(Messages.reloaded_forced_out_of_preview.getMessage(player));
+                    }
+                }
+            });
 
             // Purge the crate stuff
             crate.purge();
@@ -183,16 +194,6 @@ public class CrateManager {
 
             crate.setPrize(prizes);
             crate.setPreviewItems(crate.getPreviewItems());
-
-            for (UUID uuid : this.plugin.getInventoryManager().getViewers()) {
-                final Player player = this.plugin.getServer().getPlayer(uuid);
-
-                if (player != null) {
-                    this.inventoryManager.openNewCratePreview(player, crate);
-                }
-            }
-
-            this.inventoryManager.purge();
         } catch (Exception exception) {
             this.brokeCrates.add(crate.getName());
 
@@ -486,7 +487,7 @@ public class CrateManager {
 
         cleanDataFile();
 
-        this.inventoryManager.loadButtons();
+        this.paginationManager.loadButtons();
     }
 
     // The crate that the player is opening.
