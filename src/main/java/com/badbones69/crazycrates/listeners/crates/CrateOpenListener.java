@@ -45,7 +45,7 @@ public class CrateOpenListener implements Listener {
             }
         }
 
-        if (!player.hasPermission("crazycrates.open." + crate.getName()) || !player.hasPermission("crazycrates.open." + crate.getName().toLowerCase())) {
+        if (player.hasPermission("crazycrates.deny.open." + crate.getName()) || player.hasPermission("crazycrates.deny.open." + crate.getName().toLowerCase())) {
             player.sendRichMessage(Messages.no_crate_permission.getMessage(player, "{crate}", crate.getName()));
 
             this.crateManager.removePlayerFromOpeningList(player);
