@@ -7,5 +7,5 @@ plugins {
 }
 
 dependencies {
-    feather("0.0.1")
+    feather("0.0.4")
 }
