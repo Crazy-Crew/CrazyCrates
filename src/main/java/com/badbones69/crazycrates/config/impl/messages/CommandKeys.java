@@ -19,58 +19,54 @@ public class CommandKeys implements SettingsHolder {
         conf.setComment("command", header);
     }
 
-    @Comment("A list of available placeholders: {prefix}, {crate}, {player}")
+    @Comment("A list of available placeholders: {crate}, {player}")
     public static final Property<String> opened_a_crate = newProperty("command.open.opened-a-crate", "{prefix}<gray>You have opened the <gold>{crate} for <gold>{player}.");
 
-    @Comment("A list of available placeholders: {prefix}, {amount}, {player}, {keytype}")
+    @Comment("A list of available placeholders: {amount}, {player}, {keytype}")
     public static final Property<String> gave_a_player_keys = newProperty("command.give.given-player-keys", "{prefix}<gray>You have given <gold>{player} {amount} <gray>key(s).");
 
-    @Comment("A list of available placeholders: {prefix}, {amount}, {amount}, {keytype}")
+    @Comment("A list of available placeholders: {amount}, {amount}, {keytype}")
     public static final Property<String> cannot_give_player_keys = newProperty("command.give.full-inventory", "{prefix}<gray>You have been given <gold>{amount} {key} <gray>virtual key(s) because your inventory was full.");
 
-    @Comment("A list of available placeholders: {prefix}, {amount}, {keytype}")
+    @Comment("A list of available placeholders: {amount}, {keytype}")
     public static final Property<String> given_everyone_keys = newProperty("command.give.given-everyone-keys", "{prefix}<gray>You have given everyone <gold>{amount} <gray>key(s).");
 
-    @Comment("A list of available placeholders: {prefix}, {amount}, {player}, {keytype}")
+    @Comment("A list of available placeholders: {amount}, {player}, {keytype}")
     public static final Property<String> given_offline_player_keys = newProperty("command.give.given-offline-player-keys", "{prefix}<gray>You have given <gold>{amount} <gray>key(s) to the offline player <gold>{player}.");
 
-    @Comment("A list of available placeholders: {prefix}, {amount}, {player}, {keytype}")
+    @Comment("A list of available placeholders: {amount}, {player}, {keytype}")
     public static final Property<String> take_players_keys = newProperty("command.take.take-player-keys", "{prefix}<gray>You have taken <gold>{amount} <gray>key(s) from <gold>{player}.");
 
-    @Comment("A list of available placeholders: {prefix}, {player}")
+    @Comment("A list of available placeholders: {player}")
     public static final Property<String> cannot_take_keys = newProperty("command.take.cannot-take-keys", "{prefix}<gray>You cannot take key(s) from <gold>{player} <gray>as they are poor.");
 
-    @Comment("A list of available placeholders: {prefix}, {amount}, {player}, {keytype}")
+    @Comment("A list of available placeholders: {amount}, {player}, {keytype}")
     public static final Property<String> take_offline_player_keys = newProperty("command.take.take-offline-player-keys", "{prefix}<gray>You have taken <gold>{amount} <gray>key(s) from the offline player <gold>{player}.");
 
-    @Comment("A list of available placeholders: {prefix}, {crate}")
+    @Comment("A list of available placeholders: {crate}")
     public static final Property<String> no_item_in_hand = newProperty("command.additem.no-item-in-hand", "{prefix}<red>You need to have an item in your hand to add it {crate}.");
 
-    @Comment("A list of available placeholders: {prefix}, {crate}, {prize}")
+    @Comment("A list of available placeholders: {crate}, {prize}")
     public static final Property<String> added_item_with_editor = newProperty("command.additem.add-item-from-hand", "{prefix}<gray>The item has been added to the {crate} in prize #{prize}.");
 
-    @Comment("A list of available placeholders: {prefix}, {file}, {type}, {reason}")
+    @Comment("A list of available placeholders: {file}, {type}, {reason}")
     public static final Property<String> error_migrating = newProperty("command.migrate.error", "{prefix}<red>We could not migrate <green>{file} <red>using <green>{type} <red>migration for <green>{reason}.");
 
-    @Comment("A list of available placeholders: {prefix}")
     public static final Property<String> migration_not_available = newProperty("command.migrate.not-available", "{prefix}This migration type is not available.");
 
-    @Comment("A list of available placeholders: {prefix}, {file}, {type}")
+    @Comment("A list of available placeholders: {file}, {type}")
     public static final Property<String> successfully_migrated = newProperty("command.migrate.success", "{prefix}<green>Successfully migrated {file} using {type} migration.");
 
-    @Comment("A list of available placeholders: {prefix}")
     public static final Property<String> reloaded_plugin = newProperty("command.reload.completed", "{prefix}<dark_aqua>You have reloaded the Config and Data Files.");
 
-    @Comment("A list of available placeholders: {prefix}")
     public static final Property<String> transfer_not_enough_keys = newProperty("command.transfer.not-enough-keys", "{prefix}<red>You do not have enough keys to transfer.");
 
-    @Comment("A list of available placeholders: {prefix}, {amount}, {player}, {keytype}, {crate}")
+    @Comment("A list of available placeholders: {amount}, {player}, {keytype}, {crate}")
     public static final Property<String> transfer_sent_keys = newProperty("command.transfer.transferred-keys", "{prefix}<gray>You have transferred {amount} {crate} keys to {player}.");
 
-    @Comment("A list of available placeholders: {prefix}, {amount}, {player}, {keytype}, {crate}")
+    @Comment("A list of available placeholders: {amount}, {player}, {keytype}, {crate}")
     public static final Property<String> transfer_received_keys = newProperty("command.transfer.transferred-keys-received", "{prefix}<gray>You have received {amount} {crate} keys from {player}.");
 
-    @Comment("A list of available placeholders: {prefix}")
     public static final Property<String> no_virtual_keys = newProperty("command.keys.personal.no-virtual-keys", "{prefix}<bold><dark_gray>(<dark_red>!<dark_gray>)</bold> <gray>You currently do not have any virtual keys.");
 
     @Comment("A list of available placeholders: {crates_opened}")
@@ -80,7 +76,7 @@ public class CommandKeys implements SettingsHolder {
             ""
     ));
 
-    @Comment("A list of available placeholders: {prefix}, {player}")
+    @Comment("A list of available placeholders: {player}")
     public static final Property<String> other_player_no_keys = newProperty("command.keys.other-player.no-virtual-keys", "{prefix}<bold><dark_gray>(<dark_red>!<dark_gray>)</bold> <gray>The player {player} does not have any keys.");
 
     @Comment("A list of available placeholders: {player}, {crates_opened}")
