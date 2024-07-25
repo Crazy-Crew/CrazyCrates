@@ -123,7 +123,7 @@ public class QuadCrateManager {
     public void startCrate() {
         // Check if it is on a block.
         if (this.spawnLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
-            this.player.sendRichMessage(Messages.not_on_block.getMessage(player));
+            Messages.not_on_block.sendMessage(player);
 
             this.crateManager.removePlayerFromOpeningList(player);
 
@@ -134,7 +134,7 @@ public class QuadCrateManager {
 
         // Check if schematic folder is empty.
         if (this.crateManager.getCrateSchematics().isEmpty()) {
-            this.player.sendRichMessage(Messages.no_schematics_found.getMessage(player));
+            Messages.no_schematics_found.sendMessage(player);
 
             this.crateManager.removePlayerFromOpeningList(this.player);
 
@@ -150,7 +150,7 @@ public class QuadCrateManager {
         // Do not open the crate if the block is not able to be changed.
         for (Location loc : structureLocations) {
             if (this.handler.getBlockBlacklist().contains(loc.getBlock().getType())) {
-                this.player.sendRichMessage(Messages.needs_more_room.getMessage(player));
+                Messages.needs_more_room.sendMessage(player);
 
                 this.crateManager.removePlayerFromOpeningList(this.player);
 
@@ -165,10 +165,10 @@ public class QuadCrateManager {
         final List<Entity> shovePlayers = new ArrayList<>();
 
         for (final Entity entity : player.getNearbyEntities(3, 3, 3)) {
-            if (entity instanceof Player) {
+            if (entity instanceof Player entityPlayer) {
                 for (QuadCrateManager ongoingCrate : crateSessions) {
-                    if (entity.getUniqueId() == ongoingCrate.player.getUniqueId()) {
-                        this.player.sendRichMessage(Messages.too_close_to_another_player.getMessage(player, "{player}", entity.getName()));
+                    if (entityPlayer.getUniqueId() == ongoingCrate.player.getUniqueId()) {
+                        Messages.too_close_to_another_player.sendMessage(player, "{player}", entityPlayer.getName());
 
                         this.crateManager.removePlayerFromOpeningList(this.player);
 
@@ -265,7 +265,7 @@ public class QuadCrateManager {
             public void run() {
                 endCrate(true);
 
-                player.sendRichMessage(Messages.out_of_time.getMessage(player, "{crate}", crate.getName()));
+                Messages.out_of_time.sendMessage(player, "{crate}", crate.getName());
 
                 crate.playSound(player, player.getLocation(), "stop-sound", "entity.player.levelup", Sound.Source.PLAYER);
             }

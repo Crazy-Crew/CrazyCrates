@@ -18,7 +18,7 @@ public class CommandDebug extends BaseCommand {
     @Permission(value = "crazycrates.debug", def = PermissionDefault.OP)
     public void debug(Player player, @ArgName("crate") @Suggestion("crates") String crateName) {
         if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
-            player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
+            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
             return;
         }
@@ -26,7 +26,7 @@ public class CommandDebug extends BaseCommand {
         final Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
+            Messages.not_a_crate.sendMessage(player, "{crate}", crateName);
 
             return;
         }

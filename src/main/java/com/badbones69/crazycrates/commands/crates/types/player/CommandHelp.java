@@ -31,8 +31,14 @@ public class CommandHelp extends BaseCommand {
     @Command("help")
     @Permission(value = "crazycrates.help", def = PermissionDefault.TRUE)
     public void help(CommandSender sender) {
-        final String message = sender.hasPermission("crazycrates.admin") ? Messages.admin_help.getMessage(sender) : Messages.help.getMessage(sender);
+        if (sender.hasPermission("crazycrates.admin")) {
+            // this has to use sendRichMessage as it is a list.
+            Messages.admin_help.sendRichMessage(sender);
 
-        sender.sendRichMessage(message);
+            return;
+        }
+
+        // this has to use sendRichMessage as it is a list.
+        Messages.help.sendRichMessage(sender);
     }
 }

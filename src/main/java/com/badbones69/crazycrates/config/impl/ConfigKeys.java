@@ -4,8 +4,12 @@ import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
+import com.badbones69.crazycrates.api.enums.State;
+
 import java.util.Collections;
 import java.util.List;
+
+import static ch.jalu.configme.properties.PropertyInitializer.newBeanProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
@@ -64,6 +68,15 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.")
     public static final Property<Boolean> use_different_random = newProperty("root.use-different-random", false);
 
+    @Comment({
+            "This option will tell the plugin to send all messages as action bars or messages in chat.",
+            "",
+            "send_message -> sends messages in chat.",
+            "send_actionbar -> sends messages in actionbar.",
+            ""
+    })
+    public static final Property<State> message_state = newBeanProperty(State.class, "root.message-state", State.send_message);
+
     //@Comment({
     //        "Sends anonymous statistics about how the plugin is used to bstats.org.",
     //        "bstats is a service for plugin developers to find out how the plugin being used,",
@@ -71,7 +84,7 @@ public class ConfigKeys implements SettingsHolder {
     //})
     //public static final Property<Boolean> toggle_metrics = newProperty("root.toggle_metrics", true);
 
-    @Comment("This will wipe the example folder on /crazycrates reload or plugin startup so you always have fresh examples to look at.")
+    @Comment("This will wipe the example folder on /crazycrates reload or plugin startup. so you always have fresh examples to look at.")
     public static final Property<Boolean> update_examples_folder = newProperty("root.update-examples-folder", true);
 
     @Comment("The prefix used in commands")

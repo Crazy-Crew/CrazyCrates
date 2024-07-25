@@ -67,7 +67,7 @@ public class CrateAdminMenu extends InventoryBuilder {
 
         if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(player)) {
             player.closeInventory(InventoryCloseEvent.Reason.CANT_USE);
-            player.sendRichMessage(Messages.no_permission.getMessage(player));
+            Messages.no_permission.sendMessage(player);
 
             return;
         }
@@ -101,7 +101,7 @@ public class CrateAdminMenu extends InventoryBuilder {
 
                 placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
 
-                player.sendActionBar(AdvUtil.parse(Messages.obtaining_keys.getMessage(player, placeholders)));
+                Messages.obtaining_keys.sendMessage(player, placeholders);
             }
 
             case SHIFT_LEFT -> {
@@ -113,7 +113,7 @@ public class CrateAdminMenu extends InventoryBuilder {
                 placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
                 placeholders.put("{amount}", "8");
 
-                player.sendActionBar(AdvUtil.parse(Messages.obtaining_keys.getMessage(player, placeholders)));
+                Messages.obtaining_keys.sendMessage(player, placeholders);
             }
 
             case RIGHT -> {
@@ -124,7 +124,7 @@ public class CrateAdminMenu extends InventoryBuilder {
 
                 placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
 
-                player.sendActionBar(AdvUtil.parse(Messages.obtaining_keys.getMessage(player, placeholders)));
+                Messages.obtaining_keys.sendMessage(player, placeholders);
             }
 
             case SHIFT_RIGHT -> {
@@ -136,7 +136,7 @@ public class CrateAdminMenu extends InventoryBuilder {
                 placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
                 placeholders.put("{amount}", "8");
 
-                player.sendActionBar(AdvUtil.parse(Messages.obtaining_keys.getMessage(player, placeholders)));
+                Messages.obtaining_keys.sendMessage(player, placeholders);
             }
         }
     }

@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
 import com.ryderbelserion.vital.core.util.StringUtil;
 import com.ryderbelserion.vital.paper.enums.Support;
+import com.ryderbelserion.vital.paper.util.AdvUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.Nullable;
@@ -31,6 +32,7 @@ public enum Messages {
     no_keys(MiscKeys.no_keys),
     no_virtual_key(MiscKeys.no_virtual_key),
     internal_error(ErrorKeys.internal_error),
+    key_refund(ErrorKeys.key_refund),
     no_schematics_found(ErrorKeys.no_schematics_found),
     no_prizes_found(ErrorKeys.no_prizes_found),
     prize_error(ErrorKeys.prize_error),
@@ -67,6 +69,8 @@ public enum Messages {
     crate_locations(CrateKeys.crate_locations, true),
     crate_locations_format(CrateKeys.crate_location_format),
     reloaded_forced_out_of_preview(CrateKeys.reloaded_forced_out_of_preview),
+    crate_teleported(CrateKeys.crate_teleported),
+    crate_cannot_teleport(CrateKeys.crate_cannot_teleport),
 
     gave_a_player_keys(CommandKeys.gave_a_player_keys),
     cannot_give_player_keys(CommandKeys.cannot_give_player_keys),
@@ -138,6 +142,81 @@ public enum Messages {
 
     public String getMessage(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
         return parse(sender, placeholders).replaceAll("\\{prefix}", this.config.getProperty(ConfigKeys.command_prefix));
+    }
+
+    public void sendMessage(final CommandSender sender, final String placeholder, final String replacement) {
+        final State state = this.config.getProperty(ConfigKeys.message_state);
+
+        switch (state) {
+            case send_message -> sendRichMessage(sender, placeholder, replacement);
+            case send_actionbar -> sendActionBar(sender, placeholder, replacement);
+        }
+    }
+
+    public void sendMessage(final CommandSender sender, final Map<String, String> placeholders) {
+        final State state = this.config.getProperty(ConfigKeys.message_state);
+
+        switch (state) {
+            case send_message -> sendRichMessage(sender, placeholders);
+            case send_actionbar -> sendActionBar(sender, placeholders);
+        }
+    }
+
+    public void sendMessage(final CommandSender sender) {
+        final State state = this.config.getProperty(ConfigKeys.message_state);
+
+        switch (state) {
+            case send_message -> sendRichMessage(sender);
+            case send_actionbar -> sendActionBar(sender);
+        }
+    }
+
+    public void sendActionBar(final CommandSender sender, final String placeholder, final String replacement) {
+        final String msg = getMessage(sender, placeholder, replacement);
+
+        if (msg.isEmpty() || msg.isBlank()) return;
+
+        sender.sendActionBar(AdvUtil.parse(msg));
+    }
+
+    public void sendActionBar(final CommandSender sender, final Map<String, String> placeholders) {
+        final String msg = getMessage(sender, placeholders);
+
+        if (msg.isEmpty() || msg.isBlank()) return;
+
+        sender.sendActionBar(AdvUtil.parse(msg));
+    }
+
+    public void sendActionBar(final CommandSender sender) {
+        final String msg = getMessage(sender);
+
+        if (msg.isEmpty() || msg.isBlank()) return;
+
+        sender.sendActionBar(AdvUtil.parse(getMessage(sender)));
+    }
+
+    public void sendRichMessage(final CommandSender sender, final String placeholder, final String replacement) {
+        final String msg = getMessage(sender, placeholder, replacement);
+
+        if (msg.isEmpty() || msg.isBlank()) return;
+
+        sender.sendRichMessage(msg);
+    }
+
+    public void sendRichMessage(final CommandSender sender, final Map<String, String> placeholders) {
+        final String msg = getMessage(sender, placeholders);
+
+        if (msg.isEmpty() || msg.isBlank()) return;
+
+        sender.sendRichMessage(msg);
+    }
+
+    public void sendRichMessage(final CommandSender sender) {
+        final String msg = getMessage(sender);
+
+        if (msg.isEmpty() || msg.isBlank()) return;
+
+        sender.sendRichMessage(msg);
     }
 
     private @NotNull String parse(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {

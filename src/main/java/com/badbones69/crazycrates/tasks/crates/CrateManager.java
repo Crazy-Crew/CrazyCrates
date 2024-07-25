@@ -524,7 +524,7 @@ public class CrateManager {
                 return;
             }
 
-            player.sendRichMessage(Messages.feature_disabled.getMessage(player));
+            Messages.feature_disabled.sendMessage(player);
 
             return;
         }
@@ -546,7 +546,7 @@ public class CrateManager {
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
                     placeholders.put("{crate}", crate.getName());
 
-                    player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
+                    Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
 
                     removePlayerFromOpeningList(player);
 
@@ -558,7 +558,7 @@ public class CrateManager {
 
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    player.sendRichMessage(Messages.crate_in_use.getMessage(player, "{crate}", crate.getName()));
+                    Messages.crate_in_use.sendMessage(player, "{crate}", crate.getName());
 
                     removePlayerFromOpeningList(player);
 
@@ -571,7 +571,7 @@ public class CrateManager {
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
                     placeholders.put("{crate}", crate.getName());
 
-                    player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
+                    Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
 
                     removePlayerFromOpeningList(player);
 
@@ -588,7 +588,7 @@ public class CrateManager {
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
                     placeholders.put("{crate}", crate.getName());
 
-                    player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
+                    Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
 
                     removePlayerFromOpeningList(player);
 
@@ -600,7 +600,7 @@ public class CrateManager {
 
             case quick_crate -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    player.sendRichMessage(Messages.crate_in_use.getMessage(player, "{crate}", crate.getName()));
+                    Messages.crate_in_use.sendMessage(player, "{crate}", crate.getName());
 
                     removePlayerFromOpeningList(player);
 
@@ -613,7 +613,7 @@ public class CrateManager {
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
                     placeholders.put("{crate}", crate.getName());
 
-                    player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
+                    Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
 
                     removePlayerFromOpeningList(player);
 
