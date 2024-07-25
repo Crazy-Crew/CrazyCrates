@@ -155,11 +155,13 @@ public class CrateControlListener implements Listener {
         if (requiredKeys > 0 && totalKeys < requiredKeys) {
             final Map<String, String> placeholders = new HashMap<>();
 
-            placeholders.put("{key_amount}", String.valueOf(requiredKeys));
+            placeholders.put("{required_amount}", String.valueOf(requiredKeys));
             placeholders.put("{crate}", crate.getPreviewName());
             placeholders.put("{amount}", String.valueOf(totalKeys));
+            placeholders.put("{crate}", crate.getPreviewName());
+            placeholders.put("{key}", crate.getKeyName());
 
-            Messages.required_keys.sendMessage(player, placeholders);
+            Messages.not_enough_keys.sendMessage(player, placeholders);
 
             lackingKey(player, crate, clickedBlock, false);
 
