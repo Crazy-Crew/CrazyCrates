@@ -44,7 +44,7 @@ public class CrateKeys implements SettingsHolder {
     public static final Property<String> cannot_set_type = newProperty("crates.cannot-set-menu-type", "{prefix}<red>You cannot set the Menu to a block because the crate menu is disabled");
 
     @Comment("A list of available placeholders: {prefix}, {crate}")
-    public static final Property<String> no_crate_permission = newProperty("crates.crate-no-permission", "{prefix}<red>You do not have permission to use that {crate}.");
+    public static final Property<String> no_crate_permission = newProperty("crates.crate-no-permission", "{prefix}<red>You do not have permission to use {crate}.");
 
     @Comment("A list of available placeholders: {prefix}, {crate}")
     public static final Property<String> preview_disabled = newProperty("crates.crate-preview-disabled", "{prefix}<red>The preview for <gold>{crate} <red>is currently disabled.");
