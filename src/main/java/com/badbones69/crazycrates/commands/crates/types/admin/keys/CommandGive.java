@@ -25,13 +25,13 @@ public class CommandGive extends BaseCommand {
     @Permission(value = "crazycrates.givekey", def = PermissionDefault.OP)
     public void give(CommandSender sender, @ArgName("key_type") @Suggestion("keys") String type, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("amount") @Suggestion("numbers") int amount, @ArgName("player") @Suggestion("players") PlayerBuilder target) {
         if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
-            sender.sendRichMessage(Messages.cannot_be_empty.getMessage(sender, "{value}", "crate name"));
+            Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
 
             return;
         }
 
         if (amount <= 0) {
-            sender.sendRichMessage(Messages.not_a_number.getMessage(sender, "{number}", String.valueOf(amount)));
+            Messages.not_a_number.sendMessage(sender, "{number}", String.valueOf(amount));
 
             return;
         }
@@ -40,7 +40,7 @@ public class CommandGive extends BaseCommand {
         final Crate crate = getCrate(sender, crateName, false);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            sender.sendRichMessage(Messages.not_a_crate.getMessage(sender, "{crate}", crateName));
+            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }
@@ -66,13 +66,13 @@ public class CommandGive extends BaseCommand {
     @Permission(value = "crazycrates.giveall", def = PermissionDefault.OP)
     public void all(CommandSender sender, @Suggestion("keys") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount) {
         if (crateName.isEmpty()) {
-            sender.sendRichMessage(Messages.not_a_crate.getMessage(sender, "{crate}", crateName));
+            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }
 
         if (amount <= 0) {
-            sender.sendRichMessage(Messages.not_a_number.getMessage(sender, "{number}", String.valueOf(amount)));
+            Messages.not_a_number.sendMessage(sender, "{amount}", String.valueOf(amount));
 
             return;
         }
@@ -80,7 +80,7 @@ public class CommandGive extends BaseCommand {
         final Crate crate = getCrate(sender, crateName, false);
 
         if (crate == null) {
-            sender.sendRichMessage(Messages.not_a_crate.getMessage(sender, "{crate}", crateName));
+            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }
@@ -93,7 +93,7 @@ public class CommandGive extends BaseCommand {
         placeholders.put("{keytype}", keyType.getFriendlyName());
         placeholders.put("{key}", crate.getKeyName());
 
-        sender.sendRichMessage(Messages.given_everyone_keys.getMessage(sender, placeholders));
+        Messages.given_everyone_keys.sendMessage(sender, placeholders);
 
         for (final Player player : this.plugin.getServer().getOnlinePlayers()) {
             if (Permissions.CRAZYCRATES_PLAYER_EXCLUDE.hasPermission(player)) continue;
@@ -103,7 +103,7 @@ public class CommandGive extends BaseCommand {
 
             if (event.isCancelled()) return;
 
-            player.sendRichMessage(Messages.obtaining_keys.getMessage(player, placeholders));
+            Messages.obtaining_keys.sendMessage(player, placeholders);
 
             if (crate.getCrateType() == CrateType.crate_on_the_go) {
                 MiscUtils.addItem(player, crate.getKey(amount, player));

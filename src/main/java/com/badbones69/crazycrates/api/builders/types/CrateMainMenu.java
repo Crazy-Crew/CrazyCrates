@@ -173,14 +173,14 @@ public class CrateMainMenu extends InventoryBuilder {
                 this.inventoryManager.addViewer(player);
                 this.inventoryManager.openNewCratePreview(player, crate);
             } else {
-                player.sendRichMessage(Messages.preview_disabled.getMessage(player, "{crate}", crateName));
+                Messages.preview_disabled.sendMessage(player, "{crate}", crateName);
             }
 
             return;
         }
 
         if (this.crateManager.isInOpeningList(player)) {
-            player.sendRichMessage(Messages.already_opening_crate.getMessage(player, "{crate}", crateName));
+            Messages.already_opening_crate.sendMessage(player, "{crate}", crateName);
 
             return;
         }
@@ -205,21 +205,21 @@ public class CrateMainMenu extends InventoryBuilder {
                 player.playSound(sound);
             }
 
-            player.sendRichMessage(Messages.no_virtual_key.getMessage(player, "{crate}", crateName));
+            Messages.no_virtual_key.sendMessage(player, "{crate}", crateName);
 
             return;
         }
 
         for (String world : this.config.getProperty(ConfigKeys.disabled_worlds)) {
             if (world.equalsIgnoreCase(playerWorld)) {
-                player.sendRichMessage(Messages.world_disabled.getMessage(player, "{world}", playerWorld));
+                Messages.world_disabled.sendMessage(player, "{world}", playerWorld);
 
                 return;
             }
         }
 
         if (MiscUtils.isInventoryFull(player)) {
-            player.sendRichMessage(Messages.inventory_not_empty.getMessage(player, "{crate}", crateName));
+            Messages.inventory_not_empty.sendMessage(player, "{crate}", crateName);
 
             return;
         }

@@ -26,7 +26,7 @@ public class CommandTeleport extends BaseCommand {
     @Permission(value = "crazycrates.teleport", def = PermissionDefault.OP)
     public void teleport(Player player, @ArgName("crate_id") @Optional @Suggestion("locations") String id) {
         if (id == null || id.isEmpty() || id.isBlank()) {
-            player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate location id"));
+            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate location id");
 
             return;
         }
@@ -53,12 +53,12 @@ public class CommandTeleport extends BaseCommand {
 
                 player.teleport(loc.add(.5, 0, .5));
 
-                player.sendRichMessage(MsgUtils.getPrefix("<gray>You have been teleported to <gold>" + name + "."));
+                Messages.crate_teleported.sendMessage(player, "{name}", name);
 
                 return;
             }
         }
 
-        player.sendRichMessage(MsgUtils.getPrefix("<red>There is no location called <gold>" + id + "."));
+        Messages.crate_cannot_teleport.sendMessage(player, "{id}", id);
     }
 }

@@ -139,6 +139,53 @@ public enum Messages {
     public String getMessage(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
         return parse(sender, placeholders).replaceAll("\\{prefix}", this.config.getProperty(ConfigKeys.command_prefix));
     }
+    public void sendActionBar(final CommandSender sender, final String placeholder, final String replacement) {
+        final String msg = getMessage(sender, placeholder, replacement);
+
+        if (msg.isEmpty() || msg.isBlank()) return;
+
+        sender.sendActionBar(AdvUtil.parse(msg));
+    }
+
+    public void sendActionBar(final CommandSender sender, final Map<String, String> placeholders) {
+        final String msg = getMessage(sender, placeholders);
+
+        if (msg.isEmpty() || msg.isBlank()) return;
+
+        sender.sendActionBar(AdvUtil.parse(msg));
+    }
+
+    public void sendActionBar(final CommandSender sender) {
+        final String msg = getMessage(sender);
+
+        if (msg.isEmpty() || msg.isBlank()) return;
+
+        sender.sendActionBar(AdvUtil.parse(getMessage(sender)));
+    }
+
+    public void sendRichMessage(final CommandSender sender, final String placeholder, final String replacement) {
+        final String msg = getMessage(sender, placeholder, replacement);
+
+        if (msg.isEmpty() || msg.isBlank()) return;
+
+        sender.sendRichMessage(msg);
+    }
+
+    public void sendRichMessage(final CommandSender sender, final Map<String, String> placeholders) {
+        final String msg = getMessage(sender, placeholders);
+
+        if (msg.isEmpty() || msg.isBlank()) return;
+
+        sender.sendRichMessage(msg);
+    }
+
+    public void sendRichMessage(final CommandSender sender) {
+        final String msg = getMessage(sender);
+
+        if (msg.isEmpty() || msg.isBlank()) return;
+
+        sender.sendRichMessage(msg);
+    }
 
     private @NotNull String parse(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
         String message;
