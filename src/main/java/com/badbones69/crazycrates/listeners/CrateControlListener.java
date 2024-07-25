@@ -156,7 +156,7 @@ public class CrateControlListener implements Listener {
             final Map<String, String> placeholders = new HashMap<>();
 
             placeholders.put("{required_amount}", String.valueOf(requiredKeys));
-            placeholders.put("{crate}", crate.getPreviewName());
+            placeholders.put("{key_amount}", String.valueOf(requiredKeys)); // deprecated, remove in next major version of minecraft.
             placeholders.put("{amount}", String.valueOf(totalKeys));
             placeholders.put("{crate}", crate.getPreviewName());
             placeholders.put("{key}", crate.getKeyName());

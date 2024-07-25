@@ -28,8 +28,8 @@ public class CrateKeys implements SettingsHolder {
     @Comment("A list of available placeholders: {number}")
     public static final Property<String> not_a_number = newProperty("crates.requirements.not-a-number", "{prefix}<gold>{number} <red>is not a number.");
 
-    @Comment("A list of available placeholders: {prefix}, {amount}, {key_amount}, {crate}")
-    public static final Property<String> required_keys = newProperty("crates.requirements.not-enough-keys", "{prefix}<gray>You need <red>{key_amount} <gray>keys to open <red>{crate}. <gray>You have <red>{amount}.");
+    @Comment("A list of available placeholders: {amount}, {required_amount}, {crate}")
+    public static final Property<String> not_enough_keys = newProperty("crates.requirements.not-enough-keys", "{prefix}<gray>You need <red>{key_amount} <gray>keys to open <red>{crate}. <gray>You have <red>{amount}.");
 
     public static final Property<String> not_on_block = newProperty("crates.not-a-block", "{prefix}<red>You must be standing on a block to use <gold>{crate}.");
 
