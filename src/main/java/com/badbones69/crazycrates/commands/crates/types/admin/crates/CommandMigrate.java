@@ -2,7 +2,9 @@ package com.badbones69.crazycrates.commands.crates.types.admin.crates;
 
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
+import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.ExcellentCratesMigrator;
 import com.ryderbelserion.vital.paper.files.config.CustomFile;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -21,18 +23,31 @@ import java.util.List;
 public class CommandMigrate extends BaseCommand {
 
     public enum MigrationType {
-        MOJANG_MAPPED,
-        SPECIALIZED_CRATES,
-        ALL
+        MOJANG_MAPPED_SINGLE("MojangMappedSingle"),
+        MOJANG_MAPPED_ALL("MojangMappedAll"),
+
+        EXCELLENT_CRATES("ExcellentCrates"),
+
+        SPECIALIZED_CRATES("SpecializedCrates");
+
+        private final String name;
+
+        MigrationType(String name) {
+            this.name = name;
+        }
+
+        public final String getName() {
+            return this.name;
+        }
     }
 
     @Command("migrate")
     @Permission(value = "crazycrates.migrate", def = PermissionDefault.OP)
     public void migrate(final CommandSender sender, @ArgName("migration_type") final MigrationType type, @ArgName("crate") @Optional @Suggestion("crates") final String crateName) {
         switch (type) {
-            case ALL -> this.plugin.getFileManager().getCustomFiles().forEach(customFile -> migrate(sender, customFile, "", type));
+            case MOJANG_MAPPED_ALL -> this.plugin.getFileManager().getCustomFiles().forEach(customFile -> migrate(sender, customFile, "", type));
 
-            case MOJANG_MAPPED -> {
+            case MOJANG_MAPPED_SINGLE -> {
                 if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
                     sender.sendRichMessage(Messages.cannot_be_empty.getMessage(sender, "{value}", "crate name"));
 
@@ -55,6 +70,16 @@ public class CommandMigrate extends BaseCommand {
             }
 
             case SPECIALIZED_CRATES -> sender.sendRichMessage(Messages.migration_not_available.getMessage(sender));
+
+            case EXCELLENT_CRATES -> {
+                if (!MiscUtils.isExcellentCratesEnabled()) {
+                    sender.sendRichMessage(Messages.migration_plugin_not_enabled.getMessage(sender, "{name}", type.getName()));
+
+                    return;
+                }
+
+                new ExcellentCratesMigrator().run();
+            }
         }
     }
 

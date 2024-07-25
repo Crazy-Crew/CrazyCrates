@@ -34,3 +34,9 @@ dependencies:
       load: BEFORE
       required: false
       join-classpath: true
+
+    # Other crate plugins to migrate for people
+    ExcellentCrates:
+      load: BEFORE
+      required: false
+      join-classpath: true
