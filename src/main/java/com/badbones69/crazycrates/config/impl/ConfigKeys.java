@@ -84,7 +84,7 @@ public class ConfigKeys implements SettingsHolder {
     //})
     //public static final Property<Boolean> toggle_metrics = newProperty("root.toggle_metrics", true);
 
-    @Comment("This will wipe the example folder on /crazycrates reload or plugin startup so you always have fresh examples to look at.")
+    @Comment("This will wipe the example folder on /crazycrates reload or plugin startup. so you always have fresh examples to look at.")
     public static final Property<Boolean> update_examples_folder = newProperty("root.update-examples-folder", true);
 
     @Comment("The prefix used in commands")
