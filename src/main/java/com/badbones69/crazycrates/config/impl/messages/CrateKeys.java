@@ -91,5 +91,12 @@ public class CrateKeys implements SettingsHolder {
             "<bold><gold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</gold></bold>"
     ));
 
+    @Comment("A list of available placeholders: {id}, {crate_name}, {world}, {x}, {y}, {z}")
     public static final Property<String> crate_location_format = newProperty("crates.list.per-crate", "<dark_gray>[<blue>{id}<dark_gray>]: <red>{crate_name}<dark_gray>, <red>{world}<dark_gray>, <red>{x}<dark_gray>, <red>{y}<dark_gray>, <red>{z}");
+
+    @Comment("A list of available placeholders: {prefix}, {name}")
+    public static final Property<String> crate_teleported = newProperty("crate.teleport.success", "<red>You have been teleported to the location with the name: <gold>{name}.");
+
+    @Comment("A list of available placeholders: {prefix}, {id}")
+    public static final Property<String> crate_cannot_teleport = newProperty("crate.teleport.failed", "<red>There is no location with the name: <gold>{id}.");
 }

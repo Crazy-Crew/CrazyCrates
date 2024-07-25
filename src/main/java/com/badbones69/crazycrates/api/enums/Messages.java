@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
 import com.ryderbelserion.vital.core.util.StringUtil;
 import com.ryderbelserion.vital.paper.enums.Support;
+import com.ryderbelserion.vital.paper.util.AdvUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.Nullable;
@@ -31,6 +32,7 @@ public enum Messages {
     no_keys(MiscKeys.no_keys),
     no_virtual_key(MiscKeys.no_virtual_key),
     internal_error(ErrorKeys.internal_error),
+    key_refund(ErrorKeys.key_refund),
     no_schematics_found(ErrorKeys.no_schematics_found),
     no_prizes_found(ErrorKeys.no_prizes_found),
     prize_error(ErrorKeys.prize_error),
@@ -67,6 +69,8 @@ public enum Messages {
     crate_locations(CrateKeys.crate_locations, true),
     crate_locations_format(CrateKeys.crate_location_format),
     reloaded_forced_out_of_preview(CrateKeys.reloaded_forced_out_of_preview),
+    crate_teleported(CrateKeys.crate_teleported),
+    crate_cannot_teleport(CrateKeys.crate_cannot_teleport),
 
     gave_a_player_keys(CommandKeys.gave_a_player_keys),
     cannot_give_player_keys(CommandKeys.cannot_give_player_keys),
