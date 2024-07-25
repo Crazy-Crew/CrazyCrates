@@ -143,6 +143,34 @@ public enum Messages {
     public String getMessage(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
         return parse(sender, placeholders).replaceAll("\\{prefix}", this.config.getProperty(ConfigKeys.command_prefix));
     }
+
+    public void sendMessage(final CommandSender sender, final String placeholder, final String replacement) {
+        final State state = this.config.getProperty(ConfigKeys.message_state);
+
+        switch (state) {
+            case send_message -> sendRichMessage(sender, placeholder, replacement);
+            case send_actionbar -> sendActionBar(sender, placeholder, replacement);
+        }
+    }
+
+    public void sendMessage(final CommandSender sender, final Map<String, String> placeholders) {
+        final State state = this.config.getProperty(ConfigKeys.message_state);
+
+        switch (state) {
+            case send_message -> sendRichMessage(sender, placeholders);
+            case send_actionbar -> sendActionBar(sender, placeholders);
+        }
+    }
+
+    public void sendMessage(final CommandSender sender) {
+        final State state = this.config.getProperty(ConfigKeys.message_state);
+
+        switch (state) {
+            case send_message -> sendRichMessage(sender);
+            case send_actionbar -> sendActionBar(sender);
+        }
+    }
+
     public void sendActionBar(final CommandSender sender, final String placeholder, final String replacement) {
         final String msg = getMessage(sender, placeholder, replacement);
 
