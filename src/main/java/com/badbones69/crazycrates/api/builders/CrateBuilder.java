@@ -343,9 +343,9 @@ public abstract class CrateBuilder extends FoliaRunnable {
         if (event.isCancelled()) {
             if (MiscUtils.isLogging()) {
                 if (this.player.hasPermission("crazycrates.deny.open." + this.crate.getName())) {
-                    this.plugin.getComponentLogger().warn("The player could not open {} due to having the permission preventing them from opening the crate.", this.crate.getName());
+                    this.plugin.getComponentLogger().warn("{} could not open {} due to having the permission preventing them from opening the crate.", this.player.getName(), this.crate.getName());
                 } else {
-                    this.plugin.getComponentLogger().warn("The player could not open {} due to no valid prizes being found which led to the event being cancelled.", this.crate.getName());
+                    this.plugin.getComponentLogger().warn("{} could not open {} due to no valid prizes being found which led to the event being cancelled.", this.player.getName(), this.crate.getName());
                 }
             }
         }
