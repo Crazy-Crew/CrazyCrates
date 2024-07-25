@@ -62,7 +62,7 @@ public enum Messages {
     not_a_key(CrateKeys.not_a_key),
     not_a_number(CrateKeys.not_a_number),
     preview_disabled(CrateKeys.preview_disabled),
-    required_keys(CrateKeys.required_keys),
+    not_enough_keys(CrateKeys.not_enough_keys),
     created_physical_crate(CrateKeys.created_physical_crate, true),
     physical_crate_already_exists(CrateKeys.physical_crate_already_exists),
     removed_physical_crate(CrateKeys.removed_physical_crate),

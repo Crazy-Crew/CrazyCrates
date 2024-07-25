@@ -89,7 +89,7 @@ public enum Properties {
     too_close_to_another_player(PlayerKeys.too_close_to_another_player, newProperty("Messages.To-Close-To-Another-Player", PlayerKeys.too_close_to_another_player.getDefaultValue())),
     not_a_crate(CrateKeys.not_a_crate, newProperty("Messages.Not-A-Crate", CrateKeys.not_a_crate.getDefaultValue())),
     not_a_number(CrateKeys.not_a_number, newProperty("Messages.Not-A-Number", CrateKeys.not_a_number.getDefaultValue())),
-    required_keys(CrateKeys.required_keys, newProperty("Messages.Required-Keys", CrateKeys.required_keys.getDefaultValue())),
+    required_keys(CrateKeys.not_enough_keys, newProperty("Messages.Required-Keys", CrateKeys.not_enough_keys.getDefaultValue())),
     not_on_block(CrateKeys.not_on_block, newProperty("Messages.Not-On-Block", CrateKeys.not_on_block.getDefaultValue())),
     out_of_time(CrateKeys.out_of_time, newProperty("Messages.Out-Of-Time", CrateKeys.out_of_time.getDefaultValue())),
     reloaded_forced_out_of_preview(CrateKeys.reloaded_forced_out_of_preview, newProperty("Messages.Forced-Out-Of-Preview", CrateKeys.reloaded_forced_out_of_preview.getDefaultValue())),
