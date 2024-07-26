@@ -536,7 +536,7 @@ public class CrateManager {
             case casino -> crateBuilder = new CasinoCrate(crate, player, 27);
             case wonder -> crateBuilder = new WonderCrate(crate, player, 45);
             case wheel -> crateBuilder = new WheelCrate(crate, player, 54);
-            case roulette -> crateBuilder = new RouletteCrate(crate, player, 45);
+            case roulette -> crateBuilder = new RouletteCrate(crate, player, 27);
             case war -> crateBuilder = new WarCrate(crate, player, 9);
             case cosmic -> crateBuilder = new CosmicCrate(crate, player, 27);
             case quad_crate -> {
