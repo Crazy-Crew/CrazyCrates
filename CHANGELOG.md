@@ -16,6 +16,9 @@
 - Update some comments because of grammar.
 - Update logger message when the `CrateOpenEvent` is cancelled to be more verbose.
 
+### Fixed:
+- Wheel Crate animation now spins properly. [#764](https://github.com/Crazy-Crew/CrazyCrates/pull/764)
+
 ### Deprecations:
 - Deprecated `{key_amount}` and replaced it with `{required_amount}` in `crates.requirements.not-enough-keys`
   - `{key_amount}` will stop working in the next major version of Minecraft.
