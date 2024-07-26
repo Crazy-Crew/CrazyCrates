@@ -256,7 +256,7 @@ public class CosmicCrateListener implements Listener {
                 placeholders.put("{key}", crate.getKeyName());
 
                 // Send no keys message.
-                player.sendRichMessage(Messages.no_keys.getMessage(player, placeholders));
+                Messages.no_keys.sendMessage(player, placeholders);
 
                 // Remove opening stuff.
                 this.crateManager.removePlayerFromOpeningList(player);
@@ -356,8 +356,7 @@ public class CosmicCrateListener implements Listener {
                                 // Remove the player from the hashmap.
                                 cosmicCrateManager.removePickedPlayer(player);
 
-                                // Send refund notices.
-                                player.sendRichMessage(MsgUtils.getPrefix("<red>An issue has occurred and so a key refund was given."));
+                                Messages.key_refund.sendMessage(player, "{crate}", crateName);
 
                                 if (MiscUtils.isLogging()) plugin.getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + crate.getName() + " crate and so they were issued a key refund.", exception);
 

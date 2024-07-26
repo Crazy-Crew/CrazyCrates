@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api;
 
+import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.paper.enums.Support;
@@ -16,8 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import static java.util.regex.Matcher.quoteReplacement;
@@ -150,7 +151,9 @@ public class PrizeManager {
 
             plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
         } else {
-            player.sendRichMessage(MsgUtils.getPrefix("<red>No prize was found, please report this issue if you think this is an error."));
+            Messages.prize_error.sendMessage(player, new HashMap<>() {{
+                put("{crate}", crate.getName());
+            }});
         }
     }
 

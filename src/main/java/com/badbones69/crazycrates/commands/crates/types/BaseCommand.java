@@ -125,7 +125,7 @@ public abstract class BaseCommand {
 
         if (ignoreChecks) {
             if (crate == null || crate.getCrateType() == CrateType.menu) {
-                sender.sendRichMessage(Messages.not_a_crate.getMessage(sender, "{crate}", name));
+                Messages.not_a_crate.sendMessage(sender, "{crate}", name);
 
                 return null;
             }
@@ -142,7 +142,7 @@ public abstract class BaseCommand {
             if (totalKeys < 1) {
                 if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("The player {} does not have enough keys to take.", player.getName());
 
-                sender.sendRichMessage(Messages.cannot_take_keys.getMessage(sender, "{player}", player.getName()));
+                Messages.cannot_take_keys.sendMessage(sender, "{player}", player.getName());
 
                 return;
             }
@@ -159,7 +159,7 @@ public abstract class BaseCommand {
             placeholders.put("{keytype}", type.getFriendlyName());
             placeholders.put("{player}", player.getName());
 
-            sender.sendRichMessage(Messages.take_player_keys.getMessage(sender, placeholders));
+            Messages.take_player_keys.sendMessage(sender, placeholders);
 
             return;
         }
@@ -171,7 +171,7 @@ public abstract class BaseCommand {
             placeholders.put("{keytype}", type.getFriendlyName());
             placeholders.put("{player}", offlinePlayer.getName());
 
-            sender.sendRichMessage(Messages.take_offline_player_keys.getMessage(sender, placeholders));
+            Messages.take_offline_player_keys.sendMessage(sender, placeholders);
 
             this.userManager.takeOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), type, amount);
         }
@@ -202,9 +202,11 @@ public abstract class BaseCommand {
             boolean fullMessage = this.config.getProperty(ConfigKeys.notify_player_when_inventory_full);
             boolean inventoryCheck = this.config.getProperty(ConfigKeys.give_virtual_keys_when_inventory_full);
 
-            sender.sendRichMessage(Messages.gave_a_player_keys.getMessage(sender, placeholders));
+            Messages.gave_a_player_keys.sendMessage(sender, placeholders);
 
-            if (!inventoryCheck || !fullMessage && !MiscUtils.isInventoryFull(player) && player.isOnline()) player.sendRichMessage(Messages.obtaining_keys.getMessage(player, placeholders));
+            if (!inventoryCheck || !fullMessage && !MiscUtils.isInventoryFull(player) && player.isOnline()) {
+                Messages.obtaining_keys.sendMessage(player, placeholders);
+            }
 
             return;
         }
@@ -217,7 +219,7 @@ public abstract class BaseCommand {
             if (event.isCancelled()) return;
 
             if (!this.userManager.addOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), type, amount)) {
-                sender.sendRichMessage(Messages.internal_error.getMessage(sender));
+                Messages.internal_error.sendMessage(sender);
             } else {
                 Map<String, String> placeholders = new HashMap<>();
 
@@ -225,7 +227,7 @@ public abstract class BaseCommand {
                 placeholders.put("{keytype}", type.getFriendlyName());
                 placeholders.put("{player}", offlinePlayer.getName());
 
-                sender.sendRichMessage(Messages.given_offline_player_keys.getMessage(sender, placeholders));
+                Messages.given_offline_player_keys.sendMessage(sender, placeholders);
             }
         }
     }

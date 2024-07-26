@@ -178,10 +178,9 @@ public class QuadCrateListener implements Listener {
             Crate crate = session.getCrate();
 
             placeholders.put("{crate}", crate.getName());
-
             placeholders.put("{player}", player.getName());
 
-            player.sendRichMessage(Messages.no_commands_while_in_crate.getMessage(player, placeholders));
+            Messages.no_commands_while_in_crate.sendMessage(player, placeholders);
         }
     }
 
@@ -202,7 +201,7 @@ public class QuadCrateListener implements Listener {
 
             placeholders.put("{player}", player.getName());
 
-            player.sendRichMessage(Messages.no_teleporting.getMessage(player, placeholders));
+            Messages.no_teleporting.sendMessage(player, placeholders);
         }
     }
 

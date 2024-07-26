@@ -43,7 +43,7 @@ public class CommandReload extends BaseCommand {
                     this.inventoryManager.closeCratePreview(player);
 
                     if (this.config.getProperty(ConfigKeys.send_preview_taken_out_message)) {
-                        player.sendRichMessage(Messages.reloaded_forced_out_of_preview.getMessage(player));
+                        Messages.reloaded_forced_out_of_preview.sendMessage(player);
                     }
                 }
             });
@@ -53,6 +53,6 @@ public class CommandReload extends BaseCommand {
 
         this.crateManager.loadCrates();
 
-        sender.sendRichMessage(Messages.reloaded_plugin.getMessage(sender));
+        Messages.reloaded_plugin.sendMessage(sender);
     }
 }

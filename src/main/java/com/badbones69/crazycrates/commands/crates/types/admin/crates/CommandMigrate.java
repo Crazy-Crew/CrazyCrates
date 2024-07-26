@@ -21,20 +21,33 @@ import java.util.List;
 public class CommandMigrate extends BaseCommand {
 
     public enum MigrationType {
-        MOJANG_MAPPED,
-        SPECIALIZED_CRATES,
-        ALL
+        MOJANG_MAPPED_SINGLE("MojangMappedSingle"),
+        MOJANG_MAPPED_ALL("MojangMappedAll"),
+
+        EXCELLENT_CRATES("ExcellentCrates"),
+
+        SPECIALIZED_CRATES("SpecializedCrates");
+
+        private final String name;
+
+        MigrationType(String name) {
+            this.name = name;
+        }
+
+        public final String getName() {
+            return this.name;
+        }
     }
 
     @Command("migrate")
     @Permission(value = "crazycrates.migrate", def = PermissionDefault.OP)
     public void migrate(final CommandSender sender, @ArgName("migration_type") final MigrationType type, @ArgName("crate") @Optional @Suggestion("crates") final String crateName) {
         switch (type) {
-            case ALL -> this.plugin.getFileManager().getCustomFiles().forEach(customFile -> migrate(sender, customFile, "", type));
+            case MOJANG_MAPPED_ALL -> this.plugin.getFileManager().getCustomFiles().forEach(customFile -> migrate(sender, customFile, "", type));
 
-            case MOJANG_MAPPED -> {
+            case MOJANG_MAPPED_SINGLE -> {
                 if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
-                    sender.sendRichMessage(Messages.cannot_be_empty.getMessage(sender, "{value}", "crate name"));
+                    Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
 
                     return;
                 }
@@ -42,19 +55,24 @@ public class CommandMigrate extends BaseCommand {
                 final CustomFile file = this.fileManager.getCustomFile(crateName);
 
                 if (file == null) {
-                    sender.sendRichMessage(Messages.error_migrating.getMessage(sender, new HashMap<>() {{
+                    Messages.error_migrating.sendMessage(sender, new HashMap<>() {{
                         put("{file}", crateName);
-                        put("{type}", String.valueOf(type));
+                        put("{type}", type.getName());
                         put("{reason}", "File was not loaded properly.");
-                    }}));
+                    }});
 
                     return;
                 }
 
                 migrate(sender, file, crateName, type);
+
+                Messages.successfully_migrated.sendMessage(sender, new HashMap<>() {{
+                    put("{file}", crateName);
+                    put("{type}", type.getName());
+                }});
             }
 
-            case SPECIALIZED_CRATES -> sender.sendRichMessage(Messages.migration_not_available.getMessage(sender));
+            case SPECIALIZED_CRATES, EXCELLENT_CRATES -> Messages.migration_not_available.sendMessage(sender);
         }
     }
 
@@ -64,11 +82,11 @@ public class CommandMigrate extends BaseCommand {
         final ConfigurationSection crate = configuration.getConfigurationSection("Crate");
 
         if (crate == null) {
-            sender.sendRichMessage(Messages.error_migrating.getMessage(sender, new HashMap<>() {{
+            Messages.error_migrating.sendMessage(sender, new HashMap<>() {{
                 put("{file}", crateName.isEmpty() ? file.getStrippedName() : crateName);
-                put("{type}", String.valueOf(type));
+                put("{type}", type.getName());
                 put("{reason}", "File could not be found in our data, likely invalid yml file that didn't load properly.");
-            }}));
+            }});
 
             return;
         }

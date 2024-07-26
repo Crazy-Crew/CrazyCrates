@@ -1,30 +1,24 @@
 ### Added:
-- Ability the ability to make items glow in `Items`
-```yml
-Items:
-  - 'Item:spawner, Glowing:true'
-```
-
-### Fixed:
-- The config option for `verbose-logging` was not applied to some parts of the plugin.
+- Added missing configurable messages to places around the plugin, all messages should now be configurable.
+- Added a new config option where you can decide to send messages in chat or in the actionbar.
+  - Messages that send a list to chat will by default never be sent to actionbar as it would not look pretty.
+- Added a new placeholder, `{required_amount}` to `crates.requirements.not-enough-keys`
+- Added another new placeholder, `{key}` to `crates.requirements.not-enough-keys`, [#756](https://github.com/Crazy-Crew/CrazyCrates/issues/756)
+  - This placeholder returns the name of the key.
 
 ### Changes:
-- No longer add the contents of `DisplayData` to the `Items` section on `/crazycrates reload`
-- Lowercase shield pattern types and colors which also fixed a display issue, so previous shield pattern/color configs work. They no longer need to be typed like GRADIENT_UP:LIGHT_GRAY, you can simply type gradient_up:light_gray
-- Deprecated `Patterns` in favor of `DisplayPatterns`, it will be removed in the next major version of Minecraft.
-```yml
-    '6':
-      # The name of the item to display in the gui.
-      DisplayName: "<green>Fancy Shield"
-      # The enchants to display in the gui.
-      DisplayItem: "shield"
-      # A list of patterns: https://jd.papermc.io/paper/1.21/org/bukkit/block/banner/PatternType.html
-      # The patterns don't need to be uppercased. you can type them lowercased along with the colors.
-      # Patterns have to be laid out in a specific order, otherwise it won't look right.
-      # This also applies to the Items section.
-      DisplayPatterns:
-        - "base:white"
-        - "gradient_up:light_gray"
-        - "straight_cross:light_blue"
-        - "flower:light_blue" 
-```
+- The permission check for whether a player can open a crate has been changed.
+  - `crazycrates.open.<crate_name>` is now `crazycrates.deny.open.<crate_name>`
+  - The crate name is case-sensitive, so it must match exactly the crate name in the `crates` folder
+  - If the file name is CrateBeans.yml, it must be `crazycrates.deny.open.CrateBeans`
+- If a message in the `messages.yml` is blank, it will not send the message.
+- Update default message for `crates.crate-no-permission`
+- Update some comments because of grammar.
+- Update logger message when the `CrateOpenEvent` is cancelled to be more verbose.
+
+### Fixed:
+- Wheel Crate animation now spins properly. [#764](https://github.com/Crazy-Crew/CrazyCrates/pull/764)
+
+### Deprecations:
+- Deprecated `{key_amount}` and replaced it with `{required_amount}` in `crates.requirements.not-enough-keys`
+  - `{key_amount}` will stop working in the next major version of Minecraft.

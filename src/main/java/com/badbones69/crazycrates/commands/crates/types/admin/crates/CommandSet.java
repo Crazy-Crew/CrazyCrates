@@ -23,7 +23,7 @@ public class CommandSet extends BaseCommand {
     @Permission(value = "crazycrates.set", def = PermissionDefault.OP)
     public void set(Player player, @ArgName("crate") @Suggestion("crates") String crateName) {
         if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
-            player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
+            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
             return;
         }
@@ -31,13 +31,13 @@ public class CommandSet extends BaseCommand {
         final Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null) {
-            player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
+            Messages.not_a_crate.sendMessage(player, "{crate}", crateName);
 
             return;
         }
 
         if (crate.getCrateType() == CrateType.menu && !this.config.getProperty(ConfigKeys.enable_crate_menu)) {
-            player.sendRichMessage(Messages.cannot_set_type.getMessage(player));
+            Messages.cannot_set_type.sendMessage(player);
 
             return;
         }
@@ -45,18 +45,18 @@ public class CommandSet extends BaseCommand {
         final Block block = player.getTargetBlock(null, 5);
 
         if (block.isEmpty()) {
-            player.sendRichMessage(Messages.must_be_looking_at_block.getMessage(player));
+            Messages.must_be_looking_at_block.sendMessage(player);
 
             return;
         }
 
         if (this.crateManager.isCrateLocation(block.getLocation())) {
-            player.sendRichMessage(Messages.physical_crate_already_exists.getMessage(player, new HashMap<>() {{
+            Messages.physical_crate_already_exists.sendMessage(player, new HashMap<>() {{
                 final CrateLocation crateLocation = crateManager.getCrateLocation(block.getLocation());
 
                 put("{id}", crateLocation != null ? crateLocation.getID() : "N/A");
                 put("{crate}", crateLocation != null ? crateLocation.getCrate().getName() : "N/A");
-            }}));
+            }});
 
             return;
         }
@@ -68,6 +68,7 @@ public class CommandSet extends BaseCommand {
         placeholders.put("{crate}", crate.getName());
         placeholders.put("{prefix}", MsgUtils.getPrefix());
 
-        player.sendRichMessage(Messages.created_physical_crate.getMessage(player, placeholders));
+        // this has to use sendRichMessage as it is a list.
+        Messages.created_physical_crate.sendRichMessage(player, placeholders);
     }
 }

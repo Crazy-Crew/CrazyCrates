@@ -5,29 +5,29 @@
 # Features: https://github.com/Crazy-Crew/CrazyCrates/issues
 # 
 misc:
-  # A list of available placeholders: {prefix}, {command}
+  # A list of available placeholders: {command}
   unknown-command: "{prefix}<red>{command} is not a known command."
   # Only activates when you try to use an ender pearl while opening a crate.
   no-teleporting: "{prefix}<red>You may not teleport away while opening a crate."
   # A list of available placeholders: {prefix}
   no-commands: "{prefix}<red>You are not allowed to use commands while opening crates."
-  # A list of available placeholders: {prefix}, {key}, {crate}
+  # A list of available placeholders: {key}, {crate}
   no-keys: "{prefix}<red>You must have a {key} <red>in your hand to use <gold>{crate}."
-  # A list of available placeholders: {prefix}, {crate}
+  # A list of available placeholders: {crate}
   no-virtual-keys: "{prefix}<red>You need a virtual key to open <gold>{crate}."
-  # A list of available placeholders: {prefix}, {usage}
+  # A list of available placeholders: {usage}
   correct-usage: "{prefix}<red>The correct usage for this command is <yellow>{usage}"
   # A list of available placeholders: {prefix}
   feature-disabled: "{prefix}<red>This feature is disabled."
 # All messages related to errors.
 errors:
-  # A list of available placeholders: {prefix}, {crate}
+  # A list of available placeholders: {crate}
   no-prizes-found: "{prefix}<red>This crate contains no prizes that you can win."
   # A list of available placeholders: {prefix}
   no-schematics-found: "{prefix}<red>No schematics were found. Please make sure files ending in .nbt exist in the schematics folder. If not delete the folder so they regenerate."
   # A list of available placeholders: {prefix}
   internal-error: "{prefix}<red>An internal error has occurred. Please check the console for the full error."
-  # A list of available placeholders: {prefix}, {crate}, {prize}
+  # A list of available placeholders: {crate}, {prize}
   prize-error: "{prefix}<red>An error has occurred while trying to give you the prize called <gold>{prize}<red> in crate called <gold>{crate}<red>. Please contact the server owner and show them this error."
 # All messages related to players.
 player:
@@ -38,57 +38,57 @@ player:
     must-be-console-sender: "{prefix}<red>You must be using console to use this command."
     # A list of available placeholders: {prefix}
     must-be-looking-at-block: "{prefix}<red>You must be looking at a block."
-  # A list of available placeholders: {prefix}, {player}
+  # A list of available placeholders: {player}
   target-not-online: "{prefix}<red>{player} <gray>is not online."
   # A list of available placeholders: {prefix}
   target-same-player: "{prefix}<red>You cannot use this command on yourself."
   # A list of available placeholders: {prefix}
   no-permission: "{prefix}<red>You do not have permission to use that command/menu!"
-  # A list of available placeholders: {prefix}, {crate}
+  # A list of available placeholders: {crate}
   inventory-not-empty: "{prefix}<red>Inventory is not empty, Please make room before opening <gold>{crate}."
-  # A list of available placeholders: {prefix}, {amount}, {keytype}, {key}
+  # A list of available placeholders: {amount}, {keytype}, {key}
   obtaining-keys: "{prefix}<gray>You have been given <gold>{amount} {key} <gray>key(s)."
-  # A list of available placeholders: {prefix}, {player}
+  # A list of available placeholders: {player}
   too-close-to-another-player: "{prefix}<red>You are too close to a player that is opening a crate."
 # All messages related to crates.
 crates:
   requirements:
-    # A list of available placeholders: {prefix}, {crate}
+    # A list of available placeholders: {crate}
     not-a-crate: "{prefix}<red>There is no crate called <gold>{crate}."
-    # A list of available placeholders: {prefix}, {key}
+    # A list of available placeholders: {key}
     not-a-key: "{prefix}<red>There is no key called <gold>{key}."
-    # A list of available placeholders: {prefix}, {number}
+    # A list of available placeholders: {number}
     not-a-number: "{prefix}<gold>{number} <red>is not a number."
-    # A list of available placeholders: {prefix}, {amount}, {key_amount}, {crate}
+    # A list of available placeholders: {amount}, {key_amount}, {crate}
     not-enough-keys: "{prefix}<gray>You need <red>{key_amount} <gray>keys to open <red>{crate}. <gray>You have <red>{amount}."
   # A list of available placeholders: {prefix}
   not-a-block: "{prefix}<red>You must be standing on a block to use <gold>{crate}."
-  # A list of available placeholders: {prefix}, {crate}
+  # A list of available placeholders: {crate}
   out-of-time: "{prefix}<red>You took <gold>5 minutes <red>to open <gold>{crate} <red>so it closed."
   # A list of available placeholders: {prefix}
   forced-out-of-preview: "{prefix}<red>A reload has forced you out of the preview."
   # A list of available placeholders: {prefix}
   cannot-set-menu-type: "{prefix}<red>You cannot set the Menu to a block because the crate menu is disabled"
-  # A list of available placeholders: {prefix}, {crate}
+  # A list of available placeholders: {crate}
   crate-no-permission: "{prefix}<red>You do not have permission to use that {crate}."
-  # A list of available placeholders: {prefix}, {crate}
+  # A list of available placeholders: {crate}
   crate-preview-disabled: "{prefix}<red>The preview for <gold>{crate} <red>is currently disabled."
-  # A list of available placeholders: {prefix}, {crate}
+  # A list of available placeholders: {crate}
   crate-already-open: "{prefix}<red>You are already opening <gold>{crate}."
-  # A list of available placeholders: {prefix}, {crate}
+  # A list of available placeholders: {crate}
   crate-in-use: "{prefix}<red>{crate} is already in use. Please wait until it finishes."
-  # A list of available placeholders: {prefix}, {crate}, {cratetype}
+  # A list of available placeholders: {crate}, {cratetype}
   cannot-be-a-virtual-crate: "{prefix}<gold>{crate} <red>cannot be used as a Virtual Crate."
   # QuadCrate schematics need a fair bit of room so make sure you check the surroundings.
   need-more-room: "{prefix}<red>There is not enough space to open that here"
-  # A list of available placeholders: {prefix}, {world}
+  # A list of available placeholders: {world}
   world-disabled: "{prefix}<red>I am sorry but Crates are disabled in {world}."
   physical-crate:
-    # A list of available placeholders: {prefix}, {crate}
+    # A list of available placeholders: {crate}
     created:
       - "{prefix}<gray>You have set that block to {crate}."
       - "<gray>To remove the crate shift break in creative to remove."
-    # A list of available placeholders: {prefix}, {id}
+    # A list of available placeholders: {id}
     removed: "{prefix}<gray>You have removed <gold>{id}."
   list:
     # The format for the /crazycrates list command
@@ -108,28 +108,28 @@ crates:
 # All messages related to commands.
 command:
   open:
-    # A list of available placeholders: {prefix}, {crate}, {player}
+    # A list of available placeholders: {crate}, {player}
     opened-a-crate: "{prefix}<gray>You have opened the <gold>{crate} for <gold>{player}."
   give:
-    # A list of available placeholders: {prefix}, {amount}, {player}, {keytype}
+    # A list of available placeholders: {amount}, {player}, {keytype}
     given-player-keys: "{prefix}<gray>You have given <gold>{player} {amount} <gray>key(s)."
-    # A list of available placeholders: {prefix}, {amount}, {amount}, {keytype}
+    # A list of available placeholders: {amount}, {amount}, {keytype}
     full-inventory: "{prefix}<gray>You have been given <gold>{amount} {key} <gray>virtual key(s) because your inventory was full."
-    # A list of available placeholders: {prefix}, {amount}, {keytype}
+    # A list of available placeholders: {amount}, {keytype}
     given-everyone-keys: "{prefix}<gray>You have given everyone <gold>{amount} <gray>key(s)."
-    # A list of available placeholders: {prefix}, {amount}, {player}, {keytype}
+    # A list of available placeholders: {amount}, {player}, {keytype}
     given-offline-player-keys: "{prefix}<gray>You have given <gold>{amount} <gray>key(s) to the offline player <gold>{player}."
   take:
-    # A list of available placeholders: {prefix}, {amount}, {player}, {keytype}
+    # A list of available placeholders: {amount}, {player}, {keytype}
     take-player-keys: "{prefix}<gray>You have taken <gold>{amount} <gray>key(s) from <gold>{player}."
-    # A list of available placeholders: {prefix}, {player}
+    # A list of available placeholders: {player}
     cannot-take-keys: "{prefix}<gray>You cannot take key(s) from <gold>{player} <gray>as they are poor."
-    # A list of available placeholders: {prefix}, {amount}, {player}, {keytype}
+    # A list of available placeholders: {amount}, {player}, {keytype}
     take-offline-player-keys: "{prefix}<gray>You have taken <gold>{amount} <gray>key(s) from the offline player <gold>{player}."
   additem:
-    # A list of available placeholders: {prefix}, {crate}
+    # A list of available placeholders: {crate}
     no-item-in-hand: "{prefix}<red>You need to have an item in your hand to add it {crate}."
-    # A list of available placeholders: {prefix}, {crate}, {prize}
+    # A list of available placeholders: {crate}, {prize}
     add-item-from-hand: "{prefix}<gray>The item has been added to the {crate} in prize #{prize}."
   convert:
     no-files-to-convert: "<red>No available plugins to convert files."
@@ -141,9 +141,9 @@ command:
   transfer:
     # A list of available placeholders: {prefix}
     not-enough-keys: "{prefix}<red>You do not have enough keys to transfer."
-    # A list of available placeholders: {prefix}, {amount}, {player}, {keytype}, {crate}
+    # A list of available placeholders: {amount}, {player}, {keytype}, {crate}
     transferred-keys: "{prefix}<gray>You have transferred {amount} {crate} keys to {player}."
-    # A list of available placeholders: {prefix}, {amount}, {player}, {keytype}, {crate}
+    # A list of available placeholders: {amount}, {player}, {keytype}, {crate}
     transferred-keys-received: "{prefix}<gray>You have received {amount} {crate} keys from {player}."
   keys:
     personal:
@@ -155,7 +155,7 @@ command:
         - " <yellow> -> Total Crates Opened: <red>{crates_opened}"
         - ""
     other-player:
-      # A list of available placeholders: {prefix}, {player}
+      # A list of available placeholders: {player}
       no-virtual-keys: "{prefix}<bold><dark_gray>(<dark_red>!<dark_gray>)</bold> <gray>The player {player} does not have any keys."
       # A list of available placeholders: {player}, {crates_opened}
       virtual-keys-header:
