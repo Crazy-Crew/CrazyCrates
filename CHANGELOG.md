@@ -18,6 +18,7 @@
 
 ### Fixed:
 - Wheel Crate animation now spins properly. [#764](https://github.com/Crazy-Crew/CrazyCrates/pull/764)
+- Roulette Crate inventory size is now normal. [#765](https://github.com/Crazy-Crew/CrazyCrates/pull/765)
 
 ### Deprecations:
 - Deprecated `{key_amount}` and replaced it with `{required_amount}` in `crates.requirements.not-enough-keys`
