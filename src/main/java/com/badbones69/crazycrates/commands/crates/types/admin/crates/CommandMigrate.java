@@ -149,6 +149,7 @@ public class CommandMigrate extends BaseCommand {
         }
 
         file.save();
+        file.reload();
     }
 
     private <T> void set(ConfigurationSection section, String path, T value) {
