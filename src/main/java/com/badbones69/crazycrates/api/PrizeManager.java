@@ -89,6 +89,8 @@ public class PrizeManager {
         for (final String message : prize.getMessages()) {
             sendMessage(player, prize, crate, message);
         }
+
+        prize.broadcast(crate);
     }
 
     private static void runCommands(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, @NotNull String command) {

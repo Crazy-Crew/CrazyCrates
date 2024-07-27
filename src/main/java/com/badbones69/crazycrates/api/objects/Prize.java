@@ -20,6 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Prize {
@@ -43,6 +44,10 @@ public class Prize {
 
     private List<Tier> tiers = new ArrayList<>();
     private Prize alternativePrize;
+
+    private boolean broadcast = false;
+    private List<String> broadcastMessages = new ArrayList<>();
+    private String broadcastPermission = "";
 
     private List<ItemStack> editorItems = new ArrayList<>();
 
@@ -73,6 +78,10 @@ public class Prize {
             this.permissions.replaceAll(String::toLowerCase);
         }
 
+        this.broadcast = section.getBoolean("Settings.Broadcast.Toggle", false);
+        this.broadcastMessages = section.getStringList("Settings.Broadcast.Messages");
+        this.broadcastPermission = section.getString("Settings.Broadcast.Permission", "");
+
         this.prizeItem = display();
         this.displayItem = new ItemBuilder(this.prizeItem, true);
 
@@ -102,6 +111,10 @@ public class Prize {
      * @return the name of the prize.
      */
     public @NotNull final String getPrizeName() {
+        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
+            return this.prizeName.isEmpty() ? "" : this.prizeName;
+        }
+
         return this.prizeName.isEmpty() ? "<lang:" + this.displayItem.getType().getItemTranslationKey() + ">" : this.prizeName;
     }
 
@@ -222,6 +235,38 @@ public class Prize {
         }
 
         return false;
+    }
+
+    public void broadcast(final Crate crate) {
+        if (!this.broadcast) return;
+
+        final boolean isAdventure = ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle);
+
+        if (isAdventure) {
+            this.plugin.getServer().getOnlinePlayers().forEach(player -> {
+                if (!this.broadcastPermission.isEmpty() && player.hasPermission(this.broadcastPermission)) return;
+
+                this.broadcastMessages.forEach(message -> player.sendMessage(AdvUtil.parse(message, new HashMap<>() {{
+                    put("%player%", player.getName());
+                    put("%crate%", crate.getCrateInventoryName());
+                    put("%reward%", getPrizeName());
+                    put("%reward_stripped%", getStrippedName());
+                }}, player)));
+            });
+
+            return;
+        }
+
+        this.plugin.getServer().getOnlinePlayers().forEach(player -> {
+            if (!this.broadcastPermission.isEmpty() && player.hasPermission(this.broadcastPermission)) return;
+
+            this.broadcastMessages.forEach(message -> player.sendMessage(ItemUtil.color(message, new HashMap<>() {{
+                put("%player%", player.getName());
+                put("%crate%", crate.getCrateInventoryName());
+                put("%reward%", getPrizeName());
+                put("%reward_stripped%", getStrippedName());
+            }}, player)));
+        });
     }
 
     private @NotNull ItemBuilder display() {
