@@ -37,9 +37,9 @@ import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Level;
 
 public class Crate {
 
@@ -685,8 +685,8 @@ public class Crate {
 
             List<String> enchantments = new ArrayList<>();
 
-            for (Enchantment enchantment : itemStack.getEnchantments().keySet()) {
-                enchantments.add(enchantment.getKey().getKey());
+            for (Map.Entry<Enchantment, Integer> enchantment : itemStack.getEnchantments().entrySet()) {
+                enchantments.add(enchantment.getKey().getKey().getKey() + ":" + enchantment.getValue());
             }
 
             if (!enchantments.isEmpty()) section.set(getPath(prizeName, "DisplayEnchantments"), enchantments);
