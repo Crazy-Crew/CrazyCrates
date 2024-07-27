@@ -44,7 +44,9 @@ public class Prize {
     private List<Tier> tiers = new ArrayList<>();
     private Prize alternativePrize;
 
-    public Prize(@NotNull final ConfigurationSection section, @NotNull final List<Tier> tierPrizes, @NotNull final String crateName, @Nullable final Prize alternativePrize) {
+    private List<ItemStack> editorItems = new ArrayList<>();
+
+    public Prize(@NotNull final ConfigurationSection section, List<ItemStack> editorItems, @NotNull final List<Tier> tierPrizes, @NotNull final String crateName, @Nullable final Prize alternativePrize) {
         this.section = section;
 
         this.sectionName = section.getName();
@@ -73,6 +75,8 @@ public class Prize {
 
         this.prizeItem = display();
         this.displayItem = new ItemBuilder(this.prizeItem, true);
+
+        this.editorItems = editorItems;
     }
 
     /**
@@ -329,5 +333,9 @@ public class Prize {
                 add("<red>If you are confused, Stop by our discord for support!");
             }});
         }
+    }
+
+    public final List<ItemStack> getEditorItems() {
+        return this.editorItems;
     }
 }

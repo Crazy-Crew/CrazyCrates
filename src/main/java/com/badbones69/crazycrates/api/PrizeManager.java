@@ -43,6 +43,14 @@ public class PrizeManager {
 
         prize = prize.hasPermission(player) ? prize.getAlternativePrize() : prize;
 
+        for (ItemStack item : prize.getEditorItems()) {
+            if (!MiscUtils.isInventoryFull(player)) {
+                player.getInventory().addItem(item);
+            } else {
+                player.getWorld().dropItemNaturally(player.getLocation(), item);
+            }
+        }
+
         if (!prize.getItemBuilders().isEmpty()) {
             for (final ItemBuilder item : prize.getItemBuilders()) {
                 if (!MiscUtils.isInventoryFull(player)) {
