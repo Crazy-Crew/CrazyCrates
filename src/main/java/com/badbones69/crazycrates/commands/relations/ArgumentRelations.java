@@ -16,7 +16,8 @@ public class ArgumentRelations extends MessageManager {
 
         switch (command) {
             case "transfer" -> usage = order + " <crate_name> <player_name> <amount>";
-            case "debug", "set" -> usage = order + " <crate_name>";
+            case "set" -> usage = order + " <crate_name>";
+            case "debug" -> usage = order + "<crate_name> [player_name]";
             case "open" -> usage = order + " <crate_name> <key_type>";
             case "tp" -> usage = order + "<id>";
             case "additem" -> usage = order + " <crate_name> <prize_number> <chance> [tier]";
