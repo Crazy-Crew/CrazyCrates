@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.paper.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
+import com.ryderbelserion.vital.paper.util.ItemUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -320,7 +321,11 @@ public class CosmicCrateListener implements Listener {
                 if (!broadcastMessage.isBlank()) {
                     String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
-                    this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
+                    if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
+                        this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
+                    } else {
+                        this.plugin.getServer().broadcastMessage(ItemUtil.color(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
+                    }
                 }
             }
 

@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates;
 
+import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
@@ -61,12 +62,13 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.paper = new VitalPaper(this);
-
         this.instance = new Server(getDataFolder());
         this.instance.apply();
 
-        this.paper.setLogging(ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging));
+        final SettingsManager config = ConfigManager.getConfig();
+
+        this.paper = new VitalPaper(this, config.getProperty(ConfigKeys.minimessage_toggle));
+        this.paper.setLogging(config.getProperty(ConfigKeys.verbose_logging));
 
         this.fileManager = new FileManager();
         this.fileManager.addFile("locations.yml").addFile("data.yml")

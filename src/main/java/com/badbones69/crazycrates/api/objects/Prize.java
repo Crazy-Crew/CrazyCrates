@@ -4,10 +4,13 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
@@ -99,7 +102,11 @@ public class Prize {
     }
 
     public @NotNull final String getStrippedName() {
-        return PlainTextComponentSerializer.plainText().serialize(AdvUtil.parse(getPrizeName()));
+        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
+            return PlainTextComponentSerializer.plainText().serialize(AdvUtil.parse(getPrizeName()));
+        }
+
+        return ChatColor.stripColor(getPrizeName());
     }
 
     /**
