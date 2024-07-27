@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.commands.crates.types.admin.crates;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
+import com.ryderbelserion.vital.core.util.FileUtil;
 import com.ryderbelserion.vital.paper.files.config.CustomFile;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -14,6 +15,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.permissions.PermissionDefault;
+import org.jetbrains.annotations.Nullable;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +27,10 @@ public class CommandMigrate extends BaseCommand {
     public enum MigrationType {
         MOJANG_MAPPED_SINGLE("MojangMappedSingle"),
         MOJANG_MAPPED_ALL("MojangMappedAll"),
+
+        //MIGRATE_OLD_COMMANDS("MigrateOldCommands"),
+
+        CRATES_DEPRECATED_ALL("CratesDeprecated"),
 
         EXCELLENT_CRATES("ExcellentCrates"),
 
@@ -71,6 +79,71 @@ public class CommandMigrate extends BaseCommand {
                     put("{type}", type.getName());
                 }});
             }
+
+            case CRATES_DEPRECATED_ALL -> {
+                this.plugin.getFileManager().getCustomFiles().forEach(file -> {
+                    final YamlConfiguration configuration = file.getConfiguration();
+
+                    final ConfigurationSection prizes = configuration.getConfigurationSection("Crate.Prizes");
+
+                    if (prizes != null) {
+                        prizes.getKeys(false).forEach(value -> {
+                            if (configuration.contains("Crate.Prizes." + value + ".Lore")) {
+                                configuration.set("Crate.Prizes." + value + ".DisplayLore", configuration.getStringList("Crate.Prizes." + value + ".Lore"));
+
+                                configuration.set("Crate.Prizes." + value + ".Lore", null);
+                            }
+
+                            if (configuration.contains("Crate.Prizes." + value + ".Patterns")) {
+                                configuration.set("Crate.Prizes." + value + ".DisplayPatterns", configuration.getStringList("Crate.Prizes." + value + ".Patterns"));
+
+                                configuration.set("Crate.Prizes." + value + ".Patterns", null);
+                            }
+                        });
+
+                        file.save();
+                    }
+                });
+
+                Messages.successfully_migrated.sendMessage(sender, new HashMap<>() {{
+                    put("{file}", crateName);
+                    put("{type}", type.getName());
+                }});
+
+                this.plugin.getFileManager().init();
+            }
+
+            /*case MIGRATE_OLD_COMMANDS -> {
+                final File oldDirectory = new File(this.plugin.getDataFolder(), "old");
+
+                final List<String> files = FileUtil.getFiles(oldDirectory, ".yml");
+
+                files.forEach(key -> {
+                    final @Nullable CustomFile customFile = this.plugin.getFileManager().getCustomFile(key);
+
+                    if (customFile != null) {
+                        final File file = new File(oldDirectory, key + ".yml");
+
+                        final YamlConfiguration root  = YamlConfiguration.loadConfiguration(file);
+
+                        final ConfigurationSection prizes = root.getConfigurationSection("Crate.Prizes");
+
+                        if (prizes != null) {
+                            final YamlConfiguration configuration = customFile.getConfiguration();
+
+                            prizes.getKeys(false).forEach(value -> {
+                                List<String> commands = prizes.getStringList(value + ".Commands");
+
+                                if (!commands.isEmpty()) {
+                                    configuration.set("Crate.Prizes." + value + ".Commands", commands);
+                                }
+                            });
+
+                            customFile.save();
+                        }
+                    }
+                });
+            }*/
 
             case SPECIALIZED_CRATES, EXCELLENT_CRATES -> Messages.migration_not_available.sendMessage(sender);
         }
