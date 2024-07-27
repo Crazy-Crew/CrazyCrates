@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.commands.crates.types.admin;
 
+import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.enums.Files;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
@@ -20,7 +21,10 @@ public class CommandReload extends BaseCommand {
 
         this.fileManager.reloadFiles().init();
 
-        this.plugin.getPaper().setLogging(ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging));
+        final SettingsManager config = ConfigManager.getConfig();
+
+        this.plugin.getPaper().setLogging(config.getProperty(ConfigKeys.verbose_logging));
+        this.plugin.getPaper().setAdventure(config.getProperty(ConfigKeys.minimessage_toggle));
 
         final YamlConfiguration locations = Files.locations.getConfiguration();
         final YamlConfiguration data = Files.data.getConfiguration();

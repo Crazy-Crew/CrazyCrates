@@ -40,14 +40,14 @@ public class CosmicCrateManager extends AbstractCrateManager {
         this.totalPrizes = file.getInt(path + "Total-Prize-Amount", 4);
 
         this.mysteryCrate = new ItemBuilder()
-                .withType(file.getString(path + "Mystery-Crate.Item", "chest"))
+                .withType(file.getString(path + "Mystery-Crate.Item", "chest").toLowerCase())
                 .setDisplayName(file.getString(path + "Mystery-Crate.Name", "<bold><white>???</bold>"))
                 .setHidingItemFlags(file.getBoolean(path + "Mystery-Crate.HideItemFlags", false))
                 .setDisplayLore(file.contains(path + "Mystery-Crate.Lore") ? file.getStringList(path + "Mystery-Crate.Lore") : Collections.singletonList("<gray>You may choose 4 crates."))
                 .setPersistentInteger(PersistentKeys.cosmic_mystery_crate.getNamespacedKey(), 1)
                 .setCustomModelData(file.getInt(path + "Mystery-Crate.Custom-Model-Data", -1));
 
-        this.pickedCrate = new ItemBuilder().withType(file.getString(path + "Picked-Crate.Item", "gray_stained_glass_pane"))
+        this.pickedCrate = new ItemBuilder().withType(file.getString(path + "Picked-Crate.Item", "gray_stained_glass_pane").toLowerCase())
                 .setDisplayName(file.getString(path + "Picked-Crate.Name", "<bold><white>???</white>"))
                 .setHidingItemFlags(file.getBoolean(path + "Picked-Crate.HideItemFlags", false))
                 .setDisplayLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("<gray>You have chosen #%slot%."))

@@ -5,9 +5,10 @@ import ch.jalu.configme.properties.Property;
 import com.ryderbelserion.vital.core.util.StringUtil;
 import com.ryderbelserion.vital.paper.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
+import com.ryderbelserion.vital.paper.util.ItemUtil;
+import net.md_5.bungee.api.ChatMessageType;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.Nullable;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.messages.CommandKeys;
 import com.badbones69.crazycrates.config.impl.messages.CrateKeys;
@@ -176,7 +177,15 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        sender.sendActionBar(AdvUtil.parse(msg));
+        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
+
+        if (isAdventure) {
+            sender.sendActionBar(AdvUtil.parse(msg));
+        } else {
+            if (sender instanceof Player player) {
+                player.sendActionBar(ItemUtil.color(msg));
+            }
+        }
     }
 
     public void sendActionBar(final CommandSender sender, final Map<String, String> placeholders) {
@@ -184,7 +193,15 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        sender.sendActionBar(AdvUtil.parse(msg));
+        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
+
+        if (isAdventure) {
+            sender.sendActionBar(AdvUtil.parse(msg));
+        } else {
+            if (sender instanceof Player player) {
+                player.sendActionBar(ItemUtil.color(msg));
+            }
+        }
     }
 
     public void sendActionBar(final CommandSender sender) {
@@ -192,7 +209,15 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        sender.sendActionBar(AdvUtil.parse(getMessage(sender)));
+        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
+
+        if (isAdventure) {
+            sender.sendActionBar(AdvUtil.parse(msg));
+        } else {
+            if (sender instanceof Player player) {
+                player.sendActionBar(ItemUtil.color(msg));
+            }
+        }
     }
 
     public void sendRichMessage(final CommandSender sender, final String placeholder, final String replacement) {
@@ -200,7 +225,13 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        sender.sendRichMessage(msg);
+        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
+
+        if (isAdventure) {
+            sender.sendRichMessage(msg);
+        } else {
+            sender.sendMessage(ItemUtil.color(msg));
+        }
     }
 
     public void sendRichMessage(final CommandSender sender, final Map<String, String> placeholders) {
@@ -208,7 +239,13 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        sender.sendRichMessage(msg);
+        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
+
+        if (isAdventure) {
+            sender.sendRichMessage(msg);
+        } else {
+            sender.sendMessage(ItemUtil.color(msg));
+        }
     }
 
     public void sendRichMessage(final CommandSender sender) {
@@ -216,7 +253,13 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        sender.sendRichMessage(msg);
+        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
+
+        if (isAdventure) {
+            sender.sendRichMessage(msg);
+        } else {
+            sender.sendMessage(ItemUtil.color(msg));
+        }
     }
 
     private @NotNull String parse(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {

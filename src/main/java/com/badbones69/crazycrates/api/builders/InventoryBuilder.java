@@ -10,6 +10,7 @@ import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
+import com.ryderbelserion.vital.paper.util.ItemUtil;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.minecraft.network.protocol.game.ClientboundOpenScreenPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -60,7 +61,11 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
+        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
+            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
+        } else {
+            this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
+        }
     }
 
     public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, @NotNull final Crate crate) {
@@ -72,7 +77,11 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
+        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
+            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
+        } else {
+            this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
+        }
     }
 
     public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, final int page, @NotNull final Crate crate) {
@@ -85,7 +94,11 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
+        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
+            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
+        } else {
+            this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
+        }
     }
 
     public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, @NotNull final Crate crate, @NotNull final List<Tier> tiers) {
@@ -98,7 +111,11 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
+        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
+            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
+        } else {
+            this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
+        }
     }
 
     public InventoryBuilder() {}
@@ -177,6 +194,12 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
     }
 
     public void sendTitleChange() {
+        final SettingsManager config = ConfigManager.getConfig();
+
+        if (config.getProperty(ConfigKeys.minimessage_toggle)) {
+            return;
+        }
+
         ServerPlayer entityPlayer = (ServerPlayer) ((CraftHumanEntity) getView().getPlayer()).getHandle();
         int containerId = entityPlayer.containerMenu.containerId;
         MenuType<?> windowType = CraftContainer.getNotchInventoryType(getView().getTopInventory());

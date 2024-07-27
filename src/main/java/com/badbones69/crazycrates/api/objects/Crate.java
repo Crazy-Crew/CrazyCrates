@@ -3,6 +3,8 @@ package com.badbones69.crazycrates.api.objects;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.crates.CrateHologram;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
@@ -15,6 +17,7 @@ import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -34,6 +37,7 @@ import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -142,7 +146,7 @@ public class Crate {
         @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
         this.borderItem = new ItemBuilder()
-                .withType(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane"))
+                .withType(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane").toLowerCase())
                 .setCustomModelData(file.getInt("Crate.Preview.Glass.Custom-Model-Data", -1))
                 .setHidingItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
                 .setDisplayName(borderName);
@@ -150,7 +154,7 @@ public class Crate {
         @NotNull final String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
 
         this.previewTierBorderItem = new ItemBuilder()
-                .withType(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane"))
+                .withType(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
                 .setCustomModelData(file.getInt("Crate.tier-preview.glass.custom-model-data", -1))
                 .setHidingItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
                 .setDisplayName(previewTierBorderName);
@@ -636,22 +640,63 @@ public class Crate {
 
         final String tiers = getPath(prizeName, "Tiers");
 
-        String toBase64 = ItemUtil.toBase64(itemStack);
+        final boolean useOldEditor = ConfigManager.getConfig().getProperty(ConfigKeys.item_editor_toggle);
 
-        section.set(getPath(prizeName, "DisplayData"), toBase64);
+        if (!section.contains(prizeName)) {
+            section.set(getPath(prizeName, "MaxRange"), 100);
+        }
 
-        final String items = getPath(prizeName, "Items");
+        if (useOldEditor) {
+            final List<ItemStack> editorItems = new ArrayList<>();
 
-        if (section.contains(items)) {
-            final List<String> list = section.getStringList(items);
+            if (section.contains(prizeName + ".Editor-Items")) {
+                section.getList(prizeName + ".Editor-Items").forEach(item -> editorItems.add((ItemStack) item));
+            }
 
-            list.add("Data:" + toBase64);
+            editorItems.add(itemStack);
 
-            section.set(items, list);
+            List<String> enchantments = new ArrayList<>();
+
+            for (Map.Entry<Enchantment, Integer> enchantment : itemStack.getEnchantments().entrySet()) {
+                enchantments.add(enchantment.getKey().getKey().getKey() + ":" + enchantment.getValue());
+            }
+
+            if (!enchantments.isEmpty()) section.set(getPath(prizeName, "DisplayEnchantments"), enchantments);
+
+            if (itemStack.hasItemMeta()) {
+                final ItemMeta itemMeta = itemStack.getItemMeta();
+
+                if (itemMeta.hasDisplayName()) {
+                    section.set(getPath(prizeName, "DisplayName"), itemMeta.getDisplayName());
+                }
+
+                if (itemMeta.hasLore()) {
+                    section.set(getPath(prizeName, "DisplayLore"), itemMeta.getLore());
+                }
+            }
+
+            section.set(getPath(prizeName, "DisplayItem"), itemStack.getType().getKey().getKey());
+            section.set(getPath(prizeName, "DisplayAmount"), itemStack.getAmount());
+
+            section.set(getPath(prizeName, "Editor-Items"), editorItems);
         } else {
-            section.set(items, new ArrayList<>() {{
-                add("Data:" + toBase64);
-            }});
+            String toBase64 = ItemUtil.toBase64(itemStack);
+
+            section.set(getPath(prizeName, "DisplayData"), toBase64);
+
+            final String items = getPath(prizeName, "Items");
+
+            if (section.contains(items)) {
+                final List<String> list = section.getStringList(items);
+
+                list.add("Data:" + toBase64);
+
+                section.set(items, list);
+            } else {
+                section.set(items, new ArrayList<>() {{
+                    add("Data:" + toBase64);
+                }});
+            }
         }
 
         section.set(getPath(prizeName, "Weight"), weight);

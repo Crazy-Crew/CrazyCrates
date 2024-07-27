@@ -228,6 +228,15 @@ Crate:
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
+        # Broadcast a message to the server
+        Broadcast:
+          # If the messages should be sent.
+          Toggle: false
+          # The messages to broadcast.
+          Messages:
+            - '<red>%player% won the prize <yellow>%reward%.'
+          # If the player has this permission, they don't get the broadcast.
+          Permission: 'your_permission'
       # The amount to display in the gui.
       DisplayAmount: 5
       # The lore of the item.

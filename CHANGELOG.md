@@ -5,6 +5,10 @@
 - Added a new placeholder, `{required_amount}` to `crates.requirements.not-enough-keys`
 - Added another new placeholder, `{key}` to `crates.requirements.not-enough-keys`, [#756](https://github.com/Crazy-Crew/CrazyCrates/issues/756)
   - This placeholder returns the name of the key.
+- Added a new migration type which converts deprecated fields in the crate files.
+- Added 2 new toggles to the `config.yml` which you can find at the top of the file.
+- Added per prize broadcast, this will send a message to every player on the server.
+- Added optional arg for `Player` with crazycrates debug, so you can use it in console.
 
 ### Changes:
 - The permission check for whether a player can open a crate has been changed.
@@ -18,6 +22,7 @@
 
 ### Fixed:
 - Wheel Crate animation now spins properly. [#764](https://github.com/Crazy-Crew/CrazyCrates/pull/764)
+- Roulette Crate inventory size is now normal. [#765](https://github.com/Crazy-Crew/CrazyCrates/pull/765)
 
 ### Deprecations:
 - Deprecated `{key_amount}` and replaced it with `{required_amount}` in `crates.requirements.not-enough-keys`

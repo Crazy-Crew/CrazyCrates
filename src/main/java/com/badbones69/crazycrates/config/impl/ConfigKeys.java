@@ -67,6 +67,24 @@ public class ConfigKeys implements SettingsHolder {
     public static final Property<Boolean> use_different_random = newProperty("root.use-different-random", false);
 
     @Comment({
+            "This option defines the type of color codes used in CrazyCrates",
+            "",
+            "true -> uses minimessage",
+            "false -> uses legacy color codes",
+            "",
+            "Note: inventory titles won't update during Cosmic Crate while this is false."
+    })
+    public static final Property<Boolean> minimessage_toggle  = newProperty("root.use-minimessage", true);
+
+    @Comment({
+            "This option defines what in-game editor format is used in CrazyCrates",
+            "",
+            "true -> uses the old one",
+            "false -> uses the new one"
+    })
+    public static final Property<Boolean> item_editor_toggle = newProperty("root.use-old-editor", false);
+
+    @Comment({
             "This option will tell the plugin to send all messages as action bars or messages in chat.",
             "",
             "send_message -> sends messages in chat.",

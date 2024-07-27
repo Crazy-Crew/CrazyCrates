@@ -26,19 +26,19 @@ public class InventoryManager {
     private ItemBuilder backButton;
 
     public void loadButtons() {
-        this.menuButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.menu_button_item))
+        this.menuButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.menu_button_item).toLowerCase())
                 .setDisplayName(this.config.getProperty(ConfigKeys.menu_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.menu_button_lore))
                 .setCustomModelData(this.config.getProperty(ConfigKeys.menu_button_model_data))
                 .setPersistentString(PersistentKeys.main_menu_button.getNamespacedKey(), "none");
 
-        this.nextButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.next_button_item))
+        this.nextButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.next_button_item).toLowerCase())
                 .setDisplayName(this.config.getProperty(ConfigKeys.next_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.next_button_lore))
                 .setCustomModelData(this.config.getProperty(ConfigKeys.next_button_model_data))
                 .setPersistentString(PersistentKeys.next_button.getNamespacedKey(), "none");
 
-        this.backButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.back_button_item))
+        this.backButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.back_button_item).toLowerCase())
                 .setDisplayName(this.config.getProperty(ConfigKeys.back_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.back_button_lore))
                 .setCustomModelData(this.config.getProperty(ConfigKeys.back_button_model_data))

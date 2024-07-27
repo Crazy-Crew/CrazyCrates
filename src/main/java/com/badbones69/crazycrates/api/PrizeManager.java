@@ -43,6 +43,14 @@ public class PrizeManager {
 
         prize = prize.hasPermission(player) ? prize.getAlternativePrize() : prize;
 
+        for (ItemStack item : prize.getEditorItems()) {
+            if (!MiscUtils.isInventoryFull(player)) {
+                player.getInventory().addItem(item);
+            } else {
+                player.getWorld().dropItemNaturally(player.getLocation(), item);
+            }
+        }
+
         if (!prize.getItemBuilders().isEmpty()) {
             for (final ItemBuilder item : prize.getItemBuilders()) {
                 if (!MiscUtils.isInventoryFull(player)) {
@@ -81,6 +89,8 @@ public class PrizeManager {
         for (final String message : prize.getMessages()) {
             sendMessage(player, prize, crate, message);
         }
+
+        prize.broadcast(crate);
     }
 
     private static void runCommands(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, @NotNull String command) {

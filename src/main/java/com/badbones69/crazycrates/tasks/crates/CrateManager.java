@@ -75,8 +75,6 @@ import java.util.Objects;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.WeakHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class CrateManager {
 
@@ -152,6 +150,14 @@ public class CrateManager {
                     List<Tier> tierPrizes = new ArrayList<>();
 
                     if (prizeSection != null) {
+                        final List<ItemStack> editorItems = new ArrayList<>();
+
+                        if (prizeSection.contains("Editor-Items")) {
+                            for (Object key : prizeSection.getList("Editor-Items")) {
+                                editorItems.add((ItemStack) key);
+                            }
+                        }
+
                         for (String tier : prizeSection.getStringList("Tiers")) {
                             for (Tier key : crate.getTiers()) {
                                 if (key.getName().equalsIgnoreCase(tier)) {
@@ -174,7 +180,7 @@ public class CrateManager {
 
                         prizes.add(new Prize(
                                 prizeSection,
-                                tierPrizes,
+                                editorItems, tierPrizes,
                                 crate.getName(),
                                 alternativePrize
                         ));
@@ -322,6 +328,14 @@ public class CrateManager {
                         Prize alternativePrize = null;
 
                         if (prizeSection != null) {
+                            final List<ItemStack> editorItems = new ArrayList<>();
+
+                            if (prizeSection.contains("Editor-Items")) {
+                                for (Object key : prizeSection.getList("Editor-Items")) {
+                                    editorItems.add((ItemStack) key);
+                                }
+                            }
+
                             for (String tier : prizeSection.getStringList("Tiers")) {
                                 for (Tier key : tiers) {
                                     if (key.getName().equalsIgnoreCase(tier)) {
@@ -360,7 +374,7 @@ public class CrateManager {
                                 }
                             }*/
 
-                            prizes.add(new Prize(prizeSection, tierPrizes, crateName, alternativePrize));
+                            prizes.add(new Prize(prizeSection, editorItems, tierPrizes, crateName, alternativePrize));
                         }
                     }
                 }
@@ -536,7 +550,7 @@ public class CrateManager {
             case casino -> crateBuilder = new CasinoCrate(crate, player, 27);
             case wonder -> crateBuilder = new WonderCrate(crate, player, 45);
             case wheel -> crateBuilder = new WheelCrate(crate, player, 54);
-            case roulette -> crateBuilder = new RouletteCrate(crate, player, 45);
+            case roulette -> crateBuilder = new RouletteCrate(crate, player, 27);
             case war -> crateBuilder = new WarCrate(crate, player, 9);
             case cosmic -> crateBuilder = new CosmicCrate(crate, player, 27);
             case quad_crate -> {
@@ -1262,7 +1276,7 @@ public class CrateManager {
         final boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
-        return new ItemBuilder().withType(id).setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setHidingItemFlags(hideFlags).setCustomModelData(customModelData);
+        return new ItemBuilder().withType(id.toLowerCase()).setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setHidingItemFlags(hideFlags).setCustomModelData(customModelData);
     }
 
     // Cleans the data file.

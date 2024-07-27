@@ -53,7 +53,7 @@ public class CrateMainMenu extends InventoryBuilder {
             final String name = this.config.getProperty(ConfigKeys.filler_name);
             final List<String> lore = this.config.getProperty(ConfigKeys.filler_lore);
 
-            final ItemStack item = new ItemBuilder().withType(id).setDisplayName(name).setDisplayLore(lore).setPlayer(getPlayer()).setCustomModelData(this.config.getProperty(ConfigKeys.filler_model_data)).getStack();
+            final ItemStack item = new ItemBuilder().withType(id.toLowerCase()).setDisplayName(name).setDisplayLore(lore).setPlayer(getPlayer()).setCustomModelData(this.config.getProperty(ConfigKeys.filler_model_data)).getStack();
 
             for (int i = 0; i < getSize(); i++) {
                 inventory.setItem(i, item);
@@ -73,7 +73,7 @@ public class CrateMainMenu extends InventoryBuilder {
                         String value = key.replace(option + ":", "").replace(option, "");
 
                         switch (option.toLowerCase()) {
-                            case "item" -> item.withType(value);
+                            case "item" -> item.withType(value.toLowerCase());
                             case "name" -> item.setDisplayName(getCrates(value).replace("{player}", player.getName()));
 
                             case "lore" -> {
@@ -121,7 +121,7 @@ public class CrateMainMenu extends InventoryBuilder {
                     slot--;
 
                     final ItemBuilder builder = new ItemBuilder()
-                            .withType(section.getString("Item", "chest"))
+                            .withType(section.getString("Item", "chest").toLowerCase())
                             .setDisplayName(section.getString("CrateName", crateName))
                             .setCustomModelData(section.getInt("Custom-Model-Data", -1))
                             .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)))
