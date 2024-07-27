@@ -7,6 +7,8 @@
   - This placeholder returns the name of the key.
 - Added a new migration type which converts deprecated fields in the crate files.
 - Added 2 new toggles to the `config.yml` which you can find at the top of the file.
+- Added per prize broadcast, this will send a message to every player on the server.
+- Added optional arg for `Player` with crazycrates debug, so you can use it in console.
 
 ### Changes:
 - The permission check for whether a player can open a crate has been changed.
