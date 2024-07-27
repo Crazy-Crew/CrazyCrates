@@ -5,6 +5,8 @@
 - Added a new placeholder, `{required_amount}` to `crates.requirements.not-enough-keys`
 - Added another new placeholder, `{key}` to `crates.requirements.not-enough-keys`, [#756](https://github.com/Crazy-Crew/CrazyCrates/issues/756)
   - This placeholder returns the name of the key.
+- Added a new migration type which converts deprecated fields in the crate files.
+- Added 2 new toggles to the `config.yml` which you can find at the top of the file.
 
 ### Changes:
 - The permission check for whether a player can open a crate has been changed.
