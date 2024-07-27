@@ -226,7 +226,7 @@ public class Prize {
             }
 
             if (this.section.contains("DisplayItem")) {
-                builder.withType(this.section.getString("DisplayItem", "red_terracotta"));
+                builder.withType(this.section.getString("DisplayItem", "red_terracotta").toLowerCase());
             }
 
             if (this.section.contains("DisplayAmount")) {
@@ -240,7 +240,7 @@ public class Prize {
             if (this.section.contains("Lore")) {
                 if (MiscUtils.isLogging()) {
                     List.of(
-                            "Deprecated usage of Patterns in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
+                            "Deprecated usage of Lore in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
                             "Lore will be removed in the next major version of Minecraft in favor of DisplayLore",
                             "You can turn my nagging off in config.yml, verbose_logging: true -> false"
                     ).forEach(this.plugin.getComponentLogger()::warn);
