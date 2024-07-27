@@ -111,7 +111,7 @@ public class Prize {
      * @return the name of the prize.
      */
     public @NotNull final String getPrizeName() {
-        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
+        if (!ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
             return this.prizeName.isEmpty() ? "" : this.prizeName;
         }
 
