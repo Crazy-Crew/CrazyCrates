@@ -64,7 +64,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
         if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
             this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
         } else {
-            this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(title));
+            this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
         }
     }
 
@@ -80,7 +80,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
         if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
             this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
         } else {
-            this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(title));
+            this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
         }
     }
 
@@ -97,7 +97,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
         if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
             this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
         } else {
-            this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(title));
+            this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
         }
     }
 
@@ -114,7 +114,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
         if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
             this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
         } else {
-            this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(title));
+            this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
         }
     }
 
