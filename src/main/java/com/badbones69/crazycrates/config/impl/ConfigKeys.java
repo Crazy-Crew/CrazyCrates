@@ -51,8 +51,6 @@ public class ConfigKeys implements SettingsHolder {
         conf.setComment("crate.preview", "The preview settings.");
         conf.setComment("crate.keys", "Settings related to how keys function.");
 
-        conf.setComment("crate.unsupported-settings", "Settings that are not supported and can be removed at anytime.");
-
         conf.setComment("crate.keys.inventory-settings", "Settings related to a player's inventory is not empty.");
 
         conf.setComment("crate.quad-crate", "Settings related to QuadCrate");
@@ -72,7 +70,8 @@ public class ConfigKeys implements SettingsHolder {
             "true -> uses minimessage",
             "false -> uses legacy color codes",
             "",
-            "Note: inventory titles won't update during Cosmic Crate while this is false."
+            "Note: inventory titles won't update during Cosmic Crate while this is false.",
+            "Warning: legacy color codes is highly likely to be removed in the future."
     })
     public static final Property<Boolean> minimessage_toggle  = newProperty("root.use-minimessage", true);
 
@@ -82,7 +81,8 @@ public class ConfigKeys implements SettingsHolder {
             "true -> uses the old one",
             "false -> uses the new one",
             "",
-            "MiniMessage has to be turned off as this format uses legacy color codes."
+            "Note: MiniMessage has to be turned off as this format uses legacy color codes.",
+            "Warning: this feature will only work as long as legacy color codes aren't removed"
     })
     public static final Property<Boolean> item_editor_toggle = newProperty("root.use-old-editor", false);
 

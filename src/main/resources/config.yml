@@ -17,11 +17,15 @@ root:
   # false -> uses legacy color codes
   #
   # Note: inventory titles won't update during Cosmic Crate while this is false.
+  # Warning: legacy color codes is highly likely to be removed in the future.
   use-minimessage: true
   # This option defines what in-game editor format is used in CrazyCrates
   #
   # true -> uses the old one
   # false -> uses the new one
+  #
+  # Note: MiniMessage has to be turned off as this format uses legacy color codes.
+  # Warning: this feature will only work as long as legacy color codes aren't removed
   use-old-editor: false
   # This option will tell the plugin to send all messages as action bars or messages in chat.
   #
