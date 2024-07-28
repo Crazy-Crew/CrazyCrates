@@ -61,7 +61,7 @@ public class PrizeManager {
             }
         } else {
             // Only give them the display item as a reward if prize commands are empty.
-            if (prize.getCommands().isEmpty()) {
+            if (prize.getCommands().isEmpty() && prize.getEditorItems().isEmpty()) {
                 if (!MiscUtils.isInventoryFull(player)) {
                     MiscUtils.addItem(player, prize.getPrizeItem().setPlayer(player).getStack());
                 } else {
