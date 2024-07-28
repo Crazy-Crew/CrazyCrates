@@ -7,8 +7,31 @@
   - This placeholder returns the name of the key.
 - Added a new migration type which converts deprecated fields in the crate files.
 - Added 2 new toggles to the `config.yml` which you can find at the top of the file.
+  - The `use-old-editor` requires `use-minimessage` to be false as it's uses legacy color codes.
 - Added per prize broadcast, this will send a message to every player on the server.
+```yml
+    '5':
+      # The display name of the item.
+      DisplayName: "<yellow>$1,000"
+      # The item to display in the gui.
+      # The enchanted book will function with the enchants properly in an anvil.
+      DisplayItem: "sunflower"
+      # Prize settings
+      Settings:
+        # The custom model data of the item, -1 is disabled.
+        Custom-Model-Data: -1
+        # Broadcast a message to the server
+        Broadcast:
+          # If the messages should be sent.
+          Toggle: false
+          # The messages to broadcast.
+          Messages:
+            - '<red>%player% won the prize <yellow>%reward%.'
+          # If the player has this permission, they don't get the broadcast.
+          Permission: 'your_permission' 
+```
 - Added optional arg for `Player` with crazycrates debug, so you can use it in console.
+- Added missing message notifying an item was added using /crates additem
 
 ### Changes:
 - The permission check for whether a player can open a crate has been changed.
@@ -23,6 +46,7 @@
 ### Fixed:
 - Wheel Crate animation now spins properly. [#764](https://github.com/Crazy-Crew/CrazyCrates/pull/764)
 - Roulette Crate inventory size is now normal. [#765](https://github.com/Crazy-Crew/CrazyCrates/pull/765)
+- Don't give 2 prizes if the editor items isn't empty.
 
 ### Deprecations:
 - Deprecated `{key_amount}` and replaced it with `{required_amount}` in `crates.requirements.not-enough-keys`
