@@ -752,14 +752,14 @@ public class Crate {
      * @return the max page for the preview.
      */
     public final int getMaxPage(final Tier tier) {
-        return (int) Math.ceil((double) getPreviewItems(null, tier).size() / (this.borderToggle ? this.maxSlots - 18 : this.maxSlots));
+        return (int) Math.ceil((double) getPreviewItems(null, tier).size() / (this.borderToggle ? this.maxSlots - 18 : this.maxSlots - 9));
     }
 
     /**
      * @return the max page for the preview.
      */
     public final int getMaxPage() {
-        return (int) Math.ceil((double) getPreviewItems().size() / (this.borderToggle ? this.maxSlots - 18 : this.maxSlots));
+        return (int) Math.ceil((double) getPreviewItems().size() / (this.borderToggle ? this.maxSlots - 18 : this.maxSlots - 9));
     }
     
     /**
