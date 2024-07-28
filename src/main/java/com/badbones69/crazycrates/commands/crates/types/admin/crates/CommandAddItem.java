@@ -45,7 +45,7 @@ public class CommandAddItem extends BaseCommand {
         if (tier != null) {
             crate.addEditorItem(item, prizeName, tier, chance);
 
-            Messages.added_item_with_editor.getMessage(player, new HashMap<>() {{
+            Messages.added_item_with_editor.sendMessage(player, new HashMap<>() {{
                 put("{crate}", crateName);
                 put("{prize}", prizeName);
             }});
@@ -55,7 +55,7 @@ public class CommandAddItem extends BaseCommand {
 
         crate.addEditorItem(item, prizeName, chance);
 
-        Messages.added_item_with_editor.getMessage(player, new HashMap<>() {{
+        Messages.added_item_with_editor.sendMessage(player, new HashMap<>() {{
             put("{crate}", crateName);
             put("{prize}", prizeName);
         }});
