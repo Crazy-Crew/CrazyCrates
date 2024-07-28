@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -91,7 +92,7 @@ public class InventoryManager {
     public void openNewCratePreview(@NotNull final Player player, @NotNull final Crate crate) {
         this.crateViewers.put(player.getUniqueId(), crate);
 
-        if (crate.isPreviewTierToggle()) {
+        if (crate.getCrateType() == CrateType.casino || crate.getCrateType() == CrateType.cosmic && crate.isPreviewTierToggle()) {
             player.openInventory(crate.getTierPreview(player));
 
             return;
