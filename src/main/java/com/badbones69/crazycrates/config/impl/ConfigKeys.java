@@ -80,7 +80,9 @@ public class ConfigKeys implements SettingsHolder {
             "This option defines what in-game editor format is used in CrazyCrates",
             "",
             "true -> uses the old one",
-            "false -> uses the new one"
+            "false -> uses the new one",
+            "",
+            "MiniMessage has to be turned off as this format uses legacy color codes."
     })
     public static final Property<Boolean> item_editor_toggle = newProperty("root.use-old-editor", false);
 
