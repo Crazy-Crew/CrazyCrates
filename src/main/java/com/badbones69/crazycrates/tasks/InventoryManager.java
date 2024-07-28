@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.tasks;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.Tier;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -49,24 +50,40 @@ public class InventoryManager {
         return this.menuButton.setPlayer(player).getStack();
     }
 
-    public @NotNull final ItemStack getNextButton(@Nullable final Player player) {
+    public @NotNull final ItemStack getNextButton(@Nullable final Player player, @Nullable final Tier tier) {
         ItemBuilder button = new ItemBuilder(this.nextButton);
 
         if (player != null) {
             button.setPlayer(player).addLorePlaceholder("{page}", (getPage(player) + 1) + "");
         }
 
+        if (tier != null) {
+            button.setPersistentString(PersistentKeys.crate_tier.getNamespacedKey(), tier.getName());
+        }
+
         return button.getStack();
     }
 
-    public @NotNull final ItemStack getBackButton(@Nullable final Player player) {
+    public @NotNull final ItemStack getNextButton(@Nullable final Player player) {
+        return getNextButton(player, null);
+    }
+
+    public @NotNull final ItemStack getBackButton(@Nullable final Player player, @Nullable final Tier tier) {
         ItemBuilder button = new ItemBuilder(this.backButton);
 
         if (player != null) {
             button.setPlayer(player).addLorePlaceholder("{page}", (getPage(player) - 1) + "");
         }
 
+        if (tier != null) {
+            button.setPersistentString(PersistentKeys.crate_tier.getNamespacedKey(), tier.getName());
+        }
+
         return button.getStack();
+    }
+
+    public @NotNull final ItemStack getBackButton(@Nullable final Player player) {
+        return getBackButton(player, null);
     }
 
     private final Map<UUID, Crate> crateViewers = new HashMap<>();
@@ -89,8 +106,18 @@ public class InventoryManager {
         this.crateViewers.put(player.getUniqueId(), crate);
     }
 
-    public void openCratePreview(@NotNull final Player player, @NotNull final Crate crate) {
+    public void openCratePreview(@NotNull final Player player, @NotNull final Crate crate, @Nullable final String tierName) {
         this.crateViewers.put(player.getUniqueId(), crate);
+
+        if (tierName != null) {
+            final Tier tier = crate.getTier(tierName);
+
+            if (tier != null) {
+                player.openInventory(crate.getPreview(player, getPage(player), tier));
+            }
+
+            return;
+        }
 
         player.openInventory(crate.getPreview(player));
     }

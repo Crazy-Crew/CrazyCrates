@@ -161,6 +161,10 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
         return this.size;
     }
 
+    public final int getSize(final boolean isBorderEnabled) {
+        return this.size - (isBorderEnabled ? 18 : this.size != 9 ? 9 : 0);
+    }
+
     public void setPage(final int page) {
         this.page = page;
     }

@@ -13,13 +13,13 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,13 +29,11 @@ public class CratePreviewMenu extends InventoryBuilder {
 
     private @NotNull final SettingsManager config = ConfigManager.getConfig();
 
-    private boolean isTier;
     private Tier tier;
 
-    public CratePreviewMenu(@NotNull final Player player, @NotNull final String title, final int size, final int page, @NotNull final Crate crate, final boolean isTier, @Nullable final Tier tier) {
+    public CratePreviewMenu(@NotNull final Player player, @NotNull final String title, final int size, final int page, @NotNull final Crate crate, @Nullable final Tier tier) {
         super(player, title, size, page, crate);
 
-        this.isTier = isTier;
         this.tier = tier;
     }
 
@@ -47,7 +45,9 @@ public class CratePreviewMenu extends InventoryBuilder {
 
         setDefaultItems(inventory);
 
-        for (ItemStack item : getPageItems(getPage())) {
+        List<ItemStack> itemStacks = getCrate().getPageItems(getPlayer(), getPage(), getSize(getCrate().isBorderToggle()), this.tier);
+
+        for (ItemStack item : itemStacks) {
             final int nextSlot = inventory.firstEmpty();
 
             if (nextSlot >= 0) {
@@ -91,15 +91,17 @@ public class CratePreviewMenu extends InventoryBuilder {
                 inventory.setItem(crate.getAbsoluteItemPosition(3), crate.getBorderItem().setPlayer(player).getStack());
             }
         } else {
-            inventory.setItem(crate.getAbsoluteItemPosition(3), this.inventoryManager.getBackButton(player));
+            inventory.setItem(crate.getAbsoluteItemPosition(3), this.inventoryManager.getBackButton(player, this.tier));
         }
 
-        if (page == crate.getMaxPage()) {
+        int max = this.tier == null ? crate.getMaxPage() : crate.getMaxPage(this.tier);
+
+        if (page == max) {
             if (crate.isBorderToggle()) {
                 inventory.setItem(crate.getAbsoluteItemPosition(5), crate.getBorderItem().setPlayer(player).getStack());
             }
         } else {
-            inventory.setItem(crate.getAbsoluteItemPosition(5), this.inventoryManager.getNextButton(player));
+            inventory.setItem(crate.getAbsoluteItemPosition(5), this.inventoryManager.getNextButton(player, this.tier));
         }
     }
 
@@ -156,7 +158,7 @@ public class CratePreviewMenu extends InventoryBuilder {
 
                 this.inventoryManager.nextPage(player);
 
-                this.inventoryManager.openCratePreview(player, crate);
+                this.inventoryManager.openCratePreview(player, crate, container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
             }
 
             return;
@@ -168,42 +170,8 @@ public class CratePreviewMenu extends InventoryBuilder {
 
                 this.inventoryManager.backPage(player);
 
-                this.inventoryManager.openCratePreview(player, crate);
+                this.inventoryManager.openCratePreview(player, crate, container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
             }
         }
-    }
-
-    private @NotNull List<ItemStack> getPageItems(int page) {
-        final Player player = getPlayer();
-        final Crate crate = getCrate();
-
-        final List<ItemStack> list = !this.isTier ? crate.getPreviewItems(player) : crate.getPreviewItems(this.tier, player);
-        final List<ItemStack> items = new ArrayList<>();
-
-        if (page <= 0) page = 1;
-
-        final int max = crate.getMaxSlots() - (crate.isBorderToggle() ? 18 : crate.getMaxSlots() >= list.size() ? 0 : crate.getMaxSlots() != 9 ? 9 : 0);
-        int index = page * max - max;
-        int endIndex = index >= list.size() ? list.size() - 1 : index + max;
-
-        for (;index < endIndex; index++) {
-            if (index < list.size()) {
-                items.add(list.get(index));
-            }
-        }
-
-        for (;items.isEmpty(); page--) {
-            if (page <= 0) break;
-            index = page * max - max;
-            endIndex = index >= list.size() ? list.size() - 1 : index + max;
-
-            for (;index < endIndex; index++) {
-                if (index < list.size()) {
-                    items.add(list.get(index));
-                }
-            }
-        }
-
-        return items;
     }
 }
