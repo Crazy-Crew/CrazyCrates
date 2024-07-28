@@ -47,6 +47,7 @@
 - Wheel Crate animation now spins properly. [#764](https://github.com/Crazy-Crew/CrazyCrates/pull/764)
 - Roulette Crate inventory size is now normal. [#765](https://github.com/Crazy-Crew/CrazyCrates/pull/765)
 - Don't give 2 prizes if the editor items isn't empty.
+- Casino/Cosmic crate tier previews would share total items causing pagination to appear despite the inventory not being full.
 
 ### Deprecations:
 - Deprecated `{key_amount}` and replaced it with `{required_amount}` in `crates.requirements.not-enough-keys`
