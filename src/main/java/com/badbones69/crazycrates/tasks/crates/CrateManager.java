@@ -189,7 +189,6 @@ public class CrateManager {
             }
 
             crate.setPrize(prizes);
-            crate.setPreviewItems(crate.getPreviewItems());
 
             for (UUID uuid : this.plugin.getInventoryManager().getViewers()) {
                 final Player player = this.plugin.getServer().getPlayer(uuid);

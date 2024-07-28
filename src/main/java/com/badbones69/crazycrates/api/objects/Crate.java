@@ -70,7 +70,9 @@ public class Crate {
     private boolean giveNewPlayerKeys;
     private int previewChestLines;
     private int newPlayerKeys;
-    private ArrayList<ItemStack> preview;
+
+    private List<ItemStack> itemStacks;
+
     private List<Tier> tiers;
     private CrateHologram hologram;
 
@@ -88,8 +90,6 @@ public class Crate {
     private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
     private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-
-    //private @NotNull final FileManager fileManager = this.plugin.getFileManager();
 
     /**
      * @param name The name of the crate.
@@ -124,14 +124,12 @@ public class Crate {
         this.prizeCommands = prizeCommands;
         this.prizes = prizes;
         this.crateType = crateType;
-        this.preview = getPreviewItems();
         this.previewToggle = file.getBoolean("Crate.Preview.Toggle", false);
         this.borderToggle = file.getBoolean("Crate.Preview.Glass.Toggle", false);
 
         this.previewTierToggle = file.getBoolean("Crate.tier-preview.toggle", false);
         this.previewTierBorderToggle = file.getBoolean("Crate.tier-preview.glass.toggle", false);
 
-        setPreviewChestLines(file.getInt("Crate.Preview.ChestLines", 6));
         this.previewName = previewName;
         this.newPlayerKeys = newPlayerKeys;
         this.giveNewPlayerKeys = newPlayerKeys > 0;
@@ -360,9 +358,6 @@ public class Crate {
 
         // Add new prizes.
         this.prizes.addAll(prizes.stream().filter(prize -> prize.getChance() != -1).toList());
-
-        // Set new display items.
-        setPreviewItems(getPreviewItems());
     }
 
     /**
@@ -370,16 +365,6 @@ public class Crate {
      */
     public void purge() {
         this.prizes.clear();
-        this.preview.clear();
-    }
-
-    /**
-     * Overrides the preview items.
-     *
-     * @param itemStacks list of items
-     */
-    public void setPreviewItems(@NotNull final ArrayList<ItemStack> itemStacks) {
-        this.preview = itemStacks;
     }
 
     /**
@@ -815,13 +800,6 @@ public class Crate {
      */
     public final int getRequiredKeys() {
         return this.requiredKeys;
-    }
-
-    /**
-     * @return a list of item stacks
-     */
-    public @NotNull final List<ItemStack> getPreview() {
-        return this.preview;
     }
 
     /**
