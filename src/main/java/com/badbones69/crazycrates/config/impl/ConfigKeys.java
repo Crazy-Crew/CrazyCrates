@@ -73,7 +73,7 @@ public class ConfigKeys implements SettingsHolder {
             "Note: inventory titles won't update during Cosmic Crate while this is false.",
             "Warning: legacy color codes is highly likely to be removed in the future, so you should find time to migrate as this option won't be here forever.",
             "",
-            "Now I get what you are going to say next, but I can't. Excluding the common reason of people simply want to or it's easier.",
+            "Now I get what you are going to say next, but I can't. Excluding the common reason of people simply want to, or it's easier.",
             "I would like you to explain why you use legacy color codes still, is it because of lacking features",
             "which make you have to rely on external plugins? I had one such instance with someone using /broadcast",
             "from EssentialsX which didn't support MiniMessage, each prize in the crates now let you broadcast to the server.",
