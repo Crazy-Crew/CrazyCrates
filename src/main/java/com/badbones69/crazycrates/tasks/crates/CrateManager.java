@@ -402,7 +402,7 @@ public class CrateManager {
                 if (server.getPermission("crazycrates.deny.open." + crateName) == null) {
                     Permission permission = new Permission(
                             "crazycrates.deny.open." + crateName,
-                            "Allows you to open " + crateName,
+                            "Prevents you from opening " + crateName,
                             PermissionDefault.FALSE
                     );
 
