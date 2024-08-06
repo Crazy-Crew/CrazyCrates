@@ -72,7 +72,7 @@ tasks {
 
         listOf(
             "com.ryderbelserion.vital",
-            "dev.triumphteam.cmds"
+            "dev.triumphteam.cmd"
         ).forEach {
             relocate(it, "libs.$it")
         }
