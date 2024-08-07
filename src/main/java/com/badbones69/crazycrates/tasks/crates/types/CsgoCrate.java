@@ -97,6 +97,11 @@ public class CsgoCrate extends CrateBuilder {
 
                         crateManager.endCrate(player);
 
+                        final ItemStack itemStack = new ItemStack(Material.GRAY_STAINED_GLASS);
+
+                        setItem(4, itemStack);
+                        setItem(22, itemStack);
+
                         final ItemStack item = getInventory().getItem(13);
 
                         if (item != null) {
