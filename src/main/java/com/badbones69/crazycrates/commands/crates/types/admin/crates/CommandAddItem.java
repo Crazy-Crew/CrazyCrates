@@ -13,6 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
+import java.util.HashMap;
+
 public class CommandAddItem extends BaseCommand {
 
     @Command("additem")
@@ -43,9 +45,19 @@ public class CommandAddItem extends BaseCommand {
         if (tier != null) {
             crate.addEditorItem(item, prizeName, tier, weight);
 
+            Messages.added_item_with_editor.sendMessage(player, new HashMap<>() {{
+                put("{crate}", crateName);
+                put("{prize}", prizeName);
+            }});
+
             return;
         }
 
         crate.addEditorItem(item, prizeName, weight);
+
+        Messages.added_item_with_editor.sendMessage(player, new HashMap<>() {{
+            put("{crate}", crateName);
+            put("{prize}", prizeName);
+        }});
     }
 }

@@ -12,7 +12,7 @@ val buildNumber: String? = System.getenv("BUILD_NUMBER")
 
 rootProject.version = if (buildNumber != null) "${libs.versions.minecraft.get()}-$buildNumber" else "3.6"
 
-val isSnapshot = true
+val isSnapshot = false
 
 val content: String = rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 
@@ -72,7 +72,7 @@ tasks {
 
         listOf(
             "com.ryderbelserion.vital",
-            "dev.triumphteam.cmds"
+            "dev.triumphteam.cmd"
         ).forEach {
             relocate(it, "libs.$it")
         }

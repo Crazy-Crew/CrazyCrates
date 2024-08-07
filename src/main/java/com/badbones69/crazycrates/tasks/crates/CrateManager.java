@@ -189,7 +189,6 @@ public class CrateManager {
             }
 
             crate.setPrize(prizes);
-            crate.setPreviewItems(crate.getPreviewItems());
 
             for (UUID uuid : this.plugin.getInventoryManager().getViewers()) {
                 final Player player = this.plugin.getServer().getPlayer(uuid);
@@ -403,7 +402,7 @@ public class CrateManager {
                 if (server.getPermission("crazycrates.deny.open." + crateName) == null) {
                     Permission permission = new Permission(
                             "crazycrates.deny.open." + crateName,
-                            "Allows you to open " + crateName,
+                            "Prevents you from opening " + crateName,
                             PermissionDefault.FALSE
                     );
 

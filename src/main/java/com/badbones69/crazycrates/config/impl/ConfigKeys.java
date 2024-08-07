@@ -51,8 +51,6 @@ public class ConfigKeys implements SettingsHolder {
         conf.setComment("crate.preview", "The preview settings.");
         conf.setComment("crate.keys", "Settings related to how keys function.");
 
-        conf.setComment("crate.unsupported-settings", "Settings that are not supported and can be removed at anytime.");
-
         conf.setComment("crate.keys.inventory-settings", "Settings related to a player's inventory is not empty.");
 
         conf.setComment("crate.quad-crate", "Settings related to QuadCrate");
@@ -72,7 +70,14 @@ public class ConfigKeys implements SettingsHolder {
             "true -> uses minimessage",
             "false -> uses legacy color codes",
             "",
-            "Note: inventory titles won't update during Cosmic Crate while this is false."
+            "Note: inventory titles won't update during Cosmic Crate while this is false.",
+            "Warning: legacy color codes is highly likely to be removed in the future, so you should find time to migrate as this option won't be here forever.",
+            "",
+            "Now I get what you are going to say next, but I can't. Excluding the common reason of people simply want to, or it's easier.",
+            "I would like you to explain why you use legacy color codes still, is it because of lacking features",
+            "which make you have to rely on external plugins? I had one such instance with someone using /broadcast",
+            "from EssentialsX which didn't support MiniMessage, each prize in the crates now let you broadcast to the server.",
+            "and that section supports MiniMessage, that is one such example of an issue someone had."
     })
     public static final Property<Boolean> minimessage_toggle  = newProperty("root.use-minimessage", true);
 
@@ -80,7 +85,12 @@ public class ConfigKeys implements SettingsHolder {
             "This option defines what in-game editor format is used in CrazyCrates",
             "",
             "true -> uses the old one",
-            "false -> uses the new one"
+            "false -> uses the new one",
+            "",
+            "Note: MiniMessage has to be turned off as this format uses legacy color codes.",
+            "Warning: this feature will only work as long as legacy color codes aren't removed",
+            "",
+            "The new in-game editor will likely receive another update to make the format readable."
     })
     public static final Property<Boolean> item_editor_toggle = newProperty("root.use-old-editor", false);
 
