@@ -11,7 +11,7 @@ public enum Permissions {
 
     CRAZYCRATES_PLAYER_TRANSFER_KEYS("transfer", "Allows players to send virtual keys to another player.", PermissionDefault.OP),
     CRAZYCRATES_PLAYER_HELP("help", "Shows the help menu for Crazy Crates.", PermissionDefault.TRUE),
-    CRAZYCRATES_PLAYER_EXCLUDE("exclude.give-all", "Permission to prevent a player from getting keys.", PermissionDefault.OP),
+    CRAZYCRATES_PLAYER_EXCLUDE("exclude.give-all", "Permission to prevent a player from getting keys.", PermissionDefault.FALSE),
     CRAZYCRATES_OPEN("open", "Tries to open a crate for the player if they have a key.", PermissionDefault.OP),
     CRAZYCRATES_OPEN_OTHER("open-others", "Tries to open a crate for a player if they have a key.", PermissionDefault.OP, new HashMap<>() {{
         put("crazycrates.open", true);
