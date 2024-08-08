@@ -19,7 +19,7 @@ public class CommandAddItem extends BaseCommand {
 
     @Command("additem")
     @Permission(value = "crazycrates.additem", def = PermissionDefault.OP)
-    public void add(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("prize") @Suggestion("prizes") String prizeName, @ArgName("chance") @Suggestion("numbers") int chance, @ArgName("tier") @Suggestion("tiers") @Optional String tier) {
+    public void add(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("prize") @Suggestion("prizes") String prizeName, @ArgName("weight") @Suggestion("doubles") double weight, @ArgName("tier") @Suggestion("tiers") @Optional String tier) {
         if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
             Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
@@ -43,7 +43,7 @@ public class CommandAddItem extends BaseCommand {
         }
 
         if (tier != null) {
-            crate.addEditorItem(item, prizeName, tier, chance);
+            crate.addEditorItem(item, prizeName, tier, weight);
 
             Messages.added_item_with_editor.sendMessage(player, new HashMap<>() {{
                 put("{crate}", crateName);
@@ -53,7 +53,7 @@ public class CommandAddItem extends BaseCommand {
             return;
         }
 
-        crate.addEditorItem(item, prizeName, chance);
+        crate.addEditorItem(item, prizeName, weight);
 
         Messages.added_item_with_editor.sendMessage(player, new HashMap<>() {{
             put("{crate}", crateName);

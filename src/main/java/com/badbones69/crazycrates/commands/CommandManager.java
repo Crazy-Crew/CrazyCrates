@@ -91,6 +91,22 @@ public class CommandManager {
             return numbers;
         });
 
+        commandManager.registerSuggestion(SuggestionKey.of("doubles"), (sender, context) -> {
+            final List<String> numbers = new ArrayList<>();
+
+            int count = 0;
+
+            while (count <= 1000) {
+                double x = count / 10.0;
+
+                numbers.add(String.valueOf(x));
+
+                count++;
+            }
+
+            return numbers;
+        });
+
         commandManager.registerArgument(PlayerBuilder.class, (sender, context) -> new PlayerBuilder(context));
 
         List.of(

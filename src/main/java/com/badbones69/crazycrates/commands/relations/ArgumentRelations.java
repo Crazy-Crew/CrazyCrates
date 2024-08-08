@@ -20,7 +20,7 @@ public class ArgumentRelations extends MessageManager {
             case "debug" -> usage = order + "<crate_name> [player_name]";
             case "open" -> usage = order + " <crate_name> <key_type>";
             case "tp" -> usage = order + "<id>";
-            case "additem" -> usage = order + " <crate_name> <prize_number> <chance> [tier]";
+            case "additem" -> usage = order + " <crate_name> <prize_number> <weight> [tier]";
             case "preview", "forceopen" -> usage = order + " <crate_name> <player_name>";
             case "open-others" -> usage = order + " <crate_name> <player_name> [key_type]";
             case "mass-open" -> usage = order + " <crate_name> <key_type> <amount>";
