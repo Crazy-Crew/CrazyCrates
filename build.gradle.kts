@@ -23,7 +23,7 @@ repositories {
 dependencies {
     paperweight.paperDevBundle(libs.versions.paper)
 
-    compileOnly(fileTree("$projectDir/libs/compile").include("*.jar"))
+    compileOnly(fileTree("$projectDir/libs").include("*.jar"))
 
     implementation(libs.triumph.cmds)
 
