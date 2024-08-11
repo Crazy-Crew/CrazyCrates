@@ -25,7 +25,7 @@ runPaper = "2.3.0"
 hangar = "0.1.2"
 
 # Other
-shadowJar = "8.1.8"
+shadowJar = "8.3.0"
 
 # Modrinth
 minotaur = "2.+"
@@ -33,7 +33,7 @@ minotaur = "2.+"
 [plugins]
 paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }
 hangar = { id = "io.papermc.hangar-publish-plugin", version.ref = "hangar" }
-shadowJar = { id = "io.github.goooler.shadow", version.ref = "shadowJar" }
+shadowJar = { id = "com.gradleup.shadow", version.ref = "shadowJar" }
 runPaper = { id = "xyz.jpenilla.run-paper", version.ref = "runPaper" }
 minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }
 
