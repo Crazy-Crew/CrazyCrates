@@ -70,6 +70,10 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
         }}, failedCrates, convertedCrates);
 
         this.fileManager.init();
+
+        // reload crates
+        this.crateManager.loadHolograms();
+        this.crateManager.loadCrates();
     }
 
     @Override

@@ -140,7 +140,5 @@ public abstract class ICrateMigrator {
 
         customFile.save();
         customFile.reload();
-
-        //todo() add crate to plugin
     }
 }
