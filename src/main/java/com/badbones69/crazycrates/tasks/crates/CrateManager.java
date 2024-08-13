@@ -1335,11 +1335,12 @@ public class CrateManager {
         final String name = file.getString("Crate.PhysicalKey.Name", "");
         final int customModelData = file.getInt("Crate.PhysicalKey.Custom-Model-Data", -1);
         final List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
-        final String id = file.getString("Crate.PhysicalKey.Item", "tripwire_hook");
         final boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
-        return new ItemBuilder().withType(id.toLowerCase()).setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setHidingItemFlags(hideFlags).setCustomModelData(customModelData);
+        final ItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new ItemBuilder().fromBase64(file.getString("Crate.PhysicalKey.Data")) : new ItemBuilder().withType(file.getString("Crate.PhysicalKey.Item", "tripwire_hook"));
+
+        return itemBuilder.setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setHidingItemFlags(hideFlags).setCustomModelData(customModelData);
     }
 
     // Cleans the data file.
