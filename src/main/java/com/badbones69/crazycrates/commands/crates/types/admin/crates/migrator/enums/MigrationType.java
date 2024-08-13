@@ -21,4 +21,18 @@ public enum MigrationType {
     public final String getName() {
         return this.name;
     }
+
+    public static MigrationType fromName(final String name) {
+        MigrationType type = null;
+
+        for (MigrationType key : MigrationType.values()) {
+            if (key.getName().equalsIgnoreCase(name)) {
+                type = key;
+
+                break;
+            }
+        }
+
+        return type;
+    }
 }
