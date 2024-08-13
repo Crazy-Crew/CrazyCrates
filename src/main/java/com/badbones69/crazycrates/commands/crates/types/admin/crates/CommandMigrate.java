@@ -157,8 +157,6 @@ public class CommandMigrate extends BaseCommand {
                     }
                 });
             }*/
-
-            case SPECIALIZED_CRATES -> Messages.migration_not_available.sendMessage(sender);
         }
     }
 
