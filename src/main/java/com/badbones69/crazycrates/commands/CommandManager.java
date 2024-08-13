@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandAddItem;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandMigrate;
+import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.commands.relations.ArgumentRelations;
 import com.badbones69.crazycrates.commands.crates.types.player.CommandHelp;
 import com.badbones69.crazycrates.commands.crates.types.admin.CommandAdmin;
@@ -94,7 +95,7 @@ public class CommandManager {
         commandManager.registerSuggestion(SuggestionKey.of("migrators"), (sender, context) -> {
             final List<String> migrators = new ArrayList<>();
 
-            for (CommandMigrate.MigrationType value : CommandMigrate.MigrationType.values()) {
+            for (MigrationType value : MigrationType.values()) {
                 final String name = value.getName();
 
                 migrators.add(name);

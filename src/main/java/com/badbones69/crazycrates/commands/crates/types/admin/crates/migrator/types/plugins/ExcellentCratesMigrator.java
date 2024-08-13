@@ -1,19 +1,14 @@
-package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types;
+package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.plugins;
 
-import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandMigrate;
-import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.MigratorInterface;
+import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
+import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.ryderbelserion.vital.paper.files.config.CustomFile;
-import com.ryderbelserion.vital.paper.files.config.FileManager;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 import su.nightexpress.excellentcrates.CratesAPI;
 import su.nightexpress.excellentcrates.crate.impl.Crate;
 import su.nightexpress.excellentcrates.key.CrateKey;
@@ -21,22 +16,13 @@ import su.nightexpress.nightcore.config.FileConfig;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
-public class ExcellentCratesMigrator implements MigratorInterface {
-
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
-
-    private final FileManager fileManager = this.plugin.getFileManager();
-
-    private final CommandSender sender;
+public class ExcellentCratesMigrator extends ICrateMigrator {
 
     public ExcellentCratesMigrator(final CommandSender sender) {
-        this.sender = sender;
+        super(sender, MigrationType.EXCELLENT_CRATES);
     }
 
     @Override
@@ -49,11 +35,8 @@ public class ExcellentCratesMigrator implements MigratorInterface {
 
         final File crateDirectory = CratesAPI.PLUGIN.getDataFolder();
 
-        List<String> failed = new ArrayList<>();
-        List<String> success = new ArrayList<>();
-
-        int convertedCrates = 0;
-        int failedCrates = 0;
+        final List<String> failed = new ArrayList<>();
+        final List<String> success = new ArrayList<>();
 
         for (final Crate crate : CratesAPI.getCrateManager().getCrates()) {
             final String crateName = crate.getFile().getName();
@@ -65,9 +48,7 @@ public class ExcellentCratesMigrator implements MigratorInterface {
 
                 failed.add("<red>" + crateName);
 
-                failedCrates++;
-
-                continue;
+                return;
             }
 
             try {
@@ -76,8 +57,6 @@ public class ExcellentCratesMigrator implements MigratorInterface {
                 this.plugin.getComponentLogger().warn("Failed to create crate file {} in {}.", crateName, directory.getName(), exception);
 
                 failed.add("<red>" + crateName);
-
-                failedCrates++;
             }
 
             final CustomFile customFile = new CustomFile(directory).apply(crateName);
@@ -261,25 +240,20 @@ public class ExcellentCratesMigrator implements MigratorInterface {
 
             this.fileManager.addCustomFile(customFile);
 
-            convertedCrates++;
             success.add("<green>" + crateName);
         }
 
-        int finalConvertedCrates = convertedCrates;
-        int finalFailedCrates = failedCrates;
+        // reload crates
+        this.crateManager.loadHolograms();
+        this.crateManager.loadCrates();
 
-        final StringBuilder builder = new StringBuilder();
+        final int failedCrates = failed.size();
+        final int convertedCrates = success.size();
 
-        if (!failed.isEmpty()) failed.forEach(builder::append);
-
-        success.forEach(builder::append);
-
-        Messages.successfully_migrated.sendMessage(sender, new HashMap<>() {{
-            put("{files}", builder.toString());
-            put("{type}", CommandMigrate.MigrationType.EXCELLENT_CRATES.getName());
-            put("{failed_amount}", String.valueOf(finalFailedCrates));
-            put("{succeeded_amount}", String.valueOf(finalConvertedCrates));
-        }});
+        sendMessage(new ArrayList<>(failedCrates + convertedCrates) {{
+            addAll(failed);
+            addAll(success);
+        }}, failedCrates, convertedCrates);
     }
 
     @Override

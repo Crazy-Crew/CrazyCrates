@@ -58,9 +58,8 @@ public class CommandKeys implements SettingsHolder {
     public static final Property<String> migration_plugin_not_enabled = newProperty("command.migrate.plugin-not-available", "{prefix}<green>The plugin <red>{name} <green>is not enabled. Cannot use as migration!");
 
     @Comment({
-            "A list of available placeholders: {type}, {file}, {files}",
+            "A list of available placeholders: {type}, {files}",
             "",
-            "{file} is only usable when migrating a single crate",
             "{files} will output multiple crates if migrating from another plugin"
     })
     public static final Property<List<String>> successfully_migrated = newListProperty("command.migrate.success", List.of(
@@ -73,7 +72,7 @@ public class CommandKeys implements SettingsHolder {
             "<red>Type: <yellow>{type}",
             "<red>Files: <yellow>{files}",
             "",
-            "<bold><gold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</gold></bold>"
+            "<bold><gold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</gold></bold>"
     ));
 
     public static final Property<String> reloaded_plugin = newProperty("command.reload.completed", "{prefix}<dark_aqua>You have reloaded the Config and Data Files.");
