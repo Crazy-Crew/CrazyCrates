@@ -1,11 +1,16 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.plugins;
 
+import com.badbones69.crazycrates.api.enums.Files;
+import com.badbones69.crazycrates.api.objects.other.CrateLocation;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.ryderbelserion.vital.paper.files.config.CustomFile;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -37,6 +42,8 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
+
+        FileConfiguration locationData = Files.locations.getConfiguration();
 
         for (final Crate crate : CratesAPI.getCrateManager().getCrates()) {
             final String crateName = crate.getFile().getName();
@@ -70,6 +77,33 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             if (root == null) return;
 
             final FileConfig crateConfig = crate.getConfig();
+
+            final List<String> locations = crateConfig.getStringList("Block.Locations");
+
+            if (!locations.isEmpty()) {
+                crateConfig.getStringList("Block.Locations").forEach(location -> {
+                    String id = "1"; // Location ID
+
+                    for (int i = 1; locationData.contains("Locations." + i); i++) {
+                        id = (i + 1) + "";
+                    }
+
+                    String[] splitter = location.split(",");
+
+                    String arg5 = splitter[5];
+                    String arg0 = splitter[0];
+                    String arg1 = splitter[1];
+                    String arg2 = splitter[2];
+
+                    locationData.set("Locations." + id + ".Crate", crateName.replace(".yml", ""));
+                    locationData.set("Locations." + id + ".World", arg5);
+                    locationData.set("Locations." + id + ".X", (int) Double.parseDouble(arg0));
+                    locationData.set("Locations." + id + ".Y", (int) Double.parseDouble(arg1));
+                    locationData.set("Locations." + id + ".Z", (int) Double.parseDouble(arg2));
+
+                    Files.locations.save();
+                });
+            }
 
             set(root, "Glowing", false);
 
