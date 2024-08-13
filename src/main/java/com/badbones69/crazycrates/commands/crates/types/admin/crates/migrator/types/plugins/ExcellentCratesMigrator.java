@@ -120,7 +120,6 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 menuFile.getStringList("Crate.Lore").forEach(line -> previewLore.add(line.replaceAll("<l", "<").replaceAll("</l", "</")));
 
-                set(root, "CrateName", previewName);
                 set(root, "Name", previewName);
                 set(root, "Lore", previewLore);
 
