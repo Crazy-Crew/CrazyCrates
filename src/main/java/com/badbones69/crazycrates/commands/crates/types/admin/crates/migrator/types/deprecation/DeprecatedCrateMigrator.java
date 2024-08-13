@@ -28,7 +28,14 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
             try {
                 final YamlConfiguration configuration = customFile.getConfiguration();
 
-                final ConfigurationSection prizes = configuration.getConfigurationSection("Crate.Prizes");
+                final ConfigurationSection section = configuration.getConfigurationSection("Crate");
+
+                if (section == null) return;
+
+                section.set("Crate.Name", section.getString("Crate.CrateName"));
+                section.set("Crate.CrateName", null);
+
+                final ConfigurationSection prizes = section.getConfigurationSection("Prizes");
 
                 if (prizes != null) {
                     prizes.getKeys(false).forEach(value -> {
