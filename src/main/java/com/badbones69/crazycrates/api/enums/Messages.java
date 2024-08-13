@@ -88,7 +88,7 @@ public enum Messages {
     error_migrating(CommandKeys.error_migrating),
     migration_not_available(CommandKeys.migration_not_available),
     migration_plugin_not_enabled(CommandKeys.migration_plugin_not_enabled),
-    successfully_migrated(CommandKeys.successfully_migrated),
+    successfully_migrated(CommandKeys.successfully_migrated, true),
     transfer_sent_keys(CommandKeys.transfer_sent_keys),
     transfer_received_keys(CommandKeys.transfer_received_keys),
     no_virtual_keys(CommandKeys.no_virtual_keys),

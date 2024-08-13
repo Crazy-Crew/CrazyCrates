@@ -91,6 +91,18 @@ public class CommandManager {
             return numbers;
         });
 
+        commandManager.registerSuggestion(SuggestionKey.of("migrators"), (sender, context) -> {
+            final List<String> migrators = new ArrayList<>();
+
+            for (CommandMigrate.MigrationType value : CommandMigrate.MigrationType.values()) {
+                final String name = value.getName();
+
+                migrators.add(name);
+            }
+
+            return migrators;
+        });
+
         commandManager.registerArgument(PlayerBuilder.class, (sender, context) -> new PlayerBuilder(context));
 
         List.of(

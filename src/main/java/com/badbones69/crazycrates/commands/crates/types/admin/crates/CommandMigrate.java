@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.ExcellentCratesMigrator;
-import com.ryderbelserion.vital.core.util.FileUtil;
 import com.ryderbelserion.vital.paper.files.config.CustomFile;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -17,11 +16,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.permissions.PermissionDefault;
-import org.jetbrains.annotations.Nullable;
-import java.io.File;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class CommandMigrate extends BaseCommand {
 
@@ -50,9 +50,22 @@ public class CommandMigrate extends BaseCommand {
 
     @Command("migrate")
     @Permission(value = "crazycrates.migrate", def = PermissionDefault.OP)
-    public void migrate(final CommandSender sender, @ArgName("migration_type") final MigrationType type, @ArgName("crate") @Optional @Suggestion("crates") final String crateName) {
+    public void migrate(final CommandSender sender, @ArgName("migration_type") @Suggestion("migrators") final String name, @ArgName("crate") @Optional @Suggestion("crates") final String crateName) {
+        final MigrationType type = MigrationType.valueOf(name.toUpperCase());
+
         switch (type) {
-            case MOJANG_MAPPED_ALL -> this.plugin.getFileManager().getCustomFiles().forEach(customFile -> migrate(sender, customFile, "", type));
+            case MOJANG_MAPPED_ALL -> {
+                final @NotNull Set<CustomFile> files = this.plugin.getFileManager().getCustomFiles();
+
+                files.forEach(customFile -> migrate(sender, customFile, "", type));
+
+                Messages.successfully_migrated.sendMessage(sender, new HashMap<>() {{
+                    put("{file}", crateName);
+                    put("{type}", type.getName());
+                    put("{failed_amount}", "0");
+                    put("{succeeded_amount}", String.valueOf(files.size()));
+                }});
+            }
 
             case MOJANG_MAPPED_SINGLE -> {
                 if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
@@ -78,11 +91,15 @@ public class CommandMigrate extends BaseCommand {
                 Messages.successfully_migrated.sendMessage(sender, new HashMap<>() {{
                     put("{file}", crateName);
                     put("{type}", type.getName());
+                    put("{failed_amount}", "0");
+                    put("{succeeded_amount}", "1");
                 }});
             }
 
             case CRATES_DEPRECATED_ALL -> {
-                this.plugin.getFileManager().getCustomFiles().forEach(file -> {
+                final @NotNull Set<CustomFile> files = this.plugin.getFileManager().getCustomFiles();
+
+                files.forEach(file -> {
                     final YamlConfiguration configuration = file.getConfiguration();
 
                     final ConfigurationSection prizes = configuration.getConfigurationSection("Crate.Prizes");
@@ -109,6 +126,8 @@ public class CommandMigrate extends BaseCommand {
                 Messages.successfully_migrated.sendMessage(sender, new HashMap<>() {{
                     put("{file}", crateName);
                     put("{type}", type.getName());
+                    put("{failed_amount}", "0");
+                    put("{succeeded_amount}", String.valueOf(files.size()));
                 }});
 
                 this.plugin.getFileManager().init();
@@ -123,7 +142,7 @@ public class CommandMigrate extends BaseCommand {
                     return;
                 }
 
-                new ExcellentCratesMigrator().run();
+                new ExcellentCratesMigrator(sender).run();
             }
             
             /*case MIGRATE_OLD_COMMANDS -> {
