@@ -147,7 +147,7 @@ public class BukkitUserManager extends UserManager {
                         placeholders.put("{keytype}", keyType.getFriendlyName());
                         placeholders.put("{key}", crate.getKeyName());
 
-                        player.sendRichMessage(Messages.cannot_give_player_keys.getMessage(player, placeholders));
+                        Messages.cannot_give_player_keys.sendMessage(player, placeholders);
                     }
 
                     return;

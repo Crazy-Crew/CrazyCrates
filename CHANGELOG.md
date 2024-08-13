@@ -1,30 +1,18 @@
 ### Added:
-- Ability the ability to make items glow in `Items`
-```yml
-Items:
-  - 'Item:spawner, Glowing:true'
-```
-
-### Fixed:
-- The config option for `verbose-logging` was not applied to some parts of the plugin.
+- Bumped minecraft version to 1.21.1
+  - You should update to 1.21.1 as soon as possible, there is no changes to prevent any plugins from being used on 1.21.1
+  - This version is a minor version fixing bugs, it's plug and play.
 
 ### Changes:
-- No longer add the contents of `DisplayData` to the `Items` section on `/crazycrates reload`
-- Lowercase shield pattern types and colors which also fixed a display issue, so previous shield pattern/color configs work. They no longer need to be typed like GRADIENT_UP:LIGHT_GRAY, you can simply type gradient_up:light_gray
-- Deprecated `Patterns` in favor of `DisplayPatterns`, it will be removed in the next major version of Minecraft.
-```yml
-    '6':
-      # The name of the item to display in the gui.
-      DisplayName: "<green>Fancy Shield"
-      # The enchants to display in the gui.
-      DisplayItem: "shield"
-      # A list of patterns: https://jd.papermc.io/paper/1.21/org/bukkit/block/banner/PatternType.html
-      # The patterns don't need to be uppercased. you can type them lowercased along with the colors.
-      # Patterns have to be laid out in a specific order, otherwise it won't look right.
-      # This also applies to the Items section.
-      DisplayPatterns:
-        - "base:white"
-        - "gradient_up:light_gray"
-        - "straight_cross:light_blue"
-        - "flower:light_blue" 
-```
+- Properly relocate the command framework
+- CsgoCrate now when the task is finished, sets an item below and above the prize you won.
+  - In the future, this will be configurable. I just don't know what to call it.
+- Updated permission description
+- Updated exclude.give-all to default to FALSE, [#774](https://github.com/Crazy-Crew/CrazyCrates/pull/774)
+- Bumped CMI dependencies
+
+### Fixed:
+- Typo in config options
+- Adventure api issue [#770](https://github.com/Crazy-Crew/CrazyCrates/pull/770)
+- CsgoCrate was missing 2 glass panes [#772](https://github.com/Crazy-Crew/CrazyCrates/pull/772)
+- CsgoCrate was not animating the glass panes

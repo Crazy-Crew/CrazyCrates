@@ -10,9 +10,9 @@ plugins {
 
 val buildNumber: String? = System.getenv("BUILD_NUMBER")
 
-rootProject.version = if (buildNumber != null) "${libs.versions.minecraft.get()}-$buildNumber" else "3.5.9"
+rootProject.version = if (buildNumber != null) "${libs.versions.minecraft.get()}-$buildNumber" else "3.6.1"
 
-val isSnapshot = true
+val isSnapshot = false
 
 val content: String = rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 
@@ -23,7 +23,7 @@ repositories {
 dependencies {
     paperweight.paperDevBundle(libs.versions.paper)
 
-    compileOnly(fileTree("$projectDir/libs/compile").include("*.jar"))
+    compileOnly(fileTree("$projectDir/libs").include("*.jar"))
 
     implementation(libs.triumph.cmds)
 
@@ -72,7 +72,7 @@ tasks {
 
         listOf(
             "com.ryderbelserion.vital",
-            "dev.triumphteam.cmds"
+            "dev.triumphteam.cmd"
         ).forEach {
             relocate(it, "libs.$it")
         }

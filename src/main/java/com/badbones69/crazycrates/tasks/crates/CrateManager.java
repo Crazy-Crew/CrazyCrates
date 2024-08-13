@@ -39,6 +39,7 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
@@ -74,8 +75,6 @@ import java.util.Objects;
 import java.util.TimerTask;
 import java.util.UUID;
 import java.util.WeakHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class CrateManager {
 
@@ -151,6 +150,14 @@ public class CrateManager {
                     List<Tier> tierPrizes = new ArrayList<>();
 
                     if (prizeSection != null) {
+                        final List<ItemStack> editorItems = new ArrayList<>();
+
+                        if (prizeSection.contains("Editor-Items")) {
+                            for (Object key : prizeSection.getList("Editor-Items")) {
+                                editorItems.add((ItemStack) key);
+                            }
+                        }
+
                         for (String tier : prizeSection.getStringList("Tiers")) {
                             for (Tier key : crate.getTiers()) {
                                 if (key.getName().equalsIgnoreCase(tier)) {
@@ -173,7 +180,7 @@ public class CrateManager {
 
                         prizes.add(new Prize(
                                 prizeSection,
-                                tierPrizes,
+                                editorItems, tierPrizes,
                                 crate.getName(),
                                 alternativePrize
                         ));
@@ -182,7 +189,6 @@ public class CrateManager {
             }
 
             crate.setPrize(prizes);
-            crate.setPreviewItems(crate.getPreviewItems());
 
             for (UUID uuid : this.plugin.getInventoryManager().getViewers()) {
                 final Player player = this.plugin.getServer().getPlayer(uuid);
@@ -321,6 +327,14 @@ public class CrateManager {
                         Prize alternativePrize = null;
 
                         if (prizeSection != null) {
+                            final List<ItemStack> editorItems = new ArrayList<>();
+
+                            if (prizeSection.contains("Editor-Items")) {
+                                for (Object key : prizeSection.getList("Editor-Items")) {
+                                    editorItems.add((ItemStack) key);
+                                }
+                            }
+
                             for (String tier : prizeSection.getStringList("Tiers")) {
                                 for (Tier key : tiers) {
                                     if (key.getName().equalsIgnoreCase(tier)) {
@@ -359,7 +373,7 @@ public class CrateManager {
                                 }
                             }*/
 
-                            prizes.add(new Prize(prizeSection, tierPrizes, crateName, alternativePrize));
+                            prizes.add(new Prize(prizeSection, editorItems, tierPrizes, crateName, alternativePrize));
                         }
                     }
                 }
@@ -383,16 +397,16 @@ public class CrateManager {
                         file.getStringList("Crate.Hologram.Message"));
                 addCrate(new Crate(crateName, previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name", "Crate.PhysicalKey.Name is missing from " + crateName + ".yml"), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, prizeCommands, holo));
 
-                final Permission doesExist = this.plugin.getServer().getPluginManager().getPermission("crazycrates.open." + crateName);
+                final PluginManager server = this.plugin.getServer().getPluginManager();
 
-                if (doesExist == null) {
+                if (server.getPermission("crazycrates.deny.open." + crateName) == null) {
                     Permission permission = new Permission(
-                            "crazycrates.open." + crateName,
-                            "Allows you to open " + crateName,
-                            PermissionDefault.TRUE
+                            "crazycrates.deny.open." + crateName,
+                            "Prevents you from opening " + crateName,
+                            PermissionDefault.FALSE
                     );
 
-                    this.plugin.getServer().getPluginManager().addPermission(permission);
+                    server.addPermission(permission);
                 }
             } catch (Exception exception) {
                 this.brokeCrates.add(crateName);
@@ -523,7 +537,7 @@ public class CrateManager {
                 return;
             }
 
-            player.sendRichMessage(Messages.feature_disabled.getMessage(player));
+            Messages.feature_disabled.sendMessage(player);
 
             return;
         }
@@ -535,7 +549,7 @@ public class CrateManager {
             case casino -> crateBuilder = new CasinoCrate(crate, player, 27);
             case wonder -> crateBuilder = new WonderCrate(crate, player, 45);
             case wheel -> crateBuilder = new WheelCrate(crate, player, 54);
-            case roulette -> crateBuilder = new RouletteCrate(crate, player, 45);
+            case roulette -> crateBuilder = new RouletteCrate(crate, player, 27);
             case war -> crateBuilder = new WarCrate(crate, player, 9);
             case cosmic -> crateBuilder = new CosmicCrate(crate, player, 27);
             case quad_crate -> {
@@ -545,7 +559,7 @@ public class CrateManager {
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
                     placeholders.put("{crate}", crate.getName());
 
-                    player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
+                    Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
 
                     removePlayerFromOpeningList(player);
 
@@ -557,7 +571,7 @@ public class CrateManager {
 
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    player.sendRichMessage(Messages.crate_in_use.getMessage(player, "{crate}", crate.getName()));
+                    Messages.crate_in_use.sendMessage(player, "{crate}", crate.getName());
 
                     removePlayerFromOpeningList(player);
 
@@ -570,7 +584,7 @@ public class CrateManager {
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
                     placeholders.put("{crate}", crate.getName());
 
-                    player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
+                    Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
 
                     removePlayerFromOpeningList(player);
 
@@ -587,7 +601,7 @@ public class CrateManager {
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
                     placeholders.put("{crate}", crate.getName());
 
-                    player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
+                    Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
 
                     removePlayerFromOpeningList(player);
 
@@ -599,7 +613,7 @@ public class CrateManager {
 
             case quick_crate -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    player.sendRichMessage(Messages.crate_in_use.getMessage(player, "{crate}", crate.getName()));
+                    Messages.crate_in_use.sendMessage(player, "{crate}", crate.getName());
 
                     removePlayerFromOpeningList(player);
 
@@ -612,7 +626,7 @@ public class CrateManager {
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
                     placeholders.put("{crate}", crate.getName());
 
-                    player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
+                    Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
 
                     removePlayerFromOpeningList(player);
 

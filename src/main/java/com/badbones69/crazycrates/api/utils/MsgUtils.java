@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api.utils;
 
+import com.ryderbelserion.vital.paper.util.ItemUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -14,13 +15,45 @@ public class MsgUtils {
 
         String prefix = getPrefix();
 
+        final boolean isAdventure = ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle);
+
+        final boolean sendPrefix = !prefix.isEmpty() && prefixToggle;
+
         if (commandSender instanceof Player player) {
-            if (!prefix.isEmpty() && prefixToggle) player.sendRichMessage(message.replaceAll("%prefix%", quoteReplacement(prefix)).replaceAll("%Prefix%", quoteReplacement(prefix))); else player.sendRichMessage(message);
+            if (sendPrefix) {
+                final String msg = message.replaceAll("%prefix%", quoteReplacement(prefix)).replaceAll("%Prefix%", quoteReplacement(prefix));
+
+                if (isAdventure) {
+                    player.sendRichMessage(msg);
+                } else {
+                    player.sendMessage(ItemUtil.color(msg));
+                }
+            } else {
+                if (isAdventure) {
+                    player.sendRichMessage(message);
+                } else {
+                    player.sendMessage(ItemUtil.color(message));
+                }
+            }
 
             return;
         }
 
-        if (!prefix.isEmpty() && prefixToggle) commandSender.sendRichMessage(message.replaceAll("%prefix%", quoteReplacement(prefix)).replaceAll("%Prefix%", quoteReplacement(prefix))); else commandSender.sendRichMessage(message);
+        if (sendPrefix) {
+            final String msg = message.replaceAll("%prefix%", quoteReplacement(prefix)).replaceAll("%Prefix%", quoteReplacement(prefix));
+
+            if (isAdventure) {
+                commandSender.sendRichMessage(msg);
+            } else {
+                commandSender.sendMessage(ItemUtil.color(msg));
+            }
+        } else {
+            if (isAdventure) {
+                commandSender.sendRichMessage(message);
+            } else {
+                commandSender.sendMessage(ItemUtil.color(message));
+            }
+        }
     }
 
     /**

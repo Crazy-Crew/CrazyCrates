@@ -1,6 +1,8 @@
 package com.badbones69.crazycrates.listeners.crates;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.enums.Messages;
@@ -8,6 +10,7 @@ import com.badbones69.crazycrates.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.ryderbelserion.vital.paper.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
+import com.ryderbelserion.vital.paper.util.ItemUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -34,7 +37,7 @@ public class CrateOpenListener implements Listener {
 
         if (crate.getCrateType() != CrateType.menu) {
             if (!crate.canWinPrizes(player)) {
-                player.sendRichMessage(Messages.no_prizes_found.getMessage(player, "{crate}", crate.getName()));
+                Messages.no_prizes_found.sendMessage(player, "{crate}", crate.getName());
 
                 this.crateManager.removePlayerFromOpeningList(player);
                 this.crateManager.removePlayerKeyType(player);
@@ -45,8 +48,8 @@ public class CrateOpenListener implements Listener {
             }
         }
 
-        if (!player.hasPermission("crazycrates.open." + crate.getName()) || !player.hasPermission("crazycrates.open." + crate.getName().toLowerCase())) {
-            player.sendRichMessage(Messages.no_crate_permission.getMessage(player, "{crate}", crate.getName()));
+        if (player.hasPermission("crazycrates.deny.open." + crate.getName())) {
+            Messages.no_crate_permission.sendMessage(player, "{crate}", crate.getName());
 
             this.crateManager.removePlayerFromOpeningList(player);
             this.crateManager.removeCrateInUse(player);
@@ -69,7 +72,11 @@ public class CrateOpenListener implements Listener {
             if (!broadcastMessage.isBlank()) {
                 final String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
-                this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
+                if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
+                    this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
+                } else {
+                    this.plugin.getServer().broadcastMessage(ItemUtil.color(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
+                }
             }
         }
 

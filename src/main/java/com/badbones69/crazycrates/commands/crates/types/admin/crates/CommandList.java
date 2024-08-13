@@ -53,6 +53,7 @@ public class CommandList extends BaseCommand {
 
         placeholders.put("{locations}", this.crateManager.getCrateLocations().isEmpty() ? "N/A" : StringUtils.chomp(StringUtil.convertList(crates)));
 
-        sender.sendRichMessage(Messages.crate_locations.getMessage(sender, placeholders));
+        // this has to use sendRichMessage as it is a list.
+        Messages.crate_locations.sendRichMessage(sender, placeholders);
     }
 }

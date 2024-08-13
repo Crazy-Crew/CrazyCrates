@@ -1,7 +1,7 @@
 [versions]
 # Minecraft
-paper = "1.21-R0.1-SNAPSHOT"
-minecraft = "1.21"
+paper = "1.21.1-R0.1-SNAPSHOT"
+minecraft = "1.21.1"
 
 # Plugins
 itemsadder = "3.6.3-beta-14"
@@ -17,15 +17,15 @@ triumph-cmd = "2.0.0-ALPHA-10"
 tirumph-gui = "3.1.7"
 jetbrains = "24.1.0"
 kyori = "4.17.0"
-vital = "2.0.2"
+vital = "2.1"
 
 # Paper
-paperweight = "1.7.1"
+paperweight = "1.7.2"
 runPaper = "2.3.0"
 hangar = "0.1.2"
 
 # Other
-shadowJar = "8.1.7"
+shadowJar = "8.3.0"
 
 # Modrinth
 minotaur = "2.+"
@@ -33,7 +33,7 @@ minotaur = "2.+"
 [plugins]
 paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }
 hangar = { id = "io.papermc.hangar-publish-plugin", version.ref = "hangar" }
-shadowJar = { id = "io.github.goooler.shadow", version.ref = "shadowJar" }
+shadowJar = { id = "com.gradleup.shadow", version.ref = "shadowJar" }
 runPaper = { id = "xyz.jpenilla.run-paper", version.ref = "runPaper" }
 minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }
 

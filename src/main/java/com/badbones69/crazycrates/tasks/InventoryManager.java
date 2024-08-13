@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.tasks;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.Tier;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,19 +28,19 @@ public class InventoryManager {
     private ItemBuilder backButton;
 
     public void loadButtons() {
-        this.menuButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.menu_button_item))
+        this.menuButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.menu_button_item).toLowerCase())
                 .setDisplayName(this.config.getProperty(ConfigKeys.menu_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.menu_button_lore))
                 .setCustomModelData(this.config.getProperty(ConfigKeys.menu_button_model_data))
                 .setPersistentString(PersistentKeys.main_menu_button.getNamespacedKey(), "none");
 
-        this.nextButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.next_button_item))
+        this.nextButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.next_button_item).toLowerCase())
                 .setDisplayName(this.config.getProperty(ConfigKeys.next_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.next_button_lore))
                 .setCustomModelData(this.config.getProperty(ConfigKeys.next_button_model_data))
                 .setPersistentString(PersistentKeys.next_button.getNamespacedKey(), "none");
 
-        this.backButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.back_button_item))
+        this.backButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.back_button_item).toLowerCase())
                 .setDisplayName(this.config.getProperty(ConfigKeys.back_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.back_button_lore))
                 .setCustomModelData(this.config.getProperty(ConfigKeys.back_button_model_data))
@@ -49,24 +51,40 @@ public class InventoryManager {
         return this.menuButton.setPlayer(player).getStack();
     }
 
-    public @NotNull final ItemStack getNextButton(@Nullable final Player player) {
+    public @NotNull final ItemStack getNextButton(@Nullable final Player player, @Nullable final Tier tier) {
         ItemBuilder button = new ItemBuilder(this.nextButton);
 
         if (player != null) {
             button.setPlayer(player).addLorePlaceholder("{page}", (getPage(player) + 1) + "");
         }
 
+        if (tier != null) {
+            button.setPersistentString(PersistentKeys.crate_tier.getNamespacedKey(), tier.getName());
+        }
+
         return button.getStack();
     }
 
-    public @NotNull final ItemStack getBackButton(@Nullable final Player player) {
+    public @NotNull final ItemStack getNextButton(@Nullable final Player player) {
+        return getNextButton(player, null);
+    }
+
+    public @NotNull final ItemStack getBackButton(@Nullable final Player player, @Nullable final Tier tier) {
         ItemBuilder button = new ItemBuilder(this.backButton);
 
         if (player != null) {
             button.setPlayer(player).addLorePlaceholder("{page}", (getPage(player) - 1) + "");
         }
 
+        if (tier != null) {
+            button.setPersistentString(PersistentKeys.crate_tier.getNamespacedKey(), tier.getName());
+        }
+
         return button.getStack();
+    }
+
+    public @NotNull final ItemStack getBackButton(@Nullable final Player player) {
+        return getBackButton(player, null);
     }
 
     private final Map<UUID, Crate> crateViewers = new HashMap<>();
@@ -74,7 +92,7 @@ public class InventoryManager {
     public void openNewCratePreview(@NotNull final Player player, @NotNull final Crate crate) {
         this.crateViewers.put(player.getUniqueId(), crate);
 
-        if (crate.isPreviewTierToggle()) {
+        if (crate.getCrateType() == CrateType.casino || crate.getCrateType() == CrateType.cosmic && crate.isPreviewTierToggle()) {
             player.openInventory(crate.getTierPreview(player));
 
             return;
@@ -89,8 +107,18 @@ public class InventoryManager {
         this.crateViewers.put(player.getUniqueId(), crate);
     }
 
-    public void openCratePreview(@NotNull final Player player, @NotNull final Crate crate) {
+    public void openCratePreview(@NotNull final Player player, @NotNull final Crate crate, @Nullable final String tierName) {
         this.crateViewers.put(player.getUniqueId(), crate);
+
+        if (tierName != null) {
+            final Tier tier = crate.getTier(tierName);
+
+            if (tier != null) {
+                player.openInventory(crate.getPreview(player, getPage(player), tier));
+            }
+
+            return;
+        }
 
         player.openInventory(crate.getPreview(player));
     }

@@ -26,20 +26,20 @@ public class CommandOpen extends BaseCommand {
 
     private boolean isCancelled(Player player, String crateName) {
         if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
-            player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
+            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
             return true;
         }
 
         // Check if player is in opening list first.
         if (this.crateManager.isInOpeningList(player)) {
-            player.sendRichMessage(Messages.already_opening_crate.getMessage(player, "{crate}", crateName));
+            Messages.already_opening_crate.sendMessage(player, "{crate}", crateName);
 
             return true;
         }
 
         if (MiscUtils.isInventoryFull(player)) {
-            player.sendRichMessage(Messages.inventory_not_empty.getMessage(player, "{crate}", crateName));
+            Messages.inventory_not_empty.sendMessage(player, "{crate}", crateName);
 
             return true;
         }
@@ -57,7 +57,7 @@ public class CommandOpen extends BaseCommand {
 
         // If crate is null, return.
         if (crate == null) {
-            player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
+            Messages.not_a_crate.sendMessage(player, "{crate}", crateName);
 
             return;
         }
@@ -66,7 +66,7 @@ public class CommandOpen extends BaseCommand {
 
         // If crate type is null, we return.
         if (crateType == null || crate.getCrateType() == CrateType.menu) {
-            player.sendRichMessage(Messages.internal_error.getMessage(player));
+            Messages.internal_error.sendMessage(player);
 
             if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null or Menu for the crate named {}", crate.getName());
 
@@ -80,7 +80,7 @@ public class CommandOpen extends BaseCommand {
             placeholders.put("{cratetype}", crate.getCrateType().getName());
             placeholders.put("{crate}", crate.getName());
 
-            player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
+            Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
 
             return;
         }
@@ -103,7 +103,7 @@ public class CommandOpen extends BaseCommand {
             placeholders.put("{crate}", crate.getName());
             placeholders.put("{key}", crate.getKeyName());
 
-            player.sendRichMessage(Messages.no_keys.getMessage(player, placeholders));
+            Messages.no_keys.sendMessage(player, placeholders);
 
             return;
         }
@@ -123,7 +123,7 @@ public class CommandOpen extends BaseCommand {
 
         // If crate is null, return.
         if (crate == null) {
-            player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
+            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }
@@ -132,7 +132,7 @@ public class CommandOpen extends BaseCommand {
 
         // If crate type is null, we return.
         if (crateType == null) {
-            player.sendRichMessage(Messages.internal_error.getMessage(player));
+            Messages.internal_error.sendMessage(sender);
 
             if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crate.getName());
 
@@ -146,7 +146,7 @@ public class CommandOpen extends BaseCommand {
             placeholders.put("{cratetype}", crate.getCrateType().getName());
             placeholders.put("{crate}", crate.getName());
 
-            player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
+            Messages.cant_be_a_virtual_crate.sendMessage(sender, placeholders);
 
             return;
         }
@@ -169,10 +169,10 @@ public class CommandOpen extends BaseCommand {
                 player.playSound(sound);
             }
 
-            sender.sendRichMessage(Messages.no_keys.getMessage(sender, new HashMap<>() {{
+            Messages.no_keys.sendMessage(sender, new HashMap<>() {{
                 put("{crate}", crate.getName());
                 put("{key}", crate.getKeyName());
-            }}));
+            }});
 
             return;
         }
@@ -184,7 +184,7 @@ public class CommandOpen extends BaseCommand {
         placeholders.put("{crate}", crate.getName());
         placeholders.put("{player}", player.getName());
 
-        player.sendRichMessage(Messages.opened_a_crate.getMessage(player, placeholders));
+        Messages.opened_a_crate.sendMessage(sender, placeholders);
     }
 
 
@@ -199,7 +199,7 @@ public class CommandOpen extends BaseCommand {
 
         // If crate is null, return.
         if (crate == null) {
-            player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
+            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }
@@ -208,7 +208,7 @@ public class CommandOpen extends BaseCommand {
 
         // If crate type is null, we return.
         if (crateType == null) {
-            player.sendRichMessage(Messages.internal_error.getMessage(player));
+            Messages.internal_error.sendMessage(sender);
 
             if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crate.getName());
 
@@ -222,7 +222,7 @@ public class CommandOpen extends BaseCommand {
             placeholders.put("{cratetype}", crate.getCrateType().getName());
             placeholders.put("{crate}", crate.getName());
 
-            player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
+            Messages.cant_be_a_virtual_crate.sendMessage(sender, placeholders);
 
             return;
         }
@@ -234,7 +234,7 @@ public class CommandOpen extends BaseCommand {
         placeholders.put("{crate}", crate.getName());
         placeholders.put("{player}", player.getName());
 
-        sender.sendRichMessage(Messages.opened_a_crate.getMessage(player, placeholders));
+        Messages.opened_a_crate.sendMessage(sender, placeholders);
     }
 
     @Command("mass-open")
@@ -248,7 +248,7 @@ public class CommandOpen extends BaseCommand {
 
         // If crate is null, return.
         if (crate == null) {
-            player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
+            Messages.not_a_crate.sendMessage(player, "{crate}", crateName);
 
             return;
         }
@@ -257,7 +257,7 @@ public class CommandOpen extends BaseCommand {
 
         // If crate type is null, we return.
         if (crateType == null) {
-            player.sendRichMessage(Messages.internal_error.getMessage(player));
+            Messages.internal_error.sendMessage(player);
 
             if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crate.getName());
 
@@ -271,7 +271,7 @@ public class CommandOpen extends BaseCommand {
             placeholders.put("{cratetype}", crate.getCrateType().getName());
             placeholders.put("{crate}", crate.getName());
 
-            player.sendRichMessage(Messages.cant_be_a_virtual_crate.getMessage(player, placeholders));
+            Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
 
             return;
         }
@@ -282,10 +282,10 @@ public class CommandOpen extends BaseCommand {
         int used = 0;
 
         if (keys == 0) {
-            player.sendRichMessage(Messages.no_keys.getMessage(player, new HashMap<>() {{
+            Messages.no_keys.sendMessage(player, new HashMap<>() {{
                 put("{crate}", crate.getName());
                 put("{key}", crate.getKeyName());
-            }}));
+            }});
 
             return;
         }

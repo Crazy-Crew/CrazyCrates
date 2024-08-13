@@ -18,7 +18,7 @@ public class CommandPreview extends BaseCommand {
     @Permission(value = "crazycrates.preview", def = PermissionDefault.OP)
     public void preview(CommandSender sender, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("player") @Suggestion("players") Player player) {
         if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
-            sender.sendRichMessage(Messages.cannot_be_empty.getMessage(sender, "{value}", "crate name"));
+            Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
 
             return;
         }
@@ -26,13 +26,13 @@ public class CommandPreview extends BaseCommand {
         final Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            sender.sendRichMessage(Messages.not_a_crate.getMessage(sender, "{crate}", crateName));
+            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }
 
         if (!crate.isPreviewEnabled()) {
-            sender.sendRichMessage(Messages.preview_disabled.getMessage(sender, "{crate}", crate.getName()));
+            Messages.preview_disabled.sendMessage(sender, "{crate}", crateName);
 
             return;
         }

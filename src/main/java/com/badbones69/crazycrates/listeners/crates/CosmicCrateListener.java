@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.paper.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
+import com.ryderbelserion.vital.paper.util.ItemUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -256,7 +257,7 @@ public class CosmicCrateListener implements Listener {
                 placeholders.put("{key}", crate.getKeyName());
 
                 // Send no keys message.
-                player.sendRichMessage(Messages.no_keys.getMessage(player, placeholders));
+                Messages.no_keys.sendMessage(player, placeholders);
 
                 // Remove opening stuff.
                 this.crateManager.removePlayerFromOpeningList(player);
@@ -320,7 +321,11 @@ public class CosmicCrateListener implements Listener {
                 if (!broadcastMessage.isBlank()) {
                     String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
-                    this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
+                    if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
+                        this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
+                    } else {
+                        this.plugin.getServer().broadcastMessage(ItemUtil.color(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
+                    }
                 }
             }
 
@@ -356,8 +361,7 @@ public class CosmicCrateListener implements Listener {
                                 // Remove the player from the hashmap.
                                 cosmicCrateManager.removePickedPlayer(player);
 
-                                // Send refund notices.
-                                player.sendRichMessage(MsgUtils.getPrefix("<red>An issue has occurred and so a key refund was given."));
+                                Messages.key_refund.sendMessage(player, "{crate}", crateName);
 
                                 if (MiscUtils.isLogging()) plugin.getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + crate.getName() + " crate and so they were issued a key refund.", exception);
 

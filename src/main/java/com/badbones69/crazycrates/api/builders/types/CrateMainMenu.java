@@ -53,7 +53,7 @@ public class CrateMainMenu extends InventoryBuilder {
             final String name = this.config.getProperty(ConfigKeys.filler_name);
             final List<String> lore = this.config.getProperty(ConfigKeys.filler_lore);
 
-            final ItemStack item = new ItemBuilder().withType(id).setDisplayName(name).setDisplayLore(lore).setPlayer(getPlayer()).setCustomModelData(this.config.getProperty(ConfigKeys.filler_model_data)).getStack();
+            final ItemStack item = new ItemBuilder().withType(id.toLowerCase()).setDisplayName(name).setDisplayLore(lore).setPlayer(getPlayer()).setCustomModelData(this.config.getProperty(ConfigKeys.filler_model_data)).getStack();
 
             for (int i = 0; i < getSize(); i++) {
                 inventory.setItem(i, item);
@@ -73,7 +73,7 @@ public class CrateMainMenu extends InventoryBuilder {
                         String value = key.replace(option + ":", "").replace(option, "");
 
                         switch (option.toLowerCase()) {
-                            case "item" -> item.withType(value);
+                            case "item" -> item.withType(value.toLowerCase());
                             case "name" -> item.setDisplayName(getCrates(value).replace("{player}", player.getName()));
 
                             case "lore" -> {
@@ -121,7 +121,7 @@ public class CrateMainMenu extends InventoryBuilder {
                     slot--;
 
                     final ItemBuilder builder = new ItemBuilder()
-                            .withType(section.getString("Item", "chest"))
+                            .withType(section.getString("Item", "chest").toLowerCase())
                             .setDisplayName(section.getString("CrateName", crateName))
                             .setCustomModelData(section.getInt("Custom-Model-Data", -1))
                             .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)))
@@ -173,14 +173,14 @@ public class CrateMainMenu extends InventoryBuilder {
                 this.inventoryManager.addViewer(player);
                 this.inventoryManager.openNewCratePreview(player, crate);
             } else {
-                player.sendRichMessage(Messages.preview_disabled.getMessage(player, "{crate}", crateName));
+                Messages.preview_disabled.sendMessage(player, "{crate}", crateName);
             }
 
             return;
         }
 
         if (this.crateManager.isInOpeningList(player)) {
-            player.sendRichMessage(Messages.already_opening_crate.getMessage(player, "{crate}", crateName));
+            Messages.already_opening_crate.sendMessage(player, "{crate}", crateName);
 
             return;
         }
@@ -205,21 +205,21 @@ public class CrateMainMenu extends InventoryBuilder {
                 player.playSound(sound);
             }
 
-            player.sendRichMessage(Messages.no_virtual_key.getMessage(player, "{crate}", crateName));
+            Messages.no_virtual_key.sendMessage(player, "{crate}", crateName);
 
             return;
         }
 
         for (String world : this.config.getProperty(ConfigKeys.disabled_worlds)) {
             if (world.equalsIgnoreCase(playerWorld)) {
-                player.sendRichMessage(Messages.world_disabled.getMessage(player, "{world}", playerWorld));
+                Messages.world_disabled.sendMessage(player, "{world}", playerWorld);
 
                 return;
             }
         }
 
         if (MiscUtils.isInventoryFull(player)) {
-            player.sendRichMessage(Messages.inventory_not_empty.getMessage(player, "{crate}", crateName));
+            Messages.inventory_not_empty.sendMessage(player, "{crate}", crateName);
 
             return;
         }

@@ -16,6 +16,7 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -96,6 +97,11 @@ public class CsgoCrate extends CrateBuilder {
 
                         crateManager.endCrate(player);
 
+                        final ItemStack itemStack = new ItemStack(Material.GRAY_STAINED_GLASS);
+
+                        setItem(4, itemStack);
+                        setItem(22, itemStack);
+
                         final ItemStack item = getInventory().getItem(13);
 
                         if (item != null) {
@@ -123,49 +129,7 @@ public class CsgoCrate extends CrateBuilder {
     }
 
     private void populate() {
-        final HashMap<Integer, ItemStack> glass = new HashMap<>();
-
-        for (int index = 0; index < 10; index++) {
-            if (index < 9 && index != 3) glass.put(index, getInventory().getItem(index));
-        }
-
-        for (int index : glass.keySet()) {
-            if (getInventory().getItem(index) == null) {
-                setCustomGlassPane(index);
-                setCustomGlassPane(index + 18);
-            }
-        }
-
-        for (int index = 1; index < 10; index++) {
-            if (index < 9 && index != 4) glass.put(index, getInventory().getItem(index));
-        }
-
-        setItem(0, glass.get(1));
-
-        setItem(1, glass.get(2));
-        setItem(1 + 18, glass.get(2));
-
-        setItem(2, glass.get(3));
-        setItem(2 + 18, glass.get(3));
-
-        setItem(3, glass.get(5));
-        setItem(3 + 18, glass.get(5));
-
-        ItemStack itemStack = new ItemBuilder().withType(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(" ").getStack();
-        setItem(4, itemStack);
-        setItem(4 + 18, itemStack);
-
-        setItem(5, glass.get(6));
-        setItem(5 + 18, glass.get(6));
-
-        setItem(6, glass.get(7));
-        setItem(6 + 18, glass.get(7));
-
-        setItem(7, glass.get(8));
-        setItem(7 + 18, glass.get(8));
-
-        setCustomGlassPane(8);
-        setCustomGlassPane(8 + 18);
+        getBorder().forEach(this::setCustomGlassPane);
 
         // Set display items.
         for (int index = 9; index > 8 && index < 18; index++) {
@@ -188,10 +152,16 @@ public class CsgoCrate extends CrateBuilder {
         for (int i = 0; i < 8; i++) {
             setItem(i + 10, items.get(i));
         }
+
+        getBorder().forEach(this::setCustomGlassPane);
     }
 
     @Override
     public void run() {
 
+    }
+
+    private List<Integer> getBorder() {
+        return Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 18, 19, 20, 21, 22, 23, 24, 25, 26);
     }
 }

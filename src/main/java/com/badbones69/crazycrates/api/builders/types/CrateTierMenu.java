@@ -85,7 +85,7 @@ public class CrateTierMenu extends InventoryBuilder {
 
             final Tier tier = crate.getTier(tierName);
 
-            final Inventory cratePreviewMenu = crate.getPreview(player, this.inventoryManager.getPage(player), true, tier);
+            final Inventory cratePreviewMenu = crate.getPreview(player, this.inventoryManager.getPage(player), tier);
 
             player.openInventory(cratePreviewMenu);
         }

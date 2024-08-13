@@ -4,10 +4,13 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
@@ -17,6 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Prize {
@@ -41,7 +45,13 @@ public class Prize {
     private List<Tier> tiers = new ArrayList<>();
     private Prize alternativePrize;
 
-    public Prize(@NotNull final ConfigurationSection section, @NotNull final List<Tier> tierPrizes, @NotNull final String crateName, @Nullable final Prize alternativePrize) {
+    private boolean broadcast = false;
+    private List<String> broadcastMessages = new ArrayList<>();
+    private String broadcastPermission = "";
+
+    private List<ItemStack> editorItems = new ArrayList<>();
+
+    public Prize(@NotNull final ConfigurationSection section, List<ItemStack> editorItems, @NotNull final List<Tier> tierPrizes, @NotNull final String crateName, @Nullable final Prize alternativePrize) {
         this.section = section;
 
         this.sectionName = section.getName();
@@ -68,8 +78,14 @@ public class Prize {
             this.permissions.replaceAll(String::toLowerCase);
         }
 
+        this.broadcast = section.getBoolean("Settings.Broadcast.Toggle", false);
+        this.broadcastMessages = section.getStringList("Settings.Broadcast.Messages");
+        this.broadcastPermission = section.getString("Settings.Broadcast.Permission", "");
+
         this.prizeItem = display();
         this.displayItem = new ItemBuilder(this.prizeItem, true);
+
+        this.editorItems = editorItems;
     }
 
     /**
@@ -95,11 +111,19 @@ public class Prize {
      * @return the name of the prize.
      */
     public @NotNull final String getPrizeName() {
+        if (!ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
+            return this.prizeName.isEmpty() ? "" : this.prizeName;
+        }
+
         return this.prizeName.isEmpty() ? "<lang:" + this.displayItem.getType().getItemTranslationKey() + ">" : this.prizeName;
     }
 
     public @NotNull final String getStrippedName() {
-        return PlainTextComponentSerializer.plainText().serialize(AdvUtil.parse(getPrizeName()));
+        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
+            return PlainTextComponentSerializer.plainText().serialize(AdvUtil.parse(getPrizeName()));
+        }
+
+        return ChatColor.stripColor(getPrizeName());
     }
 
     /**
@@ -213,6 +237,38 @@ public class Prize {
         return false;
     }
 
+    public void broadcast(final Crate crate) {
+        if (!this.broadcast) return;
+
+        final boolean isAdventure = ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle);
+
+        if (isAdventure) {
+            this.plugin.getServer().getOnlinePlayers().forEach(player -> {
+                if (!this.broadcastPermission.isEmpty() && player.hasPermission(this.broadcastPermission)) return;
+
+                this.broadcastMessages.forEach(message -> player.sendMessage(AdvUtil.parse(message, new HashMap<>() {{
+                    put("%player%", player.getName());
+                    put("%crate%", crate.getCrateInventoryName());
+                    put("%reward%", getPrizeName());
+                    put("%reward_stripped%", getStrippedName());
+                }}, player)));
+            });
+
+            return;
+        }
+
+        this.plugin.getServer().getOnlinePlayers().forEach(player -> {
+            if (!this.broadcastPermission.isEmpty() && player.hasPermission(this.broadcastPermission)) return;
+
+            this.broadcastMessages.forEach(message -> player.sendMessage(ItemUtil.color(message, new HashMap<>() {{
+                put("%player%", player.getName());
+                put("%crate%", crate.getCrateInventoryName());
+                put("%reward%", getPrizeName());
+                put("%reward_stripped%", getStrippedName());
+            }}, player)));
+        });
+    }
+
     private @NotNull ItemBuilder display() {
         ItemBuilder builder = new ItemBuilder();
 
@@ -226,7 +282,7 @@ public class Prize {
             }
 
             if (this.section.contains("DisplayItem")) {
-                builder.withType(this.section.getString("DisplayItem", "red_terracotta"));
+                builder.withType(this.section.getString("DisplayItem", "red_terracotta").toLowerCase());
             }
 
             if (this.section.contains("DisplayAmount")) {
@@ -240,7 +296,7 @@ public class Prize {
             if (this.section.contains("Lore")) {
                 if (MiscUtils.isLogging()) {
                     List.of(
-                            "Deprecated usage of Patterns in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
+                            "Deprecated usage of Lore in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
                             "Lore will be removed in the next major version of Minecraft in favor of DisplayLore",
                             "You can turn my nagging off in config.yml, verbose_logging: true -> false"
                     ).forEach(this.plugin.getComponentLogger()::warn);
@@ -315,12 +371,16 @@ public class Prize {
 
             return builder;
         } catch (Exception exception) {
-            return new ItemBuilder(Material.RED_TERRACOTTA).setDisplayName("<bold><red>ERROR</bold>").setDisplayLore(new ArrayList<>() {{
-                add("<red>There was an error with one of your prizes!");
-                add("<red>The reward in question is labeled: <yellow>" + section.getName() + " <red>in crate: <yellow>" + crateName);
-                add("<red>Name of the reward is " + section.getString("DisplayName"));
-                add("<red>If you are confused, Stop by our discord for support!");
+            return new ItemBuilder(Material.RED_TERRACOTTA).setDisplayName("&l&cERROR").setDisplayLore(new ArrayList<>() {{
+                add("&cThere was an error with one of your prizes!");
+                add("&cThe reward in question is labeled: &e" + section.getName() + " &cin crate: &e" + crateName);
+                add("&cName of the reward is " + section.getString("DisplayName"));
+                add("&cIf you are confused, Stop by our discord for support!");
             }});
         }
+    }
+
+    public final List<ItemStack> getEditorItems() {
+        return this.editorItems;
     }
 }

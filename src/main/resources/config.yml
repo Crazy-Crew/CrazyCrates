@@ -11,12 +11,32 @@ root:
   verbose_logging: true
   # This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.
   use-different-random: false
-  # This will wipe the example folder on /crazycrates reload or plugin startup so you always have fresh examples to look at.
+  # This option defines the type of color codes used in CrazyCrates
+  #
+  # true -> uses minimessage
+  # false -> uses legacy color codes
+  #
+  # Note: inventory titles won't update during Cosmic Crate while this is false.
+  # Warning: legacy color codes is highly likely to be removed in the future.
+  use-minimessage: true
+  # This option defines what in-game editor format is used in CrazyCrates
+  #
+  # true -> uses the old one
+  # false -> uses the new one
+  #
+  # Note: MiniMessage has to be turned off as this format uses legacy color codes.
+  # Warning: this feature will only work as long as legacy color codes aren't removed
+  use-old-editor: false
+  # This option will tell the plugin to send all messages as action bars or messages in chat.
+  #
+  # send_message -> sends messages in chat.
+  # send_actionbar -> sends messages in actionbar.
+  #
+  message-state: send_message
+  # This will wipe the example folder on /crazycrates reload or plugin startup. so you always have fresh examples to look at.
   update-examples-folder: true
   # The prefix used in commands
   command_prefix: '<dark_gray>[<blue>CrazyCrates<dark_gray>]: '
-  # The prefix used in console
-  console_prefix: '<dark_gray>[<blue>CrazyCrates<dark_gray>] '
 # Settings related to guis.
 gui:
   # If /crates should open the main menu. Warning: This will remove the menu button from crate previews.
@@ -147,9 +167,9 @@ crate:
   keys:
     # Should a physical crate accept virtual keys?
     physical-crate-accepts-virtual-keys: true
-    # Should a virtual crate ( /crates ) accept physical keys?
-    physical-crate-accepts-physical-keys: true
     # Should a physical crate accept physical keys?
+    physical-crate-accepts-physical-keys: true
+    # Should a virtual crate accept physical keys?
     virtual-crate-accepts-physical-keys: true
     # Settings related to a player's inventory is not empty.
     inventory-settings:

@@ -10,6 +10,4 @@ public abstract class MessageManager {
 
     public abstract void build();
 
-    public abstract void send(@NotNull CommandSender sender, @NotNull String component);
-
 }

@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api;
 
+import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.vital.paper.enums.Support;
@@ -16,6 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import static java.util.regex.Matcher.quoteReplacement;
@@ -40,6 +43,14 @@ public class PrizeManager {
 
         prize = prize.hasPermission(player) ? prize.getAlternativePrize() : prize;
 
+        for (ItemStack item : prize.getEditorItems()) {
+            if (!MiscUtils.isInventoryFull(player)) {
+                player.getInventory().addItem(item);
+            } else {
+                player.getWorld().dropItemNaturally(player.getLocation(), item);
+            }
+        }
+
         if (!prize.getItemBuilders().isEmpty()) {
             for (final ItemBuilder item : prize.getItemBuilders()) {
                 if (!MiscUtils.isInventoryFull(player)) {
@@ -50,7 +61,7 @@ public class PrizeManager {
             }
         } else {
             // Only give them the display item as a reward if prize commands are empty.
-            if (prize.getCommands().isEmpty()) {
+            if (prize.getCommands().isEmpty() && prize.getEditorItems().isEmpty()) {
                 if (!MiscUtils.isInventoryFull(player)) {
                     MiscUtils.addItem(player, prize.getPrizeItem().setPlayer(player).getStack());
                 } else {
@@ -78,6 +89,8 @@ public class PrizeManager {
         for (final String message : prize.getMessages()) {
             sendMessage(player, prize, crate, message);
         }
+
+        prize.broadcast(crate);
     }
 
     private static void runCommands(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, @NotNull String command) {
@@ -148,7 +161,9 @@ public class PrizeManager {
 
             plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
         } else {
-            player.sendRichMessage(MsgUtils.getPrefix("<red>No prize was found, please report this issue if you think this is an error."));
+            Messages.prize_error.sendMessage(player, new HashMap<>() {{
+                put("{crate}", crate.getName());
+            }});
         }
     }
 

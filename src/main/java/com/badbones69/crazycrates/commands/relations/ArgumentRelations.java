@@ -4,8 +4,6 @@ import com.badbones69.crazycrates.commands.MessageManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
 import dev.triumphteam.cmd.core.extention.meta.MetaKey;
 import dev.triumphteam.cmd.core.message.MessageKey;
-import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.enums.Messages;
 import java.util.Optional;
 
@@ -18,7 +16,8 @@ public class ArgumentRelations extends MessageManager {
 
         switch (command) {
             case "transfer" -> usage = order + " <crate_name> <player_name> <amount>";
-            case "debug", "set" -> usage = order + " <crate_name>";
+            case "set" -> usage = order + " <crate_name>";
+            case "debug" -> usage = order + "<crate_name> [player_name]";
             case "open" -> usage = order + " <crate_name> <key_type>";
             case "tp" -> usage = order + "<id>";
             case "additem" -> usage = order + " <crate_name> <prize_number> <chance> [tier]";
@@ -37,19 +36,19 @@ public class ArgumentRelations extends MessageManager {
 
     @Override
     public void build() {
-        this.commandManager.registerMessage(BukkitMessageKey.UNKNOWN_COMMAND, (sender, context) -> send(sender, Messages.unknown_command.getMessage(sender, "{command}", context.getInvalidInput())));
+        this.commandManager.registerMessage(BukkitMessageKey.UNKNOWN_COMMAND, (sender, context) -> Messages.unknown_command.sendMessage(sender, "{command}", context.getInvalidInput()));
 
         this.commandManager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
             Optional<String> meta = context.getMeta().get(MetaKey.NAME);
 
             meta.ifPresent(key -> {
                 if (key.equalsIgnoreCase("view")) {
-                    send(sender, Messages.correct_usage.getMessage(sender, "{usage}", getContext(key, "/keys " + key)));
+                    Messages.correct_usage.sendMessage(sender, "{usage}", getContext(key, "/keys " + key));
 
                     return;
                 }
 
-                send(sender, Messages.correct_usage.getMessage(sender, "{usage}", getContext(key, "/crazycrates " + key)));
+                Messages.correct_usage.sendMessage(sender, "{usage}", getContext(key, "/crazycrates " + key));
             });
         });
 
@@ -58,26 +57,21 @@ public class ArgumentRelations extends MessageManager {
 
             meta.ifPresent(key -> {
                 if (key.equalsIgnoreCase("view")) {
-                    send(sender, Messages.correct_usage.getMessage(sender, "{usage}", getContext(key, "/keys " + key)));
+                    Messages.correct_usage.sendMessage(sender, "{usage}", getContext(key, "/keys " + key));
 
                     return;
                 }
 
-                send(sender, Messages.correct_usage.getMessage(sender, "{usage}", getContext(key, "/crazycrates " + key)));
+                Messages.correct_usage.sendMessage(sender, "{usage}", getContext(key, "/crazycrates " + key));
             });
         });
 
-        this.commandManager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> send(sender, Messages.correct_usage.getMessage(sender, "{usage}", context.getSyntax())));
+        this.commandManager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> Messages.correct_usage.sendMessage(sender, "{usage}", context.getSyntax()));
 
-        this.commandManager.registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> send(sender, Messages.no_permission.getMessage(sender, "{permission}", context.getPermission().toString())));
+        this.commandManager.registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> Messages.no_permission.sendMessage(sender, "{permission}", context.getPermission().toString()));
 
-        this.commandManager.registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> send(sender, Messages.must_be_a_player.getMessage(sender)));
+        this.commandManager.registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> Messages.must_be_a_player.sendMessage(sender));
 
-        this.commandManager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> send(sender, Messages.must_be_console_sender.getMessage(sender)));
-    }
-
-    @Override
-    public void send(@NotNull CommandSender sender, @NotNull String component) {
-        sender.sendRichMessage(component);
+        this.commandManager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> Messages.must_be_console_sender.sendMessage(sender));
     }
 }

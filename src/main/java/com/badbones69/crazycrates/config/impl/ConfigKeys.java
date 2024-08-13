@@ -4,8 +4,10 @@ import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
+import com.badbones69.crazycrates.api.enums.State;
 import java.util.Collections;
 import java.util.List;
+import static ch.jalu.configme.properties.PropertyInitializer.newBeanProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
@@ -49,8 +51,6 @@ public class ConfigKeys implements SettingsHolder {
         conf.setComment("crate.preview", "The preview settings.");
         conf.setComment("crate.keys", "Settings related to how keys function.");
 
-        conf.setComment("crate.unsupported-settings", "Settings that are not supported and can be removed at anytime.");
-
         conf.setComment("crate.keys.inventory-settings", "Settings related to a player's inventory is not empty.");
 
         conf.setComment("crate.quad-crate", "Settings related to QuadCrate");
@@ -64,6 +64,45 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.")
     public static final Property<Boolean> use_different_random = newProperty("root.use-different-random", false);
 
+    @Comment({
+            "This option defines the type of color codes used in CrazyCrates",
+            "",
+            "true -> uses minimessage",
+            "false -> uses legacy color codes",
+            "",
+            "Note: inventory titles won't update during Cosmic Crate while this is false.",
+            "Warning: legacy color codes is highly likely to be removed in the future, so you should find time to migrate as this option won't be here forever.",
+            "",
+            "Now I get what you are going to say next, but I can't. Excluding the common reason of people simply want to, or it's easier.",
+            "I would like you to explain why you use legacy color codes still, is it because of lacking features",
+            "which make you have to rely on external plugins? I had one such instance with someone using /broadcast",
+            "from EssentialsX which didn't support MiniMessage, each prize in the crates now let you broadcast to the server.",
+            "and that section supports MiniMessage, that is one such example of an issue someone had."
+    })
+    public static final Property<Boolean> minimessage_toggle  = newProperty("root.use-minimessage", true);
+
+    @Comment({
+            "This option defines what in-game editor format is used in CrazyCrates",
+            "",
+            "true -> uses the old one",
+            "false -> uses the new one",
+            "",
+            "Note: MiniMessage has to be turned off as this format uses legacy color codes.",
+            "Warning: this feature will only work as long as legacy color codes aren't removed",
+            "",
+            "The new in-game editor will likely receive another update to make the format readable."
+    })
+    public static final Property<Boolean> item_editor_toggle = newProperty("root.use-old-editor", false);
+
+    @Comment({
+            "This option will tell the plugin to send all messages as action bars or messages in chat.",
+            "",
+            "send_message -> sends messages in chat.",
+            "send_actionbar -> sends messages in actionbar.",
+            ""
+    })
+    public static final Property<State> message_state = newBeanProperty(State.class, "root.message-state", State.send_message);
+
     //@Comment({
     //        "Sends anonymous statistics about how the plugin is used to bstats.org.",
     //        "bstats is a service for plugin developers to find out how the plugin being used,",
@@ -71,7 +110,7 @@ public class ConfigKeys implements SettingsHolder {
     //})
     //public static final Property<Boolean> toggle_metrics = newProperty("root.toggle_metrics", true);
 
-    @Comment("This will wipe the example folder on /crazycrates reload or plugin startup so you always have fresh examples to look at.")
+    @Comment("This will wipe the example folder on /crazycrates reload or plugin startup. so you always have fresh examples to look at.")
     public static final Property<Boolean> update_examples_folder = newProperty("root.update-examples-folder", true);
 
     @Comment("The prefix used in commands")

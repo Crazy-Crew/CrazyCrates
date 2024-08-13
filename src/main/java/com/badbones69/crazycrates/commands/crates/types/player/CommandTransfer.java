@@ -22,7 +22,7 @@ public class CommandTransfer extends BaseCommand {
     @Permission(value = "crazycrates.transfer", def = PermissionDefault.OP)
     public void transfer(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("player") @Suggestion("players") Player target, @ArgName("amount") @Suggestion("numbers") int amount) {
         if (crateName.isEmpty() || crateName.isBlank()) {
-            player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
+            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
             return;
         }
@@ -31,7 +31,7 @@ public class CommandTransfer extends BaseCommand {
 
         // If the crate is menu or null. we return
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
+            Messages.not_a_crate.sendMessage(player, "{crate}", crateName);
 
             return;
         }
@@ -41,14 +41,14 @@ public class CommandTransfer extends BaseCommand {
 
         // If it's the same player, we return.
         if (uuid.toString().equalsIgnoreCase(receiver.toString())) {
-            player.sendRichMessage(Messages.same_player.getMessage(player));
+            Messages.same_player.sendMessage(player);
 
             return;
         }
 
         // If they don't have enough keys, we return.
         if (this.userManager.getVirtualKeys(uuid, crate.getName()) <= amount) {
-            player.sendRichMessage(Messages.transfer_not_enough_keys.getMessage(player, "{crate}", crate.getName()));
+            Messages.transfer_not_enough_keys.sendMessage(player, "{crate}", crate.getName());
 
             return;
         }
@@ -69,8 +69,8 @@ public class CommandTransfer extends BaseCommand {
         placeholders.put("{keytype}", KeyType.virtual_key.getFriendlyName());
         placeholders.put("{player}", player.getName());
 
-        player.sendRichMessage(Messages.transfer_sent_keys.getMessage(player, placeholders));
+        Messages.transfer_sent_keys.sendMessage(player, placeholders);
 
-        target.sendRichMessage(Messages.transfer_received_keys.getMessage(target, "{player}", player.getName()));
+        Messages.transfer_received_keys.sendMessage(target, "{player}", player.getName());
     }
 }

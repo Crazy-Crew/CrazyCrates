@@ -13,13 +13,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
+import java.util.HashMap;
+
 public class CommandAddItem extends BaseCommand {
 
     @Command("additem")
     @Permission(value = "crazycrates.additem", def = PermissionDefault.OP)
     public void add(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("prize") @Suggestion("prizes") String prizeName, @ArgName("chance") @Suggestion("numbers") int chance, @ArgName("tier") @Suggestion("tiers") @Optional String tier) {
         if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
-            player.sendRichMessage(Messages.cannot_be_empty.getMessage(player, "{value}", "crate name"));
+            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
             return;
         }
@@ -27,7 +29,7 @@ public class CommandAddItem extends BaseCommand {
         final ItemStack item = player.getInventory().getItemInMainHand();
 
         if (item.getType().isAir()) {
-            player.sendRichMessage(Messages.cannot_be_air.getMessage(player));
+            Messages.cannot_be_air.sendMessage(player);
 
             return;
         }
@@ -35,7 +37,7 @@ public class CommandAddItem extends BaseCommand {
         final Crate crate = getCrate(player, crateName, false);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            player.sendRichMessage(Messages.not_a_crate.getMessage(player, "{crate}", crateName));
+            Messages.not_a_crate.sendMessage(player, "{crate}", crateName);
 
             return;
         }
@@ -43,9 +45,19 @@ public class CommandAddItem extends BaseCommand {
         if (tier != null) {
             crate.addEditorItem(item, prizeName, tier, chance);
 
+            Messages.added_item_with_editor.sendMessage(player, new HashMap<>() {{
+                put("{crate}", crateName);
+                put("{prize}", prizeName);
+            }});
+
             return;
         }
 
         crate.addEditorItem(item, prizeName, chance);
+
+        Messages.added_item_with_editor.sendMessage(player, new HashMap<>() {{
+            put("{crate}", crateName);
+            put("{prize}", prizeName);
+        }});
     }
 }
