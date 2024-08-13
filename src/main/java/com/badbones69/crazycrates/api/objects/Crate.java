@@ -137,7 +137,7 @@ public class Crate {
         setPreviewChestLines(file.getInt("Crate.Preview.ChestLines", 6));
         this.maxSlots = this.previewChestLines * 9;
 
-        this.crateInventoryName = file.getString("Crate.CrateName", " ");
+        this.crateInventoryName = file.contains("Crate.CrateName") ? file.getString("Crate.CrateName", " ") : file.getString("Crate.Name", " ");
 
         @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 

@@ -287,7 +287,7 @@ public class CrateManager {
                 final ArrayList<Prize> prizes = new ArrayList<>();
                 final List<Tier> tiers = new ArrayList<>();
 
-                final String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name", "") : file.getString("Crate.CrateName", "");
+                final String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name", " ") : file.contains("Crate.CrateName") ? file.getString("Crate.CrateName", " ") : file.getString("Crate.Name", " ");
 
                 final int maxMassOpen = file.getInt("Crate.Max-Mass-Open", 10);
                 final int requiredKeys = file.getInt("Crate.RequiredKeys", 0);
