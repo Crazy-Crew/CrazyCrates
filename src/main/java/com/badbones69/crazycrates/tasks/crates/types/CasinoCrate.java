@@ -10,6 +10,7 @@ import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import net.kyori.adventure.sound.Sound;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -121,10 +122,12 @@ public class CasinoCrate extends CrateBuilder {
 
                 if (row_uno.isEmpty() || row_dos.isEmpty() || row_tres.isEmpty()) {
                     if (MiscUtils.isLogging()) {
-                        this.plugin.getComponentLogger().warn("One of your tiers in the config is empty.");
-                        this.plugin.getComponentLogger().warn("Tier 1: {}", row_uno);
-                        this.plugin.getComponentLogger().warn("Tier 2: {}", row_dos);
-                        this.plugin.getComponentLogger().warn("Tier 3: {}", row_tres);
+                        final ComponentLogger logger = this.plugin.getComponentLogger();
+
+                        logger.warn("One of your tiers in the config is empty.");
+                        logger.warn("Tier 1: {}", row_uno);
+                        logger.warn("Tier 2: {}", row_dos);
+                        logger.warn("Tier 3: {}", row_tres);
                     }
 
                     return;
