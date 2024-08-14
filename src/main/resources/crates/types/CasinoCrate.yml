@@ -6,8 +6,6 @@ Crate:
 
   # See CosmicCrate.yml to see how the Cosmic CrateType works.
   CrateType: Casino
-  # Name of the Inventory if a GUI crate.
-  CrateName: "<dark_blue>Casino Crate"
   # The name of the inventory that will be in the preview GUI.
   Preview-Name: "<dark_blue>Casino Crate Preview"
   # Starting amount of keys when the player 1st joins.

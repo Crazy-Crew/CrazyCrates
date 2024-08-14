@@ -35,9 +35,12 @@ public class CrateOpenListener implements Listener {
         final Player player = event.getPlayer();
         final Crate crate = event.getCrate();
 
+        final String fileName = crate.getFileName();
+        final String fancyName = crate.getCrateName();
+
         if (crate.getCrateType() != CrateType.menu) {
-            if (!crate.canWinPrizes(player)) {
-                Messages.no_prizes_found.sendMessage(player, "{crate}", crate.getName());
+            if (crate.getPrizes().isEmpty() || !crate.canWinPrizes(player)) {
+                Messages.no_prizes_found.sendMessage(player, "{crate}", fancyName);
 
                 this.crateManager.removePlayerFromOpeningList(player);
                 this.crateManager.removePlayerKeyType(player);
@@ -48,8 +51,8 @@ public class CrateOpenListener implements Listener {
             }
         }
 
-        if (player.hasPermission("crazycrates.deny.open." + crate.getName())) {
-            Messages.no_crate_permission.sendMessage(player, "{crate}", crate.getName());
+        if (player.hasPermission("crazycrates.deny.open." + fileName)) {
+            Messages.no_crate_permission.sendMessage(player, "{crate}", fancyName);
 
             this.crateManager.removePlayerFromOpeningList(player);
             this.crateManager.removeCrateInUse(player);
@@ -61,7 +64,7 @@ public class CrateOpenListener implements Listener {
 
         this.crateManager.addPlayerToOpeningList(player, crate);
 
-        if (crate.getCrateType() != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), crate.getName());
+        if (crate.getCrateType() != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), fileName);
 
         final FileConfiguration configuration = event.getConfiguration();
 
@@ -73,9 +76,9 @@ public class CrateOpenListener implements Listener {
                 final String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
                 if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
-                    this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
+                    this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
                 } else {
-                    this.plugin.getServer().broadcastMessage(ItemUtil.color(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
+                    this.plugin.getServer().broadcastMessage(ItemUtil.color(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
                 }
             }
         }
@@ -90,9 +93,9 @@ public class CrateOpenListener implements Listener {
                     String builder;
 
                     if (Support.placeholder_api.isEnabled() ) {
-                        builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName()));
+                        builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%crate%", fileName).replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName()));
                     } else {
-                        builder = line.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName());
+                        builder = line.replaceAll("%crate%", fileName).replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName());
                     }
 
                     this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), builder);

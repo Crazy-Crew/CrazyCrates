@@ -131,7 +131,8 @@ public class PrizeManager {
                 .replaceAll("%player%", quoteReplacement(player.getName()))
                 .replaceAll("%reward%", quoteReplacement(prize.getPrizeName()))
                 .replaceAll("%reward_stripped%", quoteReplacement(prize.getStrippedName()))
-                .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())));
+                .replaceAll("%crate_fancy%", quoteReplacement(crate.getCrateName()))
+                .replaceAll("%crate%", quoteReplacement(crate.getFileName())));
     }
 
     private static void sendMessage(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, String message) {
@@ -141,9 +142,9 @@ public class PrizeManager {
                 .replaceAll("%player%", quoteReplacement(player.getName()))
                 .replaceAll("%reward%", quoteReplacement(prize.getPrizeName()))
                 .replaceAll("%reward_stripped%", quoteReplacement(prize.getStrippedName()))
-                .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName()));
+                .replaceAll("%crate%", quoteReplacement(crate.getCrateName()));
 
-        MsgUtils.sendMessage(player, Support.placeholder_api.isEnabled()  ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
+        MsgUtils.sendMessage(player, Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
     }
 
     /**
@@ -159,10 +160,10 @@ public class PrizeManager {
 
             if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
-            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getFileName(), prize));
         } else {
             Messages.prize_error.sendMessage(player, new HashMap<>() {{
-                put("{crate}", crate.getName());
+                put("{crate}", crate.getCrateName());
             }});
         }
     }

@@ -46,9 +46,11 @@ public class CommandTransfer extends BaseCommand {
             return;
         }
 
+        final String fancyName = crate.getCrateName();
+
         // If they don't have enough keys, we return.
-        if (this.userManager.getVirtualKeys(uuid, crate.getName()) <= amount) {
-            Messages.transfer_not_enough_keys.sendMessage(player, "{crate}", crate.getName());
+        if (this.userManager.getVirtualKeys(uuid, crateName) <= amount) {
+            Messages.transfer_not_enough_keys.sendMessage(player, "{crate}", fancyName);
 
             return;
         }
@@ -59,12 +61,12 @@ public class CommandTransfer extends BaseCommand {
         // If the event is cancelled, We return.
         if (event.isCancelled()) return;
 
-        this.userManager.takeKeys(uuid, crate.getName(), KeyType.virtual_key, amount, false);
-        this.userManager.addKeys(receiver, crate.getName(), KeyType.virtual_key, amount);
+        this.userManager.takeKeys(uuid, crateName, KeyType.virtual_key, amount, false);
+        this.userManager.addKeys(receiver, crateName, KeyType.virtual_key, amount);
 
         final Map<String, String> placeholders = new HashMap<>();
 
-        placeholders.put("{crate}", crate.getName());
+        placeholders.put("{crate}", fancyName);
         placeholders.put("{amount}", String.valueOf(amount));
         placeholders.put("{keytype}", KeyType.virtual_key.getFriendlyName());
         placeholders.put("{player}", player.getName());

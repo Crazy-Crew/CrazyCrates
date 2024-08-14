@@ -182,6 +182,9 @@ public class ConfigKeys implements SettingsHolder {
             "world_nether"
     ));
 
+    @Comment("This option if set to true will force the crate to take the required keys set in the crate file")
+    public static final Property<Boolean> crate_use_required_keys = newProperty("crate.use-required-keys", false);
+
     @Comment("The item the button should be.")
     public static final Property<String> menu_button_item = newProperty("gui.inventory.buttons.menu.item", "compass");
 

@@ -35,7 +35,7 @@ public class CommandList extends BaseCommand {
 
             Map<String, String> placeholders = new HashMap<>();
 
-            placeholders.put("{crate_name}", crate.getName());
+            placeholders.put("{crate_name}", crate.getCrateName());
             placeholders.put("{id}", crateLocation.getID());
             placeholders.put("{x}", String.valueOf(x));
             placeholders.put("{y}", String.valueOf(y));

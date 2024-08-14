@@ -128,7 +128,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
             if (!commands.isEmpty()) {
                 commands.forEach(value -> {
-                    String command = value.replaceAll("%player%", quoteReplacement(this.player.getName())).replaceAll("%crate%", quoteReplacement(this.crate.getName()));
+                    String command = value.replaceAll("%player%", quoteReplacement(this.player.getName())).replaceAll("%crate%", quoteReplacement(this.crate.getFileName()));
 
                     MiscUtils.sendCommand(command);
                 });

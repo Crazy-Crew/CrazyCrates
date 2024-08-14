@@ -10,7 +10,7 @@ plugins {
 
 val buildNumber: String? = System.getenv("BUILD_NUMBER")
 
-rootProject.version = if (buildNumber != null) "${libs.versions.minecraft.get()}-$buildNumber" else "3.6"
+rootProject.version = if (buildNumber != null) "${libs.versions.minecraft.get()}-$buildNumber" else "3.7"
 
 val isSnapshot = false
 
@@ -23,7 +23,7 @@ repositories {
 dependencies {
     paperweight.paperDevBundle(libs.versions.paper)
 
-    compileOnly(fileTree("$projectDir/libs/compile").include("*.jar"))
+    compileOnly(fileTree("$projectDir/libs").include("*.jar"))
 
     implementation(libs.triumph.cmds)
 
@@ -162,13 +162,4 @@ tasks {
             }
         }
     }
-}
-
-tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
-    javaLauncher = javaToolchains.launcherFor {
-        vendor = JvmVendorSpec.JETBRAINS
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-
-    jvmArgs("-XX:+AllowEnhancedClassRedefinition", "-XX:+AllowRedefinitionToAddDeleteMethods")
 }

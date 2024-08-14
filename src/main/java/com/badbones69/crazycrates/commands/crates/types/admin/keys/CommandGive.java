@@ -36,7 +36,6 @@ public class CommandGive extends BaseCommand {
             return;
         }
 
-
         final Crate crate = getCrate(sender, crateName, false);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
@@ -59,7 +58,7 @@ public class CommandGive extends BaseCommand {
     @Command("give-random")
     @Permission(value = "crazycrates.giverandomkey", def = PermissionDefault.OP)
     public void random(CommandSender sender, @Suggestion("keys") String type, @Suggestion("numbers") int amount, @Suggestion("players") PlayerBuilder target) {
-        give(sender, type, this.crateManager.getUsableCrates().get((int) MiscUtils.pickNumber(0, (this.crateManager.getUsableCrates().size() - 2))).getName(), amount, target);
+        give(sender, type, this.crateManager.getUsableCrates().get((int) MiscUtils.pickNumber(0, (this.crateManager.getUsableCrates().size() - 2))).getFileName(), amount, target);
     }
 
     @Command("giveall")
@@ -111,7 +110,7 @@ public class CommandGive extends BaseCommand {
                 return;
             }
 
-            this.userManager.addKeys(player.getUniqueId(), crate.getName(), keyType, amount);
+            this.userManager.addKeys(player.getUniqueId(), crateName, keyType, amount);
         }
     }
 }

@@ -90,7 +90,7 @@ public class CommandKey {
 
         final Map<Crate, Integer> keys = new HashMap<>();
 
-        this.crateManager.getUsableCrates().forEach(crate -> keys.put(crate, this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName())));
+        this.crateManager.getUsableCrates().forEach(crate -> keys.put(crate, this.userManager.getVirtualKeys(player.getUniqueId(), crate.getFileName())));
 
         boolean hasKeys = false;
 
@@ -102,9 +102,9 @@ public class CommandKey {
 
                 hasKeys = true;
 
-                placeholders.put("{crate}", crate.getCrateInventoryName());
+                placeholders.put("{crate}", crate.getCrateName());
                 placeholders.put("{keys}", String.valueOf(amount));
-                placeholders.put("{crate_opened}", String.valueOf(this.userManager.getCrateOpened(player.getUniqueId(), crate.getName())));
+                placeholders.put("{crate_opened}", String.valueOf(this.userManager.getCrateOpened(player.getUniqueId(), crate.getFileName())));
 
                 message.add(Messages.per_crate.getMessage(player, placeholders));
             }

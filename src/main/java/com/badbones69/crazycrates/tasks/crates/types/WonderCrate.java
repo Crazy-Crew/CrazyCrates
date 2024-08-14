@@ -41,9 +41,9 @@ public class WonderCrate extends CrateBuilder {
         final Player player = getPlayer();
         final UUID uuid = player.getUniqueId();
         final Crate crate = getCrate();
-        final String crateName = crate.getName();
+        final String fileName = crate.getFileName();
 
-        final boolean keyCheck = this.userManager.takeKeys(uuid, crateName, type, 1, checkHand);
+        final boolean keyCheck = this.userManager.takeKeys(uuid, fileName, type, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
@@ -122,7 +122,7 @@ public class WonderCrate extends CrateBuilder {
 
                     if (this.prize.useFireworks()) MiscUtils.spawnFirework(getPlayer().getLocation().add(0, 1, 0), null);
 
-                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crateName, this.prize));
+                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, fileName, this.prize));
 
                     crateManager.removePlayerFromOpeningList(player);
 

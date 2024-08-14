@@ -233,15 +233,19 @@ public class Prize {
 
         final boolean isAdventure = ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle);
 
+        final String fancyName = crate.getCrateName();
+        final String prizeName = getPrizeName();
+        final String strippedName = getStrippedName();
+
         if (isAdventure) {
             this.plugin.getServer().getOnlinePlayers().forEach(player -> {
                 if (!this.broadcastPermission.isEmpty() && player.hasPermission(this.broadcastPermission)) return;
 
                 this.broadcastMessages.forEach(message -> player.sendMessage(AdvUtil.parse(message, new HashMap<>() {{
                     put("%player%", player.getName());
-                    put("%crate%", crate.getCrateInventoryName());
-                    put("%reward%", getPrizeName());
-                    put("%reward_stripped%", getStrippedName());
+                    put("%crate%", fancyName);
+                    put("%reward%", prizeName);
+                    put("%reward_stripped%", strippedName);
                 }}, player)));
             });
 
@@ -253,9 +257,9 @@ public class Prize {
 
             this.broadcastMessages.forEach(message -> player.sendMessage(ItemUtil.color(message, new HashMap<>() {{
                 put("%player%", player.getName());
-                put("%crate%", crate.getCrateInventoryName());
-                put("%reward%", getPrizeName());
-                put("%reward_stripped%", getStrippedName());
+                put("%crate%", fancyName);
+                put("%reward%", prizeName);
+                put("%reward_stripped%", strippedName);
             }}, player)));
         });
     }

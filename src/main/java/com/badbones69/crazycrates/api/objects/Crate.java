@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+@SuppressWarnings("deprecation")
 public class Crate {
 
     private ItemBuilder previewTierBorderItem;
@@ -66,7 +67,7 @@ public class Crate {
     private final CrateType crateType;
     private FileConfiguration file;
     private ArrayList<Prize> prizes;
-    private String crateInventoryName;
+    private String crateName;
     private boolean giveNewPlayerKeys;
     private int previewChestLines;
     private int newPlayerKeys;
@@ -137,7 +138,7 @@ public class Crate {
         setPreviewChestLines(file.getInt("Crate.Preview.ChestLines", 6));
         this.maxSlots = this.previewChestLines * 9;
 
-        this.crateInventoryName = file.getString("Crate.CrateName", " ");
+        this.crateName = file.contains("Crate.CrateName") ? file.getString("Crate.CrateName", " ") : file.getString("Crate.Name", " ");
 
         @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
@@ -392,9 +393,9 @@ public class Crate {
     }
     
     /**
-     * @return name the name of the crate.
+     * @return name file name.
      */
-    public @NotNull final String getName() {
+    public @NotNull final String getFileName() {
         return this.name;
     }
     
@@ -437,8 +438,8 @@ public class Crate {
      *
      * @return the name of the inventory for GUI based crate types.
      */
-    public @NotNull final String getCrateInventoryName() {
-        return this.crateInventoryName;
+    public @NotNull final String getCrateName() {
+        return this.crateName;
     }
     
     /**
@@ -456,7 +457,7 @@ public class Crate {
      * @return the preview as an Inventory object.
      */
     public @NotNull final Inventory getPreview(Player player, int page, @Nullable Tier tier) {
-        CratePreviewMenu cratePreviewMenu = new CratePreviewMenu(player, this.previewName, !this.borderToggle && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, page, this, tier);
+        CratePreviewMenu cratePreviewMenu = new CratePreviewMenu(player, getPreviewName(), !this.borderToggle && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, page, this, tier);
 
         return cratePreviewMenu.build().getInventory();
     }
@@ -467,7 +468,7 @@ public class Crate {
      * @return the tier preview as an Inventory object.
      */
     public @NotNull final Inventory getTierPreview(Player player) {
-        CrateTierMenu crateTierMenu = new CrateTierMenu(player, this.previewName, !this.previewTierBorderToggle && (this.inventoryManager.inCratePreview(player)) && this.previewTierMaxSlots == 9 ? this.previewTierMaxSlots + 9 : this.previewTierMaxSlots, this, this.tiers);
+        CrateTierMenu crateTierMenu = new CrateTierMenu(player, getPreviewName(), !this.previewTierBorderToggle && (this.inventoryManager.inCratePreview(player)) && this.previewTierMaxSlots == 9 ? this.previewTierMaxSlots + 9 : this.previewTierMaxSlots, this, this.tiers);
 
         return crateTierMenu.build().getInventory();
     }
@@ -636,7 +637,11 @@ public class Crate {
             final List<ItemStack> editorItems = new ArrayList<>();
 
             if (section.contains(prizeName + ".Editor-Items")) {
-                section.getList(prizeName + ".Editor-Items").forEach(item -> editorItems.add((ItemStack) item));
+                final List<?> editors = section.getList(prizeName + ".Editor-Items");
+
+                if (editors != null) {
+                    editors.forEach(item -> editorItems.add((ItemStack) item));
+                }
             }
 
             editorItems.add(itemStack);
@@ -869,6 +874,10 @@ public class Crate {
         }
 
         return prizes;
+    }
+
+    public final boolean useRequiredKeys() {
+        return ConfigManager.getConfig().getProperty(ConfigKeys.crate_use_required_keys) && this.requiredKeys > 0;
     }
 
     /**
