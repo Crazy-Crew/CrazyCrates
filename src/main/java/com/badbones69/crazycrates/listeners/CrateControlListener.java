@@ -72,22 +72,23 @@ public class CrateControlListener implements Listener {
 
         if (!event.getAction().isLeftClick()) return;
 
-        final Block clickedBlock = event.getClickedBlock();
+        final Block block = event.getClickedBlock();
 
-        if (clickedBlock == null) return;
+        if (block == null) return;
 
-        final CrateLocation crateLocation = this.crateManager.getCrateLocation(clickedBlock.getLocation());
+        final Location location = block.getLocation();
+        final CrateLocation crateLocation = this.crateManager.getCrateLocation(location);
 
-        // If location is null, return.
         if (crateLocation == null) return;
 
         event.setUseInteractedBlock(Event.Result.DENY);
         event.setUseItemInHand(Event.Result.DENY);
 
-        final Crate crate = crateLocation.getCrate();
-
         if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin")) {
-            if (crateLocation.getLocation().equals(clickedBlock.getLocation())) {
+            final String arg1 = MiscUtils.location(location, true);
+            final String arg2 = MiscUtils.location(crateLocation.getLocation(), true);
+
+            if (arg1.equals(arg2)) {
                 this.crateManager.removeCrateLocation(crateLocation.getID());
 
                 Messages.removed_physical_crate.sendMessage(player, "{id}", crateLocation.getID());
@@ -95,6 +96,8 @@ public class CrateControlListener implements Listener {
 
             return;
         }
+
+        final Crate crate = crateLocation.getCrate();
 
         if (crate.getCrateType() == CrateType.menu) {
             // this is to stop players in QuadCrate to not be able to try and open a crate set to menu.
