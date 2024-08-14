@@ -97,27 +97,9 @@ public class CrateControlListener implements Listener {
             return;
         }
 
-        final Crate crate = crateLocation.getCrate();
-
-        if (crate.getCrateType() == CrateType.menu) {
-            // this is to stop players in QuadCrate to not be able to try and open a crate set to menu.
-            if (!this.crateManager.isInOpeningList(player) && this.config.getProperty(ConfigKeys.enable_crate_menu)) {
-                final CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_size));
-
-                player.openInventory(crateMainMenu.build().getInventory());
-            } else {
-                Messages.feature_disabled.sendMessage(player);
-            }
-        } else {
-            if (crate.isPreviewEnabled()) {
-                this.inventoryManager.addViewer(player);
-                this.inventoryManager.openNewCratePreview(player, crateLocation.getCrate());
-            } else {
-                Messages.preview_disabled.sendMessage(player, "{crate}", crate.getName());
-            }
-        }
+        preview(player, crateLocation.getCrate(), false);
     }
-    
+
     // This must run as highest, so it doesn't cause other plugins to check
     // the items that were added to the players inventory and replaced the item in the player's hand.
     // This is only an issue with QuickCrate
@@ -138,10 +120,14 @@ public class CrateControlListener implements Listener {
 
         final Crate crate = crateLocation.getCrate();
 
-        if (crate.getCrateType() == CrateType.menu) return;
-
         event.setUseInteractedBlock(Event.Result.DENY);
         event.setUseItemInHand(Event.Result.DENY);
+
+        if (crate.getCrateType() == CrateType.menu) {
+            preview(player, crate, true);
+
+            return;
+        }
 
         final KeyCheckEvent key = new KeyCheckEvent(player, crateLocation);
         player.getServer().getPluginManager().callEvent(key);
@@ -278,7 +264,7 @@ public class CrateControlListener implements Listener {
         }};
 
         if (crate.getCrateType() != CrateType.crate_on_the_go) {
-            if (this.config.getProperty(ConfigKeys.knock_back)) knockBack(player, location);
+            if (this.config.getProperty(ConfigKeys.knock_back)) knockback(player, location);
 
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
                 net.kyori.adventure.sound.Sound sound = net.kyori.adventure.sound.Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
@@ -289,8 +275,8 @@ public class CrateControlListener implements Listener {
             if (sendMessage) Messages.no_keys.sendMessage(player, placeholders);
         }
     }
-    
-    private void knockBack(final Player player, final Location location) {
+
+    private void knockback(final Player player, final Location location) {
         final Vector vector = player.getLocation().toVector().subtract(location.toVector()).normalize().multiply(1).setY(.1);
 
         if (player.isInsideVehicle() && player.getVehicle() != null) {
@@ -300,5 +286,25 @@ public class CrateControlListener implements Listener {
         }
 
         player.setVelocity(vector);
+    }
+
+    private void preview(final Player player, final Crate crate, boolean skipTypeCheck) {
+        if (skipTypeCheck || crate.getCrateType() == CrateType.menu) {
+            // this is to stop players in QuadCrate to not be able to try and open a crate set to menu.
+            if (!this.crateManager.isInOpeningList(player) && this.config.getProperty(ConfigKeys.enable_crate_menu)) {
+                final CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_size));
+
+                player.openInventory(crateMainMenu.build().getInventory());
+            } else {
+                Messages.feature_disabled.sendMessage(player);
+            }
+        } else {
+            if (crate.isPreviewEnabled()) {
+                this.inventoryManager.addViewer(player);
+                this.inventoryManager.openNewCratePreview(player, crate);
+            } else {
+                Messages.preview_disabled.sendMessage(player, "{crate}", crate.getName());
+            }
+        }
     }
 }
