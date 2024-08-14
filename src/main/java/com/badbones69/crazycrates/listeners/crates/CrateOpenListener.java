@@ -51,8 +51,8 @@ public class CrateOpenListener implements Listener {
             }
         }
 
-        if (player.hasPermission("crazycrates.deny.open." + crate.getName())) {
-            Messages.no_crate_permission.sendMessage(player, "{crate}", crate.getName());
+        if (player.hasPermission("crazycrates.deny.open." + fileName)) {
+            Messages.no_crate_permission.sendMessage(player, "{crate}", fancyName);
 
             this.crateManager.removePlayerFromOpeningList(player);
             this.crateManager.removeCrateInUse(player);
@@ -76,9 +76,9 @@ public class CrateOpenListener implements Listener {
                 final String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
                 if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
-                    this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
+                    this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
                 } else {
-                    this.plugin.getServer().broadcastMessage(ItemUtil.color(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
+                    this.plugin.getServer().broadcastMessage(ItemUtil.color(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
                 }
             }
         }

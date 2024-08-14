@@ -58,8 +58,8 @@ public class QuickCrate extends CrateBuilder {
         final String fileName = crate.getFileName();
 
         int keys = switch (type) {
-            case virtual_key -> this.userManager.getVirtualKeys(uuid, crateName);
-            case physical_key -> this.userManager.getPhysicalKeys(uuid, crateName);
+            case virtual_key -> this.userManager.getVirtualKeys(uuid, fileName);
+            case physical_key -> this.userManager.getPhysicalKeys(uuid, fileName);
             default -> 1;
         };
 

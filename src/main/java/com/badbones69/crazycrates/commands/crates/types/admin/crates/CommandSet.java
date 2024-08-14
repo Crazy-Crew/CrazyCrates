@@ -9,6 +9,7 @@ import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
@@ -50,9 +51,11 @@ public class CommandSet extends BaseCommand {
             return;
         }
 
-        if (this.crateManager.isCrateLocation(block.getLocation())) {
+        final Location location = block.getLocation();
+
+        if (this.crateManager.isCrateLocation(location)) {
             Messages.physical_crate_already_exists.sendMessage(player, new HashMap<>() {{
-                final CrateLocation crateLocation = crateManager.getCrateLocation(block.getLocation());
+                final CrateLocation crateLocation = crateManager.getCrateLocation(location);
 
                 put("{id}", crateLocation != null ? crateLocation.getID() : "N/A");
                 put("{crate}", crateLocation != null ? crateLocation.getCrate().getCrateName() : "N/A");
@@ -61,7 +64,7 @@ public class CommandSet extends BaseCommand {
             return;
         }
 
-        this.crateManager.addCrateLocation(block.getLocation(), crate);
+        this.crateManager.addCrateLocation(location, crate);
 
         final Map<String, String> placeholders = new HashMap<>();
 
