@@ -1,6 +1,8 @@
 ### Added:
 - Ability to migrate crate configurations from ExcellentCrates.
   - active locations from ExcellentCrates are also migrated!
+- Added a new feature where the `RequiredKeys` can also take that amount of keys [#755](https://github.com/Crazy-Crew/CrazyCrates/issues/755)
+  - `use-required-keys` in `config.yml` has to be true for that to take effect.
 
 #### Crate Config Changes:
 - Crate.CrateName is deprecated, and has been replaced by Crate.Name
@@ -51,7 +53,16 @@ Crate:
 ```
 
 ### Changes:
+- Right click now opens the crate menu as well.
+- Checked location strings instead of object ids
+- Simplified multiple location getters, don't need to get the same location 3 times if we aren't changing it.
+- `{crate}` in messages will now return `Crate.Name` instead of the file name
+  - Cleaned up internals related to sometimes, the file name being used along with bad naming schemes.
+  - `Crate#getName()` is now `Crate#getFileName()` while `Crate#getCrateInventoryName()` is `Crate#getCrateName()`
 - Check if the prizes section is empty before opening a crate, previews unneeded chance calculation.
-- Overhauled the `/crazycrates migrate` command, sends a more detailed message of what was migrated. 
-  - files that show up red failed to migrate while files that are green succeeded
-  - it also tells you the migration type you picked when running the command
+- Overhauled the `/crazycrates migrate` command, sends a more detailed message of what was migrated.
+  - files that show up red failed to migrate while files that are green succeeded,
+  - it also tells you the migration type you picked when running the command, while also reloading the plugin!
+  - Only saving to file, if we find anything that needs to be migrated with `CratesDeprecated` option
+  - Only migrate `Editor-Items`, if `use-old-editor` in the `config.yml` is set to `false`
+- A lot of other changes were internal clean up, I was merely being a Janitor. functionality should not change.
