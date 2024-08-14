@@ -6,7 +6,7 @@
 - Crate.CrateName is deprecated, and has been replaced by Crate.Name
   - The options were duplicate, and one wasn't used which annoyed me.
   - Crate.CrateName will be removed in the next version of Minecraft!
-  - You can run the /crazycrates migrate CratesDeprecated to migrate deprecated options.
+  - You can run /crazycrates migrate CratesDeprecated to migrate deprecated options.
 ```yml
 Crate:
   # https://docs.crazycrew.us/docs/plugins/crazycrates/misc/crate-types
@@ -26,6 +26,28 @@ Crate:
   - "<gray>You have <gold>%keys% keys <gray>to open this crate with."
   - "<gray>You have opened this crate: <gold>%crate_opened% times"
   - "<gray>(<yellow>!<gray>) Right click to view rewards."
+```
+- Crate.Preview-Name is deprecated, and has been replaced by Crate.Preview.Name
+  - The option was meant to always be under Crate.Preview
+  - Crate.Preview-Name will be removed in the next version of Minecraft!
+  - You can run /crazycrates migrate CratesDeprecated to migrate deprecated options.
+```yml
+  Preview:
+    # The name of the inventory for the preview menu.
+    Name: "<green>Basic Crate Preview" # moved it under Preview
+    # Turn on and off the preview for this crate.
+    Toggle: true
+    # How many lines the Crate Preview should have. Including Header and Bottom (Between 3 and 6)
+    ChestLines: 6
+    Glass:
+      # Turn the glass border in the preview on and off.
+      Toggle: true
+      # The name of the border item.
+      Name: " "
+      # The item that shows in the border. Can be glass or any other item.
+      Item: "gray_stained_glass_pane"
+      # The custom model data of the item, -1 is disabled.
+      Custom-Model-Data: -1 
 ```
 
 ### Changes:

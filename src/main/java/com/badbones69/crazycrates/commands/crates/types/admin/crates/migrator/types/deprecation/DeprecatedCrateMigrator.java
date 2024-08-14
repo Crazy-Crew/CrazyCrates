@@ -32,25 +32,43 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
 
                 if (section == null) return;
 
-                section.set("Crate.Name", section.getString("Crate.CrateName"));
-                section.set("Crate.CrateName", null);
+                boolean isSave = false;
+
+                if (section.contains("CrateName")) {
+                    section.set("Name", section.getString("CrateName", " "));
+                    section.set("CrateName", null);
+
+                    isSave = true;
+                }
+
+                if (section.contains("Preview-Name")) {
+                    section.set("Preview.Name", section.getString("Preview-Name", " "));
+                    section.set("Preview-Name", null);
+
+                    isSave = true;
+                }
 
                 final ConfigurationSection prizes = section.getConfigurationSection("Prizes");
 
                 if (prizes != null) {
-                    prizes.getKeys(false).forEach(value -> {
+                    for (String value : prizes.getKeys(false)) {
                         if (configuration.contains("Crate.Prizes." + value + ".Lore")) {
                             configuration.set("Crate.Prizes." + value + ".DisplayLore", configuration.getStringList("Crate.Prizes." + value + ".Lore"));
 
                             configuration.set("Crate.Prizes." + value + ".Lore", null);
+
+                            isSave = true;
                         }
 
                         if (configuration.contains("Crate.Prizes." + value + ".Patterns")) {
                             configuration.set("Crate.Prizes." + value + ".DisplayPatterns", configuration.getStringList("Crate.Prizes." + value + ".Patterns"));
 
                             configuration.set("Crate.Prizes." + value + ".Patterns", null);
+
+                            isSave = true;
                         }
-                    });
+                    }
+                }
 
                     customFile.save();
                 }
