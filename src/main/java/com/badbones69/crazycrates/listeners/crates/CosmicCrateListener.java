@@ -246,7 +246,9 @@ public class CosmicCrateListener implements Listener {
         final int size = cosmicCrateManager.getPrizes(player).size();
 
         if (size >= totalPrizes) {
-            final KeyType type = this.crateManager.getPlayerKeyType(player) == null ? KeyType.virtual_key : this.crateManager.getPlayerKeyType(player);
+            final KeyType playerType = this.crateManager.getPlayerKeyType(player);
+
+            final KeyType type = playerType == null ? KeyType.virtual_key : playerType;
 
             final boolean value = type == KeyType.physical_key && !this.userManager.hasPhysicalKey(uuid, crateName, this.crateManager.getHand(player));
 
