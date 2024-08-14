@@ -901,6 +901,10 @@ public class Crate {
         return prizes;
     }
 
+    public final boolean useRequiredKeys() {
+        return ConfigManager.getConfig().getProperty(ConfigKeys.crate_use_required_keys) && this.requiredKeys > 0;
+    }
+
     /**
      * Plays a sound at different volume levels with fallbacks
      *

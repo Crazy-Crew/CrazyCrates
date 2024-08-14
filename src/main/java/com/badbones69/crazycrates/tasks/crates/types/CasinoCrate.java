@@ -135,7 +135,7 @@ public class CasinoCrate extends CrateBuilder {
             }
         }
 
-        final boolean keyCheck = this.userManager.takeKeys(uuid, crateName, type, 1, checkHand);
+        final boolean keyCheck = this.userManager.takeKeys(uuid, fileName, type, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.

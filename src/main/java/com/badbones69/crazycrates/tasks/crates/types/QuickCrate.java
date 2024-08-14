@@ -63,6 +63,25 @@ public class QuickCrate extends CrateBuilder {
             default -> 1;
         };
 
+        if (crate.useRequiredKeys() && keys < crate.getRequiredKeys()) {
+            final int finalKeys = keys;
+
+            Messages.not_enough_keys.sendMessage(player, new HashMap<>() {{
+                put("{required_amount}", String.valueOf(crate.getRequiredKeys()));
+                put("{key_amount}", String.valueOf(crate.getRequiredKeys())); // deprecated, remove in next major version of minecraft.
+                put("{amount}", String.valueOf(finalKeys));
+                put("{crate}", crate.getCrateName());
+                put("{key}", crate.getKeyName());
+            }});
+
+            // Remove from opening list.
+            this.crateManager.removePlayerFromOpeningList(player);
+
+            return;
+        }
+
+        this.crateManager.addCrateInUse(player, getLocation());
+
         if (player.isSneaking() && keys > 1) {
             int used = 0;
 
@@ -97,7 +116,7 @@ public class QuickCrate extends CrateBuilder {
             return;
         }
 
-        final boolean keyCheck = this.userManager.takeKeys(uuid, crateName, type, 1, true);
+        final boolean keyCheck = this.userManager.takeKeys(uuid, fileName, type, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, true);
 
         if (!keyCheck) {
             // Send the message about failing to take the key.

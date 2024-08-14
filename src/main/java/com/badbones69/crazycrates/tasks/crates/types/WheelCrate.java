@@ -45,7 +45,7 @@ public class WheelCrate extends CrateBuilder {
         final Crate crate = getCrate();
         final String fileName = crate.getFileName();
 
-        boolean keyCheck = this.userManager.takeKeys(uuid, crateName, type, 1, checkHand);
+        boolean keyCheck = this.userManager.takeKeys(uuid, fileName, type, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.

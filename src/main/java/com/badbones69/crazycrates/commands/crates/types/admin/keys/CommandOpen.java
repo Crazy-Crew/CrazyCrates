@@ -290,8 +290,24 @@ public class CommandOpen extends BaseCommand {
 
         if (keys == 0) {
             Messages.no_keys.sendMessage(player, new HashMap<>() {{
-                put("{crate}", crate.getName());
-                put("{key}", crate.getKeyName());
+                put("{crate}", fancyName);
+                put("{key}", keyName);
+            }});
+
+            return;
+        }
+
+        final int requiredKeys = crate.getRequiredKeys();
+
+        if (crate.useRequiredKeys() && keys < requiredKeys) {
+            final int finalKeys = keys;
+            
+            Messages.not_enough_keys.sendMessage(player, new HashMap<>() {{
+                put("{required_amount}", String.valueOf(requiredKeys));
+                put("{key_amount}", String.valueOf(requiredKeys)); // deprecated, remove in next major version of minecraft.
+                put("{amount}", String.valueOf(finalKeys));
+                put("{crate}", fancyName);
+                put("{key}", keyName);
             }});
 
             return;
