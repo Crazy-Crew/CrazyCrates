@@ -546,6 +546,8 @@ public class CrateManager {
             return;
         }
 
+        final String fancyName = crate.getCrateName();
+
         CrateBuilder crateBuilder;
 
         switch (crate.getCrateType()) {
@@ -561,7 +563,7 @@ public class CrateManager {
                     final Map<String, String> placeholders = new HashMap<>();
 
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
-                    placeholders.put("{crate}", crate.getName());
+                    placeholders.put("{crate}", fancyName);
 
                     Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
 
@@ -575,7 +577,7 @@ public class CrateManager {
 
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    Messages.crate_in_use.sendMessage(player, "{crate}", crate.getName());
+                    Messages.crate_in_use.sendMessage(player, "{crate}", fancyName);
 
                     removePlayerFromOpeningList(player);
 
@@ -586,7 +588,7 @@ public class CrateManager {
                     final Map<String, String> placeholders = new HashMap<>();
 
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
-                    placeholders.put("{crate}", crate.getName());
+                    placeholders.put("{crate}", fancyName);
 
                     Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
 
@@ -603,7 +605,7 @@ public class CrateManager {
                     final Map<String, String> placeholders = new HashMap<>();
 
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
-                    placeholders.put("{crate}", crate.getName());
+                    placeholders.put("{crate}", fancyName);
 
                     Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
 
@@ -617,7 +619,7 @@ public class CrateManager {
 
             case quick_crate -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    Messages.crate_in_use.sendMessage(player, "{crate}", crate.getName());
+                    Messages.crate_in_use.sendMessage(player, "{crate}", fancyName);
 
                     removePlayerFromOpeningList(player);
 
@@ -628,7 +630,7 @@ public class CrateManager {
                     final Map<String, String> placeholders = new HashMap<>();
 
                     placeholders.put("{cratetype}", crate.getCrateType().getName());
-                    placeholders.put("{crate}", crate.getName());
+                    placeholders.put("{crate}", fancyName);
 
                     Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
 
@@ -980,7 +982,7 @@ public class CrateManager {
             }
         }
 
-        locations.set("Locations." + id + ".Crate", crate.getName());
+        locations.set("Locations." + id + ".Crate", crate.getCrateName());
         locations.set("Locations." + id + ".World", location.getWorld().getName());
         locations.set("Locations." + id + ".X", location.getBlockX());
         locations.set("Locations." + id + ".Y", location.getBlockY());

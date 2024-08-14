@@ -144,6 +144,7 @@ public class CrateControlListener implements Listener {
 
         final int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), fileName);
 
+        final String fancyName = crate.getCrateName();
 
         if (requiredKeys > 0 && totalKeys < requiredKeys) {
             final Map<String, String> placeholders = new HashMap<>();
@@ -151,7 +152,7 @@ public class CrateControlListener implements Listener {
             placeholders.put("{required_amount}", String.valueOf(requiredKeys));
             placeholders.put("{key_amount}", String.valueOf(requiredKeys)); // deprecated, remove in next major version of minecraft.
             placeholders.put("{amount}", String.valueOf(totalKeys));
-            placeholders.put("{crate}", crate.getPreviewName());
+            placeholders.put("{crate}", fancyName);
             placeholders.put("{key}", crate.getKeyName());
 
             Messages.not_enough_keys.sendMessage(player, placeholders);
@@ -180,20 +181,20 @@ public class CrateControlListener implements Listener {
 
             if (!useQuickCrateAgain) {
                 if (this.crateManager.isInOpeningList(player)) {
-                    Messages.already_opening_crate.sendMessage(player, "{crate}", crate.getName());
+                    Messages.already_opening_crate.sendMessage(player, "{crate}", fancyName);
 
                     return;
                 }
 
                 if (this.crateManager.getCratesInUse().containsValue(crateLocation.getLocation())) {
-                    Messages.crate_in_use.sendMessage(player, "{crate}", crate.getName());
+                    Messages.crate_in_use.sendMessage(player, "{crate}", fancyName);
 
                     return;
                 }
             }
 
             if (MiscUtils.isInventoryFull(player)) {
-                Messages.inventory_not_empty.sendMessage(player, "{crate}", crate.getName());
+                Messages.inventory_not_empty.sendMessage(player, "{crate}", fancyName);
 
                 return;
             }
@@ -262,7 +263,7 @@ public class CrateControlListener implements Listener {
         final String keyName = crate.getKeyName();
 
         final Map<String, String> placeholders = new HashMap<>() {{
-            put("{crate}", crate.getName());
+            put("{crate}", crate.getCrateName());
             put("{key}", keyName);
         }};
 
@@ -306,7 +307,7 @@ public class CrateControlListener implements Listener {
                 this.inventoryManager.addViewer(player);
                 this.inventoryManager.openNewCratePreview(player, crate);
             } else {
-                Messages.preview_disabled.sendMessage(player, "{crate}", crate.getName());
+                Messages.preview_disabled.sendMessage(player, "{crate}", crate.getCrateName());
             }
         }
     }

@@ -31,8 +31,10 @@ public class CommandPreview extends BaseCommand {
             return;
         }
 
+        final String fancyName = crate.getCrateName();
+
         if (!crate.isPreviewEnabled()) {
-            Messages.preview_disabled.sendMessage(sender, "{crate}", crateName);
+            Messages.preview_disabled.sendMessage(sender, "{crate}", fancyName);
 
             return;
         }

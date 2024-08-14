@@ -73,12 +73,14 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
+        final String fancyName = crate.getCrateName();
+
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
             final Map<String, String> placeholders = new HashMap<>();
 
-            placeholders.put("{cratetype}", crate.getCrateType().getName());
-            placeholders.put("{crate}", crate.getName());
+            placeholders.put("{cratetype}", crateType.getName());
+            placeholders.put("{crate}", fancyName);
 
             Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
 
@@ -99,7 +101,7 @@ public class CommandOpen extends BaseCommand {
 
             Map<String, String> placeholders = new HashMap<>();
 
-            placeholders.put("{crate}", crate.getName());
+            placeholders.put("{crate}", fancyName);
             placeholders.put("{key}", crate.getKeyName());
 
             Messages.no_keys.sendMessage(player, placeholders);
@@ -127,7 +129,7 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
-        CrateType crateType = crate.getCrateType();
+        final CrateType crateType = crate.getCrateType();
 
         // If crate type is null, we return.
         if (crateType == null) {
@@ -138,12 +140,14 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
+        final String fancyName = crate.getCrateName();
+
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
             final Map<String, String> placeholders = new HashMap<>();
 
-            placeholders.put("{cratetype}", crate.getCrateType().getName());
-            placeholders.put("{crate}", crate.getName());
+            placeholders.put("{cratetype}", crateType.getName());
+            placeholders.put("{crate}", fancyName);
 
             Messages.cant_be_a_virtual_crate.sendMessage(sender, placeholders);
 
@@ -168,7 +172,7 @@ public class CommandOpen extends BaseCommand {
             }
 
             Messages.no_keys.sendMessage(sender, new HashMap<>() {{
-                put("{crate}", crate.getName());
+                put("{crate}", fancyName);
                 put("{key}", crate.getKeyName());
             }});
 
@@ -179,7 +183,7 @@ public class CommandOpen extends BaseCommand {
 
         final Map<String, String> placeholders = new HashMap<>();
 
-        placeholders.put("{crate}", crate.getName());
+        placeholders.put("{crate}", fancyName);
         placeholders.put("{player}", player.getName());
 
         Messages.opened_a_crate.sendMessage(sender, placeholders);
@@ -193,7 +197,7 @@ public class CommandOpen extends BaseCommand {
         if (isCancelled(player, crateName)) return;
 
         // Get the crate.
-        Crate crate = getCrate(player, crateName, false);
+        final Crate crate = getCrate(player, crateName, false);
 
         // If crate is null, return.
         if (crate == null) {
@@ -202,23 +206,25 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
-        CrateType crateType = crate.getCrateType();
+        final CrateType crateType = crate.getCrateType();
 
         // If crate type is null, we return.
         if (crateType == null) {
             Messages.internal_error.sendMessage(sender);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crate.getName());
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crateName);
 
             return;
         }
+
+        final String fancyName = crate.getCrateName();
 
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
             final Map<String, String> placeholders = new HashMap<>();
 
-            placeholders.put("{cratetype}", crate.getCrateType().getName());
-            placeholders.put("{crate}", crate.getName());
+            placeholders.put("{cratetype}", crateType.getName());
+            placeholders.put("{crate}", fancyName);
 
             Messages.cant_be_a_virtual_crate.sendMessage(sender, placeholders);
 
@@ -229,7 +235,7 @@ public class CommandOpen extends BaseCommand {
 
         Map<String, String> placeholders = new HashMap<>();
 
-        placeholders.put("{crate}", crate.getName());
+        placeholders.put("{crate}", fancyName);
         placeholders.put("{player}", player.getName());
 
         Messages.opened_a_crate.sendMessage(sender, placeholders);
@@ -242,7 +248,7 @@ public class CommandOpen extends BaseCommand {
         if (isCancelled(player, crateName)) return;
 
         // Get the crate.
-        Crate crate = getCrate(player, crateName, false);
+        final Crate crate = getCrate(player, crateName, false);
 
         // If crate is null, return.
         if (crate == null) {
@@ -251,23 +257,26 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
-        CrateType crateType = crate.getCrateType();
+        final CrateType crateType = crate.getCrateType();
 
         // If crate type is null, we return.
         if (crateType == null) {
             Messages.internal_error.sendMessage(player);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crate.getName());
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crate.getFileName());
 
             return;
         }
+
+        final String fancyName = crate.getCrateName();
+        final String keyName = crate.getKeyName();
 
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
             final Map<String, String> placeholders = new HashMap<>();
 
-            placeholders.put("{cratetype}", crate.getCrateType().getName());
-            placeholders.put("{crate}", crate.getName());
+            placeholders.put("{cratetype}", crateType.getName());
+            placeholders.put("{crate}", fancyName);
 
             Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
 
@@ -299,16 +308,16 @@ public class CommandOpen extends BaseCommand {
 
             PrizeManager.givePrize(player, prize, crate);
 
-            this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getName(), prize));
+            this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crateName, prize));
 
-            if (prize.useFireworks()) MiscUtils.spawnFirework((player).getLocation().clone().add(.5, 1, .5), null);
+            if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().clone().add(.5, 1, .5), null);
 
             used++;
         }
 
-        if (crateType != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), crate.getName(), used);
+        if (crateType != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), crateName, used);
 
-        if (!this.userManager.takeKeys(player.getUniqueId(), crate.getName(), keyType, used, false)) {
+        if (!this.userManager.takeKeys(player.getUniqueId(), crateName, keyType, used, false)) {
             this.crateManager.removeCrateInUse(player);
             this.crateManager.removePlayerFromOpeningList(player);
 

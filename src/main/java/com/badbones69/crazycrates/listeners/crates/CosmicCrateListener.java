@@ -241,6 +241,7 @@ public class CosmicCrateListener implements Listener {
 
         // Get the crate name.
         final String fileName = crate.getFileName();
+        final String fancyName = crate.getCrateName();
 
         // Check picked prizes size to total prizes allowed, so we know when to take the key.
         final int size = cosmicCrateManager.getPrizes(player).size();
@@ -255,7 +256,7 @@ public class CosmicCrateListener implements Listener {
             // If they don't have enough keys.
             if (value) {
                 Map<String, String> placeholders = new HashMap<>();
-                placeholders.put("{crate}", crate.getName());
+                placeholders.put("{crate}", fancyName);
                 placeholders.put("{key}", crate.getKeyName());
 
                 // Send no keys message.
@@ -305,7 +306,7 @@ public class CosmicCrateListener implements Listener {
             }
 
             // Get new name.
-            final String shufflingName = crate.getCrateInventoryName() + " - Shuffling";
+            final String shufflingName = fancyName + " - Shuffling";
 
             // Update the cosmic name.
             holder.title(shufflingName);
@@ -324,9 +325,9 @@ public class CosmicCrateListener implements Listener {
                     String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
                     if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
-                        this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
+                        this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
                     } else {
-                        this.plugin.getServer().broadcastMessage(ItemUtil.color(builder.replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
+                        this.plugin.getServer().broadcastMessage(ItemUtil.color(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
                     }
                 }
             }
@@ -363,7 +364,7 @@ public class CosmicCrateListener implements Listener {
                                 // Remove the player from the hashmap.
                                 cosmicCrateManager.removePickedPlayer(player);
 
-                                Messages.key_refund.sendMessage(player, "{crate}", crateName);
+                                Messages.key_refund.sendMessage(player, "{crate}", fancyName);
 
                                 if (MiscUtils.isLogging()) plugin.getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + fileName + " crate and so they were issued a key refund.", exception);
 
@@ -412,7 +413,7 @@ public class CosmicCrateListener implements Listener {
     }
 
     private void showRewards(final Player player, final InventoryView view, final CratePrizeMenu cosmic, final CosmicCrateManager cosmicCrateManager) {
-        final String rewardsName = cosmic.getCrate().getCrateInventoryName() + " - Prizes";
+        final String rewardsName = cosmic.getCrate().getCrateName() + " - Prizes";
 
         cosmic.title(rewardsName);
         cosmic.sendTitleChange();

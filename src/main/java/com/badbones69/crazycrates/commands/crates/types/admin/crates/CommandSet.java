@@ -55,7 +55,7 @@ public class CommandSet extends BaseCommand {
                 final CrateLocation crateLocation = crateManager.getCrateLocation(block.getLocation());
 
                 put("{id}", crateLocation != null ? crateLocation.getID() : "N/A");
-                put("{crate}", crateLocation != null ? crateLocation.getCrate().getName() : "N/A");
+                put("{crate}", crateLocation != null ? crateLocation.getCrate().getCrateName() : "N/A");
             }});
 
             return;
@@ -65,7 +65,7 @@ public class CommandSet extends BaseCommand {
 
         final Map<String, String> placeholders = new HashMap<>();
 
-        placeholders.put("{crate}", crate.getName());
+        placeholders.put("{crate}", crate.getCrateName());
         placeholders.put("{prefix}", MsgUtils.getPrefix());
 
         // this has to use sendRichMessage as it is a list.

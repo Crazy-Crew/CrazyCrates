@@ -36,10 +36,11 @@ public class CrateOpenListener implements Listener {
         final Crate crate = event.getCrate();
 
         final String fileName = crate.getFileName();
+        final String fancyName = crate.getCrateName();
 
         if (crate.getCrateType() != CrateType.menu) {
             if (crate.getPrizes().isEmpty() || !crate.canWinPrizes(player)) {
-                Messages.no_prizes_found.sendMessage(player, "{crate}", crate.getName());
+                Messages.no_prizes_found.sendMessage(player, "{crate}", fancyName);
 
                 this.crateManager.removePlayerFromOpeningList(player);
                 this.crateManager.removePlayerKeyType(player);

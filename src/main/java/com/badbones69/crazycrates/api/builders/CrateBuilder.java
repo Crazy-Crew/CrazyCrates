@@ -59,7 +59,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
         this.player = player;
         this.size = size;
 
-        this.builder = new CratePrizeMenu(player, crate.getCrateInventoryName(), size, crate);
+        this.builder = new CratePrizeMenu(player, getTitle(), size, crate);
         this.inventory = this.builder.build().getInventory();
     }
 
@@ -110,7 +110,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
         this.player = player;
         this.size = size;
 
-        this.builder = new CratePrizeMenu(player, crate.getCrateInventoryName(), size, crate);
+        this.builder = new CratePrizeMenu(player, getTitle(), size, crate);
         this.inventory = this.builder.build().getInventory();
     }
 
@@ -215,7 +215,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @return title of the crate.
      */
     public @NotNull final String getTitle() {
-        return this.crate.getCrateInventoryName();
+        return this.crate.getCrateName();
     }
 
     /**

@@ -67,7 +67,7 @@ public class Crate {
     private final CrateType crateType;
     private FileConfiguration file;
     private ArrayList<Prize> prizes;
-    private String crateInventoryName;
+    private String crateName;
     private boolean giveNewPlayerKeys;
     private int previewChestLines;
     private int newPlayerKeys;
@@ -138,7 +138,7 @@ public class Crate {
         setPreviewChestLines(file.getInt("Crate.Preview.ChestLines", 6));
         this.maxSlots = this.previewChestLines * 9;
 
-        this.crateInventoryName = file.contains("Crate.CrateName") ? file.getString("Crate.CrateName", " ") : file.getString("Crate.Name", " ");
+        this.crateName = file.contains("Crate.CrateName") ? file.getString("Crate.CrateName", " ") : file.getString("Crate.Name", " ");
 
         @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
@@ -463,8 +463,8 @@ public class Crate {
      *
      * @return the name of the inventory for GUI based crate types.
      */
-    public @NotNull final String getCrateInventoryName() {
-        return this.crateInventoryName;
+    public @NotNull final String getCrateName() {
+        return this.crateName;
     }
     
     /**
@@ -482,7 +482,7 @@ public class Crate {
      * @return the preview as an Inventory object.
      */
     public @NotNull final Inventory getPreview(Player player, int page, @Nullable Tier tier) {
-        CratePreviewMenu cratePreviewMenu = new CratePreviewMenu(player, this.previewName, !this.borderToggle && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, page, this, tier);
+        CratePreviewMenu cratePreviewMenu = new CratePreviewMenu(player, getPreviewName(), !this.borderToggle && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, page, this, tier);
 
         return cratePreviewMenu.build().getInventory();
     }
@@ -493,7 +493,7 @@ public class Crate {
      * @return the tier preview as an Inventory object.
      */
     public @NotNull final Inventory getTierPreview(Player player) {
-        CrateTierMenu crateTierMenu = new CrateTierMenu(player, this.previewName, !this.previewTierBorderToggle && (this.inventoryManager.inCratePreview(player)) && this.previewTierMaxSlots == 9 ? this.previewTierMaxSlots + 9 : this.previewTierMaxSlots, this, this.tiers);
+        CrateTierMenu crateTierMenu = new CrateTierMenu(player, getPreviewName(), !this.previewTierBorderToggle && (this.inventoryManager.inCratePreview(player)) && this.previewTierMaxSlots == 9 ? this.previewTierMaxSlots + 9 : this.previewTierMaxSlots, this, this.tiers);
 
         return crateTierMenu.build().getInventory();
     }

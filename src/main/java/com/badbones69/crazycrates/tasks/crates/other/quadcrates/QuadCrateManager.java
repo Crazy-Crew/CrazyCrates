@@ -265,7 +265,7 @@ public class QuadCrateManager {
             public void run() {
                 endCrate(true);
 
-                Messages.out_of_time.sendMessage(player, "{crate}", crate.getName());
+                Messages.out_of_time.sendMessage(player, "{crate}", crate.getCrateName());
 
                 crate.playSound(player, player.getLocation(), "stop-sound", "entity.player.levelup", Sound.Source.PLAYER);
             }

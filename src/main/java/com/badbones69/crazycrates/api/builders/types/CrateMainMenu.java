@@ -122,7 +122,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
                     final ItemBuilder builder = new ItemBuilder()
                             .withType(section.getString("Item", "chest").toLowerCase())
-                            .setDisplayName(section.contains("CrateName") ? section.getString("CrateName", crateName) : section.getString("Name", crateName))
+                            .setDisplayName(crate.getCrateName())
                             .setCustomModelData(section.getInt("Custom-Model-Data", -1))
                             .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, fileName)))
                             .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, fileName)))
@@ -163,6 +163,7 @@ public class CrateMainMenu extends InventoryBuilder {
         if (crate == null) return;
 
         final String fileName = crate.getFileName();
+        final String fancyName = crate.getCrateName();
 
         if (event.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
             if (crate.isPreviewEnabled()) {
@@ -173,14 +174,14 @@ public class CrateMainMenu extends InventoryBuilder {
                 this.inventoryManager.addViewer(player);
                 this.inventoryManager.openNewCratePreview(player, crate);
             } else {
-                Messages.preview_disabled.sendMessage(player, "{crate}", crateName);
+                Messages.preview_disabled.sendMessage(player, "{crate}", fancyName);
             }
 
             return;
         }
 
         if (this.crateManager.isInOpeningList(player)) {
-            Messages.already_opening_crate.sendMessage(player, "{crate}", crateName);
+            Messages.already_opening_crate.sendMessage(player, "{crate}", fancyName);
 
             return;
         }
@@ -205,7 +206,7 @@ public class CrateMainMenu extends InventoryBuilder {
                 player.playSound(sound);
             }
 
-            Messages.no_virtual_key.sendMessage(player, "{crate}", crateName);
+            Messages.no_virtual_key.sendMessage(player, "{crate}", fancyName);
 
             return;
         }
@@ -219,7 +220,7 @@ public class CrateMainMenu extends InventoryBuilder {
         }
 
         if (MiscUtils.isInventoryFull(player)) {
-            Messages.inventory_not_empty.sendMessage(player, "{crate}", crateName);
+            Messages.inventory_not_empty.sendMessage(player, "{crate}", fancyName);
 
             return;
         }
