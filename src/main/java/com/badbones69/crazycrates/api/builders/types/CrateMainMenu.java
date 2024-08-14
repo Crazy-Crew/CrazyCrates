@@ -122,7 +122,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
                     final ItemBuilder builder = new ItemBuilder()
                             .withType(section.getString("Item", "chest").toLowerCase())
-                            .setDisplayName(section.getString("CrateName", crateName))
+                            .setDisplayName(section.contains("CrateName") ? section.getString("CrateName", crateName) : section.getString("Name", crateName))
                             .setCustomModelData(section.getInt("Custom-Model-Data", -1))
                             .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)))
                             .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, crateName)))
