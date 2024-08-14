@@ -21,6 +21,12 @@ public class CommandMigrate extends BaseCommand {
     @Command("migrate")
     @Permission(value = "crazycrates.migrate", def = PermissionDefault.OP)
     public void migrate(final CommandSender sender, @ArgName("migration_type") @Suggestion("migrators") final String name, @ArgName("crate") @Optional @Suggestion("crates") final String crateName) {
+        if (crateName.equalsIgnoreCase("Menu")) {
+            Messages.not_a_crate.sendMessage(sender, "{crate}", "Menu");
+
+            return;
+        }
+
         final MigrationType type = MigrationType.fromName(name);
 
         switch (type) {
