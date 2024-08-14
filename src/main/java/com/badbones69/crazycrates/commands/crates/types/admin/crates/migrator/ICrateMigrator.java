@@ -16,6 +16,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public abstract class ICrateMigrator {
 
@@ -29,7 +30,11 @@ public abstract class ICrateMigrator {
 
     protected final MigrationType type;
 
+    protected final long startTime;
+
     public ICrateMigrator(final CommandSender sender, MigrationType type) {
+        this.startTime = System.nanoTime();
+
         this.sender = sender;
         this.type = type;
     }
@@ -140,5 +145,11 @@ public abstract class ICrateMigrator {
 
         customFile.save();
         customFile.reload();
+    }
+
+    public final String time() {
+        final double time = (double) (System.nanoTime() - this.startTime) / 1.0E9D;
+
+        return String.format(Locale.ROOT, "%.3fs", time);
     }
 }
