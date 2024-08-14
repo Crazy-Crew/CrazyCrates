@@ -1,9 +1,12 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator;
 
+import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
+import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.core.util.StringUtil;
 import com.ryderbelserion.vital.paper.files.config.CustomFile;
@@ -25,6 +28,8 @@ public abstract class ICrateMigrator {
     protected final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     protected final CrateManager crateManager = this.plugin.getCrateManager();
+
+    protected final SettingsManager config = ConfigManager.getConfig();
 
     protected final FileManager fileManager = this.plugin.getFileManager();
 
@@ -106,7 +111,7 @@ public abstract class ICrateMigrator {
                     set(prize, "DisplayTrim.Pattern", prize.getString("DisplayTrim.Pattern", "sentry").toLowerCase());
                 }
 
-                if (prize.contains("Editor-Items")) {
+                if (prize.contains("Editor-Items") && !this.config.getProperty(ConfigKeys.item_editor_toggle)) {
                     final List<?> items = prize.getList("Editor-Items");
 
                     if (items != null) {
