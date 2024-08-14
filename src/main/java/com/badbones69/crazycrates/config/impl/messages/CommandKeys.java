@@ -70,7 +70,10 @@ public class CommandKeys implements SettingsHolder {
             " ⤷ {failed_amount}</red>",
             "",
             "<red>Conversion Time: <yellow>{time}",
-            "<red>Files: <yellow>{files}",
+            "<red>Conversion Type: <yellow>{type}",
+            "",
+            "<red>Converted Files:",
+            "{files}",
             "",
             "<bold><gold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</gold></bold>"
     ));
