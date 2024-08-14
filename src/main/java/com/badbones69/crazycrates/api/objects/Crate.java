@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+@SuppressWarnings("deprecation")
 public class Crate {
 
     private ItemBuilder previewTierBorderItem;
@@ -661,7 +662,11 @@ public class Crate {
             final List<ItemStack> editorItems = new ArrayList<>();
 
             if (section.contains(prizeName + ".Editor-Items")) {
-                section.getList(prizeName + ".Editor-Items").forEach(item -> editorItems.add((ItemStack) item));
+                final List<?> editors = section.getList(prizeName + ".Editor-Items");
+
+                if (editors != null) {
+                    editors.forEach(item -> editorItems.add((ItemStack) item));
+                }
             }
 
             editorItems.add(itemStack);
