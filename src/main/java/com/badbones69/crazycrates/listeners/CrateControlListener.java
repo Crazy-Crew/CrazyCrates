@@ -128,7 +128,8 @@ public class CrateControlListener implements Listener {
 
         if (clickedBlock == null) return;
 
-        final CrateLocation crateLocation = this.crateManager.getCrateLocation(clickedBlock.getLocation());
+        final Location location = clickedBlock.getLocation();
+        final CrateLocation crateLocation = this.crateManager.getCrateLocation(location);
 
         if (crateLocation == null) return;
 
@@ -163,7 +164,7 @@ public class CrateControlListener implements Listener {
 
             Messages.not_enough_keys.sendMessage(player, placeholders);
 
-            lackingKey(player, crate, clickedBlock, false);
+            lackingKey(player, crate, location, false);
 
             key.setCancelled(true);
 
@@ -219,7 +220,7 @@ public class CrateControlListener implements Listener {
             return;
         }
 
-        lackingKey(player, crate, clickedBlock, true);
+        lackingKey(player, crate, location, true);
 
         key.setCancelled(true);
     }
@@ -265,7 +266,7 @@ public class CrateControlListener implements Listener {
         if (this.crateManager.isInOpeningList(player)) this.crateManager.removePlayerFromOpeningList(player);
     }
 
-    private void lackingKey(final Player player, final Crate crate, final Block clickedBlock, final boolean sendMessage) {
+    private void lackingKey(final Player player, final Crate crate, final Location location, final boolean sendMessage) {
         final String keyName = crate.getKeyName();
 
         final Map<String, String> placeholders = new HashMap<>() {{
@@ -274,7 +275,7 @@ public class CrateControlListener implements Listener {
         }};
 
         if (crate.getCrateType() != CrateType.crate_on_the_go) {
-            if (this.config.getProperty(ConfigKeys.knock_back)) knockBack(player, clickedBlock.getLocation());
+            if (this.config.getProperty(ConfigKeys.knock_back)) knockBack(player, location);
 
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
                 net.kyori.adventure.sound.Sound sound = net.kyori.adventure.sound.Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
