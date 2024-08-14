@@ -7,8 +7,10 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.paper.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -144,6 +146,32 @@ public class Prize {
      * @return the display item that is shown for the preview and the winning prize.
      */
     public @NotNull final ItemStack getDisplayItem(@NotNull final Player player) {
+        if (Support.placeholder_api.isEnabled()) {
+            final String displayName = this.displayItem.getDisplayName();
+
+            this.displayItem.setDisplayName(PlaceholderAPI.setPlaceholders(player, displayName));
+
+            List<String> lore = new ArrayList<>();
+
+            if (this.section.contains("DisplayLore") && !this.section.contains("Lore")) {
+                this.section.getStringList("DisplayLore").forEach(line -> lore.add(PlaceholderAPI.setPlaceholders(player, line)));
+            }
+
+            if (this.section.contains("Lore")) {
+                if (MiscUtils.isLogging()) {
+                    List.of(
+                            "Deprecated usage of Lore in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
+                            "Lore will be removed in the next major version of Minecraft in favor of DisplayLore",
+                            "You can turn my nagging off in config.yml, verbose_logging: true -> false"
+                    ).forEach(this.plugin.getComponentLogger()::warn);
+                }
+
+                this.section.getStringList("Lore").forEach(line -> lore.add(PlaceholderAPI.setPlaceholders(player, line)));
+            }
+
+            this.displayItem.setDisplayLore(lore);
+        }
+
         return this.displayItem.setPlayer(player).setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
     }
 
