@@ -70,6 +70,7 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
                     }
                 }
 
+                if (isSave) {
                     customFile.save();
                 }
 
