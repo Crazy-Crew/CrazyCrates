@@ -350,8 +350,12 @@ public class CrateManager {
                             final List<ItemStack> editorItems = new ArrayList<>();
 
                             if (prizeSection.contains("Editor-Items")) {
-                                for (Object key : prizeSection.getList("Editor-Items")) {
-                                    editorItems.add((ItemStack) key);
+                                final List<?> keys = prizeSection.getList("Editor-Items");
+
+                                if (keys != null) {
+                                    for (Object key : keys) {
+                                        editorItems.add((ItemStack) key);
+                                    }
                                 }
                             }
 
