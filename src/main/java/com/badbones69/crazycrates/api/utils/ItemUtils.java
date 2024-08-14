@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -166,11 +167,11 @@ public class ItemUtils {
     }
 
     /**
-     * @param itemMeta the {@link ItemMeta}
+     * @param container the {@link PersistentDataContainer}
      * @return the {@link String}
      */
-    public static String getKey(@NotNull final ItemMeta itemMeta) {
-        return itemMeta.getPersistentDataContainer().get(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
+    public static String getKey(@NotNull final PersistentDataContainer container) {
+        return container.get(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
     }
 
     /**

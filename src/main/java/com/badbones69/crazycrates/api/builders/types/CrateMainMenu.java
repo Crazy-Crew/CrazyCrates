@@ -158,7 +158,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
         if (!item.hasItemMeta()) return;
 
-        final Crate crate = this.crateManager.getCrateFromName(ItemUtils.getKey(item.getItemMeta()));
+        final Crate crate = this.crateManager.getCrateFromName(ItemUtils.getKey(item.getItemMeta().getPersistentDataContainer()));
 
         if (crate == null) return;
 

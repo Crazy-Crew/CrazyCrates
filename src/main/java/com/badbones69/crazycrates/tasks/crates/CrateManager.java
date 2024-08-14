@@ -1097,16 +1097,9 @@ public class CrateManager {
 
         ItemMeta itemMeta = item.getItemMeta();
 
-        // If null, return.
         if (itemMeta == null) return null;
 
-        if (!itemMeta.getPersistentDataContainer().has(PersistentKeys.crate_key.getNamespacedKey())) {
-            return getCrateNameFromOldKey(itemMeta);
-        }
-
-        String crateName = ItemUtils.getKey(itemMeta);
-
-        return getCrateFromName(crateName);
+        return getCrateFromName(ItemUtils.getKey(itemMeta.getPersistentDataContainer()));
     }
 
     /**
@@ -1209,78 +1202,23 @@ public class CrateManager {
      * @return true if it belongs to that Crate and false if it does not.
      */
     public final boolean isKeyFromCrate(@Nullable final ItemStack item, @Nullable final Crate crate) {
-        // If the item is null for whatever reason.
         if (item == null) return false;
 
-        // If crate is null, return.
         if (crate == null) return false;
 
-        // If the crate type is menu, return.
         if (crate.getCrateType() == CrateType.menu) return false;
 
-        // If the item type is AIR for whatever reason.
         if (item.getType() == Material.AIR) return false;
 
-        // If the item has no meta.
         if (!item.hasItemMeta()) return false;
 
-        // Get the item meta.
         final ItemMeta itemMeta = item.getItemMeta();
 
-        // Check if it has key.
-        final boolean hasNewCrateKey = itemMeta.getPersistentDataContainer().has(PersistentKeys.crate_key.getNamespacedKey());
+        final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
 
-        // If we find no value in PDC, it's likely a legacy key. It'll return false if it does not contain it.
-        if (!hasNewCrateKey) {
-            // Get the item meta as a string
-            final String value = itemMeta.getAsString();
+        if (!container.has(PersistentKeys.crate_key.getNamespacedKey())) return false;
 
-            final String[] sections = value.split(",");
-
-            String pair = null;
-
-            for (final String key : sections) {
-                if (key.contains("CrazyCrates-Crate")) {
-                    pair = key.trim().replaceAll("\\{", "").replaceAll("\"", "");
-
-                    break;
-                }
-            }
-
-            if (pair == null) {
-                return false;
-            }
-
-            return crate.getName().equals(pair.split(":")[1]);
-        }
-
-        // Get the crate name.
-        final String crateName = ItemUtils.getKey(itemMeta);
-
-        return crate.getName().equals(crateName);
-    }
-
-    public @Nullable final Crate getCrateNameFromOldKey(final ItemMeta itemMeta) {
-        if (itemMeta == null) return null;
-
-        // Get the item meta as a string
-        final String value = itemMeta.getAsString();
-
-        final String[] sections = value.split(",");
-
-        String pair = null;
-
-        for (final String key : sections) {
-            if (key.contains("CrazyCrates-Crate")) {
-                pair = key.trim().replaceAll("\\{", "").replaceAll("\"", "");
-
-                break;
-            }
-        }
-
-        if (pair == null) return null;
-
-        return getCrateFromName(pair.split(":")[1]);
+        return crate.getFileName().equals(ItemUtils.getKey(container));
     }
 
     /**

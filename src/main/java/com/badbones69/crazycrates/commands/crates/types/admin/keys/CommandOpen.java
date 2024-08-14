@@ -285,7 +285,7 @@ public class CommandOpen extends BaseCommand {
 
         final KeyType keyType = getKeyType(type);
 
-        int keys = keyType == KeyType.physical_key ? this.userManager.getPhysicalKeys(player.getUniqueId(), crate.getName()) : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName());
+        int keys = keyType == KeyType.physical_key ? this.userManager.getPhysicalKeys(player.getUniqueId(), crateName) : this.userManager.getVirtualKeys(player.getUniqueId(), crateName);
         int used = 0;
 
         if (keys == 0) {
