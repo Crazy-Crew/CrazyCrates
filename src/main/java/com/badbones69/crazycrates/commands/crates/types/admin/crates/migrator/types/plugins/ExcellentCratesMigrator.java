@@ -53,7 +53,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             if (crateFile.exists()) {
                 this.plugin.getComponentLogger().warn("Crate {} already exists in {}.", crateName, directory.getName());
 
-                failed.add("<red>" + crateName);
+                failed.add("<red>⤷ " + crateName);
 
                 return;
             }
@@ -63,7 +63,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             } catch (IOException exception) {
                 this.plugin.getComponentLogger().warn("Failed to create crate file {} in {}.", crateName, directory.getName(), exception);
 
-                failed.add("<red>" + crateName);
+                failed.add("<red>⤷ " + crateName);
             }
 
             final CustomFile customFile = new CustomFile(directory).apply(crateName);
@@ -273,20 +273,20 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             this.fileManager.addCustomFile(customFile);
 
-            success.add("<green>" + crateName);
+            success.add("<green>⤷ " + crateName);
         }
 
         // reload crates
         this.crateManager.loadHolograms();
         this.crateManager.loadCrates();
 
-        final int failedCrates = failed.size();
         final int convertedCrates = success.size();
+        final int failedCrates = failed.size();
 
         sendMessage(new ArrayList<>(failedCrates + convertedCrates) {{
             addAll(failed);
             addAll(success);
-        }}, failedCrates, convertedCrates);
+        }}, convertedCrates, failedCrates);
     }
 
     @Override

@@ -5,9 +5,11 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.core.util.StringUtil;
 import com.ryderbelserion.vital.paper.files.config.CustomFile;
 import com.ryderbelserion.vital.paper.files.config.FileManager;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -53,14 +55,10 @@ public abstract class ICrateMigrator {
 
     public abstract File getCratesDirectory();
 
-    public void sendMessage(List<String> files, final int failed, final int success) {
+    public void sendMessage(List<String> files, final int success, final int failed) {
         Messages.successfully_migrated.sendMessage(this.sender, new HashMap<>() {{
             if (files.size() > 1) {
-                final StringBuilder sb = new StringBuilder();
-
-                files.forEach(sb::append);
-
-                put("{files}", sb.toString());
+                put("{files}", StringUtils.chomp(StringUtil.convertList(files)));
             } else {
                 put("{files}", files.getFirst());
             }
@@ -68,6 +66,7 @@ public abstract class ICrateMigrator {
             put("{succeeded_amount}", String.valueOf(success));
             put("{failed_amount}", String.valueOf(failed));
             put("{type}", type.getName());
+            put("{time}", time());
         }});
     }
 

@@ -44,22 +44,22 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
         try {
             migrate(customFile, this.crateName);
 
-            success.add("<green>" + this.crateName);
+            success.add("<green>⤷ " + this.crateName);
         } catch (Exception exception) {
-            failed.add("<red>" + this.crateName);
+            failed.add("<red>⤷ " + this.crateName);
         }
 
         final Crate crate = this.crateManager.getCrateFromName(this.crateName);
 
         this.crateManager.reloadCrate(crate);
 
-        final int failedCrates = failed.size();
         final int convertedCrates = success.size();
+        final int failedCrates = failed.size();
 
         sendMessage(new ArrayList<>(failedCrates + convertedCrates) {{
             addAll(failed);
             addAll(success);
-        }}, failedCrates, convertedCrates);
+        }}, convertedCrates, failedCrates);
     }
 
     @Override

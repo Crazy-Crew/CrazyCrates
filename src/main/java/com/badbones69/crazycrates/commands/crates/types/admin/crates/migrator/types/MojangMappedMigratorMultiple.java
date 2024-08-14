@@ -27,9 +27,9 @@ public class MojangMappedMigratorMultiple extends ICrateMigrator {
             try {
                 migrate(customFile, "");
 
-                success.add("<green>" + customFile.getStrippedName());
+                success.add("<green>⤷ " + customFile.getStrippedName());
             } catch (Exception exception) {
-                failed.add("<red>" + customFile.getStrippedName());
+                failed.add("<red>⤷ " + customFile.getStrippedName());
             }
         });
 
@@ -37,13 +37,13 @@ public class MojangMappedMigratorMultiple extends ICrateMigrator {
         this.crateManager.loadHolograms();
         this.crateManager.loadCrates();
 
-        final int failedCrates = failed.size();
         final int convertedCrates = success.size();
+        final int failedCrates = failed.size();
 
         sendMessage(new ArrayList<>(failedCrates + convertedCrates) {{
             addAll(failed);
             addAll(success);
-        }}, failedCrates, convertedCrates);
+        }}, convertedCrates, failedCrates);
     }
 
     @Override

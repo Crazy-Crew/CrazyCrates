@@ -21,17 +21,19 @@ public class CommandMigrate extends BaseCommand {
     @Command("migrate")
     @Permission(value = "crazycrates.migrate", def = PermissionDefault.OP)
     public void migrate(final CommandSender sender, @ArgName("migration_type") @Suggestion("migrators") final String name, @ArgName("crate") @Optional @Suggestion("crates") final String crateName) {
-        if (crateName.equalsIgnoreCase("Menu")) {
-            Messages.not_a_crate.sendMessage(sender, "{crate}", "Menu");
-
-            return;
-        }
-
         final MigrationType type = MigrationType.fromName(name);
 
         switch (type) {
             case MOJANG_MAPPED_ALL -> new MojangMappedMigratorMultiple(sender, MigrationType.MOJANG_MAPPED_ALL).run();
-            case MOJANG_MAPPED_SINGLE -> new MojangMappedMigratorSingle(sender, MigrationType.MOJANG_MAPPED_SINGLE, crateName).run();
+            case MOJANG_MAPPED_SINGLE -> {
+                if (crateName == null || crateName.isEmpty() || crateName.isBlank() || crateName.equalsIgnoreCase("Menu")) {
+                    Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
+
+                    return;
+                }
+
+                new MojangMappedMigratorSingle(sender, MigrationType.MOJANG_MAPPED_SINGLE, crateName).run();
+            }
 
             case CRATES_DEPRECATED_ALL -> new DeprecatedCrateMigrator(sender, MigrationType.CRATES_DEPRECATED_ALL).run();
 

@@ -55,19 +55,19 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
                     customFile.save();
                 }
 
-                success.add("<green>" + customFile.getStrippedName());
+                success.add("<green>⤷ " + customFile.getStrippedName());
             } catch (Exception exception) {
-                failed.add("<red>" + customFile.getStrippedName());
+                failed.add("<red>⤷ " + customFile.getStrippedName());
             }
         });
 
-        final int convertedCrates = failed.size();
-        final int failedCrates = success.size();
+        final int convertedCrates = success.size();
+        final int failedCrates = failed.size();
 
         sendMessage(new ArrayList<>(failedCrates + convertedCrates) {{
             addAll(failed);
             addAll(success);
-        }}, failedCrates, convertedCrates);
+        }}, convertedCrates, failedCrates);
 
         this.fileManager.init();
 
