@@ -82,7 +82,7 @@ public class CrateAdminMenu extends InventoryBuilder {
 
         if (crate == null) return;
 
-        final String crateName = crate.getName();
+        final String fileName = crate.getFileName();
         final UUID uuid = player.getUniqueId();
 
         final ClickType clickType = event.getClick();
@@ -117,7 +117,7 @@ public class CrateAdminMenu extends InventoryBuilder {
             }
 
             case RIGHT -> {
-                this.userManager.addKeys(uuid, crateName, KeyType.virtual_key, 1);
+                this.userManager.addKeys(uuid, fileName, KeyType.virtual_key, 1);
 
                 //todo() make this configurable?
                 player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
@@ -128,7 +128,7 @@ public class CrateAdminMenu extends InventoryBuilder {
             }
 
             case SHIFT_RIGHT -> {
-                this.userManager.addKeys(uuid, crateName, KeyType.virtual_key, 8);
+                this.userManager.addKeys(uuid, fileName, KeyType.virtual_key, 8);
 
                 //todo() make this configurable?
                 player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);

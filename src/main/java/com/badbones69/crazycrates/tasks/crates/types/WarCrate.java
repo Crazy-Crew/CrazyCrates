@@ -40,7 +40,7 @@ public class WarCrate extends CrateBuilder {
         final Player player = getPlayer();
         final UUID uuid = player.getUniqueId();
         final Crate crate = getCrate();
-        final String crateName = crate.getName();
+        final String fileName = crate.getFileName();
 
         final boolean keyCheck = this.userManager.takeKeys(uuid, crateName, type, 1, checkHand);
 

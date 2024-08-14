@@ -129,6 +129,8 @@ public class CrateManager {
             // If crate null, return.
             if (crate == null) return;
 
+            final String fileName = crate.getFileName();
+
             // Grab the new file.
             FileConfiguration file = crate.getFile();
 
@@ -181,7 +183,7 @@ public class CrateManager {
                         prizes.add(new Prize(
                                 prizeSection,
                                 editorItems, tierPrizes,
-                                crate.getName(),
+                                crate.getFileName(),
                                 alternativePrize
                         ));
                     }
@@ -200,9 +202,11 @@ public class CrateManager {
 
             this.inventoryManager.purge();
         } catch (Exception exception) {
-            this.brokeCrates.add(crate.getName());
+            final String fileName = crate.getFileName(); //todo() this might be null
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("There was an error while loading the {}.yml file.", crate.getName(), exception);
+            this.brokeCrates.add(fileName);
+
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("There was an error while loading the {}.yml file.", fileName, exception);
         }
     }
 
@@ -641,7 +645,7 @@ public class CrateManager {
 
                 if (MiscUtils.isLogging()) {
                     List.of(
-                            crate.getName() + " has an invalid crate type. Your Value: " + crate.getFile().getString("Crate.CrateType", "CSGO"),
+                            crate.getFileName() + " has an invalid crate type. Your Value: " + crate.getFile().getString("Crate.CrateType", "CSGO"),
                             "We will use " + CrateType.csgo.getName() + " until you change the crate type.",
                             "Valid Crate Types: CSGO/Casino/Cosmic/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War"
                     ).forEach(line -> this.plugin.getComponentLogger().warn(line));
@@ -918,7 +922,7 @@ public class CrateManager {
                 getUsableCrates().stream()
                         .filter(Crate :: doNewPlayersGetKeys)
                         .forEach(crate -> {
-                            Files.data.getConfiguration().set("Players." + uuid + "." + crate.getName(), crate.getNewPlayerKeys());
+                            Files.data.getConfiguration().set("Players." + uuid + "." + crate.getFileName(), crate.getNewPlayerKeys());
                             Files.data.save();
                         });
             }
@@ -1046,7 +1050,7 @@ public class CrateManager {
         Crate crate = null;
 
         for (Crate key : this.crates) {
-            if (key.getName().equalsIgnoreCase(name)) {
+            if (key.getFileName().equalsIgnoreCase(name)) {
                 crate = key;
 
                 break;
@@ -1364,8 +1368,10 @@ public class CrateManager {
             final List<String> noKeys = new ArrayList<>();
 
             for (final Crate crate : getUsableCrates()) {
-                if (data.getInt("Players." + uuid + "." + crate.getName()) <= 0) {
-                    noKeys.add(crate.getName());
+                final String fileName = crate.getFileName();
+
+                if (data.getInt("Players." + uuid + "." + fileName) <= 0) {
+                    noKeys.add(fileName);
                 } else {
                     hasKeys = true;
                 }

@@ -131,7 +131,8 @@ public class PrizeManager {
                 .replaceAll("%player%", quoteReplacement(player.getName()))
                 .replaceAll("%reward%", quoteReplacement(prize.getPrizeName()))
                 .replaceAll("%reward_stripped%", quoteReplacement(prize.getStrippedName()))
-                .replaceAll("%crate%", quoteReplacement(crate.getCrateInventoryName())));
+                .replaceAll("%crate_fancy%", quoteReplacement(crate.getCrateName()))
+                .replaceAll("%crate%", quoteReplacement(crate.getFileName())));
     }
 
     private static void sendMessage(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, String message) {

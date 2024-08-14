@@ -140,7 +140,10 @@ public class CrateControlListener implements Listener {
 
         final int requiredKeys = crate.getRequiredKeys();
 
-        final int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), crate.getName());
+        final String fileName = crate.getFileName();
+
+        final int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), fileName);
+
 
         if (requiredKeys > 0 && totalKeys < requiredKeys) {
             final Map<String, String> placeholders = new HashMap<>();
@@ -165,7 +168,7 @@ public class CrateControlListener implements Listener {
         if (this.config.getProperty(ConfigKeys.physical_accepts_physical_keys) && crate.getCrateType() != CrateType.crate_on_the_go && ItemUtils.isSimilar(itemStack, crate)) {
             hasKey = true;
             isPhysical = true;
-        } else if (this.config.getProperty(ConfigKeys.physical_accepts_virtual_keys) && this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1) {
+        } else if (this.config.getProperty(ConfigKeys.physical_accepts_virtual_keys) && this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1) {
             hasKey = true;
         }
 

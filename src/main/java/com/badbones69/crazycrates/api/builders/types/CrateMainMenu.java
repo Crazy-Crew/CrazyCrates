@@ -112,7 +112,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
             if (section != null) {
                 if (section.getBoolean("InGUI", false)) {
-                    final String crateName = crate.getName();
+                    final String fileName = crate.getFileName();
 
                     int slot = section.getInt("Slot");
 
@@ -124,12 +124,12 @@ public class CrateMainMenu extends InventoryBuilder {
                             .withType(section.getString("Item", "chest").toLowerCase())
                             .setDisplayName(section.contains("CrateName") ? section.getString("CrateName", crateName) : section.getString("Name", crateName))
                             .setCustomModelData(section.getInt("Custom-Model-Data", -1))
-                            .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, crateName)))
-                            .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, crateName)))
-                            .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, crateName)))
-                            .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(uuid, crateName)))
+                            .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, fileName)))
+                            .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, fileName)))
+                            .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, fileName)))
+                            .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(uuid, fileName)))
                             .addLorePlaceholder("%player%", getPlayer().getName())
-                            .setPersistentString(PersistentKeys.crate_key.getNamespacedKey(), crate.getName());
+                            .setPersistentString(PersistentKeys.crate_key.getNamespacedKey(), fileName);
 
                     inventory.setItem(slot, ItemUtils.getItem(section, builder, player).getStack());
                 }
@@ -162,7 +162,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
         if (crate == null) return;
 
-        final String crateName = crate.getName();
+        final String fileName = crate.getFileName();
 
         if (event.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
             if (crate.isPreviewEnabled()) {
@@ -188,10 +188,10 @@ public class CrateMainMenu extends InventoryBuilder {
         boolean hasKey = false;
         KeyType keyType = KeyType.virtual_key;
 
-        if (this.userManager.getVirtualKeys(uuid, crateName) >= 1) {
+        if (this.userManager.getVirtualKeys(uuid, fileName) >= 1) {
             hasKey = true;
         } else {
-            if (this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && this.userManager.hasPhysicalKey(uuid, crateName, false)) {
+            if (this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && this.userManager.hasPhysicalKey(uuid, fileName, false)) {
                 hasKey = true;
                 keyType = KeyType.physical_key;
             }
@@ -233,13 +233,13 @@ public class CrateMainMenu extends InventoryBuilder {
         final UUID uuid = getPlayer().getUniqueId();
 
         for (Crate crate : this.crateManager.getUsableCrates()) {
-            final String crateName = crate.getName();
-            final String lowerCase = crateName.toLowerCase();
+            final String fileName = crate.getFileName();
+            final String lowerCase = fileName.toLowerCase();
 
-            option = option.replaceAll("%" + lowerCase + "}", this.userManager.getVirtualKeys(uuid, crateName) + "")
-                    .replaceAll("%" + lowerCase + "_physical%", this.userManager.getPhysicalKeys(uuid, crateName) + "")
-                    .replaceAll("%" + lowerCase + "_total%", this.userManager.getTotalKeys(uuid, crateName) + "")
-                    .replaceAll("%" + lowerCase + "_opened%", this.userManager.getCrateOpened(uuid, crateName) + "");
+            option = option.replaceAll("%" + lowerCase + "}", this.userManager.getVirtualKeys(uuid, fileName) + "")
+                    .replaceAll("%" + lowerCase + "_physical%", this.userManager.getPhysicalKeys(uuid, fileName) + "")
+                    .replaceAll("%" + lowerCase + "_total%", this.userManager.getTotalKeys(uuid, fileName) + "")
+                    .replaceAll("%" + lowerCase + "_opened%", this.userManager.getCrateOpened(uuid, fileName) + "");
         }
 
         return option;

@@ -108,7 +108,7 @@ public class CasinoCrate extends CrateBuilder {
         final Player player = getPlayer();
         final UUID uuid = player.getUniqueId();
         final Crate crate = getCrate();
-        final String crateName = crate.getName();
+        final String fileName = crate.getFileName();
 
         final ConfigurationSection section = crate.getFile().getConfigurationSection("Crate.random");
 

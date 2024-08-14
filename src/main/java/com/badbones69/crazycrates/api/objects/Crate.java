@@ -418,9 +418,9 @@ public class Crate {
     }
     
     /**
-     * @return name the name of the crate.
+     * @return name file name.
      */
-    public @NotNull final String getName() {
+    public @NotNull final String getFileName() {
         return this.name;
     }
     

@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class CommandOpen extends BaseCommand {
 
-    private boolean isCancelled(Player player, String crateName) {
+    private boolean isCancelled(final Player player, final String crateName) {
         if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
             Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
@@ -68,7 +68,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null || crate.getCrateType() == CrateType.menu) {
             Messages.internal_error.sendMessage(player);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null or Menu for the crate named {}", crate.getName());
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null or Menu for the crate named {}", crateName);
 
             return;
         }
@@ -87,11 +87,10 @@ public class CommandOpen extends BaseCommand {
 
         KeyType keyType = getKeyType(type);
 
-        boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), crate.getName()) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1;
+        boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), crateName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), crateName) >= 1;
 
         // If no key, run this.
         if (!hasKey) {
-            //todo() convert this to a bean property!
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
                 Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
 
@@ -134,7 +133,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null) {
             Messages.internal_error.sendMessage(sender);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crate.getName());
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crateName);
 
             return;
         }
@@ -154,15 +153,14 @@ public class CommandOpen extends BaseCommand {
         KeyType keyType = getKeyType(type);
 
         if (sender == player) {
-            open(player, crate.getName(), type);
+            open(player, crateName, type);
 
             return;
         }
 
-        boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), crate.getName()) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName()) >= 1;
+        boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), crateName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), crateName) >= 1;
 
         if (!hasKey) {
-            //todo() convert this to a bean property!
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
                 Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
 

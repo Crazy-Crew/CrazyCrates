@@ -121,7 +121,7 @@ public abstract class BaseCommand {
     protected final Crate getCrate(@NotNull final CommandSender sender, @NotNull final String name, final boolean ignoreChecks) {
         if (name.isEmpty()) return null;
 
-        Crate crate = this.crateManager.getCrateFromName(name);
+        final Crate crate = this.crateManager.getCrateFromName(name);
 
         if (ignoreChecks) {
             if (crate == null || crate.getCrateType() == CrateType.menu) {
@@ -136,8 +136,10 @@ public abstract class BaseCommand {
 
     @ApiStatus.Internal
     private void takeKey(@NotNull final CommandSender sender, @Nullable final Player player, @Nullable final OfflinePlayer offlinePlayer, @NotNull final Crate crate, @NotNull final KeyType type, int amount) {
+        final String fileName = crate.getFileName();
+
         if (player != null) {
-            final int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), crate.getName());
+            final int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), fileName);
 
             if (totalKeys < 1) {
                 if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("The player {} does not have enough keys to take.", player.getName());
@@ -148,10 +150,10 @@ public abstract class BaseCommand {
             }
 
             if (totalKeys < amount) {
-                amount = type == KeyType.physical_key ? this.userManager.getPhysicalKeys(player.getUniqueId(), crate.getName()) : this.userManager.getVirtualKeys(player.getUniqueId(), crate.getName());
+                amount = type == KeyType.physical_key ? this.userManager.getPhysicalKeys(player.getUniqueId(), fileName) : this.userManager.getVirtualKeys(player.getUniqueId(), fileName);
             }
 
-            this.userManager.takeKeys(player.getUniqueId(), crate.getName(), type, amount, false);
+            this.userManager.takeKeys(player.getUniqueId(), fileName, type, amount, false);
 
             final Map<String, String> placeholders = new HashMap<>();
 
@@ -173,12 +175,14 @@ public abstract class BaseCommand {
 
             Messages.take_offline_player_keys.sendMessage(sender, placeholders);
 
-            this.userManager.takeOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), type, amount);
+            this.userManager.takeOfflineKeys(offlinePlayer.getUniqueId(), fileName, type, amount);
         }
     }
 
     @ApiStatus.Internal
     private void addKey(@NotNull final CommandSender sender, @Nullable Player player, @Nullable OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount) {
+        final String fileName = crate.getFileName();
+
         if (player != null) {
             final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
 
@@ -189,7 +193,7 @@ public abstract class BaseCommand {
             if (crate.getCrateType() == CrateType.crate_on_the_go) {
                 MiscUtils.addItem(player, crate.getKey(amount, player));
             } else {
-                this.userManager.addKeys(player.getUniqueId(), crate.getName(), type, amount);
+                this.userManager.addKeys(player.getUniqueId(), fileName, type, amount);
             }
 
             final Map<String, String> placeholders = new HashMap<>();
@@ -218,7 +222,7 @@ public abstract class BaseCommand {
 
             if (event.isCancelled()) return;
 
-            if (!this.userManager.addOfflineKeys(offlinePlayer.getUniqueId(), crate.getName(), type, amount)) {
+            if (!this.userManager.addOfflineKeys(offlinePlayer.getUniqueId(), fileName, type, amount)) {
                 Messages.internal_error.sendMessage(sender);
             } else {
                 Map<String, String> placeholders = new HashMap<>();

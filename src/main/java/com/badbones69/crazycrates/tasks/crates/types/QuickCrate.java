@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
+import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
@@ -26,6 +27,8 @@ import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -52,9 +55,7 @@ public class QuickCrate extends CrateBuilder {
         final Player player = getPlayer();
         final UUID uuid = player.getUniqueId();
         final Crate crate = getCrate();
-        final String crateName = crate.getName();
-
-        this.crateManager.addCrateInUse(player, getLocation());
+        final String fileName = crate.getFileName();
 
         int keys = switch (type) {
             case virtual_key -> this.userManager.getVirtualKeys(uuid, crateName);
@@ -72,16 +73,19 @@ public class QuickCrate extends CrateBuilder {
                 Prize prize = crate.pickPrize(player);
                 PrizeManager.givePrize(player, prize, crate);
 
-                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crateName, prize));
+                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, fileName, prize));
 
                 if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(.5, 1, .5), null);
 
                 used++;
             }
 
-            final boolean keyCheck = this.userManager.takeKeys(uuid, crateName, type, used, false);
+            final boolean keyCheck = this.userManager.takeKeys(uuid, fileName, type, used, false);
 
             if (!keyCheck) {
+                // Send the message about failing to take the key.
+                MiscUtils.failedToTakeKey(player, fileName);
+
                 // Remove from opening list.
                 this.crateManager.removePlayerFromOpeningList(player);
 
@@ -97,7 +101,7 @@ public class QuickCrate extends CrateBuilder {
 
         if (!keyCheck) {
             // Send the message about failing to take the key.
-            MiscUtils.failedToTakeKey(player, crateName);
+            MiscUtils.failedToTakeKey(player, fileName);
 
             // Remove from opening list.
             this.crateManager.removePlayerFromOpeningList(player);
@@ -108,7 +112,7 @@ public class QuickCrate extends CrateBuilder {
         Prize prize = crate.pickPrize(player, getLocation().clone().add(.5, 1.3, .5));
         PrizeManager.givePrize(player, prize, crate);
 
-        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crateName, prize));
+        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, fileName, prize));
 
         final boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
 

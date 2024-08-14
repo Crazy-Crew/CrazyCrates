@@ -38,7 +38,7 @@ public class FireCrackerCrate extends CrateBuilder {
         final Player player = getPlayer();
         final UUID uuid = player.getUniqueId();
         final Crate crate = getCrate();
-        final String crateName = crate.getName();
+        final String fileName = crate.getFileName();
 
         this.crateManager.addCrateInUse(player, getLocation());
 
