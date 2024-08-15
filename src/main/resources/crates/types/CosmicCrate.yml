@@ -20,7 +20,7 @@ Crate:
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
-  BroadCast: "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><light_purple>Cosmic Crate.</bold>"
+  BroadCast: "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><gradient:#E43A96:#FF91EA>Cosmic Crate.</gradient></bold>"
   # This section is related to commands opening when a crate is opened.
   opening-command:
     # If the commands should be sent or not.
@@ -78,7 +78,7 @@ Crate:
   # If the crate in the main /crates is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
-  Name: "<bold><light_purple>Cosmic Crate</bold>"
+  Name: "<bold><gradient:#E43A96:#FF91EA>Cosmic Crate</gradient></bold>"
   # The lore of the item in the GUI.
   Lore:
     - "<gray>This crate contains strange objects."
@@ -87,7 +87,7 @@ Crate:
     - "<gray>(<yellow>!<gray>) Right click to view rewards."
   Preview:
     # The name of the inventory for the preview menu.
-    Name: "<light_purple>Cosmic Crate Preview"
+    Name: "<gradient:#E43A96:#FF91EA>Cosmic Crate Preview</gradient>"
     # Turn on and off the preview for this crate.
     Toggle: true
     # How many lines the Crate Preview should have. Including Header and Bottom (Between 3 and 6)
@@ -181,13 +181,12 @@ Crate:
       Slot: 24
   PhysicalKey:
     # Name of the Key.
-    Name: "<bold><light_purple>Cosmic Crate Key</bold>"
+    Name: "<bold><gradient:#E43A96:#FF91EA>Cosmic Crate Key</gradient></bold>"
     # The custom model data of the item, -1 is disabled.
     Custom-Model-Data: -1
     # Lore of the Key.
     Lore:
-      - "<gray>A special Key"
-      - "<gray>For a special Crate."
+      - "<gradient:#E43A96:#FF91EA>A fancy key to open a cosmical crate!</gradient>"
     # The item the key is.
     Item: "purple_dye"
     # Makes the key look enchanted.
