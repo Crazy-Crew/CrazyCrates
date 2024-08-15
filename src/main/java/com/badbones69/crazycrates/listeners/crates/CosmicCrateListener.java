@@ -80,6 +80,12 @@ public class CosmicCrateListener implements Listener {
         // Get the raw slot.
         final int slot = event.getRawSlot();
 
+        if (this.crateManager.containsSlot(player) && this.crateManager.getSlots(player).contains(slot)) {
+            Messages.already_redeemed_prize.sendMessage(player);
+
+            return;
+        }
+
         // Get inventory view.
         final InventoryView view = event.getView();
 
@@ -116,6 +122,8 @@ public class CosmicCrateListener implements Listener {
         holder.getCrate().playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
 
         if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
+
+        this.crateManager.addSlot(player, slot);
     }
 
     @EventHandler
@@ -438,6 +446,8 @@ public class CosmicCrateListener implements Listener {
                     crateManager.removeTier(player);
 
                     cosmicCrateManager.removePickedPlayer(player);
+
+                    crateManager.removeSlot(player);
 
                     // Log it
                     if (MiscUtils.isLogging()) {

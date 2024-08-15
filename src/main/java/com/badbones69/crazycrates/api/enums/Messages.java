@@ -53,6 +53,7 @@ public enum Messages {
     not_on_block(CrateKeys.not_on_block),
     already_opening_crate(CrateKeys.already_opening_crate),
     crate_in_use(CrateKeys.crate_in_use),
+    already_redeemed_prize(CrateKeys.already_redeemed_prize),
     world_disabled(CrateKeys.world_disabled),
     no_crate_permission(CrateKeys.no_crate_permission),
     cant_be_a_virtual_crate(CrateKeys.cant_be_a_virtual_crate),

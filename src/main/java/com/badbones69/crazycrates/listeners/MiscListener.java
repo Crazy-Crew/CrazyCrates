@@ -91,6 +91,8 @@ public class MiscListener implements Listener {
         this.crateManager.removeHands(player);
         this.crateManager.removePicker(player);
         this.crateManager.removePlayerKeyType(player);
+
+        this.crateManager.removeSlot(player);
     }
 
     @EventHandler
@@ -158,6 +160,8 @@ public class MiscListener implements Listener {
 
                 // Remove hand checks.
                 this.crateManager.removeHands(player);
+
+                this.crateManager.removeSlot(player);
 
                 // Remove the player from the hashmap.
                 crateManager.removePickedPlayer(player);

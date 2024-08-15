@@ -54,6 +54,7 @@ Crate:
 
 ### Fixes:
 - Fixed a rare issue where you weren't able to open QuickCrate
+- Fixed a duplication issue with CosmicCrate
 
 ### Changes:
 - Right click now opens the crate menu as well.

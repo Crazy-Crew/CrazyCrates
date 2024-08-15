@@ -1437,4 +1437,36 @@ public class CrateManager {
 
         return null;
     }
+
+    private final Map<UUID, ArrayList<Integer>> slots = new HashMap<>();
+
+    public void addSlot(final Player player, final int rawSlot) {
+        final UUID uuid = player.getUniqueId();
+
+        if (this.slots.containsKey(uuid)) {
+            ArrayList<Integer> slots = this.slots.get(uuid);
+
+            slots.add(rawSlot);
+
+            this.slots.put(uuid, slots);
+
+            return;
+        }
+
+        this.slots.put(uuid, new ArrayList<>() {{
+            add(rawSlot);
+        }});
+    }
+
+    public final ArrayList<Integer> getSlots(final Player player) {
+        return this.slots.get(player.getUniqueId());
+    }
+
+    public final boolean containsSlot(final Player player) {
+        return this.slots.containsKey(player.getUniqueId());
+    }
+
+    public void removeSlot(final Player player) {
+        this.slots.remove(player.getUniqueId());
+    }
 }

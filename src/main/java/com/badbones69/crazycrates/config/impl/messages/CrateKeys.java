@@ -52,6 +52,8 @@ public class CrateKeys implements SettingsHolder {
     @Comment("A list of available placeholders: {crate}")
     public static final Property<String> crate_in_use = newProperty("crates.crate-in-use", "{prefix}<red>{crate} is already in use. Please wait until it finishes.");
 
+    public static final Property<String> already_redeemed_prize = newProperty("crates.already-redeemed-prize", "{prefix}<red>You have already redeemed this prize!");
+
     @Comment("A list of available placeholders: {crate}, {cratetype}")
     public static final Property<String> cant_be_a_virtual_crate = newProperty("crates.cannot-be-a-virtual-crate", "{prefix}<gold>{crate} <red>cannot be used as a Virtual Crate.");
 
