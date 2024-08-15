@@ -1,6 +1,9 @@
 package com.badbones69.crazycrates.api.objects.other;
 
-import com.ryderbelserion.vital.core.util.FileUtil;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
+import com.ryderbelserion.vital.common.utils.FileUtil;
+import com.ryderbelserion.vital.paper.VitalPaper;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
@@ -11,7 +14,7 @@ import com.badbones69.crazycrates.config.ConfigManager;
 import java.io.File;
 import java.util.List;
 
-public class Server implements IServer {
+public class Server extends VitalPaper implements IServer {
 
     private final File directory;
     private final File crates;
@@ -19,7 +22,9 @@ public class Server implements IServer {
     private UserManager userManager;
     private Options options;
 
-    public Server(@NotNull final File directory) {
+    public Server(@NotNull final JavaPlugin plugin, @NotNull final File directory) {
+        super(plugin);
+
         this.directory = directory;
         this.crates = new File(this.directory, "crates");
 
@@ -99,5 +104,15 @@ public class Server implements IServer {
     @Override
     public @NotNull final ISettings getSettings() {
         return this.options;
+    }
+
+    @Override
+    public final boolean isLegacy() {
+        return !ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle);
+    }
+
+    @Override
+    public final boolean isVerbose() {
+        return ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging);
     }
 }

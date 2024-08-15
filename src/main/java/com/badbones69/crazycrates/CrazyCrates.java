@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates;
 
-import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
@@ -8,8 +7,6 @@ import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.objects.other.Server;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
-import com.badbones69.crazycrates.config.ConfigManager;
-import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
@@ -25,8 +22,7 @@ import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.paper.VitalPaper;
-import com.ryderbelserion.vital.paper.enums.Support;
+import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.files.config.FileManager;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
@@ -58,17 +54,10 @@ public class CrazyCrates extends JavaPlugin {
 
     private Server instance;
 
-    private VitalPaper paper;
-
     @Override
     public void onEnable() {
-        this.instance = new Server(getDataFolder());
+        this.instance = new Server(this, getDataFolder());
         this.instance.apply();
-
-        final SettingsManager config = ConfigManager.getConfig();
-
-        this.paper = new VitalPaper(this, config.getProperty(ConfigKeys.minimessage_toggle));
-        this.paper.setLogging(config.getProperty(ConfigKeys.verbose_logging));
 
         this.fileManager = new FileManager();
         this.fileManager.addFile("locations.yml").addFile("data.yml")
@@ -201,9 +190,5 @@ public class CrazyCrates extends JavaPlugin {
 
     public @NotNull final Timer getTimer() {
         return this.timer;
-    }
-
-    public final VitalPaper getPaper() {
-        return this.paper;
     }
 }
