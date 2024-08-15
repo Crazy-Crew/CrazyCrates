@@ -200,7 +200,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
     public void sendTitleChange() {
         final SettingsManager config = ConfigManager.getConfig();
 
-        if (config.getProperty(ConfigKeys.minimessage_toggle)) {
+        if (!config.getProperty(ConfigKeys.minimessage_toggle)) {
             return;
         }
 
