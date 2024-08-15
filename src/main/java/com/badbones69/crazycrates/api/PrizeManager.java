@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
-import com.ryderbelserion.vital.paper.api.builders.items.ItemBuilder;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
@@ -17,7 +17,9 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import org.jetbrains.annotations.Nullable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import static java.util.regex.Matcher.quoteReplacement;
@@ -51,7 +53,27 @@ public class PrizeManager {
         }
 
         if (!prize.getItemBuilders().isEmpty()) {
+            final boolean isPlaceholderAPIEnabled = Support.placeholder_api.isEnabled();
+
             for (final ItemBuilder item : prize.getItemBuilders()) {
+                if (isPlaceholderAPIEnabled) {
+                    final String displayName = item.getDisplayName();
+
+                    if (!displayName.isEmpty()) {
+                        item.setDisplayName(PlaceholderAPI.setPlaceholders(player, displayName));
+                    }
+
+                    final List<String> displayLore = item.getDisplayLore();
+
+                    if (!displayLore.isEmpty()) {
+                        List<String> lore = new ArrayList<>();
+
+                        displayLore.forEach(line -> lore.add(PlaceholderAPI.setPlaceholders(player, line)));
+
+                        item.setDisplayLore(lore);
+                    }
+                }
+
                 if (!MiscUtils.isInventoryFull(player)) {
                     MiscUtils.addItem(player, item.setPlayer(player).getStack());
                 } else {
