@@ -52,6 +52,9 @@ Crate:
       Custom-Model-Data: -1 
 ```
 
+### Fixes:
+- Fixed a rare issue where you weren't able to open QuickCrate
+
 ### Changes:
 - Right click now opens the crate menu as well.
 - Checked location strings instead of object ids
