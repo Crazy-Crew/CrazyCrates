@@ -17,7 +17,8 @@ triumph-cmd = "2.0.0-ALPHA-10"
 tirumph-gui = "3.1.7"
 jetbrains = "24.1.0"
 kyori = "4.17.0"
-vital = "2.1"
+jalu = "1.4.1"
+vital = "2.7-SNAPSHOT"
 
 # Paper
 paperweight = "1.7.2"
@@ -65,6 +66,8 @@ jetbrains = { module = "org.jetbrains:annotations", version.ref = "jetbrains" }
 
 vital-paper = { module = "com.ryderbelserion.vital:paper", version.ref = "vital" }
 vital-core = { module = "com.ryderbelserion.vital:core", version.ref = "vital" }
+
+yalu = { module = "ch.jalu:configme", version.ref = "jalu" }
 
 [bundles]
 holograms = ["decent-holograms", "fancy-holograms"]

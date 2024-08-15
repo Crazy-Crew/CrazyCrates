@@ -29,6 +29,8 @@ dependencies {
 
     implementation(libs.vital.paper)
 
+    implementation(libs.yalu)
+
     compileOnly(libs.decent.holograms)
 
     compileOnly(libs.fancy.holograms)
@@ -72,7 +74,8 @@ tasks {
 
         listOf(
             "com.ryderbelserion.vital",
-            "dev.triumphteam.cmd"
+            "dev.triumphteam.cmd",
+            "ch.jalu"
         ).forEach {
             relocate(it, "libs.$it")
         }

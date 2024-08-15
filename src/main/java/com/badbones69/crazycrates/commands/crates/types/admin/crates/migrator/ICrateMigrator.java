@@ -8,7 +8,7 @@ import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.en
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.core.util.StringUtil;
+import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.files.config.CustomFile;
 import com.ryderbelserion.vital.paper.files.config.FileManager;
 import com.ryderbelserion.vital.paper.util.ItemUtil;

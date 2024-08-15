@@ -19,9 +19,6 @@ public class CommandReload extends BaseCommand {
 
         this.fileManager.reloadFiles().init();
 
-        this.plugin.getPaper().setLogging(this.config.getProperty(ConfigKeys.verbose_logging));
-        this.plugin.getPaper().setAdventure(this.config.getProperty(ConfigKeys.minimessage_toggle));
-
         final YamlConfiguration locations = Files.locations.getConfiguration();
         final YamlConfiguration data = Files.data.getConfiguration();
 

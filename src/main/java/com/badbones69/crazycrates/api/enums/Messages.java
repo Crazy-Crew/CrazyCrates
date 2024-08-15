@@ -2,11 +2,10 @@ package com.badbones69.crazycrates.api.enums;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
-import com.ryderbelserion.vital.core.util.StringUtil;
-import com.ryderbelserion.vital.paper.enums.Support;
+import com.ryderbelserion.vital.common.utils.StringUtil;
+import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
-import net.md_5.bungee.api.ChatMessageType;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import com.badbones69.crazycrates.config.ConfigManager;
