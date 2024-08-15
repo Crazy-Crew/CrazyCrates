@@ -18,7 +18,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -27,10 +27,8 @@ import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class QuickCrate extends CrateBuilder {
 
@@ -108,6 +106,9 @@ public class QuickCrate extends CrateBuilder {
                 // Remove from opening list.
                 this.crateManager.removePlayerFromOpeningList(player);
 
+                // Remove crates in use
+                this.crateManager.removeCrateInUse(player);
+
                 return;
             }
 
@@ -124,6 +125,9 @@ public class QuickCrate extends CrateBuilder {
 
             // Remove from opening list.
             this.crateManager.removePlayerFromOpeningList(player);
+
+            // Remove crates in use
+            this.crateManager.removeCrateInUse(player);
 
             return;
         }
