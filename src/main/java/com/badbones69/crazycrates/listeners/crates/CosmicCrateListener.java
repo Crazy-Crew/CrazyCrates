@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
+import io.papermc.paper.persistence.PersistentDataContainerView;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,8 +28,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -159,9 +158,6 @@ public class CosmicCrateListener implements Listener {
         // Check if null or air.
         if (itemStack == null || itemStack.getType() == Material.AIR) return;
 
-        // If no item meta, return.
-        if (!itemStack.hasItemMeta()) return;
-
         // Get crate manager.
         final CosmicCrateManager cosmicCrateManager = (CosmicCrateManager) crate.getManager();
 
@@ -171,11 +167,8 @@ public class CosmicCrateListener implements Listener {
         // Get picked slot.
         final int pickedSlot = slot+1;
 
-        // Get clicked item's item meta.
-        final ItemMeta itemMeta = itemStack.getItemMeta();
-
         // Get the pdc container.
-        final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+        final PersistentDataContainerView container = itemStack.getPersistentDataContainer();
 
         // Check if it has the mystery crate key otherwise check picked key.
         if (container.has(PersistentKeys.cosmic_mystery_crate.getNamespacedKey())) {

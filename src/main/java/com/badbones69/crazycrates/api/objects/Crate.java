@@ -19,7 +19,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
@@ -572,11 +571,7 @@ public class Crate {
     }
     
     public final @Nullable Prize getPrize(@NotNull final ItemStack item) {
-        ItemMeta itemMeta = item.getItemMeta();
-
-        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-
-        return getPrize(container.get(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING));
+        return getPrize(item.getPersistentDataContainer().get(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING));
     }
     
     /**

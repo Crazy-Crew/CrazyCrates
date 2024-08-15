@@ -31,6 +31,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -87,10 +88,7 @@ public class QuadCrateListener implements Listener {
             final ItemMeta itemMeta = display.getItemMeta();
 
             // Access the pdc and set "crazycrates-item"
-            final PersistentKeys key = PersistentKeys.crate_prize;
-
-            //noinspection unchecked
-            itemMeta.getPersistentDataContainer().set(key.getNamespacedKey(), key.getType(), "1");
+            itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1");
 
             // Set the item meta.
             display.setItemMeta(itemMeta);
