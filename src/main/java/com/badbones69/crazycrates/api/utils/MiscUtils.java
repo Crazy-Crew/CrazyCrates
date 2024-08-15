@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.api.utils;
 
 import com.badbones69.crazycrates.api.enums.Permissions;
-import com.ryderbelserion.vital.paper.api.builders.items.ItemBuilder;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
