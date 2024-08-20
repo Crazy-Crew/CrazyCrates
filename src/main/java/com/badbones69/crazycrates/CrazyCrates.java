@@ -132,8 +132,6 @@ public class CrazyCrates extends Vital {
                 }
             }
 
-            getComponentLogger().info("You can disable logging by going to the plugin-config.yml and setting verbose to false.");
-
             getComponentLogger().info("Done ({})!", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
         }
     }
