@@ -159,7 +159,7 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gray>Win the warlord's set."
-        - "<bold><gold>Chance: <red>40%</bold>"
+        - "<bold><gold>Chance: <red>%chance%</bold>"
       # The max range i.e. 40/100 = 40% chance to win.
       MaxRange: 100
       # The chance to win i.e. 40%

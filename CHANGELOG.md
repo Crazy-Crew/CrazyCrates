@@ -55,6 +55,7 @@ Crate:
 ### Fixes:
 - Fixed a rare issue where you weren't able to open QuickCrate
 - Fixed a duplication issue with CosmicCrate
+- Fixed an issue where CMI likely wouldn't be detected
 
 ### Changes:
 - Right click now opens the crate menu as well.

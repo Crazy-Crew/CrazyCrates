@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
@@ -216,19 +217,32 @@ public class Prize {
     public @NotNull final String getCrateName() {
         return this.crateName;
     }
-    
+
     /**
-     * @return the chance the prize has of being picked.
+     * Get the total chance
+     *
+     * @return the total chance divided
      */
-    public final int getChance() {
-        return this.chance;
+    public final String getTotalChance() {
+        return StringUtil.formatDouble((double) getChance() / getMaxRange() * 100) + "%";
     }
-    
+
     /**
+     * Get the max range
+     *
      * @return the max range of the prize.
      */
     public final int getMaxRange() {
         return this.maxRange;
+    }
+    
+    /**
+     * Get the chance
+     *
+     * @return the chance the prize has of being picked.
+     */
+    public final int getChance() {
+        return this.chance;
     }
     
     /**
@@ -336,6 +350,8 @@ public class Prize {
 
                 builder.setDisplayLore(this.section.getStringList("Lore"));
             }
+
+            builder.addLorePlaceholder("%chance%", this.getTotalChance());
 
             builder.setGlowing(this.section.contains("Glowing") ? section.getBoolean("Glowing") : null);
 
