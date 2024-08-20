@@ -16,7 +16,7 @@ public class SessionManager {
         if (QuadCrateManager.getCrateSessions().isEmpty()) return false;
 
         for (QuadCrateManager quadCrateManager : QuadCrateManager.getCrateSessions()) {
-            if (quadCrateManager.getPlayer().getUniqueId() == player.getUniqueId()) return true;
+            if (quadCrateManager.getPlayer().getUniqueId().equals(player.getUniqueId())) return true;
         }
 
         return false;
@@ -30,7 +30,7 @@ public class SessionManager {
      */
     public @Nullable final QuadCrateManager getSession(@NotNull final Player player) {
         for (QuadCrateManager quadCrateManager : QuadCrateManager.getCrateSessions()) {
-            if (quadCrateManager.getPlayer().getUniqueId() == player.getUniqueId()) return quadCrateManager;
+            if (quadCrateManager.getPlayer().getUniqueId().equals(player.getUniqueId())) return quadCrateManager;
         }
 
         return null;
