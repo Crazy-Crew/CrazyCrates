@@ -27,10 +27,6 @@ dependencies {
 
     implementation(libs.triumph.cmds)
 
-    implementation(libs.vital.paper) {
-        exclude("org.yaml", "*")
-    }
-
     compileOnly(libs.decent.holograms)
 
     compileOnly(libs.fancy.holograms)
@@ -40,6 +36,10 @@ dependencies {
     compileOnly(libs.placeholderapi)
 
     compileOnly(libs.oraxen)
+
+    api(libs.vital.paper) {
+        exclude("org.yaml", "*")
+    }
 
     api(project(":api"))
 }
