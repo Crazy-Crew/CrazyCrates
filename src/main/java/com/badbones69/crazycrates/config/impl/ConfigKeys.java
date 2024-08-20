@@ -31,7 +31,7 @@ public class ConfigKeys implements SettingsHolder {
         String[] deprecation = {
                 "",
                 "Warning: This section is subject to change so it is considered deprecated.",
-                "This is your warning before the change happens.",
+                "This is your warning before the change happens. Please read the latest changelogs",
                 ""
         };
 
@@ -57,9 +57,6 @@ public class ConfigKeys implements SettingsHolder {
 
         conf.setComment("root", header);
     }
-
-    @Comment("Whether you want CrazyCrates to shut up or not, This option is ignored by errors.")
-    public static final Property<Boolean> verbose_logging = newProperty("root.verbose_logging", true);
 
     @Comment("This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.")
     public static final Property<Boolean> use_different_random = newProperty("root.use-different-random", false);

@@ -267,7 +267,7 @@ public class MiscUtils {
     }
 
     public static boolean isLogging() {
-        return ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging);
+        return plugin.isVerbose();
     }
 
     public static boolean isExcellentCratesEnabled() {

@@ -29,8 +29,6 @@ dependencies {
 
     implementation(libs.vital.paper)
 
-    implementation(libs.yalu)
-
     compileOnly(libs.decent.holograms)
 
     compileOnly(libs.fancy.holograms)
