@@ -12,7 +12,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
@@ -26,7 +25,7 @@ import static java.util.regex.Matcher.quoteReplacement;
 
 public class PrizeManager {
     
-    private static @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private static @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     /**
      * Gets the prize for the player.

@@ -25,14 +25,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
 public class MiscListener implements Listener {
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 

@@ -40,7 +40,6 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -78,7 +77,7 @@ import java.util.WeakHashMap;
 
 public class CrateManager {
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
     private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
     private @NotNull final FileManager yamlManager = this.plugin.getFileManager();
 

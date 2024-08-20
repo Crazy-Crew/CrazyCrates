@@ -36,6 +36,10 @@ import static com.badbones69.crazycrates.api.utils.MiscUtils.registerPermissions
 
 public class CrazyCrates extends JavaPlugin {
 
+    public static CrazyCrates getPlugin() {
+        return JavaPlugin.getPlugin(CrazyCrates.class);
+    }
+
     private final Timer timer;
     private final long startTime;
 

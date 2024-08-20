@@ -13,7 +13,7 @@ public enum Files {
 
     private final String fileName;
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private @NotNull final FileManager fileManager = this.plugin.getFileManager();
 

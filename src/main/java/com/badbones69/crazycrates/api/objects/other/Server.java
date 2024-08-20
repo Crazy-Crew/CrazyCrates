@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.api.objects.other;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.common.utils.FileUtil;
 import com.ryderbelserion.vital.paper.VitalPaper;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;

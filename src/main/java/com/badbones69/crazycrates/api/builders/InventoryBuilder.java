@@ -22,7 +22,6 @@ import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -36,7 +35,7 @@ import static java.util.regex.Matcher.quoteReplacement;
 
 public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
-    protected @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    protected @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     protected @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 

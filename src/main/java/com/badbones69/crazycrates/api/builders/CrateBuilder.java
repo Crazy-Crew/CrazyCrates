@@ -17,7 +17,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -28,7 +27,7 @@ import java.util.List;
 
 public abstract class CrateBuilder extends FoliaRunnable {
 
-    protected @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    protected @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     protected @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 

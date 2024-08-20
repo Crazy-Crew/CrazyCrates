@@ -15,7 +15,6 @@ import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,7 +28,7 @@ import java.util.Map;
 @Command(value = "crazycrates", alias = {"crates", "crate"})
 public abstract class BaseCommand {
 
-    protected @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    protected @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     protected @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 

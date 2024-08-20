@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class CrateOnTheGo extends CrateBuilder {
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
