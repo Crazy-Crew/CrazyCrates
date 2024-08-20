@@ -14,12 +14,12 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.simpleyaml.configuration.ConfigurationSection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,6 +68,7 @@ public class Prize {
         this.prizeName = section.getString("DisplayName", "");
         this.maxRange = section.getInt("MaxRange", 100);
         this.chance = section.getInt("Chance", 50);
+
         this.firework = section.getBoolean("Firework", false);
 
         this.messages = section.getStringList("Messages"); // this returns an empty list if not found anyway.

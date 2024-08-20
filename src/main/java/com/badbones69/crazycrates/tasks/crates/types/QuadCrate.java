@@ -5,9 +5,9 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.ryderbelserion.vital.paper.util.structures.StructureManager;
 import org.bukkit.Location;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
@@ -37,7 +37,7 @@ public class QuadCrate extends CrateBuilder {
             return;
         }
 
-        final FileConfiguration config = getFile();
+        final YamlConfiguration config = getFile();
         final List<CrateSchematic> schematics = this.crateManager.getCrateSchematics();
 
         final CrateSchematic crateSchematic = config.getBoolean("Crate.structure.random", true) ? schematics.get(ThreadLocalRandom.current().nextInt(schematics.size())) : this.crateManager.getCrateSchematic(config.getString("Crate.structure.file", ""));

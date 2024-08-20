@@ -2,14 +2,14 @@ package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.t
 
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.vital.paper.files.config.CustomFile;
+import com.ryderbelserion.vital.common.managers.files.CustomFile;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.simpleyaml.configuration.ConfigurationSection;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public class DeprecatedCrateMigrator extends ICrateMigrator {
 
@@ -19,7 +19,7 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Set<CustomFile> customFiles = this.plugin.getFileManager().getCustomFiles();
+        final Collection<CustomFile> customFiles = this.plugin.getFileManager().getCustomFiles().values();
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
@@ -27,6 +27,8 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
         customFiles.forEach(customFile -> {
             try {
                 final YamlConfiguration configuration = customFile.getConfiguration();
+
+                if (configuration == null) return;
 
                 final ConfigurationSection section = configuration.getConfigurationSection("Crate");
 
@@ -74,9 +76,9 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
                     customFile.save();
                 }
 
-                success.add("<green>⤷ " + customFile.getStrippedName());
+                success.add("<green>⤷ " + customFile.getCleanName());
             } catch (Exception exception) {
-                failed.add("<red>⤷ " + customFile.getStrippedName());
+                failed.add("<red>⤷ " + customFile.getCleanName());
             }
         });
 

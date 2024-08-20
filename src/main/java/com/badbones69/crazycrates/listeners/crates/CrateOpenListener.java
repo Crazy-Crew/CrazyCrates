@@ -12,11 +12,11 @@ import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.List;
@@ -65,7 +65,7 @@ public class CrateOpenListener implements Listener {
 
         if (crate.getCrateType() != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), fileName);
 
-        final FileConfiguration configuration = event.getConfiguration();
+        final YamlConfiguration configuration = event.getConfiguration();
 
         final String broadcastMessage = configuration.getString("Crate.BroadCast", "");
         final boolean broadcastToggle = configuration.getBoolean("Crate.OpeningBroadCast", false);

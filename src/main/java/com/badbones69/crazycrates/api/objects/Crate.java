@@ -9,19 +9,19 @@ import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.ryderbelserion.vital.paper.files.config.CustomFile;
+import com.ryderbelserion.vital.common.managers.files.CustomFile;
 import com.ryderbelserion.vital.paper.util.DyeUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Color;
 import org.bukkit.Particle;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
+import org.simpleyaml.configuration.ConfigurationSection;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
@@ -64,7 +64,7 @@ public class Crate {
     private Particle particle;
 
     private final CrateType crateType;
-    private FileConfiguration file;
+    private YamlConfiguration file;
     private ArrayList<Prize> prizes;
     private String crateName;
     private boolean giveNewPlayerKeys;
@@ -104,7 +104,7 @@ public class Crate {
                  @NotNull final ItemBuilder key,
                  @NotNull final String keyName,
                  @NotNull final ArrayList<Prize> prizes,
-                 @NotNull final FileConfiguration file,
+                 @NotNull final YamlConfiguration file,
                  final int newPlayerKeys,
                  @NotNull final List<Tier> tiers,
                  final int maxMassOpen,
@@ -539,7 +539,7 @@ public class Crate {
     /**
      * @return the crates file.
      */
-    public @NotNull final FileConfiguration getFile() {
+    public @NotNull final YamlConfiguration getFile() {
         return this.file;
     }
     
@@ -745,7 +745,7 @@ public class Crate {
     private void saveFile() {
         if (this.name.isEmpty()) return;
 
-        CustomFile customFile = this.plugin.getFileManager().getCustomFile(this.name);
+        CustomFile customFile = this.plugin.getFileManager().getFile(true, this.name);
 
         if (customFile != null) customFile.save();
 

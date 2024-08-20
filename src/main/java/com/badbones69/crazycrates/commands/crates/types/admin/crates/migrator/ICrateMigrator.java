@@ -8,14 +8,14 @@ import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.en
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.common.managers.files.CustomFile;
+import com.ryderbelserion.vital.common.managers.files.FileManager;
 import com.ryderbelserion.vital.common.utils.StringUtil;
-import com.ryderbelserion.vital.paper.files.config.CustomFile;
-import com.ryderbelserion.vital.paper.files.config.FileManager;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.simpleyaml.configuration.ConfigurationSection;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,11 +77,13 @@ public abstract class ICrateMigrator {
     public void migrate(final CustomFile customFile, final String crateName) {
         final YamlConfiguration configuration = customFile.getConfiguration();
 
+        if (configuration == null) return;
+
         final ConfigurationSection crate = configuration.getConfigurationSection("Crate");
 
         if (crate == null) {
             Messages.error_migrating.sendMessage(sender, new HashMap<>() {{
-                put("{file}", crateName.isEmpty() ? customFile.getStrippedName() : crateName);
+                put("{file}", crateName.isEmpty() ? customFile.getCleanName() : crateName);
                 put("{type}", type.getName());
                 put("{reason}", "File could not be found in our data, likely invalid yml file that didn't load properly.");
             }});
@@ -147,7 +149,7 @@ public abstract class ICrateMigrator {
         }
 
         customFile.save();
-        customFile.reload();
+        customFile.load();
     }
 
     public final String time() {
