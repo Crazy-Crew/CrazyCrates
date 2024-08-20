@@ -114,7 +114,7 @@ public class Prize {
      * @return the name of the prize.
      */
     public @NotNull final String getPrizeName() {
-        if (!ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
+        if (this.plugin.isLegacy()) {
             return this.prizeName.isEmpty() ? "" : this.prizeName;
         }
 
@@ -122,11 +122,11 @@ public class Prize {
     }
 
     public @NotNull final String getStrippedName() {
-        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
-            return PlainTextComponentSerializer.plainText().serialize(AdvUtil.parse(getPrizeName()));
+        if (this.plugin.isLegacy()) {
+            return ChatColor.stripColor(getPrizeName());
         }
 
-        return ChatColor.stripColor(getPrizeName());
+        return PlainTextComponentSerializer.plainText().serialize(AdvUtil.parse(getPrizeName()));
     }
 
     /**
@@ -282,17 +282,15 @@ public class Prize {
     public void broadcast(final Crate crate) {
         if (!this.broadcast) return;
 
-        final boolean isAdventure = ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle);
-
         final String fancyName = crate.getCrateName();
         final String prizeName = getPrizeName();
         final String strippedName = getStrippedName();
 
-        if (isAdventure) {
+        if (this.plugin.isLegacy()) {
             this.plugin.getServer().getOnlinePlayers().forEach(player -> {
                 if (!this.broadcastPermission.isEmpty() && player.hasPermission(this.broadcastPermission)) return;
 
-                this.broadcastMessages.forEach(message -> player.sendMessage(AdvUtil.parse(message, new HashMap<>() {{
+                this.broadcastMessages.forEach(message -> player.sendMessage(ItemUtil.color(message, new HashMap<>() {{
                     put("%player%", player.getName());
                     put("%crate%", fancyName);
                     put("%reward%", prizeName);
@@ -306,7 +304,7 @@ public class Prize {
         this.plugin.getServer().getOnlinePlayers().forEach(player -> {
             if (!this.broadcastPermission.isEmpty() && player.hasPermission(this.broadcastPermission)) return;
 
-            this.broadcastMessages.forEach(message -> player.sendMessage(ItemUtil.color(message, new HashMap<>() {{
+            this.broadcastMessages.forEach(message -> player.sendMessage(AdvUtil.parse(message, new HashMap<>() {{
                 put("%player%", player.getName());
                 put("%crate%", fancyName);
                 put("%reward%", prizeName);

@@ -657,7 +657,7 @@ public class Crate {
             section.set(getPath(prizeName, "MaxRange"), 100);
         }
 
-        if (useOldEditor && !ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
+        if (useOldEditor && !this.plugin.isLegacy()) {
             final List<ItemStack> editorItems = new ArrayList<>();
 
             if (section.contains(prizeName + ".Editor-Items")) {

@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api.enums;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
@@ -114,6 +115,8 @@ public enum Messages {
         this.isList = isList;
     }
 
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
     private final SettingsManager config = ConfigManager.getConfig();
 
     private final SettingsManager messages = ConfigManager.getMessages();
@@ -178,13 +181,13 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
-
-        if (isAdventure) {
-            sender.sendActionBar(AdvUtil.parse(msg));
-        } else {
+        if (this.plugin.isLegacy()) {
             if (sender instanceof Player player) {
                 player.sendActionBar(ItemUtil.color(msg));
+            }
+        } else {
+            if (sender instanceof Player player) {
+                player.sendActionBar(AdvUtil.parse(msg));
             }
         }
     }
@@ -194,13 +197,13 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
-
-        if (isAdventure) {
-            sender.sendActionBar(AdvUtil.parse(msg));
-        } else {
+        if (this.plugin.isLegacy()) {
             if (sender instanceof Player player) {
                 player.sendActionBar(ItemUtil.color(msg));
+            }
+        } else {
+            if (sender instanceof Player player) {
+                player.sendActionBar(AdvUtil.parse(msg));
             }
         }
     }
@@ -210,13 +213,13 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
-
-        if (isAdventure) {
-            sender.sendActionBar(AdvUtil.parse(msg));
-        } else {
+        if (this.plugin.isLegacy()) {
             if (sender instanceof Player player) {
                 player.sendActionBar(ItemUtil.color(msg));
+            }
+        } else {
+            if (sender instanceof Player player) {
+                player.sendActionBar(AdvUtil.parse(msg));
             }
         }
     }
@@ -226,12 +229,10 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
-
-        if (isAdventure) {
-            sender.sendRichMessage(msg);
-        } else {
+        if (this.plugin.isLegacy()) {
             sender.sendMessage(ItemUtil.color(msg));
+        } else {
+            sender.sendRichMessage(msg);
         }
     }
 
@@ -240,12 +241,10 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
-
-        if (isAdventure) {
-            sender.sendRichMessage(msg);
-        } else {
+        if (this.plugin.isLegacy()) {
             sender.sendMessage(ItemUtil.color(msg));
+        } else {
+            sender.sendRichMessage(msg);
         }
     }
 
@@ -254,12 +253,10 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
-
-        if (isAdventure) {
-            sender.sendRichMessage(msg);
-        } else {
+        if (this.plugin.isLegacy()) {
             sender.sendMessage(ItemUtil.color(msg));
+        } else {
+            sender.sendRichMessage(msg);
         }
     }
 

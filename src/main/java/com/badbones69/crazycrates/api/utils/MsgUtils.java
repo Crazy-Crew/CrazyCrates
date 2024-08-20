@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.api.utils;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,12 +11,12 @@ import static java.util.regex.Matcher.quoteReplacement;
 
 public class MsgUtils {
 
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+
     public static void sendMessage(CommandSender commandSender, @NotNull final String message, final boolean prefixToggle) {
         if (message.isEmpty()) return;
 
         String prefix = getPrefix();
-
-        final boolean isAdventure = ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle);
 
         final boolean sendPrefix = !prefix.isEmpty() && prefixToggle;
 
@@ -23,16 +24,16 @@ public class MsgUtils {
             if (sendPrefix) {
                 final String msg = message.replaceAll("%prefix%", quoteReplacement(prefix)).replaceAll("%Prefix%", quoteReplacement(prefix));
 
-                if (isAdventure) {
-                    player.sendRichMessage(msg);
-                } else {
+                if (plugin.isLegacy()) {
                     player.sendMessage(ItemUtil.color(msg));
+                } else {
+                    player.sendRichMessage(msg);
                 }
             } else {
-                if (isAdventure) {
-                    player.sendRichMessage(message);
-                } else {
+                if (plugin.isLegacy()) {
                     player.sendMessage(ItemUtil.color(message));
+                } else {
+                    player.sendRichMessage(message);
                 }
             }
 
@@ -42,16 +43,16 @@ public class MsgUtils {
         if (sendPrefix) {
             final String msg = message.replaceAll("%prefix%", quoteReplacement(prefix)).replaceAll("%Prefix%", quoteReplacement(prefix));
 
-            if (isAdventure) {
-                commandSender.sendRichMessage(msg);
-            } else {
+            if (plugin.isLegacy()) {
                 commandSender.sendMessage(ItemUtil.color(msg));
+            } else {
+                commandSender.sendRichMessage(msg);
             }
         } else {
-            if (isAdventure) {
-                commandSender.sendRichMessage(message);
-            } else {
+            if (plugin.isLegacy()) {
                 commandSender.sendMessage(ItemUtil.color(message));
+            } else {
+                commandSender.sendRichMessage(message);
             }
         }
     }

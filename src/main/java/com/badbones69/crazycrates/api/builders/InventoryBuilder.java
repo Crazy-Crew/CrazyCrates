@@ -60,10 +60,10 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
-            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
-        } else {
+        if (this.plugin.isLegacy()) {
             this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
+        } else {
+            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
         }
     }
 
@@ -76,10 +76,10 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
-            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
-        } else {
+        if (this.plugin.isLegacy()) {
             this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
+        } else {
+            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
         }
     }
 
@@ -93,10 +93,10 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
-            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
-        } else {
+        if (this.plugin.isLegacy()) {
             this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
+        } else {
+            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
         }
     }
 
@@ -110,10 +110,10 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
-            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
-        } else {
+        if (this.plugin.isLegacy()) {
             this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
+        } else {
+            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
         }
     }
 
@@ -197,9 +197,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
     }
 
     public void sendTitleChange() {
-        final SettingsManager config = ConfigManager.getConfig();
-
-        if (!config.getProperty(ConfigKeys.minimessage_toggle)) {
+        if (this.plugin.isLegacy()) {
             return;
         }
 
