@@ -18,7 +18,7 @@ tirumph-gui = "3.1.7"
 jetbrains = "24.1.0"
 kyori = "4.17.0"
 jalu = "1.4.1"
-vital = "2.7-SNAPSHOT"
+vital = "2.7"
 
 # Paper
 paperweight = "1.7.2"
