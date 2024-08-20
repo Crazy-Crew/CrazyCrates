@@ -27,7 +27,9 @@ dependencies {
 
     implementation(libs.triumph.cmds)
 
-    implementation(libs.vital.paper)
+    implementation(libs.vital.paper) {
+        exclude("org.yaml", "*")
+    }
 
     compileOnly(libs.decent.holograms)
 
@@ -72,8 +74,7 @@ tasks {
 
         listOf(
             "com.ryderbelserion.vital",
-            "dev.triumphteam.cmd",
-            "ch.jalu"
+            "dev.triumphteam.cmd"
         ).forEach {
             relocate(it, "libs.$it")
         }
