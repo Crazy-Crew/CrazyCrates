@@ -17,7 +17,6 @@ triumph-cmd = "2.0.0-ALPHA-10"
 tirumph-gui = "3.1.7"
 jetbrains = "24.1.0"
 kyori = "4.17.0"
-jalu = "1.4.1"
 vital = "2.7"
 
 # Paper
@@ -25,7 +24,7 @@ paperweight = "1.7.2"
 runPaper = "2.3.0"
 hangar = "0.1.2"
 
-# Other
+# Shadow
 shadowJar = "8.3.0"
 
 # Modrinth
@@ -62,12 +61,11 @@ oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }
 triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmd" }
 triumph-gui = { module = "dev.triumphteam:triumph-gui", version.ref = "tirumph-gui" }
 
-jetbrains = { module = "org.jetbrains:annotations", version.ref = "jetbrains" }
-
+# Common
 vital-common = { module = "com.ryderbelserion.vital:common", version.ref = "vital" }
 vital-paper = { module = "com.ryderbelserion.vital:paper", version.ref = "vital" }
 
-yalu = { module = "ch.jalu:configme", version.ref = "jalu" }
+jetbrains = { module = "org.jetbrains:annotations", version.ref = "jetbrains" }
 
 [bundles]
 holograms = ["decent-holograms", "fancy-holograms"]
