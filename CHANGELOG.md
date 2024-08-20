@@ -72,3 +72,7 @@ Crate:
   - Only saving to file, if we find anything that needs to be migrated with `CratesDeprecated` option
   - Only migrate `Editor-Items`, if `use-old-editor` in the `config.yml` is set to `false`
 - A lot of other changes were internal clean up, I was merely being a Janitor. functionality should not change.
+- Deprecated `use-minimessage` in `config.yml`, it will be removed in the next major version of minecraft
+  - The library (made by me), now has its own directory much like bStats. Each plugin using it will get a config generated inside it.
+  - You simply after `use-minimessage` is removed will have to edit that file instead which is `Vital/crazycrates-config.yml`
+  - Once the option `use-minimessage` is removed, setting `is-legacy` to false will allow MiniMessage
