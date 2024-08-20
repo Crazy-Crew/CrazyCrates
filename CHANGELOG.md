@@ -3,6 +3,7 @@
   - active locations from ExcellentCrates are also migrated!
 - Added a new feature where the `RequiredKeys` can also take that amount of keys [#755](https://github.com/Crazy-Crew/CrazyCrates/issues/755)
   - `use-required-keys` in `config.yml` has to be true for that to take effect.
+- Added %chance% placeholders to prizes and tiers
 
 #### Crate Config Changes:
 - Crate.CrateName is deprecated, and has been replaced by Crate.Name
