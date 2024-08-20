@@ -9,7 +9,7 @@ Crate:
   # Starting amount of keys when the player 1st joins.
   StartingKeys: 0
   # The amount of keys required to use the crate.
-  RequiredKeys: 0
+  RequiredKeys: 20
   # Max amount of crates that can be opened at once using /crates mass-open
   Max-Mass-Open: 10
   # If the crate shows in /crates.
@@ -138,6 +138,7 @@ Crate:
       # The in-game lore of the tier.
       Lore:
         - "<gray>A basic tier."
+        - "<red>%chance%</red>"
       # The item used for the secondary gui when you right-click for the preview.
       Item: "chest"
       # The custom model data of the item, -1 is disabled.
@@ -154,6 +155,7 @@ Crate:
       # The in-game lore of the tier.
       Lore:
         - "<green>An uncommon tier."
+        - "<red>%chance%</red>"
       # The item used for the secondary gui when you right-click for the preview.
       Item: "chest"
       # The custom model data of the item, -1 is disabled.
@@ -170,6 +172,7 @@ Crate:
       # The in-game lore of the tier.
       Lore:
         - "<red>A rare tier."
+        - "<red>%chance%</red>"
       # The item used for the secondary gui when you right-click for the preview.
       Item: "ender_chest"
       # The custom model data of the item, -1 is disabled.
@@ -259,7 +262,7 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gray>Win the warlord's set."
-        - "<bold><gold>Chance: <red>40%</bold>"
+        - "<bold><gold>Chance: <red>%chance%</bold>"
       # The max range i.e. 40/100 = 40% chance to win.
       MaxRange: 100
       # The chance to win i.e. 40%
@@ -356,7 +359,7 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gray>Win a fancy pair of pants."
-        - "<bold><gold>Chance: <red>4%</bold>"
+        - "<bold><gold>Chance: <red>%chance%</bold>"
       # The items to win.
       Items:
         - "Item:chainmail_leggings, Amount:1, Damage:75, Trim-Pattern:sentry, Trim-Material:lapis, Name:<bold><green>Fancy Pants</bold>, protection:2"
@@ -385,7 +388,7 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gray>Win a old classic sword."
-        - "<bold><gold>Chance: <red>3.5%</bold>"
+        - "<bold><gold>Chance: <red>%chance%</bold>"
       # The max range i.e. 35/1000 = 3.5% chance to win.
       MaxRange: 1000
       # The chance to win i.e. 3.5%.

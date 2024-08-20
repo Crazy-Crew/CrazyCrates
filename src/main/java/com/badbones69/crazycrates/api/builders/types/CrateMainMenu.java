@@ -13,8 +13,6 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -24,6 +22,8 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
+import org.simpleyaml.configuration.ConfigurationSection;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.text.NumberFormat;
 import java.util.List;
@@ -106,7 +106,7 @@ public class CrateMainMenu extends InventoryBuilder {
         }
 
         for (Crate crate : this.crateManager.getUsableCrates()) {
-            final FileConfiguration file = crate.getFile();
+            final YamlConfiguration file = crate.getFile();
 
             final ConfigurationSection section = file.getConfigurationSection("Crate");
 

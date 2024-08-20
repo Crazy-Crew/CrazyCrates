@@ -15,7 +15,7 @@ repositories {
 
     maven("https://repo.oraxen.com/releases")
 
-    maven(Repository.CrazyCrewReleases.url)
+    maven(Repository.CrazyCrewSnapshots.url)
 
     maven(Repository.Jitpack.url)
 

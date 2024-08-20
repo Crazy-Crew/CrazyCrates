@@ -24,24 +24,23 @@ import com.badbones69.crazycrates.tasks.crates.types.RouletteCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WonderCrate;
+import com.ryderbelserion.vital.common.managers.files.CustomFile;
+import com.ryderbelserion.vital.common.managers.files.FileManager;
 import com.ryderbelserion.vital.common.utils.FileUtil;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.paper.api.enums.Support;
-import com.ryderbelserion.vital.paper.files.config.CustomFile;
-import com.ryderbelserion.vital.paper.files.config.FileManager;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.NamespacedKey;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
+import org.simpleyaml.configuration.ConfigurationSection;
+import org.simpleyaml.configuration.file.FileConfiguration;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
@@ -78,9 +77,9 @@ import java.util.WeakHashMap;
 
 public class CrateManager {
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
     private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-    private @NotNull final FileManager yamlManager = this.plugin.getFileManager();
+    private @NotNull final FileManager fileManager = this.plugin.getFileManager();
 
     private final List<CrateLocation> crateLocations = new ArrayList<>();
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
@@ -284,11 +283,13 @@ public class CrateManager {
 
         for (final String crateName : getCrateNames()) {
             try {
-                final @Nullable CustomFile customFile = this.yamlManager.getCustomFile(crateName);
+                final CustomFile customFile = this.fileManager.getFile(true, crateName);
 
-                if (customFile == null) return;
+                if (customFile == null) continue;
 
                 final YamlConfiguration file = customFile.getConfiguration();
+
+                if (file == null) continue;
 
                 final CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType", "CSGO"));
 
@@ -940,6 +941,11 @@ public class CrateManager {
         this.crates.add(crate);
     }
 
+    /**
+     * Adds a crate location.
+     *
+     * @param crateLocation {@link CrateLocation}
+     */
     public void addLocation(@NotNull final CrateLocation crateLocation) {
         this.crateLocations.add(crateLocation);
     }
@@ -1420,5 +1426,37 @@ public class CrateManager {
         if (!container.has(key)) return null;
 
         return crate.getTier(container.get(key, PersistentDataType.STRING));
+    }
+
+    private final Map<UUID, ArrayList<Integer>> slots = new HashMap<>();
+
+    public void addSlot(final Player player, final int rawSlot) {
+        final UUID uuid = player.getUniqueId();
+
+        if (this.slots.containsKey(uuid)) {
+            ArrayList<Integer> slots = this.slots.get(uuid);
+
+            slots.add(rawSlot);
+
+            this.slots.put(uuid, slots);
+
+            return;
+        }
+
+        this.slots.put(uuid, new ArrayList<>() {{
+            add(rawSlot);
+        }});
+    }
+
+    public final ArrayList<Integer> getSlots(final Player player) {
+        return this.slots.get(player.getUniqueId());
+    }
+
+    public final boolean containsSlot(final Player player) {
+        return this.slots.containsKey(player.getUniqueId());
+    }
+
+    public void removeSlot(final Player player) {
+        this.slots.remove(player.getUniqueId());
     }
 }

@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api.enums;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
@@ -53,6 +54,7 @@ public enum Messages {
     not_on_block(CrateKeys.not_on_block),
     already_opening_crate(CrateKeys.already_opening_crate),
     crate_in_use(CrateKeys.crate_in_use),
+    already_redeemed_prize(CrateKeys.already_redeemed_prize),
     world_disabled(CrateKeys.world_disabled),
     no_crate_permission(CrateKeys.no_crate_permission),
     cant_be_a_virtual_crate(CrateKeys.cant_be_a_virtual_crate),
@@ -112,6 +114,8 @@ public enum Messages {
         this.properties = properties;
         this.isList = isList;
     }
+
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final SettingsManager config = ConfigManager.getConfig();
 
@@ -177,13 +181,13 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
-
-        if (isAdventure) {
-            sender.sendActionBar(AdvUtil.parse(msg));
-        } else {
+        if (this.plugin.isLegacy()) {
             if (sender instanceof Player player) {
                 player.sendActionBar(ItemUtil.color(msg));
+            }
+        } else {
+            if (sender instanceof Player player) {
+                player.sendActionBar(AdvUtil.parse(msg));
             }
         }
     }
@@ -193,13 +197,13 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
-
-        if (isAdventure) {
-            sender.sendActionBar(AdvUtil.parse(msg));
-        } else {
+        if (this.plugin.isLegacy()) {
             if (sender instanceof Player player) {
                 player.sendActionBar(ItemUtil.color(msg));
+            }
+        } else {
+            if (sender instanceof Player player) {
+                player.sendActionBar(AdvUtil.parse(msg));
             }
         }
     }
@@ -209,13 +213,13 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
-
-        if (isAdventure) {
-            sender.sendActionBar(AdvUtil.parse(msg));
-        } else {
+        if (this.plugin.isLegacy()) {
             if (sender instanceof Player player) {
                 player.sendActionBar(ItemUtil.color(msg));
+            }
+        } else {
+            if (sender instanceof Player player) {
+                player.sendActionBar(AdvUtil.parse(msg));
             }
         }
     }
@@ -225,12 +229,10 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
-
-        if (isAdventure) {
-            sender.sendRichMessage(msg);
-        } else {
+        if (this.plugin.isLegacy()) {
             sender.sendMessage(ItemUtil.color(msg));
+        } else {
+            sender.sendRichMessage(msg);
         }
     }
 
@@ -239,12 +241,10 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
-
-        if (isAdventure) {
-            sender.sendRichMessage(msg);
-        } else {
+        if (this.plugin.isLegacy()) {
             sender.sendMessage(ItemUtil.color(msg));
+        } else {
+            sender.sendRichMessage(msg);
         }
     }
 
@@ -253,12 +253,10 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        final boolean isAdventure = this.config.getProperty(ConfigKeys.minimessage_toggle);
-
-        if (isAdventure) {
-            sender.sendRichMessage(msg);
-        } else {
+        if (this.plugin.isLegacy()) {
             sender.sendMessage(ItemUtil.color(msg));
+        } else {
+            sender.sendRichMessage(msg);
         }
     }
 

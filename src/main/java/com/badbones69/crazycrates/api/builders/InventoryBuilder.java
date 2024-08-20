@@ -22,7 +22,6 @@ import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -36,7 +35,7 @@ import static java.util.regex.Matcher.quoteReplacement;
 
 public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
-    protected @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    protected @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     protected @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
@@ -61,10 +60,10 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
-            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
-        } else {
+        if (this.plugin.isLegacy()) {
             this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
+        } else {
+            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
         }
     }
 
@@ -77,10 +76,10 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
-            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
-        } else {
+        if (this.plugin.isLegacy()) {
             this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
+        } else {
+            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
         }
     }
 
@@ -94,10 +93,10 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
-            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
-        } else {
+        if (this.plugin.isLegacy()) {
             this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
+        } else {
+            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
         }
     }
 
@@ -111,10 +110,10 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
-            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
-        } else {
+        if (this.plugin.isLegacy()) {
             this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
+        } else {
+            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
         }
     }
 
@@ -198,9 +197,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
     }
 
     public void sendTitleChange() {
-        final SettingsManager config = ConfigManager.getConfig();
-
-        if (!config.getProperty(ConfigKeys.minimessage_toggle)) {
+        if (this.plugin.isLegacy()) {
             return;
         }
 

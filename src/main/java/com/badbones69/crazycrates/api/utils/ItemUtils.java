@@ -12,15 +12,14 @@ import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.banner.PatternType;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.simpleyaml.configuration.ConfigurationSection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,7 +27,7 @@ import static com.ryderbelserion.vital.paper.util.ItemUtil.getEnchantment;
 
 public class ItemUtils {
 
-    private static @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private static @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private static @NotNull final CrateManager crateManager = plugin.getCrateManager();
 

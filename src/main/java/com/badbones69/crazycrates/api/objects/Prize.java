@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
@@ -14,20 +15,19 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.simpleyaml.configuration.ConfigurationSection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Prize {
 
-    private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final ConfigurationSection section;
     private final List<ItemBuilder> builders;
@@ -69,6 +69,7 @@ public class Prize {
         this.prizeName = section.getString("DisplayName", "");
         this.maxRange = section.getInt("MaxRange", 100);
         this.chance = section.getInt("Chance", 50);
+
         this.firework = section.getBoolean("Firework", false);
 
         this.messages = section.getStringList("Messages"); // this returns an empty list if not found anyway.
@@ -113,7 +114,7 @@ public class Prize {
      * @return the name of the prize.
      */
     public @NotNull final String getPrizeName() {
-        if (!ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
+        if (this.plugin.isLegacy()) {
             return this.prizeName.isEmpty() ? "" : this.prizeName;
         }
 
@@ -121,11 +122,11 @@ public class Prize {
     }
 
     public @NotNull final String getStrippedName() {
-        if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
-            return PlainTextComponentSerializer.plainText().serialize(AdvUtil.parse(getPrizeName()));
+        if (this.plugin.isLegacy()) {
+            return ChatColor.stripColor(getPrizeName());
         }
 
-        return ChatColor.stripColor(getPrizeName());
+        return PlainTextComponentSerializer.plainText().serialize(AdvUtil.parse(getPrizeName()));
     }
 
     /**
@@ -216,19 +217,32 @@ public class Prize {
     public @NotNull final String getCrateName() {
         return this.crateName;
     }
-    
+
     /**
-     * @return the chance the prize has of being picked.
+     * Get the total chance
+     *
+     * @return the total chance divided
      */
-    public final int getChance() {
-        return this.chance;
+    public final String getTotalChance() {
+        return StringUtil.formatDouble((double) getChance() / getMaxRange() * 100) + "%";
     }
-    
+
     /**
+     * Get the max range
+     *
      * @return the max range of the prize.
      */
     public final int getMaxRange() {
         return this.maxRange;
+    }
+    
+    /**
+     * Get the chance
+     *
+     * @return the chance the prize has of being picked.
+     */
+    public final int getChance() {
+        return this.chance;
     }
     
     /**
@@ -268,17 +282,15 @@ public class Prize {
     public void broadcast(final Crate crate) {
         if (!this.broadcast) return;
 
-        final boolean isAdventure = ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle);
-
         final String fancyName = crate.getCrateName();
         final String prizeName = getPrizeName();
         final String strippedName = getStrippedName();
 
-        if (isAdventure) {
+        if (this.plugin.isLegacy()) {
             this.plugin.getServer().getOnlinePlayers().forEach(player -> {
                 if (!this.broadcastPermission.isEmpty() && player.hasPermission(this.broadcastPermission)) return;
 
-                this.broadcastMessages.forEach(message -> player.sendMessage(AdvUtil.parse(message, new HashMap<>() {{
+                this.broadcastMessages.forEach(message -> player.sendMessage(ItemUtil.color(message, new HashMap<>() {{
                     put("%player%", player.getName());
                     put("%crate%", fancyName);
                     put("%reward%", prizeName);
@@ -292,7 +304,7 @@ public class Prize {
         this.plugin.getServer().getOnlinePlayers().forEach(player -> {
             if (!this.broadcastPermission.isEmpty() && player.hasPermission(this.broadcastPermission)) return;
 
-            this.broadcastMessages.forEach(message -> player.sendMessage(ItemUtil.color(message, new HashMap<>() {{
+            this.broadcastMessages.forEach(message -> player.sendMessage(AdvUtil.parse(message, new HashMap<>() {{
                 put("%player%", player.getName());
                 put("%crate%", fancyName);
                 put("%reward%", prizeName);
@@ -336,6 +348,8 @@ public class Prize {
 
                 builder.setDisplayLore(this.section.getStringList("Lore"));
             }
+
+            builder.addLorePlaceholder("%chance%", this.getTotalChance());
 
             builder.setGlowing(this.section.contains("Glowing") ? section.getBoolean("Glowing") : null);
 

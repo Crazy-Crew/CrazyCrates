@@ -8,7 +8,13 @@ buildSrc/build
 api/.gradle
 api/build
 
-!run/eula.txt
 run
+
+!run/config/paper-global.yml
+!run/config/paper-world-defaults.yml
+!run/bukkit.yml
+!run/eula.txt
+!run/server.properties
+!run/spigot.yml
 
 jars

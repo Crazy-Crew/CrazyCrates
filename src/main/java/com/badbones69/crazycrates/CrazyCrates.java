@@ -7,6 +7,8 @@ import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.objects.other.Server;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
+import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
@@ -22,19 +24,24 @@ import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.paper.Vital;
 import com.ryderbelserion.vital.paper.api.enums.Support;
-import com.ryderbelserion.vital.paper.files.config.FileManager;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import java.io.File;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import static com.badbones69.crazycrates.api.utils.MiscUtils.registerPermissions;
 
-public class CrazyCrates extends JavaPlugin {
+public class CrazyCrates extends Vital {
+
+    public static CrazyCrates getPlugin() {
+        return JavaPlugin.getPlugin(CrazyCrates.class);
+    }
 
     private final Timer timer;
     private final long startTime;
@@ -49,18 +56,16 @@ public class CrazyCrates extends JavaPlugin {
     private InventoryManager inventoryManager;
     private BukkitUserManager userManager;
     private CrateManager crateManager;
-    private FileManager fileManager;
     private HeadDatabaseAPI api;
 
     private Server instance;
 
     @Override
     public void onEnable() {
-        this.instance = new Server(this, getDataFolder());
+        this.instance = new Server(getDataFolder());
         this.instance.apply();
 
-        this.fileManager = new FileManager();
-        this.fileManager.addFile("locations.yml").addFile("data.yml")
+        getFileManager().addFile(new File(getDataFolder(), "locations.yml")).addFile(new File(getDataFolder(),"data.yml"))
                 .addFolder("crates")
                 .addFolder("schematics")
                 .init();
@@ -111,6 +116,12 @@ public class CrazyCrates extends JavaPlugin {
                 new MiscListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
 
+        if (Support.placeholder_api.isEnabled()) {
+            if (MiscUtils.isLogging()) getComponentLogger().info("PlaceholderAPI support is enabled!");
+
+            new PlaceholderAPISupport().register();
+        }
+
         if (MiscUtils.isLogging()) {
             // Print dependency garbage
             for (final Support value : Support.values()) {
@@ -120,15 +131,7 @@ public class CrazyCrates extends JavaPlugin {
                     getComponentLogger().info(AdvUtil.parse("<bold><gold>" + value.getName() + " <red>NOT FOUND"));
                 }
             }
-        }
 
-        if (Support.placeholder_api.isEnabled()) {
-            if (MiscUtils.isLogging()) getComponentLogger().info("PlaceholderAPI support is enabled!");
-
-            new PlaceholderAPISupport().register();
-        }
-
-        if (MiscUtils.isLogging()) {
             getComponentLogger().info("You can disable logging by going to the plugin-config.yml and setting verbose to false.");
 
             getComponentLogger().info("Done ({})!", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
@@ -172,10 +175,6 @@ public class CrazyCrates extends JavaPlugin {
         return this.crateManager;
     }
 
-    public @NotNull final FileManager getFileManager() {
-        return this.fileManager;
-    }
-
     public @Nullable final HeadDatabaseAPI getApi() {
         if (this.api == null) {
             return null;
@@ -190,5 +189,10 @@ public class CrazyCrates extends JavaPlugin {
 
     public @NotNull final Timer getTimer() {
         return this.timer;
+    }
+
+    @Override
+    public final boolean isLegacy() {
+        return !ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle);
     }
 }

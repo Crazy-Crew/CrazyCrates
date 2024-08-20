@@ -5,13 +5,13 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import io.papermc.paper.persistence.PersistentDataContainerView;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.simpleyaml.configuration.file.YamlConfiguration;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
 
     private final ItemBuilder mysteryCrate;
     private final ItemBuilder pickedCrate;
-    private final FileConfiguration file;
+    private final YamlConfiguration file;
     private final int totalPrizes;
 
     private final Map<UUID, Map<Integer, Tier>> prizes = new HashMap<>();
@@ -31,7 +31,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
      *
      * @param file the crate configuration.
      */
-    public CosmicCrateManager(@NotNull final FileConfiguration file) {
+    public CosmicCrateManager(@NotNull final YamlConfiguration file) {
         this.file = file;
 
         String path = "Crate.Crate-Type-Settings.";
@@ -58,7 +58,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
     /**
      * @return crate file configuration.
      */
-    public @NotNull final FileConfiguration getFile() {
+    public @NotNull final YamlConfiguration getFile() {
         return this.file;
     }
 

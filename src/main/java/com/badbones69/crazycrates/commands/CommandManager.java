@@ -33,7 +33,7 @@ import java.util.List;
 
 public class CommandManager {
 
-    private final static @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final static @NotNull CrazyCrates plugin = CrazyCrates.getPlugin();
     private final static @NotNull CrateManager crateManager = plugin.getCrateManager();
 
     private final static @NotNull BukkitCommandManager<CommandSender> commandManager = BukkitCommandManager.create(plugin);

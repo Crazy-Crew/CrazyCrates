@@ -3,6 +3,7 @@
   - active locations from ExcellentCrates are also migrated!
 - Added a new feature where the `RequiredKeys` can also take that amount of keys [#755](https://github.com/Crazy-Crew/CrazyCrates/issues/755)
   - `use-required-keys` in `config.yml` has to be true for that to take effect.
+- Added %chance% placeholders to prizes and tiers
 
 #### Crate Config Changes:
 - Crate.CrateName is deprecated, and has been replaced by Crate.Name
@@ -54,6 +55,8 @@ Crate:
 
 ### Fixes:
 - Fixed a rare issue where you weren't able to open QuickCrate
+- Fixed a duplication issue with CosmicCrate
+- Fixed an issue where CMI likely wouldn't be detected
 
 ### Changes:
 - Removed all getItemMeta/hasItemMeta calls for checking PersistentDataContainer
@@ -72,3 +75,7 @@ Crate:
   - Only saving to file, if we find anything that needs to be migrated with `CratesDeprecated` option
   - Only migrate `Editor-Items`, if `use-old-editor` in the `config.yml` is set to `false`
 - A lot of other changes were internal clean up, I was merely being a Janitor. functionality should not change.
+- Deprecated `use-minimessage` in `config.yml`, it will be removed in the next major version of minecraft
+  - The library (made by me), now has its own directory much like bStats. Each plugin using it will get a config generated inside it.
+  - You simply after `use-minimessage` is removed will have to edit that file instead which is `Vital/crazycrates-config.yml`
+  - Once the option `use-minimessage` is removed, setting `is-legacy` to false will allow MiniMessage

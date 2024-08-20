@@ -2,11 +2,12 @@ package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import org.bukkit.configuration.ConfigurationSection;
+import com.ryderbelserion.vital.common.utils.StringUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.simpleyaml.configuration.ConfigurationSection;
 import java.util.List;
 
 public class Tier {
@@ -54,19 +55,32 @@ public class Tier {
     public @NotNull final ItemBuilder getItem() {
         return this.item;
     }
-    
+
     /**
-     * @return the chance of being picked.
+     * Get the total chance
+     *
+     * @return the total chance divided
      */
-    public final int getChance() {
-        return this.chance;
+    public final String getTotalChance() {
+        return StringUtil.formatDouble((double) getChance() / getMaxRange() * 100) + "%";
     }
-    
+
     /**
-     * @return the range of max possible chances.
+     * Get the max range
+     *
+     * @return the max range of the prize.
      */
     public final int getMaxRange() {
         return this.maxRange;
+    }
+
+    /**
+     * Get the chance
+     *
+     * @return the chance the prize has of being picked.
+     */
+    public final int getChance() {
+        return this.chance;
     }
 
     /**
@@ -82,6 +96,6 @@ public class Tier {
     public @NotNull final ItemStack getTierItem(final @Nullable Player target) {
         if (target != null) this.item.setPlayer(target);
 
-        return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).setPersistentString(PersistentKeys.crate_tier.getNamespacedKey(), this.name).getStack();
+        return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).addLorePlaceholder("%chance%", this.getTotalChance()).setPersistentString(PersistentKeys.crate_tier.getNamespacedKey(), this.name).getStack();
     }
 }

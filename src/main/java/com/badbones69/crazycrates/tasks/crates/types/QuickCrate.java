@@ -178,10 +178,10 @@ public class QuickCrate extends CrateBuilder {
 
             reward.setVelocity(new Vector(0, .2, 0));
 
-            if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
-                reward.customName(AdvUtil.parse(prize.getPrizeName()));
-            } else {
+            if (this.plugin.isLegacy()) {
                 reward.setCustomName(ItemUtil.color(prize.getPrizeName()));
+            } else {
+                reward.customName(AdvUtil.parse(prize.getPrizeName()));
             }
 
             reward.setCustomNameVisible(true);

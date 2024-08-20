@@ -1,10 +1,10 @@
 package com.badbones69.crazycrates.api.enums;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.ryderbelserion.vital.paper.files.config.FileManager;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
+import com.ryderbelserion.vital.common.managers.files.FileManager;
 import org.jetbrains.annotations.NotNull;
+import org.simpleyaml.configuration.file.YamlConfiguration;
+import java.io.File;
 
 public enum Files {
 
@@ -13,7 +13,7 @@ public enum Files {
 
     private final String fileName;
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private @NotNull final FileManager fileManager = this.plugin.getFileManager();
 
@@ -27,11 +27,11 @@ public enum Files {
     }
 
     public final YamlConfiguration getConfiguration() {
-        return this.fileManager.getFile(this.fileName);
+        return this.fileManager.getFile(this.fileName).getConfiguration();
     }
 
     public void reload() {
-        this.fileManager.reloadFile(this.fileName);
+        this.fileManager.addFile(new File(this.plugin.getDataFolder(), this.fileName));
     }
 
     public void save() {
