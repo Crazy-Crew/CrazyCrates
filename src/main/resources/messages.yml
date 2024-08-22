@@ -109,7 +109,7 @@ crates:
 command:
   open:
     # A list of available placeholders: {crate}, {player}
-    opened-a-crate: "{prefix}<gray>You have opened the <gold>{crate} for <gold>{player}."
+    opened-a-crate: "{prefix}<gray>You have opened the {crate} <gray>for <gold>{player}."
   give:
     # A list of available placeholders: {amount}, {player}, {keytype}
     given-player-keys: "{prefix}<gray>You have given <gold>{player} {amount} <gray>key(s)."
