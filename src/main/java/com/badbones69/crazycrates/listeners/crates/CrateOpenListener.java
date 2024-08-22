@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
-import org.simpleyaml.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import java.util.List;

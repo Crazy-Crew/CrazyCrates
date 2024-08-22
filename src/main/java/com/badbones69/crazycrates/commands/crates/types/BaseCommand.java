@@ -9,7 +9,7 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.common.managers.files.FileManager;
+import com.ryderbelserion.vital.paper.api.files.FileManager;
 import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;

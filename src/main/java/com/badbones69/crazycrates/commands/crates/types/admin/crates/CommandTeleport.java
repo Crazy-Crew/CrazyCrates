@@ -14,8 +14,8 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
-import org.simpleyaml.configuration.ConfigurationSection;
-import org.simpleyaml.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import java.util.Objects;
 
 public class CommandTeleport extends BaseCommand {

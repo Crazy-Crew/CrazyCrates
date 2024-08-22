@@ -12,7 +12,7 @@ import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.simpleyaml.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

@@ -5,7 +5,7 @@ import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.simpleyaml.configuration.ConfigurationSection;
+import org.bukkit.configuration.ConfigurationSection;
 
 public class SoundEffect {
 

@@ -2,10 +2,10 @@ package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.t
 
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.vital.common.managers.files.CustomFile;
+import com.ryderbelserion.vital.paper.api.files.CustomFile;
 import org.bukkit.command.CommandSender;
-import org.simpleyaml.configuration.ConfigurationSection;
-import org.simpleyaml.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;

@@ -7,7 +7,7 @@ import com.ryderbelserion.vital.paper.util.structures.StructureManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.simpleyaml.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;

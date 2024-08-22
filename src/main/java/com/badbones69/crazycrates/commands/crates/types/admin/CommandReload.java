@@ -8,7 +8,7 @@ import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
-import org.simpleyaml.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class CommandReload extends BaseCommand {
 
