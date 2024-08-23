@@ -101,7 +101,8 @@ public class ConfigKeys implements SettingsHolder {
             "true -> crazycrates.open.<crate-name>",
             "false -> crazycrates.deny.open.<crate_name>",
             "",
-            "Eventually, one of these options will be either removed or kept."
+            "Eventually, one of these options will be either removed or kept.",
+            "Changing this option requires you to restart your server!"
     })
     public static final Property<Boolean> use_old_permission_system = newProperty("root.use-old-permission-system", false);
 

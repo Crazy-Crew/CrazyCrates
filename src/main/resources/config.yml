@@ -45,6 +45,7 @@ root:
   # false -> crazycrates.deny.open.<crate_name>
   #
   # Eventually, one of these options will be either removed or kept.
+  # Changing this option requires you to restart your server!
   use-old-permission-system: false
   # This option will tell the plugin to send all messages as action bars or messages in chat.
   #
