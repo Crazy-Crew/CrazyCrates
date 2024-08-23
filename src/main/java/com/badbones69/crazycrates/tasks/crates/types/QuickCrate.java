@@ -157,11 +157,8 @@ public class QuickCrate extends CrateBuilder {
             // Get the item meta.
             ItemMeta itemMeta = display.getItemMeta();
 
-            // Access the pdc and set "crazycrates-item"
-            PersistentKeys key = PersistentKeys.crate_prize;
-
-            //noinspection unchecked
-            itemMeta.getPersistentDataContainer().set(key.getNamespacedKey(), key.getType(), "1");
+            // Set the key
+            itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1");
 
             // Set the item meta.
             display.setItemMeta(itemMeta);

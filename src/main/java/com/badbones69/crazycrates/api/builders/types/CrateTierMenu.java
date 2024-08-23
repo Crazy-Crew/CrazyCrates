@@ -7,14 +7,13 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
+import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
@@ -51,15 +50,11 @@ public class CrateTierMenu extends InventoryBuilder {
 
         if (item == null || item.getType() == Material.AIR) return;
 
-        if (!item.hasItemMeta()) return;
-
         final Crate crate = this.inventoryManager.getCratePreview(player);
 
         if (crate == null) return;
 
-        final ItemMeta itemMeta = item.getItemMeta();
-
-        final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+        final PersistentDataContainerView container = item.getPersistentDataContainer();
 
         if (this.config.getProperty(ConfigKeys.enable_crate_menu) && container.has(PersistentKeys.main_menu_button.getNamespacedKey())) {
             if (this.inventoryManager.inCratePreview(player)) {

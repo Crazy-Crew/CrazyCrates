@@ -29,12 +29,12 @@ import com.ryderbelserion.vital.paper.api.files.FileManager;
 import com.ryderbelserion.vital.common.utils.FileUtil;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.paper.api.enums.Support;
+import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.NamespacedKey;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
@@ -1099,13 +1099,7 @@ public class CrateManager {
      * @return a crate if is a key from a crate otherwise null if it is not.
      */
     public @Nullable final Crate getCrateFromKey(@NotNull final ItemStack item) {
-        if (!item.hasItemMeta()) return null;
-
-        ItemMeta itemMeta = item.getItemMeta();
-
-        if (itemMeta == null) return null;
-
-        return getCrateFromName(ItemUtils.getKey(itemMeta.getPersistentDataContainer()));
+        return getCrateFromName(ItemUtils.getKey(item.getPersistentDataContainer()));
     }
 
     /**
@@ -1182,19 +1176,11 @@ public class CrateManager {
      */
     public final boolean isDisplayReward(@NotNull final Entity entity) {
         if (entity instanceof Item item) {
-            ItemStack itemStack = item.getItemStack();
+            final ItemStack itemStack = item.getItemStack();
 
             if (itemStack.getType() == Material.AIR) return false;
 
-            if (!itemStack.hasItemMeta()) return false;
-
-            ItemMeta itemMeta = itemStack.getItemMeta();
-
-            PersistentKeys prize = PersistentKeys.crate_prize;
-
-            PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-
-            return container.has(prize.getNamespacedKey());
+            return itemStack.getPersistentDataContainer().has(PersistentKeys.crate_prize.getNamespacedKey());
         }
 
         return false;
@@ -1208,19 +1194,11 @@ public class CrateManager {
      * @return true if it belongs to that Crate and false if it does not.
      */
     public final boolean isKeyFromCrate(@Nullable final ItemStack item, @Nullable final Crate crate) {
-        if (item == null) return false;
-
-        if (crate == null) return false;
-
+        if (item == null || crate == null) return false;
         if (crate.getCrateType() == CrateType.menu) return false;
-
         if (item.getType() == Material.AIR) return false;
 
-        if (!item.hasItemMeta()) return false;
-
-        final ItemMeta itemMeta = item.getItemMeta();
-
-        final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+        final PersistentDataContainerView container = item.getPersistentDataContainer();
 
         if (!container.has(PersistentKeys.crate_key.getNamespacedKey())) return false;
 
@@ -1288,7 +1266,7 @@ public class CrateManager {
         final boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
-        final ItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new ItemBuilder().fromBase64(file.getString("Crate.PhysicalKey.Data")) : new ItemBuilder().withType(file.getString("Crate.PhysicalKey.Item", "tripwire_hook"));
+        final ItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new ItemBuilder().fromBase64(file.getString("Crate.PhysicalKey.Data", "")) : new ItemBuilder().withType(file.getString("Crate.PhysicalKey.Item", "tripwire_hook"));
 
         return itemBuilder.setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setHidingItemFlags(hideFlags).setCustomModelData(customModelData);
     }
@@ -1426,22 +1404,28 @@ public class CrateManager {
         }
     }
 
+    /**
+     * Purge all rewards!
+     */
     public void purgeRewards() {
         if (!this.allRewards.isEmpty()) this.allRewards.stream().filter(Objects::nonNull).forEach(Entity::remove);
     }
 
-    public Tier getTier(final Crate crate, final ItemStack item) {
-        if (!item.hasItemMeta()) return null;
+    /**
+     * Gets the {@link Tier}
+     *
+     * @param crate {@link Crate}
+     * @param item {@link ItemStack}
+     * @return {@link Tier}
+     */
+    public final Tier getTier(final Crate crate, final ItemStack item) {
+        final PersistentDataContainerView container = item.getPersistentDataContainer();
 
-        ItemMeta itemMeta = item.getItemMeta();
+        final NamespacedKey key = PersistentKeys.crate_tier.getNamespacedKey();
 
-        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+        if (!container.has(key)) return null;
 
-        if (container.has(PersistentKeys.crate_tier.getNamespacedKey())) {
-            return crate.getTier(container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
-        }
-
-        return null;
+        return crate.getTier(container.get(key, PersistentDataType.STRING));
     }
 
     private final Map<UUID, ArrayList<Integer>> slots = new HashMap<>();

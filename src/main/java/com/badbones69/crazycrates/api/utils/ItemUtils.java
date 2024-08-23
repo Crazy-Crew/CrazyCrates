@@ -8,6 +8,7 @@ import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.paper.util.DyeUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
+import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.banner.PatternType;
@@ -167,7 +168,7 @@ public class ItemUtils {
      * @param container the {@link PersistentDataContainer}
      * @return the {@link String}
      */
-    public static String getKey(@NotNull final PersistentDataContainer container) {
+    public static String getKey(@NotNull final PersistentDataContainerView container) {
         return container.get(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
     }
 

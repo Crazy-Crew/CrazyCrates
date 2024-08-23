@@ -59,6 +59,9 @@ Crate:
 - Fixed an issue where CMI likely wouldn't be detected
 
 ### Changes:
+- Removed all getItemMeta/hasItemMeta calls for checking PersistentDataContainer
+  - We now check ItemStack#PersistentDataContainerView which no longer relies on ItemStack#getItemMeta
+  - TLDR: stonks
 - Right click now opens the crate menu as well.
 - Checked location strings instead of object ids
 - Simplified multiple location getters, don't need to get the same location 3 times if we aren't changing it.

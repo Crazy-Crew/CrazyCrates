@@ -4,10 +4,9 @@ import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
@@ -92,20 +91,13 @@ public class CosmicCrateManager extends AbstractCrateManager {
      * @return the tier
      */
     public final Tier getTier(@NotNull final ItemStack itemStack, @NotNull final Crate crate) {
-        if (itemStack.hasItemMeta()) {
-            final ItemMeta itemMeta = itemStack.getItemMeta();
+        final PersistentDataContainerView container = itemStack.getPersistentDataContainer();
 
-            final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-
-            if (container.has(PersistentKeys.crate_tier.getNamespacedKey())) {
-                return crate.getTier(container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
-            }
-
-            // In case there is no tier.
-            return PrizeManager.getTier(crate);
+        if (container.has(PersistentKeys.crate_tier.getNamespacedKey())) {
+            return crate.getTier(container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
         }
 
-        // In case there is no item meta.
+        // In case there is no tier.
         return PrizeManager.getTier(crate);
     }
 
