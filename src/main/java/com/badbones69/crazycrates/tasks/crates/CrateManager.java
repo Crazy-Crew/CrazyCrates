@@ -409,7 +409,7 @@ public class CrateManager {
                 final boolean isNewSystemEnabled = this.config.getProperty(ConfigKeys.use_new_permission_system);
 
                 final String node = isNewSystemEnabled ? "crazycrates.deny.open." + crateName : "crazycrates.open." + crateName;
-                final String description = isNewSystemEnabled ? "Prevents you from opening " + crateName : "Lets you open " + crateName;
+                final String description = isNewSystemEnabled ? "Prevents you from opening " + crateName : "Allows you to open " + crateName;
                 final PermissionDefault permissionDefault = isNewSystemEnabled ? PermissionDefault.FALSE : PermissionDefault.TRUE;
 
                 if (server.getPermission(node) == null) {
