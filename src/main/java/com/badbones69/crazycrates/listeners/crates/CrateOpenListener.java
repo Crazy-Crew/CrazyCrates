@@ -53,15 +53,28 @@ public class CrateOpenListener implements Listener {
             }
         }
 
-        if (player.hasPermission(this.config.getProperty(ConfigKeys.use_new_permission_system) ? "crazycrates.deny.open." + fileName : "crazycrates.open." + fileName)) {
-            Messages.no_crate_permission.sendMessage(player, "{crate}", fancyName);
+        if (this.config.getProperty(ConfigKeys.use_new_permission_system)) {
+            if (player.hasPermission("crazycrates.deny.open." + fileName)) {
+                Messages.no_crate_permission.sendMessage(player, "{crate}", fancyName);
 
-            this.crateManager.removePlayerFromOpeningList(player);
-            this.crateManager.removeCrateInUse(player);
+                this.crateManager.removePlayerFromOpeningList(player);
+                this.crateManager.removeCrateInUse(player);
 
-            event.setCancelled(true);
+                event.setCancelled(true);
 
-            return;
+                return;
+            }
+        } else {
+            if (!player.hasPermission("crazycrates.open." + fileName)) {
+                Messages.no_crate_permission.sendMessage(player, "{crate}", fancyName);
+
+                this.crateManager.removePlayerFromOpeningList(player);
+                this.crateManager.removeCrateInUse(player);
+
+                event.setCancelled(true);
+
+                return;
+            }
         }
 
         this.crateManager.addPlayerToOpeningList(player, crate);
