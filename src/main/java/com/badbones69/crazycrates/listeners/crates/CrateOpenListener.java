@@ -53,7 +53,7 @@ public class CrateOpenListener implements Listener {
             }
         }
 
-        if (player.hasPermission(this.config.getProperty(ConfigKeys.use_old_permission_system) ? "crazycrates.open." + fileName : "crazycrates.deny.open." + fileName)) {
+        if (player.hasPermission(this.config.getProperty(ConfigKeys.use_new_permission_system) ? "crazycrates.deny.open." + fileName : "crazycrates.open." + fileName)) {
             Messages.no_crate_permission.sendMessage(player, "{crate}", fancyName);
 
             this.crateManager.removePlayerFromOpeningList(player);

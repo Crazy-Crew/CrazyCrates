@@ -347,7 +347,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
             if (MiscUtils.isLogging()) {
                 final String fileName = crate.getFileName();
 
-                if (this.player.hasPermission(this.config.getProperty(ConfigKeys.use_old_permission_system) ? "crazycrates.open." + fileName : "crazycrates.deny.open." + fileName)) {
+                if (this.player.hasPermission(this.config.getProperty(ConfigKeys.use_new_permission_system) ? "crazycrates.deny.open." + fileName : "crazycrates.open." + fileName)) {
                     this.plugin.getComponentLogger().warn("{} could not open {} due to having the permission preventing them from opening the crate.", this.player.getName(), fileName);
                 } else {
                     this.plugin.getComponentLogger().warn("{} could not open {} due to no valid prizes being found which led to the event being cancelled.", this.player.getName(), fileName);

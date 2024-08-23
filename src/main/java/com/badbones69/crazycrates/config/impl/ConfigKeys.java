@@ -98,13 +98,13 @@ public class ConfigKeys implements SettingsHolder {
             "",
             "It feels right to make a toggle for it regardless.",
             "",
-            "true -> crazycrates.open.<crate-name>",
-            "false -> crazycrates.deny.open.<crate_name>",
+            "false -> crazycrates.open.<crate-name>",
+            "true -> crazycrates.deny.open.<crate_name>",
             "",
             "Eventually, one of these options will be either removed or kept.",
             "Changing this option requires you to restart your server!"
     })
-    public static final Property<Boolean> use_old_permission_system = newProperty("root.use-old-permission-system", false);
+    public static final Property<Boolean> use_new_permission_system = newProperty("root.use-new-permission-system", false);
 
     @Comment({
             "This option will tell the plugin to send all messages as action bars or messages in chat.",
