@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.listeners.crates;
 
+import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
@@ -29,6 +30,8 @@ public class CrateOpenListener implements Listener {
 
     private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
+    private final SettingsManager config = ConfigManager.getConfig();
+
     @EventHandler
     public void onCrateOpen(CrateOpenEvent event) {
         final Player player = event.getPlayer();
@@ -50,7 +53,7 @@ public class CrateOpenListener implements Listener {
             }
         }
 
-        if (player.hasPermission("crazycrates.deny.open." + fileName)) {
+        if (player.hasPermission(this.config.getProperty(ConfigKeys.use_old_permission_system) ? "crazycrates.open." + fileName : "crazycrates.deny.open." + fileName)) {
             Messages.no_crate_permission.sendMessage(player, "{crate}", fancyName);
 
             this.crateManager.removePlayerFromOpeningList(player);

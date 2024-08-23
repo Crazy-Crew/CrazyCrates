@@ -1,7 +1,10 @@
 package com.badbones69.crazycrates.support;
 
+import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.api.bStats;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
@@ -11,6 +14,8 @@ import java.util.List;
 public class MetricsWrapper extends bStats {
 
     private final CrateManager crateManager;
+
+    private final SettingsManager config = ConfigManager.getConfig();
 
     /**
      * Creates a new Metrics instance.
@@ -38,5 +43,7 @@ public class MetricsWrapper extends bStats {
 
             addCustomChart(chart);
         });
+
+        addCustomChart(new SimplePie("use_old_permission_system", () -> String.valueOf(this.config.getProperty(ConfigKeys.use_old_permission_system))));
     }
 }

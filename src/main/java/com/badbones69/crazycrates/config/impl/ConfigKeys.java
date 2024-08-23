@@ -92,6 +92,20 @@ public class ConfigKeys implements SettingsHolder {
     public static final Property<Boolean> item_editor_toggle = newProperty("root.use-old-editor", false);
 
     @Comment({
+            "A recent change to permissions related to opening crates was made",
+            "The way I assumed wildcard permissions worked isn't how they worked",
+            "The superperms system for wildcards is stupid... but I digress",
+            "",
+            "It feels right to make a toggle for it regardless.",
+            "",
+            "true -> crazycrates.open.<crate-name>",
+            "false -> crazycrates.deny.open.<crate_name>",
+            "",
+            "Eventually, one of these options will be either removed or kept."
+    })
+    public static final Property<Boolean> use_old_permission_system = newProperty("root.use-old-permission-system", false);
+
+    @Comment({
             "This option will tell the plugin to send all messages as action bars or messages in chat.",
             "",
             "send_message -> sends messages in chat.",

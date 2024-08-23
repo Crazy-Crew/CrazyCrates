@@ -251,6 +251,8 @@ public class CrateManager {
         return this.plugin.getInstance().getCrateFiles();
     }
 
+    private final SettingsManager config = ConfigManager.getConfig();
+
     /**
      * Loads the crates.
      */
@@ -404,12 +406,14 @@ public class CrateManager {
 
                 final PluginManager server = this.plugin.getServer().getPluginManager();
 
-                if (server.getPermission("crazycrates.deny.open." + crateName) == null) {
-                    Permission permission = new Permission(
-                            "crazycrates.deny.open." + crateName,
-                            "Prevents you from opening " + crateName,
-                            PermissionDefault.FALSE
-                    );
+                final boolean isOldSystemEnabled = this.config.getProperty(ConfigKeys.use_old_permission_system);
+
+                final String node = isOldSystemEnabled ? "crazycrates.open." + crateName : "crazycrates.deny.open." + crateName;
+                final String description = isOldSystemEnabled ? "Lets you open " + crateName : "Prevents you from opening " + crateName;
+                final PermissionDefault permissionDefault = isOldSystemEnabled ? PermissionDefault.TRUE : PermissionDefault.FALSE;
+
+                if (server.getPermission(node) == null) {
+                    final Permission permission = new Permission(node, description, permissionDefault);
 
                     server.addPermission(permission);
                 }
