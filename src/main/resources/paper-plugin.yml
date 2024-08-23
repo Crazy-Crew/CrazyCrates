@@ -1,0 +1,42 @@
+name: '${name}'
+main: '${group}.CrazyCrates'
+
+version: '${version}'
+api-version: '${apiVersion}'
+description: '${description}'
+website: '${website}'
+
+folia-supported: true
+
+dependencies:
+  server:
+    DecentHolograms:
+     load: BEFORE
+     required: false
+     join-classpath: true
+    FancyHolograms:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    CMI:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    PlaceholderAPI:
+     load: BEFORE
+     required: false
+     join-classpath: true
+    Oraxen:
+     load: BEFORE
+     required: false
+     join-classpath: true
+    HeadDatabase:
+      load: BEFORE
+      required: false
+      join-classpath: true
+
+    # Other crate plugins to migrate for people
+    ExcellentCrates:
+      load: BEFORE
+      required: false
+      join-classpath: true
