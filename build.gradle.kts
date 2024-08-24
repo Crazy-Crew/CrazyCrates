@@ -23,7 +23,7 @@ repositories {
 dependencies {
     paperweight.paperDevBundle(libs.versions.paper)
 
-    compileOnly(fileTree("$projectDir/libs").include("*.jar"))
+    compileOnly(fileTree("$projectDir/libs/compile").include("*.jar"))
 
     implementation(libs.triumph.cmds)
 
@@ -32,6 +32,9 @@ dependencies {
     }
 
     implementation(project(":api"))
+
+    compileOnly("su.nightexpress.excellentcrates", "ExcellentCrates", "5.3.1")
+    compileOnly("su.nightexpress.nightcore", "nightcore", "2.6.3")
 
     compileOnly(libs.decent.holograms)
 
