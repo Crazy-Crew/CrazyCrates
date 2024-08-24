@@ -62,7 +62,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                 failed.add("<red>⤷ " + crateName);
             }
 
-            final CustomFile customFile = new CustomFile(crateName, crateFile);
+            final CustomFile customFile = new CustomFile(crateName, crateFile).load();
 
             final YamlConfiguration configuration = customFile.getConfiguration();
 
