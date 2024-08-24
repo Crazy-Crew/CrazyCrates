@@ -139,6 +139,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             set(root, "Preview.Toggle", true);
             set(root, "Preview.ChestLines", 6);
+            set(root, "Preview.Name", crate.getName());
             set(root, "Preview.Glass.Toggle", true);
             set(root, "Preview.Glass.Name", " ");
             set(root, "Preview.Glass.Item", "gray_stained_glass_pane");
