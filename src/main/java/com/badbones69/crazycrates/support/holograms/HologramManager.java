@@ -28,6 +28,8 @@ public abstract class HologramManager {
 
     public abstract void purge(final boolean isShutdown);
 
+    public abstract String getName();
+
     protected @NotNull final String name() {
         return this.plugin.getName().toLowerCase() + "-" + UUID.randomUUID();
     }

@@ -74,14 +74,21 @@ public class CMIHologramsSupport extends HologramManager {
 
     @Override
     public void purge(final boolean isShutdown) {
+        final String name = this.plugin.getName().toLowerCase();
+
         final List<String> holograms = new ArrayList<>() {{
             hologramManager.getHolograms().forEach((id, hologram) -> {
-                if (id.startsWith(plugin.getName().toLowerCase() + "-")) {
-                    add(id.replace(plugin.getName().toLowerCase() + "-", ""));
+                if (id.startsWith(name + "-")) {
+                    add(id.replace(name + "-", ""));
                 }
             });
         }};
 
         holograms.forEach(this::removeHologram);
+    }
+
+    @Override
+    public final String getName() {
+        return "CMI";
     }
 }

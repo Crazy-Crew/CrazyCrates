@@ -89,16 +89,23 @@ public class FancyHologramsSupport extends HologramManager {
 
     @Override
     public void purge(final boolean isShutdown) {
+        final String name = this.plugin.getName().toLowerCase();
+
         final List<String> holograms = new ArrayList<>() {{
             manager.getHolograms().forEach(hologram -> {
                 final String id = hologram.getName();
 
-                if (id.startsWith(plugin.getName().toLowerCase() + "-")) {
-                    add(id.replace(plugin.getName().toLowerCase() + "-", ""));
+                if (id.startsWith(name + "-")) {
+                    add(id.replace(name + "-", ""));
                 }
             });
         }};
 
         holograms.forEach(this::removeHologram);
+    }
+
+    @Override
+    public final String getName() {
+        return "FancyHolograms";
     }
 }

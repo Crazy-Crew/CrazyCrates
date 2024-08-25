@@ -128,7 +128,7 @@ public class CrateManager {
             // If crate null, return.
             if (crate == null) return;
 
-            final String fileName = crate.getFileName();
+            //final String fileName = crate.getFileName();
 
             // Grab the new file.
             FileConfiguration file = crate.getFile();
@@ -217,23 +217,51 @@ public class CrateManager {
      * Load the holograms.
      */
     public void loadHolograms() {
-        if (this.holograms != null) {
-            return;
+        final String pluginName = this.config.getProperty(ConfigKeys.hologram_plugin);
+
+        if (this.holograms != null && !pluginName.isEmpty()) {
+            this.holograms.purge(false);
         }
-      
-        if (Support.decent_holograms.isEnabled()) {
-            this.holograms = new DecentHologramsSupport();
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("DecentHolograms support has been enabled.");
-        } else if (Support.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
-            this.holograms = new CMIHologramsSupport();
+        switch (pluginName) {
+            case "DecentHolograms" -> {
+                if (!Support.decent_holograms.isEnabled()) return;
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("CMI Hologram support has been enabled.");
-        } else if (Support.fancy_holograms.isEnabled()) {
-            this.holograms = new FancyHologramsSupport();
+                this.holograms = new DecentHologramsSupport();
+            }
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("FancyHolograms support has been enabled.");
-        } else {
+            case "FancyHolograms" -> {
+                if (!Support.fancy_holograms.isEnabled()) return;
+
+                this.holograms = new FancyHologramsSupport();
+            }
+
+            case "CMI" -> {
+                if (!Support.cmi.isEnabled() && !CMIModule.holograms.isEnabled()) return;
+
+                this.holograms = new CMIHologramsSupport();
+            }
+
+            default -> {
+                if (Support.decent_holograms.isEnabled()) {
+                    this.holograms = new DecentHologramsSupport();
+
+                    break;
+                }
+
+                if (Support.fancy_holograms.isEnabled()) {
+                    this.holograms = new FancyHologramsSupport();
+
+                    break;
+                }
+
+                if (Support.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
+                    this.holograms = new CMIHologramsSupport();
+                }
+            }
+        }
+
+        if (this.holograms == null) {
             if (MiscUtils.isLogging()) {
                 List.of(
                         "There was no hologram plugin found on the server. If you are using CMI",
@@ -241,7 +269,11 @@ public class CrateManager {
                         "You can run /crazycrates reload if using CMI otherwise restart your server."
                 ).forEach(this.plugin.getComponentLogger()::warn);
             }
+
+            return;
         }
+
+        if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("{} support has been enabled.", this.holograms.getName());
     }
 
     /**
