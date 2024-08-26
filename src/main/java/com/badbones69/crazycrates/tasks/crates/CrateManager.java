@@ -1302,7 +1302,7 @@ public class CrateManager {
         final boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
-        final ItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new ItemBuilder().fromBase64(file.getString("Crate.PhysicalKey.Data", "")) : new ItemBuilder().withType(file.getString("Crate.PhysicalKey.Item", "tripwire_hook"));
+        final ItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new ItemBuilder().fromBase64(file.getString("Crate.PhysicalKey.Data", "")) : new ItemBuilder().withType(file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase());
 
         return itemBuilder.setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setHidingItemFlags(hideFlags).setCustomModelData(customModelData);
     }
