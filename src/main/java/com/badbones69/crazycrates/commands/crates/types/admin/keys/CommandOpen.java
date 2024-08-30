@@ -74,6 +74,7 @@ public class CommandOpen extends BaseCommand {
         }
 
         final String fancyName = crate.getCrateName();
+        final String fileName = crate.getFileName();
 
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
@@ -89,7 +90,7 @@ public class CommandOpen extends BaseCommand {
 
         KeyType keyType = getKeyType(type);
 
-        boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), crateName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), crateName) >= 1;
+        boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), fileName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1;
 
         // If no key, run this.
         if (!hasKey) {
@@ -141,6 +142,7 @@ public class CommandOpen extends BaseCommand {
         }
 
         final String fancyName = crate.getCrateName();
+        final String fileName = crate.getFileName();
 
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
@@ -162,7 +164,7 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
-        boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), crateName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), crateName) >= 1;
+        boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), fileName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1;
 
         if (!hasKey) {
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
@@ -269,6 +271,7 @@ public class CommandOpen extends BaseCommand {
         }
 
         final String fancyName = crate.getCrateName();
+        final String fileName = crate.getFileName();
         final String keyName = crate.getKeyName();
 
         // Prevent it from working with these crate types.
@@ -285,7 +288,7 @@ public class CommandOpen extends BaseCommand {
 
         final KeyType keyType = getKeyType(type);
 
-        int keys = keyType == KeyType.physical_key ? this.userManager.getPhysicalKeys(player.getUniqueId(), crateName) : this.userManager.getVirtualKeys(player.getUniqueId(), crateName);
+        int keys = keyType == KeyType.physical_key ? this.userManager.getPhysicalKeys(player.getUniqueId(), fileName) : this.userManager.getVirtualKeys(player.getUniqueId(), fileName);
         int used = 0;
 
         if (keys == 0) {
@@ -324,16 +327,16 @@ public class CommandOpen extends BaseCommand {
 
             PrizeManager.givePrize(player, prize, crate);
 
-            this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crateName, prize));
+            this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
 
             if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().clone().add(.5, 1, .5), null);
 
             used++;
         }
 
-        if (crateType != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), crateName, used);
+        if (crateType != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), fileName, used);
 
-        if (!this.userManager.takeKeys(player.getUniqueId(), crateName, keyType, used, false)) {
+        if (!this.userManager.takeKeys(player.getUniqueId(), fileName, keyType, used, false)) {
             this.crateManager.removeCrateInUse(player);
             this.crateManager.removePlayerFromOpeningList(player);
 
