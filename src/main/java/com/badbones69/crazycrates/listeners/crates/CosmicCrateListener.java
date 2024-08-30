@@ -113,7 +113,7 @@ public class CosmicCrateListener implements Listener {
 
         PrizeManager.givePrize(player, prize, crate);
 
-        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getFileName(), prize));
+        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
 
         event.setCurrentItem(prize.getDisplayItem(player));
 

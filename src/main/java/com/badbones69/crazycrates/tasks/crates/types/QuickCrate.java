@@ -90,7 +90,7 @@ public class QuickCrate extends CrateBuilder {
                 Prize prize = crate.pickPrize(player);
                 PrizeManager.givePrize(player, prize, crate);
 
-                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, fileName, prize));
+                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
 
                 if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(.5, 1, .5), null);
 
@@ -135,7 +135,7 @@ public class QuickCrate extends CrateBuilder {
         Prize prize = crate.pickPrize(player, getLocation().clone().add(.5, 1.3, .5));
         PrizeManager.givePrize(player, prize, crate);
 
-        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, fileName, prize));
+        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
 
         final boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
 

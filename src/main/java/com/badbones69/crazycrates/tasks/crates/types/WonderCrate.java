@@ -122,7 +122,7 @@ public class WonderCrate extends CrateBuilder {
 
                     if (this.prize.useFireworks()) MiscUtils.spawnFirework(getPlayer().getLocation().add(0, 1, 0), null);
 
-                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, fileName, this.prize));
+                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, this.prize));
 
                     crateManager.removePlayerFromOpeningList(player);
 

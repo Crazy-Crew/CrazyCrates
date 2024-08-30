@@ -180,7 +180,7 @@ public class PrizeManager {
 
             if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
-            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getFileName(), prize));
+            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
         } else {
             Messages.prize_error.sendMessage(player, new HashMap<>() {{
                 put("{crate}", crate.getCrateName());

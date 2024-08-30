@@ -58,7 +58,7 @@ public class WarCrateListener implements Listener {
 
                     if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
-                    this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getFileName(), prize));
+                    this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
                     this.crateManager.removePlayerFromOpeningList(player);
 
                     crate.playSound(player, player.getLocation(), "cycle-sound", "block.anvil.land", Sound.Source.PLAYER);
