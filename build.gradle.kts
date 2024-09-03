@@ -1,9 +1,9 @@
 plugins {
     alias(libs.plugins.paperweight)
-    alias(libs.plugins.shadowJar)
     alias(libs.plugins.runPaper)
     alias(libs.plugins.minotaur)
     alias(libs.plugins.hangar)
+    alias(libs.plugins.shadow)
 
     `paper-plugin`
 }
