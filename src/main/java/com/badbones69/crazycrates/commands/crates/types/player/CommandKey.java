@@ -54,7 +54,7 @@ public class CommandKey {
             return;
         }
 
-        if (target == sender) {
+        if (target.getName().equalsIgnoreCase(sender.getName())) {
             personal(target);
 
             return;
