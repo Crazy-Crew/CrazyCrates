@@ -146,10 +146,8 @@ Crate:
         Custom-Model-Data: -1
       # The amount to display in the gui.
       DisplayAmount: 1
-      # The max range i.e. 1/100 = 1% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 1%
-      Chance: 1
+      # The lower the number, the less likely to win it.
+      Weight: 1.0
       # An example of a custom player head.
       # This can be a player head as well.
       # https://minecraft-heads.com/
@@ -171,10 +169,8 @@ Crate:
         Custom-Model-Data: -1
       # The amount to display in the gui.
       DisplayAmount: 1
-      # The max range i.e. 15/100 = 15% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 15%
-      Chance: 15
+      # The lower the number, the less likely to win it.
+      Weight: 15.0
     '3':
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Helmet"
@@ -198,10 +194,8 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gradient:#8fcfa0:#32a852>A gradient lore!"
-      # The max range i.e. 15/100 = 15% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 15%
-      Chance: 15
+      # The lower the number, the less likely to win it.
+      Weight: 15.0
     '4':
       # The enchants to be stored on the book.
       DisplayEnchantments:
@@ -219,10 +213,8 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gradient:#8fcfa0:#32a852>A gradient lore!"
-      # The max range i.e. 25/100 = 15% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 25%
-      Chance: 25
+      # The lower the number, the less likely to win it.
+      Weight: 25.0
     '5':
       # The display name of the item.
       DisplayName: "<yellow>$1,000"
@@ -238,11 +230,10 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gray>Make it rain Money."
+        - "<bold><gold>Chance: <red>20%</bold>"
+      # The lower the number, the less likely to win it.
+      Weight: 20.0
         - "<bold><gold>Chance: <red>%chance%</bold>"
-      # The max range i.e. 20/100 = 25% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 20%
-      Chance: 20
       # Spawn fireworks.
       Firework: true
       # Run commands when a prize is won.

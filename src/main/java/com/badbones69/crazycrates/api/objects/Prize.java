@@ -41,8 +41,7 @@ public class Prize {
     private ItemBuilder prizeItem = new ItemBuilder();
     private boolean firework = false;
     private String crateName = "";
-    private int maxRange = 100;
-    private int chance = 0;
+    private double weight = -1;
 
     private List<Tier> tiers = new ArrayList<>();
     private Prize alternativePrize;
@@ -67,9 +66,7 @@ public class Prize {
         this.alternativePrize = alternativePrize;
 
         this.prizeName = section.getString("DisplayName", "");
-        this.maxRange = section.getInt("MaxRange", 100);
-        this.chance = section.getInt("Chance", 50);
-
+        this.weight = section.getDouble("Weight", -1);
         this.firework = section.getBoolean("Firework", false);
 
         this.messages = section.getStringList("Messages"); // this returns an empty list if not found anyway.
@@ -223,26 +220,8 @@ public class Prize {
      *
      * @return the total chance divided
      */
-    public final String getTotalChance() {
-        return StringUtil.formatDouble((double) getChance() / getMaxRange() * 100) + "%";
-    }
-
-    /**
-     * Get the max range
-     *
-     * @return the max range of the prize.
-     */
-    public final int getMaxRange() {
-        return this.maxRange;
-    }
-    
-    /**
-     * Get the chance
-     *
-     * @return the chance the prize has of being picked.
-     */
-    public final int getChance() {
-        return this.chance;
+    public final double getWeight() {
+        return this.weight;
     }
     
     /**
