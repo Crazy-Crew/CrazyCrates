@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.api.builders.types;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.tasks.InventoryManager;
@@ -124,7 +124,7 @@ public class CratePreviewMenu extends InventoryBuilder {
 
         final PersistentDataContainerView container = item.getPersistentDataContainer();
 
-        if (container.has(PersistentKeys.main_menu_button.getNamespacedKey()) && this.config.getProperty(ConfigKeys.enable_crate_menu)) { // Clicked the menu button.
+        if (container.has(Keys.main_menu_button.getNamespacedKey()) && this.config.getProperty(ConfigKeys.enable_crate_menu)) { // Clicked the menu button.
             if (this.inventoryManager.inCratePreview(player)) {
                 if (holder.overrideMenu()) return;
 
@@ -147,25 +147,25 @@ public class CratePreviewMenu extends InventoryBuilder {
             return;
         }
 
-        if (container.has(PersistentKeys.next_button.getNamespacedKey())) {  // Clicked the next button.
+        if (container.has(Keys.next_button.getNamespacedKey())) {  // Clicked the next button.
             if (this.inventoryManager.getPage(player) < crate.getMaxPage()) {
                 crate.playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
 
                 this.inventoryManager.nextPage(player);
 
-                this.inventoryManager.openCratePreview(player, crate, container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
+                this.inventoryManager.openCratePreview(player, crate, container.get(Keys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
             }
 
             return;
         }
 
-        if (container.has(PersistentKeys.back_button.getNamespacedKey())) {  // Clicked the back button.
+        if (container.has(Keys.back_button.getNamespacedKey())) {  // Clicked the back button.
             if (this.inventoryManager.getPage(player) > 1 && this.inventoryManager.getPage(player) <= crate.getMaxPage()) {
                 crate.playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
 
                 this.inventoryManager.backPage(player);
 
-                this.inventoryManager.openCratePreview(player, crate, container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
+                this.inventoryManager.openCratePreview(player, crate, container.get(Keys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
             }
         }
     }

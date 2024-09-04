@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.listeners.crates;
+package com.badbones69.crazycrates.listeners.crates.types;
 
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;

@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.api.objects;
 
-import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.common.utils.StringUtil;
 import org.bukkit.entity.Player;
@@ -96,6 +96,6 @@ public class Tier {
     public @NotNull final ItemStack getTierItem(final @Nullable Player target) {
         if (target != null) this.item.setPlayer(target);
 
-        return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).addLorePlaceholder("%chance%", this.getTotalChance()).setPersistentString(PersistentKeys.crate_tier.getNamespacedKey(), this.name).getStack();
+        return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).addLorePlaceholder("%chance%", this.getTotalChance()).setPersistentString(Keys.crate_tier.getNamespacedKey(), this.name).getStack();
     }
 }

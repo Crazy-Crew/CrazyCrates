@@ -25,7 +25,7 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.HashMap;
 import java.util.UUID;
@@ -158,7 +158,7 @@ public class QuickCrate extends CrateBuilder {
             ItemMeta itemMeta = display.getItemMeta();
 
             // Set the key
-            itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1");
+            itemMeta.getPersistentDataContainer().set(Keys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1");
 
             // Set the item meta.
             display.setItemMeta(itemMeta);

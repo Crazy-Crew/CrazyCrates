@@ -1,11 +1,9 @@
 package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.config.ConfigManager;
-import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
@@ -140,7 +138,7 @@ public class Prize {
      * @return the display item that is shown for the preview and the winning prize.
      */
     public @NotNull final ItemStack getDisplayItem() {
-        return this.displayItem.setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
+        return this.displayItem.setPersistentString(Keys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
     }
 
     /**
@@ -173,7 +171,7 @@ public class Prize {
             this.displayItem.setDisplayLore(lore);
         }
 
-        return this.displayItem.setPlayer(player).setPersistentString(PersistentKeys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
+        return this.displayItem.setPlayer(player).setPersistentString(Keys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
     }
 
     /**

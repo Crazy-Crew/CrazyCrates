@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.enums;
+package com.badbones69.crazycrates.api.enums.misc;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.ryderbelserion.vital.paper.api.files.FileManager;

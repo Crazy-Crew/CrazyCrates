@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.crates.CrateHologram;
-import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
@@ -111,7 +111,7 @@ public class Crate {
                  @NotNull final List<String> prizeMessage,
                  @NotNull final List<String> prizeCommands,
                  @NotNull final CrateHologram hologram) {
-        this.keyBuilder = key.setDisplayName(keyName).setPersistentString(PersistentKeys.crate_key.getNamespacedKey(), name);
+        this.keyBuilder = key.setDisplayName(keyName).setPersistentString(Keys.crate_key.getNamespacedKey(), name);
         this.keyName = keyName;
 
         this.file = file;
@@ -570,7 +570,7 @@ public class Crate {
     }
     
     public final @Nullable Prize getPrize(@NotNull final ItemStack item) {
-        return getPrize(item.getPersistentDataContainer().get(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING));
+        return getPrize(item.getPersistentDataContainer().get(Keys.crate_prize.getNamespacedKey(), PersistentDataType.STRING));
     }
     
     /**

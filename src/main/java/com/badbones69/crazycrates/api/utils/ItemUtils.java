@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.api.utils;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.common.utils.StringUtil;
@@ -169,7 +169,7 @@ public class ItemUtils {
      * @return the {@link String}
      */
     public static String getKey(@NotNull final PersistentDataContainerView container) {
-        return container.get(PersistentKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
+        return container.get(Keys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
     }
 
     /**

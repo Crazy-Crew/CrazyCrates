@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.plugins;
 
-import com.badbones69.crazycrates.api.enums.Files;
+import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.ryderbelserion.vital.paper.api.files.CustomFile;

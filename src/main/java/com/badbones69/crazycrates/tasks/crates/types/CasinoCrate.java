@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
@@ -221,7 +221,7 @@ public class CasinoCrate extends CrateBuilder {
             if (itemStack != null) {
                 final PersistentDataContainerView container = itemStack.getPersistentDataContainer();
 
-                if (!container.has(PersistentKeys.crate_prize.getNamespacedKey())) {
+                if (!container.has(Keys.crate_prize.getNamespacedKey())) {
                     setItem(index, getRandomGlassPane());
                 }
             }

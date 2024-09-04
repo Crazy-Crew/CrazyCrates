@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.listeners.crates;
+package com.badbones69.crazycrates.listeners.crates.types;
 
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
@@ -16,7 +16,7 @@ import com.badbones69.crazycrates.tasks.crates.other.quadcrates.QuadCrateManager
 import com.badbones69.crazycrates.tasks.crates.other.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.ChestManager;
 import org.bukkit.block.Block;
@@ -85,7 +85,7 @@ public class QuadCrateListener implements Listener {
             final ItemMeta itemMeta = display.getItemMeta();
 
             // Access the pdc and set "crazycrates-item"
-            itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1");
+            itemMeta.getPersistentDataContainer().set(Keys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1");
 
             // Set the item meta.
             display.setItemMeta(itemMeta);

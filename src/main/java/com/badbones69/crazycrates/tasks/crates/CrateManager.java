@@ -5,7 +5,7 @@ import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.crates.CrateHologram;
 import com.badbones69.crazycrates.api.crates.quadcrates.CrateSchematic;
-import com.badbones69.crazycrates.api.enums.Files;
+import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.api.objects.other.BrokeLocation;
 import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
@@ -43,7 +43,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
@@ -1216,7 +1216,7 @@ public class CrateManager {
 
             if (itemStack.getType() == Material.AIR) return false;
 
-            return itemStack.getPersistentDataContainer().has(PersistentKeys.crate_prize.getNamespacedKey());
+            return itemStack.getPersistentDataContainer().has(Keys.crate_prize.getNamespacedKey());
         }
 
         return false;
@@ -1236,7 +1236,7 @@ public class CrateManager {
 
         final PersistentDataContainerView container = item.getPersistentDataContainer();
 
-        if (!container.has(PersistentKeys.crate_key.getNamespacedKey())) return false;
+        if (!container.has(Keys.crate_key.getNamespacedKey())) return false;
 
         return crate.getFileName().equals(ItemUtils.getKey(container));
     }
@@ -1457,7 +1457,7 @@ public class CrateManager {
     public final Tier getTier(final Crate crate, final ItemStack item) {
         final PersistentDataContainerView container = item.getPersistentDataContainer();
 
-        final NamespacedKey key = PersistentKeys.crate_tier.getNamespacedKey();
+        final NamespacedKey key = Keys.crate_tier.getNamespacedKey();
 
         if (!container.has(key)) return null;
 

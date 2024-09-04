@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.tasks;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
@@ -32,19 +32,19 @@ public class InventoryManager {
                 .setDisplayName(this.config.getProperty(ConfigKeys.menu_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.menu_button_lore))
                 .setCustomModelData(this.config.getProperty(ConfigKeys.menu_button_model_data))
-                .setPersistentString(PersistentKeys.main_menu_button.getNamespacedKey(), "none");
+                .setPersistentString(Keys.main_menu_button.getNamespacedKey(), "none");
 
         this.nextButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.next_button_item).toLowerCase())
                 .setDisplayName(this.config.getProperty(ConfigKeys.next_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.next_button_lore))
                 .setCustomModelData(this.config.getProperty(ConfigKeys.next_button_model_data))
-                .setPersistentString(PersistentKeys.next_button.getNamespacedKey(), "none");
+                .setPersistentString(Keys.next_button.getNamespacedKey(), "none");
 
         this.backButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.back_button_item).toLowerCase())
                 .setDisplayName(this.config.getProperty(ConfigKeys.back_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.back_button_lore))
                 .setCustomModelData(this.config.getProperty(ConfigKeys.back_button_model_data))
-                .setPersistentString(PersistentKeys.back_button.getNamespacedKey(), "none");
+                .setPersistentString(Keys.back_button.getNamespacedKey(), "none");
     }
 
     public @NotNull final ItemStack getMenuButton(@NotNull final Player player) {
@@ -59,7 +59,7 @@ public class InventoryManager {
         }
 
         if (tier != null) {
-            button.setPersistentString(PersistentKeys.crate_tier.getNamespacedKey(), tier.getName());
+            button.setPersistentString(Keys.crate_tier.getNamespacedKey(), tier.getName());
         }
 
         return button.getStack();
@@ -77,7 +77,7 @@ public class InventoryManager {
         }
 
         if (tier != null) {
-            button.setPersistentString(PersistentKeys.crate_tier.getNamespacedKey(), tier.getName());
+            button.setPersistentString(Keys.crate_tier.getNamespacedKey(), tier.getName());
         }
 
         return button.getStack();

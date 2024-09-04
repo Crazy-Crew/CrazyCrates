@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.api.builders.types;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
-import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.config.ConfigManager;
@@ -56,7 +56,7 @@ public class CrateTierMenu extends InventoryBuilder {
 
         final PersistentDataContainerView container = item.getPersistentDataContainer();
 
-        if (this.config.getProperty(ConfigKeys.enable_crate_menu) && container.has(PersistentKeys.main_menu_button.getNamespacedKey())) {
+        if (this.config.getProperty(ConfigKeys.enable_crate_menu) && container.has(Keys.main_menu_button.getNamespacedKey())) {
             if (this.inventoryManager.inCratePreview(player)) {
                 if (holder.overrideMenu()) return;
 
@@ -73,10 +73,10 @@ public class CrateTierMenu extends InventoryBuilder {
             return;
         }
 
-        if (container.has(PersistentKeys.crate_tier.getNamespacedKey())) {
+        if (container.has(Keys.crate_tier.getNamespacedKey())) {
             crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", Sound.Source.PLAYER);
 
-            final String tierName = container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING);
+            final String tierName = container.get(Keys.crate_tier.getNamespacedKey(), PersistentDataType.STRING);
 
             final Tier tier = crate.getTier(tierName);
 

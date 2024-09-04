@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.api.builders.types;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.api.enums.PersistentKeys;
+import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
@@ -129,7 +129,7 @@ public class CrateMainMenu extends InventoryBuilder {
                             .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, fileName)))
                             .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(uuid, fileName)))
                             .addLorePlaceholder("%player%", getPlayer().getName())
-                            .setPersistentString(PersistentKeys.crate_key.getNamespacedKey(), fileName);
+                            .setPersistentString(Keys.crate_key.getNamespacedKey(), fileName);
 
                     inventory.setItem(slot, ItemUtils.getItem(section, builder, player).getStack());
                 }
