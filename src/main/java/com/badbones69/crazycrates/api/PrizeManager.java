@@ -2,30 +2,30 @@ package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
-import com.ryderbelserion.vital.paper.enums.Support;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.ryderbelserion.vital.paper.api.enums.Support;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class PrizeManager {
     
-    private static @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private static @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     /**
      * Gets the prize for the player.
@@ -52,7 +52,27 @@ public class PrizeManager {
         }
 
         if (!prize.getItemBuilders().isEmpty()) {
+            final boolean isPlaceholderAPIEnabled = Support.placeholder_api.isEnabled();
+
             for (final ItemBuilder item : prize.getItemBuilders()) {
+                if (isPlaceholderAPIEnabled) {
+                    final String displayName = item.getDisplayName();
+
+                    if (!displayName.isEmpty()) {
+                        item.setDisplayName(PlaceholderAPI.setPlaceholders(player, displayName));
+                    }
+
+                    final List<String> displayLore = item.getDisplayLore();
+
+                    if (!displayLore.isEmpty()) {
+                        List<String> lore = new ArrayList<>();
+
+                        displayLore.forEach(line -> lore.add(PlaceholderAPI.setPlaceholders(player, line)));
+
+                        item.setDisplayLore(lore);
+                    }
+                }
+
                 if (!MiscUtils.isInventoryFull(player)) {
                     MiscUtils.addItem(player, item.setPlayer(player).getStack());
                 } else {
@@ -160,7 +180,7 @@ public class PrizeManager {
 
             if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
-            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getFileName(), prize));
+            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
         } else {
             Messages.prize_error.sendMessage(player, new HashMap<>() {{
                 put("{crate}", crate.getCrateName());

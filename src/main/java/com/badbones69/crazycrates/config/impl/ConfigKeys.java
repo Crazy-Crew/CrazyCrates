@@ -5,6 +5,8 @@ import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
 import com.badbones69.crazycrates.api.enums.State;
+import com.ryderbelserion.vital.paper.api.enums.Support;
+
 import java.util.Collections;
 import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newBeanProperty;
@@ -31,7 +33,7 @@ public class ConfigKeys implements SettingsHolder {
         String[] deprecation = {
                 "",
                 "Warning: This section is subject to change so it is considered deprecated.",
-                "This is your warning before the change happens.",
+                "This is your warning before the change happens. Please read the latest changelogs",
                 ""
         };
 
@@ -57,9 +59,6 @@ public class ConfigKeys implements SettingsHolder {
 
         conf.setComment("root", header);
     }
-
-    @Comment("Whether you want CrazyCrates to shut up or not, This option is ignored by errors.")
-    public static final Property<Boolean> verbose_logging = newProperty("root.verbose_logging", true);
 
     @Comment("This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.")
     public static final Property<Boolean> use_different_random = newProperty("root.use-different-random", false);
@@ -95,6 +94,21 @@ public class ConfigKeys implements SettingsHolder {
     public static final Property<Boolean> item_editor_toggle = newProperty("root.use-old-editor", false);
 
     @Comment({
+            "A recent change to permissions related to opening crates was made",
+            "The way I assumed wildcard permissions worked isn't how they worked",
+            "The superperms system for wildcards is stupid... but I digress",
+            "",
+            "It feels right to make a toggle for it regardless.",
+            "",
+            "false -> crazycrates.open.<crate-name>",
+            "true -> crazycrates.deny.open.<crate_name>",
+            "",
+            "Eventually, one of these options will be either removed or kept.",
+            "Changing this option requires you to restart your server!"
+    })
+    public static final Property<Boolean> use_new_permission_system = newProperty("root.use-new-permission-system", false);
+
+    @Comment({
             "This option will tell the plugin to send all messages as action bars or messages in chat.",
             "",
             "send_message -> sends messages in chat.",
@@ -102,6 +116,16 @@ public class ConfigKeys implements SettingsHolder {
             ""
     })
     public static final Property<State> message_state = newBeanProperty(State.class, "root.message-state", State.send_message);
+
+    @Comment({
+            "A list of available hologram plugins:",
+            " -> DecentHolograms",
+            " -> FancyHolograms",
+            " -> CMI",
+            "",
+            "If the option is set to blank, it'll pick whatever plugin it feels like picking."
+    })
+    public static final Property<String> hologram_plugin = newProperty("root.hologram-plugin", "");
 
     //@Comment({
     //        "Sends anonymous statistics about how the plugin is used to bstats.org.",

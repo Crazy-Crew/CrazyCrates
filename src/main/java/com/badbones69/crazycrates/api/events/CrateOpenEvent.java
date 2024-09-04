@@ -1,12 +1,12 @@
 package com.badbones69.crazycrates.api.events;
 
 import com.badbones69.crazycrates.api.objects.Crate;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
+import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 
 public class CrateOpenEvent extends Event implements Cancellable {
@@ -15,11 +15,11 @@ public class CrateOpenEvent extends Event implements Cancellable {
     private final Crate crate;
     private final KeyType keyType;
     private final boolean checkHand;
-    private final FileConfiguration configuration;
+    private final YamlConfiguration configuration;
 
     private boolean isCancelled;
 
-    public CrateOpenEvent(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, final boolean checkHand, @NotNull final FileConfiguration configuration) {
+    public CrateOpenEvent(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, final boolean checkHand, @NotNull final YamlConfiguration configuration) {
         this.player = player;
         this.crate = crate;
 
@@ -58,7 +58,7 @@ public class CrateOpenEvent extends Event implements Cancellable {
         return this.checkHand;
     }
 
-    public @NotNull final FileConfiguration getConfiguration() {
+    public @NotNull final YamlConfiguration getConfiguration() {
         return this.configuration;
     }
 

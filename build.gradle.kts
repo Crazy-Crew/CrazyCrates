@@ -1,16 +1,16 @@
 plugins {
     alias(libs.plugins.paperweight)
-    alias(libs.plugins.shadowJar)
     alias(libs.plugins.runPaper)
     alias(libs.plugins.minotaur)
     alias(libs.plugins.hangar)
+    alias(libs.plugins.shadow)
 
     `paper-plugin`
 }
 
 val buildNumber: String? = System.getenv("BUILD_NUMBER")
 
-rootProject.version = if (buildNumber != null) "${libs.versions.minecraft.get()}-$buildNumber" else "3.7"
+rootProject.version = if (buildNumber != null) "${libs.versions.minecraft.get()}-$buildNumber" else "3.7.4"
 
 val isSnapshot = false
 
@@ -23,11 +23,18 @@ repositories {
 dependencies {
     paperweight.paperDevBundle(libs.versions.paper)
 
-    compileOnly(fileTree("$projectDir/libs").include("*.jar"))
+    compileOnly(fileTree("$projectDir/libs/compile").include("*.jar"))
 
     implementation(libs.triumph.cmds)
 
-    implementation(libs.vital.paper)
+    implementation(libs.vital.paper) {
+        exclude("org.yaml")
+    }
+
+    implementation(project(":api"))
+
+    compileOnly("su.nightexpress.excellentcrates", "ExcellentCrates", "5.3.1")
+    compileOnly("su.nightexpress.nightcore", "nightcore", "2.6.3")
 
     compileOnly(libs.decent.holograms)
 
@@ -38,8 +45,6 @@ dependencies {
     compileOnly(libs.placeholderapi)
 
     compileOnly(libs.oraxen)
-
-    api(project(":api"))
 }
 
 paperweight {

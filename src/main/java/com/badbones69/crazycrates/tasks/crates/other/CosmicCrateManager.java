@@ -3,16 +3,15 @@ package com.badbones69.crazycrates.tasks.crates.other;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
-import org.bukkit.configuration.file.FileConfiguration;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.bukkit.configuration.file.YamlConfiguration;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +21,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
 
     private final ItemBuilder mysteryCrate;
     private final ItemBuilder pickedCrate;
-    private final FileConfiguration file;
+    private final YamlConfiguration file;
     private final int totalPrizes;
 
     private final Map<UUID, Map<Integer, Tier>> prizes = new HashMap<>();
@@ -32,7 +31,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
      *
      * @param file the crate configuration.
      */
-    public CosmicCrateManager(@NotNull final FileConfiguration file) {
+    public CosmicCrateManager(@NotNull final YamlConfiguration file) {
         this.file = file;
 
         String path = "Crate.Crate-Type-Settings.";
@@ -59,7 +58,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
     /**
      * @return crate file configuration.
      */
-    public @NotNull final FileConfiguration getFile() {
+    public @NotNull final YamlConfiguration getFile() {
         return this.file;
     }
 
@@ -92,20 +91,13 @@ public class CosmicCrateManager extends AbstractCrateManager {
      * @return the tier
      */
     public final Tier getTier(@NotNull final ItemStack itemStack, @NotNull final Crate crate) {
-        if (itemStack.hasItemMeta()) {
-            final ItemMeta itemMeta = itemStack.getItemMeta();
+        final PersistentDataContainerView container = itemStack.getPersistentDataContainer();
 
-            final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-
-            if (container.has(PersistentKeys.crate_tier.getNamespacedKey())) {
-                return crate.getTier(container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
-            }
-
-            // In case there is no tier.
-            return PrizeManager.getTier(crate);
+        if (container.has(PersistentKeys.crate_tier.getNamespacedKey())) {
+            return crate.getTier(container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
         }
 
-        // In case there is no item meta.
+        // In case there is no tier.
         return PrizeManager.getTier(crate);
     }
 

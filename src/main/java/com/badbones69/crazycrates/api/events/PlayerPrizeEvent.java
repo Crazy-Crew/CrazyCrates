@@ -14,12 +14,17 @@ public class PlayerPrizeEvent extends Event {
     private final Crate crate;
     private final Prize prize;
     private final String crateName;
-    
+
+    @Deprecated(since = "3.7.4", forRemoval = true)
     public PlayerPrizeEvent(@NotNull final Player player, @NotNull final Crate crate, @NotNull final String crateName, @NotNull final Prize prize) {
         this.player = player;
         this.crate = crate;
         this.prize = prize;
         this.crateName = crateName;
+    }
+
+    public PlayerPrizeEvent(@NotNull final Player player, @NotNull final Crate crate, @NotNull final Prize prize) {
+        this(player, crate, crate.getFileName(), prize);
     }
     
     public static HandlerList getHandlerList() {

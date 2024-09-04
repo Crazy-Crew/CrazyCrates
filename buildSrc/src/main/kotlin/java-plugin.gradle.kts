@@ -1,8 +1,4 @@
-import com.ryderbelserion.feather.enums.Repository
-
 plugins {
-    id("com.ryderbelserion.feather-core")
-
     `maven-publish`
 
     `java-library`
@@ -13,11 +9,11 @@ repositories {
 
     maven("https://repo.codemc.io/repository/maven-public")
 
+    maven("https://repo.crazycrew.us/releases")
+
     maven("https://repo.oraxen.com/releases")
 
-    maven(Repository.CrazyCrewReleases.url)
-
-    maven(Repository.Jitpack.url)
+    maven("https://jitpack.io")
 
     flatDir { dirs("libs") }
 

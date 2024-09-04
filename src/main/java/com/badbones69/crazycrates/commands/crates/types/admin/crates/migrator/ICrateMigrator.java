@@ -1,19 +1,21 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator;
 
+import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
+import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.core.util.StringUtil;
-import com.ryderbelserion.vital.paper.files.config.CustomFile;
-import com.ryderbelserion.vital.paper.files.config.FileManager;
+import com.ryderbelserion.vital.paper.api.files.CustomFile;
+import com.ryderbelserion.vital.paper.api.files.FileManager;
+import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,9 +24,11 @@ import java.util.Locale;
 
 public abstract class ICrateMigrator {
 
-    protected final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     protected final CrateManager crateManager = this.plugin.getCrateManager();
+
+    protected final SettingsManager config = ConfigManager.getConfig();
 
     protected final FileManager fileManager = this.plugin.getFileManager();
 
@@ -73,11 +77,13 @@ public abstract class ICrateMigrator {
     public void migrate(final CustomFile customFile, final String crateName) {
         final YamlConfiguration configuration = customFile.getConfiguration();
 
+        if (configuration == null) return;
+
         final ConfigurationSection crate = configuration.getConfigurationSection("Crate");
 
         if (crate == null) {
             Messages.error_migrating.sendMessage(sender, new HashMap<>() {{
-                put("{file}", crateName.isEmpty() ? customFile.getStrippedName() : crateName);
+                put("{file}", crateName.isEmpty() ? customFile.getCleanName() : crateName);
                 put("{type}", type.getName());
                 put("{reason}", "File could not be found in our data, likely invalid yml file that didn't load properly.");
             }});
@@ -106,7 +112,7 @@ public abstract class ICrateMigrator {
                     set(prize, "DisplayTrim.Pattern", prize.getString("DisplayTrim.Pattern", "sentry").toLowerCase());
                 }
 
-                if (prize.contains("Editor-Items")) {
+                if (prize.contains("Editor-Items") && !this.config.getProperty(ConfigKeys.item_editor_toggle)) {
                     final List<?> items = prize.getList("Editor-Items");
 
                     if (items != null) {
@@ -143,7 +149,7 @@ public abstract class ICrateMigrator {
         }
 
         customFile.save();
-        customFile.reload();
+        customFile.load();
     }
 
     public final String time() {

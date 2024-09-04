@@ -9,14 +9,13 @@ import com.badbones69.crazycrates.api.PrizeManager;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
+import org.bukkit.configuration.ConfigurationSection;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.List;
 import java.util.UUID;
@@ -220,14 +219,10 @@ public class CasinoCrate extends CrateBuilder {
             final ItemStack itemStack = getInventory().getItem(index);
 
             if (itemStack != null) {
-                if (itemStack.hasItemMeta()) {
-                    final ItemMeta itemMeta = itemStack.getItemMeta();
+                final PersistentDataContainerView container = itemStack.getPersistentDataContainer();
 
-                    final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-
-                    if (!container.has(PersistentKeys.crate_prize.getNamespacedKey())) {
-                        setItem(index, getRandomGlassPane());
-                    }
+                if (!container.has(PersistentKeys.crate_prize.getNamespacedKey())) {
+                    setItem(index, getRandomGlassPane());
                 }
             }
         }

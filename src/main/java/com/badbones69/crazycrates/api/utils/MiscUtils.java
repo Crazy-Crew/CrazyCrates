@@ -1,9 +1,8 @@
 package com.badbones69.crazycrates.api.utils;
 
 import com.badbones69.crazycrates.api.enums.Permissions;
-import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import org.bukkit.permissions.Permission;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
@@ -35,7 +34,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class MiscUtils {
 
-    private static @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private static @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     public static void sendCommand(@NotNull final String command) {
         if (command.isEmpty()) return;
@@ -268,7 +267,7 @@ public class MiscUtils {
     }
 
     public static boolean isLogging() {
-        return ConfigManager.getConfig().getProperty(ConfigKeys.verbose_logging);
+        return plugin.isVerbose();
     }
 
     public static boolean isExcellentCratesEnabled() {

@@ -24,24 +24,23 @@ import com.badbones69.crazycrates.tasks.crates.types.RouletteCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WonderCrate;
-import com.ryderbelserion.vital.core.util.FileUtil;
-import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
-import com.ryderbelserion.vital.paper.enums.Support;
-import com.ryderbelserion.vital.paper.files.config.CustomFile;
-import com.ryderbelserion.vital.paper.files.config.FileManager;
+import com.ryderbelserion.vital.paper.api.files.CustomFile;
+import com.ryderbelserion.vital.paper.api.files.FileManager;
+import com.ryderbelserion.vital.common.utils.FileUtil;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.ryderbelserion.vital.paper.api.enums.Support;
+import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import org.bukkit.NamespacedKey;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
@@ -78,9 +77,9 @@ import java.util.WeakHashMap;
 
 public class CrateManager {
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
     private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-    private @NotNull final FileManager yamlManager = this.plugin.getFileManager();
+    private @NotNull final FileManager fileManager = this.plugin.getFileManager();
 
     private final List<CrateLocation> crateLocations = new ArrayList<>();
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
@@ -129,7 +128,7 @@ public class CrateManager {
             // If crate null, return.
             if (crate == null) return;
 
-            final String fileName = crate.getFileName();
+            //final String fileName = crate.getFileName();
 
             // Grab the new file.
             FileConfiguration file = crate.getFile();
@@ -218,23 +217,51 @@ public class CrateManager {
      * Load the holograms.
      */
     public void loadHolograms() {
-        if (this.holograms != null) {
-            return;
+        final String pluginName = this.config.getProperty(ConfigKeys.hologram_plugin);
+
+        if (this.holograms != null && !pluginName.isEmpty()) {
+            this.holograms.purge(false);
         }
-      
-        if (Support.decent_holograms.isEnabled()) {
-            this.holograms = new DecentHologramsSupport();
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("DecentHolograms support has been enabled.");
-        } else if (Support.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
-            this.holograms = new CMIHologramsSupport();
+        switch (pluginName) {
+            case "DecentHolograms" -> {
+                if (!Support.decent_holograms.isEnabled()) return;
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("CMI Hologram support has been enabled.");
-        } else if (Support.fancy_holograms.isEnabled()) {
-            this.holograms = new FancyHologramsSupport();
+                this.holograms = new DecentHologramsSupport();
+            }
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("FancyHolograms support has been enabled.");
-        } else {
+            case "FancyHolograms" -> {
+                if (!Support.fancy_holograms.isEnabled()) return;
+
+                this.holograms = new FancyHologramsSupport();
+            }
+
+            case "CMI" -> {
+                if (!Support.cmi.isEnabled() && !CMIModule.holograms.isEnabled()) return;
+
+                this.holograms = new CMIHologramsSupport();
+            }
+
+            default -> {
+                if (Support.decent_holograms.isEnabled()) {
+                    this.holograms = new DecentHologramsSupport();
+
+                    break;
+                }
+
+                if (Support.fancy_holograms.isEnabled()) {
+                    this.holograms = new FancyHologramsSupport();
+
+                    break;
+                }
+
+                if (Support.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
+                    this.holograms = new CMIHologramsSupport();
+                }
+            }
+        }
+
+        if (this.holograms == null) {
             if (MiscUtils.isLogging()) {
                 List.of(
                         "There was no hologram plugin found on the server. If you are using CMI",
@@ -242,7 +269,11 @@ public class CrateManager {
                         "You can run /crazycrates reload if using CMI otherwise restart your server."
                 ).forEach(this.plugin.getComponentLogger()::warn);
             }
+
+            return;
         }
+
+        if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("{} support has been enabled.", this.holograms.getName());
     }
 
     /**
@@ -251,6 +282,8 @@ public class CrateManager {
     public List<String> getCrateNames() {
         return this.plugin.getInstance().getCrateFiles();
     }
+
+    private final SettingsManager config = ConfigManager.getConfig();
 
     /**
      * Loads the crates.
@@ -284,18 +317,32 @@ public class CrateManager {
 
         for (final String crateName : getCrateNames()) {
             try {
-                final @Nullable CustomFile customFile = this.yamlManager.getCustomFile(crateName);
+                final CustomFile customFile = this.fileManager.getFile(true, crateName);
 
-                if (customFile == null) return;
+                if (customFile == null) continue;
 
                 final YamlConfiguration file = customFile.getConfiguration();
+
+                if (file == null) continue;
 
                 final CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType", "CSGO"));
 
                 final ArrayList<Prize> prizes = new ArrayList<>();
                 final List<Tier> tiers = new ArrayList<>();
 
-                final String previewName = file.contains("Crate.Preview-Name") ? file.getString("Crate.Preview-Name", " ") : file.contains("Crate.CrateName") ? file.getString("Crate.CrateName", " ") : file.getString("Crate.Name", " ");
+                String previewName;
+
+                if (file.contains("Crate.Preview-Name")) {
+                    previewName = file.getString("Crate.Preview-Name", " ");
+                } else if (file.contains("Crate.Preview.Name")) {
+                    previewName = file.getString("Crate.Preview.Name", " ");
+                } else if (file.contains("Crate.CrateName")) {
+                    previewName = file.getString("Crate.CrateName", " ");
+                } else {
+                    previewName = file.getString("Crate.Name", " ");
+                }
+
+                // final String previewName = file.contains("Crate.Preview.Name") ? file.getString("Crate.Preview.Name", " ") : file.getString("Crate.Name", " "), this is for the next version of minecraft once previous options are removed.
 
                 final int maxMassOpen = file.getInt("Crate.Max-Mass-Open", 10);
                 final int requiredKeys = file.getInt("Crate.RequiredKeys", 0);
@@ -338,8 +385,12 @@ public class CrateManager {
                             final List<ItemStack> editorItems = new ArrayList<>();
 
                             if (prizeSection.contains("Editor-Items")) {
-                                for (Object key : prizeSection.getList("Editor-Items")) {
-                                    editorItems.add((ItemStack) key);
+                                final List<?> keys = prizeSection.getList("Editor-Items");
+
+                                if (keys != null) {
+                                    for (Object key : keys) {
+                                        editorItems.add((ItemStack) key);
+                                    }
                                 }
                             }
 
@@ -357,29 +408,9 @@ public class CrateManager {
                                 final boolean isEnabled = alternativeSection.getBoolean("Toggle");
 
                                 if (isEnabled) {
-                                    alternativePrize = new Prize(prizeSection.getString("DisplayName", "<lang:item.minecraft." + prizeSection.getString("DisplayItem", "stone") + ">"), prizeSection.getName(), alternativeSection);
+                                    alternativePrize = new Prize(prizeSection.getString("DisplayName", "<lang:item.minecraft." + prizeSection.getString("DisplayItem", "stone").toLowerCase() + ">"), prizeSection.getName(), alternativeSection);
                                 }
                             }
-
-                            /*if (prizeSection.contains("DisplayData")) {
-                                if (prizeSection.contains("Items")) {
-                                    final List<String> list = prizeSection.getStringList("Items");
-
-                                    if (!list.contains("Data:" + prizeSection.getString("DisplayData"))) {
-                                        list.add("Data:" + prizeSection.getString("DisplayData"));
-
-                                        prizeSection.set("Items", list);
-
-                                        customFile.save();
-                                    }
-                                } else {
-                                    prizeSection.set("Items", new ArrayList<>() {{
-                                        add("Data:" + prizeSection.getString("DisplayData"));
-                                    }});
-
-                                    customFile.save();
-                                }
-                            }*/
 
                             prizes.add(new Prize(prizeSection, editorItems, tierPrizes, crateName, alternativePrize));
                         }
@@ -407,12 +438,14 @@ public class CrateManager {
 
                 final PluginManager server = this.plugin.getServer().getPluginManager();
 
-                if (server.getPermission("crazycrates.deny.open." + crateName) == null) {
-                    Permission permission = new Permission(
-                            "crazycrates.deny.open." + crateName,
-                            "Prevents you from opening " + crateName,
-                            PermissionDefault.FALSE
-                    );
+                final boolean isNewSystemEnabled = this.config.getProperty(ConfigKeys.use_new_permission_system);
+
+                final String node = isNewSystemEnabled ? "crazycrates.deny.open." + crateName : "crazycrates.open." + crateName;
+                final String description = isNewSystemEnabled ? "Prevents you from opening " + crateName : "Allows you to open " + crateName;
+                final PermissionDefault permissionDefault = isNewSystemEnabled ? PermissionDefault.FALSE : PermissionDefault.TRUE;
+
+                if (server.getPermission(node) == null) {
+                    final Permission permission = new Permission(node, description, permissionDefault);
 
                     server.addPermission(permission);
                 }
@@ -944,6 +977,11 @@ public class CrateManager {
         this.crates.add(crate);
     }
 
+    /**
+     * Adds a crate location.
+     *
+     * @param crateLocation {@link CrateLocation}
+     */
     public void addLocation(@NotNull final CrateLocation crateLocation) {
         this.crateLocations.add(crateLocation);
     }
@@ -986,7 +1024,7 @@ public class CrateManager {
             }
         }
 
-        locations.set("Locations." + id + ".Crate", crate.getCrateName());
+        locations.set("Locations." + id + ".Crate", crate.getFileName());
         locations.set("Locations." + id + ".World", location.getWorld().getName());
         locations.set("Locations." + id + ".X", location.getBlockX());
         locations.set("Locations." + id + ".Y", location.getBlockY());
@@ -1097,13 +1135,7 @@ public class CrateManager {
      * @return a crate if is a key from a crate otherwise null if it is not.
      */
     public @Nullable final Crate getCrateFromKey(@NotNull final ItemStack item) {
-        if (!item.hasItemMeta()) return null;
-
-        final ItemMeta itemMeta = item.getItemMeta();
-
-        if (itemMeta == null) return null;
-
-        return getCrateFromName(ItemUtils.getKey(itemMeta.getPersistentDataContainer()));
+        return getCrateFromName(ItemUtils.getKey(item.getPersistentDataContainer()));
     }
 
     /**
@@ -1180,19 +1212,11 @@ public class CrateManager {
      */
     public final boolean isDisplayReward(@NotNull final Entity entity) {
         if (entity instanceof Item item) {
-            ItemStack itemStack = item.getItemStack();
+            final ItemStack itemStack = item.getItemStack();
 
             if (itemStack.getType() == Material.AIR) return false;
 
-            if (!itemStack.hasItemMeta()) return false;
-
-            ItemMeta itemMeta = itemStack.getItemMeta();
-
-            PersistentKeys prize = PersistentKeys.crate_prize;
-
-            PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-
-            return container.has(prize.getNamespacedKey());
+            return itemStack.getPersistentDataContainer().has(PersistentKeys.crate_prize.getNamespacedKey());
         }
 
         return false;
@@ -1206,19 +1230,11 @@ public class CrateManager {
      * @return true if it belongs to that Crate and false if it does not.
      */
     public final boolean isKeyFromCrate(@Nullable final ItemStack item, @Nullable final Crate crate) {
-        if (item == null) return false;
-
-        if (crate == null) return false;
-
+        if (item == null || crate == null) return false;
         if (crate.getCrateType() == CrateType.menu) return false;
-
         if (item.getType() == Material.AIR) return false;
 
-        if (!item.hasItemMeta()) return false;
-
-        final ItemMeta itemMeta = item.getItemMeta();
-
-        final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+        final PersistentDataContainerView container = item.getPersistentDataContainer();
 
         if (!container.has(PersistentKeys.crate_key.getNamespacedKey())) return false;
 
@@ -1286,7 +1302,7 @@ public class CrateManager {
         final boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
-        final ItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new ItemBuilder().fromBase64(file.getString("Crate.PhysicalKey.Data")) : new ItemBuilder().withType(file.getString("Crate.PhysicalKey.Item", "tripwire_hook"));
+        final ItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new ItemBuilder().fromBase64(file.getString("Crate.PhysicalKey.Data", "")) : new ItemBuilder().withType(file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase());
 
         return itemBuilder.setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setHidingItemFlags(hideFlags).setCustomModelData(customModelData);
     }
@@ -1424,21 +1440,59 @@ public class CrateManager {
         }
     }
 
+    /**
+     * Purge all rewards!
+     */
     public void purgeRewards() {
         if (!this.allRewards.isEmpty()) this.allRewards.stream().filter(Objects::nonNull).forEach(Entity::remove);
     }
 
-    public Tier getTier(final Crate crate, final ItemStack item) {
-        if (!item.hasItemMeta()) return null;
+    /**
+     * Gets the {@link Tier}
+     *
+     * @param crate {@link Crate}
+     * @param item {@link ItemStack}
+     * @return {@link Tier}
+     */
+    public final Tier getTier(final Crate crate, final ItemStack item) {
+        final PersistentDataContainerView container = item.getPersistentDataContainer();
 
-        ItemMeta itemMeta = item.getItemMeta();
+        final NamespacedKey key = PersistentKeys.crate_tier.getNamespacedKey();
 
-        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+        if (!container.has(key)) return null;
 
-        if (container.has(PersistentKeys.crate_tier.getNamespacedKey())) {
-            return crate.getTier(container.get(PersistentKeys.crate_tier.getNamespacedKey(), PersistentDataType.STRING));
+        return crate.getTier(container.get(key, PersistentDataType.STRING));
+    }
+
+    private final Map<UUID, ArrayList<Integer>> slots = new HashMap<>();
+
+    public void addSlot(final Player player, final int rawSlot) {
+        final UUID uuid = player.getUniqueId();
+
+        if (this.slots.containsKey(uuid)) {
+            ArrayList<Integer> slots = this.slots.get(uuid);
+
+            slots.add(rawSlot);
+
+            this.slots.put(uuid, slots);
+
+            return;
         }
 
-        return null;
+        this.slots.put(uuid, new ArrayList<>() {{
+            add(rawSlot);
+        }});
+    }
+
+    public final ArrayList<Integer> getSlots(final Player player) {
+        return this.slots.get(player.getUniqueId());
+    }
+
+    public final boolean containsSlot(final Player player) {
+        return this.slots.containsKey(player.getUniqueId());
+    }
+
+    public void removeSlot(final Player player) {
+        this.slots.remove(player.getUniqueId());
     }
 }

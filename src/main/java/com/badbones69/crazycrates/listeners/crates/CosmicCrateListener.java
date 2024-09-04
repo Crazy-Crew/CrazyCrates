@@ -2,14 +2,13 @@ package com.badbones69.crazycrates.listeners.crates;
 
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
-import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
-import com.ryderbelserion.vital.paper.enums.Support;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
+import io.papermc.paper.persistence.PersistentDataContainerView;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.PrizeManager;
@@ -27,9 +26,8 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
+import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.CrazyCrates;
@@ -48,7 +46,7 @@ import java.util.logging.Level;
 
 public class CosmicCrateListener implements Listener {
 
-    private @NotNull final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
@@ -80,6 +78,12 @@ public class CosmicCrateListener implements Listener {
         // Get the raw slot.
         final int slot = event.getRawSlot();
 
+        if (this.crateManager.containsSlot(player) && this.crateManager.getSlots(player).contains(slot)) {
+            Messages.already_redeemed_prize.sendMessage(player);
+
+            return;
+        }
+
         // Get inventory view.
         final InventoryView view = event.getView();
 
@@ -109,13 +113,15 @@ public class CosmicCrateListener implements Listener {
 
         PrizeManager.givePrize(player, prize, crate);
 
-        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, crate.getFileName(), prize));
+        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
 
         event.setCurrentItem(prize.getDisplayItem(player));
 
         holder.getCrate().playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
 
         if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
+
+        this.crateManager.addSlot(player, slot);
     }
 
     @EventHandler
@@ -159,9 +165,6 @@ public class CosmicCrateListener implements Listener {
         // Check if null or air.
         if (itemStack == null || itemStack.getType() == Material.AIR) return;
 
-        // If no item meta, return.
-        if (!itemStack.hasItemMeta()) return;
-
         // Get crate manager.
         final CosmicCrateManager cosmicCrateManager = (CosmicCrateManager) crate.getManager();
 
@@ -171,11 +174,8 @@ public class CosmicCrateListener implements Listener {
         // Get picked slot.
         final int pickedSlot = slot+1;
 
-        // Get clicked item's item meta.
-        final ItemMeta itemMeta = itemStack.getItemMeta();
-
         // Get the pdc container.
-        final PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+        final PersistentDataContainerView container = itemStack.getPersistentDataContainer();
 
         // Check if it has the mystery crate key otherwise check picked key.
         if (container.has(PersistentKeys.cosmic_mystery_crate.getNamespacedKey())) {
@@ -315,7 +315,7 @@ public class CosmicCrateListener implements Listener {
             // Clear the top inventory.
             view.getTopInventory().clear();
 
-            FileConfiguration configuration = crate.getFile();
+            YamlConfiguration configuration = crate.getFile();
 
             final String broadcastMessage = configuration.getString("Crate.BroadCast", "");
             final boolean broadcastToggle = configuration.getBoolean("Crate.OpeningBroadCast", false);
@@ -324,10 +324,10 @@ public class CosmicCrateListener implements Listener {
                 if (!broadcastMessage.isBlank()) {
                     String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
-                    if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
-                        this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
-                    } else {
+                    if (this.plugin.isLegacy()) {
                         this.plugin.getServer().broadcastMessage(ItemUtil.color(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
+                    } else {
+                        this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
                     }
                 }
             }
@@ -438,6 +438,8 @@ public class CosmicCrateListener implements Listener {
                     crateManager.removeTier(player);
 
                     cosmicCrateManager.removePickedPlayer(player);
+
+                    crateManager.removeSlot(player);
 
                     // Log it
                     if (MiscUtils.isLogging()) {

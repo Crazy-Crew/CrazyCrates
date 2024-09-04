@@ -18,7 +18,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -27,10 +27,8 @@ import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.PersistentKeys;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class QuickCrate extends CrateBuilder {
 
@@ -92,7 +90,7 @@ public class QuickCrate extends CrateBuilder {
                 Prize prize = crate.pickPrize(player);
                 PrizeManager.givePrize(player, prize, crate);
 
-                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, fileName, prize));
+                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
 
                 if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(.5, 1, .5), null);
 
@@ -107,6 +105,9 @@ public class QuickCrate extends CrateBuilder {
 
                 // Remove from opening list.
                 this.crateManager.removePlayerFromOpeningList(player);
+
+                // Remove crates in use
+                this.crateManager.removeCrateInUse(player);
 
                 return;
             }
@@ -125,13 +126,16 @@ public class QuickCrate extends CrateBuilder {
             // Remove from opening list.
             this.crateManager.removePlayerFromOpeningList(player);
 
+            // Remove crates in use
+            this.crateManager.removeCrateInUse(player);
+
             return;
         }
 
         Prize prize = crate.pickPrize(player, getLocation().clone().add(.5, 1.3, .5));
         PrizeManager.givePrize(player, prize, crate);
 
-        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, fileName, prize));
+        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
 
         final boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
 
@@ -153,11 +157,8 @@ public class QuickCrate extends CrateBuilder {
             // Get the item meta.
             ItemMeta itemMeta = display.getItemMeta();
 
-            // Access the pdc and set "crazycrates-item"
-            PersistentKeys key = PersistentKeys.crate_prize;
-
-            //noinspection unchecked
-            itemMeta.getPersistentDataContainer().set(key.getNamespacedKey(), key.getType(), "1");
+            // Set the key
+            itemMeta.getPersistentDataContainer().set(PersistentKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1");
 
             // Set the item meta.
             display.setItemMeta(itemMeta);
@@ -177,10 +178,10 @@ public class QuickCrate extends CrateBuilder {
 
             reward.setVelocity(new Vector(0, .2, 0));
 
-            if (ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle)) {
-                reward.customName(AdvUtil.parse(prize.getPrizeName()));
-            } else {
+            if (this.plugin.isLegacy()) {
                 reward.setCustomName(ItemUtil.color(prize.getPrizeName()));
+            } else {
+                reward.customName(AdvUtil.parse(prize.getPrizeName()));
             }
 
             reward.setCustomNameVisible(true);

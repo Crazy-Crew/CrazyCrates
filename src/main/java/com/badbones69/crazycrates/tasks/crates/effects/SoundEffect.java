@@ -3,9 +3,9 @@ package com.badbones69.crazycrates.tasks.crates.effects;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.bukkit.configuration.ConfigurationSection;
 
 public class SoundEffect {
 

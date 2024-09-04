@@ -20,7 +20,7 @@ import com.badbones69.crazycrates.commands.crates.types.admin.keys.CommandTake;
 import com.badbones69.crazycrates.commands.crates.types.player.CommandKey;
 import com.badbones69.crazycrates.commands.crates.types.player.CommandTransfer;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.paper.builders.PlayerBuilder;
+import com.ryderbelserion.vital.paper.api.builders.PlayerBuilder;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
 import org.bukkit.command.CommandSender;
@@ -33,7 +33,7 @@ import java.util.List;
 
 public class CommandManager {
 
-    private final static @NotNull CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    private final static @NotNull CrazyCrates plugin = CrazyCrates.getPlugin();
     private final static @NotNull CrateManager crateManager = plugin.getCrateManager();
 
     private final static @NotNull BukkitCommandManager<CommandSender> commandManager = BukkitCommandManager.create(plugin);

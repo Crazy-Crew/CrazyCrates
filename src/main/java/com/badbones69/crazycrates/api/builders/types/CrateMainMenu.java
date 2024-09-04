@@ -7,14 +7,12 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.ryderbelserion.vital.core.util.StringUtil;
-import com.ryderbelserion.vital.paper.builders.items.ItemBuilder;
+import com.ryderbelserion.vital.common.utils.StringUtil;
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -24,6 +22,8 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.InventoryBuilder;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.text.NumberFormat;
 import java.util.List;
@@ -106,7 +106,7 @@ public class CrateMainMenu extends InventoryBuilder {
         }
 
         for (Crate crate : this.crateManager.getUsableCrates()) {
-            final FileConfiguration file = crate.getFile();
+            final YamlConfiguration file = crate.getFile();
 
             final ConfigurationSection section = file.getConfigurationSection("Crate");
 
@@ -156,9 +156,7 @@ public class CrateMainMenu extends InventoryBuilder {
 
         if (item == null || item.getType() == Material.AIR) return;
 
-        if (!item.hasItemMeta()) return;
-
-        final Crate crate = this.crateManager.getCrateFromName(ItemUtils.getKey(item.getItemMeta().getPersistentDataContainer()));
+        final Crate crate = this.crateManager.getCrateFromName(ItemUtils.getKey(item.getPersistentDataContainer()));
 
         if (crate == null) return;
 

@@ -1,19 +1,15 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.plugins;
 
 import com.badbones69.crazycrates.api.enums.Files;
-import com.badbones69.crazycrates.api.objects.other.CrateLocation;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.vital.paper.files.config.CustomFile;
+import com.ryderbelserion.vital.paper.api.files.CustomFile;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.configuration.ConfigurationSection;
 import su.nightexpress.excellentcrates.CratesAPI;
 import su.nightexpress.excellentcrates.crate.impl.Crate;
 import su.nightexpress.excellentcrates.key.CrateKey;
@@ -43,7 +39,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
 
-        FileConfiguration locationData = Files.locations.getConfiguration();
+        YamlConfiguration locationData = Files.locations.getConfiguration();
 
         for (final Crate crate : CratesAPI.getCrateManager().getCrates()) {
             final String crateName = crate.getFile().getName();
@@ -66,9 +62,11 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                 failed.add("<red>⤷ " + crateName);
             }
 
-            final CustomFile customFile = new CustomFile(directory).apply(crateName);
+            final CustomFile customFile = new CustomFile(crateName, crateFile).load();
 
             final YamlConfiguration configuration = customFile.getConfiguration();
+
+            if (configuration == null) return;
 
             set(configuration, "Crate.CrateType", "CSGO");
 
@@ -123,7 +121,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                 set(root, "Name", previewName);
                 set(root, "Lore", previewLore);
 
-                final ConfigurationSection section = menuFile.getConfigurationSection("Crate.Slots");
+                final org.bukkit.configuration.ConfigurationSection section = menuFile.getConfigurationSection("Crate.Slots");
 
                 if (section != null) {
                     for (String key : section.getKeys(false)) {
@@ -141,6 +139,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             set(root, "Preview.Toggle", true);
             set(root, "Preview.ChestLines", 6);
+            set(root, "Preview.Name", crate.getName());
             set(root, "Preview.Glass.Toggle", true);
             set(root, "Preview.Glass.Name", " ");
             set(root, "Preview.Glass.Item", "gray_stained_glass_pane");
@@ -271,7 +270,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             customFile.save();
 
-            this.fileManager.addCustomFile(customFile);
+            this.fileManager.addFile(true, customFile);
 
             success.add("<green>⤷ " + crateName);
         }

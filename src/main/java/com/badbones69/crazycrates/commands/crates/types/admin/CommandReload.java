@@ -6,9 +6,9 @@ import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.permissions.PermissionDefault;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class CommandReload extends BaseCommand {
 
@@ -18,9 +18,6 @@ public class CommandReload extends BaseCommand {
         this.plugin.getInstance().reload();
 
         this.fileManager.reloadFiles().init();
-
-        this.plugin.getPaper().setLogging(this.config.getProperty(ConfigKeys.verbose_logging));
-        this.plugin.getPaper().setAdventure(this.config.getProperty(ConfigKeys.minimessage_toggle));
 
         final YamlConfiguration locations = Files.locations.getConfiguration();
         final YamlConfiguration data = Files.data.getConfiguration();

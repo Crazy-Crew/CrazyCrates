@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.api.objects.other;
 
-import com.ryderbelserion.vital.core.util.FileUtil;
+import com.ryderbelserion.vital.common.utils.FileUtil;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;

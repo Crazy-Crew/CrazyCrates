@@ -20,7 +20,7 @@ public class CommandKeys implements SettingsHolder {
     }
 
     @Comment("A list of available placeholders: {crate}, {player}")
-    public static final Property<String> opened_a_crate = newProperty("command.open.opened-a-crate", "{prefix}<gray>You have opened the <gold>{crate} for <gold>{player}.");
+    public static final Property<String> opened_a_crate = newProperty("command.open.opened-a-crate", "{prefix}<gray>You have opened the {crate} <gray>for <gold>{player}.");
 
     @Comment("A list of available placeholders: {amount}, {player}, {keytype}")
     public static final Property<String> gave_a_player_keys = newProperty("command.give.given-player-keys", "{prefix}<gray>You have given <gold>{player} {amount} <gray>key(s).");

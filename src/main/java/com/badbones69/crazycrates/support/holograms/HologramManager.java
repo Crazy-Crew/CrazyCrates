@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.api.crates.CrateHologram;
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,7 +18,7 @@ import java.util.regex.Pattern;
 @SuppressWarnings("deprecation")
 public abstract class HologramManager {
 
-    protected CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
+    protected CrazyCrates plugin = CrazyCrates.getPlugin();
     
     public abstract void createHologram(final Location location, final Crate crate, final String id);
 
@@ -28,6 +27,8 @@ public abstract class HologramManager {
     public abstract boolean exists(final String id);
 
     public abstract void purge(final boolean isShutdown);
+
+    public abstract String getName();
 
     protected @NotNull final String name() {
         return this.plugin.getName().toLowerCase() + "-" + UUID.randomUUID();

@@ -2,14 +2,14 @@ package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.t
 
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.vital.paper.files.config.CustomFile;
+import com.ryderbelserion.vital.paper.api.files.CustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public class DeprecatedCrateMigrator extends ICrateMigrator {
 
@@ -19,7 +19,7 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Set<CustomFile> customFiles = this.plugin.getFileManager().getCustomFiles();
+        final Collection<CustomFile> customFiles = this.plugin.getFileManager().getCustomFiles().values();
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
@@ -28,36 +28,57 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
             try {
                 final YamlConfiguration configuration = customFile.getConfiguration();
 
+                if (configuration == null) return;
+
                 final ConfigurationSection section = configuration.getConfigurationSection("Crate");
 
                 if (section == null) return;
 
-                section.set("Crate.Name", section.getString("Crate.CrateName"));
-                section.set("Crate.CrateName", null);
+                boolean isSave = false;
+
+                if (section.contains("CrateName")) {
+                    section.set("Name", section.getString("CrateName", " "));
+                    section.set("CrateName", null);
+
+                    isSave = true;
+                }
+
+                if (section.contains("Preview-Name")) {
+                    section.set("Preview.Name", section.getString("Preview-Name", " "));
+                    section.set("Preview-Name", null);
+
+                    isSave = true;
+                }
 
                 final ConfigurationSection prizes = section.getConfigurationSection("Prizes");
 
                 if (prizes != null) {
-                    prizes.getKeys(false).forEach(value -> {
+                    for (String value : prizes.getKeys(false)) {
                         if (configuration.contains("Crate.Prizes." + value + ".Lore")) {
                             configuration.set("Crate.Prizes." + value + ".DisplayLore", configuration.getStringList("Crate.Prizes." + value + ".Lore"));
 
                             configuration.set("Crate.Prizes." + value + ".Lore", null);
+
+                            isSave = true;
                         }
 
                         if (configuration.contains("Crate.Prizes." + value + ".Patterns")) {
                             configuration.set("Crate.Prizes." + value + ".DisplayPatterns", configuration.getStringList("Crate.Prizes." + value + ".Patterns"));
 
                             configuration.set("Crate.Prizes." + value + ".Patterns", null);
-                        }
-                    });
 
+                            isSave = true;
+                        }
+                    }
+                }
+
+                if (isSave) {
                     customFile.save();
                 }
 
-                success.add("<green>⤷ " + customFile.getStrippedName());
+                success.add("<green>⤷ " + customFile.getCleanName());
             } catch (Exception exception) {
-                failed.add("<red>⤷ " + customFile.getStrippedName());
+                failed.add("<red>⤷ " + customFile.getCleanName());
             }
         });
 

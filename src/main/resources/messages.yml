@@ -1,9 +1,9 @@
 # Support: https://discord.gg/badbones-s-live-chat-182615261403283459
 # Github: https://github.com/Crazy-Crew
-# 
+#
 # Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
 # Features: https://github.com/Crazy-Crew/CrazyCrates/issues
-# 
+#
 misc:
   # A list of available placeholders: {command}
   unknown-command: "{prefix}<red>{command} is not a known command."
@@ -109,7 +109,7 @@ crates:
 command:
   open:
     # A list of available placeholders: {crate}, {player}
-    opened-a-crate: "{prefix}<gray>You have opened the <gold>{crate} for <gold>{player}."
+    opened-a-crate: "{prefix}<gray>You have opened the {crate} <gray>for <gold>{player}."
   give:
     # A list of available placeholders: {amount}, {player}, {keytype}
     given-player-keys: "{prefix}<gray>You have given <gold>{player} {amount} <gray>key(s)."
@@ -131,6 +131,31 @@ command:
     no-item-in-hand: "{prefix}<red>You need to have an item in your hand to add it {crate}."
     # A list of available placeholders: {crate}, {prize}
     add-item-from-hand: "{prefix}<gray>The item has been added to the {crate} in prize #{prize}."
+  migrate:
+    # A list of available placeholders: {file}, {type}, {reason}
+    error:
+      "{prefix}<red>We could not migrate <green>{file} <red>using <green>{type}
+      <red>migration for <green>{reason}."
+    # A list of available placeholders: {prefix}
+    not-available: "{prefix}<green>This migration type is not available."
+    plugin-not-available: "{prefix}<green>The plugin <red>{name} <green>is not enabled. Cannot use as migration!"
+    # A list of available placeholders: {type}, {files}
+    #
+    # {files} will output multiple crates if migrating from another plugin
+    success:
+      - "<bold><gold>━━━━━━━━━━━━━━━━━━━ Migration Stats ━━━━━━━━━━━━━━━━━━━</gold></bold>"
+      - "<dark_gray>»</dark_gray> <green>Successful Conversions: "
+      - " ⤷ {succeeded_amount}</green>"
+      - "<dark_gray>»</dark_gray> <red>Failed Conversions: "
+      - " ⤷ {failed_amount}</red>"
+      - ""
+      - "<red>Conversion Time: <yellow>{time}"
+      - "<red>Conversion Type: <yellow>{type}"
+      - ""
+      - "<red>Converted Files:"
+      - "{files}"
+      - ""
+      - "<bold><gold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</gold></bold>"
   convert:
     no-files-to-convert: "<red>No available plugins to convert files."
     error-converting-files: "<red>An error has occurred while trying to convert files. We could not convert <green>{file} <red>so please check the console."

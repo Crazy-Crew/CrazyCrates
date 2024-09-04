@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.shadowJar)
+    alias(libs.plugins.shadow)
 
     `paper-plugin`
 }
