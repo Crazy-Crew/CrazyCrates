@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
@@ -33,6 +34,8 @@ public abstract class CrateBuilder extends FoliaRunnable {
 
     protected @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
+    protected @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+
     private final InventoryBuilder builder;
     private final Inventory inventory;
     private final Location location;
@@ -43,59 +46,45 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * Create a crate with inventory size.
      *
-     * @param crate crate opened by player.
-     * @param player player opening crate.
-     * @param size size of inventory.
+     * @param crate crate opened by player
+     * @param player player opening crate
+     * @param size size of inventory
+     * @param title inventory title
+     */
+    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final String title) {
+        super(player.getScheduler(), null);
+
+        Preconditions.checkNotNull(crate, "Crate can't be null.");
+        Preconditions.checkNotNull(player, "Player can't be null.");
+
+        this.location = player.getLocation();
+        this.player = player;
+
+        this.crate = crate;
+        this.size = size;
+
+        this.builder = new CratePrizeMenu(player, title.isEmpty() ? getTitle() : title, size, crate);
+        this.inventory = this.builder.build().getInventory();
+    }
+
+    /**
+     * Create a crate with inventory size.
+     *
+     * @param crate crate opened by player
+     * @param player player opening crate
+     * @param size size of inventory
      */
     public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size) {
-        super(player.getScheduler(), null);
-
-        Preconditions.checkNotNull(crate, "Crate can't be null.");
-        Preconditions.checkNotNull(player, "Player can't be null.");
-
-        this.crate = crate;
-
-        this.location = player.getLocation();
-
-        this.player = player;
-        this.size = size;
-
-        this.builder = new CratePrizeMenu(player, getTitle(), size, crate);
-        this.inventory = this.builder.build().getInventory();
+        this(crate, player, size, "");
     }
 
     /**
      * Create a crate with inventory size.
      *
-     * @param crate crate opened by player.
-     * @param player player opening crate.
-     * @param size size of inventory.
-     * @param crateName crate name of crate.
-     */
-    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final String crateName) {
-        super(player.getScheduler(), null);
-
-        Preconditions.checkNotNull(crate, "Crate can't be null.");
-        Preconditions.checkNotNull(player, "Player can't be null.");
-
-        this.crate = crate;
-
-        this.location = player.getLocation();
-
-        this.player = player;
-        this.size = size;
-
-        this.builder = new CratePrizeMenu(player, crateName, size, crate);
-        this.inventory = this.builder.build().getInventory();
-    }
-
-    /**
-     * Create a crate with inventory size.
-     *
-     * @param crate crate opened by player.
-     * @param player player opening crate.
-     * @param size size of inventory.
-     * @param location location of player.
+     * @param crate crate opened by player
+     * @param player player opening crate
+     * @param size size of inventory
+     * @param location location of player
      */
     public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final Location location) {
         super(player.getScheduler(), null);
@@ -104,11 +93,10 @@ public abstract class CrateBuilder extends FoliaRunnable {
         Preconditions.checkNotNull(player, "Player can't be null.");
         Preconditions.checkNotNull(location, "Location can't be null.");
 
-        this.crate = crate;
-
         this.location = location;
-
         this.player = player;
+
+        this.crate = crate;
         this.size = size;
 
         this.builder = new CratePrizeMenu(player, getTitle(), size, crate);
@@ -118,32 +106,9 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * Create a crate with no inventory size.
      *
-     * @param crate crate opened by player.
-     * @param player player opening crate.
-     */
-    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player) {
-        super(player.getScheduler(), null);
-
-        Preconditions.checkNotNull(crate, "Crate can't be null.");
-        Preconditions.checkNotNull(player, "Player can't be null.");
-
-        this.crate = crate;
-
-        this.location = player.getLocation();
-
-        this.player = player;
-
-        this.size = 0;
-        this.inventory = null;
-        this.builder = null;
-    }
-
-    /**
-     * Create a crate with no inventory size.
-     *
-     * @param crate crate opened by player.
-     * @param player player opening crate.
-     * @param location location of player.
+     * @param crate crate opened by player
+     * @param player player opening crate
+     * @param location location of player
      */
     public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location) {
         super(player.getScheduler(), null);
@@ -152,11 +117,10 @@ public abstract class CrateBuilder extends FoliaRunnable {
         Preconditions.checkNotNull(player, "Player can't be null.");
         Preconditions.checkNotNull(location, "Location can't be null.");
 
-        this.crate = crate;
-
         this.location = location;
-
         this.player = player;
+
+        this.crate = crate;
         this.size = 0;
 
         this.builder = null;
@@ -164,17 +128,27 @@ public abstract class CrateBuilder extends FoliaRunnable {
     }
 
     /**
+     * Create a crate with no inventory size.
+     *
+     * @param crate crate opened by player
+     * @param player player opening crate
+     */
+    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player) {
+        this(crate, player, player.getLocation());
+    }
+
+    /**
      * The open method for crates.
      *
-     * @param type type of key.
-     * @param checkHand whether to check hands or not.
+     * @param type type of key
+     * @param checkHand whether to check hands or not
      */
     public abstract void open(@NotNull final KeyType type, final boolean checkHand);
 
     /**
      * Add a new crate task.
      *
-     * @param task task to add.
+     * @param task task to add
      */
     public void addCrateTask(@NotNull final ScheduledTask task) {
         this.crateManager.addCrateTask(this.player, task);
@@ -206,28 +180,28 @@ public abstract class CrateBuilder extends FoliaRunnable {
     }
 
     /**
-     * @return crate that is being opened.
+     * @return crate that is being opened
      */
     public @NotNull final Crate getCrate() {
         return this.crate;
     }
 
     /**
-     * @return title of the crate.
+     * @return title of the crate
      */
     public @NotNull final String getTitle() {
         return this.crate.getCrateName();
     }
 
     /**
-     * @return player opening the crate.
+     * @return player opening the crate
      */
     public @NotNull final Player getPlayer() {
         return this.player;
     }
 
     /**
-     * @return inventory size.
+     * @return inventory size
      */
     public final int getSize() {
         return this.size;
@@ -236,7 +210,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * If the crate type is fire cracker, we won't run the open crate event again.
      *
-     * @return true or false.
+     * @return true or false
      */
     public final boolean isFireCracker() {
         return this.crate.getCrateType() == CrateType.fire_cracker;
@@ -245,21 +219,21 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * If the crate type is cosmic crate, we won't run the event again.
      *
-     * @return true or false.
+     * @return true or false
      */
     public final boolean isCosmicCrate() {
         return this.crate.getCrateType() == CrateType.cosmic;
     }
 
     /**
-     * @return file configuration of crate.
+     * @return file configuration of crate
      */
-    public YamlConfiguration getFile() {
+    public final YamlConfiguration getFile() {
         return this.crate.getFile();
     }
 
     /**
-     * @return inventory of the crate.
+     * @return inventory of the crate
      */
     public Inventory getInventory() {
         return this.inventory;
@@ -268,14 +242,14 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * Specific crates need a location.
      *
-     * @return location in the world.
+     * @return location in the world
      */
     public Location getLocation() {
         return this.location;
     }
 
     /**
-     * @return instance of this class.
+     * @return instance of this class
      */
     public InventoryBuilder getMenu() {
         return this.builder.build();
@@ -284,8 +258,8 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * Sets an item to a slot.
      *
-     * @param item item to set.
-     * @param slot slot to set at.
+     * @param item item to set
+     * @param slot slot to set at
      */
     public void setItem(final int slot, @NotNull final ItemStack item) {
         getInventory().setItem(slot, item);
@@ -294,10 +268,10 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * Sets an item to a slot.
      *
-     * @param slot slot to set at.
-     * @param material material to use.
-     * @param name name of item.
-     * @param lore lore of item.
+     * @param slot slot to set at
+     * @param material material to use
+     * @param name name of item
+     * @param lore lore of item
      */
     public void setItem(final int slot, @NotNull final Material material, @NotNull final String name, @NotNull final List<String> lore) {
         getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).setDisplayLore(lore).getStack());
@@ -306,9 +280,9 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * Sets an item to a slot.
      *
-     * @param slot slot to set at.
-     * @param material material to use.
-     * @param name name of item.
+     * @param slot slot to set at
+     * @param material material to use
+     * @param name name of item
      */
     public void setItem(final int slot, @NotNull final Material material, @NotNull final String name) {
         getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).getStack());
@@ -317,7 +291,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * Sets random glass pane at a specific slot.
      *
-     * @param slot slot to set at.
+     * @param slot slot to set at
      */
     public void setCustomGlassPane(final int slot) {
         getInventory().setItem(slot, getRandomGlassPane());
@@ -335,9 +309,9 @@ public abstract class CrateBuilder extends FoliaRunnable {
     /**
      * Calls the crate open event and returns true/false if successful or not.
      *
-     * @param keyType virtual or physical key.
-     * @param checkHand true or false.
-     * @return true if cancelled otherwise false.
+     * @param keyType virtual or physical key
+     * @param checkHand true or false
+     * @return true if cancelled otherwise false
      */
     public final boolean isCrateEventValid(@NotNull final KeyType keyType, final boolean checkHand) {
         CrateOpenEvent event = new CrateOpenEvent(this.player, this.crate, keyType, checkHand, this.crate.getFile());
@@ -374,18 +348,19 @@ public abstract class CrateBuilder extends FoliaRunnable {
     @Override
     public void cancel() {
         super.cancel();
+
         this.isCancelled = true;
     }
 
     /**
-     * @return the display item of the picked prize.
+     * @return the display item of the picked prize
      */
     public ItemStack getDisplayItem() {
         return getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer());
     }
 
     /**
-     * @return the display item of the picked prize with a tier.
+     * @return the display item of the picked prize with a tier
      */
     public ItemStack getDisplayItem(@NotNull final Tier tier) {
         return getCrate().pickPrize(getPlayer(), tier).getDisplayItem(getPlayer());
