@@ -8,6 +8,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class CrateStatusEvent extends Event {
 
@@ -24,15 +25,15 @@ public class CrateStatusEvent extends Event {
     private CrateStatus status;
     private Location location;
 
-    public void setInventory(final Inventory inventory) {
+    public void setInventory(@Nullable final Inventory inventory) {
         this.inventory = inventory;
     }
 
-    public final Inventory getInventory() {
+    public @Nullable final Inventory getInventory() {
         return this.inventory;
     }
 
-    public void setLocation(final Location location) {
+    public void setLocation(@Nullable final Location location) {
         this.location = location != null ? location : this.player.getLocation();
     }
 
@@ -40,7 +41,7 @@ public class CrateStatusEvent extends Event {
         return this.location;
     }
 
-    public final CrateStatusEvent setStatus(final CrateStatus status) {
+    public final CrateStatusEvent setStatus(@NotNull final CrateStatus status) {
         this.status = status;
 
         return this;
