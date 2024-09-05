@@ -16,7 +16,7 @@ import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CosmicCrate;
 import com.badbones69.crazycrates.tasks.crates.types.CrateOnTheGo;
-import com.badbones69.crazycrates.tasks.crates.types.v2.CsgoCrate;
+import com.badbones69.crazycrates.tasks.crates.types.CsgoCrate;
 import com.badbones69.crazycrates.tasks.crates.types.FireCrackerCrate;
 import com.badbones69.crazycrates.tasks.crates.types.QuadCrate;
 import com.badbones69.crazycrates.tasks.crates.types.QuickCrate;
