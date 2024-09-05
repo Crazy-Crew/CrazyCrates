@@ -31,42 +31,56 @@ public class CrateStatusListener implements Listener {
         final Location location = player.getLocation();
 
         switch (status) {
-            case ended, failed -> {
-                crate.playSound(player, location, "stop-sound", "entity.player.levelup", Sound.Source.PLAYER);
+            case ended -> janitor(crate, player, location, event);
 
-                switch (crate.getCrateType()) {
-                    case quad_crate -> this.crateManager.endQuadCrate(player);
-
-                    case quick_crate -> this.crateManager.endQuickCrate(player, location, crate, false);
-
-                    default -> this.crateManager.endCrate(player);
-                }
-
-                // Always remove thy player from thy opening list!
-                this.crateManager.removePlayerFromOpeningList(player);
-
-                final Inventory inventory = event.getInventory();
-
-                // Close inventory, if the crate requires an inventory.
-                if (inventory != null) {
-                    new FoliaRunnable(player.getScheduler(), null) {
-                        @Override
-                        public void run() {
-                            if (player.getOpenInventory().getTopInventory().equals(inventory)) player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
-                        }
-                    }.runDelayed(plugin, 40);
-                }
-            }
-
-            case cycling -> {
-                crate.playSound(player, location, "cycle-sound", "block.note_block.xylophone", Sound.Source.PLAYER);
-            }
+            case cycling -> crate.playSound(player, location, "cycle-sound", "block.note_block.xylophone", Sound.Source.PLAYER);
 
             case opened -> {
 
             }
 
+            case failed -> {
+                janitor(crate, player, location, event);
+
+                // add the key back, since the crate failed.
+                this.userManager.addKeys(player.getUniqueId(), crate.getFileName(), KeyType.virtual_key, 1);
+
+                // inform the player, they have been given a refund.
+                Messages.key_refund.sendMessage(player, "{crate}", crate.getCrateName());
+            }
+
             default -> {}
         }
+    }
+
+    /**
+     * Sends common tasks, for ending a crate in the cycle.
+     *
+     * @param crate {@link Crate}
+     * @param player {@link Player}
+     * @param location {@link Location}
+     * @param event {@link CrateStatusEvent}
+     */
+    private void janitor(final Crate crate, final Player player, final Location location, final CrateStatusEvent event) {
+        crate.playSound(player, location, "stop-sound", "entity.player.levelup", Sound.Source.PLAYER);
+
+        switch (crate.getCrateType()) {
+            case quad_crate -> this.crateManager.endQuadCrate(player);
+
+            case quick_crate -> this.crateManager.endQuickCrate(player, location, crate, false);
+
+            default -> this.crateManager.endCrate(player);
+        }
+
+        // Always remove thy player from thy opening list!
+        this.crateManager.removePlayerFromOpeningList(player);
+
+        // Always close the inventory, after 40 ticks.
+        new FoliaRunnable(player.getScheduler(), null) {
+            @Override
+            public void run() {
+                player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
+            }
+        }.runDelayed(plugin, 100); // 5 seconds, to take screenshots.
     }
 }
