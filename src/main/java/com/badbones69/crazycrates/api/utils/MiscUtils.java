@@ -2,6 +2,9 @@ package com.badbones69.crazycrates.api.utils;
 
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.Nullable;
 import com.badbones69.crazycrates.config.ConfigManager;
@@ -78,6 +81,34 @@ public class MiscUtils {
         return name + "," + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ();
     }
 
+    /**
+     * Converts a lore to minimessage strings
+     *
+     * @param lore {@link List<Component>}
+     * @return {@link List<Component>}
+     */
+    public static @NotNull List<String> convert(@NotNull final List<Component> lore) {
+        return new ArrayList<>(lore.size()) {{
+            lore.forEach(line -> add(convert(line)));
+        }};
+    }
+
+    /**
+     * Converts a {@link Component} to {@link String}.
+     *
+     * @param component {@link Component}
+     * @return {@link String}
+     */
+    public static @NotNull String convert(@NotNull final Component component) {
+        return MiniMessage.miniMessage().serialize(component);
+    }
+
+    /**
+     * Converts a {@link Location} without the world name.
+     *
+     * @param location {@link Location}
+     * @return {@link String}
+     */
     public static @NotNull String location(@NotNull final Location location) {
         return location(location, false);
     }
