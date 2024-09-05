@@ -62,19 +62,6 @@ public class ConfigKeys implements SettingsHolder {
     public static final Property<Boolean> use_different_random = newProperty("root.use-different-random", false);
 
     @Comment({
-            "This option defines what in-game editor format is used in CrazyCrates",
-            "",
-            "true -> uses the old one",
-            "false -> uses the new one",
-            "",
-            "Note: MiniMessage has to be turned off as this format uses legacy color codes.",
-            "Warning: this feature will only work as long as legacy color codes aren't removed",
-            "",
-            "The new in-game editor will likely receive another update to make the format readable."
-    })
-    public static final Property<Boolean> item_editor_toggle = newProperty("root.use-old-editor", false);
-
-    @Comment({
             "A recent change to permissions related to opening crates was made",
             "The way I assumed wildcard permissions worked isn't how they worked",
             "The superperms system for wildcards is stupid... but I digress",
