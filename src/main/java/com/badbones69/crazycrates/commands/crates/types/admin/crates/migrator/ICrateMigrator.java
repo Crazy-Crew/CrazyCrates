@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.api.files.CustomFile;
 import com.ryderbelserion.vital.paper.api.files.FileManager;
@@ -109,32 +110,6 @@ public abstract class ICrateMigrator {
                 if (prize.contains("DisplayTrim")) {
                     set(prize, "DisplayTrim.Material", prize.getString("DisplayTrim.Material", "quartz").toLowerCase());
                     set(prize, "DisplayTrim.Pattern", prize.getString("DisplayTrim.Pattern", "sentry").toLowerCase());
-                }
-
-                if (prize.contains("Editor-Items")) { // migrate this to a more readable format instead of base64? there no real good format for this though...
-                    final List<?> items = prize.getList("Editor-Items");
-
-                    if (items != null) {
-                        items.forEach(item -> {
-                            final org.bukkit.inventory.ItemStack itemStack = (org.bukkit.inventory.ItemStack) item;
-
-                            final String asBase64 = ItemUtil.toBase64(itemStack);
-
-                            if (prize.contains("Items")) {
-                                final List<String> list = prize.getStringList("Items");
-
-                                list.add("Data: " + asBase64);
-
-                                prize.set("Items", list);
-                            } else {
-                                prize.set("Items", new ArrayList<>() {{
-                                    add("Data: " + asBase64);
-                                }});
-                            }
-                        });
-
-                        prize.set("Editor-Items", null);
-                    }
                 }
 
                 if (prize.contains("DisplayEnchantments")) {
