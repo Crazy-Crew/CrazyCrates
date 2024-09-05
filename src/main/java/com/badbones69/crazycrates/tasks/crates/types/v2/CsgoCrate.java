@@ -104,7 +104,7 @@ public class CsgoCrate extends CrateBuilder {
         player.openInventory(getInventory());
 
         // run the task, which uses the run method above.
-        runAtFixedRate(this.plugin, 1, 1);
+        runAtFixedRate(this.plugin, 0, 1);
     }
 
     private void moveItemsAndSetGlass() {
