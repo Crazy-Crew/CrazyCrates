@@ -547,8 +547,8 @@ public class Crate {
      * @param name name of the prize you want.
      * @return the prize you asked for.
      */
-    public final @Nullable Prize getPrize(@Nullable final String name) {
-        if (name != null && name.isEmpty()) return null;
+    public final @Nullable Prize getPrize(@NotNull final String name) {
+        if (name.isEmpty()) return null;
 
         Prize prize = null;
 
@@ -564,7 +564,7 @@ public class Crate {
     }
     
     public final @Nullable Prize getPrize(@NotNull final ItemStack item) {
-        return getPrize(item.getPersistentDataContainer().get(Keys.crate_prize.getNamespacedKey(), PersistentDataType.STRING));
+        return getPrize(item.getPersistentDataContainer().getOrDefault(Keys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, ""));
     }
     
     /**
