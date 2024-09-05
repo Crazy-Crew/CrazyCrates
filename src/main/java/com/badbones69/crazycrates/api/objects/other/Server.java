@@ -82,7 +82,7 @@ public class Server implements IServer {
      */
     @Override
     public @NotNull final List<String> getCrateFiles() {
-        return FileUtil.getFiles(getCrateFolder(), ".yml");
+        return FileUtil.getFiles(getCrateFolder(), ".yml", false);
     }
 
     /**
