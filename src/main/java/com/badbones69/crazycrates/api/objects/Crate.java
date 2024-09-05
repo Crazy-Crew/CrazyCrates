@@ -13,6 +13,7 @@ import com.ryderbelserion.vital.paper.api.files.CustomFile;
 import com.ryderbelserion.vital.paper.util.DyeUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import net.kyori.adventure.sound.Sound;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.persistence.PersistentDataType;
@@ -643,6 +644,8 @@ public class Crate {
         if (!section.contains(prizeName)) {
             section.set(getPath(prizeName, "MaxRange"), 100);
         }
+
+        //todo() add something for Editor-Items, I am no longer using it.
 
         String toBase64 = ItemUtil.toBase64(itemStack);
 
