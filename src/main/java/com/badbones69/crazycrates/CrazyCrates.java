@@ -7,8 +7,6 @@ import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.objects.other.Server;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
-import com.badbones69.crazycrates.config.ConfigManager;
-import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
@@ -187,10 +185,5 @@ public class CrazyCrates extends Vital {
 
     public @NotNull final Timer getTimer() {
         return this.timer;
-    }
-
-    @Override
-    public final boolean isLegacy() {
-        return !ConfigManager.getConfig().getProperty(ConfigKeys.minimessage_toggle);
     }
 }

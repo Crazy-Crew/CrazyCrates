@@ -112,18 +112,10 @@ public class Prize {
      * @return the name of the prize.
      */
     public @NotNull final String getPrizeName() {
-        if (this.plugin.isLegacy()) {
-            return this.prizeName.isEmpty() ? "" : this.prizeName;
-        }
-
         return this.prizeName.isEmpty() ? "<lang:" + this.displayItem.getType().getItemTranslationKey() + ">" : this.prizeName;
     }
 
     public @NotNull final String getStrippedName() {
-        if (this.plugin.isLegacy()) {
-            return ChatColor.stripColor(getPrizeName());
-        }
-
         return PlainTextComponentSerializer.plainText().serialize(AdvUtil.parse(getPrizeName()));
     }
 
@@ -283,21 +275,6 @@ public class Prize {
         final String fancyName = crate.getCrateName();
         final String prizeName = getPrizeName();
         final String strippedName = getStrippedName();
-
-        if (this.plugin.isLegacy()) {
-            this.plugin.getServer().getOnlinePlayers().forEach(player -> {
-                if (!this.broadcastPermission.isEmpty() && player.hasPermission(this.broadcastPermission)) return;
-
-                this.broadcastMessages.forEach(message -> player.sendMessage(ItemUtil.color(message, new HashMap<>() {{
-                    put("%player%", player.getName());
-                    put("%crate%", fancyName);
-                    put("%reward%", prizeName);
-                    put("%reward_stripped%", strippedName);
-                }}, player)));
-            });
-
-            return;
-        }
 
         this.plugin.getServer().getOnlinePlayers().forEach(player -> {
             if (!this.broadcastPermission.isEmpty() && player.hasPermission(this.broadcastPermission)) return;

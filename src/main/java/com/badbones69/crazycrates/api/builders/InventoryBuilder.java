@@ -58,13 +58,9 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
         this.title = title;
         this.size = size;
 
-        String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
+        final String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        if (this.plugin.isLegacy()) {
-            this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
-        } else {
-            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
-        }
+        this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
     }
 
     public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, @NotNull final Crate crate) {
@@ -74,13 +70,9 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         this.crate = crate;
 
-        String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
+        final String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        if (this.plugin.isLegacy()) {
-            this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
-        } else {
-            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
-        }
+        this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
     }
 
     public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, final int page, @NotNull final Crate crate) {
@@ -91,13 +83,9 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         this.crate = crate;
 
-        String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
+        final String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        if (this.plugin.isLegacy()) {
-            this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
-        } else {
-            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
-        }
+        this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
     }
 
     public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, @NotNull final Crate crate, @NotNull final List<Tier> tiers) {
@@ -108,13 +96,9 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
         this.crate = crate;
         this.tiers = tiers;
 
-        String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
+        final String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
-        if (this.plugin.isLegacy()) {
-            this.inventory = this.server.createInventory(this, this.size, ItemUtil.color(inventoryTitle));
-        } else {
-            this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
-        }
+        this.inventory = this.server.createInventory(this, this.size, AdvUtil.parse(inventoryTitle));
     }
 
     public InventoryBuilder() {}
@@ -127,7 +111,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
             if (!commands.isEmpty()) {
                 commands.forEach(value -> {
-                    String command = value.replaceAll("%player%", quoteReplacement(this.player.getName())).replaceAll("%crate%", quoteReplacement(this.crate.getFileName()));
+                    final String command = value.replaceAll("%player%", quoteReplacement(this.player.getName())).replaceAll("%crate%", quoteReplacement(this.crate.getFileName()));
 
                     MiscUtils.sendCommand(command);
                 });
@@ -197,10 +181,6 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
     }
 
     public void sendTitleChange() {
-        if (this.plugin.isLegacy()) {
-            return;
-        }
-
         ServerPlayer entityPlayer = (ServerPlayer) ((CraftHumanEntity) getView().getPlayer()).getHandle();
         int containerId = entityPlayer.containerMenu.containerId;
         MenuType<?> windowType = CraftContainer.getNotchInventoryType(getView().getTopInventory());

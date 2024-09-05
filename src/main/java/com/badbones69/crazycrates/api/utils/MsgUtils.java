@@ -24,17 +24,9 @@ public class MsgUtils {
             if (sendPrefix) {
                 final String msg = message.replaceAll("%prefix%", quoteReplacement(prefix)).replaceAll("%Prefix%", quoteReplacement(prefix));
 
-                if (plugin.isLegacy()) {
-                    player.sendMessage(ItemUtil.color(msg));
-                } else {
-                    player.sendRichMessage(msg);
-                }
+                player.sendRichMessage(msg);
             } else {
-                if (plugin.isLegacy()) {
-                    player.sendMessage(ItemUtil.color(message));
-                } else {
-                    player.sendRichMessage(message);
-                }
+                player.sendRichMessage(message);
             }
 
             return;
@@ -43,17 +35,9 @@ public class MsgUtils {
         if (sendPrefix) {
             final String msg = message.replaceAll("%prefix%", quoteReplacement(prefix)).replaceAll("%Prefix%", quoteReplacement(prefix));
 
-            if (plugin.isLegacy()) {
-                commandSender.sendMessage(ItemUtil.color(msg));
-            } else {
-                commandSender.sendRichMessage(msg);
-            }
+            commandSender.sendRichMessage(msg);
         } else {
-            if (plugin.isLegacy()) {
-                commandSender.sendMessage(ItemUtil.color(message));
-            } else {
-                commandSender.sendRichMessage(message);
-            }
+            commandSender.sendRichMessage(message);
         }
     }
 
