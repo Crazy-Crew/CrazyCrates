@@ -123,7 +123,7 @@ public class CsgoCrate extends CrateBuilder {
                     }
                 }
             }
-        }.runAtFixedRate(this.plugin, 1, 1));
+        }.runAtFixedRate(this.plugin, 0, 1));
     }
 
     private void populate() {
