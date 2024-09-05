@@ -5,7 +5,6 @@ import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
 import com.badbones69.crazycrates.api.enums.misc.State;
-
 import java.util.Collections;
 import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newBeanProperty;
@@ -61,23 +60,6 @@ public class ConfigKeys implements SettingsHolder {
 
     @Comment("This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.")
     public static final Property<Boolean> use_different_random = newProperty("root.use-different-random", false);
-
-    @Comment({
-            "This option defines the type of color codes used in CrazyCrates",
-            "",
-            "true -> uses minimessage",
-            "false -> uses legacy color codes",
-            "",
-            "Note: inventory titles won't update during Cosmic Crate while this is false.",
-            "Warning: legacy color codes is highly likely to be removed in the future, so you should find time to migrate as this option won't be here forever.",
-            "",
-            "Now I get what you are going to say next, but I can't. Excluding the common reason of people simply want to, or it's easier.",
-            "I would like you to explain why you use legacy color codes still, is it because of lacking features",
-            "which make you have to rely on external plugins? I had one such instance with someone using /broadcast",
-            "from EssentialsX which didn't support MiniMessage, each prize in the crates now let you broadcast to the server.",
-            "and that section supports MiniMessage, that is one such example of an issue someone had."
-    })
-    public static final Property<Boolean> minimessage_toggle  = newProperty("root.use-minimessage", true);
 
     @Comment({
             "This option defines what in-game editor format is used in CrazyCrates",

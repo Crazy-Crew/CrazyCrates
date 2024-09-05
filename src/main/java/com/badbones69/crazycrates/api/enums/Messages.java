@@ -182,14 +182,8 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        if (this.plugin.isLegacy()) {
-            if (sender instanceof Player player) {
-                player.sendActionBar(ItemUtil.color(msg));
-            }
-        } else {
-            if (sender instanceof Player player) {
-                player.sendActionBar(AdvUtil.parse(msg));
-            }
+        if (sender instanceof Player player) {
+            player.sendActionBar(AdvUtil.parse(msg));
         }
     }
 
@@ -198,14 +192,8 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        if (this.plugin.isLegacy()) {
-            if (sender instanceof Player player) {
-                player.sendActionBar(ItemUtil.color(msg));
-            }
-        } else {
-            if (sender instanceof Player player) {
-                player.sendActionBar(AdvUtil.parse(msg));
-            }
+        if (sender instanceof Player player) {
+            player.sendActionBar(AdvUtil.parse(msg));
         }
     }
 
@@ -214,14 +202,8 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        if (this.plugin.isLegacy()) {
-            if (sender instanceof Player player) {
-                player.sendActionBar(ItemUtil.color(msg));
-            }
-        } else {
-            if (sender instanceof Player player) {
-                player.sendActionBar(AdvUtil.parse(msg));
-            }
+        if (sender instanceof Player player) {
+            player.sendActionBar(AdvUtil.parse(msg));
         }
     }
 
@@ -230,11 +212,7 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        if (this.plugin.isLegacy()) {
-            sender.sendMessage(ItemUtil.color(msg));
-        } else {
-            sender.sendRichMessage(msg);
-        }
+        sender.sendRichMessage(msg);
     }
 
     public void sendRichMessage(final CommandSender sender, final Map<String, String> placeholders) {
@@ -242,11 +220,7 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        if (this.plugin.isLegacy()) {
-            sender.sendMessage(ItemUtil.color(msg));
-        } else {
-            sender.sendRichMessage(msg);
-        }
+        sender.sendRichMessage(msg);
     }
 
     public void sendRichMessage(final CommandSender sender) {
@@ -254,11 +228,7 @@ public enum Messages {
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        if (this.plugin.isLegacy()) {
-            sender.sendMessage(ItemUtil.color(msg));
-        } else {
-            sender.sendRichMessage(msg);
-        }
+        sender.sendRichMessage(msg);
     }
 
     private @NotNull String parse(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {

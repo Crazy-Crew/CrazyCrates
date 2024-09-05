@@ -9,7 +9,6 @@ import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
-import com.ryderbelserion.vital.paper.util.ItemUtil;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
@@ -178,11 +177,7 @@ public class QuickCrate extends CrateBuilder {
 
             reward.setVelocity(new Vector(0, .2, 0));
 
-            if (this.plugin.isLegacy()) {
-                reward.setCustomName(ItemUtil.color(prize.getPrizeName()));
-            } else {
-                reward.customName(AdvUtil.parse(prize.getPrizeName()));
-            }
+            reward.customName(AdvUtil.parse(prize.getPrizeName()));
 
             reward.setCustomNameVisible(true);
             reward.setCanMobPickup(false);

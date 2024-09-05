@@ -15,8 +15,6 @@ import com.ryderbelserion.vital.paper.util.ItemUtil;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Color;
 import org.bukkit.Particle;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
@@ -35,11 +33,9 @@ import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-@SuppressWarnings("deprecation")
 public class Crate {
 
     private ItemBuilder previewTierBorderItem;
@@ -69,8 +65,6 @@ public class Crate {
     private boolean giveNewPlayerKeys;
     private int previewChestLines;
     private int newPlayerKeys;
-
-    private List<ItemStack> itemStacks;
 
     private List<Tier> tiers;
     private CrateHologram hologram;
@@ -646,67 +640,26 @@ public class Crate {
 
         final String tiers = getPath(prizeName, "Tiers");
 
-        final boolean useOldEditor = ConfigManager.getConfig().getProperty(ConfigKeys.item_editor_toggle);
-
         if (!section.contains(prizeName)) {
             section.set(getPath(prizeName, "MaxRange"), 100);
         }
 
-        if (useOldEditor && !this.plugin.isLegacy()) {
-            final List<ItemStack> editorItems = new ArrayList<>();
+        String toBase64 = ItemUtil.toBase64(itemStack);
 
-            if (section.contains(prizeName + ".Editor-Items")) {
-                final List<?> editors = section.getList(prizeName + ".Editor-Items");
+        section.set(getPath(prizeName, "DisplayData"), toBase64);
 
-                if (editors != null) {
-                    editors.forEach(item -> editorItems.add((ItemStack) item));
-                }
-            }
+        final String items = getPath(prizeName, "Items");
 
-            editorItems.add(itemStack);
+        if (section.contains(items)) {
+            final List<String> list = section.getStringList(items);
 
-            List<String> enchantments = new ArrayList<>();
+            list.add("Data:" + toBase64);
 
-            for (Map.Entry<Enchantment, Integer> enchantment : itemStack.getEnchantments().entrySet()) {
-                enchantments.add(enchantment.getKey().getKey().getKey() + ":" + enchantment.getValue());
-            }
-
-            if (!enchantments.isEmpty()) section.set(getPath(prizeName, "DisplayEnchantments"), enchantments);
-
-            if (itemStack.hasItemMeta()) {
-                final ItemMeta itemMeta = itemStack.getItemMeta();
-
-                if (itemMeta.hasDisplayName()) {
-                    section.set(getPath(prizeName, "DisplayName"), itemMeta.getDisplayName());
-                }
-
-                if (itemMeta.hasLore()) {
-                    section.set(getPath(prizeName, "DisplayLore"), itemMeta.getLore());
-                }
-            }
-
-            section.set(getPath(prizeName, "DisplayItem"), itemStack.getType().getKey().getKey());
-            section.set(getPath(prizeName, "DisplayAmount"), itemStack.getAmount());
-
-            section.set(getPath(prizeName, "Editor-Items"), editorItems);
+            section.set(items, list);
         } else {
-            String toBase64 = ItemUtil.toBase64(itemStack);
-
-            section.set(getPath(prizeName, "DisplayData"), toBase64);
-
-            final String items = getPath(prizeName, "Items");
-
-            if (section.contains(items)) {
-                final List<String> list = section.getStringList(items);
-
-                list.add("Data:" + toBase64);
-
-                section.set(items, list);
-            } else {
-                section.set(items, new ArrayList<>() {{
-                    add("Data:" + toBase64);
-                }});
-            }
+            section.set(items, new ArrayList<>() {{
+                add("Data:" + toBase64);
+            }});
         }
 
         section.set(getPath(prizeName, "Chance"), chance);
