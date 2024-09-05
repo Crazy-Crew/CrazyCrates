@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.tasks.crates.types.v2;
+package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.enums.crates.CrateStatus;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
