@@ -11,7 +11,6 @@ import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -293,7 +292,7 @@ public class Prize {
 
         try {
             if (this.section.contains("DisplayData")) {
-                builder = builder.fromBase64(this.section.getString("DisplayData"));
+                builder = builder.fromBase64(this.section.getString("DisplayData", ""));
             }
 
             if (this.section.contains("DisplayName")) {
