@@ -1,11 +1,14 @@
 package com.badbones69.crazycrates.tasks.crates.types.v2;
 
 import com.badbones69.crazycrates.api.enums.crates.CrateStatus;
+import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.crates.CrateStatusEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.api.objects.Prize;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -61,8 +64,6 @@ public class CsgoCrate extends CrateBuilder {
             this.time++;
 
             if (this.time >= 60) { // finished
-                this.event.setStatus(CrateStatus.ended).callEvent();
-
                 final ItemStack itemStack = new ItemStack(Material.GRAY_STAINED_GLASS);
 
                 setItem(4, itemStack);
@@ -70,7 +71,21 @@ public class CsgoCrate extends CrateBuilder {
 
                 final ItemStack item = getInventory().getItem(13);
 
-                if (item != null) PrizeManager.givePrize(player, crate, crate.getPrize(item));
+                Prize prize = null;
+
+                if (item != null) {
+                    prize = crate.getPrize(item);
+                }
+
+                final PlayerPrizeEvent playerPrizeEvent = new PlayerPrizeEvent(player, this.event, crate, prize);
+
+                playerPrizeEvent.callEvent();
+
+                if (playerPrizeEvent.isCancelled()) {
+                    cancel();
+
+                    return;
+                }
 
                 cancel();
             }
@@ -97,7 +112,7 @@ public class CsgoCrate extends CrateBuilder {
 
         // Set display items.
         for (int index = 9; index > 8 && index < 18; index++) {
-            setItem(index, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer()));
+            setItem(index, crate.pickPrize(player).getDisplayItem(player));
         }
 
         // Open the inventory.
@@ -111,10 +126,11 @@ public class CsgoCrate extends CrateBuilder {
         final List<ItemStack> items = new ArrayList<>();
 
         final Player player = getPlayer();
+        final Inventory inventory = getInventory();
         final Crate crate = getCrate();
 
         for (int i = 9; i > 8 && i < 17; i++) {
-            items.add(getInventory().getItem(i));
+            items.add(inventory.getItem(i));
         }
 
         setItem(9, crate.pickPrize(player).getDisplayItem(player));

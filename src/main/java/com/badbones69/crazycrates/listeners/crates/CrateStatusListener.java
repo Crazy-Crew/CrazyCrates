@@ -1,9 +1,14 @@
 package com.badbones69.crazycrates.listeners.crates;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.crates.CrateStatus;
+import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.crates.CrateStatusEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import net.kyori.adventure.sound.Sound;
@@ -15,12 +20,49 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import us.crazycrew.crazycrates.api.users.UserManager;
 
 public class CrateStatusListener implements Listener {
 
     private final CrazyCrates plugin = JavaPlugin.getPlugin(CrazyCrates.class);
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
+
+    private final UserManager userManager = this.plugin.getUserManager();
+
+    @EventHandler
+    public void onPlayerPrize(PlayerPrizeEvent event) {
+        final Player player = event.getPlayer();
+        final Prize prize = event.getPrize();
+        final Crate crate = event.getCrate();
+
+        final CrateStatusEvent status = event.getEvent();
+
+        if (prize == null) {
+            if (status != null) {
+                status.setStatus(CrateStatus.failed).callEvent();
+            }
+
+            if (MiscUtils.isLogging()) {
+                this.plugin.getComponentLogger().warn("Prize was not found, thus the crate failed! A refund has been given to {} for the crate {}", player.getName(), crate.getFileName());
+            }
+
+            event.setCancelled(true);
+
+            return;
+        }
+
+        PrizeManager.givePrize(player, prize, crate);
+
+        if (prize.useFireworks()) {
+            MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
+        }
+
+        if (status != null) {
+            status.setStatus(CrateStatus.ended).callEvent();
+        }
+    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onCrateStatus(CrateStatusEvent event) {
