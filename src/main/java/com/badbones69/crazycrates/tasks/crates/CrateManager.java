@@ -23,7 +23,7 @@ import com.badbones69.crazycrates.tasks.crates.types.QuickCrate;
 import com.badbones69.crazycrates.tasks.crates.types.RouletteCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WheelCrate;
-import com.badbones69.crazycrates.tasks.crates.types.WonderCrate;
+import com.badbones69.crazycrates.tasks.crates.types.v2.WonderCrate;
 import com.ryderbelserion.vital.paper.api.files.CustomFile;
 import com.ryderbelserion.vital.paper.api.files.FileManager;
 import com.ryderbelserion.vital.common.utils.FileUtil;
