@@ -33,8 +33,8 @@ dependencies {
 
     implementation(project(":api"))
 
-    compileOnly("su.nightexpress.excellentcrates", "ExcellentCrates", "5.3.1")
-    compileOnly("su.nightexpress.nightcore", "nightcore", "2.6.3")
+    compileOnly(libs.excellentcrates)
+    compileOnly(libs.nightcore)
 
     compileOnly(libs.decent.holograms)
 
