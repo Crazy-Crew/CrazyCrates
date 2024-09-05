@@ -154,6 +154,13 @@ public class CrateManager {
                         final List<ItemStack> editorItems = new ArrayList<>();
 
                         if (prizeSection.contains("Editor-Items")) {
+                            if (MiscUtils.isLogging()) {
+                                final ComponentLogger logger = this.plugin.getComponentLogger();
+
+                                logger.warn("Detected usage of Editor-Items in {}. Please run the migration command for deprecated options", prize);
+                                logger.warn("The format, it will be migrated to will be readable much like Editor-Items.");
+                            }
+
                             List<?> list = prizeSection.getList("Editor-Items");
 
                             if (list != null) {
@@ -385,6 +392,13 @@ public class CrateManager {
                             final List<ItemStack> editorItems = new ArrayList<>();
 
                             if (prizeSection.contains("Editor-Items")) {
+                                if (MiscUtils.isLogging()) {
+                                    final ComponentLogger logger = this.plugin.getComponentLogger();
+
+                                    logger.warn("Detected usage of Editor-Items in {}. Please run the migration command for deprecated options", prize);
+                                    logger.warn("The format, it will be migrated to will be readable much like Editor-Items.");
+                                }
+
                                 final List<?> keys = prizeSection.getList("Editor-Items");
 
                                 if (keys != null) {
