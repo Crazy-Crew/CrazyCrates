@@ -9,3 +9,4 @@
   - CrazyCrates now supports MiniMessage, regardless of the item format used.
   - This is only happening, as legacy colors have been removed and I did some research.
 - Updated Vital API
+- Removed the code, that if no `Items` or `Editor-Items` or `Commands` were found, that it would use the `DisplayItem`, `DisplayName` etc as a prize.

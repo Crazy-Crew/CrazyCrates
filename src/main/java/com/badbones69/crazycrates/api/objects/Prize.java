@@ -35,7 +35,6 @@ public class Prize {
 
     private List<String> permissions = new ArrayList<>();
     private ItemBuilder displayItem = new ItemBuilder();
-    private ItemBuilder prizeItem = new ItemBuilder();
     private boolean firework = false;
     private String crateName = "";
     private int maxRange = 100;
@@ -82,8 +81,7 @@ public class Prize {
         this.broadcastMessages = section.getStringList("Settings.Broadcast.Messages");
         this.broadcastPermission = section.getString("Settings.Broadcast.Permission", "");
 
-        this.prizeItem = display();
-        this.displayItem = new ItemBuilder(this.prizeItem, true);
+        this.displayItem = display();
 
         this.editorItems = editorItems;
     }
@@ -163,13 +161,6 @@ public class Prize {
         }
 
         return this.displayItem.setPlayer(player).setPersistentString(Keys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
-    }
-
-    /**
-     * @return the ItemBuilder of the display item.
-     */
-    public @NotNull final ItemBuilder getPrizeItem() {
-        return this.prizeItem;
     }
     
     /**
