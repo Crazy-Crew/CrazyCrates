@@ -9,25 +9,23 @@
 [![MIT License][license-shield]][license-url]
 [![CodeFactor](https://www.codefactor.io/repository/github/crazy-crew/crazycrates/badge)](https://www.codefactor.io/repository/github/crazy-crew/crazycrates)
 
-<big>**Create as many crates as you like with multiple crate types to pick from**</big>
+  <big>**Create as many crates as you like with multiple crate types to pick from**</big>
 
-### **Quick Links**
+  <big>**Quick Links**</big><br>
 [Request Features](https://github.com/Crazy-Crew/CrazyCrates/issues)<br>
 [Documentation](https://docs.crazycrew.us/docs/category/crazycrates)<br>
 [Developer API](https://docs.crazycrew.us/docs/plugins/crazycrates/guides/api/intro)<br>
 [Report Bugs](https://github.com/Crazy-Crew/CrazyCrates/issues)<br>
 [Trello Board](https://trello.com/b/bzQ5TwXo/crazycrates)
 
-### Supported Platforms
+  <big>Supported Platforms</big><br>
 [![paper software](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/paper_vector.svg)](https://papermc.io/)
 [![purpur software](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/purpur_vector.svg)](https://purpurmc.org/)
 
-### **Initial Plugin Setup**
+  <big>**Initial Plugin Setup**</big><br>
 CrazyCrates as first install will come with a set of default files in the `crates` folder which are to help you figure out how to use the plugin.
 You can simply create more crates by copying the files or creating new ones than doing `/crazycrates reload`<br>
 Testing your crates is even easier, if you simply want to test prizes. We have a command for that called `/crazycrates debug <crate>`
-
-[![Partnered with ApexHosting](https://raw.githubusercontent.com/Crazy-Crew/Branding/main/apex-banner-transparent.webp)](https://billing.apexminecrafthosting.com/aff.php?aff=5511)
 
 ![Features Banner](https://raw.githubusercontent.com/Crazy-Crew/Branding/main/crazycrates/banner/webp/features.webp)
 
@@ -64,7 +62,7 @@ Please head to [crazy-crates](https://discord.com/channels/182615261403283459/19
 Please check to make sure that your question wasn't asked before, You can use `Ctrl+F` on Discord to look for past conversations.<br>
 Describe your issue in detail, Don't just make it a bread crumb trail that has to be questioned out of you.<br>
 Plugin Version i.e. `CrazyCrates 3.3` **LATEST DOES NOT COUNT**<br>
-Server Version & Server Type i.e. `Paper 1.20.6` or `Purpur 1.20.6` **LATEST DOES NOT COUNT**<br>
+Server Version & Server Type i.e. `Paper 1.21.1` or `Purpur 1.21.1` **LATEST DOES NOT COUNT**<br>
 Send any console errors or files you have through https://mclo.gs/ - (We don't own the website, You have to copy the link and send it.)<br>
 
 </details>
