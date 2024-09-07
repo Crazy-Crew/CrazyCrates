@@ -9,26 +9,25 @@
 [![MIT License][license-shield]][license-url]
 [![CodeFactor](https://www.codefactor.io/repository/github/crazy-crew/crazycrates/badge)](https://www.codefactor.io/repository/github/crazy-crew/crazycrates)
 
-  <big>**Create as many crates as you like with multiple crate types to pick from**</big>
+<big>**Create as many crates as you like with multiple crate types to pick from**</big>
 
-  <big>**Quick Links**</big><br>
+<big>**Quick Links**</big><br>
 [Request Features](https://github.com/Crazy-Crew/CrazyCrates/issues)<br>
 [Documentation](https://docs.crazycrew.us/docs/category/crazycrates)<br>
 [Developer API](https://docs.crazycrew.us/docs/plugins/crazycrates/guides/api/intro)<br>
 [Report Bugs](https://github.com/Crazy-Crew/CrazyCrates/issues)<br>
 [Trello Board](https://trello.com/b/bzQ5TwXo/crazycrates)
 
-  <big>Supported Platforms</big><br>
+<big>Supported Platforms</big><br>
 [![paper software](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/paper_vector.svg)](https://papermc.io/)
 [![purpur software](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/compact-minimal/supported/purpur_vector.svg)](https://purpurmc.org/)
 
-  <big>**Initial Plugin Setup**</big><br>
+<big>**Initial Plugin Setup**</big><br>
 CrazyCrates as first install will come with a set of default files in the `crates` folder which are to help you figure out how to use the plugin.
 You can simply create more crates by copying the files or creating new ones than doing `/crazycrates reload`<br>
 Testing your crates is even easier, if you simply want to test prizes. We have a command for that called `/crazycrates debug <crate>`
 
-![Features Banner](https://raw.githubusercontent.com/Crazy-Crew/Branding/main/crazycrates/banner/webp/features.webp)
-
+![Features Banner](https://raw.githubusercontent.com/Crazy-Crew/Branding/main/crazycrates/banner/webp/features.webp)<br>
 **The ability to customize the entirety of CrazyCrates along with PlaceholderAPI support everywhere**<br>
 If you have found something that you would like to be able to customize,<br>
 please make a [feature request,](https://github.com/Crazy-Crew/CrazyCrates/issues) and we'll see about adding it
@@ -51,8 +50,7 @@ A list of placeholders to display the *statistics* can be found [here](https://d
 **Ability to display or give custom items/custom heads using Oraxen, ItemsAdder or HeadDatabase**<br>
 **Ability to use physical or virtual crates or both**<br>
 
-![Support Banner](https://raw.githubusercontent.com/Crazy-Crew/Branding/main/crazycrates/banner/webp/support.webp)
-
+![Support Banner](https://raw.githubusercontent.com/Crazy-Crew/Branding/main/crazycrates/banner/webp/support.webp)<br>
 Are you confused about something? Hop by the Discord and you might just get an answer!<br>
 Please head to [crazy-crates](https://discord.com/channels/182615261403283459/196107841449361408) with your question and do not cross post.<br>
 
@@ -73,7 +71,6 @@ Send any console errors or files you have through https://mclo.gs/ - (We don't o
 
 ![CrazyCrates Statistics](https://bstats.org/signatures/bukkit/CrazyCrates.svg)
 </center>
-
 
 [contributors-shield]: https://img.shields.io/github/contributors/Crazy-Crew/CrazyCrates.svg?style=flat&logo=appveyor
 [contributors-url]: https://github.com/Crazy-Crew/CrazyCrates/graphs/contributors
