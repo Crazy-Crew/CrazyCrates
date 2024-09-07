@@ -9,6 +9,7 @@ repositories {
 
     maven("https://repo.codemc.io/repository/maven-public")
 
+    maven("https://repo.crazycrew.us/libraries")
     maven("https://repo.crazycrew.us/releases")
 
     maven("https://repo.oraxen.com/releases")
