@@ -11,7 +11,6 @@ import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -36,7 +35,6 @@ public class Prize {
 
     private List<String> permissions = new ArrayList<>();
     private ItemBuilder displayItem = new ItemBuilder();
-    private ItemBuilder prizeItem = new ItemBuilder();
     private boolean firework = false;
     private String crateName = "";
     private int maxRange = 100;
@@ -83,8 +81,7 @@ public class Prize {
         this.broadcastMessages = section.getStringList("Settings.Broadcast.Messages");
         this.broadcastPermission = section.getString("Settings.Broadcast.Permission", "");
 
-        this.prizeItem = display();
-        this.displayItem = new ItemBuilder(this.prizeItem, true);
+        this.displayItem = display();
 
         this.editorItems = editorItems;
     }
@@ -164,13 +161,6 @@ public class Prize {
         }
 
         return this.displayItem.setPlayer(player).setPersistentString(Keys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
-    }
-
-    /**
-     * @return the ItemBuilder of the display item.
-     */
-    public @NotNull final ItemBuilder getPrizeItem() {
-        return this.prizeItem;
     }
     
     /**
@@ -293,7 +283,7 @@ public class Prize {
 
         try {
             if (this.section.contains("DisplayData")) {
-                builder = builder.fromBase64(this.section.getString("DisplayData"));
+                builder = builder.fromBase64(this.section.getString("DisplayData", ""));
             }
 
             if (this.section.contains("DisplayName")) {

@@ -112,32 +112,6 @@ public abstract class ICrateMigrator {
                     set(prize, "DisplayTrim.Pattern", prize.getString("DisplayTrim.Pattern", "sentry").toLowerCase());
                 }
 
-                if (prize.contains("Editor-Items") && !this.config.getProperty(ConfigKeys.item_editor_toggle)) {
-                    final List<?> items = prize.getList("Editor-Items");
-
-                    if (items != null) {
-                        items.forEach(item -> {
-                            final org.bukkit.inventory.ItemStack itemStack = (org.bukkit.inventory.ItemStack) item;
-
-                            final String asBase64 = ItemUtil.toBase64(itemStack);
-
-                            if (prize.contains("Items")) {
-                                final List<String> list = prize.getStringList("Items");
-
-                                list.add("Data: " + asBase64);
-
-                                prize.set("Items", list);
-                            } else {
-                                prize.set("Items", new ArrayList<>() {{
-                                    add("Data: " + asBase64);
-                                }});
-                            }
-                        });
-
-                        prize.set("Editor-Items", null);
-                    }
-                }
-
                 if (prize.contains("DisplayEnchantments")) {
                     List<String> enchants = new ArrayList<>() {{
                         prize.getStringList("DisplayEnchantments").forEach(enchant -> add(ItemUtils.getEnchant(enchant)));
