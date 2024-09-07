@@ -5,8 +5,9 @@
 - CSGO Crate animation was delayed by 1 tick, for some reason.
 
 ### Changes:
+- Removed sections of code related to giving a prize if `Editor-Items`, `Commands` or `Items` were all not found.
+  - This would use the `DisplayItem`, `DisplayName`, `DisplayLore`, `DisplayEnchantments` and `DisplayAmount` as the prize.
 - Updated the /crates additem command
   - CrazyCrates now supports MiniMessage, regardless of the item format used.
   - This is only happening, as legacy colors have been removed and I did some research.
 - Updated Vital API
-- Removed the code, that if no `Items` or `Editor-Items` or `Commands` were found, that it would use the `DisplayItem`, `DisplayName` etc as a prize.
