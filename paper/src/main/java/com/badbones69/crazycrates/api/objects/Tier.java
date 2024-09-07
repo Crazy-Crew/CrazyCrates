@@ -64,15 +64,6 @@ public class Tier {
     }
 
     /**
-     * Get the chance
-     *
-     * @return the chance the prize has of being picked.
-     */
-    public final int getChance() {
-        return this.chance;
-    }
-
-    /**
      * @return slot in the inventory.
      */
     public final int getSlot() {
@@ -85,6 +76,6 @@ public class Tier {
     public @NotNull final ItemStack getTierItem(final @Nullable Player target) {
         if (target != null) this.item.setPlayer(target);
 
-        return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).addLorePlaceholder("%chance%", this.getTotalChance()).setPersistentString(Keys.crate_tier.getNamespacedKey(), this.name).getStack();
+        return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).setPersistentString(Keys.crate_tier.getNamespacedKey(), this.name).getStack();
     }
 }
