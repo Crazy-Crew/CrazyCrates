@@ -13,6 +13,10 @@ val isSnapshot = false
 
 val content: String = rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 
+subprojects.filter { it.name != "api" }.forEach {
+    it.project.version = rootProject.version
+}
+
 tasks {
     modrinth {
         token.set(System.getenv("MODRINTH_TOKEN"))
