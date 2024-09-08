@@ -775,7 +775,7 @@ public class Crate {
             if (!key.getName().equalsIgnoreCase(name)) continue;
 
             tier = key;
-            
+
             break;
         }
 
