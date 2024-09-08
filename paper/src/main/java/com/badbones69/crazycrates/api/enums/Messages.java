@@ -231,12 +231,12 @@ public enum Messages {
 
     public void migrate() {
         if (this.isList) {
-            this.messages.setProperty(this.properties, MiscUtils.fromComponent(MiscUtils.toComponent(this.messages.getProperty(this.properties))));
+            this.messages.setProperty(this.properties, MiscUtils.convert(this.messages.getProperty(this.properties), true));
 
             return;
         }
 
-        this.messages.setProperty(this.property, MiscUtils.fromComponent(MiscUtils.toComponent(this.messages.getProperty(this.property))));
+        this.messages.setProperty(this.property, MiscUtils.convert(this.messages.getProperty(this.property), true));
     }
 
     private @NotNull String parse(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {

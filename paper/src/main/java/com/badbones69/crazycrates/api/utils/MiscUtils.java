@@ -110,8 +110,18 @@ public class MiscUtils {
      * @return {@link List<Component>}
      */
     public static @NotNull List<String> fromComponent(@NotNull final List<Component> lore) {
+        return fromComponent(lore, false);
+    }
+
+    /**
+     * Converts a lore to minimessage strings
+     *
+     * @param lore {@link List<Component>}
+     * @return {@link List<Component>}
+     */
+    public static @NotNull List<String> fromComponent(@NotNull final List<Component> lore, final boolean isMessage) {
         return new ArrayList<>(lore.size()) {{
-            lore.forEach(line -> add(fromComponent(line)));
+            lore.forEach(line -> add(fromComponent(line, isMessage)));
         }};
     }
 
@@ -122,7 +132,68 @@ public class MiscUtils {
      * @return {@link String}
      */
     public static @NotNull String fromComponent(@NotNull final Component component) {
-        return MiniMessage.miniMessage().serialize(component);
+        return fromComponent(component, false);
+    }
+
+    /**
+     * Converts a {@link Component} to {@link String}.
+     *
+     * @param component {@link Component}
+     * @param isMessage true or false
+     * @return {@link String}
+     */
+    public static @NotNull String fromComponent(@NotNull final Component component, final boolean isMessage) {
+        final String value = MiniMessage.miniMessage().serialize(component);
+
+        if (isMessage) {
+            return value.replace("\\<", "<");
+        }
+
+        return value;
+    }
+
+    /**
+     * Converts a {@link String} to a {@link Component} then a {@link String}.
+     *
+     * @param component {@link String}
+     * @return {@link String}
+     */
+    public static @NotNull String convert(@NotNull final String component)  {
+        return convert(component, false);
+    }
+
+    /**
+     * Converts a {@link List<String>} to a {@link List<Component>} then a {@link List<String>}.
+     *
+     * @param components {@link List<String>}
+     * @return {@link List<String>}
+     */
+    public static @NotNull List<String> convert(@NotNull final List<String> components) {
+        return convert(components, false);
+    }
+
+    /**
+     * Converts a {@link List<String>} to a {@link List<Component>} then a {@link List<String>}.
+     *
+     * @param components {@link List<String>}
+     * @param isMessage true or false
+     * @return {@link List<String>}
+     */
+    public static @NotNull List<String> convert(@NotNull final List<String> components, final boolean isMessage) {
+        return new ArrayList<>(components.size()) {{
+            components.forEach(line -> add(convert(line, isMessage)));
+        }};
+    }
+
+    /**
+     * Converts a {@link String} to a {@link Component} then a {@link String}.
+     *
+     * @param component {@link String}
+     * @param isMessage true or false
+     * @return {@link String}
+     */
+    public static @NotNull String convert(@NotNull final String component, final boolean isMessage)  {
+        return fromComponent(toComponent(component), isMessage);
     }
 
     /**

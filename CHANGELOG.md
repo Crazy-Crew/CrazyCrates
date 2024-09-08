@@ -4,10 +4,12 @@
 
 ### Fixed:
 - CSGO Crate animation was delayed by 1 tick, for some reason.
+- Fixed spacing in migrate command usage.
 
 ### Changes:
 - Improved /crazycrates migrate internally
-  - ExcellentCrates Migrator has changed significantly, report any bugs you might find. It will convert legacy color codes to MiniMessage
+  - ExcellentCrates Migrator has changed significantly, report any bugs you might find. It will convert legacy color codes to MiniMessage.
+  - Properly warn the player/sender if the inputted migration type is not valid.
 - Removed sections of code related to giving a prize if `Editor-Items`, `Commands` or `Items` were all not found.
   - This would use the `DisplayItem`, `DisplayName`, `DisplayLore`, `DisplayEnchantments` and `DisplayAmount` as the prize.
 - Updated the /crazycrates additem command
