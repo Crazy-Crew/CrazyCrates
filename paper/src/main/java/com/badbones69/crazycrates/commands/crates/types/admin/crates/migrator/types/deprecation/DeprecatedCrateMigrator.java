@@ -37,15 +37,15 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
                 boolean isSave = false;
 
                 if (section.contains("CrateName")) {
-                    section.set("Name", section.getString("CrateName", " "));
-                    section.set("CrateName", null);
+                    set(section, "Name", section.getString("CrateName", " "));
+                    set(section, "CrateName", null);
 
                     isSave = true;
                 }
 
                 if (section.contains("Preview-Name")) {
-                    section.set("Preview.Name", section.getString("Preview-Name", " "));
-                    section.set("Preview-Name", null);
+                    set(section, "Preview.Name", section.getString("Preview-Name", " "));
+                    set(section, "Preview-Name", null);
 
                     isSave = true;
                 }
@@ -54,18 +54,20 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
 
                 if (prizes != null) {
                     for (String value : prizes.getKeys(false)) {
-                        if (configuration.contains("Crate.Prizes." + value + ".Lore")) {
-                            configuration.set("Crate.Prizes." + value + ".DisplayLore", configuration.getStringList("Crate.Prizes." + value + ".Lore"));
+                        final ConfigurationSection prizeSection = prizes.getConfigurationSection(value);
 
-                            configuration.set("Crate.Prizes." + value + ".Lore", null);
+                        if (prizeSection == null) continue;
+
+                        if (prizeSection.contains("Lore")) {
+                            set(prizeSection, "DisplayLore", prizeSection.getStringList("Lore"));
+                            set(prizeSection, "Lore", null);
 
                             isSave = true;
                         }
 
-                        if (configuration.contains("Crate.Prizes." + value + ".Patterns")) {
-                            configuration.set("Crate.Prizes." + value + ".DisplayPatterns", configuration.getStringList("Crate.Prizes." + value + ".Patterns"));
-
-                            configuration.set("Crate.Prizes." + value + ".Patterns", null);
+                        if (prizeSection.contains("Patterns")) {
+                            set(prizeSection, "DisplayPatterns", prizeSection.getStringList("Patterns"));
+                            set(prizeSection, "Patterns", null);
 
                             isSave = true;
                         }
@@ -98,7 +100,7 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
     }
 
     @Override
-    public <T> void set(ConfigurationSection section, String path, T value) {
+    public <T> void set(final ConfigurationSection section, final String path, T value) {
         section.set(path, value);
     }
 
