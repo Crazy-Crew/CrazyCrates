@@ -8,7 +8,6 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
-import com.ryderbelserion.vital.paper.util.ItemUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import com.badbones69.crazycrates.config.ConfigManager;
@@ -116,8 +115,6 @@ public enum Messages {
         this.properties = properties;
         this.isList = isList;
     }
-
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final SettingsManager config = ConfigManager.getConfig();
 
@@ -234,12 +231,12 @@ public enum Messages {
 
     public void migrate() {
         if (this.isList) {
-            this.config.setProperty(this.properties, MiscUtils.fromComponent(MiscUtils.toComponent(this.config.getProperty(this.properties))));
+            this.messages.setProperty(this.properties, MiscUtils.fromComponent(MiscUtils.toComponent(this.messages.getProperty(this.properties))));
 
             return;
         }
 
-        this.config.setProperty(this.property, MiscUtils.fromComponent(MiscUtils.toComponent(this.config.getProperty(this.property))));
+        this.messages.setProperty(this.property, MiscUtils.fromComponent(MiscUtils.toComponent(this.messages.getProperty(this.property))));
     }
 
     private @NotNull String parse(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
