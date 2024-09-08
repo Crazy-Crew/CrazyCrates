@@ -82,14 +82,36 @@ public class MiscUtils {
     }
 
     /**
+     * Converts a {@link String} to {@link Component}.
+     *
+     * @param component {@link String}
+     * @return {@link Component}
+     */
+    public static @NotNull Component toComponent(@NotNull final String component) {
+        return LegacyComponentSerializer.legacyAmpersand().deserialize(component.replace("§", "&"));
+    }
+
+    /**
      * Converts a lore to minimessage strings
      *
      * @param lore {@link List<Component>}
      * @return {@link List<Component>}
      */
-    public static @NotNull List<String> convert(@NotNull final List<Component> lore) {
+    public static @NotNull List<Component> toComponent(@NotNull final List<String> lore) {
         return new ArrayList<>(lore.size()) {{
-            lore.forEach(line -> add(convert(line)));
+            lore.forEach(line -> add(toComponent(line)));
+        }};
+    }
+
+    /**
+     * Converts a lore to minimessage strings
+     *
+     * @param lore {@link List<Component>}
+     * @return {@link List<Component>}
+     */
+    public static @NotNull List<String> fromComponent(@NotNull final List<Component> lore) {
+        return new ArrayList<>(lore.size()) {{
+            lore.forEach(line -> add(fromComponent(line)));
         }};
     }
 
@@ -99,7 +121,7 @@ public class MiscUtils {
      * @param component {@link Component}
      * @return {@link String}
      */
-    public static @NotNull String convert(@NotNull final Component component) {
+    public static @NotNull String fromComponent(@NotNull final Component component) {
         return MiniMessage.miniMessage().serialize(component);
     }
 
