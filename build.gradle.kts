@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.minotaur)
     alias(libs.plugins.hangar)
 
-    `paper-plugin`
+    `java-plugin`
 }
 
 val buildNumber: String? = System.getenv("BUILD_NUMBER")
