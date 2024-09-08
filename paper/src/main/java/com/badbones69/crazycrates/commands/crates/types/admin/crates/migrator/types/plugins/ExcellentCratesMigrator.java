@@ -289,7 +289,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
     }
 
     @Override
-    public <T> void set(final ConfigurationSection section, final String path, final T value) {
+    public <T> void set(final ConfigurationSection section, final String path, T value) {
         section.set(path, value);
     }
 
