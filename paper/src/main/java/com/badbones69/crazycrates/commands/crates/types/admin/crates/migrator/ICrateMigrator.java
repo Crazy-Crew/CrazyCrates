@@ -98,28 +98,28 @@ public abstract class ICrateMigrator {
         final ConfigurationSection prizes = crate.getConfigurationSection("Prizes");
 
         if (prizes != null) {
-            prizes.getKeys(false).forEach(key -> {
-                final ConfigurationSection prize = prizes.getConfigurationSection(key);
+            for (String value : prizes.getKeys(false)) {
+                final ConfigurationSection prizeSection = prizes.getConfigurationSection(value);
 
-                if (prize == null) return;
+                if (prizeSection == null) continue;
 
-                if (prize.contains("DisplayItem")) {
-                    set(prize, "DisplayItem", prize.getString("DisplayItem", "red_terracotta").toLowerCase());
+                if (prizeSection.contains("DisplayItem")) {
+                    set(prizeSection, "DisplayItem", prizeSection.getString("DisplayItem", "red_terracotta").toLowerCase());
                 }
 
-                if (prize.contains("DisplayTrim")) {
-                    set(prize, "DisplayTrim.Material", prize.getString("DisplayTrim.Material", "quartz").toLowerCase());
-                    set(prize, "DisplayTrim.Pattern", prize.getString("DisplayTrim.Pattern", "sentry").toLowerCase());
+                if (prizeSection.contains("DisplayTrim")) {
+                    set(prizeSection, "DisplayTrim.Material", prizeSection.getString("DisplayTrim.Material", "quartz").toLowerCase());
+                    set(prizeSection, "DisplayTrim.Pattern", prizeSection.getString("DisplayTrim.Pattern", "sentry").toLowerCase());
                 }
 
-                if (prize.contains("DisplayEnchantments")) {
+                if (prizeSection.contains("DisplayEnchantments")) {
                     List<String> enchants = new ArrayList<>() {{
-                        prize.getStringList("DisplayEnchantments").forEach(enchant -> add(ItemUtils.getEnchant(enchant)));
+                        prizeSection.getStringList("DisplayEnchantments").forEach(enchant -> add(ItemUtils.getEnchant(enchant)));
                     }};
 
-                    set(prize, "DisplayEnchantments", enchants);
+                    set(prizeSection, "DisplayEnchantments", enchants);
                 }
-            });
+            }
         }
 
         customFile.save();
