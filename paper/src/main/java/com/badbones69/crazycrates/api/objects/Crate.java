@@ -657,21 +657,7 @@ public class Crate {
 
         section.set(getPath(prizeName, "DisplayLore"), lore != null ? MiscUtils.fromComponent(lore) : List.of());
 
-        if (this.config.getProperty(ConfigKeys.item_editor_toggle)) {
-            final List<ItemStack> editorItems = new ArrayList<>();
-
-            if (section.contains(prizeName + ".Editor-Items")) {
-                final List<?> editors = section.getList(prizeName + ".Editor-Items");
-
-                if (editors != null) {
-                    editors.forEach(item -> editorItems.add((ItemStack) item));
-                }
-            }
-
-            editorItems.add(itemStack);
-
-            section.set(getPath(prizeName, "Editor-Items"), editorItems);
-        } else {
+        if (this.config.getProperty(ConfigKeys.use_new_item_editor)) {
             String toBase64 = ItemUtil.toBase64(itemStack);
 
             section.set(getPath(prizeName, "DisplayData"), toBase64);
@@ -689,6 +675,20 @@ public class Crate {
                     add("Data:" + toBase64);
                 }});
             }
+        } else {
+            final List<ItemStack> editorItems = new ArrayList<>();
+
+            if (section.contains(prizeName + ".Editor-Items")) {
+                final List<?> editors = section.getList(prizeName + ".Editor-Items");
+
+                if (editors != null) {
+                    editors.forEach(item -> editorItems.add((ItemStack) item));
+                }
+            }
+
+            editorItems.add(itemStack);
+
+            section.set(getPath(prizeName, "Editor-Items"), editorItems);
         }
 
         section.set(getPath(prizeName, "DisplayItem"), itemStack.getType().getKey().getKey());

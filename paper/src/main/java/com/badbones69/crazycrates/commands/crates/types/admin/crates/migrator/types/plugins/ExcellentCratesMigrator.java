@@ -266,24 +266,10 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 if (prizeSection == null) return;
 
-                final boolean useOldEditor = this.config.getProperty(ConfigKeys.item_editor_toggle);
+                final boolean useNewItemEditor = this.config.getProperty(ConfigKeys.use_new_item_editor);
 
                 reward.getItems().forEach(key -> {
-                    if (useOldEditor) {
-                        final List<ItemStack> editorItems = new ArrayList<>();
-
-                        if (prizeSection.contains("Editor-Items")) {
-                            final List<?> editors = prizeSection.getList("Editor-Items");
-
-                            if (editors != null) {
-                                editors.forEach(item -> editorItems.add((ItemStack) item));
-                            }
-                        }
-
-                        editorItems.add(key);
-
-                        set(prizeSection, "Editor-Items", editorItems);
-                    } else {
+                    if (useNewItemEditor) {
                         final String base64 = ItemUtil.toBase64(key);
 
                         if (prizeSection.contains("Items")) {
@@ -297,6 +283,20 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                                 add("Data: " + base64);
                             }});
                         }
+                    } else {
+                        final List<ItemStack> editorItems = new ArrayList<>();
+
+                        if (prizeSection.contains("Editor-Items")) {
+                            final List<?> editors = prizeSection.getList("Editor-Items");
+
+                            if (editors != null) {
+                                editors.forEach(item -> editorItems.add((ItemStack) item));
+                            }
+                        }
+
+                        editorItems.add(key);
+
+                        set(prizeSection, "Editor-Items", editorItems);
                     }
 
                     set(prizeSection, "DisplayItem", key.getType().getKey().getKey());

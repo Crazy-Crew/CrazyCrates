@@ -21,6 +21,8 @@ public enum Properties {
 
     show_quickcrate(ConfigKeys.show_quickcrate_item, newProperty("Settings.Show-QuickCrate-Item", ConfigKeys.show_quickcrate_item.getDefaultValue()), false),
 
+    item_editor_toggle(ConfigKeys.use_new_item_editor, newProperty("root.use-old-editor", ConfigKeys.use_new_item_editor.getDefaultValue()), false),
+
     inventory_name(ConfigKeys.inventory_name, newProperty("Settings.InventoryName", ConfigKeys.inventory_name.getDefaultValue())),
     inventory_size(ConfigKeys.inventory_size, newProperty("Settings.InventorySize", ConfigKeys.inventory_size.getDefaultValue()), 1),
 
@@ -181,6 +183,12 @@ public enum Properties {
         Boolean key = reader.getBoolean(this.oldBoolean.getPath());
 
         if (key == null) return false;
+
+        if (this.oldBoolean.getPath().equalsIgnoreCase("root.use-old-editor")) { // invert it
+            configuration.setValue(this.newBoolean, !this.oldBoolean.determineValue(reader).getValue());
+
+            return true;
+        }
 
         configuration.setValue(this.newBoolean, this.oldBoolean.determineValue(reader).getValue());
 
