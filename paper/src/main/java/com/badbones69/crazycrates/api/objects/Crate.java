@@ -651,25 +651,11 @@ public class Crate {
             section.set(getPath(prizeName, "MaxRange"), 100);
         }
 
-        if (itemStack.hasItemMeta()) {
-            final ItemMeta itemMeta = itemStack.getItemMeta();
+        section.set(getPath(prizeName, "DisplayName"), MiscUtils.fromComponent(itemStack.displayName()));
 
-            if (itemMeta.hasDisplayName()) {
-                final Component displayName = itemMeta.displayName();
+        final List<Component> lore = itemStack.lore();
 
-                if (displayName != null) {
-                    section.set(getPath(prizeName, "DisplayName"), MiscUtils.convert(displayName));
-                }
-            }
-
-            if (itemMeta.hasLore()) {
-                final List<Component> lore = itemMeta.lore();
-
-                if (lore != null) {
-                    section.set(getPath(prizeName, "DisplayLore"), MiscUtils.convert(lore));
-                }
-            }
-        }
+        section.set(getPath(prizeName, "DisplayLore"), lore != null ? MiscUtils.fromComponent(lore) : List.of());
 
         if (this.config.getProperty(ConfigKeys.item_editor_toggle)) {
             final List<ItemStack> editorItems = new ArrayList<>();
@@ -789,6 +775,7 @@ public class Crate {
             if (!key.getName().equalsIgnoreCase(name)) continue;
 
             tier = key;
+            
             break;
         }
 
