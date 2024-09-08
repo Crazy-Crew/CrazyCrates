@@ -57,7 +57,9 @@ public abstract class ICrateMigrator {
 
     public abstract <T> void set(ConfigurationSection section, String path, T value);
 
-    public abstract File getCratesDirectory();
+    public File getCratesDirectory() {
+        return null;
+    }
 
     public void sendMessage(List<String> files, final int success, final int failed) {
         Messages.successfully_migrated.sendMessage(this.sender, new HashMap<>() {{
