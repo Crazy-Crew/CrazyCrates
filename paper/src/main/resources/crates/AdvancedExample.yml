@@ -212,3 +212,6 @@ Crate:
       MaxRange: 100
       # The chance to win i.e. 25%
       Chance: 25
+      # The list of items to win.
+      Items:
+        - "Item:enchanted_book, protection:5, unbreaking:3"

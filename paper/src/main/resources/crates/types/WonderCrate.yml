@@ -156,6 +156,8 @@ Crate:
       Player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
       # Only uncomment this if using HeadDatabase by Arcaniax
       # Skull: "7129"
+      Items:
+        - "Item:player_head, Player:1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Name:<gold>BadBones69"
     '2':
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Sword"
@@ -202,6 +204,9 @@ Crate:
       MaxRange: 100
       # The chance to win i.e. 15%
       Chance: 15
+      # The list of items to win.
+      Items:
+        - "Item:diamond_helmet, Name:<red>Diamond Helmet, protection:5, unbreaking:3"
     '4':
       # The enchants to be stored on the book.
       DisplayEnchantments:
@@ -223,6 +228,9 @@ Crate:
       MaxRange: 100
       # The chance to win i.e. 25%
       Chance: 25
+      # The list of items to win.
+      Items:
+        - "Item:enchanted_book, protection:5, unbreaking:3"
     '5':
       # The display name of the item.
       DisplayName: "<yellow>$1,000"
