@@ -651,11 +651,25 @@ public class Crate {
             section.set(getPath(prizeName, "MaxRange"), 100);
         }
 
-        section.set(getPath(prizeName, "DisplayName"), MiscUtils.fromComponent(itemStack.displayName()));
+        if (itemStack.hasItemMeta()) {
+            final ItemMeta itemMeta = itemStack.getItemMeta();
 
-        final List<Component> lore = itemStack.lore();
+            if (itemMeta.hasDisplayName()) {
+                final Component displayName = itemMeta.displayName();
 
-        section.set(getPath(prizeName, "DisplayLore"), lore != null ? MiscUtils.fromComponent(lore) : List.of());
+                if (displayName != null) {
+                    section.set(getPath(prizeName, "DisplayName"), MiscUtils.fromComponent(displayName));
+                }
+            }
+
+            if (itemMeta.hasLore()) {
+                final List<Component> lore = itemMeta.lore();
+
+                if (lore != null) {
+                    section.set(getPath(prizeName, "DisplayLore"), MiscUtils.fromComponent(lore));
+                }
+            }
+        }
 
         if (this.config.getProperty(ConfigKeys.use_new_item_editor)) {
             String toBase64 = ItemUtil.toBase64(itemStack);

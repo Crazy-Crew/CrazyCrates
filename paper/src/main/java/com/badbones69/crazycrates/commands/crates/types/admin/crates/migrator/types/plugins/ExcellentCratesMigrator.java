@@ -242,11 +242,25 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 final ItemStack itemStack = reward.getPreview();
 
-                set(root, "Prizes." + id + ".DisplayName", MiscUtils.fromComponent(itemStack.displayName()));
+                if (itemStack.hasItemMeta()) {
+                    final ItemMeta itemMeta = itemStack.getItemMeta();
 
-                final List<Component> displayLore = itemStack.lore();
+                    if (itemMeta.hasDisplayName()) {
+                        final Component displayName = itemMeta.displayName();
 
-                set(root, "Prizes." + id + ".DisplayLore", displayLore != null ? MiscUtils.fromComponent(displayLore) : List.of());
+                        if (displayName != null) {
+                            set(root, "Prizes." + id + ".DisplayName", MiscUtils.fromComponent(itemStack.displayName()));
+                        }
+                    }
+
+                    if (itemMeta.hasLore()) {
+                        final List<Component> lore = itemMeta.lore();
+
+                        if (lore != null) {
+                            set(root, "Prizes." + id + ".DisplayLore", MiscUtils.fromComponent(lore));
+                        }
+                    }
+                }
 
                 set(root, "Prizes." + id + ".Commands", reward.getCommands());
 
@@ -257,6 +271,18 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                 set(root, "Prizes." + id + ".BlackListed-Permissions", reward.getIgnoredForPermissions());
 
                 set(root, "Prizes." + id + ".Chance", (int) reward.getWeight());
+
+                set(root, "Prizes." + id + ".DisplayItem", itemStack.getType().getKey().getKey());
+
+                set(root, "Prizes." + id + ".DisplayAmount", itemStack.getAmount());
+
+                List<String> enchantments = new ArrayList<>();
+
+                for (Map.Entry<Enchantment, Integer> enchantment : itemStack.getEnchantments().entrySet()) {
+                    enchantments.add(enchantment.getKey().getKey().getKey() + ":" + enchantment.getValue());
+                }
+
+                if (!enchantments.isEmpty()) set(root, "Prizes." + id + ".DisplayEnchantments", enchantments);
 
                 final ConfigurationSection section = root.getConfigurationSection("Prizes");
 
@@ -298,18 +324,6 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                         set(prizeSection, "Editor-Items", editorItems);
                     }
-
-                    set(prizeSection, "DisplayItem", key.getType().getKey().getKey());
-
-                    set(prizeSection, "DisplayAmount", key.getAmount());
-
-                    List<String> enchantments = new ArrayList<>();
-
-                    for (Map.Entry<Enchantment, Integer> enchantment : key.getEnchantments().entrySet()) {
-                        enchantments.add(enchantment.getKey().getKey().getKey() + ":" + enchantment.getValue());
-                    }
-
-                    if (!enchantments.isEmpty()) set(prizeSection, "DisplayEnchantments", enchantments);
                 });
             });
 
