@@ -24,6 +24,12 @@ public class CommandMigrate extends BaseCommand {
     public void migrate(final CommandSender sender, @ArgName("migration_type") @Suggestion("migrators") final String name, @ArgName("crate") @Optional @Suggestion("crates") final String crateName) {
         final MigrationType type = MigrationType.fromName(name);
 
+        if (type == null) {
+            Messages.migration_not_available.sendMessage(sender);
+
+            return;
+        }
+
         switch (type) {
             case MOJANG_MAPPED_ALL -> new MojangMappedMigratorMultiple(sender, type).run();
             case MOJANG_MAPPED_SINGLE -> {
