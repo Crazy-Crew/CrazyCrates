@@ -1,13 +1,16 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.deprecation;
 
+import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.paper.api.files.CustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,6 +26,28 @@ public class LegacyColorMigrator extends ICrateMigrator {
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
+
+        this.config.setProperty(ConfigKeys.command_prefix, MiscUtils.fromComponent(MiscUtils.toComponent(this.config.getProperty(ConfigKeys.command_prefix))));
+        this.config.setProperty(ConfigKeys.inventory_name, MiscUtils.fromComponent(MiscUtils.toComponent(this.config.getProperty(ConfigKeys.inventory_name))));
+
+        this.config.setProperty(ConfigKeys.menu_button_name, MiscUtils.fromComponent(MiscUtils.toComponent(this.config.getProperty(ConfigKeys.menu_button_name))));
+        this.config.setProperty(ConfigKeys.menu_button_lore, MiscUtils.fromComponent(MiscUtils.toComponent(this.config.getProperty(ConfigKeys.menu_button_lore))));
+
+        this.config.setProperty(ConfigKeys.next_button_name, MiscUtils.fromComponent(MiscUtils.toComponent(this.config.getProperty(ConfigKeys.next_button_name))));
+        this.config.setProperty(ConfigKeys.next_button_lore, MiscUtils.fromComponent(MiscUtils.toComponent(this.config.getProperty(ConfigKeys.next_button_lore))));
+
+        this.config.setProperty(ConfigKeys.back_button_name, MiscUtils.fromComponent(MiscUtils.toComponent(this.config.getProperty(ConfigKeys.back_button_name))));
+        this.config.setProperty(ConfigKeys.back_button_lore, MiscUtils.fromComponent(MiscUtils.toComponent(this.config.getProperty(ConfigKeys.back_button_lore))));
+
+        this.config.setProperty(ConfigKeys.filler_name, MiscUtils.fromComponent(MiscUtils.toComponent(this.config.getProperty(ConfigKeys.filler_name))));
+        this.config.setProperty(ConfigKeys.filler_lore, MiscUtils.fromComponent(MiscUtils.toComponent(this.config.getProperty(ConfigKeys.filler_lore))));
+
+        for (Messages message : Messages.values()) {
+            message.migrate();
+        }
+
+        this.config.reload();
+        this.messages.reload();
 
         customFiles.forEach(customFile -> {
             try {

@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.misc.State;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
@@ -229,6 +230,16 @@ public enum Messages {
         if (msg.isEmpty() || msg.isBlank()) return;
 
         sender.sendRichMessage(msg);
+    }
+
+    public void migrate() {
+        if (this.isList) {
+            this.config.setProperty(this.properties, MiscUtils.fromComponent(MiscUtils.toComponent(this.config.getProperty(this.properties))));
+
+            return;
+        }
+
+        this.config.setProperty(this.property, MiscUtils.fromComponent(MiscUtils.toComponent(this.config.getProperty(this.property))));
     }
 
     private @NotNull String parse(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
