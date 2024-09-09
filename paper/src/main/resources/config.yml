@@ -35,6 +35,13 @@ root:
   # send_actionbar -> sends messages in actionbar.
   #
   message-state: send_message
+  # A list of available hologram plugins:
+  #  -> DecentHolograms
+  #  -> FancyHolograms
+  #  -> CMI
+  #
+  # If the option is set to blank, it'll pick whatever plugin it feels like picking.
+  hologram-plugin: ''
   # This will wipe the example folder on /crazycrates reload or plugin startup. so you always have fresh examples to look at.
   update-examples-folder: true
   # The prefix used in commands
