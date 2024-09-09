@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
@@ -12,8 +11,6 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 
 public class CosmicCrate extends CrateBuilder {
-
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
     public CosmicCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size, crate.getCrateName() + " - Choose");

@@ -10,8 +10,6 @@ import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
-import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -30,10 +28,6 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class QuickCrate extends CrateBuilder {
-
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
-
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
     public QuickCrate(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location) {
         super(crate, player, location);

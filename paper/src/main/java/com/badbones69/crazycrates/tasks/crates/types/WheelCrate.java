@@ -4,8 +4,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
-import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -22,10 +20,6 @@ import java.util.UUID;
 import java.util.HashMap;
 
 public class WheelCrate extends CrateBuilder {
-
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
-
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
     public WheelCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size);
