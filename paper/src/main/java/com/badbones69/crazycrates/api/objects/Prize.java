@@ -306,8 +306,10 @@ public class Prize {
         final String fancyName = crate.getCrateName();
 
         if (this.broadcast) {
+            final String permission = this.broadcastPermission;
+
             this.plugin.getServer().getOnlinePlayers().forEach(player -> {
-                if (!this.broadcastPermission.isEmpty() && player.hasPermission(this.broadcastPermission)) return;
+                if (!permission.isEmpty() && player.hasPermission(permission)) return;
 
                 this.broadcastMessages.forEach(message -> sendMessage(target, player, message, fancyName));
             });
@@ -315,11 +317,15 @@ public class Prize {
             return;
         }
 
-        this.plugin.getServer().getOnlinePlayers().forEach(player -> {
-            if (!crate.getBroadcastPermission().isEmpty() && player.hasPermission(crate.getBroadcastPermission())) return;
+        if (crate.isBroadcastToggle()) {
+            final String permission = crate.getBroadcastPermission();
 
-            crate.getBroadcastMessages().forEach(message -> sendMessage(target, player, message, fancyName));
-        });
+            this.plugin.getServer().getOnlinePlayers().forEach(player -> {
+                if (!permission.isEmpty() && player.hasPermission(permission)) return;
+
+                crate.getBroadcastMessages().forEach(message -> sendMessage(target, player, message, fancyName));
+            });
+        }
     }
 
     private void sendMessage(final Player target, final Player player, final String message, final String fancyName) {
