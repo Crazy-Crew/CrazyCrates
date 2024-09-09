@@ -1,57 +1,83 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
+import com.badbones69.crazycrates.api.builders.v2.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.crates.CrateStatus;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.crates.CrateStatusEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.Prize;
-import org.bukkit.Material;
+import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
+import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
+import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 public class CsgoCrate extends CrateBuilder {
 
-    private final CrateStatusEvent event;
+    public CsgoCrate(final Player player, final Crate crate) {
+        super(player, crate, 3);
 
-    public CsgoCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
-        super(crate, player, size);
-
-        this.event = new CrateStatusEvent(crate, player);
+        setSeconds(6000);
     }
 
-    private int time = 1;
-    private int full = 0;
-    private int open = 0;
+    private final CrateStatusEvent event = getEvent();
+    private final Player player = getPlayer();
+    private final Crate crate = getCrate();
+    private final Gui gui = getGui();
+
+    private final long startTime = System.currentTimeMillis(); // 5.4 seconds
+
+    private int inventoryStatus = 0;
+    private int delayCounter = 0;
 
     @Override
     public void run() {
-        final Player player = getPlayer();
-        final Crate crate = getCrate();
+        final long elapsedTime = System.currentTimeMillis() - this.startTime;
 
-        if (this.full <= 50) { // cycling
-            moveItemsAndSetGlass();
+        if (elapsedTime >= getSeconds()) { // elapsed the allowed time.
+            this.event.setStatus(CrateStatus.ended).callEvent();
 
+            cancel();
+
+            return;
+        }
+
+        if (elapsedTime <= 5000) {
             this.event.setStatus(CrateStatus.cycling).callEvent();
+
+            moveItemsAndSetGlass();
         }
 
-        this.open++;
+        this.inventoryStatus++;
 
-        if (this.open >= 5) { // opens the inventory
-            player.openInventory(getInventory());
+        if (this.inventoryStatus >= 5) {
+            this.player.openInventory(this.gui.getInventory());
 
-            this.open = 0;
+            this.inventoryStatus = 0;
         }
 
+        if (elapsedTime > 5100) { // slowing down
+            this.delayCounter = this.delayCounter + 10;
+
+            this.event.setStatus(CrateStatus.silent).callEvent();
+
+            new FoliaRunnable(this.player.getScheduler(), null) {
+                @Override
+                public void run() {
+                    moveItemsAndSetGlass();
+
+                    event.setStatus(CrateStatus.cycling).callEvent();
+
+                    cancel();
+                }
+            }.runAtFixedRate(this.plugin, this.delayCounter, 1);
+        }
+
+        /*
         this.full++;
 
         if (this.full > 51) { // slowing down
@@ -89,57 +115,38 @@ public class CsgoCrate extends CrateBuilder {
 
                 cancel();
             }
-        }
+        }*/
     }
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand) {
-        final Player player = getPlayer();
-        final Crate crate = getCrate();
+    public void open(@NotNull final KeyType type, final boolean inspectInventory) {
+        getBorder().forEach(this::setRandomGlass);
 
-        final UUID uuid = player.getUniqueId();
-        final String fileName = crate.getFileName();
-
-        final boolean keyCheck = this.userManager.takeKeys(uuid, fileName, type, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, checkHand);
-
-        if (!keyCheck) {
-            this.crateManager.removePlayerFromOpeningList(player);
-
-            return;
-        }
-
-        getBorder().forEach(this::setCustomGlassPane);
-
-        // Set display items.
         for (int index = 9; index > 8 && index < 18; index++) {
-            setItem(index, crate.pickPrize(player).getDisplayItem(player, crate));
+            this.gui.setItem(index, new GuiItem(this.crate.pickPrize(this.player).getDisplayItem(this.player, this.crate)));
         }
 
-        // Open the inventory.
-        player.openInventory(getInventory());
+        this.gui.open(this.player);
 
-        // run the task, which uses the run method above.
         runAtFixedRate(this.plugin, 0, 1);
     }
 
     private void moveItemsAndSetGlass() {
         final List<ItemStack> items = new ArrayList<>();
 
-        final Player player = getPlayer();
-        final Inventory inventory = getInventory();
-        final Crate crate = getCrate();
+        final Inventory inventory = this.gui.getInventory();
 
-        for (int i = 9; i > 8 && i < 17; i++) {
-            items.add(inventory.getItem(i));
+        for (int count = 9; count > 8 && count < 17; count++) {
+            items.add(inventory.getItem(count));
         }
 
-        setItem(9, crate.pickPrize(player).getDisplayItem(player, crate));
+        this.gui.setItem(9, new GuiItem(this.crate.pickPrize(this.player).getDisplayItem(this.player, this.crate)));
 
-        for (int i = 0; i < 8; i++) {
-            setItem(i + 10, items.get(i));
+        for (int count = 0; count < 8; count++) {
+            this.gui.setItem(count, new GuiItem(items.get(count)));
         }
 
-        getBorder().forEach(this::setCustomGlassPane);
+        getBorder().forEach(this::setRandomGlass);
     }
 
     private List<Integer> getBorder() {

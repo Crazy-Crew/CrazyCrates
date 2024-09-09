@@ -15,7 +15,7 @@ public class CrateStatusEvent extends Event {
     private final Player player;
     private final Crate crate;
 
-    public CrateStatusEvent(@NotNull final Crate crate, @NotNull final Player player) {
+    public CrateStatusEvent(final Player player, final Crate crate) {
         this.status = CrateStatus.opened;
         this.player = player;
         this.crate = crate;

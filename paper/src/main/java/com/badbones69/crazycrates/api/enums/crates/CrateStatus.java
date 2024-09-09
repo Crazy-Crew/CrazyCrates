@@ -5,7 +5,8 @@ public enum CrateStatus {
     failed("Failed"),
     ended("Ended"),
     cycling("Cycling"),
-    opened("Opened");
+    opened("Opened"),
+    silent("Silent");
 
     private final String status;
 

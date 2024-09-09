@@ -91,6 +91,10 @@ public class CrateStatusListener implements Listener {
                 Messages.key_refund.sendMessage(player, "{crate}", crate.getCrateName());
             }
 
+            case silent -> {
+
+            }
+
             default -> {}
         }
     }

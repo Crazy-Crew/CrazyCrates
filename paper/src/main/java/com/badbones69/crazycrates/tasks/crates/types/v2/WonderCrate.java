@@ -23,7 +23,7 @@ public class WonderCrate extends CrateBuilder {
     public WonderCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size);
 
-        this.event = new CrateStatusEvent(crate, player);
+        this.event = new CrateStatusEvent(player, crate);
     }
 
     private final List<Integer> slots = new ArrayList<>();
