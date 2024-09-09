@@ -55,12 +55,12 @@ public class Prize {
 
     private List<ItemStack> editorItems = new ArrayList<>();
 
-    public Prize(@NotNull final ConfigurationSection section, List<ItemStack> editorItems, @NotNull final List<Tier> tierPrizes, @NotNull final String crateName, @Nullable final Prize alternativePrize) {
+    public Prize(@NotNull final ConfigurationSection section, List<ItemStack> editorItems, @NotNull final List<Tier> tierPrizes, @NotNull final Crate crate, @Nullable final Prize alternativePrize) {
         this.section = section;
 
         this.sectionName = section.getName();
 
-        this.crateName = crateName;
+        this.crateName = crate.getFileName();
 
         this.builders = ItemUtils.convertStringList(this.section.getStringList("Items"), this.sectionName);
 
