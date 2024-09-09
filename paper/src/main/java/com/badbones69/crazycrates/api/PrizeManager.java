@@ -46,15 +46,17 @@ public class PrizeManager {
 
         prize = prize.hasPermission(player) ? prize.getAlternativePrize() : prize;
 
-        final int pulls = getCurrentPulls(prize, crate);
+        if (!player.isOp()) {
+            final int pulls = getCurrentPulls(prize, crate);
 
-        if (pulls != -1 && pulls < prize.getMaxPulls()) {
-            YamlConfiguration configuration = Files.data.getConfiguration();
+            if (pulls != -1 && pulls < prize.getMaxPulls()) {
+                YamlConfiguration configuration = Files.data.getConfiguration();
 
-            configuration.set("Prizes." + crate.getFileName()  + "." + prize.getSectionName() + ".Pulls", pulls + 1);
+                configuration.set("Prizes." + crate.getFileName()  + "." + prize.getSectionName() + ".Pulls", pulls + 1);
 
-            // save to file!
-            Files.data.save();
+                // save to file!
+                Files.data.save();
+            }
         }
 
         for (ItemStack item : prize.getEditorItems()) {
