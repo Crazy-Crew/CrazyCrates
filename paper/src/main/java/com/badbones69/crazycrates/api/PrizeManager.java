@@ -105,6 +105,8 @@ public class PrizeManager {
             runCommands(player, prize, crate, command);
         }
 
+        prize.broadcast(player, crate);
+
         if (!crate.getPrizeMessage().isEmpty() && prize.getMessages().isEmpty()) {
             for (final String message : crate.getPrizeMessage()) {
                 sendMessage(player, prize, crate, message);
@@ -116,8 +118,6 @@ public class PrizeManager {
         for (final String message : prize.getMessages()) {
             sendMessage(player, prize, crate, message);
         }
-
-        prize.broadcast(player, crate);
     }
 
     private static void runCommands(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, @NotNull String command) {

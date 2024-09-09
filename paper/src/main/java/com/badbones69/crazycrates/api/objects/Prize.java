@@ -303,15 +303,13 @@ public class Prize {
     }
 
     public void broadcast(final Player target, final Crate crate) {
-        final String fancyName = crate.getCrateName();
-
         if (this.broadcast) {
             final String permission = this.broadcastPermission;
 
             this.plugin.getServer().getOnlinePlayers().forEach(player -> {
                 if (!permission.isEmpty() && player.hasPermission(permission)) return;
 
-                this.broadcastMessages.forEach(message -> sendMessage(target, player, message, fancyName));
+                this.broadcastMessages.forEach(message -> sendMessage(target, player, message, crate));
             });
 
             return;
@@ -323,17 +321,21 @@ public class Prize {
             this.plugin.getServer().getOnlinePlayers().forEach(player -> {
                 if (!permission.isEmpty() && player.hasPermission(permission)) return;
 
-                crate.getBroadcastMessages().forEach(message -> sendMessage(target, player, message, fancyName));
+                crate.getBroadcastMessages().forEach(message -> sendMessage(target, player, message, crate));
             });
         }
     }
 
-    private void sendMessage(final Player target, final Player player, final String message, final String fancyName) {
+    private void sendMessage(final Player target, final Player player, final String message, final Crate crate) {
+        final String maxPulls = String.valueOf(getMaxPulls());
+        final String pulls = String.valueOf(PrizeManager.getCurrentPulls(this, crate));
+
         player.sendMessage(AdvUtil.parse(message, new HashMap<>() {{
             put("%player%", target.getName());
-            put("%crate%", fancyName);
-            put("%reward%", getPrizeName());
-            put("%maxpulls%", String.valueOf(getMaxPulls()));
+            put("%crate%", crate.getCrateName());
+            put("%reward%", getPrizeName().replaceAll("%maxpulls%", maxPulls).replaceAll("%pulls%", pulls));
+            put("%maxpulls%", maxPulls);
+            put("%pulls%", pulls);
             put("%reward_stripped%", getStrippedName());
         }}, player));
     }
