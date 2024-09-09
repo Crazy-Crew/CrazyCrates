@@ -296,14 +296,14 @@ public class Prize {
         return false;
     }
 
-    public void broadcast(final Crate crate) {
+    public void broadcast(final Player target, final Crate crate) {
         final String fancyName = crate.getCrateName();
 
         if (this.broadcast) {
             this.plugin.getServer().getOnlinePlayers().forEach(player -> {
                 if (!this.broadcastPermission.isEmpty() && player.hasPermission(this.broadcastPermission)) return;
 
-                this.broadcastMessages.forEach(message -> sendMessage(player, message, fancyName));
+                this.broadcastMessages.forEach(message -> sendMessage(target, player, message, fancyName));
             });
 
             return;
@@ -312,13 +312,13 @@ public class Prize {
         this.plugin.getServer().getOnlinePlayers().forEach(player -> {
             if (!crate.getBroadcastPermission().isEmpty() && player.hasPermission(crate.getBroadcastPermission())) return;
 
-            crate.getBroadcastMessages().forEach(message -> sendMessage(player, message, fancyName));
+            crate.getBroadcastMessages().forEach(message -> sendMessage(target, player, message, fancyName));
         });
     }
 
-    private void sendMessage(final Player player, final String message, final String fancyName) {
+    private void sendMessage(final Player target, final Player player, final String message, final String fancyName) {
         player.sendMessage(AdvUtil.parse(message, new HashMap<>() {{
-            put("%player%", player.getName());
+            put("%player%", target.getName());
             put("%crate%", fancyName);
             put("%reward%", getPrizeName());
             put("%maxpulls%", String.valueOf(getMaxPulls()));
