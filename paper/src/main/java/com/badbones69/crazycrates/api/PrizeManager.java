@@ -46,12 +46,12 @@ public class PrizeManager {
 
         prize = prize.hasPermission(player) ? prize.getAlternativePrize() : prize;
 
-        final int pulls = getCurrentPulls(prize);
+        final int pulls = getCurrentPulls(prize, crate);
 
         if (pulls != -1 && pulls < prize.getMaxPulls()) {
             YamlConfiguration configuration = Files.data.getConfiguration();
 
-            configuration.set("Prizes." + prize.getSectionName() + ".Pulls", pulls + 1);
+            configuration.set("Prizes." + crate.getFileName()  + "." + prize.getSectionName() + ".Pulls", pulls + 1);
 
             // save to file!
             Files.data.save();
@@ -153,7 +153,7 @@ public class PrizeManager {
         if (Support.placeholder_api.isEnabled() ) cmd = PlaceholderAPI.setPlaceholders(player, cmd);
 
         final String maxPulls = String.valueOf(prize.getMaxPulls());
-        final String pulls = String.valueOf(getCurrentPulls(prize));
+        final String pulls = String.valueOf(getCurrentPulls(prize, crate));
         final String prizeName = prize.getPrizeName().replaceAll("%maxpulls%", maxPulls).replaceAll("%pulls%", pulls);
 
         MiscUtils.sendCommand(cmd
@@ -170,7 +170,7 @@ public class PrizeManager {
         if (message.isEmpty()) return;
 
         final String maxPulls = String.valueOf(prize.getMaxPulls());
-        final String pulls = String.valueOf(getCurrentPulls(prize));
+        final String pulls = String.valueOf(getCurrentPulls(prize, crate));
         final String prizeName = prize.getPrizeName().replaceAll("%maxpulls%", maxPulls).replaceAll("%pulls%", pulls);
 
         final String defaultMessage = message
@@ -184,12 +184,11 @@ public class PrizeManager {
         MsgUtils.sendMessage(player, Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
     }
 
-    public static int getCurrentPulls(final Prize prize) {
+    public static int getCurrentPulls(final Prize prize, final Crate crate) {
         if (prize.getMaxPulls() == -1) return 0;
 
         final YamlConfiguration configuration = Files.data.getConfiguration();
-
-        final ConfigurationSection section = configuration.getConfigurationSection("Prizes." + prize.getSectionName());
+        final ConfigurationSection section = configuration.getConfigurationSection("Prizes." + crate.getFileName()  + "." + prize.getSectionName());
 
         if (section == null) return 0;
 

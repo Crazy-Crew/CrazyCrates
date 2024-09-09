@@ -134,15 +134,15 @@ public class Prize {
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
-    public @NotNull final ItemStack getDisplayItem() {
-        return getDisplayItem(null);
+    public @NotNull final ItemStack getDisplayItem(final Crate crate) {
+        return getDisplayItem(null, crate);
     }
 
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
-    public @NotNull final ItemStack getDisplayItem(@Nullable final Player player) {
-        final int pulls = PrizeManager.getCurrentPulls(this);
+    public @NotNull final ItemStack getDisplayItem(@Nullable final Player player, final Crate crate) {
+        final int pulls = PrizeManager.getCurrentPulls(this, crate);
         final String maxPulls = String.valueOf(getMaxPulls());
         final String amount = String.valueOf(pulls);
 
@@ -170,7 +170,7 @@ public class Prize {
             this.section.getStringList("Lore").forEach(line -> lore.add(player != null && isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, line) : line));
         }
 
-        if (pulls >= getMaxPulls()) {
+        if (pulls != 0 && pulls >= getMaxPulls()) {
             if (player != null) {
                 final String line = Messages.crate_prize_max_pulls.getMessage(player);
 

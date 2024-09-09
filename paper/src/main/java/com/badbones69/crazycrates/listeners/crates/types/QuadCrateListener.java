@@ -79,7 +79,7 @@ public class QuadCrateListener implements Listener {
             PrizeManager.givePrize(player, prize, crate);
 
             // Get the display item.
-            final ItemStack display = prize.getDisplayItem(player);
+            final ItemStack display = prize.getDisplayItem(player, crate);
 
             // Get the item meta.
             final ItemMeta itemMeta = display.getItemMeta();

@@ -59,7 +59,7 @@ public class WonderCrate extends CrateBuilder {
 
             slots.add(String.valueOf(index));
 
-            setItem(index, prize.getDisplayItem(player));
+            setItem(index, prize.getDisplayItem(player, crate));
         }
 
         player.openInventory(getInventory());
@@ -92,7 +92,7 @@ public class WonderCrate extends CrateBuilder {
                     for (String slot : slots) {
                         this.prize = crate.pickPrize(player);
 
-                        setItem(Integer.parseInt(slot), this.prize.getDisplayItem(player));
+                        setItem(Integer.parseInt(slot), this.prize.getDisplayItem(player, crate));
                     }
 
                     playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");

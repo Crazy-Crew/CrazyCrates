@@ -304,7 +304,7 @@ public class Crate {
             for (Prize prize : getPrizes()) {
                 if (prize.getChance() == -1) continue;
 
-                final int pulls = PrizeManager.getCurrentPulls(prize);
+                final int pulls = PrizeManager.getCurrentPulls(prize, this);
 
                 if (pulls != 0) {
                     if (pulls >= prize.getMaxPulls()) continue;
@@ -901,10 +901,10 @@ public class Crate {
             if (prize.getChance() < 1) continue;
 
             if (tier == null) {
-                prizes.add(player == null ? prize.getDisplayItem() : prize.getDisplayItem(player));
+                prizes.add(player == null ? prize.getDisplayItem(this) : prize.getDisplayItem(player, this));
             } else {
                 if (prize.getTiers().contains(tier)) {
-                    prizes.add(player == null ? prize.getDisplayItem() : prize.getDisplayItem(player));
+                    prizes.add(player == null ? prize.getDisplayItem(this) : prize.getDisplayItem(player, this));
                 }
             }
         }

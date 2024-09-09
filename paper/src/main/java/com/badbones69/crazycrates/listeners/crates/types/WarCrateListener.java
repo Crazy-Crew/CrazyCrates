@@ -47,7 +47,7 @@ public class WarCrateListener implements Listener {
 
                     final Prize prize = crate.pickPrize(player);
 
-                    inventory.setItem(slot, prize.getDisplayItem(player));
+                    inventory.setItem(slot, prize.getDisplayItem(player, crate));
 
                     if (this.crateManager.hasCrateTask(player)) this.crateManager.endCrate(player);
 
@@ -67,7 +67,7 @@ public class WarCrateListener implements Listener {
                         @Override
                         public void run() {
                             for (int i = 0; i < 9; i++) {
-                                if (i != slot) inventory.setItem(i, crate.pickPrize(player).getDisplayItem(player));
+                                if (i != slot) inventory.setItem(i, crate.pickPrize(player).getDisplayItem(player, crate));
                             }
 
                             if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
