@@ -131,8 +131,13 @@ public class Crate {
 
         this.broadcastToggle = this.file.getBoolean("Crate.Settings.Broadcast.Toggle", false);
         this.broadcastMessages = this.file.getStringList("Crate.Settings.Broadcast.Messages");
+        this.broadcastPermission = this.file.getString("Crate.Settings.Broadcast.Permission", "");
 
-        MiscUtils.registerPermission(this.broadcastPermission = this.file.getString("Crate.Settings.Broadcast.Permission", ""), "Hides the broadcast message if a player has this permission", false);
+        if (this.broadcastToggle) {
+            MiscUtils.registerPermission(this.broadcastPermission, "Hides the broadcast message if a player has this permission", false);
+        } else {
+            MiscUtils.unregisterPermission(this.broadcastPermission);
+        }
 
         this.prizes = prizes;
         this.crateType = crateType;
