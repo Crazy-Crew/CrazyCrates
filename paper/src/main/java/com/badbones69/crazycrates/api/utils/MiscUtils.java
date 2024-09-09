@@ -2,9 +2,11 @@ package com.badbones69.crazycrates.api.utils;
 
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.api.enums.misc.Files;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.Nullable;
 import com.badbones69.crazycrates.config.ConfigManager;
@@ -213,6 +215,35 @@ public class MiscUtils {
      */
     public static boolean isInventoryFull(@NotNull final Player player) {
         return player.getInventory().firstEmpty() == -1;
+    }
+
+    public static void save() {
+        YamlConfiguration data = Files.data.getConfiguration();
+        YamlConfiguration location = Files.locations.getConfiguration();
+
+        boolean isSave = false;
+
+        if (!location.contains("Locations")) {
+            location.set("Locations.Clear", null);
+
+            Files.locations.save();
+        }
+
+        if (!data.contains("Players")) {
+            data.set("Players.Clear", null);
+
+            isSave = true;
+        }
+
+        if (!data.contains("Prizes")) {
+            data.set("Prizes.Clear", null);
+
+            isSave = true;
+        }
+
+        if (isSave) {
+            Files.data.save();
+        }
     }
 
     // ElectronicBoy is the author.
