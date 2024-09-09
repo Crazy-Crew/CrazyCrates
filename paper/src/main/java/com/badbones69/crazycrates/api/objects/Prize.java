@@ -297,23 +297,33 @@ public class Prize {
     }
 
     public void broadcast(final Crate crate) {
-        if (!this.broadcast) return;
-
         final String fancyName = crate.getCrateName();
-        final String prizeName = getPrizeName();
-        final String strippedName = getStrippedName();
+
+        if (this.broadcast) {
+            this.plugin.getServer().getOnlinePlayers().forEach(player -> {
+                if (!this.broadcastPermission.isEmpty() && player.hasPermission(this.broadcastPermission)) return;
+
+                this.broadcastMessages.forEach(message -> sendMessage(player, message, fancyName));
+            });
+
+            return;
+        }
 
         this.plugin.getServer().getOnlinePlayers().forEach(player -> {
-            if (!this.broadcastPermission.isEmpty() && player.hasPermission(this.broadcastPermission)) return;
+            if (!crate.getBroadcastPermission().isEmpty() && player.hasPermission(crate.getBroadcastPermission())) return;
 
-            this.broadcastMessages.forEach(message -> player.sendMessage(AdvUtil.parse(message, new HashMap<>() {{
-                put("%player%", player.getName());
-                put("%crate%", fancyName);
-                put("%reward%", prizeName);
-                put("%maxpulls%", String.valueOf(maxPulls));
-                put("%reward_stripped%", strippedName);
-            }}, player)));
+            crate.getBroadcastMessages().forEach(message -> sendMessage(player, message, fancyName));
         });
+    }
+
+    private void sendMessage(final Player player, final String message, final String fancyName) {
+        player.sendMessage(AdvUtil.parse(message, new HashMap<>() {{
+            put("%player%", player.getName());
+            put("%crate%", fancyName);
+            put("%reward%", getPrizeName());
+            put("%maxpulls%", String.valueOf(getMaxPulls()));
+            put("%reward_stripped%", getStrippedName());
+        }}, player));
     }
 
     private @NotNull ItemBuilder display() {

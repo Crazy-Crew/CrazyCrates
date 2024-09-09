@@ -93,6 +93,10 @@ public class Crate {
 
     private @NotNull final SettingsManager config = ConfigManager.getConfig();
 
+    private boolean broadcastToggle = false;
+    private List<String> broadcastMessages = new ArrayList<>();
+    private String broadcastPermission = "";
+
     /**
      * @param name The name of the crate.
      * @param crateType The crate type of the crate.
@@ -124,6 +128,11 @@ public class Crate {
         this.requiredKeys = requiredKeys;
         this.prizeMessage = prizeMessage;
         this.prizeCommands = prizeCommands;
+
+        this.broadcastToggle = this.file.getBoolean("Crate.Settings.Broadcast.Toggle", false);
+        this.broadcastMessages = this.file.getStringList("Crate.Settings.Broadcast.Messages");
+        this.broadcastPermission = this.file.getString("Crate.Settings.Broadcast.Permission", "");
+
         this.prizes = prizes;
         this.crateType = crateType;
         this.previewToggle = file.getBoolean("Crate.Preview.Toggle", false);
@@ -220,7 +229,19 @@ public class Crate {
     public @NotNull final AbstractCrateManager getManager() {
         return this.manager;
     }
-    
+
+    public final boolean isBroadcastToggle() {
+        return this.broadcastToggle;
+    }
+
+    public final String getBroadcastPermission() {
+        return this.broadcastPermission;
+    }
+
+    public final List<String> getBroadcastMessages() {
+        return this.broadcastMessages;
+    }
+
     /**
      * Set the preview lines for a Crate.
      *
