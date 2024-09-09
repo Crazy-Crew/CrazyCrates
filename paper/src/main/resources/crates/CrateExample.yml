@@ -81,7 +81,7 @@ Crate:
       Messages:
         - '<red>%player% won the prize <yellow>%reward%.'
       # If the player has this permission, they don't get the broadcast.
-      Permission: 'your_permission'
+      Permission: ''
   # Item the crate is in the GUI
   Item: "diamond"
   # The custom model data of the item, -1 is disabled.
@@ -264,7 +264,7 @@ Crate:
           Messages:
             - '<red>%player% won the prize <yellow>%reward%.'
           # If the player has this permission, they don't get the broadcast.
-          Permission: 'your_permission'
+          Permission: ''
       # The amount to display in the gui.
       DisplayAmount: 5
       # The lore of the item.
