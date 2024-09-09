@@ -58,7 +58,7 @@ public class WonderCrate extends CrateBuilder {
             for (int slot : this.slots) {
                 prize = crate.pickPrize(player);
 
-                setItem(slot, prize.getDisplayItem(player));
+                setItem(slot, prize.getDisplayItem(player, crate));
             }
 
             this.event.setStatus(CrateStatus.cycling).callEvent();
@@ -122,7 +122,7 @@ public class WonderCrate extends CrateBuilder {
         for (int index = 0; index < getSize(); index++) {
             this.slots.add(index);
 
-            setItem(index, crate.pickPrize(player).getDisplayItem(player));
+            setItem(index, crate.pickPrize(player).getDisplayItem(player, crate));
         }
 
         player.openInventory(getInventory());
