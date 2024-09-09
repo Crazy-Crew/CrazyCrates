@@ -157,6 +157,8 @@ Crate:
       Player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
       # Only uncomment this if using HeadDatabase by Arcaniax
       # Skull: "7129"
+      Items:
+        - "Item:player_head, Player:1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Name:<gold>BadBones69"
     '2':
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Sword"
@@ -176,6 +178,9 @@ Crate:
       MaxRange: 100
       # The chance to win i.e. 15%
       Chance: 15
+      # The list of items to win.
+      Items:
+        - "Item:diamond_sword, Name:<red>Diamond Sword, sharpness:5, looting:3"
     '3':
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Helmet"
@@ -203,6 +208,9 @@ Crate:
       MaxRange: 100
       # The chance to win i.e. 15%
       Chance: 15
+      # The list of items to win.
+      Items:
+        - "Item:diamond_helmet, Name:<red>Diamond Helmet, protection:5, unbreaking:3"
     '4':
       # The enchants to be stored on the book.
       DisplayEnchantments:
@@ -224,6 +232,9 @@ Crate:
       MaxRange: 100
       # The chance to win i.e. 25%
       Chance: 25
+      # The list of items to win.
+      Items:
+        - "Item:enchanted_book, protection:5, unbreaking:3"
     '5':
       # The display name of the item.
       DisplayName: "<yellow>$1,000"
@@ -263,7 +274,7 @@ Crate:
         - "<gray>You won <reset>%reward%."
     '6':
       # The name of the item to display in the gui.
-      DisplayName: "<green>Fancy Shield"
+      DisplayName: "<green>Fancy Shield <gray>| <red>%pulls%<gray>/<red>%maxpulls%"
       # The enchants to display in the gui.
       DisplayItem: "shield"
       # A list of patterns: https://jd.papermc.io/paper/1.21/org/bukkit/block/banner/PatternType.html
@@ -279,6 +290,8 @@ Crate:
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
+        # The amount of times this item can be pulled.
+        Max-Pulls: 10
       # The amount to display in the gui.
       DisplayAmount: 1
       # The max range i.e. 15/100 = 15% chance to win.

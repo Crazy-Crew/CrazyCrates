@@ -62,13 +62,13 @@ public class ConfigKeys implements SettingsHolder {
     public static final Property<Boolean> use_different_random = newProperty("root.use-different-random", false);
 
     @Comment({
-            "This option defines what in-game editor format is used in CrazyCrates",
+            "This option defines what in-game editor format is used in CrazyCrates.",
             "",
-            "true -> uses the old one",
-            "false -> uses the new one",
+            "true -> uses the new editor",
+            "false -> uses the old editor",
             ""
     })
-    public static final Property<Boolean> item_editor_toggle = newProperty("root.use-old-editor", false);
+    public static final Property<Boolean> use_new_item_editor = newProperty("root.use-new-editor", false);
 
     @Comment({
             "A recent change to permissions related to opening crates was made",

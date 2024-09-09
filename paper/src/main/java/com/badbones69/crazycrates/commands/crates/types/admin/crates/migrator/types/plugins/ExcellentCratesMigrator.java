@@ -1,15 +1,20 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.plugins;
 
 import com.badbones69.crazycrates.api.enums.misc.Files;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.paper.api.files.CustomFile;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
 import su.nightexpress.excellentcrates.CratesAPI;
 import su.nightexpress.excellentcrates.crate.impl.Crate;
 import su.nightexpress.excellentcrates.key.CrateKey;
@@ -18,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class ExcellentCratesMigrator extends ICrateMigrator {
@@ -220,9 +226,12 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 set(root, "PhysicalKey.Data", ItemUtil.toBase64(itemStack));
 
-                set(root, "PhysicalKey.Name", key.getName());
+                set(root, "PhysicalKey.Name", MiscUtils.fromComponent(itemStack.displayName()));
                 set(root, "PhysicalKey.Item", itemStack.getType().getKey().getKey());
-                set(root, "PhysicalKey.Lore", List.of());
+
+                final List<Component> keyLore = itemStack.lore();
+
+                set(root, "PhysicalKey.Lore", keyLore != null ? MiscUtils.fromComponent(keyLore) : List.of());
 
                 set(root, "PhysicalKey.Glowing", config.contains("Item.Enchants"));
             }
@@ -231,7 +240,27 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                 // Get the id i.e. '1':
                 final String id = reward.getId();
 
-                set(root, "Prizes." + id + ".DisplayData", ItemUtil.toBase64(reward.getPreview()));
+                final ItemStack itemStack = reward.getPreview();
+
+                if (itemStack.hasItemMeta()) {
+                    final ItemMeta itemMeta = itemStack.getItemMeta();
+
+                    if (itemMeta.hasDisplayName()) {
+                        final Component displayName = itemMeta.displayName();
+
+                        if (displayName != null) {
+                            set(root, "Prizes." + id + ".DisplayName", MiscUtils.fromComponent(itemStack.displayName()));
+                        }
+                    }
+
+                    if (itemMeta.hasLore()) {
+                        final List<Component> lore = itemMeta.lore();
+
+                        if (lore != null) {
+                            set(root, "Prizes." + id + ".DisplayLore", MiscUtils.fromComponent(lore));
+                        }
+                    }
+                }
 
                 set(root, "Prizes." + id + ".Commands", reward.getCommands());
 
@@ -243,27 +272,57 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 set(root, "Prizes." + id + ".Chance", (int) reward.getWeight());
 
+                set(root, "Prizes." + id + ".DisplayItem", itemStack.getType().getKey().getKey());
+
+                set(root, "Prizes." + id + ".DisplayAmount", itemStack.getAmount());
+
+                List<String> enchantments = new ArrayList<>();
+
+                for (Map.Entry<Enchantment, Integer> enchantment : itemStack.getEnchantments().entrySet()) {
+                    enchantments.add(enchantment.getKey().getKey().getKey() + ":" + enchantment.getValue());
+                }
+
+                if (!enchantments.isEmpty()) set(root, "Prizes." + id + ".DisplayEnchantments", enchantments);
+
                 final ConfigurationSection section = root.getConfigurationSection("Prizes");
 
                 if (section == null) return;
 
-                final ConfigurationSection prizes = section.getConfigurationSection(id);
+                final ConfigurationSection prizeSection = section.getConfigurationSection(id);
 
-                if (prizes == null) return;
+                if (prizeSection == null) return;
 
-                reward.getItems().forEach(itemStack -> {
-                    final String base64 = ItemUtil.toBase64(itemStack);
+                final boolean useNewItemEditor = this.config.getProperty(ConfigKeys.use_new_item_editor);
 
-                    if (prizes.contains("Items")) {
-                        final List<String> items = prizes.getStringList("Items");
+                reward.getItems().forEach(key -> {
+                    if (useNewItemEditor) {
+                        final String base64 = ItemUtil.toBase64(key);
 
-                        items.add("Data: " + base64);
+                        if (prizeSection.contains("Items")) {
+                            final List<String> items = prizeSection.getStringList("Items");
 
-                        set(prizes, "Items", items);
+                            items.add("Data: " + base64);
+
+                            set(prizeSection, "Items", items);
+                        } else {
+                            set(prizeSection, "Items", new ArrayList<>() {{
+                                add("Data: " + base64);
+                            }});
+                        }
                     } else {
-                        set(prizes, "Items", new ArrayList<>() {{
-                            add("Data: " + base64);
-                        }});
+                        final List<ItemStack> editorItems = new ArrayList<>();
+
+                        if (prizeSection.contains("Editor-Items")) {
+                            final List<?> editors = prizeSection.getList("Editor-Items");
+
+                            if (editors != null) {
+                                editors.forEach(item -> editorItems.add((ItemStack) item));
+                            }
+                        }
+
+                        editorItems.add(key);
+
+                        set(prizeSection, "Editor-Items", editorItems);
                     }
                 });
             });
@@ -289,7 +348,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
     }
 
     @Override
-    public <T> void set(final ConfigurationSection section, final String path, final T value) {
+    public <T> void set(final ConfigurationSection section, final String path, T value) {
         section.set(path, value);
     }
 

@@ -262,6 +262,10 @@ Crate:
       # This can be a player head as well.
       # https://minecraft-heads.com/
       Player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
+      # Only uncomment this if using HeadDatabase by Arcaniax
+      # Skull: "7129"
+      Items:
+        - "Item:player_head, Player:1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Name:<gold>BadBones69"
     "2":
       DisplayName: "<bold><blue>Cheap Helmet</bold>"
       DisplayItem: "golden_helmet"

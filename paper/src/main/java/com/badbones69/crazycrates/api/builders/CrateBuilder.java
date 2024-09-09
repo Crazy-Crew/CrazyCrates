@@ -356,14 +356,14 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @return the display item of the picked prize
      */
     public ItemStack getDisplayItem() {
-        return getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer());
+        return getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer(), getCrate());
     }
 
     /**
      * @return the display item of the picked prize with a tier
      */
     public ItemStack getDisplayItem(@NotNull final Tier tier) {
-        return getCrate().pickPrize(getPlayer(), tier).getDisplayItem(getPlayer());
+        return getCrate().pickPrize(getPlayer(), tier).getDisplayItem(getPlayer(), getCrate());
     }
 
     /**

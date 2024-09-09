@@ -4,10 +4,10 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.misc.State;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
-import com.ryderbelserion.vital.paper.util.ItemUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import com.badbones69.crazycrates.config.ConfigManager;
@@ -74,6 +74,7 @@ public enum Messages {
     reloaded_forced_out_of_preview(CrateKeys.reloaded_forced_out_of_preview),
     crate_teleported(CrateKeys.crate_teleported),
     crate_cannot_teleport(CrateKeys.crate_cannot_teleport),
+    crate_prize_max_pulls(CrateKeys.crate_prize_max_pulls),
 
     gave_a_player_keys(CommandKeys.gave_a_player_keys),
     cannot_give_player_keys(CommandKeys.cannot_give_player_keys),
@@ -115,8 +116,6 @@ public enum Messages {
         this.properties = properties;
         this.isList = isList;
     }
-
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final SettingsManager config = ConfigManager.getConfig();
 
@@ -229,6 +228,16 @@ public enum Messages {
         if (msg.isEmpty() || msg.isBlank()) return;
 
         sender.sendRichMessage(msg);
+    }
+
+    public void migrate() {
+        if (this.isList) {
+            this.messages.setProperty(this.properties, MiscUtils.convert(this.messages.getProperty(this.properties), true));
+
+            return;
+        }
+
+        this.messages.setProperty(this.property, MiscUtils.convert(this.messages.getProperty(this.property), true));
     }
 
     private @NotNull String parse(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {

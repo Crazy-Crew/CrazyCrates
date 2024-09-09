@@ -1,8 +1,10 @@
 package com.badbones69.crazycrates.api.objects;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.crates.CrateHologram;
+import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
@@ -301,6 +303,12 @@ public class Crate {
         } else {
             for (Prize prize : getPrizes()) {
                 if (prize.getChance() == -1) continue;
+
+                final int pulls = PrizeManager.getCurrentPulls(prize, this);
+
+                if (pulls != 0) {
+                    if (pulls >= prize.getMaxPulls()) continue;
+                }
 
                 if (prize.hasPermission(player)) {
                     if (prize.hasAlternativePrize()) continue;
@@ -658,7 +666,7 @@ public class Crate {
                 final Component displayName = itemMeta.displayName();
 
                 if (displayName != null) {
-                    section.set(getPath(prizeName, "DisplayName"), MiscUtils.convert(displayName));
+                    section.set(getPath(prizeName, "DisplayName"), MiscUtils.fromComponent(displayName));
                 }
             }
 
@@ -666,26 +674,12 @@ public class Crate {
                 final List<Component> lore = itemMeta.lore();
 
                 if (lore != null) {
-                    section.set(getPath(prizeName, "DisplayLore"), MiscUtils.convert(lore));
+                    section.set(getPath(prizeName, "DisplayLore"), MiscUtils.fromComponent(lore));
                 }
             }
         }
 
-        if (this.config.getProperty(ConfigKeys.item_editor_toggle)) {
-            final List<ItemStack> editorItems = new ArrayList<>();
-
-            if (section.contains(prizeName + ".Editor-Items")) {
-                final List<?> editors = section.getList(prizeName + ".Editor-Items");
-
-                if (editors != null) {
-                    editors.forEach(item -> editorItems.add((ItemStack) item));
-                }
-            }
-
-            editorItems.add(itemStack);
-
-            section.set(getPath(prizeName, "Editor-Items"), editorItems);
-        } else {
+        if (this.config.getProperty(ConfigKeys.use_new_item_editor)) {
             String toBase64 = ItemUtil.toBase64(itemStack);
 
             section.set(getPath(prizeName, "DisplayData"), toBase64);
@@ -703,6 +697,20 @@ public class Crate {
                     add("Data:" + toBase64);
                 }});
             }
+        } else {
+            final List<ItemStack> editorItems = new ArrayList<>();
+
+            if (section.contains(prizeName + ".Editor-Items")) {
+                final List<?> editors = section.getList(prizeName + ".Editor-Items");
+
+                if (editors != null) {
+                    editors.forEach(item -> editorItems.add((ItemStack) item));
+                }
+            }
+
+            editorItems.add(itemStack);
+
+            section.set(getPath(prizeName, "Editor-Items"), editorItems);
         }
 
         section.set(getPath(prizeName, "DisplayItem"), itemStack.getType().getKey().getKey());
@@ -789,6 +797,7 @@ public class Crate {
             if (!key.getName().equalsIgnoreCase(name)) continue;
 
             tier = key;
+
             break;
         }
 
@@ -892,10 +901,10 @@ public class Crate {
             if (prize.getChance() < 1) continue;
 
             if (tier == null) {
-                prizes.add(player == null ? prize.getDisplayItem() : prize.getDisplayItem(player));
+                prizes.add(player == null ? prize.getDisplayItem(this) : prize.getDisplayItem(player, this));
             } else {
                 if (prize.getTiers().contains(tier)) {
-                    prizes.add(player == null ? prize.getDisplayItem() : prize.getDisplayItem(player));
+                    prizes.add(player == null ? prize.getDisplayItem(this) : prize.getDisplayItem(player, this));
                 }
             }
         }

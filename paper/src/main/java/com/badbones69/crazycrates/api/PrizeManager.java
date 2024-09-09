@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.api.enums.Messages;
+import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
@@ -9,6 +10,8 @@ import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -42,6 +45,19 @@ public class PrizeManager {
         }
 
         prize = prize.hasPermission(player) ? prize.getAlternativePrize() : prize;
+
+        if (!player.isOp()) {
+            final int pulls = getCurrentPulls(prize, crate);
+
+            if (pulls != -1 && pulls < prize.getMaxPulls()) {
+                YamlConfiguration configuration = Files.data.getConfiguration();
+
+                configuration.set("Prizes." + crate.getFileName()  + "." + prize.getSectionName() + ".Pulls", pulls + 1);
+
+                // save to file!
+                Files.data.save();
+            }
+        }
 
         for (ItemStack item : prize.getEditorItems()) {
             if (!MiscUtils.isInventoryFull(player)) {
@@ -138,24 +154,47 @@ public class PrizeManager {
 
         if (Support.placeholder_api.isEnabled() ) cmd = PlaceholderAPI.setPlaceholders(player, cmd);
 
+        final String maxPulls = String.valueOf(prize.getMaxPulls());
+        final String pulls = String.valueOf(getCurrentPulls(prize, crate));
+        final String prizeName = prize.getPrizeName().replaceAll("%maxpulls%", maxPulls).replaceAll("%pulls%", pulls);
+
         MiscUtils.sendCommand(cmd
                 .replaceAll("%player%", quoteReplacement(player.getName()))
-                .replaceAll("%reward%", quoteReplacement(prize.getPrizeName()))
+                .replaceAll("%reward%", quoteReplacement(prizeName))
                 .replaceAll("%reward_stripped%", quoteReplacement(prize.getStrippedName()))
                 .replaceAll("%crate_fancy%", quoteReplacement(crate.getCrateName()))
-                .replaceAll("%crate%", quoteReplacement(crate.getFileName())));
+                .replaceAll("%crate%", quoteReplacement(crate.getFileName()))
+                .replaceAll("%maxpulls%", maxPulls)
+                .replaceAll("%pulls%", pulls));
     }
 
     private static void sendMessage(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, String message) {
         if (message.isEmpty()) return;
 
+        final String maxPulls = String.valueOf(prize.getMaxPulls());
+        final String pulls = String.valueOf(getCurrentPulls(prize, crate));
+        final String prizeName = prize.getPrizeName().replaceAll("%maxpulls%", maxPulls).replaceAll("%pulls%", pulls);
+
         final String defaultMessage = message
                 .replaceAll("%player%", quoteReplacement(player.getName()))
-                .replaceAll("%reward%", quoteReplacement(prize.getPrizeName()))
+                .replaceAll("%reward%", quoteReplacement(prizeName))
                 .replaceAll("%reward_stripped%", quoteReplacement(prize.getStrippedName()))
-                .replaceAll("%crate%", quoteReplacement(crate.getCrateName()));
+                .replaceAll("%crate%", quoteReplacement(crate.getCrateName()))
+                .replaceAll("%maxpulls%", maxPulls)
+                .replaceAll("%pulls%", pulls);
 
         MsgUtils.sendMessage(player, Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
+    }
+
+    public static int getCurrentPulls(final Prize prize, final Crate crate) {
+        if (prize.getMaxPulls() == -1) return 0;
+
+        final YamlConfiguration configuration = Files.data.getConfiguration();
+        final ConfigurationSection section = configuration.getConfigurationSection("Prizes." + crate.getFileName()  + "." + prize.getSectionName());
+
+        if (section == null) return 0;
+
+        return section.getInt("Pulls", 0);
     }
 
     /**

@@ -1,14 +1,13 @@
 package com.badbones69.crazycrates.commands.crates.types.admin;
 
-import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.api.enums.Messages;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class CommandReload extends BaseCommand {
 
@@ -19,20 +18,7 @@ public class CommandReload extends BaseCommand {
 
         this.fileManager.reloadFiles().init();
 
-        final YamlConfiguration locations = Files.locations.getConfiguration();
-        final YamlConfiguration data = Files.data.getConfiguration();
-
-        if (!locations.contains("Locations")) {
-            locations.set("Locations.Clear", null);
-
-            Files.locations.save();
-        }
-
-        if (!data.contains("Players")) {
-            data.set("Players.Clear", null);
-
-            Files.data.save();
-        }
+        MiscUtils.save();
 
         if (this.config.getProperty(ConfigKeys.take_out_of_preview)) {
             this.plugin.getServer().getOnlinePlayers().forEach(player -> {

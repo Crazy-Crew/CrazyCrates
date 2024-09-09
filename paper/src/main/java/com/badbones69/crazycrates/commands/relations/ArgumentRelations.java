@@ -27,7 +27,7 @@ public class ArgumentRelations extends MessageManager {
             case "give-random" -> usage = order + " <key_type> <amount> <player_name>";
             case "give", "take" -> usage = order + " <key_type> <crate_name> <amount> <player_name>";
             case "giveall" -> usage = order + " <key_type> <crate-name> <amount>";
-            case "migrate" -> usage = order + "<migration_type> [crate_name]";
+            case "migrate" -> usage = order + " <migration_type> [crate_name]";
             case "admin" -> usage = order;
         }
 

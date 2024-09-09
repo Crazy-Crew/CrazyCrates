@@ -151,7 +151,7 @@ public class QuickCrate extends CrateBuilder {
             }
 
             // Get the display item.
-            ItemStack display = prize.getDisplayItem(player);
+            ItemStack display = prize.getDisplayItem(player, crate);
 
             // Get the item meta.
             ItemMeta itemMeta = display.getItemMeta();

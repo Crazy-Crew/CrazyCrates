@@ -140,7 +140,7 @@ public class CrateManager {
             crate.purge();
 
             // Profit?
-            ArrayList<Prize> prizes = new ArrayList<>();
+            List<Prize> prizes = new ArrayList<>();
 
             ConfigurationSection prizesSection = file.getConfigurationSection("Crate.Prizes");
 

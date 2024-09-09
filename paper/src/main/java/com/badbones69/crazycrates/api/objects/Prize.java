@@ -1,10 +1,14 @@
 package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.config.impl.messages.CrateKeys;
 import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
@@ -40,6 +44,8 @@ public class Prize {
     private int maxRange = 100;
     private int chance = 0;
 
+    private int maxPulls;
+
     private List<Tier> tiers = new ArrayList<>();
     private Prize alternativePrize;
 
@@ -57,6 +63,8 @@ public class Prize {
         this.crateName = crateName;
 
         this.builders = ItemUtils.convertStringList(this.section.getStringList("Items"), this.sectionName);
+
+        this.maxPulls = section.getInt("Settings.Max-Pulls", -1);
 
         this.tiers = tierPrizes;
 
@@ -126,41 +134,70 @@ public class Prize {
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
-    public @NotNull final ItemStack getDisplayItem() {
-        return this.displayItem.setPersistentString(Keys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
+    public @NotNull final ItemStack getDisplayItem(final Crate crate) {
+        return getDisplayItem(null, crate);
     }
 
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
-    public @NotNull final ItemStack getDisplayItem(@NotNull final Player player) {
-        if (Support.placeholder_api.isEnabled()) {
-            final String displayName = this.displayItem.getDisplayName();
+    public @NotNull final ItemStack getDisplayItem(@Nullable final Player player, final Crate crate) {
+        final int pulls = PrizeManager.getCurrentPulls(this, crate);
+        final String maxPulls = String.valueOf(getMaxPulls());
+        final String amount = String.valueOf(pulls);
 
-            this.displayItem.setDisplayName(PlaceholderAPI.setPlaceholders(player, displayName));
+        List<String> lore = new ArrayList<>();
 
-            List<String> lore = new ArrayList<>();
+        final boolean isPapiEnabled = Support.placeholder_api.isEnabled();
 
-            if (this.section.contains("DisplayLore") && !this.section.contains("Lore")) {
-                this.section.getStringList("DisplayLore").forEach(line -> lore.add(PlaceholderAPI.setPlaceholders(player, line)));
-            }
+        final String displayName = this.displayItem.getDisplayName();
 
-            if (this.section.contains("Lore")) {
-                if (MiscUtils.isLogging()) {
-                    List.of(
-                            "Deprecated usage of Lore in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
-                            "Lore will be removed in the next major version of Minecraft in favor of DisplayLore",
-                            "You can turn my nagging off in config.yml, verbose_logging: true -> false"
-                    ).forEach(this.plugin.getComponentLogger()::warn);
-                }
+        this.displayItem.setDisplayName(player != null && isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, displayName) : displayName);
 
-                this.section.getStringList("Lore").forEach(line -> lore.add(PlaceholderAPI.setPlaceholders(player, line)));
-            }
-
-            this.displayItem.setDisplayLore(lore);
+        if (this.section.contains("DisplayLore") && !this.section.contains("Lore")) {
+            this.section.getStringList("DisplayLore").forEach(line -> lore.add(player != null && isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, line) : line));
         }
 
-        return this.displayItem.setPlayer(player).setPersistentString(Keys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
+        if (this.section.contains("Lore")) {
+            if (MiscUtils.isLogging()) {
+                List.of(
+                        "Deprecated usage of Lore in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
+                        "Lore will be removed in the next major version of Minecraft in favor of DisplayLore",
+                        "You can turn my nagging off in config.yml, verbose_logging: true -> false"
+                ).forEach(this.plugin.getComponentLogger()::warn);
+            }
+
+            this.section.getStringList("Lore").forEach(line -> lore.add(player != null && isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, line) : line));
+        }
+
+        if (pulls != 0 && pulls >= getMaxPulls()) {
+            if (player != null) {
+                final String line = Messages.crate_prize_max_pulls.getMessage(player);
+
+                if (!line.isEmpty()) {
+                    final String variable = line.replaceAll("\\{maxpulls}", maxPulls).replaceAll("\\{pulls}", amount);
+
+                    lore.add(isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, variable) : variable);
+                }
+            } else {
+                final String line = ConfigManager.getMessages().getProperty(CrateKeys.crate_prize_max_pulls);
+
+                if (!line.isEmpty()) {
+                    lore.add(line.replaceAll("\\{maxpulls}", maxPulls).replaceAll("\\{pulls}", amount));
+                }
+            }
+        }
+
+        this.displayItem.setDisplayLore(lore);
+
+        if (player != null) {
+            this.displayItem.setPlayer(player);
+        }
+
+        this.displayItem.addLorePlaceholder("%chance%", getTotalChance()).addLorePlaceholder("%maxpulls%", maxPulls).addLorePlaceholder("%pulls%", amount);
+        this.displayItem.addNamePlaceholder("%chance%", getTotalChance()).addNamePlaceholder("%maxpulls%", maxPulls).addNamePlaceholder("%pulls%", amount);
+
+        return this.displayItem.setPersistentString(Keys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
     }
     
     /**
@@ -273,6 +310,7 @@ public class Prize {
                 put("%player%", player.getName());
                 put("%crate%", fancyName);
                 put("%reward%", prizeName);
+                put("%maxpulls%", String.valueOf(maxPulls));
                 put("%reward_stripped%", strippedName);
             }}, player)));
         });
@@ -313,8 +351,6 @@ public class Prize {
 
                 builder.setDisplayLore(this.section.getStringList("Lore"));
             }
-
-            builder.addLorePlaceholder("%chance%", this.getTotalChance());
 
             builder.setGlowing(this.section.contains("Glowing") ? section.getBoolean("Glowing") : null);
 
@@ -393,5 +429,11 @@ public class Prize {
 
     public final List<ItemStack> getEditorItems() {
         return this.editorItems;
+    }
+
+    public final int getMaxPulls() {
+        if (this.maxPulls == -1) return 0;
+
+        return this.maxPulls;
     }
 }
