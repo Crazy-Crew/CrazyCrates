@@ -185,7 +185,8 @@ public class CrateManager {
 
                         prizes.add(new Prize(
                                 prizeSection,
-                                editorItems, tierPrizes, crate,
+                                editorItems, tierPrizes,
+                                crate.getFileName(),
                                 alternativePrize
                         ));
                     }
