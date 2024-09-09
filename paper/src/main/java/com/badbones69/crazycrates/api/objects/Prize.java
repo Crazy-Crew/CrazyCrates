@@ -87,7 +87,8 @@ public class Prize {
 
         this.broadcast = section.getBoolean("Settings.Broadcast.Toggle", false);
         this.broadcastMessages = section.getStringList("Settings.Broadcast.Messages");
-        this.broadcastPermission = section.getString("Settings.Broadcast.Permission", "");
+
+        MiscUtils.registerPermission(this.broadcastPermission = section.getString("Settings.Broadcast.Permission", ""), "Hides the broadcast message for prize: " + this.prizeName +  " if a player has this permission", false);
 
         this.displayItem = display();
 

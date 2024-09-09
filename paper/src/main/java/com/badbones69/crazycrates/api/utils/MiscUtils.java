@@ -8,6 +8,8 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
@@ -406,6 +408,24 @@ public class MiscUtils {
 
     public static boolean useOtherRandom() {
         return ConfigManager.getConfig().getProperty(ConfigKeys.use_different_random);
+    }
+
+    public static void registerPermission(final String permission, final String description, final boolean isDefault) {
+        if (permission.isEmpty()) {
+            plugin.getComponentLogger().warn("Permission cannot be blank!");
+
+            return;
+        }
+
+        PluginManager pluginManager = plugin.getServer().getPluginManager();
+
+        if (pluginManager.getPermission(permission) != null) {
+            plugin.getComponentLogger().warn("Permission {} is already on the server. Pick a different name", permission);
+
+            return;
+        }
+
+        pluginManager.addPermission(new Permission(permission, description, isDefault ? PermissionDefault.TRUE : PermissionDefault.OP));
     }
 
     public static void registerPermissions() {
