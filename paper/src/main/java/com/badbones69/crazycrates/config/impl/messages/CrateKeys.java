@@ -98,4 +98,12 @@ public class CrateKeys implements SettingsHolder {
 
     @Comment("A list of available placeholders: {id}")
     public static final Property<String> crate_cannot_teleport = newProperty("crate.teleport.failed", "<red>There is no location with the name: <gold>{id}.");
+
+    @Comment({
+            "This will add a notice to a prize, if the prize has reached max pulls.",
+            "If this message is empty, it will not add the lore to prizes.",
+            "",
+            "A list of available placeholders: {maxpulls}, {pulls}"
+    })
+    public static final Property<String> crate_prize_max_pulls = newProperty("crate.pulls.max", "<red>This prize can no longer be obtained, {pulls}/{maxpulls}");
 }

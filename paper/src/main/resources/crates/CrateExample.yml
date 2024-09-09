@@ -274,7 +274,7 @@ Crate:
         - "<gray>You won <reset>%reward%."
     '6':
       # The name of the item to display in the gui.
-      DisplayName: "<green>Fancy Shield"
+      DisplayName: "<green>Fancy Shield <gray>| <red>%pulls%<gray>/<red>%maxpulls%"
       # The enchants to display in the gui.
       DisplayItem: "shield"
       # A list of patterns: https://jd.papermc.io/paper/1.21/org/bukkit/block/banner/PatternType.html
@@ -290,6 +290,8 @@ Crate:
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
+        # The amount of times this item can be pulled.
+        Max-Pulls: 10
       # The amount to display in the gui.
       DisplayAmount: 1
       # The max range i.e. 15/100 = 15% chance to win.

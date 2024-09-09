@@ -1,8 +1,10 @@
 package com.badbones69.crazycrates.api.objects;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.crates.CrateHologram;
+import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
@@ -301,6 +303,12 @@ public class Crate {
         } else {
             for (Prize prize : getPrizes()) {
                 if (prize.getChance() == -1) continue;
+
+                final int pulls = PrizeManager.getCurrentPulls(prize);
+
+                if (pulls != 0) {
+                    if (pulls >= prize.getMaxPulls()) continue;
+                }
 
                 if (prize.hasPermission(player)) {
                     if (prize.hasAlternativePrize()) continue;
