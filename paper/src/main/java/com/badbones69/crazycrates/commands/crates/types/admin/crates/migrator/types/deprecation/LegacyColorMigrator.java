@@ -168,6 +168,12 @@ public class LegacyColorMigrator extends ICrateMigrator {
                             isSave = true;
                         }
 
+                        if (prizeSection.contains("DisplayName")) {
+                            set(prizeSection, "DisplayName", MiscUtils.convert(prizeSection.getString("DisplayName", " "), true));
+
+                            isSave = true;
+                        }
+
                         if (prizeSection.contains("Messages")) {
                             set(prizeSection, "Messages", MiscUtils.convert(prizeSection.getStringList("Messages"), true));
 
