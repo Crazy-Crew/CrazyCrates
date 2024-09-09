@@ -412,7 +412,7 @@ public class MiscUtils {
 
     public static void registerPermission(final String permission, final String description, final boolean isDefault) {
         if (permission.isEmpty()) {
-            plugin.getComponentLogger().warn("Permission cannot be blank!");
+            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission cannot be blank!");
 
             return;
         }
@@ -420,12 +420,34 @@ public class MiscUtils {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
 
         if (pluginManager.getPermission(permission) != null) {
-            plugin.getComponentLogger().warn("Permission {} is already on the server. Pick a different name", permission);
+            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission {} is already on the server. Pick a different name", permission);
 
             return;
         }
 
+        if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission {} is registered", permission);
+
         pluginManager.addPermission(new Permission(permission, description, isDefault ? PermissionDefault.TRUE : PermissionDefault.OP));
+    }
+
+    public static void unregisterPermission(final String permission) {
+        if (permission.isEmpty()) {
+            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission cannot be blank!");
+
+            return;
+        }
+
+        PluginManager pluginManager = plugin.getServer().getPluginManager();
+
+        if (pluginManager.getPermission(permission) == null) {
+            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission {} is not registered", permission);
+
+            return;
+        }
+
+        if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission {} is unregistered", permission);
+
+        pluginManager.removePermission(permission);
     }
 
     public static void registerPermissions() {
