@@ -110,7 +110,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                     this.gui.setItem(slot, new GuiItem(ItemUtils.getItem(section, builder, player).getStack(), event -> {
                         final String fancyName = crate.getCrateName();
 
-                        if (event.getAction() == InventoryAction.PICKUP_HALF) { // Right-clicked the item
+                        if (event.getClick() == ClickType.RIGHT) { // Right-clicked the item
                             if (crate.isPreviewEnabled()) {
                                 crate.playSound(this.player, this.player.getLocation(), "click-sound", "ui.button.click", Sound.Source.PLAYER);
 
