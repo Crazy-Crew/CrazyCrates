@@ -2,8 +2,8 @@ package com.badbones69.crazycrates.api.objects;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.api.builders.v2.types.CratePreviewMenu;
-import com.badbones69.crazycrates.api.builders.v2.types.CrateTierMenu;
+import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
+import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.crates.CrateHologram;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.config.ConfigManager;

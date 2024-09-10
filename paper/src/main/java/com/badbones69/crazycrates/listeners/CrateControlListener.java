@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.listeners;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.api.builders.v2.types.CrateMainMenu;
+import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.events.KeyCheckEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;

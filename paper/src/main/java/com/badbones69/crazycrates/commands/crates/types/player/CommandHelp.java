@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.commands.crates.types.player;
 
-import com.badbones69.crazycrates.api.builders.v2.types.CrateMainMenu;
+import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;

@@ -1,7 +1,7 @@
-package com.badbones69.crazycrates.api.builders.v2.types;
+package com.badbones69.crazycrates.api.builders.types;
 
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.badbones69.crazycrates.api.builders.v2.StaticInventoryBuilder;
+import com.badbones69.crazycrates.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -18,7 +18,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;

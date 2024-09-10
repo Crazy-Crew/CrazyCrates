@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.builders.v2;
+package com.badbones69.crazycrates.api.builders.gui;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;

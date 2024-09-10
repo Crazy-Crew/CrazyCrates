@@ -1,6 +1,6 @@
-package com.badbones69.crazycrates.api.builders.v2.types;
+package com.badbones69.crazycrates.api.builders.types;
 
-import com.badbones69.crazycrates.api.builders.v2.StaticInventoryBuilder;
+import com.badbones69.crazycrates.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;

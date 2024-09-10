@@ -1,6 +1,6 @@
-package com.badbones69.crazycrates.api.builders.v2.types;
+package com.badbones69.crazycrates.api.builders.types;
 
-import com.badbones69.crazycrates.api.builders.v2.DynamicInventoryBuilder;
+import com.badbones69.crazycrates.api.builders.gui.DynamicInventoryBuilder;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;

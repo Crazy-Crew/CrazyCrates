@@ -1,7 +1,7 @@
-package com.badbones69.crazycrates.api.builders.v2.types;
+package com.badbones69.crazycrates.api.builders.types;
 
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.badbones69.crazycrates.api.builders.v2.DynamicInventoryBuilder;
+import com.badbones69.crazycrates.api.builders.gui.DynamicInventoryBuilder;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
@@ -125,13 +125,13 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
             });
         }
 
-        /*if (this.gui.getPageNumber() < this.gui.getMaxPages()) {
+        if (this.gui.getPageNumber() < this.gui.getMaxPages()) {
             setNextButton(6, 6, action -> {
                 this.player.playSound(this.player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
 
                 this.gui.next();
             });
-        }*/
+        }
 
         this.gui.open(this.player, 1);
     }
