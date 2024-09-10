@@ -18,6 +18,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.text.NumberFormat;
@@ -113,7 +114,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                             if (crate.isPreviewEnabled()) {
                                 crate.playSound(this.player, this.player.getLocation(), "click-sound", "ui.button.click", Sound.Source.PLAYER);
 
-                                this.player.closeInventory();
+                                this.gui.close(this.player, InventoryCloseEvent.Reason.OPEN_NEW, false);
 
                                 this.inventoryManager.addViewer(this.player);//todo() this can be removed obviously now
                                 this.inventoryManager.openNewCratePreview(this.player, crate);
