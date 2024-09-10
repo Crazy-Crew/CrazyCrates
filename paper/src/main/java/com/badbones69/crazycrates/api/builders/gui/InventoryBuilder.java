@@ -1,8 +1,8 @@
-package com.badbones69.crazycrates.api.builders.v2;
+package com.badbones69.crazycrates.api.builders.gui;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.builders.v2.types.CrateMainMenu;
+import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.config.ConfigManager;
@@ -11,6 +11,8 @@ import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.BaseGui;
+import com.ryderbelserion.vital.paper.api.enums.Support;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import us.crazycrew.crazycrates.api.users.UserManager;
@@ -59,4 +61,7 @@ public abstract class InventoryBuilder {
         }
     }
 
+    public final String parse(final Player player, final String title) {
+        return Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, title) : title;
+    }
 }
