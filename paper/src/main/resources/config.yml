@@ -54,8 +54,8 @@ gui:
   inventory:
     # The name of the gui.
     name: <bold><blue>Crazy <dark_red>Crates</bold>
-    # The size of the gui. Valid sizes are 9,18,27,36,45
-    size: 45
+    # The amount of rows for a gui.
+    rows: 6
     # The buttons in the gui.
     buttons:
       # The main menu button.
