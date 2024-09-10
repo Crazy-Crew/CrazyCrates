@@ -108,6 +108,6 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
             }
         })));
 
-        this.gui.open(player, 1);
+        this.gui.open(this.player, 1);
     }
 }

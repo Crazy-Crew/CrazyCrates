@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.commands.crates.types.player;
 
-import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
+import com.badbones69.crazycrates.api.builders.v2.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -16,11 +16,11 @@ public class CommandHelp extends BaseCommand {
     @Permission("crazycrates.gui")
     public void gui(Player player) {
         if (this.config.getProperty(ConfigKeys.enable_crate_menu)) {
-            player.openInventory(new CrateMainMenu(
+            new CrateMainMenu(
                     player,
                     this.config.getProperty(ConfigKeys.inventory_name),
                     this.config.getProperty(ConfigKeys.inventory_size)
-            ).build().getInventory());
+            ).open();
 
             return;
         }

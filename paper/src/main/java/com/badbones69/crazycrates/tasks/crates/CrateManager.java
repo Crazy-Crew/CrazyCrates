@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.tasks.crates;
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
+import com.badbones69.crazycrates.api.builders.v2.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.crates.CrateHologram;
 import com.badbones69.crazycrates.api.crates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.api.enums.misc.Files;
@@ -46,7 +47,6 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -571,9 +571,11 @@ public class CrateManager {
 
         if (crate.getCrateType() == CrateType.menu) {
             if (config.getProperty(ConfigKeys.enable_crate_menu)) {
-                final CrateMainMenu crateMainMenu = new CrateMainMenu(player, config.getProperty(ConfigKeys.inventory_name), config.getProperty(ConfigKeys.inventory_size));
-
-                player.openInventory(crateMainMenu.build().getInventory());
+                new CrateMainMenu(
+                        player,
+                        this.config.getProperty(ConfigKeys.inventory_name),
+                        this.config.getProperty(ConfigKeys.inventory_size)
+                ).open();
 
                 return;
             }

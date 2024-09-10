@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.api.builders.types;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.api.builders.v2.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
@@ -139,9 +140,11 @@ public class CratePreviewMenu extends InventoryBuilder {
                 this.inventoryManager.removeViewer(player);
                 this.inventoryManager.closeCratePreview(player);
 
-                final CrateMainMenu crateMainMenu = new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_size));
-
-                player.openInventory(crateMainMenu.build().getInventory());
+                new CrateMainMenu(
+                        player,
+                        this.config.getProperty(ConfigKeys.inventory_name),
+                        this.config.getProperty(ConfigKeys.inventory_size)
+                ).open();
             }
 
             return;

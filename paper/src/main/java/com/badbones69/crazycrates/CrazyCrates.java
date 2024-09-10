@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates;
 
-import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.objects.other.Server;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
@@ -98,7 +97,6 @@ public class CrazyCrates extends Vital {
         List.of(
                 // Menu listeners.
                 new CratePreviewMenu(),
-                new CrateMainMenu(),
 
                 // Other listeners.
                 new BrokeLocationsListener(),

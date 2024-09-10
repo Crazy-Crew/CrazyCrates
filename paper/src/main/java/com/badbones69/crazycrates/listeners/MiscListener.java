@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -176,7 +175,7 @@ public class MiscListener implements Listener {
     public void onInventoryDragEvent(InventoryDragEvent event) {
         final Inventory inventory = event.getView().getTopInventory();
 
-        if (inventory.getHolder(false) instanceof CrateMainMenu || inventory.getHolder(false) instanceof CratePreviewMenu || inventory.getHolder(false) instanceof CratePrizeMenu) {
+        if (inventory.getHolder(false) instanceof CratePreviewMenu || inventory.getHolder(false) instanceof CratePrizeMenu) {
             event.setCancelled(true);
         }
     }

@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.api.builders.v2.types;
 
-import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.builders.v2.StaticInventoryBuilder;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
