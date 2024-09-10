@@ -132,8 +132,8 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("The name of the gui.")
     public static final Property<String> inventory_name = newProperty("gui.inventory.name", "<bold><blue>Crazy <dark_red>Crates</bold>");
 
-    @Comment("The size of the gui. Valid sizes are 9,18,27,36,45")
-    public static final Property<Integer> inventory_size = newProperty("gui.inventory.size", 45);
+    @Comment("The amount of rows for a gui.")
+    public static final Property<Integer> inventory_rows = newProperty("gui.inventory.rows", 6);
 
     @Comment("If crates should knock you back if you have no keys.")
     public static final Property<Boolean> knock_back = newProperty("crate.knock-back", true);

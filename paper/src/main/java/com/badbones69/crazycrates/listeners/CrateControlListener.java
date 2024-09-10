@@ -298,7 +298,7 @@ public class CrateControlListener implements Listener {
                 new CrateMainMenu(
                         player,
                         this.config.getProperty(ConfigKeys.inventory_name),
-                        this.config.getProperty(ConfigKeys.inventory_size)
+                        this.config.getProperty(ConfigKeys.inventory_rows)
                 ).open();
             } else {
                 Messages.feature_disabled.sendMessage(player);
