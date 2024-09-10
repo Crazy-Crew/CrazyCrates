@@ -85,9 +85,9 @@ Crate:
       Toggle: false
       # The messages to broadcast.
       Messages:
-        - '<red>%player% won the prize <yellow>%reward%.'
+        - "<red>%player% won the prize <yellow>%reward%."
       # If the player has this permission, they don't get the broadcast.
-      Permission: ''
+      Permission: ""
   # Item the crate is in the GUI
   Item: "brewing_stand"
   # The custom model data of the item, -1 is disabled.
@@ -155,7 +155,7 @@ Crate:
     Message:
       - "<bold><blue>Quad Crate</bold>"
   Prizes:
-    '1':
+    "1":
       # The name of the item to display in the gui.
       DisplayName: "<gold>Ryder Belserion"
       # The item to display in the gui.
