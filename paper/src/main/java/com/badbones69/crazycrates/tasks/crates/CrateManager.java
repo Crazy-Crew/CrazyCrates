@@ -134,7 +134,7 @@ public class CrateManager {
             FileConfiguration file = crate.getFile();
 
             // Close previews
-            this.plugin.getServer().getOnlinePlayers().forEach(this.inventoryManager::closeCratePreview);
+            //this.plugin.getServer().getOnlinePlayers().forEach(this.inventoryManager::closeCratePreview);
 
             // Purge the crate stuff
             crate.purge();
@@ -195,15 +195,13 @@ public class CrateManager {
 
             crate.setPrize(prizes);
 
-            for (UUID uuid : this.plugin.getInventoryManager().getViewers()) {
+            /*for (UUID uuid : this.plugin.getInventoryManager().getViewers()) {
                 final Player player = this.plugin.getServer().getPlayer(uuid);
 
                 if (player != null) {
                     this.inventoryManager.openNewCratePreview(player, crate);
                 }
-            }
-
-            this.inventoryManager.purge();
+            }*/
         } catch (Exception exception) {
             final String fileName = crate.getFileName(); //todo() this might be null
 

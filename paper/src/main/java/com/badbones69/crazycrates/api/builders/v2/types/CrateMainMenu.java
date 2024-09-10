@@ -117,7 +117,6 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                                 this.gui.close(this.player, InventoryCloseEvent.Reason.OPEN_NEW, false);
 
-                                this.inventoryManager.addViewer(this.player);//todo() this can be removed obviously now, no need to track it.
                                 this.inventoryManager.openNewCratePreview(this.player, crate);
                             } else {
                                 Messages.preview_disabled.sendMessage(this.player, "{crate}", fancyName);

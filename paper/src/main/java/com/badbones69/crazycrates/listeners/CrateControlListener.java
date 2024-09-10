@@ -305,7 +305,6 @@ public class CrateControlListener implements Listener {
             }
         } else {
             if (crate.isPreviewEnabled()) {
-                this.inventoryManager.addViewer(player);
                 this.inventoryManager.openNewCratePreview(player, crate);
             } else {
                 Messages.preview_disabled.sendMessage(player, "{crate}", crate.getCrateName());

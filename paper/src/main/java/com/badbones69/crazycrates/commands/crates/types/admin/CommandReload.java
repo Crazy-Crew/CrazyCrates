@@ -7,7 +7,6 @@ import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
-import com.badbones69.crazycrates.config.impl.ConfigKeys;
 
 public class CommandReload extends BaseCommand {
 
@@ -20,7 +19,7 @@ public class CommandReload extends BaseCommand {
 
         MiscUtils.save();
 
-        if (this.config.getProperty(ConfigKeys.take_out_of_preview)) {
+        /*if (this.config.getProperty(ConfigKeys.take_out_of_preview)) {
             this.plugin.getServer().getOnlinePlayers().forEach(player -> {
                 if (this.inventoryManager.inCratePreview(player)) {
                     this.inventoryManager.closeCratePreview(player);
@@ -30,7 +29,7 @@ public class CommandReload extends BaseCommand {
                     }
                 }
             });
-        }
+        }*/
 
         this.crateManager.loadHolograms();
 

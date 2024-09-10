@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api.objects;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.api.builders.v2.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.builders.v2.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.crates.CrateHologram;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
@@ -31,10 +32,8 @@ import com.badbones69.crazycrates.tasks.crates.other.AbstractCrateManager;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import com.badbones69.crazycrates.tasks.InventoryManager;
-import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -502,8 +501,8 @@ public class Crate {
      *
      * @return the preview as an Inventory object.
      */
-    public @NotNull final Inventory getPreview(Player player) {
-        return getPreview(player, this.inventoryManager.getPage(player), null);
+    public final CratePreviewMenu getPreview(final Player player) {
+        return getPreview(player, null);
     }
     
     /**
@@ -511,10 +510,8 @@ public class Crate {
      *
      * @return the preview as an Inventory object.
      */
-    public @NotNull final Inventory getPreview(Player player, int page, @Nullable Tier tier) {
-        CratePreviewMenu cratePreviewMenu = new CratePreviewMenu(player, getPreviewName(), !this.borderToggle && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, page, this, tier);
-
-        return cratePreviewMenu.build().getInventory();
+    public final CratePreviewMenu getPreview(final Player player, final @Nullable Tier tier) {
+        return new CratePreviewMenu(player, this, tier);
     }
 
     /**

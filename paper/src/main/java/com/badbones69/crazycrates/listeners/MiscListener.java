@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
@@ -71,10 +70,6 @@ public class MiscListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent event) {
         final Player player = event.getPlayer();
-
-        this.inventoryManager.removeViewer(player);
-        this.inventoryManager.removeCrateViewer(player);
-        this.inventoryManager.removePageViewer(player);
 
         this.crateManager.removeTier(player);
 
@@ -175,7 +170,7 @@ public class MiscListener implements Listener {
     public void onInventoryDragEvent(InventoryDragEvent event) {
         final Inventory inventory = event.getView().getTopInventory();
 
-        if (inventory.getHolder(false) instanceof CratePreviewMenu || inventory.getHolder(false) instanceof CratePrizeMenu) {
+        if (inventory.getHolder(false) instanceof CratePrizeMenu) {
             event.setCancelled(true);
         }
     }
