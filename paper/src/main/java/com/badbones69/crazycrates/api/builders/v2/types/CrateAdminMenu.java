@@ -54,12 +54,12 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
         }));
 
         this.crateManager.getUsableCrates().forEach(crate -> this.gui.addPageItem(new GuiItem(crate.getKey(1), action -> {
-            this.plugin.getLogger().warning("Material: " + action.getCurrentItem().getType().getKey().getKey());
-
             if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(this.player)) {
                 Messages.no_permission.sendMessage(this.player);
 
                 this.gui.close(this.player, InventoryCloseEvent.Reason.CANT_USE, false);
+
+                return;
             }
 
             final String fileName = crate.getFileName();
