@@ -11,6 +11,7 @@ import com.badbones69.crazycrates.commands.CommandManager;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
+import com.badbones69.crazycrates.listeners.crates.CrateStatusListener;
 import com.badbones69.crazycrates.listeners.crates.types.CosmicCrateListener;
 import com.badbones69.crazycrates.listeners.crates.CrateOpenListener;
 import com.badbones69.crazycrates.listeners.crates.types.MobileCrateListener;
@@ -105,6 +106,9 @@ public class CrazyCrates extends Vital {
                 new CrateAdminMenu(),
                 new CrateMainMenu(),
                 new CrateTierMenu(),
+
+                // Crate Monitoring
+                new CrateStatusListener(),
 
                 // Other listeners.
                 new BrokeLocationsListener(),

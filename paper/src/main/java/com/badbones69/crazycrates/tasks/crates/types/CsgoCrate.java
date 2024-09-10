@@ -1,162 +1,152 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
+import com.badbones69.crazycrates.api.builders.v2.CrateBuilder;
+import com.badbones69.crazycrates.api.enums.crates.CrateStatus;
+import com.badbones69.crazycrates.api.events.crates.CrateStatusEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.api.PrizeManager;
+import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
+import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
-import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import net.kyori.adventure.sound.Sound;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 public class CsgoCrate extends CrateBuilder {
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    public CsgoCrate(final Player player, final Crate crate) {
+        super(player, crate, 3);
 
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+        setSeconds(6000);
+    }
 
-    public CsgoCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
-        super(crate, player, size);
+    private final CrateStatusEvent event = getEvent();
+    private final Player player = getPlayer();
+    private final Crate crate = getCrate();
+    private final Gui gui = getGui();
+
+    private final long startTime = System.currentTimeMillis(); // 5.4 seconds
+
+    private int inventoryStatus = 0;
+    private int delayCounter = 0;
+
+    @Override
+    public void run() {
+        final long elapsedTime = System.currentTimeMillis() - this.startTime;
+
+        if (elapsedTime >= getSeconds()) { // elapsed the allowed time.
+            this.event.setStatus(CrateStatus.ended).callEvent();
+
+            cancel();
+
+            return;
+        }
+
+        if (elapsedTime <= 5000) {
+            this.event.setStatus(CrateStatus.cycling).callEvent();
+
+            moveItemsAndSetGlass();
+        }
+
+        this.inventoryStatus++;
+
+        if (this.inventoryStatus >= 5) {
+            this.player.openInventory(this.gui.getInventory());
+
+            this.inventoryStatus = 0;
+        }
+
+        if (elapsedTime > 5100) { // slowing down
+            this.delayCounter = this.delayCounter + 10;
+
+            this.event.setStatus(CrateStatus.silent).callEvent();
+
+            new FoliaRunnable(this.player.getScheduler(), null) {
+                @Override
+                public void run() {
+                    moveItemsAndSetGlass();
+
+                    event.setStatus(CrateStatus.cycling).callEvent();
+
+                    cancel();
+                }
+            }.runAtFixedRate(this.plugin, this.delayCounter, 1);
+        }
+
+        /*
+        this.full++;
+
+        if (this.full > 51) { // slowing down
+            if (MiscUtils.slowSpin(120, 15).contains(this.time)) { // cycling
+                moveItemsAndSetGlass();
+
+                this.event.setStatus(CrateStatus.cycling).callEvent();
+            }
+
+            this.time++;
+
+            if (this.time >= 60) { // finished
+                final ItemStack itemStack = new ItemStack(Material.GRAY_STAINED_GLASS);
+
+                setItem(4, itemStack);
+                setItem(22, itemStack);
+
+                final ItemStack item = getInventory().getItem(13);
+
+                Prize prize = null;
+
+                if (item != null) {
+                    prize = crate.getPrize(item);
+                }
+
+                final PlayerPrizeEvent playerPrizeEvent = new PlayerPrizeEvent(player, this.event, crate, prize);
+
+                playerPrizeEvent.callEvent();
+
+                if (playerPrizeEvent.isCancelled()) {
+                    cancel();
+
+                    return;
+                }
+
+                cancel();
+            }
+        }*/
     }
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand) {
-        // Crate event failed so we return.
-        if (isCrateEventValid(type, checkHand)) {
-            return;
-        }
+    public void open(@NotNull final KeyType type, final boolean inspectInventory) {
+        getBorder().forEach(this::setRandomGlass);
 
-        final Player player = getPlayer();
-        final UUID uuid = player.getUniqueId();
-        final Crate crate = getCrate();
-        final String fileName = crate.getFileName();
-
-        final boolean keyCheck = this.userManager.takeKeys(uuid, fileName, type, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, checkHand);
-
-        if (!keyCheck) {
-            // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(player);
-
-            return;
-        }
-
-        // Set the glass/display items to the inventory.
-        populate();
-
-        // Open the inventory.
-        player.openInventory(getInventory());
-
-        addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
-            int time = 1;
-
-            int full = 0;
-
-            int open = 0;
-
-            @Override
-            public void run() {
-                if (this.full <= 50) { // When Spinning
-                    moveItemsAndSetGlass();
-
-                    playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
-                }
-
-                this.open++;
-
-                if (this.open >= 5) {
-                    player.openInventory(getInventory());
-
-                    this.open = 0;
-                }
-
-                this.full++;
-
-                if (this.full > 51) {
-                    if (MiscUtils.slowSpin(120, 15).contains(this.time)) { // When Slowing Down
-                        moveItemsAndSetGlass();
-
-                        playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
-                    }
-
-                    this.time++;
-
-                    if (this.time == 60) { // When done
-                        playSound("stop-sound", Sound.Source.PLAYER, "entity.player.levelup");
-
-                        crateManager.endCrate(player);
-
-                        final ItemStack itemStack = new ItemStack(Material.GRAY_STAINED_GLASS);
-
-                        setItem(4, itemStack);
-                        setItem(22, itemStack);
-
-                        final ItemStack item = getInventory().getItem(13);
-
-                        if (item != null) {
-                            final Prize prize = crate.getPrize(item);
-
-                            PrizeManager.givePrize(player, crate, prize);
-                        }
-
-                        crateManager.removePlayerFromOpeningList(player);
-
-                        cancel();
-
-                        new FoliaRunnable(player.getScheduler(), null) {
-                            @Override
-                            public void run() {
-                                if (player.getOpenInventory().getTopInventory().equals(getInventory())) player.closeInventory();
-                            }
-                        }.runDelayed(plugin, 40);
-                    } else if (this.time > 60) { // Added this due reports of the prizes spamming when low tps.
-                        cancel();
-                    }
-                }
-            }
-        }.runAtFixedRate(this.plugin, 0, 1));
-    }
-
-    private void populate() {
-        getBorder().forEach(this::setCustomGlassPane);
-
-        // Set display items.
         for (int index = 9; index > 8 && index < 18; index++) {
-            setItem(index, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer(), getCrate()));
+            this.gui.setItem(index, new GuiItem(this.crate.pickPrize(this.player).getDisplayItem(this.player, this.crate)));
         }
+
+        this.gui.open(this.player);
+
+        runAtFixedRate(this.plugin, 0, 1);
     }
 
     private void moveItemsAndSetGlass() {
         final List<ItemStack> items = new ArrayList<>();
 
-        final Player player = getPlayer();
-        final Crate crate = getCrate();
+        final Inventory inventory = this.gui.getInventory();
 
-        for (int i = 9; i > 8 && i < 17; i++) {
-            items.add(getInventory().getItem(i));
+        for (int count = 9; count > 8 && count < 17; count++) {
+            items.add(inventory.getItem(count));
         }
 
-        setItem(9, crate.pickPrize(player).getDisplayItem(player, crate));
+        this.gui.setItem(9, new GuiItem(this.crate.pickPrize(this.player).getDisplayItem(this.player, this.crate)));
 
-        for (int i = 0; i < 8; i++) {
-            setItem(i + 10, items.get(i));
+        for (int count = 0; count < 8; count++) {
+            this.gui.setItem(count, new GuiItem(items.get(count)));
         }
 
-        getBorder().forEach(this::setCustomGlassPane);
-    }
-
-    @Override
-    public void run() {
-
+        getBorder().forEach(this::setRandomGlass);
     }
 
     private List<Integer> getBorder() {

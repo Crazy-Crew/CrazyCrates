@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.tasks.crates;
 
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
-import com.badbones69.crazycrates.api.builders.CrateBuilder;
+import com.badbones69.crazycrates.api.builders.v2.CrateBuilder;
 import com.badbones69.crazycrates.api.crates.CrateHologram;
 import com.badbones69.crazycrates.api.crates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.api.enums.misc.Files;
@@ -23,7 +23,7 @@ import com.badbones69.crazycrates.tasks.crates.types.QuickCrate;
 import com.badbones69.crazycrates.tasks.crates.types.RouletteCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WheelCrate;
-import com.badbones69.crazycrates.tasks.crates.types.WonderCrate;
+import com.badbones69.crazycrates.tasks.crates.types.v2.WonderCrate;
 import com.ryderbelserion.vital.paper.api.files.CustomFile;
 import com.ryderbelserion.vital.paper.api.files.FileManager;
 import com.ryderbelserion.vital.common.utils.FileUtil;
@@ -588,8 +588,8 @@ public class CrateManager {
         CrateBuilder crateBuilder;
 
         switch (crate.getCrateType()) {
-            case csgo -> crateBuilder = new CsgoCrate(crate, player, 27);
-            case casino -> crateBuilder = new CasinoCrate(crate, player, 27);
+            case csgo -> crateBuilder = new CsgoCrate(player, crate);
+            /*case casino -> crateBuilder = new CasinoCrate(crate, player, 27);
             case wonder -> crateBuilder = new WonderCrate(crate, player, 45);
             case wheel -> crateBuilder = new WheelCrate(crate, player, 54);
             case roulette -> crateBuilder = new RouletteCrate(crate, player, 27);
@@ -677,10 +677,10 @@ public class CrateManager {
                 }
 
                 crateBuilder = new QuickCrate(crate, player, location);
-            }
+            }*/
 
             default -> {
-                crateBuilder = new CsgoCrate(crate, player, 27);
+                crateBuilder = new CsgoCrate(player, crate);
 
                 if (MiscUtils.isLogging()) {
                     List.of(
