@@ -1,3 +1,16 @@
+### Added:
+- Added a new feature to prizes, The ability to set a limit on prizes.
+  - If a prize has Max-Pulls set to any number i.e. 1 or higher. 
+  - That is limit globally for any player to claim it.
+  - Once that limit is reached, It will no longer be winnable.
+    - %pulls%, %maxpulls% are 2 new placeholders which can be used in `DisplayLore`, `DisplayName`, `Messages`, `Commands` and the global/per prize broadcast.
+  - A lore will be added to any prize that meets the criteria.
+    - This message can be edited in messages.yml, and set to empty if you don't want it appended.
+  - 
+- Added the ability to have per prize broadcasts and global broadcast for prizes.
+  - The permissions used to filter out who can see the broadcast are registered as proper permissions, so they show up in LuckPerms
+  - They do get removed when you turn off the per prize broadcast or the global broadcast.
+
 ### Removed:
 - All legacy color codes are removed, I do not want to maintain it anymore as I've figured out ways around needing it.
   - You can run /crazycrates migrate LegacyColorAll which should migrate all values in `config.yml`, `messages.yml` and all `crate` files.
@@ -7,7 +20,7 @@
 - Fixed spacing in migrate command usage.
 
 ### Changes:
-- Improved /crazycrates migrate internally
+- Improved /crazycrates migrate internally.
   - ExcellentCrates Migrator has changed significantly, report any bugs you might find. It will convert legacy color codes to MiniMessage.
   - Properly warn the player/sender if the inputted migration type is not valid.
 - Removed sections of code related to giving a prize if `Editor-Items`, `Commands` or `Items` were all not found.
@@ -17,4 +30,4 @@
   - This is only happening, as legacy colors have been removed and I did some research to improve things.
 - Updated the config option `use-old-editor`, It is now migrated to `use-new-editor`
   - `true` uses the new editor, `false` uses the old one which is more readable. The option should be migrated on startup.
-- Updated Vital API
+- Updated Vital API.
