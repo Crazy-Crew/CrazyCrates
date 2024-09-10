@@ -1,9 +1,11 @@
 package com.badbones69.crazycrates.tasks;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -41,40 +43,40 @@ public class InventoryManager {
         return this.menuButton.setPlayer(player).getStack();
     }
 
-    public final ItemStack getNextButton(@Nullable final Player player, @Nullable final Tier tier) {
+    public final ItemStack getNextButton(@Nullable final Player player, @Nullable final Tier tier, @NotNull final PaginatedGui gui) {
         final ItemBuilder button = new ItemBuilder(this.nextButton);
 
-        //if (player != null) {
-            //button.setPlayer(player).addLorePlaceholder("{page}", (getPage(player) + 1) + "");
-        //}
+        if (player != null) {
+            button.setPlayer(player).addLorePlaceholder("{page}", String.valueOf(gui.getPageNumber()));
+        }
 
-        /*if (tier != null) {
+        if (tier != null) {
             button.setPersistentString(Keys.crate_tier.getNamespacedKey(), tier.getName());
-        }*/
+        }
 
         return button.getStack();
     }
 
-    public final ItemStack getNextButton(@Nullable final Player player) {
-        return getNextButton(player, null);
+    public final ItemStack getNextButton(@Nullable final Player player, @NotNull final PaginatedGui gui) {
+        return getNextButton(player, null, gui);
     }
 
-    public final ItemStack getBackButton(@Nullable final Player player, @Nullable final Tier tier) {
+    public final ItemStack getBackButton(@Nullable final Player player, @Nullable final Tier tier, @NotNull final PaginatedGui gui) {
         final ItemBuilder button = new ItemBuilder(this.backButton);
 
-        //if (player != null) {
-            //button.setPlayer(player).addLorePlaceholder("{page}", (getPage(player) - 1) + "");
-        //}
+        if (player != null) {
+            button.setPlayer(player).addLorePlaceholder("{page}", String.valueOf(gui.getPageNumber()));
+        }
 
-        /*if (tier != null) {
+        if (tier != null) {
             button.setPersistentString(Keys.crate_tier.getNamespacedKey(), tier.getName());
-        }*/
+        }
 
         return button.getStack();
     }
 
-    public final ItemStack getBackButton(@Nullable final Player player) {
-        return getBackButton(player, null);
+    public final ItemStack getBackButton(@Nullable final Player player, @NotNull final PaginatedGui gui) {
+        return getBackButton(player, null, gui);
     }
 
     public void openNewCratePreview(@NotNull final Player player, @NotNull final Crate crate) {

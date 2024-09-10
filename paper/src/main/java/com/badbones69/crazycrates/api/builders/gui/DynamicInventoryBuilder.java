@@ -68,11 +68,11 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
 
     // Adds the back button
     public void setBackButton(final int row, final int column, final @Nullable GuiAction<@NotNull InventoryClickEvent> action) {
-        this.gui.setItem(row, column, new GuiItem(this.inventoryManager.getBackButton(this.player), action));
+        this.gui.setItem(row, column, new GuiItem(this.inventoryManager.getBackButton(this.player, this.gui), action));
     }
 
     // Adds the next button
     public void setNextButton(final int row, final int column, final @Nullable GuiAction<@NotNull InventoryClickEvent> action) {
-        this.gui.setItem(row, column, new GuiItem(this.inventoryManager.getNextButton(this.player), action));
+        this.gui.setItem(row, column, new GuiItem(this.inventoryManager.getNextButton(this.player, this.gui), action));
     }
 }
