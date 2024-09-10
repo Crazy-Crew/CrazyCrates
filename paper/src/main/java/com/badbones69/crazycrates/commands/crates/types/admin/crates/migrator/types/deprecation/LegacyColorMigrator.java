@@ -44,6 +44,7 @@ public class LegacyColorMigrator extends ICrateMigrator {
 
             success.add("<green>⤷ config.yml");
 
+            this.config.save();
             this.config.reload();
         } catch (Exception exception) {
             failed.add("<red>⤷ config.yml");
@@ -56,6 +57,7 @@ public class LegacyColorMigrator extends ICrateMigrator {
 
             success.add("<green>⤷ messages.yml");
 
+            this.messages.save();
             this.messages.reload();
         } catch (Exception exception) {
             failed.add("<red>⤷ messages.yml");
