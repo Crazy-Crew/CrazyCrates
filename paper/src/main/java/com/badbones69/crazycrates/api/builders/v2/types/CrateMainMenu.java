@@ -17,6 +17,7 @@ import net.kyori.adventure.sound.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.jetbrains.annotations.NotNull;
@@ -116,7 +117,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                                 this.gui.close(this.player, InventoryCloseEvent.Reason.OPEN_NEW, false);
 
-                                this.inventoryManager.addViewer(this.player);//todo() this can be removed obviously now
+                                this.inventoryManager.addViewer(this.player);//todo() this can be removed obviously now, no need to track it.
                                 this.inventoryManager.openNewCratePreview(this.player, crate);
                             } else {
                                 Messages.preview_disabled.sendMessage(this.player, "{crate}", fancyName);
