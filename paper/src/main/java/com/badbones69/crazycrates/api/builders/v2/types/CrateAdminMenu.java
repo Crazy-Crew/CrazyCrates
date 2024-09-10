@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.builders.v2.DynamicInventoryBuilder;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
 import org.bukkit.Material;
@@ -41,6 +42,14 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
                 Messages.no_permission.sendMessage(this.player);
 
                 this.gui.close(this.player, InventoryCloseEvent.Reason.CANT_USE, false);
+
+                return;
+            }
+
+            if (this.config.getProperty(ConfigKeys.enable_crate_menu)) {
+                this.player.playSound(this.player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
+
+                new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_rows)).open();
             }
         }));
 
