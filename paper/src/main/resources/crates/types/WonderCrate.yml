@@ -79,9 +79,9 @@ Crate:
       Toggle: false
       # The messages to broadcast.
       Messages:
-        - '<red>%player% won the prize <yellow>%reward%.'
+        - "<red>%player% won the prize <yellow>%reward%."
       # If the player has this permission, they don't get the broadcast.
-      Permission: ''
+      Permission: ""
   # Item the crate is in the GUI
   Item: "shulker_box"
   # The custom model data of the item, -1 is disabled.
@@ -146,7 +146,7 @@ Crate:
   # They will give the prizes based on what's already below.
   # See the AdvancedExample.yml for a more advanced crate.
   Prizes:
-    '1':
+    "1":
       # The name of the item to display in the gui.
       DisplayName: "<gold>BadBones69"
       # The item to display in the gui.
@@ -169,7 +169,7 @@ Crate:
       # Skull: "7129"
       Items:
         - "Item:player_head, Player:1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Name:<gold>BadBones69"
-    '2':
+    "2":
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Sword"
       # The enchants to display in the gui.
@@ -188,7 +188,7 @@ Crate:
       MaxRange: 100
       # The chance to win i.e. 15%
       Chance: 15
-    '3':
+    "3":
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Helmet"
       DisplayEnchantments:
@@ -218,7 +218,7 @@ Crate:
       # The list of items to win.
       Items:
         - "Item:diamond_helmet, Name:<red>Diamond Helmet, protection:5, unbreaking:3"
-    '4':
+    "4":
       # The enchants to be stored on the book.
       DisplayEnchantments:
         - "protection:5"
@@ -242,7 +242,7 @@ Crate:
       # The list of items to win.
       Items:
         - "Item:enchanted_book, protection:5, unbreaking:3"
-    '5':
+    "5":
       # The display name of the item.
       DisplayName: "<yellow>$1,000"
       # The item to display in the gui.
