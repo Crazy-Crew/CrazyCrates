@@ -119,7 +119,7 @@ Crate:
     Lore:
       - "<gradient:#084CFB:#ADF3FD>A fancy key to open a wonderful crate!</gradient>"
     # The item the key is.
-    Item: "lime_dye"
+    Item: "blue_dye"
     # The custom model data of the item, -1 is disabled.
     Custom-Model-Data: -1
     # Makes the key look enchanted.
