@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.api.objects.Tier;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
-import net.kyori.adventure.sound.Sound;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -38,16 +38,18 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
         }
 
         if (this.gui.getNextPageNumber() > 1) {
-            setNextButton(6, 6, action -> {
-                this.crate.playSound(this.player, this.player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
-
-                this.gui.next();
-            });
-
             setBackButton(6, 4, action -> {
-                this.crate.playSound(this.player, this.player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
+                this.player.playSound(this.player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1f, 1f);
 
                 this.gui.previous();
+            });
+        }
+
+        if (this.gui.getNextPageNumber() < this.gui.getMaxPages()) {
+            setNextButton(6, 6, action -> {
+                this.player.playSound(this.player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
+
+                this.gui.next();
             });
         }
 
