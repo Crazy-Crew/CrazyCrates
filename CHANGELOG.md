@@ -6,7 +6,31 @@
     - %pulls%, %maxpulls% are 2 new placeholders which can be used in `DisplayLore`, `DisplayName`, `Messages`, `Commands` and the global/per prize broadcast.
   - A lore will be added to any prize that meets the criteria.
     - This message can be edited in messages.yml, and set to empty if you don't want it appended.
-  - 
+
+An example of what a prize would look like with the `Max-Pulls` option
+```yml
+    '6':
+      # The name of the item to display in the gui.
+      DisplayName: "<green>Fancy Shield <gray>| <red>%pulls%<gray>/<red>%maxpulls%"
+      # The enchants to display in the gui.
+      DisplayItem: "shield"
+      # A list of patterns: https://jd.papermc.io/paper/1.21/org/bukkit/block/banner/PatternType.html
+      # The patterns don't need to be uppercased. you can type them lowercased along with the colors.
+      # Patterns have to be laid out in a specific order, otherwise it won't look right.
+      # This also applies to the Items section.
+      DisplayPatterns:
+        - "base:white"
+        - "gradient_up:light_gray"
+        - "straight_cross:light_blue"
+        - "flower:light_blue"
+      # Prize settings
+      Settings:
+        # The custom model data of the item, -1 is disabled.
+        Custom-Model-Data: -1
+        # The amount of times this item can be pulled.
+        Max-Pulls: 10
+```
+
 - Added the ability to have per prize broadcasts and global broadcast for prizes.
   - The permissions used to filter out who can see the broadcast are registered as proper permissions, so they show up in LuckPerms
   - They do get removed when you turn off the per prize broadcast or the global broadcast.
