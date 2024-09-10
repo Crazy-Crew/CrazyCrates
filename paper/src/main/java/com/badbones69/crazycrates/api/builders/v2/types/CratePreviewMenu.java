@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.api.builders.v2.types;
 import com.badbones69.crazycrates.api.builders.v2.DynamicInventoryBuilder;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
@@ -16,7 +15,7 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
     private final Tier tier;
 
     public CratePreviewMenu(final Player player, final Crate crate, final Tier tier) {
-        super(player, crate.getPreviewName(), crate.getPreviewChestLines());
+        super(player, crate, crate.getPreviewName(), crate.getPreviewChestLines());
 
         this.tier = tier;
     }
@@ -38,25 +37,23 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
             guiFiller.fillBottom(new GuiItem(itemStack));
         }
 
-        if (this.config.getProperty(ConfigKeys.enable_crate_menu)) {
-            this.gui.setItem(6, 3, new GuiItem(this.inventoryManager.getMenuButton(this.player)));
-        }
-
-        setBackButton(6, 2, action -> {
+        setBackButton(6, 4, action -> {
             this.crate.playSound(this.player, this.player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
 
             this.gui.previous();
         });
 
-        setNextButton(6, 4, action -> {
+        setNextButton(6, 6, action -> {
             this.crate.playSound(this.player, this.player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
 
             this.gui.next();
         });
 
-        this.crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> this.gui.addPageItem(new GuiItem(itemStack)));
+        this.crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> {
+            this.gui.addPageItem(new GuiItem(itemStack));
+        });
 
-        addMenuButton(this.player, this.crate, this.gui);
+        addMenuButton(this.player, this.crate, this.gui, 6, 5);
 
         this.gui.open(this.player, 1);
     }

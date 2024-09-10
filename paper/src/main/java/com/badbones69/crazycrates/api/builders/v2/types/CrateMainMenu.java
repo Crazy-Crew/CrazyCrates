@@ -115,7 +115,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                             if (crate.isPreviewEnabled()) {
                                 crate.playSound(this.player, this.player.getLocation(), "click-sound", "ui.button.click", Sound.Source.PLAYER);
 
-                                this.gui.close(this.player, InventoryCloseEvent.Reason.OPEN_NEW, false);
+                                //this.gui.close(this.player, InventoryCloseEvent.Reason.OPEN_NEW, false);
 
                                 this.inventoryManager.openNewCratePreview(this.player, crate);
                             } else {

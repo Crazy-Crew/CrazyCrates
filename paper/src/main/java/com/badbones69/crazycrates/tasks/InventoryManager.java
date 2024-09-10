@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.tasks;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;

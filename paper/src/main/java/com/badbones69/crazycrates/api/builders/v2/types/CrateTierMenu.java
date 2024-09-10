@@ -10,7 +10,6 @@ import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.List;
@@ -65,7 +64,7 @@ public class CrateTierMenu extends StaticInventoryBuilder {
             }));
         });
 
-        addMenuButton(this.player, this.crate, this.gui);
+        addMenuButton(this.player, this.crate, this.gui, 5, 5);
 
         this.gui.open(this.player);
     }

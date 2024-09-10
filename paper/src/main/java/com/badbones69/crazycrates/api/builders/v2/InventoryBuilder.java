@@ -31,9 +31,9 @@ public abstract class InventoryBuilder {
 
     protected final SettingsManager config = ConfigManager.getConfig();
 
-    public void addMenuButton(final Player player, final Crate crate, final BaseGui gui) {
+    public void addMenuButton(final Player player, final Crate crate, final BaseGui gui, final int row, final int column) {
         if (this.config.getProperty(ConfigKeys.enable_crate_menu)) {
-            gui.setItem(5, 5, new GuiItem(this.inventoryManager.getMenuButton(player), action -> {
+            gui.setItem(row, column, new GuiItem(this.inventoryManager.getMenuButton(player), action -> {
                 if (this.config.getProperty(ConfigKeys.menu_button_override)) {
                     final List<String> commands = this.config.getProperty(ConfigKeys.menu_button_command_list);
 
