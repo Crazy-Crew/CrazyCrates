@@ -2,9 +2,8 @@ package com.badbones69.crazycrates.api.objects;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
+import com.badbones69.crazycrates.api.builders.v2.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.crates.CrateHologram;
-import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
@@ -173,7 +172,6 @@ public class Crate {
                 .setDisplayName(previewTierBorderName);
 
         setTierPreviewRows(file.getInt("Crate.tier-preview.rows", 5));
-        this.previewTierMaxSlots = this.previewTierCrateRows * 9;
 
         if (crateType == CrateType.quad_crate) {
             this.particle = ItemUtil.getParticleType(file.getString("Crate.particles.type", "dust"));
@@ -269,15 +267,13 @@ public class Crate {
      * @param amount the amount of lines the preview has.
      */
     public void setTierPreviewRows(final int amount) {
-        int finalAmount;
-
-        if (this.borderToggle && amount < 3) {
-            finalAmount = 3;
-        } else finalAmount = Math.min(amount, 6);
-
-        this.previewTierCrateRows = finalAmount;
+        this.previewTierCrateRows = amount;
     }
-    
+
+    public final int getPreviewTierCrateRows() {
+        return this.previewTierCrateRows;
+    }
+
     /**
      * Get the amount of lines the preview will show.
      *
@@ -526,10 +522,8 @@ public class Crate {
      *
      * @return the tier preview as an Inventory object.
      */
-    public @NotNull final Inventory getTierPreview(Player player) {
-        CrateTierMenu crateTierMenu = new CrateTierMenu(player, getPreviewName(), !this.previewTierBorderToggle && (this.inventoryManager.inCratePreview(player)) && this.previewTierMaxSlots == 9 ? this.previewTierMaxSlots + 9 : this.previewTierMaxSlots, this, this.tiers);
-
-        return crateTierMenu.build().getInventory();
+    public final CrateTierMenu getTierPreview(final Player player) {
+        return new CrateTierMenu(player, this);
     }
     
     /**
