@@ -93,8 +93,7 @@ public class CrateTierMenu extends StaticInventoryBuilder {
 
                 this.crate.playSound(this.player, this.player.getLocation(), "click-sound", "ui.button.click", Sound.Source.PLAYER);
 
-                final CrateMainMenu crateMainMenu = new CrateMainMenu(this.player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_size));
-                this.player.openInventory(crateMainMenu.build().getInventory());
+                new CrateMainMenu(this.player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_size)).open();
             }));
         }
 
