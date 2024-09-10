@@ -37,17 +37,19 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
             guiFiller.fillBottom(new GuiItem(itemStack));
         }
 
-        setBackButton(6, 4, action -> {
-            this.crate.playSound(this.player, this.player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
+        if (this.gui.getNextPageNumber() > 1) {
+            setNextButton(6, 6, action -> {
+                this.crate.playSound(this.player, this.player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
 
-            this.gui.previous();
-        });
+                this.gui.next();
+            });
 
-        setNextButton(6, 6, action -> {
-            this.crate.playSound(this.player, this.player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
+            setBackButton(6, 4, action -> {
+                this.crate.playSound(this.player, this.player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
 
-            this.gui.next();
-        });
+                this.gui.previous();
+            });
+        }
 
         this.crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> {
             this.gui.addPageItem(new GuiItem(itemStack));
