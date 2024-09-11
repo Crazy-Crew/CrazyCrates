@@ -40,6 +40,7 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
         if (this.gui.getNextPageNumber() > 1) {
             setBackButton(6, 4, action -> {
                 this.player.playSound(this.player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1f, 1f);
+            action.setCancelled(true);
 
                 this.gui.previous();
             });
@@ -48,6 +49,7 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
         if (this.gui.getPageNumber() < this.gui.getMaxPages()) {
             setNextButton(6, 6, action -> {
                 this.player.playSound(this.player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
+            action.setCancelled(true);
 
                 this.gui.next();
             });
