@@ -125,7 +125,9 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
             });
         }
 
-        if (this.gui.getPageNumber() < this.gui.getMaxPages()) {
+        final int pageNumber = this.gui.getPageNumber();
+
+        if (pageNumber > 1 && pageNumber < this.gui.getMaxPages()) {
             setNextButton(6, 6, action -> {
                 this.player.playSound(this.player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
 
