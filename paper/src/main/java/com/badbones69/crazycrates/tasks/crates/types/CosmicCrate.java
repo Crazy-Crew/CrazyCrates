@@ -1,10 +1,6 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
-import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.api.objects.Tier;
-import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -24,26 +20,8 @@ public class CosmicCrate extends CrateBuilder {
         }
 
         final Player player = getPlayer();
-        final Crate crate = getCrate();
 
-        final CosmicCrateManager manager = (CosmicCrateManager) crate.getManager();
-        int slot = 1;
-
-        for (int index = 0; index < getSize(); index++) {
-            final ItemBuilder stack = manager.getMysteryCrate().setPlayer(player).addNamePlaceholder("%Slot%", String.valueOf(slot)).addLorePlaceholder("%Slot%", String.valueOf(slot));
-
-            stack.setAmount(slot);
-
-            final Tier tier = PrizeManager.getTier(crate);
-
-            if (tier != null) {
-                this.crateManager.addTier(player, index, tier);
-
-                setItem(index, stack.getStack());
-
-                slot++;
-            }
-        }
+        populateTiers();
 
         this.crateManager.addPlayerKeyType(player, type);
         this.crateManager.addHands(player, checkHand);
