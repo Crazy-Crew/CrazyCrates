@@ -47,7 +47,7 @@ public class InventoryManager {
         final ItemBuilder button = new ItemBuilder(this.nextButton);
 
         if (player != null) {
-            button.setPlayer(player).addLorePlaceholder("{page}", String.valueOf(gui.getPageNumber()));
+            button.setPlayer(player).addLorePlaceholder("{page}", String.valueOf(gui.getNextPageNumber()));
         }
 
         if (tier != null) {
@@ -65,7 +65,7 @@ public class InventoryManager {
         final ItemBuilder button = new ItemBuilder(this.backButton);
 
         if (player != null) {
-            button.setPlayer(player).addLorePlaceholder("{page}", String.valueOf(gui.getPageNumber()));
+            button.setPlayer(player).addLorePlaceholder("{page}", String.valueOf(gui.getNextPageNumber()));
         }
 
         if (tier != null) {
