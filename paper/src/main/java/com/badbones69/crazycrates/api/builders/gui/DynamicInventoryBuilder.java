@@ -82,8 +82,10 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
                 if (page > 1) {
                     setBackButton(row, column);
                 } else {
-                    if (this.crate.isBorderToggle()) {
+                    if (this.crate != null && this.crate.isBorderToggle()) {
                         this.gui.setItem(row, column, new GuiItem(this.crate.getBorderItem().getStack()));
+                    } else {
+                        this.gui.removeItem(row, column);
                     }
                 }
 
@@ -107,16 +109,20 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
                 if (page < this.gui.getMaxPages()) {
                     setNextButton(row, column);
                 } else {
-                    if (this.crate.isBorderToggle()) {
+                    if (this.crate != null && this.crate.isBorderToggle()) {
                         this.gui.setItem(row, column, new GuiItem(this.crate.getBorderItem().getStack()));
+                    } else {
+                        this.gui.removeItem(row, column);
                     }
                 }
 
                 if (page > 1) {
                     setBackButton(6, 4);
                 } else {
-                    if (this.crate.isBorderToggle()) {
+                    if (this.crate != null && this.crate.isBorderToggle()) {
                         this.gui.setItem(6, 4, new GuiItem(this.crate.getBorderItem().getStack()));
+                    } else {
+                        this.gui.removeItem(6, 4);
                     }
                 }
             }));
