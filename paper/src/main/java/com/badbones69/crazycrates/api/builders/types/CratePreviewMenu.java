@@ -28,7 +28,7 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
     public void open() {
         if (this.crate == null) return;
 
-        if (this.crate.isBroadcastToggle()) {
+        if (this.crate.isBorderToggle()) {
             final GuiFiller guiFiller = this.gui.getFiller();
 
             final ItemStack itemStack = this.crate.getBorderItem().setPlayer(this.player).getStack();
@@ -37,27 +37,23 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
             guiFiller.fillBottom(new GuiItem(itemStack));
         }
 
-        if (this.gui.getNextPageNumber() > 1) {
-            setBackButton(6, 4, action -> {
-                this.player.playSound(this.player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1f, 1f);
+        setBackButton(6, 4, action -> {
+            this.player.playSound(this.player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1f, 1f);
+
             action.setCancelled(true);
 
-                this.gui.previous();
-            });
-        }
-
-        if (this.gui.getPageNumber() < this.gui.getMaxPages()) {
-            setNextButton(6, 6, action -> {
-                this.player.playSound(this.player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
-            action.setCancelled(true);
-
-                this.gui.next();
-            });
-        }
-
-        this.crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> {
-            this.gui.addPageItem(new GuiItem(itemStack));
+            this.gui.previous();
         });
+
+        setNextButton(6, 6, action -> {
+            this.player.playSound(this.player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
+
+            action.setCancelled(true);
+
+            this.gui.next();
+        });
+
+        this.crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> this.gui.addPageItem(new GuiItem(itemStack)));
 
         addMenuButton(this.player, this.crate, this.gui, 6, 5);
 
