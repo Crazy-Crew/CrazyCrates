@@ -6,9 +6,7 @@ import com.badbones69.crazycrates.api.objects.Tier;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public class CratePreviewMenu extends DynamicInventoryBuilder {
 
@@ -31,32 +29,19 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
         if (this.crate.isBorderToggle()) {
             final GuiFiller guiFiller = this.gui.getFiller();
 
-            final ItemStack itemStack = this.crate.getBorderItem().setPlayer(this.player).getStack();
+            final GuiItem guiItem = new GuiItem(this.crate.getBorderItem().getStack());
 
-            guiFiller.fillTop(new GuiItem(itemStack));
-            guiFiller.fillBottom(new GuiItem(itemStack));
+            guiFiller.fillTop(guiItem);
+            guiFiller.fillBottom(guiItem);
         }
 
-        setBackButton(6, 4, action -> {
-            this.player.playSound(this.player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1f, 1f);
+        this.crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> this.gui.addItem(new GuiItem(itemStack)));
 
-            action.setCancelled(true);
-
-            this.gui.previous();
-        });
-
-        setNextButton(6, 6, action -> {
-            this.player.playSound(this.player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
-
-            action.setCancelled(true);
-
-            this.gui.next();
-        });
-
-        this.crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> this.gui.addPageItem(new GuiItem(itemStack)));
+        setBackButton(6, 4);
+        setNextButton(6, 6);
 
         addMenuButton(this.player, this.crate, this.gui, 6, 5);
 
-        this.gui.open(this.player, 1);
+        this.gui.open(this.player);
     }
 }

@@ -38,7 +38,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
         final UUID uuid = this.player.getUniqueId();
 
         if (this.config.getProperty(ConfigKeys.filler_toggle)) {
-            final GuiFiller guiFiller = this.gui.getFiller();
+            final GuiFiller guiFiller = gui.getFiller();
 
             guiFiller.fill(new GuiItem(new ItemBuilder()
                     .withType(this.config.getProperty(ConfigKeys.filler_item))
@@ -175,23 +175,5 @@ public class CrateMainMenu extends StaticInventoryBuilder {
         }
 
         this.gui.open(this.player);
-    }
-
-    private String getCrates(@NotNull String option) {
-        if (option.isEmpty()) return "";
-
-        final UUID uuid = getPlayer().getUniqueId();
-
-        for (Crate crate : this.crateManager.getUsableCrates()) {
-            final String fileName = crate.getFileName();
-            final String lowerCase = fileName.toLowerCase();
-
-            option = option.replaceAll("%" + lowerCase + "}", this.userManager.getVirtualKeys(uuid, fileName) + "")
-                    .replaceAll("%" + lowerCase + "_physical%", this.userManager.getPhysicalKeys(uuid, fileName) + "")
-                    .replaceAll("%" + lowerCase + "_total%", this.userManager.getTotalKeys(uuid, fileName) + "")
-                    .replaceAll("%" + lowerCase + "_opened%", this.userManager.getCrateOpened(uuid, fileName) + "");
-        }
-
-        return option;
     }
 }

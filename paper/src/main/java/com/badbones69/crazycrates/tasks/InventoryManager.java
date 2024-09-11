@@ -65,7 +65,7 @@ public class InventoryManager {
         final ItemBuilder button = new ItemBuilder(this.backButton);
 
         if (player != null) {
-            button.setPlayer(player).addLorePlaceholder("{page}", String.valueOf(gui.getNextPageNumber()));
+            button.setPlayer(player).addLorePlaceholder("{page}", String.valueOf(gui.getPreviousPageNumber()));
         }
 
         if (tier != null) {

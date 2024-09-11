@@ -31,6 +31,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
     public void open() {
         this.gui.setItem(6, 5, new GuiItem(new ItemBuilder(Material.CHEST)
                 .setDisplayName("<red>What is this menu?")
+                .addDisplayLore(" <gold>⤷ Right click to go back to the main menu!")
                 .addDisplayLore("")
                 .addDisplayLore("<light_purple>A cheat cheat menu of all your available keys.")
                 .addDisplayLore(" <gold>⤷ Right click to get virtual keys.")
@@ -53,7 +54,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
             }
         }));
 
-        this.crateManager.getUsableCrates().forEach(crate -> this.gui.addPageItem(new GuiItem(crate.getKey(1), action -> {
+        this.crateManager.getUsableCrates().forEach(crate -> this.gui.addItem(new GuiItem(crate.getKey(1), action -> {
             if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(this.player)) {
                 Messages.no_permission.sendMessage(this.player);
 
@@ -117,28 +118,9 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
             }
         })));
 
-        if (this.gui.getNextPageNumber() > 1) {
-            setBackButton(6, 4, action -> {
-                this.player.playSound(this.player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
+        setBackButton(6, 4);
+        setNextButton(6, 6);
 
-                action.setCancelled(true);
-
-                this.gui.previous();
-            });
-        }
-
-        final int pageNumber = this.gui.getPageNumber();
-
-        if (pageNumber > 1 && pageNumber < this.gui.getMaxPages()) {
-            setNextButton(6, 6, action -> {
-                this.player.playSound(this.player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
-
-                action.setCancelled(true);
-
-                this.gui.next();
-            });
-        }
-
-        this.gui.open(this.player, 1);
+        this.gui.open(this.player);
     }
 }
