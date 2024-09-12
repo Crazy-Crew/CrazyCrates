@@ -125,7 +125,7 @@ public class InventoryManager {
 
             final Player player = this.plugin.getServer().getPlayer(uuid);
 
-            if (player == null) {
+            if (player == null || !player.isOnline()) {
                 removePreviewViewer(uuid);
 
                 continue;
@@ -143,7 +143,7 @@ public class InventoryManager {
 
             final Player player = this.plugin.getServer().getPlayer(uuid);
 
-            if (player == null) {
+            if (player == null || !player.isOnline()) {
                 removePreviewViewer(uuid);
 
                 continue;
