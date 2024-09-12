@@ -410,7 +410,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
             if (tier != null) {
                 this.crateManager.addTier(this.player, slot, tier);
 
-                getInventory().setItem(getInventory().firstEmpty(), itemBuilder.getStack());
+                getInventory().setItem(getInventory().firstEmpty(), itemBuilder.asItemStack());
             }
         }
     }
