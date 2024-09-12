@@ -11,6 +11,7 @@ import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.List;
 
@@ -35,12 +36,12 @@ public class CrateTierMenu extends StaticInventoryBuilder {
         final boolean isPreviewBorderEnabled = this.crate.isPreviewTierBorderToggle();
 
         if (isPreviewBorderEnabled) {
-            final ItemStack itemStack = this.crate.getPreviewTierBorderItem().setPlayer(this.player).getStack();
+            final GuiItem guiItem = this.crate.getPreviewTierBorderItem().setPlayer(this.player).asGuiItem();
 
             final GuiFiller guiFiller = this.gui.getFiller();
 
-            guiFiller.fillTop(new GuiItem(itemStack));
-            guiFiller.fillBottom(new GuiItem(itemStack));
+            guiFiller.fillTop(guiItem);
+            guiFiller.fillBottom(guiItem);
         }
 
         final List<Tier> tiers = this.crate.getTiers();

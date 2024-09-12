@@ -29,7 +29,7 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
         if (this.crate.isBorderToggle()) {
             final GuiFiller guiFiller = this.gui.getFiller();
 
-            final GuiItem guiItem = new GuiItem(this.crate.getBorderItem().getStack());
+            final GuiItem guiItem = new GuiItem(this.crate.getBorderItem().asItemStack());
 
             guiFiller.fillTop(guiItem);
             guiFiller.fillBottom(guiItem);

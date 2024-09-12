@@ -203,7 +203,7 @@ public class Prize {
         this.displayItem.addLorePlaceholder("%chance%", getTotalChance()).addLorePlaceholder("%maxpulls%", maxPulls).addLorePlaceholder("%pulls%", amount);
         this.displayItem.addNamePlaceholder("%chance%", getTotalChance()).addNamePlaceholder("%maxpulls%", maxPulls).addNamePlaceholder("%pulls%", amount);
 
-        return this.displayItem.setPersistentString(Keys.crate_prize.getNamespacedKey(), this.sectionName).getStack();
+        return this.displayItem.setPersistentString(Keys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack();
     }
     
     /**

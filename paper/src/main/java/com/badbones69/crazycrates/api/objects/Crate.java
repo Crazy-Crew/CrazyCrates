@@ -534,7 +534,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey() {
-        return this.keyBuilder.getStack();
+        return this.keyBuilder.asItemStack();
     }
 
     /**
@@ -542,7 +542,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey(Player player) {
-        return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).getStack();
+        return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).asItemStack();
     }
 
     /**
@@ -550,7 +550,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey(int amount) {
-        return this.keyBuilder.setAmount(amount).getStack();
+        return this.keyBuilder.setAmount(amount).asItemStack();
     }
     
     /**
@@ -559,7 +559,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey(int amount, Player player) {
-        return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).setAmount(amount).getStack();
+        return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).setAmount(amount).asItemStack();
     }
 
     /**

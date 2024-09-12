@@ -83,7 +83,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
                     setBackButton(row, column);
                 } else {
                     if (this.crate != null && this.crate.isBorderToggle()) {
-                        this.gui.setItem(row, column, new GuiItem(this.crate.getBorderItem().getStack()));
+                        this.gui.setItem(row, column, this.crate.getBorderItem().asGuiItem());
                     } else {
                         this.gui.removeItem(row, column);
                     }
@@ -110,7 +110,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
                     setNextButton(row, column);
                 } else {
                     if (this.crate != null && this.crate.isBorderToggle()) {
-                        this.gui.setItem(row, column, new GuiItem(this.crate.getBorderItem().getStack()));
+                        this.gui.setItem(row, column, this.crate.getBorderItem().asGuiItem());
                     } else {
                         this.gui.removeItem(row, column);
                     }
@@ -120,7 +120,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
                     setBackButton(6, 4);
                 } else {
                     if (this.crate != null && this.crate.isBorderToggle()) {
-                        this.gui.setItem(6, 4, new GuiItem(this.crate.getBorderItem().getStack()));
+                        this.gui.setItem(6, 4, this.crate.getBorderItem().asGuiItem());
                     } else {
                         this.gui.removeItem(6, 4);
                     }

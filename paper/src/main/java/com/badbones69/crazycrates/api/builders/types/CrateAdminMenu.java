@@ -38,7 +38,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
                 .addDisplayLore(" <gold>⤷ Shift right click to get 8 virtual keys.")
                 .addDisplayLore(" <gold>⤷ Left click to get physical keys.")
                 .addDisplayLore(" <gold>⤷ Shift left click to get 8 physical keys.")
-                .getStack(), action -> {
+                .asGuiItem(action -> {
             if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(this.player)) {
                 Messages.no_permission.sendMessage(this.player);
 

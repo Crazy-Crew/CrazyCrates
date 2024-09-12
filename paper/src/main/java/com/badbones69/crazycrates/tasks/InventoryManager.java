@@ -40,7 +40,7 @@ public class InventoryManager {
     }
 
     public final ItemStack getMenuButton(@NotNull final Player player) {
-        return this.menuButton.setPlayer(player).getStack();
+        return this.menuButton.setPlayer(player).asItemStack();
     }
 
     public final ItemStack getNextButton(@Nullable final Player player, @Nullable final Tier tier, @NotNull final PaginatedGui gui) {
@@ -54,7 +54,7 @@ public class InventoryManager {
             button.setPersistentString(Keys.crate_tier.getNamespacedKey(), tier.getName());
         }
 
-        return button.getStack();
+        return button.asItemStack();
     }
 
     public final ItemStack getNextButton(@Nullable final Player player, @NotNull final PaginatedGui gui) {
@@ -72,7 +72,7 @@ public class InventoryManager {
             button.setPersistentString(Keys.crate_tier.getNamespacedKey(), tier.getName());
         }
 
-        return button.getStack();
+        return button.asItemStack();
     }
 
     public final ItemStack getBackButton(@Nullable final Player player, @NotNull final PaginatedGui gui) {

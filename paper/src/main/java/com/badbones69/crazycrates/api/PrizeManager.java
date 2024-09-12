@@ -90,9 +90,9 @@ public class PrizeManager {
                 }
 
                 if (!MiscUtils.isInventoryFull(player)) {
-                    MiscUtils.addItem(player, item.setPlayer(player).getStack());
+                    MiscUtils.addItem(player, item.setPlayer(player).asItemStack());
                 } else {
-                    player.getWorld().dropItemNaturally(player.getLocation(), item.setPlayer(player).getStack());
+                    player.getWorld().dropItemNaturally(player.getLocation(), item.setPlayer(player).asItemStack());
                 }
             }
         }

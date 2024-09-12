@@ -40,11 +40,11 @@ public class CrateMainMenu extends StaticInventoryBuilder {
         if (this.config.getProperty(ConfigKeys.filler_toggle)) {
             final GuiFiller guiFiller = gui.getFiller();
 
-            guiFiller.fill(new GuiItem(new ItemBuilder()
+            guiFiller.fill(new ItemBuilder()
                     .withType(this.config.getProperty(ConfigKeys.filler_item))
                     .setDisplayName(this.config.getProperty(ConfigKeys.filler_name))
                     .setDisplayLore(this.config.getProperty(ConfigKeys.filler_lore))
-                    .getStack()));
+                    .asGuiItem());
         }
 
         if (this.config.getProperty(ConfigKeys.gui_customizer_toggle)) {
@@ -81,7 +81,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                     }
                 }
 
-                this.gui.setItem(slot, new GuiItem(item.setPlayer(this.player).getStack()));
+                this.gui.setItem(slot, item.setPlayer(this.player).asGuiItem());
             }
         }
 
@@ -107,7 +107,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                             .addLorePlaceholder("%player%", getPlayer().getName())
                             .setPersistentString(Keys.crate_key.getNamespacedKey(), fileName);
 
-                    this.gui.setItem(slot, new GuiItem(ItemUtils.getItem(section, builder, player).getStack(), event -> {
+                    this.gui.setItem(slot, ItemUtils.getItem(section, builder, player).asGuiItem(event -> {
                         final String fancyName = crate.getCrateName();
 
                         if (event.getClick() == ClickType.RIGHT) { // Right-clicked the item

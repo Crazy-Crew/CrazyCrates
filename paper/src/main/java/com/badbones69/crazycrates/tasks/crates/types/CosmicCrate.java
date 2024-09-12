@@ -42,7 +42,7 @@ public class CosmicCrate extends CrateBuilder {
             if (tier != null) {
                 this.crateManager.addTier(player, index, tier);
 
-                setItem(index, stack.getStack());
+                setItem(index, stack.asItemStack());
 
                 slot++;
             }
