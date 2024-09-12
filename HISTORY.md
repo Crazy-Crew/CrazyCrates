@@ -2,6 +2,18 @@
 Date format: (YYYY-MM-DD)
 
 <details>
+  <summary>v3.7.4 (1.21.1) - 2024-07-30</summary>
+
+### Fixed:
+- Fixed an issue with some commands not properly validating virtual keys
+
+### Deprecation
+- Deprecated `PlayerPrizeEvent(player, crate, crateName, prize)`
+  - Please use `PlayerPrizeEvent(player, crate, prize)` as the crateName is already passed through via the `crate` object.
+
+</details>
+
+<details>
   <summary>v3.7.3 (1.21.1) - 2024-08-25</summary>
 
 ### Fixed:
