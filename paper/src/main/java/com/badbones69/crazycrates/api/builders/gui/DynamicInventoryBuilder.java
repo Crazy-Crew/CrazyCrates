@@ -7,6 +7,7 @@ import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
+import java.util.function.Consumer;
 
 public abstract class DynamicInventoryBuilder extends InventoryBuilder {
 
@@ -25,7 +26,23 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
         this(player, null, title, rows);
     }
 
-    public abstract void open();
+    /**
+     * Opens the {@link PaginatedGui}.
+     */
+    public void open() {
+        open(null);
+    }
+
+    /**
+     * Opens the {@link PaginatedGui}.
+     *
+     * @param consumer {@link Consumer(DynamicInventoryBuilder)}
+     */
+    public void open(@Nullable final Consumer<DynamicInventoryBuilder> consumer) {
+        if (consumer != null) {
+            consumer.accept(this);
+        }
+    }
 
     /**
      * Gets the {@link Player}.
