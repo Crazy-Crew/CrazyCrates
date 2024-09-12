@@ -204,7 +204,7 @@ public class CosmicCrateListener implements Listener {
                 cosmicCrateManager.setTier(builder, tierName);
 
                 // Overwrite the current item.
-                event.setCurrentItem(builder.getStack());
+                event.setCurrentItem(builder.asItemStack());
 
                 // Add the picked prize.
                 cosmicCrateManager.addPickedPrize(player, slot, tier);
@@ -230,7 +230,7 @@ public class CosmicCrateListener implements Listener {
             cosmicCrateManager.setTier(builder, tierName);
 
             // Overwrite the current item.
-            event.setCurrentItem(builder.getStack());
+            event.setCurrentItem(builder.asItemStack());
 
             // Remove slot if we click it.
             cosmicCrateManager.removePickedPrize(player, slot);

@@ -91,7 +91,7 @@ public class QuadCrateListener implements Listener {
             display.setItemMeta(itemMeta);
 
             // Convert the item stack to item builder.
-            final ItemStack itemStack = ItemUtils.convertItemStack(display).getStack();
+            final ItemStack itemStack = ItemUtils.convertItemStack(display).asItemStack();
 
             // Drop the item.
             final Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), itemStack);

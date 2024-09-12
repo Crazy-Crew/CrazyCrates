@@ -1,142 +1,134 @@
 package com.badbones69.crazycrates.api.builders.types;
 
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.api.builders.gui.DynamicInventoryBuilder;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.Permissions;
-import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.config.impl.ConfigKeys;
+import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
+import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
+import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.api.builders.InventoryBuilder;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class CrateAdminMenu extends InventoryBuilder {
+public class CrateAdminMenu extends DynamicInventoryBuilder {
 
-    public CrateAdminMenu(@NotNull final Player player, @NotNull final String title, final int size) {
-        super(player, title, size);
+    public CrateAdminMenu(final Player player) {
+        super(player, "<bold><red>Admin Keys</bold>", 6);
     }
 
-    public CrateAdminMenu() {}
+    private final Player player = getPlayer();
+    private final PaginatedGui gui = getGui();
 
     @Override
-    public InventoryBuilder build() {
-        final Inventory inventory = getInventory();
+    public void open() {
+        final GuiFiller guiFiller = this.gui.getFiller();
 
-        inventory.setItem(49, new ItemBuilder(Material.CHEST)
+        final GuiItem guiItem = new GuiItem(Material.BLACK_STAINED_GLASS_PANE);
+
+        guiFiller.fillTop(guiItem);
+        guiFiller.fillBottom(guiItem);
+
+        this.gui.setItem(6, 5, new ItemBuilder(Material.CHEST)
                 .setDisplayName("<red>What is this menu?")
+                .addDisplayLore(" <gold>⤷ Right click to go back to the main menu!")
                 .addDisplayLore("")
                 .addDisplayLore("<light_purple>A cheat cheat menu of all your available keys.")
-                .addDisplayLore("<bold><gray>Right click to get virtual keys.")
-                .addDisplayLore("<bold><gray>Shift right click to get 8 virtual keys.")
-                .addDisplayLore("<bold><gray>Left click to get physical keys.")
-                .addDisplayLore("<bold><gray>Shift left click to get 8 physical keys.")
-                .getStack());
+                .addDisplayLore(" <gold>⤷ Right click to get virtual keys.")
+                .addDisplayLore(" <gold>⤷ Shift right click to get 8 virtual keys.")
+                .addDisplayLore(" <gold>⤷ Left click to get physical keys.")
+                .addDisplayLore(" <gold>⤷ Shift left click to get 8 physical keys.")
+                .asGuiItem(action -> {
+            if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(this.player)) {
+                Messages.no_permission.sendMessage(this.player);
 
-        for (final Crate crate : this.crateManager.getUsableCrates()) {
-            if (inventory.firstEmpty() >= 0) inventory.setItem(inventory.firstEmpty(), crate.getKey(1, getPlayer()));
-        }
+                this.gui.close(this.player, InventoryCloseEvent.Reason.CANT_USE, false);
 
-        return this;
-    }
-
-    @Override
-    public void run(InventoryClickEvent event) {
-        final Inventory inventory = event.getInventory();
-
-        if (!(inventory.getHolder(false) instanceof CrateAdminMenu holder)) return;
-
-        event.setCancelled(true);
-
-        final Player player = holder.getPlayer();
-
-        final InventoryView view = holder.getView();
-
-        if (event.getClickedInventory() != view.getTopInventory()) return;
-
-        if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(player)) {
-            player.closeInventory(InventoryCloseEvent.Reason.CANT_USE);
-            Messages.no_permission.sendMessage(player);
-
-            return;
-        }
-
-        final ItemStack item = event.getCurrentItem();
-
-        if (item == null || item.getType() == Material.AIR) return;
-
-        if (!this.crateManager.isKey(item)) return;
-
-        final Crate crate = this.crateManager.getCrateFromKey(item);
-
-        if (crate == null) return;
-
-        final String fileName = crate.getFileName();
-        final UUID uuid = player.getUniqueId();
-
-        final ClickType clickType = event.getClick();
-
-        final Map<String, String> placeholders = new HashMap<>();
-
-        placeholders.put("{amount}", String.valueOf(1));
-        placeholders.put("{key}", crate.getKeyName());
-
-        switch (clickType) {
-            case LEFT -> {
-                MiscUtils.addItem(player, crate.getKey(player));
-
-                //todo() make this configurable?
-                player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
-
-                placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
-
-                Messages.obtaining_keys.sendMessage(player, placeholders);
+                return;
             }
 
-            case SHIFT_LEFT -> {
-                MiscUtils.addItem(player, crate.getKey(8, player));
+            if (this.config.getProperty(ConfigKeys.enable_crate_menu)) {
+                this.player.playSound(this.player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
 
-                //todo() make this configurable?
-                player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
+                new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_rows)).open();
+            }
+        }));
 
-                placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
-                placeholders.put("{amount}", "8");
+        this.crateManager.getUsableCrates().forEach(crate -> this.gui.addItem(new GuiItem(crate.getKey(1), action -> {
+            if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(this.player)) {
+                Messages.no_permission.sendMessage(this.player);
 
-                Messages.obtaining_keys.sendMessage(player, placeholders);
+                this.gui.close(this.player, InventoryCloseEvent.Reason.CANT_USE, false);
+
+                return;
             }
 
-            case RIGHT -> {
-                this.userManager.addKeys(uuid, fileName, KeyType.virtual_key, 1);
+            final String fileName = crate.getFileName();
+            final UUID uuid = this.player.getUniqueId();
 
-                //todo() make this configurable?
-                player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
+            final ClickType click = action.getClick();
 
-                placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
+            final Map<String, String> placeholders = new HashMap<>();
 
-                Messages.obtaining_keys.sendMessage(player, placeholders);
+            placeholders.put("{amount}", "1");
+            placeholders.put("{key}", crate.getKeyName());
+
+            switch (click) {
+                case LEFT -> {
+                    MiscUtils.addItem(this.player, crate.getKey(this.player));
+
+                    this.player.playSound(this.player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
+
+                    placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
+
+                    Messages.obtaining_keys.sendMessage(this.player, placeholders);
+                }
+
+                case SHIFT_LEFT -> {
+                    MiscUtils.addItem(this.player, crate.getKey(8, this.player));
+
+                    this.player.playSound(this.player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
+
+                    placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
+                    placeholders.put("{amount}", "8");
+
+                    Messages.obtaining_keys.sendMessage(this.player, placeholders);
+                }
+
+                case RIGHT -> {
+                    this.userManager.addKeys(uuid, fileName, KeyType.virtual_key, 1);
+
+                    this.player.playSound(this.player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
+
+                    placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
+
+                    Messages.obtaining_keys.sendMessage(this.player, placeholders);
+                }
+
+                case SHIFT_RIGHT -> {
+                    this.userManager.addKeys(uuid, fileName, KeyType.virtual_key, 8);
+
+                    this.player.playSound(this.player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
+
+                    placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
+                    placeholders.put("{amount}", "8");
+
+                    Messages.obtaining_keys.sendMessage(this.player, placeholders);
+                }
             }
+        })));
 
-            case SHIFT_RIGHT -> {
-                this.userManager.addKeys(uuid, fileName, KeyType.virtual_key, 8);
+        setBackButton(6, 4);
+        setNextButton(6, 6);
 
-                //todo() make this configurable?
-                player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
-
-                placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
-                placeholders.put("{amount}", "8");
-
-                Messages.obtaining_keys.sendMessage(player, placeholders);
-            }
-        }
+        this.gui.open(this.player);
     }
 }

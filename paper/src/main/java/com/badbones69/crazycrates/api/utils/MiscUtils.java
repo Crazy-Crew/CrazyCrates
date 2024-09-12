@@ -411,11 +411,7 @@ public class MiscUtils {
     }
 
     public static void registerPermission(final String permission, final String description, final boolean isDefault) {
-        if (permission.isEmpty()) {
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission cannot be blank!");
-
-            return;
-        }
+        if (permission.isEmpty()) return;
 
         PluginManager pluginManager = plugin.getServer().getPluginManager();
 
@@ -431,11 +427,7 @@ public class MiscUtils {
     }
 
     public static void unregisterPermission(final String permission) {
-        if (permission.isEmpty()) {
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission cannot be blank!");
-
-            return;
-        }
+        if (permission.isEmpty()) return;
 
         PluginManager pluginManager = plugin.getServer().getPluginManager();
 

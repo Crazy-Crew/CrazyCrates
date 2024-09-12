@@ -11,9 +11,7 @@ public class CommandAdmin extends BaseCommand {
 
     @Command("admin")
     @Permission(value = "crazycrates.admin", def = PermissionDefault.OP)
-    public void admin(Player player) {
-        final CrateAdminMenu inventory = new CrateAdminMenu(player, "<bold><red>Admin Keys</bold>", 54);
-
-        player.openInventory(inventory.build().getInventory());
+    public void admin(final Player player) {
+        new CrateAdminMenu(player).open();
     }
 }

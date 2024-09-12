@@ -16,11 +16,11 @@ public class CommandHelp extends BaseCommand {
     @Permission("crazycrates.gui")
     public void gui(Player player) {
         if (this.config.getProperty(ConfigKeys.enable_crate_menu)) {
-            player.openInventory(new CrateMainMenu(
+            new CrateMainMenu(
                     player,
                     this.config.getProperty(ConfigKeys.inventory_name),
-                    this.config.getProperty(ConfigKeys.inventory_size)
-            ).build().getInventory());
+                    this.config.getProperty(ConfigKeys.inventory_rows)
+            ).open();
 
             return;
         }

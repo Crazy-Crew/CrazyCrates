@@ -277,7 +277,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param lore lore of item
      */
     public void setItem(final int slot, @NotNull final Material material, @NotNull final String name, @NotNull final List<String> lore) {
-        getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).setDisplayLore(lore).getStack());
+        getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).setDisplayLore(lore).asItemStack());
     }
 
     /**
@@ -288,7 +288,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param name name of item
      */
     public void setItem(final int slot, @NotNull final Material material, @NotNull final String name) {
-        getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).getStack());
+        getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).asItemStack());
     }
 
     /**
@@ -304,7 +304,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @return the itemstack
      */
     public @NotNull final ItemStack getRandomGlassPane() {
-        return MiscUtils.getRandomPaneColor().setDisplayName(" ").getStack();
+        return MiscUtils.getRandomPaneColor().setDisplayName(" ").asItemStack();
     }
 
     private final SettingsManager config = ConfigManager.getConfig();
@@ -410,7 +410,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
             if (tier != null) {
                 this.crateManager.addTier(this.player, slot, tier);
 
-                getInventory().setItem(getInventory().firstEmpty(), itemBuilder.getStack());
+                getInventory().setItem(getInventory().firstEmpty(), itemBuilder.asItemStack());
             }
         }
     }
