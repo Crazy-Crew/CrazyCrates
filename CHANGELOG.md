@@ -45,6 +45,8 @@ An example of what a prize would look like with the `Max-Pulls` option
 - Fixed spacing in migrate command usage.
 
 ### Changes:
+- Slots in `config.yml`, and slots in each crate file that define the position of the tiers in the tier preview or the buttons in /crates have been changed, so existing gui's will look very weird.
+  - All initial configs, You must subtract 1 from each slot. 14 would become 13 as an example. It's a very easy change (there is no real way to migrate your configurations with this)
 - Improved /crazycrates migrate internally.
   - ExcellentCrates Migrator has changed significantly, report any bugs you might find. It will convert legacy color codes to MiniMessage.
   - Properly warn the player/sender if the inputted migration type is not valid.
