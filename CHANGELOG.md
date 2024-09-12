@@ -41,6 +41,7 @@ An example of what a prize would look like with the `Max-Pulls` option
 
 ### Fixed:
 - CSGO Crate animation was delayed by 1 tick, for some reason.
+- Fixed https://github.com/Crazy-Crew/CrazyCrates/issues/788
 - Fixed spacing in migrate command usage.
 
 ### Changes:
