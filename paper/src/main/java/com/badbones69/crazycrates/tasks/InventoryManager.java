@@ -1,22 +1,32 @@
 package com.badbones69.crazycrates.tasks;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
 
+@SuppressWarnings("WhileLoopReplaceableByForEach")
 public class InventoryManager {
 
     private final SettingsManager config = ConfigManager.getConfig();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private ItemBuilder menuButton;
     private ItemBuilder nextButton;
@@ -87,5 +97,63 @@ public class InventoryManager {
         }
 
         crate.getPreview(player).open();
+    }
+
+    private final List<UUID> previewViewers = new ArrayList<>();
+
+    public void addPreviewViewer(final UUID uuid) {
+        this.previewViewers.add(uuid);
+    }
+
+    public void removePreviewViewer(final UUID uuid) {
+        this.previewViewers.remove(uuid);
+    }
+
+    public final List<UUID> getPreviewViewers() {
+        return Collections.unmodifiableList(this.previewViewers);
+    }
+
+    public final boolean hasPreviewViewer(final UUID uuid) {
+        return this.previewViewers.contains(uuid);
+    }
+
+    public void openPreview(final Crate crate) {
+        final Iterator<UUID> viewers = getPreviewViewers().iterator();
+
+        while (viewers.hasNext()) {
+            final UUID uuid = viewers.next();
+
+            final Player player = this.plugin.getServer().getPlayer(uuid);
+
+            if (player == null) {
+                removePreviewViewer(uuid);
+
+                continue;
+            }
+
+            openNewCratePreview(player, crate);
+        }
+    }
+
+    public void closePreview() {
+        final Iterator<UUID> viewers = getPreviewViewers().iterator();
+
+        while (viewers.hasNext()) {
+            final UUID uuid = viewers.next();
+
+            final Player player = this.plugin.getServer().getPlayer(uuid);
+
+            if (player == null) {
+                removePreviewViewer(uuid);
+
+                continue;
+            }
+
+            player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
+
+            if (this.config.getProperty(ConfigKeys.send_preview_taken_out_message)) {
+                Messages.reloaded_forced_out_of_preview.sendMessage(player);
+            }
+        }
     }
 }

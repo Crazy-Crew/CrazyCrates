@@ -34,6 +34,7 @@ import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.NamespacedKey;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.persistence.PersistentDataType;
@@ -68,6 +69,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -128,13 +130,11 @@ public class CrateManager {
             // If crate null, return.
             if (crate == null) return;
 
-            //final String fileName = crate.getFileName();
-
             // Grab the new file.
             FileConfiguration file = crate.getFile();
 
-            // Close previews
-            //this.plugin.getServer().getOnlinePlayers().forEach(this.inventoryManager::closeCratePreview);
+            // Close the preview menu
+            this.inventoryManager.closePreview();
 
             // Purge the crate stuff
             crate.purge();
@@ -195,13 +195,7 @@ public class CrateManager {
 
             crate.setPrize(prizes);
 
-            /*for (UUID uuid : this.plugin.getInventoryManager().getViewers()) {
-                final Player player = this.plugin.getServer().getPlayer(uuid);
-
-                if (player != null) {
-                    this.inventoryManager.openNewCratePreview(player, crate);
-                }
-            }*/
+            this.inventoryManager.openPreview(crate);
         } catch (Exception exception) {
             final String fileName = crate.getFileName(); //todo() this might be null
 
