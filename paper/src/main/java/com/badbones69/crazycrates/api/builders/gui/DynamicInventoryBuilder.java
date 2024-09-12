@@ -10,34 +10,18 @@ import org.jetbrains.annotations.Nullable;
 public abstract class DynamicInventoryBuilder extends InventoryBuilder {
 
     private final PaginatedGui gui;
-    private final Player player;
     private final Crate crate;
-
-    public DynamicInventoryBuilder(final Player player, final String title, final int rows) {
-        super(player);
-
-        this.gui = Gui.paginated().setTitle(title).setRows(rows).disableInteractions().create();
-
-        this.player = player;
-        this.crate = null;
-    }
 
     public DynamicInventoryBuilder(final Player player, final Crate crate, final String title, final int rows) {
         super(player);
 
-        this.gui = Gui.paginated().setTitle(title).setRows(rows).disableInteractions().create();
+        this.gui = Gui.paginated().setTitle(title).setRows(rows).disableInteractions().create().setPageSize(0);
 
-        this.player = player;
         this.crate = crate;
     }
 
-    public DynamicInventoryBuilder(final Player player, final Crate crate) {
-        super(player);
-
-        this.gui = Gui.paginated().setTitle(crate.getPreviewName()).setRows(crate.getPreviewTierCrateRows()).disableInteractions().create();
-
-        this.player = player;
-        this.crate = crate;
+    public DynamicInventoryBuilder(final Player player, final String title, final int rows) {
+        this(player, null, title, rows);
     }
 
     public abstract void open();

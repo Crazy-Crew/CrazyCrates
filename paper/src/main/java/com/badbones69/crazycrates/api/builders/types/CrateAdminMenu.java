@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
+import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
 import org.bukkit.Material;
@@ -29,7 +30,14 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
 
     @Override
     public void open() {
-        this.gui.setItem(6, 5, new GuiItem(new ItemBuilder(Material.CHEST)
+        final GuiFiller guiFiller = this.gui.getFiller();
+
+        final GuiItem guiItem = new GuiItem(Material.BLACK_STAINED_GLASS_PANE);
+
+        guiFiller.fillTop(guiItem);
+        guiFiller.fillBottom(guiItem);
+
+        this.gui.setItem(6, 5, new ItemBuilder(Material.CHEST)
                 .setDisplayName("<red>What is this menu?")
                 .addDisplayLore(" <gold>⤷ Right click to go back to the main menu!")
                 .addDisplayLore("")

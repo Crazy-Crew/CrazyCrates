@@ -27,7 +27,7 @@ import static java.util.regex.Matcher.quoteReplacement;
 
 public abstract class InventoryBuilder {
 
-    private final Player player;
+    protected final Player player;
 
     public InventoryBuilder(final Player player) {
         this.player = player;
