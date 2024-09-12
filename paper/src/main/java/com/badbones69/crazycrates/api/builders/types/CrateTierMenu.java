@@ -11,7 +11,6 @@ import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.List;
 
@@ -66,6 +65,10 @@ public class CrateTierMenu extends StaticInventoryBuilder {
         });
 
         addMenuButton(this.player, this.crate, this.gui, 5, 5);
+
+        this.gui.setOpenGuiAction(event -> this.inventoryManager.addPreviewViewer(event.getPlayer().getUniqueId()));
+
+        this.gui.setCloseGuiAction(event -> this.inventoryManager.removePreviewViewer(event.getPlayer().getUniqueId()));
 
         this.gui.open(this.player);
     }

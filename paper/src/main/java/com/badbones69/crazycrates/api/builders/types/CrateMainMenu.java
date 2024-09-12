@@ -107,7 +107,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                             .addLorePlaceholder("%player%", getPlayer().getName())
                             .setPersistentString(Keys.crate_key.getNamespacedKey(), fileName);
 
-                    this.gui.setItem(slot, ItemUtils.getItem(section, builder, player).asGuiItem(event -> {
+                    this.gui.setItem(slot, ItemUtils.getItem(section, builder, this.player).asGuiItem(event -> {
                         final String fancyName = crate.getCrateName();
 
                         if (event.getClick() == ClickType.RIGHT) { // Right-clicked the item
