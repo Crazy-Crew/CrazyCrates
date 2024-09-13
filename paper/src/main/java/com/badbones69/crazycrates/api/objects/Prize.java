@@ -197,8 +197,8 @@ public class Prize {
             this.displayItem.setPlayer(player);
         }
 
-        this.displayItem.addLorePlaceholder("%chance%", getTotalChance()).addLorePlaceholder("%maxpulls%", maxPulls).addLorePlaceholder("%pulls%", amount);
-        this.displayItem.addNamePlaceholder("%chance%", getTotalChance()).addNamePlaceholder("%maxpulls%", maxPulls).addNamePlaceholder("%pulls%", amount);
+        this.displayItem.addLorePlaceholder("%chance%", "N/A").addLorePlaceholder("%maxpulls%", maxPulls).addLorePlaceholder("%pulls%", amount);
+        this.displayItem.addNamePlaceholder("%chance%", "N/A").addNamePlaceholder("%maxpulls%", maxPulls).addNamePlaceholder("%pulls%", amount);
 
         return this.displayItem.setPersistentString(Keys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack();
     }
