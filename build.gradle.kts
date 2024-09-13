@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.minotaur)
     alias(libs.plugins.hangar)
 
-    `paper-plugin`
+    `java-plugin`
 }
 
 val buildNumber: String? = System.getenv("BUILD_NUMBER")
@@ -12,6 +12,10 @@ rootProject.version = if (buildNumber != null) "${libs.versions.minecraft.get()}
 val isSnapshot = false
 
 val content: String = rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
+
+subprojects.filter { it.name != "api" }.forEach {
+    it.project.version = rootProject.version
+}
 
 tasks {
     modrinth {

@@ -59,7 +59,7 @@ public class WonderCrate extends CrateBuilder {
 
             slots.add(String.valueOf(index));
 
-            setItem(index, prize.getDisplayItem(player));
+            setItem(index, prize.getDisplayItem(player, crate));
         }
 
         player.openInventory(getInventory());
@@ -84,7 +84,7 @@ public class WonderCrate extends CrateBuilder {
                     other.add(this.slot1);
                     other.add(this.slot2);
 
-                    final ItemStack material = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(" ").getStack();
+                    final ItemStack material = new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(" ").asItemStack();
 
                     setItem(this.slot1, material);
                     setItem(this.slot2, material);
@@ -92,7 +92,7 @@ public class WonderCrate extends CrateBuilder {
                     for (String slot : slots) {
                         this.prize = crate.pickPrize(player);
 
-                        setItem(Integer.parseInt(slot), this.prize.getDisplayItem(player));
+                        setItem(Integer.parseInt(slot), this.prize.getDisplayItem(player, crate));
                     }
 
                     playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");

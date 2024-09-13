@@ -94,8 +94,16 @@ public class CrateKeys implements SettingsHolder {
     public static final Property<String> crate_location_format = newProperty("crates.list.per-crate", "<dark_gray>[<blue>{id}<dark_gray>]: <red>{crate_name}<dark_gray>, <red>{world}<dark_gray>, <red>{x}<dark_gray>, <red>{y}<dark_gray>, <red>{z}");
 
     @Comment("A list of available placeholders: {name}")
-    public static final Property<String> crate_teleported = newProperty("crate.teleport.success", "<red>You have been teleported to the location with the name: <gold>{name}.");
+    public static final Property<String> crate_teleported = newProperty("crates.teleport.success", "<red>You have been teleported to the location with the name: <gold>{name}.");
 
     @Comment("A list of available placeholders: {id}")
-    public static final Property<String> crate_cannot_teleport = newProperty("crate.teleport.failed", "<red>There is no location with the name: <gold>{id}.");
+    public static final Property<String> crate_cannot_teleport = newProperty("crates.teleport.failed", "<red>There is no location with the name: <gold>{id}.");
+
+    @Comment({
+            "This will add a notice to a prize, if the prize has reached max pulls.",
+            "If this message is empty, it will not add the lore to prizes.",
+            "",
+            "A list of available placeholders: {maxpulls}, {pulls}"
+    })
+    public static final Property<String> crate_prize_max_pulls = newProperty("crates.pulls.max", "<red>This prize can no longer be obtained, {pulls}/{maxpulls}");
 }

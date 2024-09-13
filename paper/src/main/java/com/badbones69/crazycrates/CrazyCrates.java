@@ -1,9 +1,5 @@
 package com.badbones69.crazycrates;
 
-import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
-import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
-import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
-import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.objects.other.Server;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
@@ -68,6 +64,8 @@ public class CrazyCrates extends Vital {
                 .addFolder("schematics")
                 .init();
 
+        MiscUtils.save();
+
         // Register permissions that we need.
         registerPermissions();
 
@@ -96,12 +94,6 @@ public class CrazyCrates extends Vital {
         new MetricsWrapper(this, 4514).start();
 
         List.of(
-                // Menu listeners.
-                new CratePreviewMenu(),
-                new CrateAdminMenu(),
-                new CrateMainMenu(),
-                new CrateTierMenu(),
-
                 // Other listeners.
                 new BrokeLocationsListener(),
                 new CrateControlListener(),

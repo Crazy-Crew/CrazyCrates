@@ -17,17 +17,17 @@ public class ArgumentRelations extends MessageManager {
         switch (command) {
             case "transfer" -> usage = order + " <crate_name> <player_name> <amount>";
             case "set" -> usage = order + " <crate_name>";
-            case "debug" -> usage = order + "<crate_name> [player_name]";
+            case "debug" -> usage = order + " <crate_name> [player_name]";
             case "open" -> usage = order + " <crate_name> <key_type>";
-            case "tp" -> usage = order + "<id>";
-            case "additem" -> usage = order + " <crate_name> <prize_number> <weight> [tier]";
+            case "tp" -> usage = order + " <id>";
+            case "additem" -> usage = order + " <crate_name> <prize_number> <chance> [tier]";
             case "preview", "forceopen" -> usage = order + " <crate_name> <player_name>";
             case "open-others" -> usage = order + " <crate_name> <player_name> [key_type]";
             case "mass-open" -> usage = order + " <crate_name> <key_type> <amount>";
             case "give-random" -> usage = order + " <key_type> <amount> <player_name>";
             case "give", "take" -> usage = order + " <key_type> <crate_name> <amount> <player_name>";
             case "giveall" -> usage = order + " <key_type> <crate-name> <amount>";
-            case "migrate" -> usage = order + "<migration_type> [crate_name]";
+            case "migrate" -> usage = order + " <migration_type> [crate_name]";
             case "admin" -> usage = order;
         }
 

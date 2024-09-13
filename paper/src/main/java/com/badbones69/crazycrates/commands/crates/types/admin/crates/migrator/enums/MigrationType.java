@@ -1,8 +1,11 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums;
 
 public enum MigrationType {
+
     MOJANG_MAPPED_SINGLE("MojangMappedSingle"),
     MOJANG_MAPPED_ALL("MojangMappedAll"),
+
+    LEGACY_COLOR_ALL("LegacyColorAll"),
 
     //MIGRATE_OLD_COMMANDS("MigrateOldCommands"),
 

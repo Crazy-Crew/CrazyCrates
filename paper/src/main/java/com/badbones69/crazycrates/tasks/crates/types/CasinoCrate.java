@@ -7,8 +7,6 @@ import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
-import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -22,10 +20,6 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CasinoCrate extends CrateBuilder {
-
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
-
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
     public CasinoCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size);

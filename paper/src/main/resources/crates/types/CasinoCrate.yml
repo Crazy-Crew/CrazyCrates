@@ -16,7 +16,7 @@ Crate:
   # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
   InGUI: true
   # Slot the item is in the GUI.
-  Slot: 16
+  Slot: 15
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
@@ -71,6 +71,17 @@ Crate:
   # A default command if the prize doesn't have any commands
   # i.e. Commands: [] or the value isn't there.
   Prize-Commands: []
+  # Global Settings
+  Settings:
+    # Broadcast a message to the server
+    Broadcast:
+      # If the messages should be sent.
+      Toggle: false
+      # The messages to broadcast.
+      Messages:
+        - "<red>%player% won the prize <yellow>%reward%."
+      # If the player has this permission, they don't get the broadcast.
+      Permission: ""
   # Item the crate is in the GUI
   Item: "gold_ingot"
   # The custom model data of the item, -1 is disabled.
@@ -230,6 +241,10 @@ Crate:
       # This can be a player head as well.
       # https://minecraft-heads.com/
       Player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
+      # Only uncomment this if using HeadDatabase by Arcaniax
+      # Skull: "7129"
+      Items:
+        - "Item:player_head, Player:1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Name:<gold>BadBones69"
     "2":
       # The name of the item to display in the gui.
       DisplayName: "<bold><dark_red>Warlord's Set</bold>"
@@ -311,6 +326,9 @@ Crate:
       # The Tiers the rewards can be found in.
       Tiers:
         - "Rare"
+      # The list of items to win.
+      Items:
+        - "Item:enchanted_book, protection:5, unbreaking:3"
     "4":
       # The name of the item to display in the gui.
       DisplayName: "<bold><green>Fancy Pants</bold>"

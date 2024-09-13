@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.listeners.crates.types;
 
+import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
@@ -16,7 +17,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 
@@ -47,7 +47,7 @@ public class WarCrateListener implements Listener {
 
                     final Prize prize = crate.pickPrize(player);
 
-                    inventory.setItem(slot, prize.getDisplayItem(player));
+                    inventory.setItem(slot, prize.getDisplayItem(player, crate));
 
                     if (this.crateManager.hasCrateTask(player)) this.crateManager.endCrate(player);
 
@@ -67,7 +67,7 @@ public class WarCrateListener implements Listener {
                         @Override
                         public void run() {
                             for (int i = 0; i < 9; i++) {
-                                if (i != slot) inventory.setItem(i, crate.pickPrize(player).getDisplayItem(player));
+                                if (i != slot) inventory.setItem(i, crate.pickPrize(player).getDisplayItem(player, crate));
                             }
 
                             if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);

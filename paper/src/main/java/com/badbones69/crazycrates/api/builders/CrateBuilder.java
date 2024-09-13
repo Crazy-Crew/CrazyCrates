@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.api.builders;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
@@ -8,6 +9,7 @@ import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
@@ -26,6 +28,7 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
+
 import java.util.List;
 
 public abstract class CrateBuilder extends FoliaRunnable {
@@ -274,7 +277,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param lore lore of item
      */
     public void setItem(final int slot, @NotNull final Material material, @NotNull final String name, @NotNull final List<String> lore) {
-        getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).setDisplayLore(lore).getStack());
+        getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).setDisplayLore(lore).asItemStack());
     }
 
     /**
@@ -285,7 +288,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param name name of item
      */
     public void setItem(final int slot, @NotNull final Material material, @NotNull final String name) {
-        getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).getStack());
+        getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).asItemStack());
     }
 
     /**
@@ -301,7 +304,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @return the itemstack
      */
     public @NotNull final ItemStack getRandomGlassPane() {
-        return MiscUtils.getRandomPaneColor().setDisplayName(" ").getStack();
+        return MiscUtils.getRandomPaneColor().setDisplayName(" ").asItemStack();
     }
 
     private final SettingsManager config = ConfigManager.getConfig();
@@ -356,14 +359,14 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @return the display item of the picked prize
      */
     public ItemStack getDisplayItem() {
-        return getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer());
+        return getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer(), getCrate());
     }
 
     /**
      * @return the display item of the picked prize with a tier
      */
     public ItemStack getDisplayItem(@NotNull final Tier tier) {
-        return getCrate().pickPrize(getPlayer(), tier).getDisplayItem(getPlayer());
+        return getCrate().pickPrize(getPlayer(), tier).getDisplayItem(getPlayer(), getCrate());
     }
 
     /**
@@ -389,6 +392,26 @@ public abstract class CrateBuilder extends FoliaRunnable {
             );
 
             sound.play(player, player.getLocation());
+        }
+    }
+
+    public final void populateTiers() {
+        final CosmicCrateManager manager = (CosmicCrateManager) this.crate.getManager();
+        final ItemBuilder itemBuilder = manager.getMysteryCrate().setPlayer(this.player);
+
+        for (int slot = 0; slot <= this.size; slot++) {
+            itemBuilder.addNamePlaceholder("%Slot%", String.valueOf(slot))
+                    .addLorePlaceholder("%Slot%", String.valueOf(slot));
+
+            itemBuilder.setAmount(slot);
+
+            final Tier tier = PrizeManager.getTier(this.crate);
+
+            if (tier != null) {
+                this.crateManager.addTier(this.player, slot, tier);
+
+                getInventory().setItem(getInventory().firstEmpty(), itemBuilder.asItemStack());
+            }
         }
     }
 }

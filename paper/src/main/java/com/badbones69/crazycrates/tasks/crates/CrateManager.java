@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.tasks.crates;
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
+import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.crates.CrateHologram;
 import com.badbones69.crazycrates.api.crates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.api.enums.misc.Files;
@@ -33,6 +34,7 @@ import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.NamespacedKey;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.persistence.PersistentDataType;
@@ -46,7 +48,6 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -68,6 +69,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -128,19 +130,17 @@ public class CrateManager {
             // If crate null, return.
             if (crate == null) return;
 
-            //final String fileName = crate.getFileName();
-
             // Grab the new file.
             FileConfiguration file = crate.getFile();
 
-            // Close previews
-            this.plugin.getServer().getOnlinePlayers().forEach(this.inventoryManager::closeCratePreview);
+            // Close the preview menu
+            this.inventoryManager.closePreview();
 
             // Purge the crate stuff
             crate.purge();
 
             // Profit?
-            ArrayList<Prize> prizes = new ArrayList<>();
+            List<Prize> prizes = new ArrayList<>();
 
             ConfigurationSection prizesSection = file.getConfigurationSection("Crate.Prizes");
 
@@ -195,15 +195,7 @@ public class CrateManager {
 
             crate.setPrize(prizes);
 
-            for (UUID uuid : this.plugin.getInventoryManager().getViewers()) {
-                final Player player = this.plugin.getServer().getPlayer(uuid);
-
-                if (player != null) {
-                    this.inventoryManager.openNewCratePreview(player, crate);
-                }
-            }
-
-            this.inventoryManager.purge();
+            this.inventoryManager.openPreview(crate);
         } catch (Exception exception) {
             final String fileName = crate.getFileName(); //todo() this might be null
 
@@ -571,9 +563,11 @@ public class CrateManager {
 
         if (crate.getCrateType() == CrateType.menu) {
             if (config.getProperty(ConfigKeys.enable_crate_menu)) {
-                final CrateMainMenu crateMainMenu = new CrateMainMenu(player, config.getProperty(ConfigKeys.inventory_name), config.getProperty(ConfigKeys.inventory_size));
-
-                player.openInventory(crateMainMenu.build().getInventory());
+                new CrateMainMenu(
+                        player,
+                        this.config.getProperty(ConfigKeys.inventory_name),
+                        this.config.getProperty(ConfigKeys.inventory_rows)
+                ).open();
 
                 return;
             }

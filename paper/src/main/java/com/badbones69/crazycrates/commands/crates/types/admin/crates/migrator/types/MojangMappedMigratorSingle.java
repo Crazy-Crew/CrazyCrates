@@ -63,7 +63,7 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
     }
 
     @Override
-    public <T> void set(ConfigurationSection section, String path, T value) {
+    public <T> void set(final ConfigurationSection section, final String path, T value) {
         section.set(path, value);
     }
 

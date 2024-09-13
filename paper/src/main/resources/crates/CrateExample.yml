@@ -16,7 +16,7 @@ Crate:
   # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
   InGUI: true
   # Slot the item is in the GUI.
-  Slot: 12
+  Slot: 11
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
@@ -71,6 +71,17 @@ Crate:
   # A default command if the prize doesn't have any commands
   # i.e. Commands: [] or the value isn't there.
   Prize-Commands: []
+  # Global Settings
+  Settings:
+    # Broadcast a message to the server
+    Broadcast:
+      # If the messages should be sent.
+      Toggle: false
+      # The messages to broadcast.
+      Messages:
+        - "<red>%player% won the prize <yellow>%reward%."
+      # If the player has this permission, they don't get the broadcast.
+      Permission: ""
   # Item the crate is in the GUI
   Item: "diamond"
   # The custom model data of the item, -1 is disabled.
@@ -136,7 +147,7 @@ Crate:
   # They will give the prizes based on what's already below.
   # See the AdvancedExample.yml for a more advanced crate.
   Prizes:
-    '1':
+    "1":
       # The name of the item to display in the gui.
       DisplayName: "<gold>BadBones69"
       # The item to display in the gui.
@@ -155,7 +166,9 @@ Crate:
       Player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
       # Only uncomment this if using HeadDatabase by Arcaniax
       # Skull: "7129"
-    '2':
+      Items:
+        - "Item:player_head, Player:1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Name:<gold>BadBones69"
+    "2":
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Sword"
       # The enchants to display in the gui.
@@ -172,7 +185,10 @@ Crate:
       DisplayAmount: 1
       # The lower the number, the less likely to win it.
       Weight: 15.0
-    '3':
+      # The list of items to win.
+      Items:
+        - "Item:diamond_sword, Name:<red>Diamond Sword, sharpness:5, looting:3"
+    "3":
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Helmet"
       DisplayEnchantments:
@@ -197,7 +213,10 @@ Crate:
         - "<gradient:#8fcfa0:#32a852>A gradient lore!"
       # The lower the number, the less likely to win it.
       Weight: 15.0
-    '4':
+      # The list of items to win.
+      Items:
+        - "Item:diamond_helmet, Name:<red>Diamond Helmet, protection:5, unbreaking:3"
+    "4":
       # The enchants to be stored on the book.
       DisplayEnchantments:
         - "protection:5"
@@ -216,7 +235,10 @@ Crate:
         - "<gradient:#8fcfa0:#32a852>A gradient lore!"
       # The lower the number, the less likely to win it.
       Weight: 25.0
-    '5':
+      # The list of items to win.
+      Items:
+        - "Item:enchanted_book, protection:5, unbreaking:3"
+    "5":
       # The display name of the item.
       DisplayName: "<yellow>$1,000"
       # The item to display in the gui.
@@ -232,9 +254,9 @@ Crate:
           Toggle: false
           # The messages to broadcast.
           Messages:
-            - '<red>%player% won the prize <yellow>%reward%.'
+            - "<red>%player% won the prize <yellow>%reward%."
           # If the player has this permission, they don't get the broadcast.
-          Permission: 'your_permission'
+          Permission: ""
       # The amount to display in the gui.
       DisplayAmount: 5
       # The lore of the item.
@@ -251,9 +273,9 @@ Crate:
       # Override the global message.
       Messages:
         - "<gray>You won <reset>%reward%."
-    '6':
+    "6":
       # The name of the item to display in the gui.
-      DisplayName: "<green>Fancy Shield"
+      DisplayName: "<green>Fancy Shield <gray>| <red>%pulls%<gray>/<red>%maxpulls%"
       # The enchants to display in the gui.
       DisplayItem: "shield"
       # A list of patterns: https://jd.papermc.io/paper/1.21/org/bukkit/block/banner/PatternType.html
@@ -269,6 +291,8 @@ Crate:
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
+        # The amount of times this item can be pulled.
+        Max-Pulls: 10
       # The amount to display in the gui.
       DisplayAmount: 1
       # The lower the number, the less likely to win it.
@@ -276,7 +300,7 @@ Crate:
       # The list of items to win.
       Items:
         - "Item:shield, base:white, gradient_up:light_gray, straight_cross:light_blue, flower:light_blue"
-    '7':
+    "7":
       # The name of the item to display in the gui.
       DisplayName: "<green>Creeper Spawner"
       # The enchants to display in the gui.

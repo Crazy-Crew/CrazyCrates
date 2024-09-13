@@ -1,13 +1,11 @@
 package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.api.builders.types.CrateAdminMenu;
-import com.badbones69.crazycrates.api.builders.types.CrateMainMenu;
-import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
@@ -28,6 +26,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
+
+import java.util.List;
 
 public class MiscListener implements Listener {
 
@@ -74,9 +74,7 @@ public class MiscListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         final Player player = event.getPlayer();
 
-        this.inventoryManager.removeViewer(player);
-        this.inventoryManager.removeCrateViewer(player);
-        this.inventoryManager.removePageViewer(player);
+        this.inventoryManager.removePreviewViewer(player.getUniqueId());
 
         this.crateManager.removeTier(player);
 
@@ -177,7 +175,7 @@ public class MiscListener implements Listener {
     public void onInventoryDragEvent(InventoryDragEvent event) {
         final Inventory inventory = event.getView().getTopInventory();
 
-        if (inventory.getHolder(false) instanceof CrateAdminMenu || inventory.getHolder(false) instanceof CrateMainMenu || inventory.getHolder(false) instanceof CratePreviewMenu || inventory.getHolder(false) instanceof CratePrizeMenu) {
+        if (inventory.getHolder(false) instanceof CratePrizeMenu) {
             event.setCancelled(true);
         }
     }

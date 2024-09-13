@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.en
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.MojangMappedMigratorMultiple;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.MojangMappedMigratorSingle;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.deprecation.DeprecatedCrateMigrator;
+import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.deprecation.LegacyColorMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.plugins.ExcellentCratesMigrator;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
@@ -23,8 +24,14 @@ public class CommandMigrate extends BaseCommand {
     public void migrate(final CommandSender sender, @ArgName("migration_type") @Suggestion("migrators") final String name, @ArgName("crate") @Optional @Suggestion("crates") final String crateName) {
         final MigrationType type = MigrationType.fromName(name);
 
+        if (type == null) {
+            Messages.migration_not_available.sendMessage(sender);
+
+            return;
+        }
+
         switch (type) {
-            case MOJANG_MAPPED_ALL -> new MojangMappedMigratorMultiple(sender, MigrationType.MOJANG_MAPPED_ALL).run();
+            case MOJANG_MAPPED_ALL -> new MojangMappedMigratorMultiple(sender, type).run();
             case MOJANG_MAPPED_SINGLE -> {
                 if (crateName == null || crateName.isEmpty() || crateName.isBlank() || crateName.equalsIgnoreCase("Menu")) {
                     Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
@@ -32,10 +39,12 @@ public class CommandMigrate extends BaseCommand {
                     return;
                 }
 
-                new MojangMappedMigratorSingle(sender, MigrationType.MOJANG_MAPPED_SINGLE, crateName).run();
+                new MojangMappedMigratorSingle(sender, type, crateName).run();
             }
 
-            case CRATES_DEPRECATED_ALL -> new DeprecatedCrateMigrator(sender, MigrationType.CRATES_DEPRECATED_ALL).run();
+            case LEGACY_COLOR_ALL -> new LegacyColorMigrator(sender, type).run();
+
+            case CRATES_DEPRECATED_ALL -> new DeprecatedCrateMigrator(sender, type).run();
 
             case SPECIALIZED_CRATES -> sender.sendRichMessage(Messages.migration_not_available.getMessage(sender));
 

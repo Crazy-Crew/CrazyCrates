@@ -21,8 +21,10 @@ public enum Properties {
 
     show_quickcrate(ConfigKeys.show_quickcrate_item, newProperty("Settings.Show-QuickCrate-Item", ConfigKeys.show_quickcrate_item.getDefaultValue()), false),
 
+    item_editor_toggle(ConfigKeys.use_new_item_editor, newProperty("root.use-old-editor", ConfigKeys.use_new_item_editor.getDefaultValue()), false),
+
     inventory_name(ConfigKeys.inventory_name, newProperty("Settings.InventoryName", ConfigKeys.inventory_name.getDefaultValue())),
-    inventory_size(ConfigKeys.inventory_size, newProperty("Settings.InventorySize", ConfigKeys.inventory_size.getDefaultValue()), 1),
+    inventory_size(ConfigKeys.inventory_rows, newProperty("Settings.InventorySize", ConfigKeys.inventory_rows.getDefaultValue()), 1),
 
     knockback(ConfigKeys.knock_back, newProperty("Settings.KnockBack", ConfigKeys.knock_back.getDefaultValue()), false),
 
@@ -182,6 +184,12 @@ public enum Properties {
 
         if (key == null) return false;
 
+        if (this.oldBoolean.getPath().equalsIgnoreCase("root.use-old-editor")) { // invert it
+            configuration.setValue(this.newBoolean, !key);
+
+            return true;
+        }
+
         configuration.setValue(this.newBoolean, this.oldBoolean.determineValue(reader).getValue());
 
         return true;
@@ -213,6 +221,12 @@ public enum Properties {
         Integer key = reader.getInt(this.oldInteger.getPath());
 
         if (key == null) return false;
+
+        if (this.oldInteger.getPath().equalsIgnoreCase("root.gui.inventory.size") || this.oldInteger.getPath().equalsIgnoreCase("Settings.InventorySize")) { // divide it
+            configuration.setValue(this.newInteger, key / 9);
+
+            return true;
+        }
 
         configuration.setValue(this.newInteger, this.oldInteger.determineValue(reader).getValue());
 

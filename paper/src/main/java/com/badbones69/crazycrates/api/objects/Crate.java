@@ -1,6 +1,8 @@
 package com.badbones69.crazycrates.api.objects;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
 import com.badbones69.crazycrates.api.crates.CrateHologram;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
@@ -30,10 +32,8 @@ import com.badbones69.crazycrates.tasks.crates.other.AbstractCrateManager;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import com.badbones69.crazycrates.tasks.InventoryManager;
-import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +91,10 @@ public class Crate {
 
     private @NotNull final SettingsManager config = ConfigManager.getConfig();
 
+    private boolean broadcastToggle = false;
+    private List<String> broadcastMessages = new ArrayList<>();
+    private String broadcastPermission = "";
+
     /**
      * @param name The name of the crate.
      * @param crateType The crate type of the crate.
@@ -122,6 +126,17 @@ public class Crate {
         this.requiredKeys = requiredKeys;
         this.prizeMessage = prizeMessage;
         this.prizeCommands = prizeCommands;
+
+        this.broadcastToggle = this.file.getBoolean("Crate.Settings.Broadcast.Toggle", false);
+        this.broadcastMessages = this.file.getStringList("Crate.Settings.Broadcast.Messages");
+        this.broadcastPermission = this.file.getString("Crate.Settings.Broadcast.Permission", "");
+
+        if (this.broadcastToggle) {
+            MiscUtils.registerPermission(this.broadcastPermission, "Hides the broadcast message if a player has this permission", false);
+        } else {
+            MiscUtils.unregisterPermission(this.broadcastPermission);
+        }
+
         this.prizes = prizes;
         this.crateType = crateType;
         this.previewToggle = file.getBoolean("Crate.Preview.Toggle", false);
@@ -156,7 +171,6 @@ public class Crate {
                 .setDisplayName(previewTierBorderName);
 
         setTierPreviewRows(file.getInt("Crate.tier-preview.rows", 5));
-        this.previewTierMaxSlots = this.previewTierCrateRows * 9;
 
         if (crateType == CrateType.quad_crate) {
             this.particle = ItemUtil.getParticleType(file.getString("Crate.particles.type", "dust"));
@@ -218,7 +232,19 @@ public class Crate {
     public @NotNull final AbstractCrateManager getManager() {
         return this.manager;
     }
-    
+
+    public final boolean isBroadcastToggle() {
+        return this.broadcastToggle;
+    }
+
+    public final String getBroadcastPermission() {
+        return this.broadcastPermission;
+    }
+
+    public final List<String> getBroadcastMessages() {
+        return this.broadcastMessages;
+    }
+
     /**
      * Set the preview lines for a Crate.
      *
@@ -240,15 +266,13 @@ public class Crate {
      * @param amount the amount of lines the preview has.
      */
     public void setTierPreviewRows(final int amount) {
-        int finalAmount;
-
-        if (this.borderToggle && amount < 3) {
-            finalAmount = 3;
-        } else finalAmount = Math.min(amount, 6);
-
-        this.previewTierCrateRows = finalAmount;
+        this.previewTierCrateRows = amount;
     }
-    
+
+    public final int getPreviewTierCrateRows() {
+        return this.previewTierCrateRows;
+    }
+
     /**
      * Get the amount of lines the preview will show.
      *
@@ -296,6 +320,12 @@ public class Crate {
 
         for (Prize prize : getPrizes()) {
             if (prize.getWeight() == -1) continue;
+          
+            final int pulls = PrizeManager.getCurrentPulls(prize, this);
+
+             if (pulls != 0) {
+                if (pulls >= prize.getMaxPulls()) continue;
+            }
 
             if (prize.hasPermission(player) && !player.isOp()) {
                 if (prize.hasAlternativePrize()) continue;
@@ -443,8 +473,8 @@ public class Crate {
      *
      * @return the preview as an Inventory object.
      */
-    public @NotNull final Inventory getPreview(Player player) {
-        return getPreview(player, this.inventoryManager.getPage(player), null);
+    public final CratePreviewMenu getPreview(final Player player) {
+        return getPreview(player, null);
     }
     
     /**
@@ -452,10 +482,8 @@ public class Crate {
      *
      * @return the preview as an Inventory object.
      */
-    public @NotNull final Inventory getPreview(Player player, int page, @Nullable Tier tier) {
-        CratePreviewMenu cratePreviewMenu = new CratePreviewMenu(player, getPreviewName(), !this.borderToggle && this.maxSlots == 9 ? this.maxSlots + 9 : this.maxSlots, page, this, tier);
-
-        return cratePreviewMenu.build().getInventory();
+    public final CratePreviewMenu getPreview(final Player player, final @Nullable Tier tier) {
+        return new CratePreviewMenu(player, this, tier);
     }
 
     /**
@@ -463,10 +491,8 @@ public class Crate {
      *
      * @return the tier preview as an Inventory object.
      */
-    public @NotNull final Inventory getTierPreview(Player player) {
-        CrateTierMenu crateTierMenu = new CrateTierMenu(player, getPreviewName(), !this.previewTierBorderToggle && (this.inventoryManager.inCratePreview(player)) && this.previewTierMaxSlots == 9 ? this.previewTierMaxSlots + 9 : this.previewTierMaxSlots, this, this.tiers);
-
-        return crateTierMenu.build().getInventory();
+    public final CrateTierMenu getTierPreview(final Player player) {
+        return new CrateTierMenu(player, this);
     }
     
     /**
@@ -480,7 +506,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey() {
-        return this.keyBuilder.getStack();
+        return this.keyBuilder.asItemStack();
     }
 
     /**
@@ -488,7 +514,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey(Player player) {
-        return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).getStack();
+        return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).asItemStack();
     }
 
     /**
@@ -496,7 +522,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey(int amount) {
-        return this.keyBuilder.setAmount(amount).getStack();
+        return this.keyBuilder.setAmount(amount).asItemStack();
     }
     
     /**
@@ -505,7 +531,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey(int amount, Player player) {
-        return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).setAmount(amount).getStack();
+        return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).setAmount(amount).asItemStack();
     }
 
     /**
@@ -630,7 +656,7 @@ public class Crate {
                 final Component displayName = itemMeta.displayName();
 
                 if (displayName != null) {
-                    section.set(getPath(prizeName, "DisplayName"), MiscUtils.convert(displayName));
+                    section.set(getPath(prizeName, "DisplayName"), MiscUtils.fromComponent(displayName));
                 }
             }
 
@@ -638,26 +664,12 @@ public class Crate {
                 final List<Component> lore = itemMeta.lore();
 
                 if (lore != null) {
-                    section.set(getPath(prizeName, "DisplayLore"), MiscUtils.convert(lore));
+                    section.set(getPath(prizeName, "DisplayLore"), MiscUtils.fromComponent(lore));
                 }
             }
         }
 
-        if (this.config.getProperty(ConfigKeys.item_editor_toggle)) {
-            final List<ItemStack> editorItems = new ArrayList<>();
-
-            if (section.contains(prizeName + ".Editor-Items")) {
-                final List<?> editors = section.getList(prizeName + ".Editor-Items");
-
-                if (editors != null) {
-                    editors.forEach(item -> editorItems.add((ItemStack) item));
-                }
-            }
-
-            editorItems.add(itemStack);
-
-            section.set(getPath(prizeName, "Editor-Items"), editorItems);
-        } else {
+        if (this.config.getProperty(ConfigKeys.use_new_item_editor)) {
             String toBase64 = ItemUtil.toBase64(itemStack);
 
             section.set(getPath(prizeName, "DisplayData"), toBase64);
@@ -675,6 +687,20 @@ public class Crate {
                     add("Data:" + toBase64);
                 }});
             }
+        } else {
+            final List<ItemStack> editorItems = new ArrayList<>();
+
+            if (section.contains(prizeName + ".Editor-Items")) {
+                final List<?> editors = section.getList(prizeName + ".Editor-Items");
+
+                if (editors != null) {
+                    editors.forEach(item -> editorItems.add((ItemStack) item));
+                }
+            }
+
+            editorItems.add(itemStack);
+
+            section.set(getPath(prizeName, "Editor-Items"), editorItems);
         }
 
         section.set(getPath(prizeName, "DisplayItem"), itemStack.getType().getKey().getKey());
@@ -761,6 +787,7 @@ public class Crate {
             if (!key.getName().equalsIgnoreCase(name)) continue;
 
             tier = key;
+
             break;
         }
 
@@ -864,10 +891,10 @@ public class Crate {
             if (prize.getWeight() < 1) continue;
 
             if (tier == null) {
-                prizes.add(player == null ? prize.getDisplayItem() : prize.getDisplayItem(player));
+                prizes.add(player == null ? prize.getDisplayItem(this) : prize.getDisplayItem(player, this));
             } else {
                 if (prize.getTiers().contains(tier)) {
-                    prizes.add(player == null ? prize.getDisplayItem() : prize.getDisplayItem(player));
+                    prizes.add(player == null ? prize.getDisplayItem(this) : prize.getDisplayItem(player, this));
                 }
             }
         }

@@ -3,8 +3,6 @@ package com.badbones69.crazycrates.tasks.crates.types;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
-import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,10 +17,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public class WarCrate extends CrateBuilder {
-
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
-
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
     private final Map<Material, String> colorCodes = new HashMap<>();
 
@@ -102,7 +96,7 @@ public class WarCrate extends CrateBuilder {
         if (!this.crateManager.isInOpeningList(player) && !(getInventory().getHolder(false) instanceof CratePrizeMenu)) return;
 
         for (int index = 0; index < 9; index++) {
-            setItem(index, crate.pickPrize(player).getDisplayItem(player));
+            setItem(index, crate.pickPrize(player).getDisplayItem(player, crate));
         }
     }
 
@@ -115,7 +109,7 @@ public class WarCrate extends CrateBuilder {
 
         final ItemBuilder builder = MiscUtils.getRandomPaneColor();
         builder.setDisplayName("<" + this.colorCodes.get(builder.getType()) + "><bold>???</bold>");
-        final ItemStack item = builder.getStack();
+        final ItemStack item = builder.asItemStack();
 
         for (int index = 0; index < 9; index++) {
             setItem(index, item);

@@ -79,7 +79,7 @@ public class QuadCrateListener implements Listener {
             PrizeManager.givePrize(player, prize, crate);
 
             // Get the display item.
-            final ItemStack display = prize.getDisplayItem(player);
+            final ItemStack display = prize.getDisplayItem(player, crate);
 
             // Get the item meta.
             final ItemMeta itemMeta = display.getItemMeta();
@@ -91,7 +91,7 @@ public class QuadCrateListener implements Listener {
             display.setItemMeta(itemMeta);
 
             // Convert the item stack to item builder.
-            final ItemStack itemStack = ItemUtils.convertItemStack(display).getStack();
+            final ItemStack itemStack = ItemUtils.convertItemStack(display).asItemStack();
 
             // Drop the item.
             final Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), itemStack);

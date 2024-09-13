@@ -115,7 +115,7 @@ public class CosmicCrateListener implements Listener {
 
         this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
 
-        event.setCurrentItem(prize.getDisplayItem(player));
+        event.setCurrentItem(prize.getDisplayItem(player, crate));
 
         holder.getCrate().playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
 
@@ -183,7 +183,7 @@ public class CosmicCrateListener implements Listener {
 
             // Check if prizes is less than or equal to totalPrizes before we change any items.
             if (size < totalPrizes) {
-                final Tier tier = this.crateManager.getTier(player, pickedSlot);
+                final Tier tier = this.crateManager.getTier(player, slot);
 
                 if (tier == null) {
                     return;
@@ -204,16 +204,16 @@ public class CosmicCrateListener implements Listener {
                 cosmicCrateManager.setTier(builder, tierName);
 
                 // Overwrite the current item.
-                event.setCurrentItem(builder.getStack());
+                event.setCurrentItem(builder.asItemStack());
 
                 // Add the picked prize.
-                cosmicCrateManager.addPickedPrize(player, pickedSlot, tier);
+                cosmicCrateManager.addPickedPrize(player, slot, tier);
 
                 // Play a sound to indicate they clicked a chest.
-                holder.getCrate().playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
+                crate.playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
             }
         } else if (container.has(Keys.cosmic_picked_crate.getNamespacedKey())) {
-            final Tier tier = this.crateManager.getTier(player, pickedSlot);
+            final Tier tier = this.crateManager.getTier(player, slot);
 
             // Get item builder.
             ItemBuilder builder = cosmicCrateManager.getMysteryCrate().setPlayer(player)
@@ -230,13 +230,13 @@ public class CosmicCrateListener implements Listener {
             cosmicCrateManager.setTier(builder, tierName);
 
             // Overwrite the current item.
-            event.setCurrentItem(builder.getStack());
+            event.setCurrentItem(builder.asItemStack());
 
             // Remove slot if we click it.
-            cosmicCrateManager.removePickedPrize(player, pickedSlot);
+            cosmicCrateManager.removePickedPrize(player, slot);
 
             // Play a sound to indicate they clicked a chest.
-            holder.getCrate().playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
+            crate.playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
         }
 
         // Get the crate name.
@@ -405,6 +405,7 @@ public class CosmicCrateListener implements Listener {
         }
 
         cosmic.getCrate().playSound(player, player.getLocation(), "cycle-sound", "block.note_block.xylophone", Sound.Source.PLAYER);
+
         player.updateInventory();
     }
 
@@ -428,16 +429,8 @@ public class CosmicCrateListener implements Listener {
             this.crateManager.addCrateTask(player, new TimerTask() {
                 @Override
                 public void run() {
-                    // Close inventory.
                     player.getScheduler().run(plugin, scheduledTask -> player.closeInventory(InventoryCloseEvent.Reason.UNLOADED), null);
 
-                    crateManager.removeTier(player);
-
-                    cosmicCrateManager.removePickedPlayer(player);
-
-                    crateManager.removeSlot(player);
-
-                    // Log it
                     if (MiscUtils.isLogging()) {
                         List.of(
                                 player.getName() + " spent 10 seconds staring at a gui instead of collecting their prizes",
