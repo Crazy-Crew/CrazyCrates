@@ -389,6 +389,16 @@ public class Crate {
     }
 
     /**
+     * Gets the chance of the prize.
+     *
+     * @param weight the weight out of the sum
+     * @return the chance
+     */
+    public double getChance(final double weight) {
+        return (weight / this.sum) * 100D;
+    }
+
+    /**
      * Overrides the current prize pool.
      *
      * @param prizes list of prizes
