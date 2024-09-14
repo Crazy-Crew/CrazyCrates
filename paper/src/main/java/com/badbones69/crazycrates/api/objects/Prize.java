@@ -9,7 +9,6 @@ import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.messages.CrateKeys;
-import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
@@ -197,8 +196,10 @@ public class Prize {
             this.displayItem.setPlayer(player);
         }
 
-        this.displayItem.addLorePlaceholder("%chance%", "N/A").addLorePlaceholder("%maxpulls%", maxPulls).addLorePlaceholder("%pulls%", amount);
-        this.displayItem.addNamePlaceholder("%chance%", "N/A").addNamePlaceholder("%maxpulls%", maxPulls).addNamePlaceholder("%pulls%", amount);
+        final String weight = MathUtil.format(crate.getChance(getWeight()));
+
+        //this.displayItem.addLorePlaceholder("%chance%", weight).addLorePlaceholder("%maxpulls%", maxPulls).addLorePlaceholder("%pulls%", amount);
+        //this.displayItem.addNamePlaceholder("%chance%", weight).addNamePlaceholder("%maxpulls%", maxPulls).addNamePlaceholder("%pulls%", amount);
 
         return this.displayItem.setPersistentString(Keys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack();
     }
@@ -239,9 +240,9 @@ public class Prize {
     }
 
     /**
-     * Get the total chance
+     * Gets the weight
      *
-     * @return the total chance divided
+     * @return the weight
      */
     public final double getWeight() {
         return this.weight;
