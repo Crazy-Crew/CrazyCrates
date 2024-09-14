@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ty
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.MojangMappedMigratorSingle;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.deprecation.DeprecatedCrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.deprecation.LegacyColorMigrator;
+import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.deprecation.WeightMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.plugins.ExcellentCratesMigrator;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
@@ -41,6 +42,8 @@ public class CommandMigrate extends BaseCommand {
 
                 new MojangMappedMigratorSingle(sender, type, crateName).run();
             }
+
+            case WEIGHT_MIGRATION -> new WeightMigrator(sender, type).run();
 
             case LEGACY_COLOR_ALL -> new LegacyColorMigrator(sender, type).run();
 

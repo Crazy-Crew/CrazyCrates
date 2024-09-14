@@ -55,6 +55,10 @@ public class MiscUtils {
         });
     }
 
+    public static double calculateWeight(int chance, int maxRange) {
+        return (double) chance / maxRange * 100D;
+    }
+
     public static void spawnFirework(@NotNull final Location location, @Nullable final Color color) {
         Firework firework = (Firework) location.getWorld().spawnEntity(location, EntityType.FIREWORK_ROCKET);
 

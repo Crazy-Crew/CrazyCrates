@@ -21,6 +21,9 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
+
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -196,12 +199,37 @@ public class Prize {
             this.displayItem.setPlayer(player);
         }
 
-        final String weight = MathUtil.format(crate.getChance(getWeight()));
+        final String weight = format(crate.getChance(getWeight()));
 
-        //this.displayItem.addLorePlaceholder("%chance%", weight).addLorePlaceholder("%maxpulls%", maxPulls).addLorePlaceholder("%pulls%", amount);
-        //this.displayItem.addNamePlaceholder("%chance%", weight).addNamePlaceholder("%maxpulls%", maxPulls).addNamePlaceholder("%pulls%", amount);
+        this.displayItem.addLorePlaceholder("%chance%", weight).addLorePlaceholder("%maxpulls%", maxPulls).addLorePlaceholder("%pulls%", amount);
+        this.displayItem.addNamePlaceholder("%chance%", weight).addNamePlaceholder("%maxpulls%", maxPulls).addNamePlaceholder("%pulls%", amount);
 
         return this.displayItem.setPersistentString(Keys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack();
+    }
+
+    /**
+     * Converts a double to a string with rounding and proper formatting.
+     *
+     * @param value the double to format
+     * @return the string
+     * @since 0.0.2
+     */
+    public static String format(final double value) {
+        final DecimalFormat decimalFormat = new DecimalFormat("#,###.##");
+
+        decimalFormat.setRoundingMode(mode());
+
+        return decimalFormat.format(value);
+    }
+
+    /**
+     * Gets the rounding mode from the config
+     *
+     * @return the rounding mode
+     * @since 0.0.2
+     */
+    public static RoundingMode mode() {
+        return RoundingMode.HALF_EVEN;
     }
     
     /**

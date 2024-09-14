@@ -7,6 +7,8 @@ public enum MigrationType {
 
     LEGACY_COLOR_ALL("LegacyColorAll"),
 
+    WEIGHT_MIGRATION("WeightMigration"),
+
     //MIGRATE_OLD_COMMANDS("MigrateOldCommands"),
 
     CRATES_DEPRECATED_ALL("CratesDeprecated"),
