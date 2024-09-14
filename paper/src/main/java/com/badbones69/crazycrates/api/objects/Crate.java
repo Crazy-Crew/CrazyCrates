@@ -95,6 +95,8 @@ public class Crate {
     private List<String> broadcastMessages = new ArrayList<>();
     private String broadcastPermission = "";
 
+    private double sum = 0;
+
     /**
      * @param name The name of the crate.
      * @param crateType The crate type of the crate.
@@ -138,6 +140,9 @@ public class Crate {
         }
 
         this.prizes = prizes;
+
+        this.sum = this.prizes.stream().filter(prize -> prize.getWeight() != -1).mapToDouble(Prize::getWeight).sum();
+
         this.crateType = crateType;
         this.previewToggle = file.getBoolean("Crate.Preview.Toggle", false);
         this.borderToggle = file.getBoolean("Crate.Preview.Glass.Toggle", false);
@@ -547,7 +552,16 @@ public class Crate {
     public @NotNull final List<Prize> getPrizes() {
         return this.prizes;
     }
-    
+
+    /**
+     * Gets the total chance of the prizes weights added up
+     *
+     * @return the total chance added up
+     */
+    public final double getSum() {
+        return this.sum;
+    }
+
     /**
      * @param name name of the prize you want.
      * @return the prize you asked for.
