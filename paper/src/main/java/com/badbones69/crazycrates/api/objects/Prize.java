@@ -215,7 +215,7 @@ public class Prize {
      * @since 0.0.2
      */
     public static String format(final double value) {
-        final DecimalFormat decimalFormat = new DecimalFormat("#,###.##");
+        final DecimalFormat decimalFormat = new DecimalFormat("###,###.###");
 
         decimalFormat.setRoundingMode(mode());
 
