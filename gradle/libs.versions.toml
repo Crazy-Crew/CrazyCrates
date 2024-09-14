@@ -46,7 +46,7 @@ kyori-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
 decent-holograms = { module = "com.github.decentsoftware-eu:decentholograms", version.ref = "decentholograms" }
 fancy-holograms = { module = "de.oliver:FancyHolograms", version.ref = "fancyholograms" }
 headdatabaseapi = { module = "com.arcaniax:HeadDatabase-API", version.ref = "headdatabaseapi" }
-placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }
+placeholderapi = { module = "com.github.PlaceholderAPI:PlaceholderAPI", version.ref = "placeholderapi" }
 vault = { module = "com.github.MilkBowl:VaultAPI", version.ref = "vault" }
 itemsadder = { module = "com.github.LoneDev6:api-itemsadder", version.ref = "itemsadder" }
 oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }

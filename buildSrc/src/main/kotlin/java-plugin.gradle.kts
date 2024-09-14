@@ -5,8 +5,6 @@ plugins {
 }
 
 repositories {
-    maven("https://repo.extendedclip.com/content/repositories/placeholderapi")
-
     maven("https://repo.codemc.io/repository/maven-public")
 
     maven("https://repo.crazycrew.us/libraries")
