@@ -10,8 +10,6 @@ repositories {
     maven("https://repo.crazycrew.us/libraries")
     maven("https://repo.crazycrew.us/releases")
 
-    maven("https://repo.oraxen.com/releases")
-
     maven("https://jitpack.io")
 
     flatDir { dirs("libs") }
