@@ -1,3 +1,13 @@
+### Big Changes:
+#### If you DO not change this, all your previews will look weird.
+- config.yml has had a chance that cannot be automatically done.
+  - the customizer specifically the `slot` option, due to recent inventory changes.
+  - you must subtract 1 from each option, and start from `slot:0` instead of `slot:1`
+- Similar tweaks have to be made with subtracting `1` from each option in the `crate` files
+  - Specifically, related to the position of the crates in `/crates` and the position of the tiers in the tier previews
+- Why did this change? Inventories naturally start from `0`, and the gui framework I switched to does start from `0`
+  - This change allows for much easier inventory management and future features.
+
 ### Added:
 - Added a new feature to prizes, The ability to set a limit on prizes.
   - If a prize has Max-Pulls set to any number i.e. 1 or higher. 
