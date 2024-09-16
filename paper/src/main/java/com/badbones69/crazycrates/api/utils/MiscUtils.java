@@ -31,6 +31,9 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -56,7 +59,7 @@ public class MiscUtils {
     }
 
     public static double calculateWeight(int chance, int maxRange) {
-        return (double) chance / maxRange * 100D;
+        return new BigDecimal((double) chance / maxRange * 100D).setScale(1, RoundingMode.HALF_UP).doubleValue();
     }
 
     public static void spawnFirework(@NotNull final Location location, @Nullable final Color color) {
