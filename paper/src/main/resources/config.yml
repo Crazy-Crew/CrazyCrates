@@ -7,8 +7,6 @@
 # List of all sounds: https://minecraft.wiki/w/Sounds.json#Java_Edition_values
 # List of all enchantments: https://jd.papermc.io/paper/1.20/org/bukkit/enchantments/Enchantment.html
 root:
-  # Whether you want CrazyCrates to shut up or not, This option is ignored by errors.
-  verbose_logging: true
   # This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.
   use-different-random: false
   # This option defines what in-game editor format is used in CrazyCrates.
@@ -45,7 +43,7 @@ root:
   # This will wipe the example folder on /crazycrates reload or plugin startup. so you always have fresh examples to look at.
   update-examples-folder: true
   # The prefix used in commands
-  command_prefix: "<dark_gray>[<blue>CrazyCrates<dark_gray>]: "
+  command_prefix: '<dark_gray>[<blue>CrazyCrates<dark_gray>]: '
 # Settings related to guis.
 gui:
   # If /crates should open the main menu. Warning: This will remove the menu button from crate previews.
@@ -106,7 +104,7 @@ gui:
         # The custom model data for the item, -1 is disabled.
         custom-model-data: -1
         # The name of the item.
-        name: " "
+        name: ' '
         # The lore of the item.
         lore: []
       customizer:
@@ -114,48 +112,48 @@ gui:
         toggle: true
         # The items to set to the gui.
         items:
-          - "slot:0, item:red_stained_glass_pane, name: "
-          - "slot:1, item:red_stained_glass_pane, name: "
-          - "slot:2, item:red_stained_glass_pane, name: "
-          - "slot:3, item:red_stained_glass_pane, name: "
-          - "slot:4, item:red_stained_glass_pane, name: "
-          - "slot:5, item:red_stained_glass_pane, name: "
-          - "slot:6, item:red_stained_glass_pane, name: "
-          - "slot:7, item:red_stained_glass_pane, name: "
-          - "slot:8, item:red_stained_glass_pane, name: "
-          - "slot:36, item:red_stained_glass_pane, name: "
-          - "slot:37, item:red_stained_glass_pane, name: "
-          - "slot:38, item:red_stained_glass_pane, name: "
-          - "slot:39, item:red_stained_glass_pane, name: "
-          - "slot:40, item:red_stained_glass_pane, name: "
-          - "slot:41, item:red_stained_glass_pane, name: "
-          - "slot:42, item:red_stained_glass_pane, name: "
-          - "slot:43, item:red_stained_glass_pane, name: "
-          - "slot:44, item:red_stained_glass_pane, name: "
-          - "slot:9, item:blue_stained_glass_pane, name: "
-          - "slot:18, item:blue_stained_glass_pane, name: "
-          - "slot:27, item:blue_stained_glass_pane, name: "
-          - "slot:17, item:blue_stained_glass_pane, name: "
-          - "slot:26, item:blue_stained_glass_pane, name: "
-          - "slot:35, item:blue_stained_glass_pane, name: "
-          - "slot:10, item:cyan_stained_glass_pane, name: "
-          - "slot:12, item:cyan_stained_glass_pane, name: "
-          - "slot:14, item:cyan_stained_glass_pane, name: "
-          - "slot:24, item:cyan_stained_glass_pane, name: "
-          - "slot:16, item:cyan_stained_glass_pane, name: "
-          - "slot:19, item:cyan_stained_glass_pane, name: "
-          - "slot:20, item:cyan_stained_glass_pane, name: "
-          - "slot:21, item:cyan_stained_glass_pane, name: "
-          - "slot:22, item:cyan_stained_glass_pane, name: "
-          - "slot:23, item:cyan_stained_glass_pane, name: "
-          - "slot:24, item:cyan_stained_glass_pane, name: "
-          - "slot:25, item:cyan_stained_glass_pane, name: "
-          - "slot:28, item:cyan_stained_glass_pane, name: "
-          - "slot:30, item:cyan_stained_glass_pane, name: "
-          - "slot:31, item:cyan_stained_glass_pane, name: "
-          - "slot:32, item:cyan_stained_glass_pane, name: "
-          - "slot:33, item:cyan_stained_glass_pane, name: "
-          - "slot:34, item:cyan_stained_glass_pane, name: "
+          - 'slot:0, item:red_stained_glass_pane, name: '
+          - 'slot:1, item:red_stained_glass_pane, name: '
+          - 'slot:2, item:red_stained_glass_pane, name: '
+          - 'slot:3, item:red_stained_glass_pane, name: '
+          - 'slot:4, item:red_stained_glass_pane, name: '
+          - 'slot:5, item:red_stained_glass_pane, name: '
+          - 'slot:6, item:red_stained_glass_pane, name: '
+          - 'slot:7, item:red_stained_glass_pane, name: '
+          - 'slot:8, item:red_stained_glass_pane, name: '
+          - 'slot:36, item:red_stained_glass_pane, name: '
+          - 'slot:37, item:red_stained_glass_pane, name: '
+          - 'slot:38, item:red_stained_glass_pane, name: '
+          - 'slot:39, item:red_stained_glass_pane, name: '
+          - 'slot:40, item:red_stained_glass_pane, name: '
+          - 'slot:41, item:red_stained_glass_pane, name: '
+          - 'slot:42, item:red_stained_glass_pane, name: '
+          - 'slot:43, item:red_stained_glass_pane, name: '
+          - 'slot:44, item:red_stained_glass_pane, name: '
+          - 'slot:9, item:blue_stained_glass_pane, name: '
+          - 'slot:18, item:blue_stained_glass_pane, name: '
+          - 'slot:27, item:blue_stained_glass_pane, name: '
+          - 'slot:17, item:blue_stained_glass_pane, name: '
+          - 'slot:26, item:blue_stained_glass_pane, name: '
+          - 'slot:35, item:blue_stained_glass_pane, name: '
+          - 'slot:10, item:cyan_stained_glass_pane, name: '
+          - 'slot:12, item:cyan_stained_glass_pane, name: '
+          - 'slot:14, item:cyan_stained_glass_pane, name: '
+          - 'slot:24, item:cyan_stained_glass_pane, name: '
+          - 'slot:16, item:cyan_stained_glass_pane, name: '
+          - 'slot:19, item:cyan_stained_glass_pane, name: '
+          - 'slot:20, item:cyan_stained_glass_pane, name: '
+          - 'slot:21, item:cyan_stained_glass_pane, name: '
+          - 'slot:22, item:cyan_stained_glass_pane, name: '
+          - 'slot:23, item:cyan_stained_glass_pane, name: '
+          - 'slot:24, item:cyan_stained_glass_pane, name: '
+          - 'slot:25, item:cyan_stained_glass_pane, name: '
+          - 'slot:28, item:cyan_stained_glass_pane, name: '
+          - 'slot:30, item:cyan_stained_glass_pane, name: '
+          - 'slot:31, item:cyan_stained_glass_pane, name: '
+          - 'slot:32, item:cyan_stained_glass_pane, name: '
+          - 'slot:33, item:cyan_stained_glass_pane, name: '
+          - 'slot:34, item:cyan_stained_glass_pane, name: '
 # Settings related to crates.
 crate:
   # Whether to show the display item when opening QuickCrate
@@ -201,3 +199,17 @@ crate:
     - world_nether
   # This option if set to true will force the crate to take the required keys set in the crate file
   use-required-keys: false
+  # This section contains settings related to different crate types.
+  types:
+    # This section is related to settings with the csgo crate type.
+    csgo:
+      # Sets a static material in the csgo crate in slot 4 and 22
+      # This is above and below the prize.
+      #
+      # Set this to blank to have it populate with glass.
+      cycling-material: gold_ingot
+      # Sets a static material in the csgo crate in slot 4 and 22
+      # This is above and below the prize and only shows up when the crate ends.
+      #
+      # Set this to blank to have it populate with glass.
+      finished-material: iron_ingot

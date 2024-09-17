@@ -55,6 +55,9 @@ public class ConfigKeys implements SettingsHolder {
 
         conf.setComment("crate.quad-crate", "Settings related to QuadCrate");
 
+        conf.setComment("crate.types", "This section contains settings related to different crate types.");
+        conf.setComment("crate.types.csgo", "This section is related to settings with the csgo crate type.");
+
         conf.setComment("root", header);
     }
 
@@ -192,7 +195,7 @@ public class ConfigKeys implements SettingsHolder {
             "",
             "Set this to blank to have it populate with glass."
     })
-    public static final Property<String> crate_csgo_cycling_material = newProperty("crate.csgo.cycling-material", "gold_ingot");
+    public static final Property<String> crate_csgo_cycling_material = newProperty("crate.types.csgo.cycling-material", "gold_ingot");
 
     @Comment({
             "Sets a static material in the csgo crate in slot 4 and 22",
@@ -200,7 +203,7 @@ public class ConfigKeys implements SettingsHolder {
             "",
             "Set this to blank to have it populate with glass."
     })
-    public static final Property<String> crate_csgo_finished_material = newProperty("crate.csgo.finished-material", "iron_ingot");
+    public static final Property<String> crate_csgo_finished_material = newProperty("crate.types.csgo.finished-material", "iron_ingot");
 
     @Comment("The item the button should be.")
     public static final Property<String> menu_button_item = newProperty("gui.inventory.buttons.menu.item", "compass");
