@@ -176,7 +176,7 @@ public class CsgoCrate extends CrateBuilder {
     private List<Integer> getBorder() {
         final String material = this.config.getProperty(ConfigKeys.crate_csgo_cycling_material);
 
-        if (material.isEmpty()) {
+        if (!material.isEmpty()) {
             return Arrays.asList(0, 1, 2, 3, 5, 6, 7, 8, 18, 19, 20, 21, 23, 24, 25, 26);
         }
 
