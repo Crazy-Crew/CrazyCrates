@@ -11,7 +11,6 @@ import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
-import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,7 +18,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.text.NumberFormat;
 import java.util.UUID;
@@ -44,6 +42,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                     .withType(this.config.getProperty(ConfigKeys.filler_item))
                     .setDisplayName(this.config.getProperty(ConfigKeys.filler_name))
                     .setDisplayLore(this.config.getProperty(ConfigKeys.filler_lore))
+                    .setCustomModelData(this.config.getProperty(ConfigKeys.filler_model_data))
                     .asGuiItem());
         }
 
