@@ -48,8 +48,8 @@ public class WeightMigrator extends ICrateMigrator {
                                 final int chance = tier.getInt("Chance");
                                 int maxRange = tier.getInt("MaxRange");
 
-                                if (maxRange > 10000) {
-                                    maxRange = 10000;
+                                if (maxRange > 100000) {
+                                    maxRange = 100000;
                                 }
 
                                 tier.set("Weight", MiscUtils.calculateWeight(chance, maxRange));
@@ -83,8 +83,8 @@ public class WeightMigrator extends ICrateMigrator {
                             isSave = true;
                         }
 
-                        if (maxRange > 10000) {
-                            maxRange = 10000;
+                        if (maxRange > 100000) {
+                            maxRange = 100000;
                         }
 
                         prizeSection.set("Weight", MiscUtils.calculateWeight(chance, maxRange));
