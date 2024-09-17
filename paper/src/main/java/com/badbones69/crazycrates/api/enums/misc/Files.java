@@ -9,6 +9,7 @@ import java.io.File;
 public enum Files {
 
     locations("locations.yml"),
+    respin_gui("respin-gui.yml"),
     data("data.yml");
 
     private final String fileName;
