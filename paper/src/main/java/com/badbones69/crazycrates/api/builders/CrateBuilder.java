@@ -307,7 +307,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
         return MiscUtils.getRandomPaneColor().setDisplayName(" ").asItemStack();
     }
 
-    private final SettingsManager config = ConfigManager.getConfig();
+    protected final SettingsManager config = ConfigManager.getConfig();
 
     /**
      * Calls the crate open event and returns true/false if successful or not.

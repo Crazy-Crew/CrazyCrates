@@ -186,6 +186,22 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("This option if set to true will force the crate to take the required keys set in the crate file")
     public static final Property<Boolean> crate_use_required_keys = newProperty("crate.use-required-keys", false);
 
+    @Comment({
+            "Sets a static material in the csgo crate in slot 4 and 22",
+            "This is above and below the prize.",
+            "",
+            "Set this to blank to have it populate with glass."
+    })
+    public static final Property<String> crate_csgo_cycling_material = newProperty("crate.csgo.cycling-material", "gold_ingot");
+
+    @Comment({
+            "Sets a static material in the csgo crate in slot 4 and 22",
+            "This is above and below the prize and only shows up when the crate ends.",
+            "",
+            "Set this to blank to have it populate with glass."
+    })
+    public static final Property<String> crate_csgo_finished_material = newProperty("crate.csgo.finished-material", "iron_ingot");
+
     @Comment("The item the button should be.")
     public static final Property<String> menu_button_item = newProperty("gui.inventory.buttons.menu.item", "compass");
 
