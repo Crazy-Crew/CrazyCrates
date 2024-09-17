@@ -646,6 +646,76 @@ public class BukkitUserManager extends UserManager {
         this.data.save();
     }
 
+    public int getCrateRespin(@NotNull final UUID uuid, @NotNull final String crateName) {
+        final Crate crate = isCrateInvalid(crateName);
+
+        if (crate == null) {
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+
+            return 0;
+        }
+
+        return this.data.getConfiguration().getInt("Players." + uuid + ".respins." + crateName, 0);
+    }
+
+    public void removeRespinCrate(@NotNull final UUID uuid, @NotNull final String crateName, final int amount) {
+        final Crate crate = isCrateInvalid(crateName);
+
+        if (crate == null) {
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+
+            return;
+        }
+
+        final YamlConfiguration configuration = this.data.getConfiguration();
+
+        final String fileName = crate.getFileName();
+
+        final boolean hasValue = configuration.contains("Players." + uuid + ".respins." + fileName);
+
+        int newAmount;
+
+        if (hasValue) {
+            newAmount = configuration.getInt("Players." + uuid + ".respins." + fileName) - amount;
+
+            configuration.set("Players." + uuid + ".respins." + fileName, newAmount);
+
+            this.data.save();
+        }
+    }
+
+    public void addRespinCrate(@NotNull final UUID uuid, @NotNull final String crateName, final int amount) {
+        final Crate crate = isCrateInvalid(crateName);
+
+        if (crate == null) {
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+
+            return;
+        }
+
+        final YamlConfiguration configuration = this.data.getConfiguration();
+
+        final String fileName = crate.getFileName();
+
+        final boolean hasValue = configuration.contains("Players." + uuid + ".respins." + fileName);
+
+        int newAmount;
+
+        if (hasValue) {
+            newAmount = configuration.getInt("Players." + uuid + ".respins." + fileName) + amount;
+
+            configuration.set("Players." + uuid + ".respins." + fileName, newAmount);
+
+            this.data.save();
+
+            return;
+        }
+
+        configuration.set("Players." + uuid + ".respins." + fileName, amount);
+
+        this.data.save();
+    }
+
     private @Nullable Crate isCrateInvalid(@NotNull final String crateName) {
         if (crateName.isEmpty()) return null;
 
