@@ -1,9 +1,12 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.api.builders.types.features.CrateSpinMenu;
+import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
@@ -115,14 +118,18 @@ public class CsgoCrate extends CrateBuilder {
 
                         crateManager.removePlayerFromOpeningList(player);
 
-                        cancel();
-
                         new FoliaRunnable(player.getScheduler(), null) {
                             @Override
                             public void run() {
-                                if (player.getOpenInventory().getTopInventory().equals(getInventory())) player.closeInventory();
+                                if (crate.isCyclePrize()) { //todo() this file getter is likely temporary.
+                                    new CrateSpinMenu(player, crate, new GuiSettings(crate, Files.respin_gui.getConfiguration())).open();
+                                } else {
+                                    if (player.getOpenInventory().getTopInventory().equals(getInventory())) player.closeInventory();
+                                }
                             }
                         }.runDelayed(plugin, 40);
+
+                        cancel();
                     } else if (this.time > 60) { // Added this due reports of the prizes spamming when low tps.
                         cancel();
                     }

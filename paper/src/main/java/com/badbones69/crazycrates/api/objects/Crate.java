@@ -58,7 +58,6 @@ public class Crate {
     private boolean previewTierToggle;
     private boolean previewTierBorderToggle;
     private int previewTierCrateRows;
-    private int previewTierMaxSlots;
 
     private Color color;
     private Particle particle;
@@ -77,6 +76,8 @@ public class Crate {
     private int maxMassOpen;
     private int requiredKeys;
 
+    private boolean cyclePrize;
+
     private List<String> prizeMessage = new ArrayList<>();
 
     private List<String> prizeCommands = new ArrayList<>();
@@ -86,8 +87,6 @@ public class Crate {
     private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
     private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
-
-    private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     private @NotNull final SettingsManager config = ConfigManager.getConfig();
 
@@ -132,6 +131,8 @@ public class Crate {
         this.broadcastToggle = this.file.getBoolean("Crate.Settings.Broadcast.Toggle", false);
         this.broadcastMessages = this.file.getStringList("Crate.Settings.Broadcast.Messages");
         this.broadcastPermission = this.file.getString("Crate.Settings.Broadcast.Permission", "");
+
+        this.cyclePrize = this.file.getBoolean("Crate.Settings.Rewards.Re-Roll-Spin", false);
 
         if (this.broadcastToggle) {
             MiscUtils.registerPermission(this.broadcastPermission, "Hides the broadcast message if a player has this permission", false);
@@ -924,6 +925,10 @@ public class Crate {
         }
 
         return prizes;
+    }
+
+    public final boolean isCyclePrize() {
+        return this.cyclePrize;
     }
 
     public final boolean useRequiredKeys() {
