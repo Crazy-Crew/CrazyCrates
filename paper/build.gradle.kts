@@ -21,6 +21,7 @@ dependencies {
         exclude("org.yaml")
     }
 
+    implementation(project(":common"))
     implementation(project(":api"))
 
     compileOnly(libs.excellentcrates)
