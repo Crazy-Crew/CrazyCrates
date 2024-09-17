@@ -95,6 +95,8 @@ public class Crate {
     private List<String> broadcastMessages = new ArrayList<>();
     private String broadcastPermission = "";
 
+    private double sum = 0;
+
     /**
      * @param name The name of the crate.
      * @param crateType The crate type of the crate.
@@ -138,6 +140,9 @@ public class Crate {
         }
 
         this.prizes = prizes;
+
+        this.sum = this.prizes.stream().filter(prize -> prize.getWeight() != -1).mapToDouble(Prize::getWeight).sum();
+
         this.crateType = crateType;
         this.previewToggle = file.getBoolean("Crate.Preview.Toggle", false);
         this.borderToggle = file.getBoolean("Crate.Preview.Glass.Toggle", false);
@@ -313,68 +318,84 @@ public class Crate {
      * Picks a random prize based on BlackList Permissions and the Chance System.
      *
      * @param player the player that will be winning the prize.
-     * @return the winning prize.
+     * @return {@link Prize}
      */
     public Prize pickPrize(@NotNull final Player player) {
         final List<Prize> prizes = new ArrayList<>();
-        final List<Prize> usablePrizes = new ArrayList<>();
 
-        // ================= Blacklist Check ================= //
-        if (player.isOp()) {
-            usablePrizes.addAll(getPrizes().stream().filter(prize -> prize.getChance() != -1).toList());
-        } else {
-            for (Prize prize : getPrizes()) {
-                if (prize.getChance() == -1) continue;
+        for (Prize prize : getPrizes()) {
+            if (prize.getWeight() == -1) continue;
+          
+            final int pulls = PrizeManager.getCurrentPulls(prize, this);
 
-                final int pulls = PrizeManager.getCurrentPulls(prize, this);
-
-                if (pulls != 0) {
-                    if (pulls >= prize.getMaxPulls()) continue;
-                }
-
-                if (prize.hasPermission(player)) {
-                    if (prize.hasAlternativePrize()) continue;
-                }
-
-                usablePrizes.add(prize);
+             if (pulls != 0) {
+                if (pulls >= prize.getMaxPulls()) continue;
             }
+
+            if (prize.hasPermission(player) && !player.isOp()) {
+                if (prize.hasAlternativePrize()) continue;
+            }
+
+            prizes.add(prize);
         }
 
-        Random random = MiscUtils.useOtherRandom() ? ThreadLocalRandom.current() : new Random();
+        return getPrize(prizes, MiscUtils.useOtherRandom() ? ThreadLocalRandom.current() : new Random());
+    }
 
-        // ================= Chance Check ================= //
-        chanceCheck(prizes, usablePrizes, random);
+    /**
+     * Picks a random prize based on BlackList Permissions and the Chance System. Only used in the Cosmic Crate & Casino Type since it is the only one with tiers.
+     *
+     * @param player The player that will be winning the prize.
+     * @param tier The tier you wish the prize to be from.
+     * @return the winning prize based on the crate's tiers.
+     */
+    public final Prize pickPrize(@NotNull final Player player, @NotNull final Tier tier) {
+        final List<Prize> prizes = new ArrayList<>();
 
-        try {
-            return prizes.get(random.nextInt(prizes.size()));
-        } catch (IllegalArgumentException exception) {
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Failed to find prize from the {} crate for player {}.", name, player.getName(), exception);
+        for (final Prize prize : getPrizes()) {
+            if (prize.hasPermission(player) && !player.isOp()) {
+                if (prize.hasAlternativePrize()) continue;
+            }
 
-            return null;
+            if (prize.getTiers().contains(tier)) prizes.add(prize);
         }
+
+        return getPrize(prizes, MiscUtils.useOtherRandom() ? ThreadLocalRandom.current() : new Random());
     }
 
     /**
      * Checks the chances and returns usable prizes.
      *
-     * @param prizes       The prizes to check
-     * @param usablePrizes The usable prizes to check
+     * @param prizes The prizes to check
      * @param random The random variable
+     * @return {@link Prize}
      */
-    private void chanceCheck(@NotNull final List<Prize> prizes, @NotNull final List<Prize> usablePrizes, Random random) {
-        for (int stop = 0; prizes.isEmpty() && stop <= 2000; stop++) {
-            for (Prize prize : usablePrizes) {
-                int max = prize.getMaxRange();
-                int chance = prize.getChance();
-                int num;
+    private Prize getPrize(@NotNull final List<Prize> prizes, @NotNull final Random random) {
+        double weight = 0.0;
 
-                for (int counter = 1; counter <= 1; counter++) {
-                    num = 1 + random.nextInt(max);
-
-                    if (num <= chance) prizes.add(prize);
-                }
-            }
+        for (Prize itemDrop : prizes) {
+            weight += itemDrop.getWeight();
         }
+
+        int index = 0;
+
+        for (double value = random.nextDouble() * weight; index < prizes.size() - 1; index++) {
+            value -= prizes.get(index).getWeight();
+
+            if (value < 0.0) break;
+        }
+
+        return prizes.get(index);
+    }
+
+    /**
+     * Gets the chance of the prize.
+     *
+     * @param weight the weight out of the sum
+     * @return the chance
+     */
+    public double getChance(final double weight) {
+        return (weight / this.sum) * 100D;
     }
 
     /**
@@ -387,7 +408,7 @@ public class Crate {
         purge();
 
         // Add new prizes.
-        this.prizes.addAll(prizes.stream().filter(prize -> prize.getChance() != -1).toList());
+        this.prizes.addAll(prizes.stream().filter(prize -> prize.getWeight() != -1).toList());
     }
 
     /**
@@ -395,40 +416,6 @@ public class Crate {
      */
     public void purge() {
         this.prizes.clear();
-    }
-
-    /**
-     * Picks a random prize based on BlackList Permissions and the Chance System. Only used in the Cosmic Crate & Casino Type since it is the only one with tiers.
-     *
-     * @param player The player that will be winning the prize.
-     * @param tier The tier you wish the prize to be from.
-     * @return the winning prize based on the crate's tiers.
-     */
-    public final Prize pickPrize(@NotNull final Player player, @NotNull final Tier tier) {
-        final List<Prize> prizes = new ArrayList<>();
-        final List<Prize> usablePrizes = new ArrayList<>();
-
-        // ================= Blacklist Check ================= //
-        if (player.isOp()) {
-            for (final Prize prize : getPrizes()) {
-                if (prize.getTiers().contains(tier)) usablePrizes.add(prize);
-            }
-        } else {
-            for (final Prize prize : getPrizes()) {
-                if (prize.hasPermission(player)) {
-                    if (prize.hasAlternativePrize()) continue;
-                }
-
-                if (prize.getTiers().contains(tier)) usablePrizes.add(prize);
-            }
-        }
-
-        Random random = MiscUtils.useOtherRandom() ? ThreadLocalRandom.current() : new Random();
-
-        // ================= Chance Check ================= //
-        chanceCheck(prizes, usablePrizes, random);
-
-        return prizes.get(random.nextInt(prizes.size()));
     }
     
     /**
@@ -575,7 +562,16 @@ public class Crate {
     public @NotNull final List<Prize> getPrizes() {
         return this.prizes;
     }
-    
+
+    /**
+     * Gets the total chance of the prizes weights added up
+     *
+     * @return the total chance added up
+     */
+    public final double getSum() {
+        return this.sum;
+    }
+
     /**
      * @param name name of the prize you want.
      * @return the prize you asked for.
@@ -619,16 +615,16 @@ public class Crate {
      *
      * @param itemStack the itemstack to add.
      * @param prizeName the name of the prize.
-     * @param chance the chance to add.
+     * @param weight the chance to add.
      */
-    public void addEditorItem(@Nullable final ItemStack itemStack, @NotNull final String prizeName, final int chance) {
-        if (itemStack == null || prizeName.isEmpty() || chance <= 0) return;
+    public void addEditorItem(@Nullable final ItemStack itemStack, @NotNull final String prizeName, final double weight) {
+        if (itemStack == null || prizeName.isEmpty() || weight <= 0) return;
 
         ConfigurationSection section = getPrizeSection();
 
         if (section == null) return;
 
-        setItem(itemStack, prizeName, section, chance, "");
+        setItem(itemStack, prizeName, section, weight, "");
     }
 
     /**
@@ -637,16 +633,16 @@ public class Crate {
      * @param itemStack the itemstack to add.
      * @param prizeName the name of the prize.
      * @param tier the tier to add.
-     * @param chance the chance to add.
+     * @param weight the chance to add.
      */
-    public void addEditorItem(@Nullable final ItemStack itemStack, @NotNull final String prizeName, @NotNull final String tier, final int chance) {
-        if (tier.isEmpty() || prizeName.isEmpty() || chance <= 0 || itemStack == null) return;
+    public void addEditorItem(@Nullable final ItemStack itemStack, @NotNull final String prizeName, @NotNull final String tier, final double weight) {
+        if (tier.isEmpty() || prizeName.isEmpty() || weight <= 0 || itemStack == null) return;
 
         final ConfigurationSection section = getPrizeSection();
 
         if (section == null) return;
 
-        setItem(itemStack, prizeName, section, chance, tier);
+        setItem(itemStack, prizeName, section, weight, tier);
     }
 
     /**
@@ -666,10 +662,10 @@ public class Crate {
      * @param itemStack the itemstack to set.
      * @param prizeName the prize name.
      * @param section the prizes section.
-     * @param chance the chance of the prize.
+     * @param weight the chance of the prize.
      */
-    private void setItem(@Nullable final ItemStack itemStack, @NotNull final String prizeName, @Nullable final ConfigurationSection section, final int chance, final String tier) {
-        if (prizeName.isEmpty() || section == null || chance <= 0 || itemStack == null) return;
+    private void setItem(@Nullable final ItemStack itemStack, @NotNull final String prizeName, @Nullable final ConfigurationSection section, final double weight, final String tier) {
+        if (prizeName.isEmpty() || section == null || weight <= 0 || itemStack == null) return;
 
         final String tiers = getPath(prizeName, "Tiers");
 
@@ -743,7 +739,7 @@ public class Crate {
 
         if (!enchantments.isEmpty()) section.set(getPath(prizeName, "DisplayEnchantments"), enchantments);
 
-        section.set(getPath(prizeName, "Chance"), chance);
+        section.set(getPath(prizeName, "Weight"), weight);
 
         // The section already contains a prize name, so we update the tiers.
         if (!tier.isEmpty()) {
@@ -916,7 +912,7 @@ public class Crate {
         List<ItemStack> prizes = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
-            if (prize.getChance() < 1) continue;
+            if (prize.getWeight() == -1) continue;
 
             if (tier == null) {
                 prizes.add(player == null ? prize.getDisplayItem(this) : prize.getDisplayItem(player, this));

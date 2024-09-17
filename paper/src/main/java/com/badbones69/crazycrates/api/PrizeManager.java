@@ -19,7 +19,9 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -229,22 +231,26 @@ public class PrizeManager {
     }
 
     public static @Nullable Tier getTier(@NotNull final Crate crate) {
-        if (!crate.getTiers().isEmpty()) {
-            Random random = MiscUtils.useOtherRandom() ? ThreadLocalRandom.current() : new Random();
+        if (crate.getTiers().isEmpty()) return null;
 
-            for (int stopLoop = 0; stopLoop <= 100; stopLoop++) {
-                for (final Tier tier : crate.getTiers()) {
-                    final int chance = tier.getChance();
+        final Random random = MiscUtils.useOtherRandom() ? ThreadLocalRandom.current() : new Random();
 
-                    final int num = random.nextInt(tier.getMaxRange());
+        double weight = 0.0;
 
-                    if (num >= 1 && num <= chance) {
-                        return tier;
-                    }
-                }
-            }
+        final List<Tier> tiers = crate.getTiers();
+
+        for (final Tier tier : tiers) {
+            weight += tier.getWeight();
         }
 
-        return null;
+        int index = 0;
+
+        for (double value = random.nextDouble() * weight; index < tiers.size() - 1; index++) {
+            value -= tiers.get(index).getWeight();
+
+            if (value < 0.0) break;
+        }
+
+        return tiers.get(index);
     }
 }

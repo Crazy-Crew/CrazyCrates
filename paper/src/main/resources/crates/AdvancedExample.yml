@@ -170,11 +170,9 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gray>Win the warlord's set."
-        - "<bold><gold>Chance: <red>%chance%</bold>"
-      # The max range i.e. 40/100 = 40% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 40%
-      Chance: 40
+        - "<bold><gold>Chance: <red>40%</bold>"
+      # The lower the number, the less likely to win it.
+      Weight: 40.0
       # A list of commands to run when they roll this prize.
       Commands:
         # This adds the blacklist permission to the player when they win the prize,
@@ -219,10 +217,8 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gradient:#8fcfa0:#32a852>A gradient lore!"
-      # The max range i.e. 25/100 = 15% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 25%
-      Chance: 25
+      # The lower the number, the less likely to win it.
+      Weight: 25.0
       # The list of items to win.
       Items:
         - "Item:enchanted_book, protection:5, unbreaking:3"

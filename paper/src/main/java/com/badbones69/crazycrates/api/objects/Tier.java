@@ -13,11 +13,10 @@ import java.util.List;
 public class Tier {
 
     private final ItemBuilder item;
-    private final int maxRange;
     private final String name;
     private final List<String> lore;
     private final String coloredName;
-    private final int chance;
+    private final double weight;
     private final int slot;
 
     public Tier(@NotNull final String tier, @NotNull final ConfigurationSection section) {
@@ -29,8 +28,7 @@ public class Tier {
 
         this.item = new ItemBuilder().withType(section.getString("Item", "chest").toLowerCase()).setHidingItemFlags(section.getBoolean("HideItemFlags", false)).setCustomModelData(section.getInt("Custom-Model-Data", -1));
 
-        this.chance = section.getInt("Chance");
-        this.maxRange = section.getInt("MaxRange", 100);
+        this.weight = section.getDouble("Weight", -1);
 
         this.slot = section.getInt("Slot");
     }
@@ -61,26 +59,8 @@ public class Tier {
      *
      * @return the total chance divided
      */
-    public final String getTotalChance() {
-        return StringUtil.formatDouble((double) getChance() / getMaxRange() * 100) + "%";
-    }
-
-    /**
-     * Get the max range
-     *
-     * @return the max range of the prize.
-     */
-    public final int getMaxRange() {
-        return this.maxRange;
-    }
-
-    /**
-     * Get the chance
-     *
-     * @return the chance the prize has of being picked.
-     */
-    public final int getChance() {
-        return this.chance;
+    public final double getWeight() {
+        return this.weight;
     }
 
     /**
@@ -96,6 +76,7 @@ public class Tier {
     public @NotNull final ItemStack getTierItem(final @Nullable Player target) {
         if (target != null) this.item.setPlayer(target);
 
-        return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).addLorePlaceholder("%chance%", this.getTotalChance()).setPersistentString(Keys.crate_tier.getNamespacedKey(), this.name).asItemStack();
+        return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).setPersistentString(Keys.crate_tier.getNamespacedKey(), this.name).asItemStack();
+        //return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).addLorePlaceholder("%chance%", this.getTotalChance()).setPersistentString(Keys.crate_tier.getNamespacedKey(), this.name).asItemStack();
     }
 }

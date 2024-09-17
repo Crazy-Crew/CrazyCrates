@@ -25,7 +25,6 @@ import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
 import java.util.ArrayList;
@@ -88,6 +87,22 @@ public class CommandManager {
             final List<String> numbers = new ArrayList<>();
 
             for (int i = 1; i <= 100; i++) numbers.add(String.valueOf(i));
+
+            return numbers;
+        });
+
+        commandManager.registerSuggestion(SuggestionKey.of("doubles"), (sender, context) -> {
+            final List<String> numbers = new ArrayList<>();
+
+            int count = 0;
+
+            while (count <= 1000) {
+                double x = count / 10.0;
+
+                numbers.add(String.valueOf(x));
+
+                count++;
+            }
 
             return numbers;
         });

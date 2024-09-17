@@ -158,10 +158,8 @@ Crate:
         Custom-Model-Data: -1
       # The amount to display in the gui.
       DisplayAmount: 1
-      # The max range i.e. 1/100 = 1% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 1%
-      Chance: 1
+      # The lower the number, the less likely to win it.
+      Weight: 1.0
       # An example of a custom player head.
       # This can be a player head as well.
       # https://minecraft-heads.com/
@@ -185,10 +183,8 @@ Crate:
         Custom-Model-Data: -1
       # The amount to display in the gui.
       DisplayAmount: 1
-      # The max range i.e. 15/100 = 15% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 15%
-      Chance: 15
+      # The lower the number, the less likely to win it.
+      Weight: 15.0
       # The list of items to win.
       Items:
         - "Item:diamond_sword, Name:<red>Diamond Sword, sharpness:5, looting:3"
@@ -215,10 +211,8 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gradient:#8fcfa0:#32a852>A gradient lore!"
-      # The max range i.e. 15/100 = 15% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 15%
-      Chance: 15
+      # The lower the number, the less likely to win it.
+      Weight: 15.0
       # The list of items to win.
       Items:
         - "Item:diamond_helmet, Name:<red>Diamond Helmet, protection:5, unbreaking:3"
@@ -239,10 +233,8 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gradient:#8fcfa0:#32a852>A gradient lore!"
-      # The max range i.e. 25/100 = 15% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 25%
-      Chance: 25
+      # The lower the number, the less likely to win it.
+      Weight: 25.0
       # The list of items to win.
       Items:
         - "Item:enchanted_book, protection:5, unbreaking:3"
@@ -270,11 +262,9 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gray>Make it rain Money."
-        - "<bold><gold>Chance: <red>%chance%</bold>"
-      # The max range i.e. 20/100 = 25% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 20%
-      Chance: 20
+        - "<bold><gold>Chance: <red>20%</bold>"
+      # The lower the number, the less likely to win it.
+      Weight: 20.0
       # Spawn fireworks.
       Firework: true
       # Run commands when a prize is won.
@@ -305,10 +295,8 @@ Crate:
         Max-Pulls: 10
       # The amount to display in the gui.
       DisplayAmount: 1
-      # The max range i.e. 15/100 = 15% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 15%
-      Chance: 15
+      # The lower the number, the less likely to win it.
+      Weight: 15.0
       # The list of items to win.
       Items:
         - "Item:shield, base:white, gradient_up:light_gray, straight_cross:light_blue, flower:light_blue"
@@ -325,10 +313,8 @@ Crate:
         Mob-Type: creeper
       # The amount to display in the gui.
       DisplayAmount: 1
-      # The max range i.e. 15/100 = 15% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 15%
-      Chance: 23
+      # The lower the number, the less likely to win it.
+      Weight: 23.5
       # The list of items to win.
       Items:
         - "Item:spawner, Mob:creeper"

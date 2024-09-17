@@ -153,10 +153,8 @@ Crate:
       Item: "chest"
       # The custom model data of the item, -1 is disabled.
       Custom-Model-Data: -1
-      # Chance of that item getting picked. It would be 80/100 chance because MaxRange is 100.
-      Chance: 50
-      # The max range that the chance will go though.
-      MaxRange: 100
+      # The lower the number, the less likely to win it.
+      Weight: 50.0
       # The slot this item will be in the secondary gui.
       Slot: 20
     UnCommon:
@@ -170,10 +168,8 @@ Crate:
       Item: "chest"
       # The custom model data of the item, -1 is disabled.
       Custom-Model-Data: -1
-      # Chance of that item getting picked. It would be 35/100 chance because MaxRange is 100.
-      Chance: 35
-      # The max range that the chance will go though.
-      MaxRange: 100
+      # The lower the number, the less likely to win it.
+      Weight: 35.0
       # The slot this item will be in the secondary gui.
       Slot: 22
     Rare:
@@ -187,10 +183,8 @@ Crate:
       Item: "ender_chest"
       # The custom model data of the item, -1 is disabled.
       Custom-Model-Data: -1
-      # Chance of that item getting picked. It would be 25/100 chance because MaxRange is 100.
-      Chance: 25
-      # The max range that the chance will go though.
-      MaxRange: 100
+      # The lower the number, the less likely to win it.
+      Weight: 25.0
       # The slot this item will be in the secondary gui.
       Slot: 24
   PhysicalKey:
@@ -261,10 +255,8 @@ Crate:
         Custom-Model-Data: -1
       # The amount to display in the gui.
       DisplayAmount: 1
-      # The max range i.e. 1/100 = 1% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 1%.
-      Chance: 1
+      # The lower the number, the less likely to win it.
+      Weight: 1.0
       # Tiers are available in Cosmic and Casino crate types.
       # The Tiers the rewards can be found in.
       Tiers:
@@ -299,10 +291,8 @@ Crate:
         Pattern: "sentry"
       # The amount to display in the gui.
       DisplayAmount: 1
-      # The max range i.e. 60/100 = 60% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 60%.
-      Chance: 60
+      # The lower the number, the less likely to win it.
+      Weight: 60.0
       # The lore of the item.
       DisplayLore:
         - "<gray>Win a cheap helmet."
@@ -326,10 +316,8 @@ Crate:
         Custom-Model-Data: -1
       # The amount to display in the gui.
       DisplayAmount: 1
-      # The max range i.e. 20/100 = 20% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 20%.
-      Chance: 20
+      # The lower the number, the less likely to win it.
+      Weight: 20.0
       # The lore of the item.
       DisplayLore:
         - "<gray>Make it rain Money."
@@ -362,10 +350,8 @@ Crate:
       DisplayDamage: 12
       # The amount to display in the gui.
       DisplayAmount: 1
-      # The max range i.e. 10/100 = 10% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 10%.
-      Chance: 10
+      # The lower the number, the less likely to win it.
+      Weight: 10.0
       # The lore of the item.
       DisplayLore:
         - "<gray>Win a crazy cool sword."
@@ -387,10 +373,8 @@ Crate:
         Custom-Model-Data: -1
       # The amount to display in the gui.
       DisplayAmount: 1
-      # The max range i.e. 20/100 = 20% chance to win.
-      MaxRange: 100
-      # The chance to win i.e. 20%.
-      Chance: 20
+      # The lower the number, the less likely to win it.
+      Weight: 20.0
       # The lore of the item.
       DisplayLore:
         - "<gray>Make it rain a butt load of Money."
@@ -414,10 +398,8 @@ Crate:
         Custom-Model-Data: -1
       # The amount to display in the gui.
       DisplayAmount: 2
-      # The max range i.e. 10/1000 = 1.0% chance to win.
-      MaxRange: 1000
-      # The chance to win i.e. 1.0%.
-      Chance: 10
+      # The lower the number, the less likely to win it.
+      Weight: 10.0
       # The lore of the item.
       DisplayLore:
         - "<gray>A special Key"
