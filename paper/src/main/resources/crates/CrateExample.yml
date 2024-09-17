@@ -82,6 +82,10 @@ Crate:
         - "<red>%player% won the prize <yellow>%reward%."
       # If the player has this permission, they don't get the broadcast.
       Permission: ""
+    # Settings related to rewards.
+    Rewards:
+      # Should a yes/no popup be made, to ask if they want to keep the prize?
+      Re-Roll-Spin: false
   # Item the crate is in the GUI
   Item: "diamond"
   # The custom model data of the item, -1 is disabled.
