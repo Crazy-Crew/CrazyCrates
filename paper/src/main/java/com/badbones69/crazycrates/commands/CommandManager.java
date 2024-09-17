@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.objects.other.CrateLocation;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandAddItem;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandMigrate;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
+import com.badbones69.crazycrates.commands.crates.types.admin.keys.CommandRespin;
 import com.badbones69.crazycrates.commands.relations.ArgumentRelations;
 import com.badbones69.crazycrates.commands.crates.types.player.CommandHelp;
 import com.badbones69.crazycrates.commands.crates.types.admin.CommandAdmin;
@@ -128,6 +129,8 @@ public class CommandManager {
                 new CommandDebug(),
                 new CommandList(),
                 new CommandSet(),
+
+                new CommandRespin(),
 
                 new CommandGive(),
                 new CommandOpen(),
