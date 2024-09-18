@@ -22,7 +22,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
