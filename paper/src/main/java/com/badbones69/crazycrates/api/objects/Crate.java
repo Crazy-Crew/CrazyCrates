@@ -13,6 +13,7 @@ import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.paper.api.files.CustomFile;
+import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.DyeUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import net.kyori.adventure.sound.Sound;
@@ -676,7 +677,7 @@ public class Crate {
                 final Component displayName = itemMeta.displayName();
 
                 if (displayName != null) {
-                    section.set(getPath(prizeName, "DisplayName"), MiscUtils.fromComponent(displayName));
+                    section.set(getPath(prizeName, "DisplayName"), AdvUtil.fromComponent(displayName));
                 }
             }
 
@@ -684,7 +685,7 @@ public class Crate {
                 final List<Component> lore = itemMeta.lore();
 
                 if (lore != null) {
-                    section.set(getPath(prizeName, "DisplayLore"), MiscUtils.fromComponent(lore));
+                    section.set(getPath(prizeName, "DisplayLore"), AdvUtil.fromComponent(lore));
                 }
             }
         }

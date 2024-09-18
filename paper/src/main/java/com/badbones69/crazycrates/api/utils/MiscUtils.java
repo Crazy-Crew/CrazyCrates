@@ -3,9 +3,6 @@ package com.badbones69.crazycrates.api.utils;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.misc.Files;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -89,121 +86,6 @@ public class MiscUtils {
         String name = getName ? location.getWorld().getName() : String.valueOf(location.getWorld().getUID());
 
         return name + "," + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ();
-    }
-
-    /**
-     * Converts a {@link String} to {@link Component}.
-     *
-     * @param component {@link String}
-     * @return {@link Component}
-     */
-    public static @NotNull Component toComponent(@NotNull final String component) {
-        return LegacyComponentSerializer.legacyAmpersand().deserialize(component.replace("§", "&"));
-    }
-
-    /**
-     * Converts a lore to minimessage strings
-     *
-     * @param lore {@link List<Component>}
-     * @return {@link List<Component>}
-     */
-    public static @NotNull List<Component> toComponent(@NotNull final List<String> lore) {
-        return new ArrayList<>(lore.size()) {{
-            lore.forEach(line -> add(toComponent(line)));
-        }};
-    }
-
-    /**
-     * Converts a lore to minimessage strings
-     *
-     * @param lore {@link List<Component>}
-     * @return {@link List<Component>}
-     */
-    public static @NotNull List<String> fromComponent(@NotNull final List<Component> lore) {
-        return fromComponent(lore, false);
-    }
-
-    /**
-     * Converts a lore to minimessage strings
-     *
-     * @param lore {@link List<Component>}
-     * @return {@link List<Component>}
-     */
-    public static @NotNull List<String> fromComponent(@NotNull final List<Component> lore, final boolean isMessage) {
-        return new ArrayList<>(lore.size()) {{
-            lore.forEach(line -> add(fromComponent(line, isMessage)));
-        }};
-    }
-
-    /**
-     * Converts a {@link Component} to {@link String}.
-     *
-     * @param component {@link Component}
-     * @return {@link String}
-     */
-    public static @NotNull String fromComponent(@NotNull final Component component) {
-        return fromComponent(component, false);
-    }
-
-    /**
-     * Converts a {@link Component} to {@link String}.
-     *
-     * @param component {@link Component}
-     * @param isMessage true or false
-     * @return {@link String}
-     */
-    public static @NotNull String fromComponent(@NotNull final Component component, final boolean isMessage) {
-        final String value = MiniMessage.miniMessage().serialize(component);
-
-        if (isMessage) {
-            return value.replace("\\<", "<");
-        }
-
-        return value;
-    }
-
-    /**
-     * Converts a {@link String} to a {@link Component} then a {@link String}.
-     *
-     * @param component {@link String}
-     * @return {@link String}
-     */
-    public static @NotNull String convert(@NotNull final String component)  {
-        return convert(component, false);
-    }
-
-    /**
-     * Converts a {@link List<String>} to a {@link List<Component>} then a {@link List<String>}.
-     *
-     * @param components {@link List<String>}
-     * @return {@link List<String>}
-     */
-    public static @NotNull List<String> convert(@NotNull final List<String> components) {
-        return convert(components, false);
-    }
-
-    /**
-     * Converts a {@link List<String>} to a {@link List<Component>} then a {@link List<String>}.
-     *
-     * @param components {@link List<String>}
-     * @param isMessage true or false
-     * @return {@link List<String>}
-     */
-    public static @NotNull List<String> convert(@NotNull final List<String> components, final boolean isMessage) {
-        return new ArrayList<>(components.size()) {{
-            components.forEach(line -> add(convert(line, isMessage)));
-        }};
-    }
-
-    /**
-     * Converts a {@link String} to a {@link Component} then a {@link String}.
-     *
-     * @param component {@link String}
-     * @param isMessage true or false
-     * @return {@link String}
-     */
-    public static @NotNull String convert(@NotNull final String component, final boolean isMessage)  {
-        return fromComponent(toComponent(component), isMessage);
     }
 
     /**
