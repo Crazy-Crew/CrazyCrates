@@ -730,7 +730,7 @@ public class BukkitUserManager extends UserManager {
         if (hasValue) {
             newAmount = configuration.getInt("Players." + uuid + ".respins." + fileName + ".amount") - amount;
 
-            configuration.set("Players." + uuid + ".respins." + fileName + ".amount", newAmount);
+            configuration.set("Players." + uuid + ".respins." + fileName + ".amount", newAmount == 0 ? null : newAmount);
 
             this.data.save();
         }
