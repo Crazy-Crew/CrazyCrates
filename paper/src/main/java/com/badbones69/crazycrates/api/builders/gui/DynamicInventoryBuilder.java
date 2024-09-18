@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 
 public abstract class DynamicInventoryBuilder extends InventoryBuilder {
 
-    private PaginatedGui gui;
+    private final PaginatedGui gui;
     private final Crate crate;
 
     public DynamicInventoryBuilder(final Player player, final Crate crate, final String title, final int rows) {
@@ -74,6 +74,8 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
     // Adds the back button
     public void setBackButton(final int row, final int column) {
         if (this.gui.getCurrentPageNumber() <= 1) {
+            setNavigationItem(row, column);
+
             return;
         }
 
@@ -85,13 +87,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
             final int page = this.gui.getCurrentPageNumber();
 
             if (page <= 1) {
-                if (this.crate != null && this.crate.isBorderToggle()) {
-                    this.gui.setItem(row, column, this.crate.getBorderItem().asGuiItem());
-                } else {
-                    this.gui.removeItem(row, column);
-
-                    this.gui.setItem(row, column, new GuiItem(Material.BLACK_STAINED_GLASS_PANE));
-                }
+                setNavigationItem(row, column);
             } else {
                 setBackButton(row, column);
             }
@@ -100,6 +96,18 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
                 setNextButton(this.gui.getRows(), 6);
             }
         }));
+
+        addMenuButton(this.player, this.crate, this.gui, this.gui.getRows(), 5);
+    }
+
+    private void setNavigationItem(int row, int column) {
+        if (this.crate != null && this.crate.isBorderToggle()) {
+            this.gui.setItem(row, column, this.crate.getBorderItem().asGuiItem());
+        } else {
+            this.gui.removeItem(row, column);
+
+            this.gui.setItem(row, column, new GuiItem(Material.BLACK_STAINED_GLASS_PANE));
+        }
     }
 
     // Adds the next button
@@ -116,13 +124,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
             final int page = this.gui.getCurrentPageNumber();
 
             if (page >= this.gui.getMaxPages()) {
-                if (this.crate != null && this.crate.isBorderToggle()) {
-                    this.gui.setItem(row, column, this.crate.getBorderItem().asGuiItem());
-                } else {
-                    this.gui.removeItem(row, column);
-
-                    this.gui.setItem(row, column, new GuiItem(Material.BLACK_STAINED_GLASS_PANE));
-                }
+                setNavigationItem(row, column);
             } else {
                 setNextButton(row, column);
             }
@@ -141,5 +143,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
                 setBackButton(rows, 4);
             }
         }));
+
+        addMenuButton(this.player, this.crate, this.gui, this.gui.getRows(), 5);
     }
 }
