@@ -23,7 +23,6 @@ import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.List;
@@ -59,7 +58,7 @@ public class CrazyCrates extends Vital {
         this.instance = new Server(getDataFolder());
         this.instance.apply();
 
-        getFileManager().addFile(new File(getDataFolder(), "locations.yml")).addFile(new File(getDataFolder(),"data.yml"))
+        getFileManager().addFile(new File(getDataFolder(), "locations.yml")).addFile(new File(getDataFolder(), "data.yml"))
                 .addFolder("crates")
                 .addFolder("schematics")
                 .init();
