@@ -55,6 +55,14 @@ public class MiscUtils {
         });
     }
 
+    public static int getAbsoluteItemPosition(final int baseSlot, final int rows) {
+        return baseSlot + (rows > 1 ? rows - 1 : 1) * 9;
+    }
+
+    public static double calculateWeight(int chance, int maxRange) {
+        return new BigDecimal((double) chance / maxRange * 100D).setScale(1, RoundingMode.HALF_UP).doubleValue();
+    }
+
     public static void spawnFirework(@NotNull final Location location, @Nullable final Color color) {
         Firework firework = (Firework) location.getWorld().spawnEntity(location, EntityType.FIREWORK_ROCKET);
 

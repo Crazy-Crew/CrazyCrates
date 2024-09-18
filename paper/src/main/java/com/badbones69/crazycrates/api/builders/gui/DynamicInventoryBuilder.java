@@ -6,18 +6,23 @@ import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
 
 public abstract class DynamicInventoryBuilder extends InventoryBuilder {
 
-    private final PaginatedGui gui;
+    private PaginatedGui gui;
     private final Crate crate;
+
+    private final String title;
+    private final int rows;
 
     public DynamicInventoryBuilder(final Player player, final Crate crate, final String title, final int rows) {
         super(player);
 
-        this.gui = Gui.paginated().setTitle(title).setRows(rows).disableInteractions().create();
+        this.title = title;
+        this.rows = rows;
 
         this.crate = crate;
     }
@@ -63,6 +68,17 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
     }
 
     /**
+     * Sets the {@link PaginatedGui} instance.
+     *
+     * @return {@link DynamicInventoryBuilder}
+     */
+    public final DynamicInventoryBuilder setGui() {
+        this.gui = Gui.paginated().setTitle(this.title).setRows(this.rows).disableInteractions().create();
+
+        return this;
+    }
+
+    /**
      * Gets the {@link PaginatedGui}.
      *
      * @return {@link PaginatedGui}
@@ -77,7 +93,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
             return;
         }
 
-        this.gui.setItem(row, column, new GuiItem(this.inventoryManager.getBackButton(this.player, this.gui), event -> {
+        this.gui.setItem(this.crate.getAbsoluteItemPosition(gui.getSlotFromRowColumn(row, column)), new GuiItem(this.inventoryManager.getBackButton(this.player, this.gui), event -> {
             event.setCancelled(true);
 
             this.gui.previous();
@@ -108,7 +124,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
             return;
         }
 
-        this.gui.setItem(row, column, new GuiItem(this.inventoryManager.getNextButton(this.player, this.gui), event -> {
+        this.gui.setItem(crate.getAbsoluteItemPosition(gui.getSlotFromRowColumn(row, column)), new GuiItem(this.inventoryManager.getNextButton(this.player, this.gui), event -> {
             event.setCancelled(true);
 
             this.gui.next();

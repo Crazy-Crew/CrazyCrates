@@ -309,7 +309,7 @@ public class CrateManager {
 
         for (final String crateName : getCrateNames()) {
             try {
-                final CustomFile customFile = this.fileManager.getFile(true, crateName);
+                final CustomFile customFile = this.fileManager.getFile(crateName, true);
 
                 if (customFile == null) continue;
 
