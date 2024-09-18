@@ -179,14 +179,14 @@ public class CrateManager {
                             boolean isEnabled = alternativeSection.getBoolean("Toggle");
 
                             if (isEnabled) {
-                                alternativePrize = new Prize(crate, prizeSection.getString("DisplayName", ""), prizeSection.getName(), alternativeSection);
+                                alternativePrize = new Prize(prizeSection.getString("DisplayName", ""), prizeSection.getName(), alternativeSection);
                             }
                         }
 
                         prizes.add(new Prize(
                                 prizeSection,
                                 editorItems, tierPrizes,
-                                crate,
+                                crate.getFileName(),
                                 alternativePrize
                         ));
                     }
