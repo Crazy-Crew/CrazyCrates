@@ -93,7 +93,7 @@ Crate:
     Name: "<green>Basic Crate Preview" # moved it under Preview
     # Turn on and off the preview for this crate.
     Toggle: true
-    # How many lines the Crate Preview should have. Including Header and Bottom (Between 3 and 6)
+    # How many lines should the preview be? You can use 1-6.
     ChestLines: 6
     Glass:
       # Turn the glass border in the preview on and off.

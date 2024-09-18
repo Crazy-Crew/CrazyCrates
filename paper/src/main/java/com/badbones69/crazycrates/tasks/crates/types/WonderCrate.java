@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
-import com.badbones69.crazycrates.tasks.BukkitUserManager;
+import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
@@ -16,16 +16,16 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class WonderCrate extends CrateBuilder {
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     public WonderCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size);
@@ -135,10 +135,5 @@ public class WonderCrate extends CrateBuilder {
                 if (this.time > 2) this.time = 0;
             }
         }.runAtFixedRate(this.plugin, 0, 2));
-    }
-
-    @Override
-    public void run() {
-
     }
 }

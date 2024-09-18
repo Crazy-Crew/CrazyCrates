@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.listeners.crates.types;
 
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.api.utils.ItemUtils;
+import com.badbones69.crazycrates.utils.ItemUtils;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
@@ -32,16 +32,16 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class QuadCrateListener implements Listener {
 
-    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private @NotNull final SessionManager sessionManager = new SessionManager();
+    private final SessionManager sessionManager = new SessionManager();
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {

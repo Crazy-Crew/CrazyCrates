@@ -4,11 +4,11 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
-import com.badbones69.crazycrates.api.utils.ItemUtils;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.utils.ItemUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.badbones69.crazycrates.config.ConfigManager;
-import com.badbones69.crazycrates.config.impl.messages.CrateKeys;
+import com.badbones69.crazycrates.managers.config.ConfigManager;
+import com.badbones69.crazycrates.managers.config.impl.messages.CrateKeys;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
@@ -21,7 +21,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
-
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -214,7 +213,7 @@ public class Prize {
      * @return the string
      * @since 0.0.2
      */
-    public static String format(final double value) {
+    public final String format(final double value) {
         final DecimalFormat decimalFormat = new DecimalFormat("###,###.###");
 
         decimalFormat.setRoundingMode(mode());
@@ -228,7 +227,7 @@ public class Prize {
      * @return the rounding mode
      * @since 0.0.2
      */
-    public static RoundingMode mode() {
+    public final RoundingMode mode() {
         return RoundingMode.HALF_EVEN;
     }
     

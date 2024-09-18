@@ -2,17 +2,18 @@ package com.badbones69.crazycrates.api.objects;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.api.builders.types.CratePreviewMenu;
-import com.badbones69.crazycrates.api.builders.types.CrateTierMenu;
-import com.badbones69.crazycrates.api.crates.CrateHologram;
+import com.badbones69.crazycrates.tasks.menus.CratePreviewMenu;
+import com.badbones69.crazycrates.tasks.menus.CrateTierMenu;
+import com.badbones69.crazycrates.api.objects.crates.CrateHologram;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
-import com.badbones69.crazycrates.config.ConfigManager;
-import com.badbones69.crazycrates.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.tasks.BukkitUserManager;
+import com.badbones69.crazycrates.managers.config.ConfigManager;
+import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.paper.api.files.CustomFile;
+import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.DyeUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import net.kyori.adventure.sound.Sound;
@@ -33,8 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import com.badbones69.crazycrates.tasks.InventoryManager;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -82,13 +82,13 @@ public class Crate {
 
     private List<String> prizeCommands = new ArrayList<>();
 
-    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    private @NotNull final SettingsManager config = ConfigManager.getConfig();
+    private final SettingsManager config = ConfigManager.getConfig();
 
     private boolean broadcastToggle = false;
     private List<String> broadcastMessages = new ArrayList<>();
@@ -681,7 +681,7 @@ public class Crate {
                 final Component displayName = itemMeta.displayName();
 
                 if (displayName != null) {
-                    section.set(getPath(prizeName, "DisplayName"), MiscUtils.fromComponent(displayName));
+                    section.set(getPath(prizeName, "DisplayName"), AdvUtil.fromComponent(displayName));
                 }
             }
 
@@ -689,7 +689,7 @@ public class Crate {
                 final List<Component> lore = itemMeta.lore();
 
                 if (lore != null) {
-                    section.set(getPath(prizeName, "DisplayLore"), MiscUtils.fromComponent(lore));
+                    section.set(getPath(prizeName, "DisplayLore"), AdvUtil.fromComponent(lore));
                 }
             }
         }
@@ -771,25 +771,11 @@ public class Crate {
     private void saveFile() {
         if (this.name.isEmpty()) return;
 
-        CustomFile customFile = this.plugin.getFileManager().getFile(true, this.name);
+        final CustomFile customFile = this.plugin.getFileManager().getFile(this.name, true);
 
         if (customFile != null) customFile.save();
 
         this.crateManager.reloadCrate(this.crateManager.getCrateFromName(this.name));
-    }
-
-    /**
-     * @return the max page for the preview.
-     */
-    public final int getMaxPage(final Tier tier) {
-        return (int) Math.ceil((double) getPreviewItems(null, tier).size() / (this.borderToggle ? this.maxSlots - 18 : this.maxSlots - 9));
-    }
-
-    /**
-     * @return the max page for the preview.
-     */
-    public final int getMaxPage() {
-        return (int) Math.ceil((double) getPreviewItems().size() / (this.borderToggle ? this.maxSlots - 18 : this.maxSlots - 9));
     }
     
     /**
@@ -838,69 +824,6 @@ public class Crate {
      */
     public @NotNull final CrateHologram getHologram() {
         return this.hologram;
-    }
-
-    /**
-     * @param baseSlot - default slot to use.
-     * @return the finalized slot.
-     */
-    public final int getAbsoluteItemPosition(final int baseSlot) {
-        return baseSlot + (this.previewChestLines > 1 ? this.previewChestLines - 1 : 1) * 9;
-    }
-
-    /**
-     * @param baseSlot - default slot to use.
-     * @return the finalized slot.
-     */
-    public final int getAbsolutePreviewItemPosition(final int baseSlot) {
-        return baseSlot + (this.previewTierCrateRows > 1 ? this.previewTierCrateRows - 1 : 1) * 9;
-    }
-
-    /**
-     * Get the preview items with optionally getting the preview tier items.
-     *
-     * @param player {@link Player}
-     * @param page page number
-     * @param tier {@link Tier}
-     * @return {@link ItemStack}
-     */
-    public final List<ItemStack> getPageItems(final Player player, int page, final int size, final Tier tier) {
-        final List<ItemStack> items = new ArrayList<>();
-
-        if (page <= 0) page = 1;
-
-        final List<ItemStack> prizes = getPreviewItems(player, tier);
-
-        final int prizeSize = prizes.size();
-
-        int givenPage = page - 1;
-
-        int max = ((givenPage * size) + size);
-        if (max > prizeSize) max = prizeSize;
-
-        for (int i = givenPage * size; i < max; i++) {
-            items.add(prizes.get(i));
-        }
-
-        return items;
-    }
-
-    /**
-     * Loads all the preview items and puts them into a list.
-     *
-     * @return a list of all the preview items that were created.
-     */
-    public @NotNull final List<ItemStack> getPreviewItems() {
-        return getPreviewItems(null, null);
-    }
-    
-    /**
-     * Loads all the preview items and puts them into a list.
-     *
-     * @return a list of all the preview items that were created.
-     */
-    public @NotNull final List<ItemStack> getPreviewItems(@NotNull final Player player) {
-        return getPreviewItems(player, null);
     }
 
     /**

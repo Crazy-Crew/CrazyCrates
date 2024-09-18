@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.api.objects.other.Server;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
@@ -15,21 +15,20 @@ import com.badbones69.crazycrates.listeners.other.EntityDamageListener;
 import com.badbones69.crazycrates.support.MetricsWrapper;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
-import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.badbones69.crazycrates.tasks.InventoryManager;
+import com.badbones69.crazycrates.managers.BukkitUserManager;
+import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.Vital;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
-import static com.badbones69.crazycrates.api.utils.MiscUtils.registerPermissions;
+import static com.badbones69.crazycrates.utils.MiscUtils.registerPermissions;
 
 public class CrazyCrates extends Vital {
 
@@ -59,7 +58,7 @@ public class CrazyCrates extends Vital {
         this.instance = new Server(getDataFolder());
         this.instance.apply();
 
-        getFileManager().addFile(new File(getDataFolder(), "locations.yml")).addFile(new File(getDataFolder(),"data.yml"))
+        getFileManager().addFile(new File(getDataFolder(), "locations.yml")).addFile(new File(getDataFolder(), "data.yml"))
                 .addFolder("crates")
                 .addFolder("schematics")
                 .addFolder("guis")
@@ -152,15 +151,15 @@ public class CrazyCrates extends Vital {
         }
     }
 
-    public @NotNull final InventoryManager getInventoryManager() {
+    public final InventoryManager getInventoryManager() {
         return this.inventoryManager;
     }
 
-    public @NotNull final BukkitUserManager getUserManager() {
+    public final BukkitUserManager getUserManager() {
         return this.userManager;
     }
 
-    public @NotNull final CrateManager getCrateManager() {
+    public final CrateManager getCrateManager() {
         return this.crateManager;
     }
 
@@ -172,11 +171,11 @@ public class CrazyCrates extends Vital {
         return this.api;
     }
 
-    public @NotNull final Server getInstance() {
+    public final Server getInstance() {
         return this.instance;
     }
 
-    public @NotNull final Timer getTimer() {
+    public final Timer getTimer() {
         return this.timer;
     }
 }

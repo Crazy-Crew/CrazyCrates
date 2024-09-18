@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.commands.crates.types.player;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.tasks.BukkitUserManager;
+import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -26,10 +26,10 @@ import java.util.Map;
 @Description("Views the amount of keys you/others have.")
 public class CommandKey {
 
-    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @Command
     @Permission(value = "crazycrates.keys", def = PermissionDefault.TRUE)
