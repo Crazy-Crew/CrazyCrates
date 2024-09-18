@@ -50,6 +50,8 @@ public class CommandRespin extends BaseCommand {
             }
 
             this.userManager.addRespinCrate(target.getUniqueId(), crate.getFileName(), amount);
+
+            //todo() send message that they added a prize.
         }
     }
 
@@ -83,6 +85,8 @@ public class CommandRespin extends BaseCommand {
             }
 
             this.userManager.removeRespinCrate(target.getUniqueId(), crate.getFileName(), amount);
+
+            //todo() send message that they added a prize.
         }
     }
 }
