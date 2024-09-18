@@ -20,27 +20,30 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
     }
 
     private final Player player = getPlayer();
-    private final Crate crate = getCrate();
 
     @Override
     public void open() {
+        final Crate crate = getCrate();
+
+        if (crate == null) return;
+
         final PaginatedGui gui = setGui().getGui();
 
-        if (this.crate.isBorderToggle()) {
+        if (crate.isBorderToggle()) {
             final GuiFiller guiFiller = gui.getFiller();
 
-            final GuiItem guiItem = new GuiItem(this.crate.getBorderItem().asItemStack());
+            final GuiItem guiItem = new GuiItem(crate.getBorderItem().asItemStack());
 
             guiFiller.fillTop(guiItem);
             guiFiller.fillBottom(guiItem);
         }
 
-        this.crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> gui.addItem(new GuiItem(itemStack)));
+        crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> gui.addItem(new GuiItem(itemStack)));
 
         setBackButton(6, 4);
         setNextButton(6, 6);
 
-        addMenuButton(this.player, this.crate, gui, 6, 5);
+        addMenuButton(this.player, crate, gui, 6, 5);
 
         gui.setOpenGuiAction(event -> this.inventoryManager.addPreviewViewer(event.getPlayer().getUniqueId()));
 

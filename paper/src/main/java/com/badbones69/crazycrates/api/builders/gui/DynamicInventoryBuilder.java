@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.api.builders.gui;
 
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
@@ -93,7 +94,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
             return;
         }
 
-        this.gui.setItem(this.crate.getAbsoluteItemPosition(gui.getSlotFromRowColumn(row, column)), new GuiItem(this.inventoryManager.getBackButton(this.player, this.gui), event -> {
+        this.gui.setItem(this.gui.getSlotFromRowColumn(row, column), new GuiItem(this.inventoryManager.getBackButton(this.player, this.gui), event -> {
             event.setCancelled(true);
 
             this.gui.previous();
@@ -120,11 +121,11 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
 
     // Adds the next button
     public void setNextButton(final int row, final int column) {
-        if (this.gui.getCurrentPageNumber() >= this.gui.getMaxPages()) {
+        if (this.gui.getCurrentPageNumber() > this.gui.getMaxPages()) {
             return;
         }
 
-        this.gui.setItem(crate.getAbsoluteItemPosition(gui.getSlotFromRowColumn(row, column)), new GuiItem(this.inventoryManager.getNextButton(this.player, this.gui), event -> {
+        this.gui.setItem(this.gui.getSlotFromRowColumn(row, column), new GuiItem(this.inventoryManager.getNextButton(this.player, this.gui), event -> {
             event.setCancelled(true);
 
             this.gui.next();

@@ -26,18 +26,19 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
     }
 
     private final Player player = getPlayer();
-    private final PaginatedGui gui = getGui();
 
     @Override
     public void open() {
-        final GuiFiller guiFiller = this.gui.getFiller();
+        final PaginatedGui gui = setGui().getGui();
+
+        final GuiFiller guiFiller = gui.getFiller();
 
         final GuiItem guiItem = new GuiItem(Material.BLACK_STAINED_GLASS_PANE);
 
         guiFiller.fillTop(guiItem);
         guiFiller.fillBottom(guiItem);
 
-        this.gui.setItem(6, 5, new ItemBuilder(Material.CHEST)
+        gui.setItem(6, 5, new ItemBuilder(Material.CHEST)
                 .setDisplayName("<red>What is this menu?")
                 .addDisplayLore(" <gold>⤷ Right click to go back to the main menu!")
                 .addDisplayLore("")
@@ -50,7 +51,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
             if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(this.player)) {
                 Messages.no_permission.sendMessage(this.player);
 
-                this.gui.close(this.player, InventoryCloseEvent.Reason.CANT_USE, false);
+                gui.close(this.player, InventoryCloseEvent.Reason.CANT_USE, false);
 
                 return;
             }
@@ -62,11 +63,11 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
             }
         }));
 
-        this.crateManager.getUsableCrates().forEach(crate -> this.gui.addItem(new GuiItem(crate.getKey(1), action -> {
+        this.crateManager.getUsableCrates().forEach(crate -> gui.addItem(new GuiItem(crate.getKey(1), action -> {
             if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(this.player)) {
                 Messages.no_permission.sendMessage(this.player);
 
-                this.gui.close(this.player, InventoryCloseEvent.Reason.CANT_USE, false);
+                gui.close(this.player, InventoryCloseEvent.Reason.CANT_USE, false);
 
                 return;
             }
@@ -129,6 +130,6 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
         setBackButton(6, 4);
         setNextButton(6, 6);
 
-        this.gui.open(this.player);
+        gui.open(this.player);
     }
 }
