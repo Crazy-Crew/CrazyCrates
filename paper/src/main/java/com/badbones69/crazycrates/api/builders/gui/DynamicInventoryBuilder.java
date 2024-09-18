@@ -1,13 +1,11 @@
 package com.badbones69.crazycrates.api.builders.gui;
 
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
 
@@ -16,14 +14,10 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
     private PaginatedGui gui;
     private final Crate crate;
 
-    private final String title;
-    private final int rows;
-
     public DynamicInventoryBuilder(final Player player, final Crate crate, final String title, final int rows) {
         super(player);
 
-        this.title = title;
-        this.rows = rows;
+        this.gui = Gui.paginated().setTitle(title).setRows(rows).disableInteractions().create();
 
         this.crate = crate;
     }
@@ -69,17 +63,6 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
     }
 
     /**
-     * Sets the {@link PaginatedGui} instance.
-     *
-     * @return {@link DynamicInventoryBuilder}
-     */
-    public final DynamicInventoryBuilder setGui() {
-        this.gui = Gui.paginated().setTitle(this.title).setRows(this.rows).disableInteractions().create();
-
-        return this;
-    }
-
-    /**
      * Gets the {@link PaginatedGui}.
      *
      * @return {@link PaginatedGui}
@@ -114,14 +97,14 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
             }
 
             if (page < this.gui.getMaxPages()) {
-                setNextButton(6, 6);
+                setNextButton(this.gui.getRows(), 6);
             }
         }));
     }
 
     // Adds the next button
     public void setNextButton(final int row, final int column) {
-        if (this.gui.getCurrentPageNumber() > this.gui.getMaxPages()) {
+        if (this.gui.getCurrentPageNumber() >= this.gui.getMaxPages()) {
             return;
         }
 
@@ -144,16 +127,18 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
                 setNextButton(row, column);
             }
 
+            final int rows = this.gui.getRows();
+
             if (page <= 1) {
                 if (this.crate != null && this.crate.isBorderToggle()) {
-                    this.gui.setItem(6, 4, this.crate.getBorderItem().asGuiItem());
+                    this.gui.setItem(rows, 4, this.crate.getBorderItem().asGuiItem());
                 } else {
-                    this.gui.removeItem(6, 4);
+                    this.gui.removeItem(rows, 4);
 
-                    this.gui.setItem(6, 4, new GuiItem(Material.BLACK_STAINED_GLASS_PANE));
+                    this.gui.setItem(rows, 4, new GuiItem(Material.BLACK_STAINED_GLASS_PANE));
                 }
             } else {
-                setBackButton(6, 4);
+                setBackButton(rows, 4);
             }
         }));
     }

@@ -7,7 +7,6 @@ import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 public class CratePreviewMenu extends DynamicInventoryBuilder {
 
@@ -20,6 +19,7 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
     }
 
     private final Player player = getPlayer();
+    private final PaginatedGui gui = getGui();
 
     @Override
     public void open() {
@@ -27,10 +27,8 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
 
         if (crate == null) return;
 
-        final PaginatedGui gui = setGui().getGui();
-
         if (crate.isBorderToggle()) {
-            final GuiFiller guiFiller = gui.getFiller();
+            final GuiFiller guiFiller = this.gui.getFiller();
 
             final GuiItem guiItem = new GuiItem(crate.getBorderItem().asItemStack());
 
@@ -38,17 +36,19 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
             guiFiller.fillBottom(guiItem);
         }
 
-        crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> gui.addItem(new GuiItem(itemStack)));
+        crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> this.gui.addItem(new GuiItem(itemStack)));
 
-        setBackButton(6, 4);
-        setNextButton(6, 6);
+        this.gui.setOpenGuiAction(event -> this.inventoryManager.addPreviewViewer(event.getPlayer().getUniqueId()));
 
-        addMenuButton(this.player, crate, gui, 6, 5);
+        this.gui.setCloseGuiAction(event -> this.inventoryManager.removePreviewViewer(event.getPlayer().getUniqueId()));
 
-        gui.setOpenGuiAction(event -> this.inventoryManager.addPreviewViewer(event.getPlayer().getUniqueId()));
+        this.gui.open(this.player, gui -> {
+            final int rows = gui.getRows();
 
-        gui.setCloseGuiAction(event -> this.inventoryManager.removePreviewViewer(event.getPlayer().getUniqueId()));
+            setBackButton(rows, 4);
+            setNextButton(rows, 6);
 
-        gui.open(this.player);
+            addMenuButton(this.player, crate, this.gui, rows, 5);
+        });
     }
 }

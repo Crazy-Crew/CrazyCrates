@@ -860,22 +860,6 @@ public class Crate {
     }
 
     /**
-     * @param baseSlot - default slot to use.
-     * @return the finalized slot.
-     */
-    public final int getAbsoluteItemPosition(final int baseSlot) {
-        return baseSlot + (this.previewChestLines > 1 ? this.previewChestLines - 1 : 1) * 9;
-    }
-
-    /**
-     * @param baseSlot - default slot to use.
-     * @return the finalized slot.
-     */
-    public final int getAbsolutePreviewItemPosition(final int baseSlot) {
-        return baseSlot + (this.previewTierCrateRows > 1 ? this.previewTierCrateRows - 1 : 1) * 9;
-    }
-
-    /**
      * Get the preview items with optionally getting the preview tier items.
      *
      * @param player {@link Player}
