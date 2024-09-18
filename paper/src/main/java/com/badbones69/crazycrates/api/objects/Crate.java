@@ -755,22 +755,6 @@ public class Crate {
         saveFile();
     }
 
-    /**
-     * @param baseSlot - default slot to use.
-     * @return the finalized slot.
-     */
-    public final int getAbsoluteItemPosition(final int baseSlot) {
-        return MiscUtils.getAbsoluteItemPosition(baseSlot, this.previewChestLines);
-    }
-
-    /**
-     * @param baseSlot - default slot to use.
-     * @return the finalized slot.
-     */
-    public final int getAbsolutePreviewItemPosition(final int baseSlot) {
-        return MiscUtils.getAbsoluteItemPosition(baseSlot, this.previewTierCrateRows);
-    }
-
     private @NotNull String getPath(final String section, final String path) {
         if (section.isEmpty() || path.isEmpty()) return "";
 
