@@ -658,6 +658,58 @@ public class BukkitUserManager extends UserManager {
         return this.data.getConfiguration().getInt("Players." + uuid + ".respins." + crateName, 0);
     }
 
+    public void addRespinPrize(@NotNull final UUID uuid, @NotNull final String crateName, final String prize) {
+        final Crate crate = isCrateInvalid(crateName);
+
+        if (crate == null) {
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+
+            return;
+        }
+
+        final YamlConfiguration configuration = this.data.getConfiguration();
+
+        final String fileName = crate.getFileName();
+
+        configuration.set("Players." + uuid + ".respins." + fileName + ".prize", prize);
+
+        this.data.save();
+    }
+
+    public final boolean hasRespinPrize(@NotNull final UUID uuid, @NotNull final String crateName) {
+        final Crate crate = isCrateInvalid(crateName);
+
+        if (crate == null) {
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+
+            return false;
+        }
+
+        final YamlConfiguration configuration = this.data.getConfiguration();
+
+        final String fileName = crate.getFileName();
+
+        return configuration.contains("Players." + uuid + ".respins." + fileName + ".prize");
+    }
+
+    public void removeRespinPrize(@NotNull final UUID uuid, @NotNull final String crateName) {
+        final Crate crate = isCrateInvalid(crateName);
+
+        if (crate == null) {
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+
+            return;
+        }
+
+        final YamlConfiguration configuration = this.data.getConfiguration();
+
+        final String fileName = crate.getFileName();
+
+        configuration.set("Players." + uuid + ".respins." + fileName + ".prize", null);
+
+        this.data.save();
+    }
+
     public void removeRespinCrate(@NotNull final UUID uuid, @NotNull final String crateName, final int amount) {
         final Crate crate = isCrateInvalid(crateName);
 
@@ -676,9 +728,9 @@ public class BukkitUserManager extends UserManager {
         int newAmount;
 
         if (hasValue) {
-            newAmount = configuration.getInt("Players." + uuid + ".respins." + fileName) - amount;
+            newAmount = configuration.getInt("Players." + uuid + ".respins." + fileName + ".amount") - amount;
 
-            configuration.set("Players." + uuid + ".respins." + fileName, newAmount);
+            configuration.set("Players." + uuid + ".respins." + fileName + ".amount", newAmount);
 
             this.data.save();
         }
@@ -702,16 +754,16 @@ public class BukkitUserManager extends UserManager {
         int newAmount;
 
         if (hasValue) {
-            newAmount = configuration.getInt("Players." + uuid + ".respins." + fileName) + amount;
+            newAmount = configuration.getInt("Players." + uuid + ".respins." + fileName + ".amount") + amount;
 
-            configuration.set("Players." + uuid + ".respins." + fileName, newAmount);
+            configuration.set("Players." + uuid + ".respins." + fileName + ".amount", newAmount);
 
             this.data.save();
 
             return;
         }
 
-        configuration.set("Players." + uuid + ".respins." + fileName, amount);
+        configuration.set("Players." + uuid + ".respins." + fileName + ".amount", amount);
 
         this.data.save();
     }
