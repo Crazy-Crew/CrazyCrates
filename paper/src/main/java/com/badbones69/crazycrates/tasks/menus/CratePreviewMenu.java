@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.builders.types;
+package com.badbones69.crazycrates.tasks.menus;
 
 import com.badbones69.crazycrates.api.builders.gui.DynamicInventoryBuilder;
 import com.badbones69.crazycrates.api.objects.Crate;

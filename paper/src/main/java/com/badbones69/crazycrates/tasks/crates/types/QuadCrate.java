@@ -1,8 +1,8 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
-import com.badbones69.crazycrates.api.crates.quadcrates.CrateSchematic;
+import com.badbones69.crazycrates.api.objects.crates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.other.CrateLocation;
+import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.ryderbelserion.vital.paper.util.structures.StructureManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.objects.other;
+package com.badbones69.crazycrates.api.objects.crates;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import org.bukkit.Location;

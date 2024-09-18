@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.config.migrate;
+package com.badbones69.crazycrates.managers.config.migrate;
 
 import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.migration.PlainMigrationService;

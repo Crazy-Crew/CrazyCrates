@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.utils;
+package com.badbones69.crazycrates.utils;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
