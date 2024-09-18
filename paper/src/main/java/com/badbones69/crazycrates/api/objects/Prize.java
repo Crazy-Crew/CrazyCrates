@@ -21,7 +21,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
-
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -214,7 +213,7 @@ public class Prize {
      * @return the string
      * @since 0.0.2
      */
-    public static String format(final double value) {
+    public final String format(final double value) {
         final DecimalFormat decimalFormat = new DecimalFormat("###,###.###");
 
         decimalFormat.setRoundingMode(mode());
@@ -228,7 +227,7 @@ public class Prize {
      * @return the rounding mode
      * @since 0.0.2
      */
-    public static RoundingMode mode() {
+    public final RoundingMode mode() {
         return RoundingMode.HALF_EVEN;
     }
     

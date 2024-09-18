@@ -210,9 +210,4 @@ public class QuickCrate extends CrateBuilder {
             }
         }.runDelayed(this.plugin, 40));
     }
-
-    @Override
-    public void run() {
-
-    }
 }

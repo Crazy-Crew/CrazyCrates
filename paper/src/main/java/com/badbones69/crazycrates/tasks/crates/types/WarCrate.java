@@ -134,9 +134,4 @@ public class WarCrate extends CrateBuilder {
         this.colorCodes.put(Material.RED_STAINED_GLASS_PANE, "dark_red");
         this.colorCodes.put(Material.BLACK_STAINED_GLASS_PANE, "black");
     }
-
-    @Override
-    public void run() {
-
-    }
 }

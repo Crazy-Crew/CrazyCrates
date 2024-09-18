@@ -19,7 +19,7 @@ public enum Keys {
     crate_tier("crate_tier", PersistentDataType.STRING),
     crate_key("crate_key", PersistentDataType.STRING);
 
-    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final String NamespacedKey;
     private final PersistentDataType type;

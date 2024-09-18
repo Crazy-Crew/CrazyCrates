@@ -24,9 +24,9 @@ import java.util.UUID;
 
 public class CsgoCrate extends CrateBuilder {
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     public CsgoCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size);
@@ -166,11 +166,6 @@ public class CsgoCrate extends CrateBuilder {
         }
 
         getBorder().forEach(this::setCustomGlassPane);
-    }
-
-    @Override
-    public void run() {
-
     }
 
     private List<Integer> getBorder() {

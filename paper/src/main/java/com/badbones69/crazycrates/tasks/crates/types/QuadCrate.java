@@ -53,9 +53,4 @@ public class QuadCrate extends CrateBuilder {
             session.startCrate();
         }
     }
-
-    @Override
-    public void run() {
-
-    }
 }

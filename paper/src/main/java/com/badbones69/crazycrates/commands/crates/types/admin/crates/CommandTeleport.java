@@ -12,14 +12,13 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
-import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.util.Objects;
 
 public class CommandTeleport extends BaseCommand {
 
-    private @NotNull final YamlConfiguration locations = Files.locations.getConfiguration();
+    private final YamlConfiguration locations = Files.locations.getConfiguration();
 
     @Command("teleport")
     @Permission(value = "crazycrates.teleport", def = PermissionDefault.OP)

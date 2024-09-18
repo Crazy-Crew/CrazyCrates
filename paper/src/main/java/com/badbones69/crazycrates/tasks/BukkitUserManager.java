@@ -32,11 +32,11 @@ import java.util.UUID;
 
 public class BukkitUserManager extends UserManager {
 
-    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private @NotNull final Files data = Files.data;
+    private final Files data = Files.data;
 
     @Override
     public Player getUser(@NotNull final UUID uuid) {

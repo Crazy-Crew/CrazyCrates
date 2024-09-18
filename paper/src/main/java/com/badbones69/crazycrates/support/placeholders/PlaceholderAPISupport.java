@@ -17,11 +17,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class PlaceholderAPISupport extends PlaceholderExpansion {
 
-    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @Override
     public @NotNull final String onRequest(final OfflinePlayer player, @NotNull final String identifier) {

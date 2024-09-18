@@ -161,9 +161,4 @@ public class WheelCrate extends CrateBuilder {
     private List<Integer> getBorder() {
         return Arrays.asList(10, 11, 12, 13, 14, 15, 16, 25, 34, 43, 42, 41, 40, 39, 38, 37, 28, 19);
     }
-
-    @Override
-    public void run() {
-
-    }
 }

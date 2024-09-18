@@ -81,9 +81,4 @@ public class FireCrackerCrate extends CrateBuilder {
             }
         }.runAtFixedRate(this.plugin, 0, 2));
     }
-
-    @Override
-    public void run() {
-
-    }
 }

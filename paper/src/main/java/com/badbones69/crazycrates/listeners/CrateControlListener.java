@@ -9,7 +9,8 @@ import com.badbones69.crazycrates.api.utils.ItemUtils;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
-import org.bukkit.*;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -38,15 +39,15 @@ import java.util.Map;
 
 public class CrateControlListener implements Listener {
 
-    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
-    private @NotNull final SettingsManager config = ConfigManager.getConfig();
+    private final SettingsManager config = ConfigManager.getConfig();
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     @EventHandler
     public void onGroundClick(PlayerInteractEvent event) {

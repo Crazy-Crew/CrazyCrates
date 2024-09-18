@@ -33,7 +33,6 @@ import org.jetbrains.annotations.NotNull;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import com.badbones69.crazycrates.tasks.InventoryManager;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +57,6 @@ public class Crate {
     private boolean previewTierToggle;
     private boolean previewTierBorderToggle;
     private int previewTierCrateRows;
-    private int previewTierMaxSlots;
 
     private Color color;
     private Particle particle;
@@ -81,15 +79,13 @@ public class Crate {
 
     private List<String> prizeCommands = new ArrayList<>();
 
-    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-
-    private @NotNull final SettingsManager config = ConfigManager.getConfig();
+    private final SettingsManager config = ConfigManager.getConfig();
 
     private boolean broadcastToggle = false;
     private List<String> broadcastMessages = new ArrayList<>();
@@ -776,20 +772,6 @@ public class Crate {
 
         this.crateManager.reloadCrate(this.crateManager.getCrateFromName(this.name));
     }
-
-    /**
-     * @return the max page for the preview.
-     */
-    public final int getMaxPage(final Tier tier) {
-        return (int) Math.ceil((double) getPreviewItems(null, tier).size() / (this.borderToggle ? this.maxSlots - 18 : this.maxSlots - 9));
-    }
-
-    /**
-     * @return the max page for the preview.
-     */
-    public final int getMaxPage() {
-        return (int) Math.ceil((double) getPreviewItems().size() / (this.borderToggle ? this.maxSlots - 18 : this.maxSlots - 9));
-    }
     
     /**
      * @return a list of the tiers for the crate. Will be empty if there are none.
@@ -837,69 +819,6 @@ public class Crate {
      */
     public @NotNull final CrateHologram getHologram() {
         return this.hologram;
-    }
-
-    /**
-     * @param baseSlot - default slot to use.
-     * @return the finalized slot.
-     */
-    public final int getAbsoluteItemPosition(final int baseSlot) {
-        return baseSlot + (this.previewChestLines > 1 ? this.previewChestLines - 1 : 1) * 9;
-    }
-
-    /**
-     * @param baseSlot - default slot to use.
-     * @return the finalized slot.
-     */
-    public final int getAbsolutePreviewItemPosition(final int baseSlot) {
-        return baseSlot + (this.previewTierCrateRows > 1 ? this.previewTierCrateRows - 1 : 1) * 9;
-    }
-
-    /**
-     * Get the preview items with optionally getting the preview tier items.
-     *
-     * @param player {@link Player}
-     * @param page page number
-     * @param tier {@link Tier}
-     * @return {@link ItemStack}
-     */
-    public final List<ItemStack> getPageItems(final Player player, int page, final int size, final Tier tier) {
-        final List<ItemStack> items = new ArrayList<>();
-
-        if (page <= 0) page = 1;
-
-        final List<ItemStack> prizes = getPreviewItems(player, tier);
-
-        final int prizeSize = prizes.size();
-
-        int givenPage = page - 1;
-
-        int max = ((givenPage * size) + size);
-        if (max > prizeSize) max = prizeSize;
-
-        for (int i = givenPage * size; i < max; i++) {
-            items.add(prizes.get(i));
-        }
-
-        return items;
-    }
-
-    /**
-     * Loads all the preview items and puts them into a list.
-     *
-     * @return a list of all the preview items that were created.
-     */
-    public @NotNull final List<ItemStack> getPreviewItems() {
-        return getPreviewItems(null, null);
-    }
-    
-    /**
-     * Loads all the preview items and puts them into a list.
-     *
-     * @return a list of all the preview items that were created.
-     */
-    public @NotNull final List<ItemStack> getPreviewItems(@NotNull final Player player) {
-        return getPreviewItems(player, null);
     }
 
     /**

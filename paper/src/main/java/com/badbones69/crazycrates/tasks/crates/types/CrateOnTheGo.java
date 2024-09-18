@@ -44,9 +44,4 @@ public class CrateOnTheGo extends CrateBuilder {
 
         this.crateManager.removePlayerKeyType(player);
     }
-
-    @Override
-    public void run() {
-
-    }
 }

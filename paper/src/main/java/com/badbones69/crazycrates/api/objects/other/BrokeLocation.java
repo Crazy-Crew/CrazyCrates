@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class BrokeLocation {
 
-    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     /**
      * Empty values that get instantiated below.

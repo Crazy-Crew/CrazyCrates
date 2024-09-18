@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 
 import com.badbones69.crazycrates.api.objects.other.CrateLocation;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
@@ -11,7 +10,6 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.plugin.java.JavaPlugin;
 import com.badbones69.crazycrates.config.ConfigManager;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.CrazyCrates;
@@ -34,10 +32,10 @@ import java.util.HashMap;
 
 public class QuadCrateManager {
 
-    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     private static final List<QuadCrateManager> crateSessions = new ArrayList<>();
 

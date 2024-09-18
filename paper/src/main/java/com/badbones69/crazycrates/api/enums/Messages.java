@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.api.enums;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.misc.State;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.ryderbelserion.vital.common.utils.StringUtil;

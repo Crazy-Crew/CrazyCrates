@@ -28,16 +28,15 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.api.utils.MiscUtils;
-
 import java.util.List;
 
 public abstract class CrateBuilder extends FoliaRunnable {
 
-    protected @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    protected @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    protected final CrateManager crateManager = this.plugin.getCrateManager();
 
-    protected @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+    protected final BukkitUserManager userManager = this.plugin.getUserManager();
 
     private final InventoryBuilder builder;
     private final Inventory inventory;

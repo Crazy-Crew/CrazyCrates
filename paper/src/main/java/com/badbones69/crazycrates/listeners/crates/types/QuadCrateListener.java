@@ -39,9 +39,9 @@ import java.util.Map;
 
 public class QuadCrateListener implements Listener {
 
-    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private @NotNull final SessionManager sessionManager = new SessionManager();
+    private final SessionManager sessionManager = new SessionManager();
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {

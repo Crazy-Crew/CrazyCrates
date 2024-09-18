@@ -79,9 +79,9 @@ import java.util.WeakHashMap;
 
 public class CrateManager {
 
-    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
-    private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-    private @NotNull final FileManager fileManager = this.plugin.getFileManager();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    private final FileManager fileManager = this.plugin.getFileManager();
 
     private final List<CrateLocation> crateLocations = new ArrayList<>();
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
@@ -179,14 +179,14 @@ public class CrateManager {
                             boolean isEnabled = alternativeSection.getBoolean("Toggle");
 
                             if (isEnabled) {
-                                alternativePrize = new Prize(prizeSection.getString("DisplayName", ""), prizeSection.getName(), alternativeSection);
+                                alternativePrize = new Prize(crate, prizeSection.getString("DisplayName", ""), prizeSection.getName(), alternativeSection);
                             }
                         }
 
                         prizes.add(new Prize(
                                 prizeSection,
                                 editorItems, tierPrizes,
-                                crate.getFileName(),
+                                crate,
                                 alternativePrize
                         ));
                     }
