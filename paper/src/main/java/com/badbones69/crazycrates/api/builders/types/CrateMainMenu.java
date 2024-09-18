@@ -77,6 +77,8 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                         case "unbreakable-item" -> item.setUnbreakable(StringUtil.tryParseBoolean(value).orElse(false));
 
                         case "hide-item-flags" -> item.setHidingItemFlags(StringUtil.tryParseBoolean(value).orElse(false));
+
+                        case "command" -> this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), value);
                     }
                 }
 
