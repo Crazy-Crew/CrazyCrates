@@ -30,7 +30,7 @@ public class GuiSettings {
         this.rows = configuration.getInt("rows", 3);
         this.slot = configuration.getInt("slot", 5);
 
-        this.isFillerToggled = configuration.getBoolean("toggle", false);
+        this.isFillerToggled = configuration.getBoolean("filler.toggle", false);
         this.fillerType = FillerType.getFromName(configuration.getString("filler.fill-type", "border"));
 
         this.fillerStack = new ItemBuilder().withType(configuration.getString("filler.toggle.material", "red_stained_glass_pane")).setDisplayName(configuration.getString("filler.toggle.name", " ")).asGuiItem();
