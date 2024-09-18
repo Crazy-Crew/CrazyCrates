@@ -1,7 +1,9 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.keys.respin;
 
+import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
@@ -35,6 +37,16 @@ public class CommandRespinDeny extends BaseCommand {
 
             return;
         }
+
+        final Prize prize = crate.getPrize(this.userManager.getRespinPrize(target.getUniqueId(), crate.getFileName()));
+
+        if (prize == null) {
+            //todo() say prize is null.
+
+            return;
+        }
+
+        PrizeManager.givePrize(target, prize, crate);
 
         this.userManager.removeRespinPrize(target.getUniqueId(), crate.getFileName());
     }

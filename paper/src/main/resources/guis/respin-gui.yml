@@ -32,7 +32,8 @@ buttons:
     lore: []
     # Run commands
     commands:
-      - "crates respin-accept %player% %crate% %prize%"
+      - "crates respin-accept %player% %crate%"
+      - "crates forceopen %crate% %player%"
     # Send messages
     messages: []
     # The sound settings
@@ -56,8 +57,7 @@ buttons:
     lore: []
     # Run commands
     commands:
-      - "crates respin-deny %player% %crates%"
-      - "crates respin-remove %player% %crate% 1"
+      - "crates respin-deny %player% %crate%"
     # Send messages
     messages: []
     # The sound settings

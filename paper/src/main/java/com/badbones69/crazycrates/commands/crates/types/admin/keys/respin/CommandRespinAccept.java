@@ -15,7 +15,7 @@ public class CommandRespinAccept extends BaseCommand {
 
     @Command("respin-accept")
     @Permission(value = "crazycrates.respin.accept", def = PermissionDefault.OP, description = "Allows the sender to accept the respin for another person.")
-    public void accept(final CommandSender sender, @Suggestion("players") final Player target, @Suggestion("crates") final String crateName, @Suggestion("prizes") final String prizeName) {
+    public void accept(final CommandSender sender, @Suggestion("players") final Player target, @Suggestion("crates") final String crateName) {
         if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
             Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
 
@@ -36,6 +36,6 @@ public class CommandRespinAccept extends BaseCommand {
             return;
         }
 
-        this.userManager.addRespinPrize(target.getUniqueId(), crate.getFileName(), prizeName);
+        this.userManager.addRespinCrate(target.getUniqueId(), crate.getFileName(), 1);
     }
 }
