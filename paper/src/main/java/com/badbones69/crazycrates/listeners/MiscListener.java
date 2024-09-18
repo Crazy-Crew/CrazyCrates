@@ -1,13 +1,12 @@
 package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
+import com.badbones69.crazycrates.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
-import com.badbones69.crazycrates.tasks.BukkitUserManager;
-import com.badbones69.crazycrates.tasks.InventoryManager;
+import com.badbones69.crazycrates.managers.BukkitUserManager;
+import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -23,21 +22,18 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
-import java.util.List;
-
 public class MiscListener implements Listener {
 
-    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    private @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {

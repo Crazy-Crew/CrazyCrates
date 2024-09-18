@@ -2,9 +2,9 @@ package com.badbones69.crazycrates.listeners.crates;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.config.ConfigManager;
-import com.badbones69.crazycrates.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.tasks.BukkitUserManager;
+import com.badbones69.crazycrates.managers.config.ConfigManager;
+import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;
@@ -15,19 +15,18 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.api.utils.MsgUtils;
+import com.badbones69.crazycrates.utils.MsgUtils;
 import java.util.List;
 
 public class CrateOpenListener implements Listener {
 
-    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     private final SettingsManager config = ConfigManager.getConfig();
 

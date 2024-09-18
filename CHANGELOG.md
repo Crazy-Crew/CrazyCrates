@@ -1,4 +1,7 @@
-### Fixed:
-- Fixed an issue with pagination on prizes.
-- Fixed an issue with the next/main/back buttons being static not dynamic.
-  - They would not re-size with the gui if you changed the row size.
+### Breaking Changes:
+- The weight system has been merged in, which effectively replaces the Chance/Max Range system.
+  - You must run the command /crazycrates migrate WeightMigration, which will convert your configurations.
+
+### Changes:
+- Added the ability to run commands with the gui customizer.
+- Added config options, which allow you to configure slots 4 and 22 above the prize in `csgo` crate

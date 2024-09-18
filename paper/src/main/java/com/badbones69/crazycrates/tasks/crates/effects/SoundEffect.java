@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
 
+@SuppressWarnings("PatternValidation")
 public class SoundEffect {
 
     private final boolean isEnabled;

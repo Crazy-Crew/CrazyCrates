@@ -10,8 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.api.builders.types.CratePrizeMenu;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.tasks.menus.CratePrizeMenu;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -133,10 +133,5 @@ public class WarCrate extends CrateBuilder {
         this.colorCodes.put(Material.GREEN_STAINED_GLASS_PANE, "green");
         this.colorCodes.put(Material.RED_STAINED_GLASS_PANE, "dark_red");
         this.colorCodes.put(Material.BLACK_STAINED_GLASS_PANE, "black");
-    }
-
-    @Override
-    public void run() {
-
     }
 }

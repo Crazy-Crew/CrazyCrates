@@ -4,12 +4,11 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
-import com.badbones69.crazycrates.api.utils.ItemUtils;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.utils.ItemUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.badbones69.crazycrates.config.ConfigManager;
-import com.badbones69.crazycrates.config.impl.messages.CrateKeys;
-import com.ryderbelserion.vital.common.utils.StringUtil;
+import com.badbones69.crazycrates.managers.config.ConfigManager;
+import com.badbones69.crazycrates.managers.config.impl.messages.CrateKeys;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
@@ -22,6 +21,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,8 +42,7 @@ public class Prize {
     private ItemBuilder displayItem = new ItemBuilder();
     private boolean firework = false;
     private String crateName = "";
-    private int maxRange = 100;
-    private int chance = 0;
+    private double weight = -1;
 
     private int maxPulls;
 
@@ -71,9 +71,7 @@ public class Prize {
         this.alternativePrize = alternativePrize;
 
         this.prizeName = section.getString("DisplayName", "");
-        this.maxRange = section.getInt("MaxRange", 100);
-        this.chance = section.getInt("Chance", 50);
-
+        this.weight = section.getDouble("Weight", -1);
         this.firework = section.getBoolean("Firework", false);
 
         this.messages = section.getStringList("Messages"); // this returns an empty list if not found anyway.
@@ -200,10 +198,37 @@ public class Prize {
             this.displayItem.setPlayer(player);
         }
 
-        this.displayItem.addLorePlaceholder("%chance%", getTotalChance()).addLorePlaceholder("%maxpulls%", maxPulls).addLorePlaceholder("%pulls%", amount);
-        this.displayItem.addNamePlaceholder("%chance%", getTotalChance()).addNamePlaceholder("%maxpulls%", maxPulls).addNamePlaceholder("%pulls%", amount);
+        final String weight = format(crate.getChance(getWeight()));
+
+        this.displayItem.addLorePlaceholder("%chance%", weight).addLorePlaceholder("%maxpulls%", maxPulls).addLorePlaceholder("%pulls%", amount);
+        this.displayItem.addNamePlaceholder("%chance%", weight).addNamePlaceholder("%maxpulls%", maxPulls).addNamePlaceholder("%pulls%", amount);
 
         return this.displayItem.setPersistentString(Keys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack();
+    }
+
+    /**
+     * Converts a double to a string with rounding and proper formatting.
+     *
+     * @param value the double to format
+     * @return the string
+     * @since 0.0.2
+     */
+    public final String format(final double value) {
+        final DecimalFormat decimalFormat = new DecimalFormat("###,###.###");
+
+        decimalFormat.setRoundingMode(mode());
+
+        return decimalFormat.format(value);
+    }
+
+    /**
+     * Gets the rounding mode from the config
+     *
+     * @return the rounding mode
+     * @since 0.0.2
+     */
+    public final RoundingMode mode() {
+        return RoundingMode.HALF_EVEN;
     }
     
     /**
@@ -242,30 +267,12 @@ public class Prize {
     }
 
     /**
-     * Get the total chance
+     * Gets the weight
      *
-     * @return the total chance divided
+     * @return the weight
      */
-    public final String getTotalChance() {
-        return StringUtil.formatDouble((double) getChance() / getMaxRange() * 100) + "%";
-    }
-
-    /**
-     * Get the max range
-     *
-     * @return the max range of the prize.
-     */
-    public final int getMaxRange() {
-        return this.maxRange;
-    }
-    
-    /**
-     * Get the chance
-     *
-     * @return the chance the prize has of being picked.
-     */
-    public final int getChance() {
-        return this.chance;
+    public final double getWeight() {
+        return this.weight;
     }
     
     /**
@@ -375,6 +382,8 @@ public class Prize {
 
                 builder.setDisplayLore(this.section.getStringList("Lore"));
             }
+
+            //builder.addLorePlaceholder("%chance%", this.getTotalChance());
 
             builder.setGlowing(this.section.contains("Glowing") ? section.getBoolean("Glowing") : null);
 

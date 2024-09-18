@@ -1,11 +1,11 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.plugins;
 
 import com.badbones69.crazycrates.api.enums.misc.Files;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.badbones69.crazycrates.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.paper.api.files.CustomFile;
+import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
@@ -14,7 +14,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.NotNull;
 import su.nightexpress.excellentcrates.CratesAPI;
 import su.nightexpress.excellentcrates.crate.impl.Crate;
 import su.nightexpress.excellentcrates.key.CrateKey;
@@ -226,12 +225,12 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 set(root, "PhysicalKey.Data", ItemUtil.toBase64(itemStack));
 
-                set(root, "PhysicalKey.Name", MiscUtils.fromComponent(itemStack.displayName()));
+                set(root, "PhysicalKey.Name", AdvUtil.fromComponent(itemStack.displayName()));
                 set(root, "PhysicalKey.Item", itemStack.getType().getKey().getKey());
 
                 final List<Component> keyLore = itemStack.lore();
 
-                set(root, "PhysicalKey.Lore", keyLore != null ? MiscUtils.fromComponent(keyLore) : List.of());
+                set(root, "PhysicalKey.Lore", keyLore != null ? AdvUtil.fromComponent(keyLore) : List.of());
 
                 set(root, "PhysicalKey.Glowing", config.contains("Item.Enchants"));
             }
@@ -249,7 +248,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                         final Component displayName = itemMeta.displayName();
 
                         if (displayName != null) {
-                            set(root, "Prizes." + id + ".DisplayName", MiscUtils.fromComponent(itemStack.displayName()));
+                            set(root, "Prizes." + id + ".DisplayName", AdvUtil.fromComponent(itemStack.displayName()));
                         }
                     }
 
@@ -257,7 +256,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                         final List<Component> lore = itemMeta.lore();
 
                         if (lore != null) {
-                            set(root, "Prizes." + id + ".DisplayLore", MiscUtils.fromComponent(lore));
+                            set(root, "Prizes." + id + ".DisplayLore", AdvUtil.fromComponent(lore));
                         }
                     }
                 }

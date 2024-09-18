@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import com.ryderbelserion.vital.paper.api.builders.PlayerBuilder;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;

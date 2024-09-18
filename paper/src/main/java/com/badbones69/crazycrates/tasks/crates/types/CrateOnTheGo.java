@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.UUID;
 
 public class CrateOnTheGo extends CrateBuilder {
@@ -43,10 +43,5 @@ public class CrateOnTheGo extends CrateBuilder {
         if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
         this.crateManager.removePlayerKeyType(player);
-    }
-
-    @Override
-    public void run() {
-
     }
 }

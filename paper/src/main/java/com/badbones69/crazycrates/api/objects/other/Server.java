@@ -7,7 +7,7 @@ import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import us.crazycrew.crazycrates.platform.ISettings;
 import us.crazycrew.crazycrates.platform.IServer;
-import com.badbones69.crazycrates.config.ConfigManager;
+import com.badbones69.crazycrates.managers.config.ConfigManager;
 import java.io.File;
 import java.util.List;
 

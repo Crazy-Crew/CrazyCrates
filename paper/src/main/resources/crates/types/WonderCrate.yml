@@ -157,10 +157,8 @@ Crate:
         Custom-Model-Data: -1
       # The amount to display in the gui.
       DisplayAmount: 1
-      # The max range i.e. 1/100 = 1% chance to win.
-      MaxRange: 100
       # The chance to win i.e. 1%
-      Chance: 1
+      Weight: 1.0
       # An example of a custom player head.
       # This can be a player head as well.
       # https://minecraft-heads.com/
@@ -184,10 +182,8 @@ Crate:
         Custom-Model-Data: -1
       # The amount to display in the gui.
       DisplayAmount: 1
-      # The max range i.e. 15/100 = 15% chance to win.
-      MaxRange: 100
       # The chance to win i.e. 15%
-      Chance: 15
+      Weight: 15.0
     "3":
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Helmet"
@@ -211,10 +207,8 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gradient:#8fcfa0:#32a852>A gradient lore!"
-      # The max range i.e. 15/100 = 15% chance to win.
-      MaxRange: 100
       # The chance to win i.e. 15%
-      Chance: 15
+      Weight: 15.0
       # The list of items to win.
       Items:
         - "Item:diamond_helmet, Name:<red>Diamond Helmet, protection:5, unbreaking:3"
@@ -235,10 +229,8 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gradient:#8fcfa0:#32a852>A gradient lore!"
-      # The max range i.e. 25/100 = 15% chance to win.
-      MaxRange: 100
       # The chance to win i.e. 25%
-      Chance: 25
+      Weight: 25.0
       # The list of items to win.
       Items:
         - "Item:enchanted_book, protection:5, unbreaking:3"
@@ -258,10 +250,8 @@ Crate:
       DisplayLore:
         - "<gray>Make it rain Money."
         - "<bold><gold>Chance: <red>%chance%</bold>"
-      # The max range i.e. 20/100 = 25% chance to win.
-      MaxRange: 100
       # The chance to win i.e. 20%
-      Chance: 20
+      Weight: 20.0
       # Spawn fireworks.
       Firework: true
       # Run commands when a prize is won.

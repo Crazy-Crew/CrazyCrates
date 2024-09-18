@@ -2,8 +2,8 @@ package com.badbones69.crazycrates.commands.crates.types.admin.crates;
 
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.api.objects.other.CrateLocation;
-import com.badbones69.crazycrates.api.utils.MsgUtils;
+import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
+import com.badbones69.crazycrates.utils.MsgUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
@@ -14,7 +14,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
 import java.util.HashMap;
 import java.util.Map;
 

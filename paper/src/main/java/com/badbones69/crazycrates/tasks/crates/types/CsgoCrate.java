@@ -1,10 +1,12 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
+import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
-import com.badbones69.crazycrates.tasks.BukkitUserManager;
+import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
@@ -13,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,9 +23,9 @@ import java.util.UUID;
 
 public class CsgoCrate extends CrateBuilder {
 
-    private @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     public CsgoCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size);
@@ -95,7 +97,9 @@ public class CsgoCrate extends CrateBuilder {
 
                         crateManager.endCrate(player);
 
-                        final ItemStack itemStack = new ItemStack(Material.GRAY_STAINED_GLASS);
+                        final String material = config.getProperty(ConfigKeys.crate_csgo_finished_material);
+
+                        final ItemStack itemStack = new ItemBuilder().withType(material.isEmpty() ? Material.GRAY_STAINED_GLASS.getKey().getKey() : material).setDisplayName(" ").asItemStack();
 
                         setItem(4, itemStack);
                         setItem(22, itemStack);
@@ -129,6 +133,15 @@ public class CsgoCrate extends CrateBuilder {
     private void populate() {
         getBorder().forEach(this::setCustomGlassPane);
 
+        final String material = this.config.getProperty(ConfigKeys.crate_csgo_cycling_material);
+
+        if (!material.isEmpty()) {
+            final ItemStack itemStack = new ItemBuilder().withType(material).setDisplayName(" ").asItemStack();
+
+            setItem(4, itemStack);
+            setItem(22, itemStack);
+        }
+
         // Set display items.
         for (int index = 9; index > 8 && index < 18; index++) {
             setItem(index, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer(), getCrate()));
@@ -154,12 +167,13 @@ public class CsgoCrate extends CrateBuilder {
         getBorder().forEach(this::setCustomGlassPane);
     }
 
-    @Override
-    public void run() {
-
-    }
-
     private List<Integer> getBorder() {
+        final String material = this.config.getProperty(ConfigKeys.crate_csgo_cycling_material);
+
+        if (!material.isEmpty()) {
+            return Arrays.asList(0, 1, 2, 3, 5, 6, 7, 8, 18, 19, 20, 21, 23, 24, 25, 26);
+        }
+
         return Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 18, 19, 20, 21, 22, 23, 24, 25, 26);
     }
 }

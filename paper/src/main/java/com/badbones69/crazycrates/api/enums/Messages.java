@@ -2,24 +2,22 @@ package com.badbones69.crazycrates.api.enums;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.misc.State;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
 import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
-import com.badbones69.crazycrates.config.ConfigManager;
-import com.badbones69.crazycrates.config.impl.messages.CommandKeys;
-import com.badbones69.crazycrates.config.impl.messages.CrateKeys;
-import com.badbones69.crazycrates.config.impl.messages.ErrorKeys;
-import com.badbones69.crazycrates.config.impl.messages.MiscKeys;
-import com.badbones69.crazycrates.config.impl.messages.PlayerKeys;
+import com.badbones69.crazycrates.managers.config.ConfigManager;
+import com.badbones69.crazycrates.managers.config.impl.messages.CommandKeys;
+import com.badbones69.crazycrates.managers.config.impl.messages.CrateKeys;
+import com.badbones69.crazycrates.managers.config.impl.messages.ErrorKeys;
+import com.badbones69.crazycrates.managers.config.impl.messages.MiscKeys;
+import com.badbones69.crazycrates.managers.config.impl.messages.PlayerKeys;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -232,12 +230,12 @@ public enum Messages {
 
     public void migrate() {
         if (this.isList) {
-            this.messages.setProperty(this.properties, MiscUtils.convert(this.messages.getProperty(this.properties), true));
+            this.messages.setProperty(this.properties, AdvUtil.convert(this.messages.getProperty(this.properties), true));
 
             return;
         }
 
-        this.messages.setProperty(this.property, MiscUtils.convert(this.messages.getProperty(this.property), true));
+        this.messages.setProperty(this.property, AdvUtil.convert(this.messages.getProperty(this.property), true));
     }
 
     private @NotNull String parse(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {

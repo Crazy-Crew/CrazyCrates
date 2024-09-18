@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.UUID;
 
 public class RouletteCrate extends CrateBuilder {
@@ -122,10 +122,5 @@ public class RouletteCrate extends CrateBuilder {
                 setCustomGlassPane(slot);
             }
         }
-    }
-
-    @Override
-    public void run() {
-
     }
 }

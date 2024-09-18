@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.api.objects.other.CrateLocation;
+import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
@@ -19,11 +19,11 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.config.ConfigManager;
-import com.badbones69.crazycrates.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.managers.config.ConfigManager;
+import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -209,10 +209,5 @@ public class QuickCrate extends CrateBuilder {
                 crateManager.endQuickCrate(player, getLocation(), crate, false);
             }
         }.runDelayed(this.plugin, 40));
-    }
-
-    @Override
-    public void run() {
-
     }
 }

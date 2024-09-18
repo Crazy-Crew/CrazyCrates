@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.api.utils.MiscUtils;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -160,10 +160,5 @@ public class WheelCrate extends CrateBuilder {
 
     private List<Integer> getBorder() {
         return Arrays.asList(10, 11, 12, 13, 14, 15, 16, 25, 34, 43, 42, 41, 40, 39, 38, 37, 28, 19);
-    }
-
-    @Override
-    public void run() {
-
     }
 }

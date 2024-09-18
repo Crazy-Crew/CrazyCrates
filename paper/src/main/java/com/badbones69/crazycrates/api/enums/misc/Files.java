@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.api.enums.misc;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.ryderbelserion.vital.paper.api.files.FileManager;
-import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 
@@ -13,9 +12,9 @@ public enum Files {
 
     private final String fileName;
 
-    private @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private @NotNull final FileManager fileManager = this.plugin.getFileManager();
+    private final FileManager fileManager = this.plugin.getFileManager();
 
     /**
      * A constructor to build a file

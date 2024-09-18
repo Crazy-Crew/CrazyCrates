@@ -1,15 +1,14 @@
 package com.badbones69.crazycrates.api.objects.other;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.config.ConfigManager;
-import com.badbones69.crazycrates.config.impl.ConfigKeys;
-import org.jetbrains.annotations.NotNull;
+import com.badbones69.crazycrates.managers.config.ConfigManager;
+import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
 import us.crazycrew.crazycrates.platform.ISettings;
 import java.util.List;
 
 public class Options implements ISettings {
 
-    private @NotNull final SettingsManager config = ConfigManager.getConfig();
+    private final SettingsManager config = ConfigManager.getConfig();
 
     @Override
     public final boolean isPhysicalAcceptsVirtual() {
