@@ -767,7 +767,7 @@ public class Crate {
     private void saveFile() {
         if (this.name.isEmpty()) return;
 
-        CustomFile customFile = this.plugin.getFileManager().getFile(true, this.name);
+        final CustomFile customFile = this.plugin.getFileManager().getFile(this.name, true);
 
         if (customFile != null) customFile.save();
 

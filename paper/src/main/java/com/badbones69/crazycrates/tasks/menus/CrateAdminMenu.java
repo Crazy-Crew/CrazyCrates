@@ -37,31 +37,6 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
         guiFiller.fillTop(guiItem);
         guiFiller.fillBottom(guiItem);
 
-        this.gui.setItem(6, 5, new ItemBuilder(Material.CHEST)
-                .setDisplayName("<red>What is this menu?")
-                .addDisplayLore(" <gold>⤷ Right click to go back to the main menu!")
-                .addDisplayLore("")
-                .addDisplayLore("<light_purple>A cheat cheat menu of all your available keys.")
-                .addDisplayLore(" <gold>⤷ Right click to get virtual keys.")
-                .addDisplayLore(" <gold>⤷ Shift right click to get 8 virtual keys.")
-                .addDisplayLore(" <gold>⤷ Left click to get physical keys.")
-                .addDisplayLore(" <gold>⤷ Shift left click to get 8 physical keys.")
-                .asGuiItem(action -> {
-            if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(this.player)) {
-                Messages.no_permission.sendMessage(this.player);
-
-                this.gui.close(this.player, InventoryCloseEvent.Reason.CANT_USE, false);
-
-                return;
-            }
-
-            if (this.config.getProperty(ConfigKeys.enable_crate_menu)) {
-                this.player.playSound(this.player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
-
-                new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_rows)).open();
-            }
-        }));
-
         this.crateManager.getUsableCrates().forEach(crate -> this.gui.addItem(new GuiItem(crate.getKey(1), action -> {
             if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(this.player)) {
                 Messages.no_permission.sendMessage(this.player);
@@ -129,6 +104,36 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
         setBackButton(6, 4);
         setNextButton(6, 6);
 
-        this.gui.open(this.player);
+        gui.open(this.player, gui -> {
+            final int rows = gui.getRows();
+
+            gui.setItem(rows, 5, new ItemBuilder(Material.CHEST)
+                    .setDisplayName("<red>What is this menu?")
+                    .addDisplayLore(" <gold>⤷ Right click to go back to the main menu!")
+                    .addDisplayLore("")
+                    .addDisplayLore("<light_purple>A cheat cheat menu of all your available keys.")
+                    .addDisplayLore(" <gold>⤷ Right click to get virtual keys.")
+                    .addDisplayLore(" <gold>⤷ Shift right click to get 8 virtual keys.")
+                    .addDisplayLore(" <gold>⤷ Left click to get physical keys.")
+                    .addDisplayLore(" <gold>⤷ Shift left click to get 8 physical keys.")
+                    .asGuiItem(action -> {
+                        if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(this.player)) {
+                            Messages.no_permission.sendMessage(this.player);
+
+                            gui.close(this.player, InventoryCloseEvent.Reason.CANT_USE, false);
+
+                            return;
+                        }
+
+                        if (this.config.getProperty(ConfigKeys.enable_crate_menu)) {
+                            this.player.playSound(this.player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
+
+                            new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_rows)).open();
+                        }
+                    }));
+
+            setBackButton(rows, 4);
+            setNextButton(rows, 6);
+        });
     }
 }

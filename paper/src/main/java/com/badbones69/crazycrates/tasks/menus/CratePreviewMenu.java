@@ -20,32 +20,35 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
 
     private final Player player = getPlayer();
     private final PaginatedGui gui = getGui();
-    private final Crate crate = getCrate();
 
     @Override
     public void open() {
-        if (this.crate == null) return;
+        final Crate crate = getCrate();
 
-        if (this.crate.isBorderToggle()) {
+        if (crate == null) return;
+
+        if (crate.isBorderToggle()) {
             final GuiFiller guiFiller = this.gui.getFiller();
 
-            final GuiItem guiItem = new GuiItem(this.crate.getBorderItem().asItemStack());
+            final GuiItem guiItem = new GuiItem(crate.getBorderItem().asItemStack());
 
             guiFiller.fillTop(guiItem);
             guiFiller.fillBottom(guiItem);
         }
 
-        this.crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> this.gui.addItem(new GuiItem(itemStack)));
-
-        setBackButton(6, 4);
-        setNextButton(6, 6);
-
-        addMenuButton(this.player, this.crate, this.gui, 6, 5);
+        crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> this.gui.addItem(new GuiItem(itemStack)));
 
         this.gui.setOpenGuiAction(event -> this.inventoryManager.addPreviewViewer(event.getPlayer().getUniqueId()));
 
         this.gui.setCloseGuiAction(event -> this.inventoryManager.removePreviewViewer(event.getPlayer().getUniqueId()));
 
-        this.gui.open(this.player);
+        this.gui.open(this.player, gui -> {
+            final int rows = gui.getRows();
+
+            setBackButton(rows, 4);
+            setNextButton(rows, 6);
+
+            addMenuButton(this.player, crate, this.gui, rows, 5);
+        });
     }
 }

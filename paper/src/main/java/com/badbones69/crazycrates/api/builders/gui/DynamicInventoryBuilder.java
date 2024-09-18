@@ -74,10 +74,12 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
     // Adds the back button
     public void setBackButton(final int row, final int column) {
         if (this.gui.getCurrentPageNumber() <= 1) {
+            setNavigationItem(row, column);
+
             return;
         }
 
-        this.gui.setItem(row, column, new GuiItem(this.inventoryManager.getBackButton(this.player, this.gui), event -> {
+        this.gui.setItem(this.gui.getSlotFromRowColumn(row, column), new GuiItem(this.inventoryManager.getBackButton(this.player, this.gui), event -> {
             event.setCancelled(true);
 
             this.gui.previous();
@@ -85,21 +87,27 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
             final int page = this.gui.getCurrentPageNumber();
 
             if (page <= 1) {
-                if (this.crate != null && this.crate.isBorderToggle()) {
-                    this.gui.setItem(row, column, this.crate.getBorderItem().asGuiItem());
-                } else {
-                    this.gui.removeItem(row, column);
-
-                    this.gui.setItem(row, column, new GuiItem(Material.BLACK_STAINED_GLASS_PANE));
-                }
+                setNavigationItem(row, column);
             } else {
                 setBackButton(row, column);
             }
 
             if (page < this.gui.getMaxPages()) {
-                setNextButton(6, 6);
+                setNextButton(this.gui.getRows(), 6);
             }
         }));
+
+        addMenuButton(this.player, this.crate, this.gui, this.gui.getRows(), 5);
+    }
+
+    private void setNavigationItem(int row, int column) {
+        if (this.crate != null && this.crate.isBorderToggle()) {
+            this.gui.setItem(row, column, this.crate.getBorderItem().asGuiItem());
+        } else {
+            this.gui.removeItem(row, column);
+
+            this.gui.setItem(row, column, new GuiItem(Material.BLACK_STAINED_GLASS_PANE));
+        }
     }
 
     // Adds the next button
@@ -108,7 +116,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
             return;
         }
 
-        this.gui.setItem(row, column, new GuiItem(this.inventoryManager.getNextButton(this.player, this.gui), event -> {
+        this.gui.setItem(this.gui.getSlotFromRowColumn(row, column), new GuiItem(this.inventoryManager.getNextButton(this.player, this.gui), event -> {
             event.setCancelled(true);
 
             this.gui.next();
@@ -116,28 +124,26 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
             final int page = this.gui.getCurrentPageNumber();
 
             if (page >= this.gui.getMaxPages()) {
-                if (this.crate != null && this.crate.isBorderToggle()) {
-                    this.gui.setItem(row, column, this.crate.getBorderItem().asGuiItem());
-                } else {
-                    this.gui.removeItem(row, column);
-
-                    this.gui.setItem(row, column, new GuiItem(Material.BLACK_STAINED_GLASS_PANE));
-                }
+                setNavigationItem(row, column);
             } else {
                 setNextButton(row, column);
             }
 
+            final int rows = this.gui.getRows();
+
             if (page <= 1) {
                 if (this.crate != null && this.crate.isBorderToggle()) {
-                    this.gui.setItem(6, 4, this.crate.getBorderItem().asGuiItem());
+                    this.gui.setItem(rows, 4, this.crate.getBorderItem().asGuiItem());
                 } else {
-                    this.gui.removeItem(6, 4);
+                    this.gui.removeItem(rows, 4);
 
-                    this.gui.setItem(6, 4, new GuiItem(Material.BLACK_STAINED_GLASS_PANE));
+                    this.gui.setItem(rows, 4, new GuiItem(Material.BLACK_STAINED_GLASS_PANE));
                 }
             } else {
-                setBackButton(6, 4);
+                setBackButton(rows, 4);
             }
         }));
+
+        addMenuButton(this.player, this.crate, this.gui, this.gui.getRows(), 5);
     }
 }
