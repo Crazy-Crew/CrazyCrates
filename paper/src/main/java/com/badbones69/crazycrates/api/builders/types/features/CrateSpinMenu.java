@@ -13,8 +13,8 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
 
     private final GuiSettings settings;
 
-    public CrateSpinMenu(final Player player, final Crate crate, final GuiSettings settings) {
-        super(player, crate, settings.getTitle(), settings.getRows());
+    public CrateSpinMenu(final Player player, final GuiSettings settings) {
+        super(player, settings.getCrate(), settings.getTitle(), settings.getRows());
 
         this.settings = settings;
     }

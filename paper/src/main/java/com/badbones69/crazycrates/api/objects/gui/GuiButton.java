@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api.objects.gui;
 
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.utils.MsgUtils;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
@@ -9,10 +10,8 @@ import net.kyori.adventure.sound.Sound;
 import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class GuiButton {
 
@@ -23,8 +22,9 @@ public class GuiButton {
     private final List<String> messages;
 
     private final Crate crate;
+    private final Prize prize;
 
-    public GuiButton(final Crate crate, final ConfigurationSection section) {
+    public GuiButton(final Crate crate, final Prize prize, final ConfigurationSection section) {
         final String name = section.getString("name", "No display name found.");
         final String material = section.getString("material", "emerald_block");
         final List<String> lore = section.getStringList("lore");
@@ -37,16 +37,17 @@ public class GuiButton {
         this.messages = messages;
         this.section = section;
         this.crate = crate;
+        this.prize = prize;
     }
 
-    public final @NotNull GuiItem getGuiItem(@NotNull final Consumer<InventoryClickEvent> action) {
+    public final @NotNull GuiItem getGuiItem() {
         return this.guiItem.asGuiItem(event -> {
             if (!(event.getWhoClicked() instanceof Player player)) return;
 
             final Server server = player.getServer();
 
-            commands.forEach(command -> server.dispatchCommand(server.getConsoleSender(), command.replaceAll("%crate%", crate.getFileName())));
-            messages.forEach(message -> MsgUtils.sendMessage(player, message.replaceAll("%crate%", crate.getCrateName()), false));
+            commands.forEach(command -> server.dispatchCommand(server.getConsoleSender(), command.replaceAll("%prize%", prize.getSectionName()).replaceAll("%crate%", crate.getFileName())));
+            messages.forEach(message -> MsgUtils.sendMessage(player, message.replaceAll("%prize%", prize.getPrizeName()).replaceAll("%crate%", crate.getCrateName()), false));
 
             final ConfigurationSection sound = section.getConfigurationSection("sound");
 
@@ -60,8 +61,6 @@ public class GuiButton {
 
                 effect.play(player, player.getLocation());
             }
-
-            action.accept(event);
         });
     }
 }
