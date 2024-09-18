@@ -15,6 +15,7 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 public class CommandRespin extends BaseCommand {
 
     @Command("respin")
+    @Permission(value = "crazycrates.respin.use", def = PermissionDefault.OP, description = "Allows the sender to access /crazycrates respin.")
     public void root(final CommandSender sender) {
         //todo() send help message
     }
@@ -26,6 +27,7 @@ public class CommandRespin extends BaseCommand {
         protected @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
         @Command("add")
+        @Permission(value = "crazycrates.respin.add", def = PermissionDefault.OP, description = "Allows the sender to add a respin for another person.")
         public void add(final CommandSender sender, @Suggestion("players") final Player target, @Suggestion("crates") final String crateName, @Suggestion("numbers") final int amount) {
             if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
                 Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
@@ -58,6 +60,7 @@ public class CommandRespin extends BaseCommand {
         protected @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
         @Command("remove")
+        @Permission(value = "crazycrates.respin.remove", def = PermissionDefault.OP, description = "Allows the sender to remove a respin from another person.")
         public void remove(final CommandSender sender, @Suggestion("players") final Player target, @Suggestion("crates") final String crateName, @Suggestion("numbers") final int amount) {
             if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
                 Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
