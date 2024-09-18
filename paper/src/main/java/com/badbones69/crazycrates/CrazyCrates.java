@@ -151,15 +151,15 @@ public class CrazyCrates extends Vital {
         }
     }
 
-    public @NotNull final InventoryManager getInventoryManager() {
+    public final InventoryManager getInventoryManager() {
         return this.inventoryManager;
     }
 
-    public @NotNull final BukkitUserManager getUserManager() {
+    public final BukkitUserManager getUserManager() {
         return this.userManager;
     }
 
-    public @NotNull final CrateManager getCrateManager() {
+    public final CrateManager getCrateManager() {
         return this.crateManager;
     }
 
@@ -171,11 +171,11 @@ public class CrazyCrates extends Vital {
         return this.api;
     }
 
-    public @NotNull final Server getInstance() {
+    public final Server getInstance() {
         return this.instance;
     }
 
-    public @NotNull final Timer getTimer() {
+    public final Timer getTimer() {
         return this.timer;
     }
 }
