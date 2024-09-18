@@ -8,7 +8,6 @@ import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.config.impl.ConfigKeys;
-import com.ryderbelserion.vital.paper.util.ItemUtil;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
@@ -113,21 +112,23 @@ public class CsgoCrate extends CrateBuilder {
                         if (item != null) {
                             final Prize prize = crate.getPrize(item);
 
-                            PrizeManager.givePrize(player, crate, prize);
+                            if (crate.isCyclePrize()) { // re-open this menu
+                                new CrateSpinMenu(player, new GuiSettings(crate, prize, Files.respin_gui.getConfiguration())).open();
+                            } else {
+                                PrizeManager.givePrize(player, crate, prize);
+                            }
                         }
 
                         crateManager.removePlayerFromOpeningList(player);
 
-                        new FoliaRunnable(player.getScheduler(), null) {
-                            @Override
-                            public void run() {
-                                if (crate.isCyclePrize()) { //todo() this file getter is likely temporary.
-                                    new CrateSpinMenu(player, crate, new GuiSettings(crate, Files.respin_gui.getConfiguration())).open();
-                                } else {
+                        if (!crate.isCyclePrize()) {
+                            new FoliaRunnable(player.getScheduler(), null) {
+                                @Override
+                                public void run() {
                                     if (player.getOpenInventory().getTopInventory().equals(getInventory())) player.closeInventory();
                                 }
-                            }
-                        }.runDelayed(plugin, 40);
+                            }.runDelayed(plugin, 40);
+                        }
 
                         cancel();
                     } else if (this.time > 60) { // Added this due reports of the prizes spamming when low tps.
