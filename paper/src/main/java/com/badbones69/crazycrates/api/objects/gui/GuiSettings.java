@@ -39,19 +39,51 @@ public class GuiSettings {
         this.isFillerToggled = configuration.getBoolean("filler.toggle", false);
         this.fillerType = FillerType.getFromName(configuration.getString("filler.fill-type", "border"));
 
-        this.fillerStack = new ItemBuilder().withType(configuration.getString("filler.toggle.material", "red_stained_glass_pane")).setDisplayName(configuration.getString("filler.toggle.name", " ")).asGuiItem();
+        this.fillerStack = new ItemBuilder()
+                .withType(configuration.getString("filler.toggle.material", "red_stained_glass_pane"))
+                .setDisplayName(configuration.getString("filler.toggle.name", " ")).asGuiItem();
 
-        final ConfigurationSection section = configuration.getConfigurationSection("buttons");
+        final ConfigurationSection staticButtons = configuration.getConfigurationSection("buttons.static");
 
-        if (section != null) {
-            section.getKeys(false).forEach(key -> {
-                final ConfigurationSection button = section.getConfigurationSection(key);
+        if (staticButtons != null) {
+            staticButtons.getKeys(false).forEach(key -> {
+                final ConfigurationSection button = staticButtons.getConfigurationSection(key);
 
                 if (button == null) return;
 
                 final int slot = button.getInt("slot");
 
-                this.buttons.put(slot, new GuiButton(crate, prize, button));
+                if (this.buttons.containsKey(slot)) {
+                    if (MiscUtils.isLogging()) {
+                        this.plugin.getComponentLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
+                    }
+
+                    return;
+                }
+
+                this.buttons.put(slot, new CrateButton(crate, prize, button));
+            });
+        }
+
+        final ConfigurationSection customButtons = configuration.getConfigurationSection("buttons.custom");
+
+        if (customButtons != null) {
+            customButtons.getKeys(false).forEach(key -> {
+                final ConfigurationSection button = customButtons.getConfigurationSection(key);
+
+                if (button == null) return;
+
+                final int slot = button.getInt("slot");
+
+                if (this.buttons.containsKey(slot)) {
+                    if (MiscUtils.isLogging()) {
+                        this.plugin.getComponentLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
+                    }
+
+                    return;
+                }
+
+                this.buttons.put(slot, new CrateButton(crate, prize, button));
             });
         }
 
