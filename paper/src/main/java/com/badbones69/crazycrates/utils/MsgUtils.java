@@ -38,12 +38,20 @@ public class MsgUtils {
     }
 
     /**
+     * Get the prefix.
+     *
      * @return the {@link String}
      */
     public static @NotNull String getPrefix() {
         return ConfigManager.getConfig().getProperty(ConfigKeys.command_prefix);
     }
 
+    /**
+     * Get prefix with message.
+     *
+     * @param msg the message
+     * @return the message with prefix
+     */
     public static @NotNull String getPrefix(@NotNull final String msg) {
         if (msg.isEmpty()) return "";
 
