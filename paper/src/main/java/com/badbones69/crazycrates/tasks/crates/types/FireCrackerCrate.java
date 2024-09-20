@@ -23,9 +23,9 @@ public class FireCrackerCrate extends CrateBuilder {
     }
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent) {
         // Crate event failed so we return.
-        if (isCrateEventValid(type, checkHand)) {
+        if (isCrateEventValid(type, checkHand, isSilent)) {
             return;
         }
 
@@ -76,7 +76,7 @@ public class FireCrackerCrate extends CrateBuilder {
 
                     QuickCrate quickCrate = new QuickCrate(crate, player, getLocation());
 
-                    quickCrate.open(KeyType.free_key, false);
+                    quickCrate.open(KeyType.free_key, false, isSilent);
                 }
             }
         }.runAtFixedRate(this.plugin, 0, 2));

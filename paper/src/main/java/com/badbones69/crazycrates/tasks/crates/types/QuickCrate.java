@@ -34,11 +34,11 @@ public class QuickCrate extends CrateBuilder {
     }
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent) {
         // If the crate type is not fire cracker.
         if (!isFireCracker()) {
             // If the crate event failed.
-            if (isCrateEventValid(type, checkHand)) {
+            if (isCrateEventValid(type, checkHand, isSilent)) {
                 return;
             }
         }

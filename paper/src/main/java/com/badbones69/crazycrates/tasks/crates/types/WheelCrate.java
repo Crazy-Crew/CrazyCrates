@@ -28,9 +28,9 @@ public class WheelCrate extends CrateBuilder {
     private Map<Integer, ItemStack> rewards;
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent) {
         // Crate event failed so we return.
-        if (isCrateEventValid(type, checkHand)) {
+        if (isCrateEventValid(type, checkHand, isSilent)) {
             return;
         }
 

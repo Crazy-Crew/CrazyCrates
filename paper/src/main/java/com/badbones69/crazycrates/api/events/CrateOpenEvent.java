@@ -16,10 +16,11 @@ public class CrateOpenEvent extends Event implements Cancellable {
     private final KeyType keyType;
     private final boolean checkHand;
     private final YamlConfiguration configuration;
+    private final boolean isSilent;
 
     private boolean isCancelled;
 
-    public CrateOpenEvent(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, final boolean checkHand, @NotNull final YamlConfiguration configuration) {
+    public CrateOpenEvent(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, final boolean checkHand, @NotNull final YamlConfiguration configuration, boolean isSilent) {
         this.player = player;
         this.crate = crate;
 
@@ -29,6 +30,7 @@ public class CrateOpenEvent extends Event implements Cancellable {
         this.configuration = configuration;
 
         this.isCancelled = false;
+        this.isSilent = isSilent;
     }
 
     private static final HandlerList handlers = new HandlerList();
@@ -60,6 +62,10 @@ public class CrateOpenEvent extends Event implements Cancellable {
 
     public @NotNull final YamlConfiguration getConfiguration() {
         return this.configuration;
+    }
+
+    public final boolean isSilent() {
+        return this.isSilent;
     }
 
     @Override
