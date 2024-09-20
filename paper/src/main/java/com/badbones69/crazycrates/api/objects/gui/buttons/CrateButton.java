@@ -51,7 +51,7 @@ public class CrateButton extends GuiButton {
             switch (getSection().getName()) {
                 case "accept" -> {
                     this.userManager.addRespinCrate(uuid, this.crate.getFileName(), 1);
-                    this.crateManager.openCrate(player, this.crate, KeyType.free_key, player.getLocation(), true, false);
+                    this.crateManager.openCrate(player, this.crate, KeyType.free_key, player.getLocation(), true, false, true);
                 }
 
                 case "deny" -> {
