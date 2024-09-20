@@ -5,10 +5,6 @@ import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandAddItem;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandMigrate;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.badbones69.crazycrates.commands.crates.types.admin.keys.respin.CommandRespinAccept;
-import com.badbones69.crazycrates.commands.crates.types.admin.keys.respin.CommandRespinAdd;
-import com.badbones69.crazycrates.commands.crates.types.admin.keys.respin.CommandRespinDeny;
-import com.badbones69.crazycrates.commands.crates.types.admin.keys.respin.CommandRespinRemove;
 import com.badbones69.crazycrates.commands.relations.ArgumentRelations;
 import com.badbones69.crazycrates.commands.crates.types.player.CommandHelp;
 import com.badbones69.crazycrates.commands.crates.types.admin.CommandAdmin;
@@ -36,10 +32,10 @@ import java.util.List;
 
 public class CommandManager {
 
-    private final static @NotNull CrazyCrates plugin = CrazyCrates.getPlugin();
-    private final static @NotNull CrateManager crateManager = plugin.getCrateManager();
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final CrateManager crateManager = plugin.getCrateManager();
 
-    private final static @NotNull BukkitCommandManager<CommandSender> commandManager = BukkitCommandManager.create(plugin);
+    private static final BukkitCommandManager<CommandSender> commandManager = BukkitCommandManager.create(plugin);
 
     /**
      * Loads commands.
@@ -132,11 +128,6 @@ public class CommandManager {
                 new CommandDebug(),
                 new CommandList(),
                 new CommandSet(),
-
-                new CommandRespinAccept(),
-                new CommandRespinAdd(),
-                new CommandRespinDeny(),
-                new CommandRespinRemove(),
 
                 new CommandGive(),
                 new CommandOpen(),
