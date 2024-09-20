@@ -20,53 +20,56 @@ filler:
   # top, bottom, border, side, full
   fill-type: "border"
 
+# A list of buttons to add!
 buttons:
-  yes:
-    # The name of the button
-    name: "<green>Yes"
-    # The slot the item goes in
-    slot: 12
-    # The type of block
-    material: emerald_block
-    # Add lore to the item
-    lore: []
-    # Run commands
-    commands:
-      - "crates respin-accept %player% %crate%"
-      - "crates forceopen %crate% %player%"
-    # Send messages
-    messages: []
-    # The sound settings
-    sound:
-      # Should the sound play?
-      toggle: true
-      # The sound to play
-      value: entity.villager.yes
-      # The volume of sound
-      volume: 1.0
-      # The pitch of the sound
-      pitch: 1.0
-  no:
-    # The name of the button
-    name: "<red>No"
-    # The slot the item goes in
-    slot: 14
-    # The type of block
-    material: redstone_block
-    # Add lore to the item
-    lore: []
-    # Run commands
-    commands:
-      - "crates respin-deny %player% %crate%"
-    # Send messages
-    messages: []
-    # The sound settings
-    sound:
-      # Should the sound play?
-      toggle: true
-      # The sound to play
-      value: entity.villager.no
-      # The volume of sound
-      volume: 1.0
-      # The pitch of the sound
-      pitch: 1.0
+  # These are buttons that are static and cannot be removed.
+  static:
+    accept: # Do not change this
+      # The name of the button
+      name: "<green>Yes"
+      # The slot the item goes in
+      slot: 12
+      # The type of block
+      material: emerald_block
+      # Add lore to the item
+      lore: []
+      # Run commands
+      commands: []
+      # Send messages
+      messages: []
+      # The sound settings
+      sound:
+        # Should the sound play?
+        toggle: true
+        # The sound to play
+        value: entity.villager.yes
+        # The volume of sound
+        volume: 1.0
+        # The pitch of the sound
+        pitch: 1.0
+    deny: # Do not change this
+      # The name of the button
+      name: "<red>No"
+      # The slot the item goes in
+      slot: 14
+      # The type of block
+      material: redstone_block
+      # Add lore to the item
+      lore: []
+      # Run commands
+      commands: []
+      # Send messages
+      messages: []
+      # The sound settings
+      sound:
+        # Should the sound play?
+        toggle: true
+        # The sound to play
+        value: entity.villager.no
+        # The volume of sound
+        volume: 1.0
+        # The pitch of the sound
+        pitch: 1.0
+
+  # A list of custom buttons for anywhere in the gui.
+  custom: []
