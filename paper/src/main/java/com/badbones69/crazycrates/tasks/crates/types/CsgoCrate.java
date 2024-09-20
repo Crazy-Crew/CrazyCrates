@@ -7,7 +7,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
-import com.badbones69.crazycrates.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;

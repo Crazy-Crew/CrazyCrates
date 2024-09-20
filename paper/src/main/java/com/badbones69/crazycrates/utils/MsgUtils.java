@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.utils;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

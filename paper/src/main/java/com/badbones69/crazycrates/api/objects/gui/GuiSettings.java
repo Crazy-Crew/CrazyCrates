@@ -1,9 +1,13 @@
 package com.badbones69.crazycrates.api.objects.gui;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.FillerType;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.objects.gui.buttons.CrateButton;
+import com.badbones69.crazycrates.api.objects.gui.buttons.GuiButton;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,6 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GuiSettings {
+
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final String title;
     private final int rows;

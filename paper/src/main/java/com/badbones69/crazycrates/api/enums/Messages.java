@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.api.enums;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
 import com.badbones69.crazycrates.api.enums.misc.State;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;

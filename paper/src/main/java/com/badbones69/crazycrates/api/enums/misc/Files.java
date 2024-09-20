@@ -26,11 +26,9 @@ public enum Files {
         this.fileName = fileName;
     }
 
-
-
     public final YamlConfiguration getConfiguration() {
         if (this.fileName.equalsIgnoreCase("respin-gui.yml")) {
-            return this.fileManager.getFile(true, this.fileName).getConfiguration();
+            return this.fileManager.getFile(this.fileName, true).getConfiguration();
         }
 
         return this.fileManager.getFile(this.fileName).getConfiguration();
