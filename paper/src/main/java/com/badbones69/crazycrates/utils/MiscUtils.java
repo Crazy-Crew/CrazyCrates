@@ -44,16 +44,51 @@ public class MiscUtils {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    public static void sendCommand(@NotNull final String command) {
+    public static void sendCommand(@Nullable final CommandSender sender, @NotNull final String command, @NotNull final Map<String, String> placeholders) {
         if (command.isEmpty()) return;
 
-        Server server = plugin.getServer();
+        final Server server = plugin.getServer();
 
-        server.getGlobalRegionScheduler().run(plugin, scheduledTask -> {
-            ConsoleCommandSender console = server.getConsoleSender();
+        final String result = populatePlaceholders(sender, command, placeholders);
 
-            server.dispatchCommand(console, command);
-        });
+        new FoliaRunnable(server.getGlobalRegionScheduler()) {
+            @Override
+            public void run() {
+                server.dispatchCommand(server.getConsoleSender(), result);
+            }
+        }.run(plugin);
+    }
+
+    public static void sendCommand(@NotNull final String command, @NotNull final Map<String, String> placeholders) {
+        sendCommand(null, command, placeholders);
+    }
+
+    public static void sendCommand(@NotNull final String command) {
+        sendCommand(command, new HashMap<>());
+    }
+
+    public static String populatePlaceholders(@Nullable final CommandSender sender, @NotNull String line, @NotNull final Map<String, String> placeholders) {
+        if (sender != null && Support.placeholder_api.isEnabled()) {
+            if (sender instanceof Player player) {
+                line = PlaceholderAPI.setPlaceholders(player, line);
+            }
+        }
+
+        if (!placeholders.isEmpty()) {
+            for (final Map.Entry<String, String> placeholder : placeholders.entrySet()) {
+
+                if (placeholder != null) {
+                    final String key = placeholder.getKey();
+                    final String value = placeholder.getValue();
+
+                    if (key != null && value != null) {
+                        line = line.replace(key, value).replace(key.toLowerCase(), value);
+                    }
+                }
+            }
+        }
+
+        return line;
     }
 
     public static double calculateWeight(int chance, int maxRange) {

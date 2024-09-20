@@ -248,25 +248,6 @@ public enum Messages {
             message = getString();
         }
 
-        if (sender instanceof Player player) {
-            if (Support.placeholder_api.isEnabled()) {
-                message = PlaceholderAPI.setPlaceholders(player, message);
-            }
-        }
-
-        if (!placeholders.isEmpty()) {
-            for (Map.Entry<String, String> placeholder : placeholders.entrySet()) {
-                if (placeholder != null) {
-                    final String key = placeholder.getKey();
-                    final String value = placeholder.getValue();
-
-                    if (key != null && value != null) {
-                        message = message.replace(key, value).replace(key.toLowerCase(), value);
-                    }
-                }
-            }
-        }
-
-        return message;
+        return MiscUtils.populatePlaceholders(sender, message, placeholders);
     }
 }
