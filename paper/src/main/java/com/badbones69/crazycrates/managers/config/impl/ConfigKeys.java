@@ -25,7 +25,6 @@ public class ConfigKeys implements SettingsHolder {
                 "Features: https://github.com/Crazy-Crew/CrazyCrates/issues",
                 "",
                 "List of all sounds: https://minecraft.wiki/w/Sounds.json#Java_Edition_values",
-                "List of all enchantments: https://jd.papermc.io/paper/1.20/org/bukkit/enchantments/Enchantment.html"
         };
 
         String[] deprecation = {
