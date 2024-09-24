@@ -122,20 +122,14 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("If /crates should open the main menu. Warning: This will remove the menu button from crate previews.")
     public static final Property<Boolean> enable_crate_menu = newProperty("gui.toggle", true);
 
-    @Comment("Whether to show the display item when opening QuickCrate")
-    public static final Property<Boolean> show_quickcrate_item = newProperty("crate.quickcrate-display-item", true);
-
-    //@Comment("Logs all crate actions to a .txt file if enabled. It is recommended to delete the file occasionally.")
-    //public static final Property<Boolean> log_to_file = newProperty("crate.log-file", false);
-
-    //@Comment("Logs all crate actions to console if enabled.")
-    //public static final Property<Boolean> log_to_console = newProperty("crate.log-console", false);
-
     @Comment("The name of the gui.")
     public static final Property<String> inventory_name = newProperty("gui.inventory.name", "<bold><blue>Crazy <dark_red>Crates</bold>");
 
     @Comment("The amount of rows for a gui.")
     public static final Property<Integer> inventory_rows = newProperty("gui.inventory.rows", 5);
+
+    @Comment("Whether to show the display item when opening QuickCrate")
+    public static final Property<Boolean> show_quickcrate_item = newProperty("crate.quickcrate-display-item", true);
 
     @Comment("If crates should knock you back if you have no keys.")
     public static final Property<Boolean> knock_back = newProperty("crate.knock-back", true);
@@ -203,6 +197,12 @@ public class ConfigKeys implements SettingsHolder {
             "Set this to blank to have it populate with glass."
     })
     public static final Property<String> crate_csgo_finished_material = newProperty("crate.types.csgo.finished-material", "iron_ingot");
+
+    @Comment("Logs all crate actions to console if enabled.")
+    public static final Property<Boolean> log_to_console = newProperty("crate.log-to-console", false);
+
+    @Comment("Logs all crate/key actions to individual files, on plugin reload and shutdown. the files will zip to avoid size errors.")
+    public static final Property<Boolean> log_to_file = newProperty("crate.log-to-file", false);
 
     @Comment("The item the button should be.")
     public static final Property<String> menu_button_item = newProperty("gui.inventory.buttons.menu.item", "compass");
