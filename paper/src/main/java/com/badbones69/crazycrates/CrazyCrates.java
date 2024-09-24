@@ -1,6 +1,9 @@
 package com.badbones69.crazycrates;
 
+import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.api.objects.other.Server;
+import com.badbones69.crazycrates.managers.config.ConfigManager;
+import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
@@ -18,6 +21,7 @@ import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.common.utils.FileUtil;
 import com.ryderbelserion.vital.paper.Vital;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
@@ -148,6 +152,13 @@ public class CrazyCrates extends Vital {
 
         if (this.instance != null) {
             this.instance.disable();
+        }
+
+        final File logsFolder = new File(getDataFolder(), "logs");
+
+        if (logsFolder.exists() && ConfigManager.getConfig().getProperty(ConfigKeys.log_to_file)) {
+            FileUtil.zip(Files.crate_log.getFile(), logsFolder, "", true);
+            FileUtil.zip(Files.key_log.getFile(), logsFolder, "", true);
         }
     }
 
