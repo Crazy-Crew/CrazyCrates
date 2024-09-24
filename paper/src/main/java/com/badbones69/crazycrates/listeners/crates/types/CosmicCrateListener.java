@@ -3,6 +3,8 @@ package com.badbones69.crazycrates.listeners.crates.types;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.managers.events.EventManager;
+import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import io.papermc.paper.persistence.PersistentDataContainerView;
@@ -325,6 +327,8 @@ public class CosmicCrateListener implements Listener {
                     this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", MsgUtils.getPrefix()).replaceAll("%player%", player.getName())));
                 }
             }
+
+            EventManager.logEvent(EventType.event_crate_opened, player, player, crate, type, 1);
 
             this.crateManager.addRepeatingCrateTask(player, new TimerTask() {
                 int time = 0;

@@ -4,6 +4,8 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
+import com.badbones69.crazycrates.managers.events.EventManager;
+import com.badbones69.crazycrates.managers.events.enums.EventType;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
@@ -75,5 +77,7 @@ public class CommandTransfer extends BaseCommand {
         Messages.transfer_sent_keys.sendMessage(player, placeholders);
 
         Messages.transfer_received_keys.sendMessage(target, "{player}", player.getName());
+
+        EventManager.logEvent(EventType.event_key_transferred, target, player, crate, KeyType.virtual_key, amount);
     }
 }

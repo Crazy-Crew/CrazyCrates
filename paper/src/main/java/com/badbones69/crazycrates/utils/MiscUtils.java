@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.utils;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.misc.Files;
+import com.ryderbelserion.vital.common.utils.FileUtil;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -28,6 +29,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -52,6 +55,29 @@ public class MiscUtils {
 
             server.dispatchCommand(console, command);
         });
+    }
+
+    public static void janitor() {
+        final File logsFolder = new File(plugin.getDataFolder(), "logs");
+
+        if (logsFolder.exists() && ConfigManager.getConfig().getProperty(ConfigKeys.log_to_file)) {
+            final File crateLog = Files.crate_log.getFile();
+            final File keyLog = Files.key_log.getFile();
+
+            FileUtil.zip(logsFolder, ".log", true);
+
+            try {
+                if (!crateLog.exists()) {
+                    crateLog.createNewFile();
+                }
+
+                if (!keyLog.exists()) {
+                    keyLog.createNewFile();
+                }
+            } catch (IOException exception) {
+                plugin.getLogger().warning("Failed to create files.");
+            }
+        }
     }
 
     public static double calculateWeight(int chance, int maxRange) {

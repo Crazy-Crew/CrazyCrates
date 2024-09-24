@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
+import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import org.bukkit.Color;
@@ -23,9 +24,9 @@ public class FireCrackerCrate extends CrateBuilder {
     }
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand, final EventType eventType) {
         // Crate event failed so we return.
-        if (isCrateEventValid(type, checkHand)) {
+        if (isCrateEventValid(type, checkHand, eventType)) {
             return;
         }
 
@@ -76,7 +77,7 @@ public class FireCrackerCrate extends CrateBuilder {
 
                     QuickCrate quickCrate = new QuickCrate(crate, player, getLocation());
 
-                    quickCrate.open(KeyType.free_key, false);
+                    quickCrate.open(KeyType.free_key, false, eventType);
                 }
             }
         }.runAtFixedRate(this.plugin, 0, 2));

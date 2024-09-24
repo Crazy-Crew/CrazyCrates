@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
@@ -169,7 +170,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                             return;
                         }
 
-                        this.crateManager.openCrate(this.player, crate, keyType, this.player.getLocation(), true, false);
+                        this.crateManager.openCrate(this.player, crate, keyType, this.player.getLocation(), true, false, EventType.event_crate_opened);
                     }));
                 }
             }

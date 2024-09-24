@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.tasks.crates.types;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.managers.events.enums.EventType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -17,9 +18,9 @@ public class CrateOnTheGo extends CrateBuilder {
     }
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand) {
+    public void open(@NotNull final KeyType type, final boolean checkHand, final EventType eventType) {
         // Crate event failed so we return.
-        if (isCrateEventValid(KeyType.physical_key, checkHand)) {
+        if (isCrateEventValid(KeyType.physical_key, checkHand, eventType)) {
             return;
         }
 

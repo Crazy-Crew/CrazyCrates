@@ -21,7 +21,6 @@ import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.common.utils.FileUtil;
 import com.ryderbelserion.vital.paper.Vital;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
@@ -29,6 +28,7 @@ import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -68,6 +68,7 @@ public class CrazyCrates extends Vital {
                 .addFolder("logs")
                 .init();
 
+        MiscUtils.janitor();
         MiscUtils.save();
 
         // Register permissions that we need.
@@ -154,12 +155,7 @@ public class CrazyCrates extends Vital {
             this.instance.disable();
         }
 
-        final File logsFolder = new File(getDataFolder(), "logs");
-
-        if (logsFolder.exists() && ConfigManager.getConfig().getProperty(ConfigKeys.log_to_file)) {
-            FileUtil.zip(Files.crate_log.getFile(), logsFolder, "", true);
-            FileUtil.zip(Files.key_log.getFile(), logsFolder, "", true);
-        }
+        MiscUtils.janitor();
     }
 
     public final InventoryManager getInventoryManager() {

@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api.builders;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
@@ -144,8 +145,9 @@ public abstract class CrateBuilder extends FoliaRunnable {
      *
      * @param type type of key
      * @param checkHand whether to check hands or not
+     * @param eventType {@link EventType}
      */
-    public abstract void open(@NotNull final KeyType type, final boolean checkHand);
+    public abstract void open(@NotNull final KeyType type, final boolean checkHand, final EventType eventType);
 
     /**
      * Add a new crate task.
@@ -313,10 +315,11 @@ public abstract class CrateBuilder extends FoliaRunnable {
      *
      * @param keyType virtual or physical key
      * @param checkHand true or false
+     * @param eventType {@link EventType}
      * @return true if cancelled otherwise false
      */
-    public final boolean isCrateEventValid(@NotNull final KeyType keyType, final boolean checkHand) {
-        CrateOpenEvent event = new CrateOpenEvent(this.player, this.crate, keyType, checkHand, this.crate.getFile());
+    public final boolean isCrateEventValid(@NotNull final KeyType keyType, final boolean checkHand, final EventType eventType) {
+        CrateOpenEvent event = new CrateOpenEvent(this.player, this.crate, keyType, checkHand, this.crate.getFile(), eventType);
         event.callEvent();
 
         if (event.isCancelled()) {

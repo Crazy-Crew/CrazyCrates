@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.tasks.crates;
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
+import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.api.objects.crates.CrateHologram;
 import com.badbones69.crazycrates.api.objects.crates.quadcrates.CrateSchematic;
@@ -555,8 +556,9 @@ public class CrateManager {
      * @param crate the crate that is being used.
      * @param location the location that may be needed for some crate types.
      * @param checkHand if it just checks the players hand or if it checks their inventory.
+     * @param eventType {@link EventType}
      */
-    public void openCrate(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, @NotNull final Location location, final boolean virtualCrate, final boolean checkHand) {
+    public void openCrate(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, @NotNull final Location location, final boolean virtualCrate, final boolean checkHand, final EventType eventType) {
         final SettingsManager config = ConfigManager.getConfig();
 
         if (crate.getCrateType() == CrateType.menu) {
@@ -685,7 +687,7 @@ public class CrateManager {
         }
 
         // Open the crate.
-        crateBuilder.open(keyType, checkHand);
+        crateBuilder.open(keyType, checkHand, eventType);
     }
 
     /**

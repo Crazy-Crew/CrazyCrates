@@ -5,6 +5,8 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.managers.config.ConfigManager;
 import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
+import com.badbones69.crazycrates.managers.events.EventManager;
+import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;
@@ -111,5 +113,7 @@ public class CrateOpenListener implements Listener {
                 });
             }
         }
+
+        EventManager.logEvent(event.getEventType(), player, player, crate, event.getKeyType(), 1);
     }
 }

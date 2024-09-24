@@ -110,7 +110,7 @@ public class CommandGive extends BaseCommand {
                 return;
             }
 
-            this.userManager.addKeys(player.getUniqueId(), crateName, keyType, amount);
+            addKey(sender, player, crate, keyType, amount);
         }
     }
 }
