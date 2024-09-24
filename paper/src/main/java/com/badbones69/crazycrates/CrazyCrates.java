@@ -61,6 +61,7 @@ public class CrazyCrates extends Vital {
         getFileManager().addFile(new File(getDataFolder(), "locations.yml")).addFile(new File(getDataFolder(), "data.yml"))
                 .addFolder("crates")
                 .addFolder("schematics")
+                .addFolder("logs")
                 .init();
 
         MiscUtils.save();
