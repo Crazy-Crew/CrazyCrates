@@ -655,7 +655,7 @@ public class BukkitUserManager extends UserManager {
             return 0;
         }
 
-        return this.data.getConfiguration().getInt("Players." + uuid + ".respins." + crateName, 0);
+        return this.data.getConfiguration().getInt("Players." + uuid + ".respins." + crateName + ".amount", 0);
     }
 
     public void addRespinPrize(@NotNull final UUID uuid, @NotNull final String crateName, final String prize) {
