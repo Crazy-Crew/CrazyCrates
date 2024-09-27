@@ -36,6 +36,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -77,6 +78,10 @@ public class Crate {
     private int requiredKeys;
 
     private boolean cyclePrize;
+
+    private final Map<String, Integer> permissions = new HashMap<>();
+    private boolean cyclePermissionToggle;
+    private int cyclePermissionCap;
 
     private List<String> prizeMessage = new ArrayList<>();
 
@@ -442,7 +447,19 @@ public class Crate {
 
         return prize;
     }
-    
+
+    public final boolean isCyclePermissionToggle() {
+        return this.cyclePermissionToggle;
+    }
+
+    public final int getCyclePermissionCap() {
+        return this.cyclePermissionCap;
+    }
+
+    public final Map<String, Integer> getPermissions() {
+        return this.permissions;
+    }
+
     /**
      * @return name file name.
      */
