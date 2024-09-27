@@ -74,6 +74,7 @@ public enum Messages {
     crate_teleported(CrateKeys.crate_teleported),
     crate_cannot_teleport(CrateKeys.crate_cannot_teleport),
     crate_prize_max_pulls(CrateKeys.crate_prize_max_pulls),
+    crate_prize_max_respins(CrateKeys.crate_prize_max_respins),
 
     gave_a_player_keys(CommandKeys.gave_a_player_keys),
     cannot_give_player_keys(CommandKeys.cannot_give_player_keys),

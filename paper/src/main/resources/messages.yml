@@ -116,6 +116,9 @@ crates:
       #
       # A list of available placeholders: {maxpulls}, {pulls}
       max: '{prefix}<red>This prize can no longer be obtained, {pulls}/{maxpulls}'
+    respins:
+      # A list of available placeholders: {respins_left}, {respins_total}
+      max: '{prefix}<red>You can no longer respin, {respins_left}/{respins_total}'
 # All messages related to commands.
 command:
   open:

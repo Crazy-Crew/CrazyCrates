@@ -106,4 +106,8 @@ public class CrateKeys implements SettingsHolder {
             "A list of available placeholders: {maxpulls}, {pulls}"
     })
     public static final Property<String> crate_prize_max_pulls = newProperty("crates.pulls.max", "{prefix}<red>This prize can no longer be obtained, {pulls}/{maxpulls}");
+
+    @Comment("A list of available placeholders: {respins_left}, {respins_total}")
+    public static final Property<String> crate_prize_max_respins = newProperty("crates.respins.max", "{prefix}<red>You can no longer respin, {respins_left}/{respins_total}");
+
 }
