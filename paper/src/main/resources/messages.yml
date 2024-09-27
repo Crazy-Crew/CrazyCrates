@@ -107,15 +107,18 @@ crates:
     per-crate: "<dark_gray>[<blue>{id}<dark_gray>]: <red>{crate_name}<dark_gray>, <red>{world}<dark_gray>, <red>{x}<dark_gray>, <red>{y}<dark_gray>, <red>{z}"
     teleport:
       # A list of available placeholders: {name}
-      success: '<red>You have been teleported to the location with the name: <gold>{name}.'
+      success: '{prefix}<red>You have been teleported to the location with the name: <gold>{name}.'
       # A list of available placeholders: {id}
-      failed: '<red>There is no location with the name: <gold>{id}.'
+      failed: '{prefix}<red>There is no location with the name: <gold>{id}.'
     pulls:
       # This will add a notice to a prize, if the prize has reached max pulls.
       # If this message is empty, it will not add the lore to prizes.
       #
       # A list of available placeholders: {maxpulls}, {pulls}
-      max: '<red>This prize can no longer be obtained, {pulls}/{maxpulls}'
+      max: '{prefix}<red>This prize can no longer be obtained, {pulls}/{maxpulls}'
+    respins:
+      # A list of available placeholders: {respins_left}, {respins_total}
+      max: '{prefix}<red>You can no longer respin, {respins_left}/{respins_total}'
 # All messages related to commands.
 command:
   open:

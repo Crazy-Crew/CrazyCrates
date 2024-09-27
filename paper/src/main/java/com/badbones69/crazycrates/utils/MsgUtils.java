@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.utils;
 
-import com.badbones69.crazycrates.CrazyCrates;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -9,8 +8,6 @@ import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class MsgUtils {
-
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     public static void sendMessage(CommandSender commandSender, @NotNull final String message, final boolean prefixToggle) {
         if (message.isEmpty()) return;
@@ -41,12 +38,20 @@ public class MsgUtils {
     }
 
     /**
+     * Get the prefix.
+     *
      * @return the {@link String}
      */
     public static @NotNull String getPrefix() {
         return ConfigManager.getConfig().getProperty(ConfigKeys.command_prefix);
     }
 
+    /**
+     * Get prefix with message.
+     *
+     * @param msg the message
+     * @return the message with prefix
+     */
     public static @NotNull String getPrefix(@NotNull final String msg) {
         if (msg.isEmpty()) return "";
 

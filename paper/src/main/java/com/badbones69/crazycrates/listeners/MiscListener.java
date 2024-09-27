@@ -1,6 +1,9 @@
 package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.api.builders.types.features.CrateSpinMenu;
+import com.badbones69.crazycrates.api.enums.misc.Files;
+import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
@@ -24,6 +27,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class MiscListener implements Listener {
 
@@ -47,6 +53,28 @@ public class MiscListener implements Listener {
 
         // Also add the new data.
         this.userManager.loadOfflinePlayersKeys(player, this.crateManager.getUsableCrates());
+
+        /*final Map<Crate, Prize> prizes = new HashMap<>() {{
+            final UUID uuid = player.getUniqueId();
+
+            crateManager.getUsableCrates().forEach(crate -> {
+                final String fileName = crate.getFileName();
+
+                if (userManager.hasRespinPrize(uuid, fileName)) {
+                    put(crateManager.getCrateFromName(fileName), crate.getPrize(userManager.getRespinPrize(uuid, fileName)));
+                }
+            });
+        }};*/
+
+        final UUID uuid = player.getUniqueId();
+
+        for (final Crate crate : this.crateManager.getUsableCrates()) {
+            final String fileName = crate.getFileName();
+
+            if (crate.isCyclePrize() && this.userManager.hasRespinPrize(uuid, fileName)) {
+                new CrateSpinMenu(player, new GuiSettings(crate, crate.getPrize(this.userManager.getRespinPrize(uuid, fileName)), Files.respin_gui.getConfiguration())).open();
+            }
+        }
     }
 
     @EventHandler(ignoreCancelled = true)

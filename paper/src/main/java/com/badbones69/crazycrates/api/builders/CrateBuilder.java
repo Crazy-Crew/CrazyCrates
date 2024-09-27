@@ -146,8 +146,9 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param type type of key
      * @param checkHand whether to check hands or not
      * @param eventType {@link EventType}
+     * @param isSilent true or false
      */
-    public abstract void open(@NotNull final KeyType type, final boolean checkHand, final EventType eventType);
+    public abstract void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType);
 
     /**
      * Add a new crate task.
@@ -318,8 +319,8 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param eventType {@link EventType}
      * @return true if cancelled otherwise false
      */
-    public final boolean isCrateEventValid(@NotNull final KeyType keyType, final boolean checkHand, final EventType eventType) {
-        CrateOpenEvent event = new CrateOpenEvent(this.player, this.crate, keyType, checkHand, this.crate.getFile(), eventType);
+    public final boolean isCrateEventValid(@NotNull final KeyType keyType, final boolean checkHand, final boolean isSilent, final EventType eventType) {
+        CrateOpenEvent event = new CrateOpenEvent(this.player, this.crate, keyType, checkHand, this.crate.getFile(), isSilent, eventType);
         event.callEvent();
 
         if (event.isCancelled()) {

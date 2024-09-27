@@ -76,6 +76,11 @@ public class Crate {
     private int maxMassOpen;
     private int requiredKeys;
 
+    private boolean cyclePrize;
+
+    private boolean cyclePermissionToggle;
+    private int cyclePermissionCap;
+
     private List<String> prizeMessage = new ArrayList<>();
 
     private List<String> prizeCommands = new ArrayList<>();
@@ -130,6 +135,19 @@ public class Crate {
         this.broadcastToggle = this.file.getBoolean("Crate.Settings.Broadcast.Toggle", false);
         this.broadcastMessages = this.file.getStringList("Crate.Settings.Broadcast.Messages");
         this.broadcastPermission = this.file.getString("Crate.Settings.Broadcast.Permission", "");
+
+        this.cyclePrize = this.file.getBoolean("Crate.Settings.Rewards.Re-Roll-Spin", false);
+
+        this.cyclePermissionToggle = this.file.getBoolean("Crate.Settings.Rewards.Permission.Toggle", false);
+        this.cyclePermissionCap = this.file.getInt("Crate.Settings.Rewards.Permission.Max-Cap", 20);
+
+        for (int node = 1; node < this.cyclePermissionCap; node++) {
+            if (this.cyclePermissionToggle) {
+                MiscUtils.registerPermission("crazycrates.respin." + this.name + "." + node, "Allows you to open the crate " + this.name + node + " amount of times.", false);
+            } else {
+                MiscUtils.unregisterPermission("crazycrates.respin." + this.name + "." + node);
+            }
+        }
 
         if (this.broadcastToggle) {
             MiscUtils.registerPermission(this.broadcastPermission, "Hides the broadcast message if a player has this permission", false);
@@ -438,7 +456,15 @@ public class Crate {
 
         return prize;
     }
-    
+
+    public final boolean isCyclePermissionToggle() {
+        return this.cyclePermissionToggle;
+    }
+
+    public final int getCyclePermissionCap() {
+        return this.cyclePermissionCap;
+    }
+
     /**
      * @return name file name.
      */
@@ -853,6 +879,10 @@ public class Crate {
         }
 
         return prizes;
+    }
+
+    public final boolean isCyclePrize() {
+        return this.cyclePrize;
     }
 
     public final boolean useRequiredKeys() {

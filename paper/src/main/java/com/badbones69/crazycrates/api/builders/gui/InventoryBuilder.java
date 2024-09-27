@@ -2,13 +2,14 @@ package com.badbones69.crazycrates.api.builders.gui;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.utils.MiscUtils;
+import com.badbones69.crazycrates.managers.BukkitUserManager;
+import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.managers.config.ConfigManager;
 import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.badbones69.crazycrates.tasks.menus.CrateMainMenu;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.BaseGui;
 import com.ryderbelserion.vital.paper.api.enums.Support;
@@ -16,7 +17,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.users.UserManager;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +34,7 @@ public abstract class InventoryBuilder {
 
     protected final CrateManager crateManager = this.plugin.getCrateManager();
 
-    protected final UserManager userManager = this.plugin.getUserManager();
+    protected final BukkitUserManager userManager = this.plugin.getUserManager();
 
     protected final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 

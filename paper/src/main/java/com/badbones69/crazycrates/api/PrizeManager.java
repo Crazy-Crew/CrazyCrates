@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.ConfigurationSection;
@@ -15,6 +16,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.utils.MsgUtils;
@@ -29,6 +31,53 @@ import static java.util.regex.Matcher.quoteReplacement;
 public class PrizeManager {
     
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final BukkitUserManager userManager = plugin.getUserManager();
+
+    public static int getCap(final Crate crate, final Player player) {
+        final String format = "crazycrates.respin." + crate.getFileName() + ".";
+        int cap = 0;
+
+        for (final PermissionAttachmentInfo permission : player.getEffectivePermissions()) {
+            String node = permission.getPermission();
+
+            if (node.startsWith(format.toLowerCase())) {
+                node = node.replace(format.toLowerCase(), "");
+
+                int number = Integer.parseInt(node);
+
+                if (number > cap && cap < crate.getCyclePermissionCap()) {
+                    cap = number;
+                }
+            }
+        }
+
+        return cap;
+    }
+
+    public static boolean isCapped(final Crate crate, final Player player) {
+        boolean isCapped = false;
+
+        if (!crate.isCyclePermissionToggle() || crate.getCyclePermissionCap() < 1 || player.isOp()) {
+            return false;
+        }
+
+        final int wins = userManager.getCrateRespin(player.getUniqueId(), crate.getFileName());
+
+        int cap = getCap(crate, player);
+
+        final String format = "crazycrates.respin." + crate.getFileName() + ".";
+        final String node = format + cap;
+
+        if (player.hasPermission(node)) {
+            if (wins >= cap) {
+                isCapped = true;
+            }
+        } else {
+            isCapped = true;
+        }
+
+        return isCapped;
+    }
 
     /**
      * Gets the prize for the player.

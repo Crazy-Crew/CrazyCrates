@@ -557,8 +557,25 @@ public class CrateManager {
      * @param location the location that may be needed for some crate types.
      * @param checkHand if it just checks the players hand or if it checks their inventory.
      * @param eventType {@link EventType}
+     * @param player the player that is having the crate opened for them
+     * @param crate the crate that is being used
+     * @param location the location that may be needed for some crate types
+     * @param checkHand if it just checks the players hand or if it checks their inventory
      */
     public void openCrate(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, @NotNull final Location location, final boolean virtualCrate, final boolean checkHand, final EventType eventType) {
+        openCrate(player, crate, keyType, location, virtualCrate, checkHand, false, eventType);
+    }
+
+    /**
+     * Opens a crate for a player.
+     *
+     * @param player the player that is having the crate opened for them
+     * @param crate the crate that is being used
+     * @param location the location that may be needed for some crate types
+     * @param checkHand if it just checks the players hand or if it checks their inventory
+     * @param isSilent true or false, this decides on sending the broadcast messages etc
+     */
+    public void openCrate(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, @NotNull final Location location, final boolean virtualCrate, final boolean checkHand, final boolean isSilent, final EventType eventType) {
         final SettingsManager config = ConfigManager.getConfig();
 
         if (crate.getCrateType() == CrateType.menu) {
@@ -687,7 +704,7 @@ public class CrateManager {
         }
 
         // Open the crate.
-        crateBuilder.open(keyType, checkHand, eventType);
+        crateBuilder.open(keyType, checkHand, isSilent, eventType);
     }
 
     /**

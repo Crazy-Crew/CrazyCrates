@@ -35,13 +35,10 @@ public class QuickCrate extends CrateBuilder {
     }
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand, final EventType eventType) {
-        // If the crate type is not fire cracker.
-        if (!isFireCracker()) {
-            // If the crate event failed.
-            if (isCrateEventValid(type, checkHand, eventType)) {
-                return;
-            }
+    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType) {
+        // Crate event failed so we return.
+        if (isCrateEventValid(type, checkHand, isSilent, eventType)) {
+            return;
         }
 
         final Player player = getPlayer();

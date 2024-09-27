@@ -6,7 +6,6 @@ import com.badbones69.crazycrates.managers.config.ConfigManager;
 import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.events.EventManager;
-import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;
@@ -86,7 +85,7 @@ public class CrateOpenListener implements Listener {
         final String broadcastMessage = configuration.getString("Crate.BroadCast", "");
         final boolean broadcastToggle = configuration.getBoolean("Crate.OpeningBroadCast", false);
 
-        if (broadcastToggle && crate.getCrateType() != CrateType.cosmic) {
+        if (broadcastToggle && crate.getCrateType() != CrateType.cosmic && !event.isSilent()) {
             if (!broadcastMessage.isBlank()) {
                 final String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 

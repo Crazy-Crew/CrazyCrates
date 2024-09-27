@@ -97,7 +97,7 @@ public class CrateKeys implements SettingsHolder {
     public static final Property<String> crate_teleported = newProperty("crates.teleport.success", "<red>You have been teleported to the location with the name: <gold>{name}.");
 
     @Comment("A list of available placeholders: {id}")
-    public static final Property<String> crate_cannot_teleport = newProperty("crates.teleport.failed", "<red>There is no location with the name: <gold>{id}.");
+    public static final Property<String> crate_cannot_teleport = newProperty("crates.teleport.failed", "{prefix}<red>There is no location with the name: <gold>{id}.");
 
     @Comment({
             "This will add a notice to a prize, if the prize has reached max pulls.",
@@ -105,5 +105,9 @@ public class CrateKeys implements SettingsHolder {
             "",
             "A list of available placeholders: {maxpulls}, {pulls}"
     })
-    public static final Property<String> crate_prize_max_pulls = newProperty("crates.pulls.max", "<red>This prize can no longer be obtained, {pulls}/{maxpulls}");
+    public static final Property<String> crate_prize_max_pulls = newProperty("crates.pulls.max", "{prefix}<red>This prize can no longer be obtained, {pulls}/{maxpulls}");
+
+    @Comment("A list of available placeholders: {respins_left}, {respins_total}")
+    public static final Property<String> crate_prize_max_respins = newProperty("crates.respins.max", "{prefix}<red>You can no longer respin, {respins_left}/{respins_total}");
+
 }

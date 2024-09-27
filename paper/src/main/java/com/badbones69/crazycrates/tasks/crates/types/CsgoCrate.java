@@ -1,9 +1,12 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.api.builders.types.features.CrateSpinMenu;
+import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
@@ -33,9 +36,9 @@ public class CsgoCrate extends CrateBuilder {
     }
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand, final EventType eventType) {
+    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType) {
         // Crate event failed so we return.
-        if (isCrateEventValid(type, checkHand, eventType)) {
+        if (isCrateEventValid(type, checkHand, isSilent, eventType)) {
             return;
         }
 
@@ -110,19 +113,25 @@ public class CsgoCrate extends CrateBuilder {
                         if (item != null) {
                             final Prize prize = crate.getPrize(item);
 
-                            PrizeManager.givePrize(player, crate, prize);
+                            if (crate.isCyclePrize()) { // re-open this menu
+                                new CrateSpinMenu(player, new GuiSettings(crate, prize, Files.respin_gui.getConfiguration())).open();
+                            } else {
+                                PrizeManager.givePrize(player, crate, prize);
+                            }
                         }
 
                         crateManager.removePlayerFromOpeningList(player);
 
-                        cancel();
+                        if (!crate.isCyclePrize()) {
+                            new FoliaRunnable(player.getScheduler(), null) {
+                                @Override
+                                public void run() {
+                                    if (player.getOpenInventory().getTopInventory().equals(getInventory())) player.closeInventory();
+                                }
+                            }.runDelayed(plugin, 40);
+                        }
 
-                        new FoliaRunnable(player.getScheduler(), null) {
-                            @Override
-                            public void run() {
-                                if (player.getOpenInventory().getTopInventory().equals(getInventory())) player.closeInventory();
-                            }
-                        }.runDelayed(plugin, 40);
+                        cancel();
                     } else if (this.time > 60) { // Added this due reports of the prizes spamming when low tps.
                         cancel();
                     }

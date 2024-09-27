@@ -7,11 +7,13 @@ import java.io.File;
 
 public enum Files {
 
-    locations("locations.yml"),
-    data("data.yml"),
+    respin_gui("respin-gui.yml", "guis"),
 
+    crate_log("crates.log", "logs"),
     key_log("keys.log", "logs"),
-    crate_log("crates.log", "logs");
+
+    locations("locations.yml"),
+    data("data.yml");
 
 
     private final String fileName;
@@ -54,6 +56,6 @@ public enum Files {
     }
 
     public final File getFile() {
-        return new File(this.folder.isEmpty() ? this.plugin.getDataFolder() : new File(this.plugin.getDataFolder(), "logs"), this.fileName);
+        return new File(this.folder.isEmpty() ? this.plugin.getDataFolder() : new File(this.plugin.getDataFolder(), this.folder), this.fileName);
     }
 }

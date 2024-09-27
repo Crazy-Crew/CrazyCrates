@@ -1,0 +1,75 @@
+# The title of the gui
+title: "<red>Do you want to re-spin?"
+
+# The slot of the prize you currently have won.
+slot: 13
+
+# The amount of rows
+rows: 3
+
+# The filler settings
+filler:
+  # Should filler be enabled?
+  toggle: true
+  # The name of the item
+  name: " "
+  # The material to fill
+  material: "red_stained_glass_pane"
+  # The type of filler
+  #
+  # top, bottom, border, side, full
+  fill-type: "border"
+
+# A list of buttons to add!
+buttons:
+  # These are buttons that are static and cannot be removed.
+  static:
+    accept: # Do not change this
+      # The name of the button
+      name: "<green>Yes"
+      # The slot the item goes in
+      slot: 12
+      # The type of block
+      material: emerald_block
+      # Add lore to the item
+      lore: []
+      # Run commands
+      commands: []
+      # Send messages
+      messages: []
+      # The sound settings
+      sound:
+        # Should the sound play?
+        toggle: true
+        # The sound to play
+        value: entity.villager.yes
+        # The volume of sound
+        volume: 1.0
+        # The pitch of the sound
+        pitch: 1.0
+    deny: # Do not change this
+      # The name of the button
+      name: "<red>No"
+      # The slot the item goes in
+      slot: 14
+      # The type of block
+      material: redstone_block
+      # Add lore to the item
+      lore: []
+      # Run commands
+      commands: []
+      # Send messages
+      messages: []
+      # The sound settings
+      sound:
+        # Should the sound play?
+        toggle: true
+        # The sound to play
+        value: entity.villager.no
+        # The volume of sound
+        volume: 1.0
+        # The pitch of the sound
+        pitch: 1.0
+
+  # A list of custom buttons for anywhere in the gui.
+  custom: []

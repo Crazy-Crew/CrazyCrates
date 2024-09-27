@@ -57,7 +57,7 @@ public class CrazyCrates extends Vital {
         this.instance = new Server(getDataFolder());
         this.instance.apply();
 
-        getFileManager().addFile("locations.yml").addFile("data.yml")
+        getFileManager().addFile("locations.yml").addFile("data.yml").addFile("respin-gui.yml", "guis")
                 .addFolder("crates")
                 .addFolder("schematics")
                 .addFolder("logs")
