@@ -9,6 +9,7 @@ import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.managers.config.ConfigManager;
 import com.badbones69.crazycrates.managers.config.impl.messages.CrateKeys;
+import com.ryderbelserion.vital.common.utils.math.MathUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
@@ -198,27 +199,12 @@ public class Prize {
             this.displayItem.setPlayer(player);
         }
 
-        final String weight = format(crate.getChance(getWeight()));
+        final String weight = MathUtil.format(crate.getChance(getWeight()));
 
         this.displayItem.addLorePlaceholder("%chance%", weight).addLorePlaceholder("%maxpulls%", maxPulls).addLorePlaceholder("%pulls%", amount);
         this.displayItem.addNamePlaceholder("%chance%", weight).addNamePlaceholder("%maxpulls%", maxPulls).addNamePlaceholder("%pulls%", amount);
 
         return this.displayItem.setPersistentString(Keys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack();
-    }
-
-    /**
-     * Converts a double to a string with rounding and proper formatting.
-     *
-     * @param value the double to format
-     * @return the string
-     * @since 0.0.2
-     */
-    public final String format(final double value) {
-        final DecimalFormat decimalFormat = new DecimalFormat("###,###.###");
-
-        decimalFormat.setRoundingMode(mode());
-
-        return decimalFormat.format(value);
     }
 
     /**
