@@ -140,6 +140,9 @@ public class Crate {
 
         this.cyclePrize = this.file.getBoolean("Crate.Settings.Rewards.Re-Roll-Spin", false);
 
+        this.cyclePermissionToggle = this.file.getBoolean("Crate.Settings.Rewards.Permission.Toggle", false);
+        this.cyclePermissionCap = this.file.getInt("Crate.Settings.Rewards.Permission.Max-Cap", 20);
+
         if (this.broadcastToggle) {
             MiscUtils.registerPermission(this.broadcastPermission, "Hides the broadcast message if a player has this permission", false);
         } else {
