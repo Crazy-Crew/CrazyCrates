@@ -213,3 +213,7 @@ crate:
       #
       # Set this to blank to have it populate with glass.
       finished-material: iron_ingot
+  # Logs all crate actions to console if enabled.
+  log-to-console: false
+  # Logs all crate/key actions to individual files, on plugin reload and shutdown. the files will zip to avoid size errors.
+  log-to-file: false
