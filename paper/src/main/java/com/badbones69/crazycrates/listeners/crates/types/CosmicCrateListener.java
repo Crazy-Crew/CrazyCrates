@@ -400,19 +400,23 @@ public class CosmicCrateListener implements Listener {
     }
 
     private void startRollingAnimation(final Player player, final InventoryView view, final CratePrizeMenu cosmic) {
-        for (int slot = 0; slot < cosmic.getSize(); slot++) {
-            final Tier tier = PrizeManager.getTier(cosmic.getCrate());
+        final Crate crate = cosmic.getCrate();
 
-            if (tier != null) view.getTopInventory().setItem(slot, tier.getTierItem(player));
+        for (int slot = 0; slot < cosmic.getSize(); slot++) {
+            final Tier tier = PrizeManager.getTier(crate);
+
+            if (tier != null) view.getTopInventory().setItem(slot, tier.getTierItem(player, crate));
         }
 
-        cosmic.getCrate().playSound(player, player.getLocation(), "cycle-sound", "block.note_block.xylophone", Sound.Source.PLAYER);
+        crate.playSound(player, player.getLocation(), "cycle-sound", "block.note_block.xylophone", Sound.Source.PLAYER);
 
         player.updateInventory();
     }
 
     private void showRewards(final Player player, final InventoryView view, final CratePrizeMenu cosmic, final CosmicCrateManager cosmicCrateManager) {
-        final String rewardsName = cosmic.getCrate().getCrateName() + " - Prizes";
+        final Crate crate = cosmic.getCrate();
+
+        final String rewardsName = crate.getCrateName() + " - Prizes";
 
         cosmic.title(rewardsName);
         cosmic.sendTitleChange();
@@ -422,7 +426,7 @@ public class CosmicCrateListener implements Listener {
         cosmicCrateManager.getPrizes(player).forEach((slot, tier) -> {
             Inventory inventory = view.getTopInventory();
 
-            inventory.setItem(slot, tier.getTierItem(player));
+            inventory.setItem(slot, tier.getTierItem(player, crate));
         });
 
         player.updateInventory();
