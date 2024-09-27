@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.api.objects.gui.buttons;
 
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
@@ -51,6 +52,21 @@ public class CrateButton extends GuiButton {
 
             switch (getSection().getName()) {
                 case "accept" -> {
+                    if (PrizeManager.isCapped(this.crate, player)) {
+                        final Prize prize = this.crate.getPrize(this.userManager.getRespinPrize(uuid, this.crate.getFileName()));
+
+                        PrizeManager.givePrize(player, prize, this.crate);
+
+                        this.userManager.removeRespinPrize(uuid, this.crate.getFileName()); // remove just in case
+
+                        Messages.crate_prize_max_respins.sendMessage(player, new HashMap<>() {{
+                            put("{respins_left}", "0");
+                            put("{respins_total}", String.valueOf(PrizeManager.getCap(crate, player)));
+                        }});
+
+                        return;
+                    }
+
                     this.userManager.addRespinCrate(uuid, this.crate.getFileName(), 1);
                     this.crateManager.openCrate(player, this.crate, KeyType.free_key, player.getLocation(), true, false, true, EventType.event_crate_opened);
                 }
