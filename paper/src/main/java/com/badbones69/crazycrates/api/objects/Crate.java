@@ -93,6 +93,7 @@ public class Crate {
     private String broadcastPermission = "";
 
     private double sum = 0;
+    private double tierSum = 0;
 
     /**
      * @param name The name of the crate.
@@ -184,6 +185,8 @@ public class Crate {
 
         if (crateType == CrateType.cosmic) {
             if (this.file != null) this.manager = new CosmicCrateManager(this.file);
+
+            this.tierSum = this.tiers.stream().filter(tier -> tier.getWeight() != -1).mapToDouble(Tier::getWeight).sum();
         }
     }
 
@@ -389,6 +392,16 @@ public class Crate {
      */
     public double getChance(final double weight) {
         return (weight / this.sum) * 100D;
+    }
+
+    /**
+     * Gets the chance of the tier.
+     *
+     * @param weight the weight out of the sum
+     * @return the chance
+     */
+    public double getTierChance(final double weight) {
+        return (weight / this.tierSum) * 100D;
     }
 
     /**
