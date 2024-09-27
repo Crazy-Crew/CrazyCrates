@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
@@ -35,9 +36,9 @@ public class CsgoCrate extends CrateBuilder {
     }
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent) {
+    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType) {
         // Crate event failed so we return.
-        if (isCrateEventValid(type, checkHand, isSilent)) {
+        if (isCrateEventValid(type, checkHand, isSilent, eventType)) {
             return;
         }
 

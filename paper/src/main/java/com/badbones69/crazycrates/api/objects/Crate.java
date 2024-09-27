@@ -95,6 +95,7 @@ public class Crate {
     private String broadcastPermission = "";
 
     private double sum = 0;
+    private double tierSum = 0;
 
     /**
      * @param name The name of the crate.
@@ -178,7 +179,7 @@ public class Crate {
 
         setTierPreviewRows(file.getInt("Crate.tier-preview.rows", 5));
 
-        if (crateType == CrateType.quad_crate) {
+        if (this.crateType == CrateType.quad_crate) {
             this.particle = ItemUtil.getParticleType(file.getString("Crate.particles.type", "dust"));
 
             this.color = DyeUtil.getColor(file.getString("Crate.particles.color", "235,64,52"));
@@ -186,8 +187,10 @@ public class Crate {
 
         this.hologram = hologram;
 
-        if (crateType == CrateType.cosmic) {
+        if (this.crateType == CrateType.cosmic) {
             if (this.file != null) this.manager = new CosmicCrateManager(this.file);
+
+            this.tierSum = this.tiers.stream().filter(tier -> tier.getWeight() != -1).mapToDouble(Tier::getWeight).sum();
         }
     }
 
@@ -372,11 +375,7 @@ public class Crate {
      * @return {@link Prize}
      */
     private Prize getPrize(@NotNull final List<Prize> prizes, @NotNull final Random random) {
-        double weight = 0.0;
-
-        for (Prize itemDrop : prizes) {
-            weight += itemDrop.getWeight();
-        }
+        double weight = this.sum;
 
         int index = 0;
 
@@ -397,6 +396,16 @@ public class Crate {
      */
     public double getChance(final double weight) {
         return (weight / this.sum) * 100D;
+    }
+
+    /**
+     * Gets the chance of the tier.
+     *
+     * @param weight the weight out of the sum
+     * @return the chance
+     */
+    public double getTierChance(final double weight) {
+        return (weight / this.tierSum) * 100D;
     }
 
     /**

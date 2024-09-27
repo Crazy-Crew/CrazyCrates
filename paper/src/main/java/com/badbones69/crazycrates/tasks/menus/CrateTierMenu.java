@@ -46,7 +46,7 @@ public class CrateTierMenu extends StaticInventoryBuilder {
         final List<Tier> tiers = this.crate.getTiers();
 
         tiers.forEach(tier -> {
-            final ItemStack item = tier.getTierItem(this.player);
+            final ItemStack item = tier.getTierItem(this.player, this.crate);
             final int slot = tier.getSlot();
 
             this.gui.setItem(slot, new GuiItem(item, action -> {

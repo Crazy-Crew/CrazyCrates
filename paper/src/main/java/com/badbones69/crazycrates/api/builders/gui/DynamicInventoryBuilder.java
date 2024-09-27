@@ -72,9 +72,9 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
     }
 
     // Adds the back button
-    public void setBackButton(final int row, final int column) {
+    public void setBackButton(final int row, final int column, final boolean isPreview) {
         if (this.gui.getCurrentPageNumber() <= 1) {
-            setNavigationItem(row, column);
+            setFillerItem(row, column, isPreview);
 
             return;
         }
@@ -87,31 +87,33 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
             final int page = this.gui.getCurrentPageNumber();
 
             if (page <= 1) {
-                setNavigationItem(row, column);
+                setFillerItem(row, column, isPreview);
             } else {
-                setBackButton(row, column);
+                setBackButton(row, column, isPreview);
             }
 
             if (page < this.gui.getMaxPages()) {
-                setNextButton(this.gui.getRows(), 6);
+                setNextButton(this.gui.getRows(), 6, isPreview);
             }
         }));
 
         addMenuButton(this.player, this.crate, this.gui, this.gui.getRows(), 5);
     }
 
-    private void setNavigationItem(int row, int column) {
+    private void setFillerItem(int row, int column, boolean isPreview) {
         if (this.crate != null && this.crate.isBorderToggle()) {
             this.gui.setItem(row, column, this.crate.getBorderItem().asGuiItem());
         } else {
-            this.gui.removeItem(row, column);
+            if (!isPreview) {
+                this.gui.removeItem(row, column);
 
-            this.gui.setItem(row, column, new GuiItem(Material.BLACK_STAINED_GLASS_PANE));
+                this.gui.setItem(row, column, new GuiItem(Material.BLACK_STAINED_GLASS_PANE));
+            }
         }
     }
 
     // Adds the next button
-    public void setNextButton(final int row, final int column) {
+    public void setNextButton(final int row, final int column, final boolean isPreview) {
         if (this.gui.getCurrentPageNumber() >= this.gui.getMaxPages()) {
             return;
         }
@@ -124,9 +126,9 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
             final int page = this.gui.getCurrentPageNumber();
 
             if (page >= this.gui.getMaxPages()) {
-                setNavigationItem(row, column);
+                setFillerItem(row, column, isPreview);
             } else {
-                setNextButton(row, column);
+                setNextButton(row, column, isPreview);
             }
 
             final int rows = this.gui.getRows();
@@ -135,12 +137,14 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
                 if (this.crate != null && this.crate.isBorderToggle()) {
                     this.gui.setItem(rows, 4, this.crate.getBorderItem().asGuiItem());
                 } else {
-                    this.gui.removeItem(rows, 4);
+                    if (!isPreview) {
+                        this.gui.removeItem(rows, 4);
 
-                    this.gui.setItem(rows, 4, new GuiItem(Material.BLACK_STAINED_GLASS_PANE));
+                        this.gui.setItem(rows, 4, new GuiItem(Material.BLACK_STAINED_GLASS_PANE));
+                    }
                 }
             } else {
-                setBackButton(rows, 4);
+                setBackButton(rows, 4, isPreview);
             }
         }));
 

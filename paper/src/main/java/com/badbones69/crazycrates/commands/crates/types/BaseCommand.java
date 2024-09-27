@@ -5,6 +5,8 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.managers.events.EventManager;
+import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.InventoryManager;
@@ -161,6 +163,8 @@ public abstract class BaseCommand {
 
             Messages.take_player_keys.sendMessage(sender, placeholders);
 
+            EventManager.logEvent(EventType.event_key_removed, player, sender, crate, type, amount);
+
             return;
         }
 
@@ -174,6 +178,8 @@ public abstract class BaseCommand {
             Messages.take_offline_player_keys.sendMessage(sender, placeholders);
 
             this.userManager.takeOfflineKeys(offlinePlayer.getUniqueId(), fileName, type, amount);
+
+            EventManager.logEvent(EventType.event_key_removed, offlinePlayer, sender, crate, type, amount);
         }
     }
 
@@ -210,6 +216,8 @@ public abstract class BaseCommand {
                 Messages.obtaining_keys.sendMessage(player, placeholders);
             }
 
+            EventManager.logEvent(EventType.event_key_given, player, sender, crate, type, amount);
+
             return;
         }
 
@@ -230,6 +238,8 @@ public abstract class BaseCommand {
                 placeholders.put("{player}", offlinePlayer.getName());
 
                 Messages.given_offline_player_keys.sendMessage(sender, placeholders);
+
+                EventManager.logEvent(EventType.event_key_given, offlinePlayer, sender, crate, type, amount);
             }
         }
     }

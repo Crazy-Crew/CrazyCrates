@@ -14,6 +14,8 @@ public class CommandReload extends BaseCommand {
     @Command("reload")
     @Permission(value = "crazycrates.reload", def = PermissionDefault.OP)
     public void reload(CommandSender sender) {
+        MiscUtils.janitor();
+
         this.plugin.getInstance().reload();
 
         this.fileManager.reloadFiles().init();

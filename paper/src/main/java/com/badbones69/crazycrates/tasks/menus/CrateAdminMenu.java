@@ -101,10 +101,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
             }
         })));
 
-        setBackButton(6, 4);
-        setNextButton(6, 6);
-
-        gui.open(this.player, gui -> {
+        this.gui.open(this.player, gui -> {
             final int rows = gui.getRows();
 
             gui.setItem(rows, 5, new ItemBuilder(Material.CHEST)
@@ -132,8 +129,8 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
                         }
                     }));
 
-            setBackButton(rows, 4);
-            setNextButton(rows, 6);
+            setBackButton(rows, 4, false);
+            setNextButton(rows, 6, false);
         });
     }
 }

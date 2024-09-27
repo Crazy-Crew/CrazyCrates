@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.api.objects;
 
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.ryderbelserion.vital.common.utils.math.MathUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -72,10 +73,9 @@ public class Tier {
     /**
      * @return the tier item shown in the preview.
      */
-    public @NotNull final ItemStack getTierItem(final @Nullable Player target) {
+    public @NotNull final ItemStack getTierItem(final @Nullable Player target, final Crate crate) {
         if (target != null) this.item.setPlayer(target);
 
-        return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).setPersistentString(Keys.crate_tier.getNamespacedKey(), this.name).asItemStack();
-        //return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).addLorePlaceholder("%chance%", this.getTotalChance()).setPersistentString(Keys.crate_tier.getNamespacedKey(), this.name).asItemStack();
+        return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).addLorePlaceholder("%chance%", MathUtil.format(crate.getTierChance(getWeight()))).setPersistentString(Keys.crate_tier.getNamespacedKey(), this.name).asItemStack();
     }
 }

@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
+import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiAction;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
@@ -51,7 +52,7 @@ public class CrateButton extends GuiButton {
             switch (getSection().getName()) {
                 case "accept" -> {
                     this.userManager.addRespinCrate(uuid, this.crate.getFileName(), 1);
-                    this.crateManager.openCrate(player, this.crate, KeyType.free_key, player.getLocation(), true, false, true);
+                    this.crateManager.openCrate(player, this.crate, KeyType.free_key, player.getLocation(), true, false, true, EventType.event_crate_opened);
                 }
 
                 case "deny" -> {

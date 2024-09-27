@@ -10,14 +10,8 @@ import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
-import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
-import net.minecraft.network.protocol.game.ClientboundOpenScreenPacket;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.inventory.MenuType;
+import com.ryderbelserion.vital.paper.util.MiscUtil;
 import org.bukkit.Server;
-import org.bukkit.craftbukkit.entity.CraftHumanEntity;
-import org.bukkit.craftbukkit.inventory.CraftContainer;
-import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -180,11 +174,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
     }
 
     public void sendTitleChange() {
-        ServerPlayer entityPlayer = (ServerPlayer) ((CraftHumanEntity) getView().getPlayer()).getHandle();
-        int containerId = entityPlayer.containerMenu.containerId;
-        MenuType<?> windowType = CraftContainer.getNotchInventoryType(getView().getTopInventory());
-        entityPlayer.connection.send(new ClientboundOpenScreenPacket(containerId, windowType, CraftChatMessage.fromJSON(JSONComponentSerializer.json().serialize(AdvUtil.parse(this.title)))));
-        getPlayer().updateInventory();
+        MiscUtil.updateTitle(this.player, this.title);
     }
 
     @Override

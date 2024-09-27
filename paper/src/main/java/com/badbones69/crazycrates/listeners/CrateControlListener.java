@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.listeners;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.api.events.KeyCheckEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -207,7 +208,7 @@ public class CrateControlListener implements Listener {
 
             this.crateManager.addPlayerToOpeningList(player, crate);
 
-            this.crateManager.openCrate(player, crate, keyType, crateLocation.getLocation(), false, true);
+            this.crateManager.openCrate(player, crate, keyType, crateLocation.getLocation(), false, true, EventType.event_crate_opened);
 
             return;
         }

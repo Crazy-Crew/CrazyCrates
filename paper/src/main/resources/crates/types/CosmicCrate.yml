@@ -148,7 +148,7 @@ Crate:
       # The in-game lore of the tier.
       Lore:
         - "<gray>A basic tier."
-        - "<red>%chance%</red>"
+        - "<red>%chance%%</red>"
       # The item used for the secondary gui when you right-click for the preview.
       Item: "chest"
       # The custom model data of the item, -1 is disabled.
@@ -163,7 +163,7 @@ Crate:
       # The in-game lore of the tier.
       Lore:
         - "<green>An uncommon tier."
-        - "<red>%chance%</red>"
+        - "<red>%chance%%</red>"
       # The item used for the secondary gui when you right-click for the preview.
       Item: "chest"
       # The custom model data of the item, -1 is disabled.
@@ -178,7 +178,7 @@ Crate:
       # The in-game lore of the tier.
       Lore:
         - "<red>A rare tier."
-        - "<red>%chance%</red>"
+        - "<red>%chance%%</red>"
       # The item used for the secondary gui when you right-click for the preview.
       Item: "ender_chest"
       # The custom model data of the item, -1 is disabled.

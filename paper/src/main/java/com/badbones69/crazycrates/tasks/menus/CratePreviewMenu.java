@@ -45,8 +45,8 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
         this.gui.open(this.player, gui -> {
             final int rows = gui.getRows();
 
-            setBackButton(rows, 4);
-            setNextButton(rows, 6);
+            setBackButton(rows, 4, true);
+            setNextButton(rows, 6, true);
 
             addMenuButton(this.player, crate, this.gui, rows, 5);
         });

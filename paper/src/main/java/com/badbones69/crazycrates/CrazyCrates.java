@@ -24,7 +24,6 @@ import com.ryderbelserion.vital.paper.util.AdvUtil;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
-import java.io.File;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -58,12 +57,14 @@ public class CrazyCrates extends Vital {
         this.instance = new Server(getDataFolder());
         this.instance.apply();
 
-        getFileManager().addFile(new File(getDataFolder(), "locations.yml")).addFile(new File(getDataFolder(), "data.yml"))
+        getFileManager().addFile("locations.yml").addFile("data.yml")
                 .addFolder("crates")
                 .addFolder("schematics")
+                .addFolder("logs")
                 .addFolder("guis")
                 .init();
 
+        MiscUtils.janitor();
         MiscUtils.save();
 
         // Register permissions that we need.
@@ -149,6 +150,8 @@ public class CrazyCrates extends Vital {
         if (this.instance != null) {
             this.instance.disable();
         }
+
+        MiscUtils.janitor();
     }
 
     public final InventoryManager getInventoryManager() {

@@ -5,6 +5,8 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.managers.events.EventManager;
+import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -111,7 +113,7 @@ public class CommandOpen extends BaseCommand {
         }
 
         // They passed the check.
-        this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
+        this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false, EventType.event_crate_opened);
     }
 
     @Command("open-others")
@@ -181,7 +183,7 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
-        this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false);
+        this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false, EventType.event_crate_opened);
 
         final Map<String, String> placeholders = new HashMap<>();
 
@@ -233,7 +235,7 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
-        this.crateManager.openCrate(player, crate, KeyType.free_key, player.getLocation(), true, false);
+        this.crateManager.openCrate(player, crate, KeyType.free_key, player.getLocation(), true, false, EventType.event_crate_force_opened);
 
         Map<String, String> placeholders = new HashMap<>();
 
@@ -335,6 +337,9 @@ public class CommandOpen extends BaseCommand {
         }
 
         if (crateType != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), fileName, used);
+
+        EventManager.logEvent(EventType.event_crate_opened, player, player, crate, keyType, used);
+        EventManager.logEvent(EventType.event_key_taken, player, player, crate, keyType, used);
 
         if (!this.userManager.takeKeys(player.getUniqueId(), fileName, keyType, used, false)) {
             this.crateManager.removeCrateInUse(player);
