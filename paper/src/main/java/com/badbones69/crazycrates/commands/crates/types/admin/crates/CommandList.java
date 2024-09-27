@@ -7,7 +7,7 @@ import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import com.ryderbelserion.vital.common.utils.StringUtil;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;

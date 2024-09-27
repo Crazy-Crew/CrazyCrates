@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.api.enums.misc.State;
 import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 import com.badbones69.crazycrates.managers.config.ConfigManager;
 import com.badbones69.crazycrates.managers.config.impl.messages.CommandKeys;
