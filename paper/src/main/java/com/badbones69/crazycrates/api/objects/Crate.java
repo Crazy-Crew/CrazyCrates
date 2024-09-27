@@ -175,7 +175,7 @@ public class Crate {
 
         setTierPreviewRows(file.getInt("Crate.tier-preview.rows", 5));
 
-        if (crateType == CrateType.quad_crate) {
+        if (this.crateType == CrateType.quad_crate) {
             this.particle = ItemUtil.getParticleType(file.getString("Crate.particles.type", "dust"));
 
             this.color = DyeUtil.getColor(file.getString("Crate.particles.color", "235,64,52"));
@@ -183,7 +183,7 @@ public class Crate {
 
         this.hologram = hologram;
 
-        if (crateType == CrateType.cosmic) {
+        if (this.crateType == CrateType.cosmic) {
             if (this.file != null) this.manager = new CosmicCrateManager(this.file);
 
             this.tierSum = this.tiers.stream().filter(tier -> tier.getWeight() != -1).mapToDouble(Tier::getWeight).sum();
