@@ -368,11 +368,7 @@ public class Crate {
      * @return {@link Prize}
      */
     private Prize getPrize(@NotNull final List<Prize> prizes, @NotNull final Random random) {
-        double weight = 0.0;
-
-        for (Prize itemDrop : prizes) {
-            weight += itemDrop.getWeight();
-        }
+        double weight = this.sum;
 
         int index = 0;
 
