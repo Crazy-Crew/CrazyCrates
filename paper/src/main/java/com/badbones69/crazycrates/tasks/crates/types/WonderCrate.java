@@ -120,7 +120,7 @@ public class WonderCrate extends CrateBuilder {
 
                     getPlayer().closeInventory(InventoryCloseEvent.Reason.UNLOADED);
 
-                    if (crate.isCyclePrize() && PrizeManager.isCapped(crate, player)) { // re-open this menu
+                    if (crate.isCyclePrize() && !PrizeManager.isCapped(crate, player)) { // re-open this menu
                         new CrateSpinMenu(player, new GuiSettings(crate, prize, Files.respin_gui.getConfiguration())).open();
 
                         crateManager.removePlayerFromOpeningList(player);

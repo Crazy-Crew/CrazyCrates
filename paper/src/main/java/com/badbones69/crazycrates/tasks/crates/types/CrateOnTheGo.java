@@ -43,7 +43,7 @@ public class CrateOnTheGo extends CrateBuilder {
 
         final Prize prize = crate.pickPrize(player);
 
-        if (crate.isCyclePrize() && PrizeManager.isCapped(crate, player)) { // re-open this menu
+        if (crate.isCyclePrize() && !PrizeManager.isCapped(crate, player)) { // re-open this menu
             new CrateSpinMenu(player, new GuiSettings(crate, prize, Files.respin_gui.getConfiguration())).open();
 
             this.crateManager.removePlayerFromOpeningList(player);

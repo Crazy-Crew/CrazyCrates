@@ -113,7 +113,7 @@ public class CsgoCrate extends CrateBuilder {
                         if (item != null) {
                             final Prize prize = crate.getPrize(item);
 
-                            if (crate.isCyclePrize() && PrizeManager.isCapped(crate, player)) { // re-open this menu
+                            if (crate.isCyclePrize() && !PrizeManager.isCapped(crate, player)) { // re-open this menu
                                 new CrateSpinMenu(player, new GuiSettings(crate, prize, Files.respin_gui.getConfiguration())).open();
 
                                 return;
