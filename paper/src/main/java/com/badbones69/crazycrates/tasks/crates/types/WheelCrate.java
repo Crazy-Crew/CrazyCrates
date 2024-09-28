@@ -119,7 +119,7 @@ public class WheelCrate extends CrateBuilder {
                             prize = crate.getPrize(rewards.get(this.slots.get(this.what)));
                         }
 
-                        if (crate.isCyclePrize()) { // re-open this menu
+                        if (crate.isCyclePrize() && PrizeManager.isCapped(crate, player)) { // re-open this menu
                             new CrateSpinMenu(player, new GuiSettings(crate, prize, Files.respin_gui.getConfiguration())).open();
 
                             return;

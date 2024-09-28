@@ -104,7 +104,7 @@ public class RouletteCrate extends CrateBuilder {
                         if (item != null) {
                             Prize prize = crate.getPrize(item);
 
-                            if (crate.isCyclePrize()) { // re-open this menu
+                            if (crate.isCyclePrize() && PrizeManager.isCapped(crate, player)) { // re-open this menu
                                 new CrateSpinMenu(player, new GuiSettings(crate, prize, Files.respin_gui.getConfiguration())).open();
 
                                 crateManager.removePlayerFromOpeningList(player);

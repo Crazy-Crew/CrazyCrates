@@ -128,7 +128,7 @@ public class QuickCrate extends CrateBuilder {
 
         Prize prize = crate.pickPrize(player, getLocation().clone().add(.5, 1.3, .5));
 
-        if (crate.isCyclePrize()) { // re-open this menu
+        if (crate.isCyclePrize() && PrizeManager.isCapped(crate, player)) { // re-open this menu
             new CrateSpinMenu(player, new GuiSettings(crate, prize, Files.respin_gui.getConfiguration())).open();
 
             this.crateManager.removePlayerFromOpeningList(player);

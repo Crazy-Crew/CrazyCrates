@@ -113,23 +113,23 @@ public class CsgoCrate extends CrateBuilder {
                         if (item != null) {
                             final Prize prize = crate.getPrize(item);
 
-                            if (crate.isCyclePrize()) { // re-open this menu
+                            if (crate.isCyclePrize() && PrizeManager.isCapped(crate, player)) { // re-open this menu
                                 new CrateSpinMenu(player, new GuiSettings(crate, prize, Files.respin_gui.getConfiguration())).open();
-                            } else {
-                                PrizeManager.givePrize(player, crate, prize);
+
+                                return;
                             }
+
+                            PrizeManager.givePrize(player, crate, prize);
                         }
 
                         crateManager.removePlayerFromOpeningList(player);
 
-                        if (!crate.isCyclePrize()) {
-                            new FoliaRunnable(player.getScheduler(), null) {
-                                @Override
-                                public void run() {
-                                    if (player.getOpenInventory().getTopInventory().equals(getInventory())) player.closeInventory();
-                                }
-                            }.runDelayed(plugin, 40);
-                        }
+                        new FoliaRunnable(player.getScheduler(), null) {
+                            @Override
+                            public void run() {
+                                if (player.getOpenInventory().getTopInventory().equals(getInventory())) player.closeInventory();
+                            }
+                        }.runDelayed(plugin, 40);
 
                         cancel();
                     } else if (this.time > 60) { // Added this due reports of the prizes spamming when low tps.
