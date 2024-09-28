@@ -291,6 +291,8 @@ public class CrateManager {
                     "messages.yml"
             ).forEach(file -> FileUtil.extract(file, "examples", true));
 
+            FileUtil.extracts(classObject, "/guis/", path.resolve("examples").resolve("guis"), true);
+            FileUtil.extracts(classObject, "/logs/", path.resolve("examples").resolve("logs"), true);
             FileUtil.extracts(classObject, "/crates/", path.resolve("examples").resolve("crates"), true);
             FileUtil.extracts(classObject, "/schematics/", path.resolve("examples").resolve("schematics"), true);
         }
