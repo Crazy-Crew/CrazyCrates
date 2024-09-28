@@ -1,8 +1,11 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
+import com.badbones69.crazycrates.api.builders.types.features.CrateSpinMenu;
+import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +42,17 @@ public class CrateOnTheGo extends CrateBuilder {
         }
 
         final Prize prize = crate.pickPrize(player);
-        PrizeManager.givePrize(player, prize, crate);
+
+        if (crate.isCyclePrize()) { // re-open this menu
+            new CrateSpinMenu(player, new GuiSettings(crate, prize, Files.respin_gui.getConfiguration())).open();
+
+            this.crateManager.removePlayerFromOpeningList(player);
+            this.crateManager.removePlayerKeyType(player);
+
+            return;
+        }
+
+        PrizeManager.givePrize(player, crate, prize);
 
         if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
