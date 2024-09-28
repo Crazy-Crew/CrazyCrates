@@ -22,6 +22,35 @@
 ### Changes:
 - Added config options, which allow you to configure slots 4 and 22 above the prize in `csgo` crate
 - Added the ability to run commands with the gui customizer.
+- Added the ability to respin prizes to each crate file, if the option is enabled.
+```yml
+    # Settings related to rewards.
+    Rewards:
+      # Should a yes/no popup be made, to ask if they want to keep the prize?
+      Re-Roll-Spin: false
+      # Should there be a limit to how many times they can re-roll?
+      Permission:
+        # Should this be enabled?
+        Toggle: false
+        # This will define how many permissions will be registered to the server per crate.
+        # i.e. crazycrates.respin.<crate_name>.1-20
+        # It will simply register multiple permissions, so it shows up in things like LuckPerms.
+        Max-Cap: 20 
+```
+- You can view an example of this in `examples/crates/CrateExample.yml`
+- You must have `Re-Roll-Spin` set to true to allow re-rolls.
+- You must have `Permission.Toggle` set to true, for it to be permission based.
+  - The higher the permission, the more spins they have.
+  - Internally, we loop through a player's permissions.... and find the highest matching one with `crazycrates.respin.<crate_name>.<amount>`
+  - The permissions will be registered on startup, and on /crates reload if not found.
+    - We also unregister on /crates reload, if you set `Permissions.Toggle` to false.
+  - `<amount>` is the `Max-Cap`, It will not go any higher... The higher that number is, the heavier the permission checks.
+- Crate Types such as Cosmic Crate, Casino Crate, QuadCrate, and WarCrate do not have support for re-spins
+  - Casino Crate has 3 prizes, the gui currently only supports 1 prize.
+  - Cosmic Crate has 4 prizes that you pick, the gui currently only supports 1 prize.
+  - QuadCrate has 4 prizes, the gui currently only supports 1 prize.
+  - WarCrate is in a similar situation, where it's picked prizes.
+- The complexity for these crate types above will take some time to add it in while it not being a train wreck.
 
 ### Fixed:
 - Fixed an issue, where if the border was toggled off. and you didn't have a second page, a glass pane would be there.
