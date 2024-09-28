@@ -59,9 +59,13 @@ public class CrateButton extends GuiButton {
 
                         this.userManager.removeRespinPrize(uuid, this.crate.getFileName()); // remove just in case
 
+                        final int cap = PrizeManager.getCap(crate, player);
+
                         Messages.crate_prize_max_respins.sendMessage(player, new HashMap<>() {{
-                            put("{respins_left}", "0");
-                            put("{respins_total}", String.valueOf(PrizeManager.getCap(crate, player)));
+                            put("{status}", cap >= 1 ? Messages.crate_prize_max_respins_left.getMessage(player, new HashMap<>() {{
+                                put("{respins_total}", String.valueOf(cap));
+                                put("{respins_left}", "0");
+                            }}) : Messages.crate_prize_max_respins_none.getMessage(player));
                         }});
 
                         return;

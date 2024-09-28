@@ -107,7 +107,17 @@ public class CrateKeys implements SettingsHolder {
     })
     public static final Property<String> crate_prize_max_pulls = newProperty("crates.pulls.max", "{prefix}<red>This prize can no longer be obtained, {pulls}/{maxpulls}");
 
-    @Comment("A list of available placeholders: {respins_left}, {respins_total}")
-    public static final Property<String> crate_prize_max_respins = newProperty("crates.respins.max", "{prefix}<red>You can no longer respin, {respins_left}/{respins_total}");
+    @Comment("A list of available placeholders: {status}")
+    public static final Property<String> crate_prize_max_respins = newProperty("crates.respins.max", "{prefix}<red>You can no longer respin, Status: {status}");
+
+    @Comment({
+            "If the player has any permission for respins, this format will show above in place of {status}",
+            "",
+            "A list of available placeholders: {respins_left}/{respins_total}"
+    })
+    public static final Property<String> crate_prize_max_respins_left = newProperty("crates.respins.format", "{respins_left}/{respins_total}");
+
+    @Comment("A blank string to configure for {status}")
+    public static final Property<String> crate_prize_max_respins_none = newProperty("crates.respins.none", "N/A");
 
 }

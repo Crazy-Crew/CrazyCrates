@@ -107,18 +107,25 @@ crates:
     per-crate: "<dark_gray>[<blue>{id}<dark_gray>]: <red>{crate_name}<dark_gray>, <red>{world}<dark_gray>, <red>{x}<dark_gray>, <red>{y}<dark_gray>, <red>{z}"
     teleport:
       # A list of available placeholders: {name}
-      success: '{prefix}<red>You have been teleported to the location with the name: <gold>{name}.'
+      success: "{prefix}<red>You have been teleported to the location with the name: <gold>{name}."
       # A list of available placeholders: {id}
-      failed: '{prefix}<red>There is no location with the name: <gold>{id}.'
+      failed: "{prefix}<red>There is no location with the name: <gold>{id}."
     pulls:
       # This will add a notice to a prize, if the prize has reached max pulls.
       # If this message is empty, it will not add the lore to prizes.
       #
       # A list of available placeholders: {maxpulls}, {pulls}
-      max: '{prefix}<red>This prize can no longer be obtained, {pulls}/{maxpulls}'
+      max: "{prefix}<red>This prize can no longer be obtained, {pulls}/{maxpulls}"
     respins:
       # A list of available placeholders: {respins_left}, {respins_total}
-      max: '{prefix}<red>You can no longer respin, {respins_left}/{respins_total}'
+      max: "{prefix}<red>You can no longer respin, {respins_left}/{respins_total}"
+      # If the player has any permission for respins, this format will show above in place of {status}
+      #
+      # A list of available placeholders: {respins_left}/{respins_total}
+      format: "{respins_left}/{respins_total}"
+      # A blank string to configure for {status}
+      none: "N/A"
+      
 # All messages related to commands.
 command:
   open:
@@ -198,7 +205,7 @@ command:
       no-virtual-keys: "{prefix}<bold><dark_gray>(<dark_red>!<dark_gray>)</bold> <gray>The player {player} does not have any keys."
       # A list of available placeholders: {player}, {crates_opened}
       virtual-keys-header:
-        - "<bold><dark_gray>(<gold>!<dark_gray>)</bold> <gray>List of {player}''s current number of keys."
+        - "<bold><dark_gray>(<gold>!<dark_gray>)</bold> <gray>List of {player}""s current number of keys."
         - " <yellow> -> Total Crates Opened: <red>{crates_opened}"
         - ""
     # A list of available placeholders: {crate}, {keys}, {crate_opened}
