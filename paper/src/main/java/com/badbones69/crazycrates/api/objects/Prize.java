@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.common.impl.crates.Reward;
 import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
@@ -27,14 +28,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Prize {
+public class Prize extends Reward {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final ConfigurationSection section;
     private final List<ItemBuilder> builders;
-    private final List<String> commands;
-    private final List<String> messages;
     private final String sectionName;
     private final String prizeName;
 
@@ -42,7 +41,6 @@ public class Prize {
     private ItemBuilder displayItem = new ItemBuilder();
     private boolean firework = false;
     private String crateName = "";
-    private double weight = -1;
 
     private int maxPulls;
 
@@ -56,6 +54,8 @@ public class Prize {
     private List<ItemStack> editorItems = new ArrayList<>();
 
     public Prize(@NotNull final ConfigurationSection section, List<ItemStack> editorItems, @NotNull final List<Tier> tierPrizes, @NotNull final String crateName, @Nullable final Prize alternativePrize) {
+        super(section.getStringList("Commands"), section.getStringList("Messages"), section.getDouble("Weight", -1));
+
         this.section = section;
 
         this.sectionName = section.getName();
@@ -71,11 +71,7 @@ public class Prize {
         this.alternativePrize = alternativePrize;
 
         this.prizeName = section.getString("DisplayName", "");
-        this.weight = section.getDouble("Weight", -1);
         this.firework = section.getBoolean("Firework", false);
-
-        this.messages = section.getStringList("Messages"); // this returns an empty list if not found anyway.
-        this.commands = section.getStringList("Commands"); // this returns an empty list if not found anyway.
 
         this.permissions = section.getStringList("BlackListed-Permissions"); // this returns an empty list if not found anyway.
 
@@ -105,10 +101,9 @@ public class Prize {
      * @param section the configuration section.
      */
     public Prize(@NotNull final String prizeName, @NotNull final String sectionName, @NotNull final ConfigurationSection section) {
-        this.prizeName = prizeName;
+        super(section.getStringList("Commands"), section.getStringList("Messages"), -1D);
 
-        this.messages = section.getStringList("Messages"); // this returns an empty list if not found anyway.
-        this.commands = section.getStringList("Commands"); // this returns an empty list if not found anyway.
+        this.prizeName = prizeName;
 
         this.sectionName = sectionName;
 
@@ -224,20 +219,6 @@ public class Prize {
     }
     
     /**
-     * @return the messages sent to the player.
-     */
-    public @NotNull final List<String> getMessages() {
-        return this.messages;
-    }
-    
-    /**
-     * @return the commands that are run when the player wins.
-     */
-    public @NotNull final List<String> getCommands() {
-        return this.commands;
-    }
-    
-    /**
      * @return the ItemBuilders for all the custom items made from the Items: option.
      */
     public @NotNull final List<ItemBuilder> getItemBuilders() {
@@ -249,15 +230,6 @@ public class Prize {
      */
     public @NotNull final String getCrateName() {
         return this.crateName;
-    }
-
-    /**
-     * Gets the weight
-     *
-     * @return the weight
-     */
-    public final double getWeight() {
-        return this.weight;
     }
     
     /**
@@ -453,5 +425,10 @@ public class Prize {
         if (this.maxPulls == -1) return 0;
 
         return this.maxPulls;
+    }
+
+    @Override
+    public final double getChance() {
+        return crate.getChance(getWeight());
     }
 }
