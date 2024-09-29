@@ -1,10 +1,10 @@
-package com.badbones69.crazycrates.managers.config.impl;
+package com.badbones69.crazycrates.common.config.impl;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
-import com.badbones69.crazycrates.api.enums.misc.State;
+import com.badbones69.crazycrates.common.enums.State;
 import java.util.Collections;
 import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newBeanProperty;
@@ -105,13 +105,6 @@ public class ConfigKeys implements SettingsHolder {
             "If the option is set to blank, it'll pick whatever plugin it feels like picking."
     })
     public static final Property<String> hologram_plugin = newProperty("root.hologram-plugin", "");
-
-    //@Comment({
-    //        "Sends anonymous statistics about how the plugin is used to bstats.org.",
-    //        "bstats is a service for plugin developers to find out how the plugin being used,",
-    //        "This information helps us figure out how to better improve the plugin."
-    //})
-    //public static final Property<Boolean> toggle_metrics = newProperty("root.toggle_metrics", true);
 
     @Comment("This will wipe the example folder on /crazycrates reload or plugin startup. so you always have fresh examples to look at.")
     public static final Property<Boolean> update_examples_folder = newProperty("root.update-examples-folder", true);

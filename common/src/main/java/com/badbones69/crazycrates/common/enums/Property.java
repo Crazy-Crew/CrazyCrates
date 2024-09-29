@@ -1,21 +1,20 @@
-package com.badbones69.crazycrates.api.enums;
+package com.badbones69.crazycrates.common.enums;
 
 import ch.jalu.configme.configurationdata.ConfigurationData;
-import ch.jalu.configme.properties.Property;
 import ch.jalu.configme.resource.PropertyReader;
-import com.badbones69.crazycrates.managers.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.managers.config.impl.messages.CommandKeys;
-import com.badbones69.crazycrates.managers.config.impl.messages.CrateKeys;
-import com.badbones69.crazycrates.managers.config.impl.messages.ErrorKeys;
-import com.badbones69.crazycrates.managers.config.impl.messages.MiscKeys;
-import com.badbones69.crazycrates.managers.config.impl.messages.PlayerKeys;
+import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.common.config.impl.messages.CommandKeys;
+import com.badbones69.crazycrates.common.config.impl.messages.CrateKeys;
+import com.badbones69.crazycrates.common.config.impl.messages.ErrorKeys;
+import com.badbones69.crazycrates.common.config.impl.messages.MiscKeys;
+import com.badbones69.crazycrates.common.config.impl.messages.PlayerKeys;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
-public enum Properties {
+public enum Property {
 
     enable_crate_menu(ConfigKeys.enable_crate_menu, newProperty("Settings.Enable-Crate-Menu", ConfigKeys.enable_crate_menu.getDefaultValue()), false),
 
@@ -126,8 +125,8 @@ public enum Properties {
     help(CommandKeys.help, newListProperty("Messages.Help", CommandKeys.help.getDefaultValue()), Collections.emptyList()),
     admin_help(CommandKeys.admin_help, newListProperty("Messages.Admin-Help", CommandKeys.admin_help.getDefaultValue()), Collections.emptyList());
 
-    private Property<String> newString;
-    private Property<String> oldString;
+    private ch.jalu.configme.properties.Property<String> newString;
+    private ch.jalu.configme.properties.Property<String> oldString;
 
     /**
      * A constructor moving the new and old string property for migration
@@ -135,7 +134,7 @@ public enum Properties {
      * @param newString the new property
      * @param oldString the old property
      */
-    Properties(Property<String> newString, Property<String> oldString) {
+    Property(ch.jalu.configme.properties.Property<String> newString, ch.jalu.configme.properties.Property<String> oldString) {
         this.newString = newString;
         this.oldString = oldString;
     }
@@ -157,8 +156,8 @@ public enum Properties {
         return true;
     }
 
-    private Property<Boolean> newBoolean;
-    private Property<Boolean> oldBoolean;
+    private ch.jalu.configme.properties.Property<Boolean> newBoolean;
+    private ch.jalu.configme.properties.Property<Boolean> oldBoolean;
 
     /**
      * A constructor consisting of the new and old boolean property for migration
@@ -167,7 +166,7 @@ public enum Properties {
      * @param oldBoolean the old property
      * @param dummy only to differentiate from previous constructors
      */
-    Properties(Property<Boolean> newBoolean, Property<Boolean> oldBoolean, boolean dummy) {
+    Property(ch.jalu.configme.properties.Property<Boolean> newBoolean, ch.jalu.configme.properties.Property<Boolean> oldBoolean, boolean dummy) {
         this.newBoolean = newBoolean;
         this.oldBoolean = oldBoolean;
     }
@@ -195,8 +194,8 @@ public enum Properties {
         return true;
     }
 
-    private Property<Integer> newInteger;
-    private Property<Integer> oldInteger;
+    private ch.jalu.configme.properties.Property<Integer> newInteger;
+    private ch.jalu.configme.properties.Property<Integer> oldInteger;
 
     /**
      * A constructor consisting of the new and old int property for migration
@@ -205,7 +204,7 @@ public enum Properties {
      * @param oldInteger the old property
      * @param dummy only to differentiate from previous constructors
      */
-    Properties(Property<Integer> newInteger, Property<Integer> oldInteger, int dummy) {
+    Property(ch.jalu.configme.properties.Property<Integer> newInteger, ch.jalu.configme.properties.Property<Integer> oldInteger, int dummy) {
         this.newInteger = newInteger;
         this.oldInteger = oldInteger;
     }
@@ -233,8 +232,8 @@ public enum Properties {
         return true;
     }
 
-    private Property<List<String>> newList;
-    private Property<List<String>> oldList;
+    private ch.jalu.configme.properties.Property<List<String>> newList;
+    private ch.jalu.configme.properties.Property<List<String>> oldList;
 
     /**
      * A constructor consisting of the new and old list property for migration
@@ -243,7 +242,7 @@ public enum Properties {
      * @param oldList the old property
      * @param dummy only to differentiate from previous constructors
      */
-    Properties(Property<List<String>> newList, Property<List<String>> oldList, List<String> dummy) {
+    Property(ch.jalu.configme.properties.Property<List<String>> newList, ch.jalu.configme.properties.Property<List<String>> oldList, List<String> dummy) {
         this.newList = newList;
         this.oldList = oldList;
     }

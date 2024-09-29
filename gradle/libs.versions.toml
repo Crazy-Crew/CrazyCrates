@@ -31,6 +31,7 @@ vault = "1.7.1"
 triumph-cmd = "2.0.0-ALPHA-10"
 jetbrains = "24.1.0"
 adventure = "4.17.0"
+vital-common = "0.0.4"
 vital-paper = "1.0.2"
 
 [libraries]
@@ -58,6 +59,7 @@ nightcore = { module = "su.nightexpress.nightcore:nightcore", version = "2.6.3" 
 # Libraries
 triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmd" }
 
+vital-common = { module = "com.ryderbelserion.vital:common", version.ref = "vital-common" }
 vital-paper = { module = "com.ryderbelserion.vital:paper", version.ref = "vital-paper" }
 
 jetbrains = { module = "org.jetbrains:annotations", version.ref = "jetbrains" }

@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.enums.misc;
+package com.badbones69.crazycrates.common.enums;
 
 public enum State {
 
