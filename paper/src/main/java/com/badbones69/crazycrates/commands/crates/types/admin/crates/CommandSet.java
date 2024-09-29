@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.commands.crates.types.admin.crates;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
+import com.badbones69.crazycrates.common.utils.Methods;
 import com.badbones69.crazycrates.utils.MsgUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -69,7 +70,7 @@ public class CommandSet extends BaseCommand {
         final Map<String, String> placeholders = new HashMap<>();
 
         placeholders.put("{crate}", crate.getCrateName());
-        placeholders.put("{prefix}", MsgUtils.getPrefix());
+        placeholders.put("{prefix}", Methods.getPrefix());
 
         // this has to use sendRichMessage as it is a list.
         Messages.created_physical_crate.sendRichMessage(player, placeholders);

@@ -21,7 +21,6 @@ dependencies {
     }
 
     implementation(project(":common"))
-    implementation(project(":api"))
 
     compileOnly(libs.excellentcrates)
     compileOnly(libs.nightcore)

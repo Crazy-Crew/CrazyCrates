@@ -3,8 +3,7 @@ package com.badbones69.crazycrates.utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import static com.badbones69.crazycrates.common.utils.Methods.getPrefix;
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class MsgUtils {
@@ -12,7 +11,7 @@ public class MsgUtils {
     public static void sendMessage(CommandSender commandSender, @NotNull final String message, final boolean prefixToggle) {
         if (message.isEmpty()) return;
 
-        String prefix = getPrefix();
+        final String prefix = getPrefix();
 
         final boolean sendPrefix = !prefix.isEmpty() && prefixToggle;
 
@@ -35,26 +34,5 @@ public class MsgUtils {
         } else {
             commandSender.sendRichMessage(message);
         }
-    }
-
-    /**
-     * Get the prefix.
-     *
-     * @return the {@link String}
-     */
-    public static @NotNull String getPrefix() {
-        return ConfigManager.getConfig().getProperty(ConfigKeys.command_prefix);
-    }
-
-    /**
-     * Get prefix with message.
-     *
-     * @param msg the message
-     * @return the message with prefix
-     */
-    public static @NotNull String getPrefix(@NotNull final String msg) {
-        if (msg.isEmpty()) return "";
-
-        return getPrefix() + msg;
     }
 }

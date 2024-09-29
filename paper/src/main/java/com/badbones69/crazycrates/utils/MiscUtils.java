@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.utils;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.misc.Files;
+import com.badbones69.crazycrates.common.utils.Methods;
 import com.ryderbelserion.vital.common.utils.FileUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
@@ -294,7 +295,7 @@ public class MiscUtils {
                     "",
                     " <yellow>-> <light_purple>Not enough keys.",
                     " <yellow>-> <light_purple>Key is in off hand."
-            ).forEach(line -> player.sendRichMessage(MsgUtils.getPrefix(line)));
+            ).forEach(line -> player.sendRichMessage(Methods.getPrefix(line)));
         }
     }
 
