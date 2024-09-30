@@ -81,6 +81,11 @@ public class CrateButton extends GuiButton {
                     PrizeManager.givePrize(player, prize, this.crate);
 
                     this.userManager.removeRespinPrize(uuid, this.crate.getFileName());
+
+                    this.crateManager.removePlayerFromOpeningList(player);
+                    this.crateManager.removeCrateInUse(player);
+                    this.crateManager.removeCrateTask(player);
+                    this.crateManager.endCrate(player);
                 }
             }
         });
