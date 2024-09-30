@@ -141,7 +141,7 @@ public class Crate {
         this.cyclePermissionToggle = this.file.getBoolean("Crate.Settings.Rewards.Permission.Toggle", false);
         this.cyclePermissionCap = this.file.getInt("Crate.Settings.Rewards.Permission.Max-Cap", 20);
 
-        for (int node = 1; node < this.cyclePermissionCap; node++) {
+        for (int node = 1; node <= this.cyclePermissionCap; node++) {
             if (this.cyclePermissionToggle) {
                 MiscUtils.registerPermission("crazycrates.respin." + this.name + "." + node, "Allows you to open the crate " + this.name + node + " amount of times.", false);
             } else {
