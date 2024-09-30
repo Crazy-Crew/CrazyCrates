@@ -75,6 +75,7 @@ public enum Messages {
     crate_prize_max_respins(CrateKeys.crate_prize_max_respins),
     crate_prize_max_respins_left(CrateKeys.crate_prize_max_respins_left),
     crate_prize_max_respins_none(CrateKeys.crate_prize_max_respins_none),
+    crate_prizes_respins_claimed(CrateKeys.crate_prizes_respins_claimed),
 
     gave_a_player_keys(CommandKeys.gave_a_player_keys),
     cannot_give_player_keys(CommandKeys.cannot_give_player_keys),

@@ -111,6 +111,16 @@ public class CrateKeys implements SettingsHolder {
     public static final Property<String> crate_prize_max_respins = newProperty("crates.respins.max", "{prefix}<red>You can no longer respin, Status: {status}");
 
     @Comment({
+            "This will be sent on join, with an accurate count of how many prizes they have claimed.",
+            "",
+            "If they have multiple prizes unclaimed, and they pass the max cap. The amount will grow",
+            "If a prize is found and they do not have a max cap reached, the loop will break to avoid multiple gui's opening.",
+            "",
+            "A list of available placeholders: {amount}"
+    })
+    public static final Property<String> crate_prizes_respins_claimed = newProperty("crates.respins.claimed", "{prefix}<red>You have claimed {amount} prizes from your respins!");
+
+    @Comment({
             "If the player has any permission for respins, this format will show above in place of {status}",
             "",
             "A list of available placeholders: {respins_left}/{respins_total}"
