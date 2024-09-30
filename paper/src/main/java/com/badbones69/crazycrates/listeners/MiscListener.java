@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.builders.types.features.CrateSpinMenu;
+import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.tasks.menus.CratePrizeMenu;
@@ -68,6 +69,8 @@ public class MiscListener implements Listener {
 
         final UUID uuid = player.getUniqueId();
 
+        int count = 0;
+
         for (final Crate crate : this.crateManager.getUsableCrates()) {
             final String fileName = crate.getFileName();
 
@@ -75,11 +78,16 @@ public class MiscListener implements Listener {
                 if (PrizeManager.isCapped(crate, player)) {
                     PrizeManager.givePrize(player, crate.getPrize(this.userManager.getRespinPrize(player.getUniqueId(), crate.getFileName())), crate);
 
-                    continue;
+                    count++;
+
                 }
 
                 new CrateSpinMenu(player, new GuiSettings(crate, crate.getPrize(this.userManager.getRespinPrize(uuid, fileName)), Files.respin_gui.getConfiguration())).open();
             }
+        }
+
+        if (count > 0) {
+            Messages.crate_prizes_respins_claimed.sendMessage(player, "{amount}", String.valueOf(count));
         }
     }
 
