@@ -83,6 +83,8 @@ public class MiscListener implements Listener {
                 }
 
                 new CrateSpinMenu(player, new GuiSettings(crate, crate.getPrize(this.userManager.getRespinPrize(uuid, fileName)), Files.respin_gui.getConfiguration())).open();
+
+                break; // break, because we don't need multiple gui's opening which override the other ones.
             }
         }
 
