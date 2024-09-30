@@ -80,6 +80,7 @@ public class MiscListener implements Listener {
 
                     count++;
 
+                    continue; // continue, because we should give them all the prizes on join.
                 }
 
                 new CrateSpinMenu(player, new GuiSettings(crate, crate.getPrize(this.userManager.getRespinPrize(uuid, fileName)), Files.respin_gui.getConfiguration())).open();
