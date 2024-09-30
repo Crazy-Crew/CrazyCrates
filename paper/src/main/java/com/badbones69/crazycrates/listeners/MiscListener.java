@@ -72,6 +72,12 @@ public class MiscListener implements Listener {
             final String fileName = crate.getFileName();
 
             if (crate.isCyclePrize() && this.userManager.hasRespinPrize(uuid, fileName)) {
+                if (PrizeManager.isCapped(crate, player)) {
+                    PrizeManager.givePrize(player, crate.getPrize(this.userManager.getRespinPrize(player.getUniqueId(), crate.getFileName())), crate);
+
+                    continue;
+                }
+
                 new CrateSpinMenu(player, new GuiSettings(crate, crate.getPrize(this.userManager.getRespinPrize(uuid, fileName)), Files.respin_gui.getConfiguration())).open();
             }
         }
