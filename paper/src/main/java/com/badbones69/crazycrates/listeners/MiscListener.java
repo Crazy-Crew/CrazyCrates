@@ -78,6 +78,8 @@ public class MiscListener implements Listener {
                 if (PrizeManager.isCapped(crate, player)) {
                     PrizeManager.givePrize(player, crate.getPrize(this.userManager.getRespinPrize(player.getUniqueId(), crate.getFileName())), crate);
 
+                    this.userManager.removeRespinPrize(player.getUniqueId(), crate.getFileName());
+
                     count++;
 
                     continue; // continue, because we should give them all the prizes on join.
