@@ -1,16 +1,22 @@
 plugins {
     alias(libs.plugins.runPaper)
     alias(libs.plugins.shadow)
-
-    `paper-plugin`
 }
 
 repositories {
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi")
+
+    maven("https://repo.papermc.io/repository/maven-public")
+
+    maven("https://repo.triumphteam.dev/snapshots")
+
     maven("https://repo.fancyplugins.de/releases")
+
+    maven("https://repo.oraxen.com/releases")
 }
 
 dependencies {
-    compileOnly(libs.paper)
+    implementation(project(":common"))
 
     implementation(libs.triumph.cmds)
 
@@ -18,23 +24,11 @@ dependencies {
         exclude("org.yaml")
     }
 
-    implementation(project(":common"))
+    compileOnly(libs.bundles.dependencies)
+    compileOnly(libs.bundles.shared)
+    compileOnly(libs.bundles.crates)
 
-    compileOnly(libs.excellentcrates)
-    compileOnly(libs.nightcore)
-
-    compileOnly(libs.decent.holograms)
-
-    compileOnly(libs.fancy.holograms)
-
-    compileOnly(libs.headdatabaseapi)
-
-    compileOnly(libs.placeholderapi)
-
-    compileOnly(libs.oraxen)
-
-    compileOnly(libs.cmilib)
-    compileOnly(libs.cmi)
+    compileOnly(libs.paper)
 }
 
 tasks {
@@ -74,8 +68,8 @@ tasks {
         inputs.properties("version" to project.version)
         inputs.properties("group" to project.group)
         inputs.properties("apiVersion" to libs.versions.minecraft.get())
-        inputs.properties("description" to project.properties["description"])
-        inputs.properties("website" to project.properties["website"])
+        inputs.properties("description" to project.description)
+        inputs.properties("website" to "https://modrinth.com/plugin/crazycrates")
 
         filesMatching("paper-plugin.yml") {
             expand(inputs.properties)

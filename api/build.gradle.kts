@@ -1,11 +1,13 @@
 plugins {
     alias(libs.plugins.shadow)
-
-    `paper-plugin`
 }
 
 project.group = "us.crazycrew.crazycrates"
 project.version = "0.8"
+
+repositories {
+    maven("https://repo.papermc.io/repository/maven-public")
+}
 
 dependencies {
     compileOnly(libs.paper)
