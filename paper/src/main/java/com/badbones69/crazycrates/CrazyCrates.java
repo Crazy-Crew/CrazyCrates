@@ -23,14 +23,17 @@ import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import static com.badbones69.crazycrates.utils.MiscUtils.registerPermissions;
 
+@ApiStatus.Internal
 public class CrazyCrates extends JavaPlugin {
 
+    @ApiStatus.Internal
     public static CrazyCrates getPlugin() {
         return JavaPlugin.getPlugin(CrazyCrates.class);
     }
@@ -156,18 +159,22 @@ public class CrazyCrates extends JavaPlugin {
         MiscUtils.janitor();
     }
 
+    @ApiStatus.Internal
     public final InventoryManager getInventoryManager() {
         return this.inventoryManager;
     }
 
+    @ApiStatus.Internal
     public final BukkitUserManager getUserManager() {
         return this.userManager;
     }
 
+    @ApiStatus.Internal
     public final CrateManager getCrateManager() {
         return this.crateManager;
     }
 
+    @ApiStatus.Internal
     public @Nullable final HeadDatabaseAPI getApi() {
         if (this.api == null) {
             return null;
@@ -176,14 +183,17 @@ public class CrazyCrates extends JavaPlugin {
         return this.api;
     }
 
+    @ApiStatus.Internal
     public final Server getInstance() {
         return this.instance;
     }
 
+    @ApiStatus.Internal
     public final Vital getVital() {
         return this.vital;
     }
 
+    @ApiStatus.Internal
     public final Timer getTimer() {
         return this.timer;
     }
