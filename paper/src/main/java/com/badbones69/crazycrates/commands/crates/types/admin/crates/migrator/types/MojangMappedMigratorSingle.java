@@ -26,7 +26,7 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
             return;
         }
 
-        final CustomFile customFile = this.plugin.getFileManager().getFile(this.crateName, true);
+        final CustomFile customFile = this.plugin.getVital().getFileManager().getFile(this.crateName, true);
 
         if (customFile == null) {
             Messages.error_migrating.sendMessage(this.sender, new HashMap<>() {{

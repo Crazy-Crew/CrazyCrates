@@ -408,7 +408,7 @@ public class MiscUtils {
     }
 
     public static boolean isLogging() {
-        return plugin.isVerbose();
+        return plugin.getVital().isVerbose();
     }
 
     public static boolean isExcellentCratesEnabled() {

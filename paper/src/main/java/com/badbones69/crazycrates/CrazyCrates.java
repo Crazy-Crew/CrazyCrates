@@ -29,19 +29,21 @@ import java.util.Locale;
 import java.util.Timer;
 import static com.badbones69.crazycrates.utils.MiscUtils.registerPermissions;
 
-public class CrazyCrates extends Vital {
+public class CrazyCrates extends JavaPlugin {
 
     public static CrazyCrates getPlugin() {
         return JavaPlugin.getPlugin(CrazyCrates.class);
     }
 
+    private final Vital vital;
     private final Timer timer;
     private final long startTime;
 
     public CrazyCrates() {
         this.startTime = System.nanoTime();
 
-        // Create timer object.
+        this.vital = new Vital(this);
+
         this.timer = new Timer();
     }
 
@@ -57,7 +59,7 @@ public class CrazyCrates extends Vital {
         this.instance = new Server(getDataFolder());
         this.instance.apply();
 
-        getFileManager().addFile("locations.yml").addFile("data.yml").addFile("respin-gui.yml", "guis")
+        this.vital.getFileManager().addFile("locations.yml").addFile("data.yml").addFile("respin-gui.yml", "guis")
                 .addFile("crates.log", "logs")
                 .addFile("keys.log", "logs")
                 .addFolder("crates")
@@ -176,6 +178,10 @@ public class CrazyCrates extends Vital {
 
     public final Server getInstance() {
         return this.instance;
+    }
+
+    public final Vital getVital() {
+        return this.vital;
     }
 
     public final Timer getTimer() {

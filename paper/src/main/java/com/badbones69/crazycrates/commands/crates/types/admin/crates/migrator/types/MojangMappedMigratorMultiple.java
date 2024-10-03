@@ -18,7 +18,7 @@ public class MojangMappedMigratorMultiple extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Set<CustomFile> customFiles = (Set<CustomFile>) this.plugin.getFileManager().getCustomFiles().values();
+        final Set<CustomFile> customFiles = (Set<CustomFile>) this.plugin.getVital().getFileManager().getCustomFiles().values();
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();

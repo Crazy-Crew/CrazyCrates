@@ -37,7 +37,7 @@ public abstract class BaseCommand {
 
     protected @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    protected @NotNull final FileManager fileManager = this.plugin.getFileManager();
+    protected @NotNull final FileManager fileManager = this.plugin.getVital().getFileManager();
 
     protected @NotNull final SettingsManager config = ConfigManager.getConfig();
 

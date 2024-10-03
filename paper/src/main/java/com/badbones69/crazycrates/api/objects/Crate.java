@@ -802,7 +802,7 @@ public class Crate {
     private void saveFile() {
         if (this.name.isEmpty()) return;
 
-        final CustomFile customFile = this.plugin.getFileManager().getFile(this.name, true);
+        final CustomFile customFile = this.plugin.getVital().getFileManager().getFile(this.name, true);
 
         if (customFile != null) customFile.save();
 
