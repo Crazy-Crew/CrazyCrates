@@ -51,6 +51,8 @@ itemsadder = { module = "com.github.LoneDev6:api-itemsadder", version.ref = "ite
 fancy-holograms = { module = "de.oliver:FancyHolograms", version.ref = "fancyholograms" }
 vault = { module = "com.github.MilkBowl:VaultAPI", version.ref = "vault" }
 oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }
+cmilib = { module = "CMILib:CMILib", version = "1.5.1.4" }
+cmi = { module = "CMI-API:CMI-API", version = "9.7.4.1" }
 
 # Crate Plugins
 excellentcrates = { module = "su.nightexpress.excellentcrates:ExcellentCrates", version = "5.3.1" }

@@ -12,8 +12,6 @@ repositories {
 dependencies {
     compileOnly(libs.paper)
 
-    compileOnly(fileTree("$projectDir/libs/compile").include("*.jar"))
-
     implementation(libs.triumph.cmds)
 
     implementation(libs.vital.paper) {
@@ -34,6 +32,9 @@ dependencies {
     compileOnly(libs.placeholderapi)
 
     compileOnly(libs.oraxen)
+
+    compileOnly(libs.cmilib)
+    compileOnly(libs.cmi)
 }
 
 tasks {
