@@ -78,6 +78,7 @@ public class Crate {
 
     private boolean cyclePrize;
 
+    private boolean cyclePersistRestart;
     private boolean cyclePermissionToggle;
     private int cyclePermissionCap;
 
@@ -139,6 +140,7 @@ public class Crate {
         this.cyclePrize = this.file.getBoolean("Crate.Settings.Rewards.Re-Roll-Spin", false);
 
         this.cyclePermissionToggle = this.file.getBoolean("Crate.Settings.Rewards.Permission.Toggle", false);
+        this.cyclePersistRestart = this.file.getBoolean("Crate.Settings.Rewards.Permission.Persist", false);
         this.cyclePermissionCap = this.file.getInt("Crate.Settings.Rewards.Permission.Max-Cap", 20);
 
         for (int node = 1; node <= this.cyclePermissionCap; node++) {
@@ -879,6 +881,10 @@ public class Crate {
         }
 
         return prizes;
+    }
+
+    public final boolean isCyclePersistRestart() {
+        return this.cyclePersistRestart;
     }
 
     public final boolean isCyclePrize() {

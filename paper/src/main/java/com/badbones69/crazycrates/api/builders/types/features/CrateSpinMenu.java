@@ -50,6 +50,10 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
         this.gui.setOpenGuiAction(action -> this.userManager.addRespinPrize(this.player.getUniqueId(), this.crate.getFileName(), this.settings.getPrize().getSectionName()));
 
         this.gui.setCloseGuiAction(action -> {
+            if (!this.crate.isCyclePersistRestart()) {
+                this.userManager.removeRespinCrate(this.player.getUniqueId(), this.crate.getFileName(), 0, false);
+            }
+
             this.crateManager.removePlayerFromOpeningList(this.player);
             this.crateManager.removeCrateInUse(this.player);
             this.crateManager.removeCrateTask(this.player);
