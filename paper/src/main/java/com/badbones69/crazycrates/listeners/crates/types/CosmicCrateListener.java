@@ -7,7 +7,7 @@ import com.ryderbelserion.crazycrates.common.plugin.util.Methods;
 import com.badbones69.crazycrates.managers.events.EventManager;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.ryderbelserion.vital.paper.api.enums.Support;
-import com.ryderbelserion.vital.paper.util.AdvUtil;
+import com.ryderbelserion.vital.common.util.AdvUtil;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;

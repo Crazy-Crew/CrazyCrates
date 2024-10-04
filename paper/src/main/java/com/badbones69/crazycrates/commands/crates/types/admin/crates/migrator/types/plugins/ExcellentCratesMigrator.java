@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.IC
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
 import com.ryderbelserion.vital.paper.api.files.CustomFile;
-import com.ryderbelserion.vital.paper.util.AdvUtil;
+import com.ryderbelserion.vital.common.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;

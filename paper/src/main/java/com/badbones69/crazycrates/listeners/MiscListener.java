@@ -28,8 +28,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import java.util.HashMap;
-import java.util.Map;
+
 import java.util.UUID;
 
 public class MiscListener implements Listener {

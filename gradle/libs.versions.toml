@@ -29,8 +29,8 @@ oraxen = "1.171.0"
 vault = "1.7.1"
 
 # Vital API
-vital-common = "0.0.4"
-vital-paper = "1.0.4"
+vital-common = "0.0.5"
+vital-paper = "1.0.5"
 
 # Common API
 triumph-cmd = "2.0.0-ALPHA-10"

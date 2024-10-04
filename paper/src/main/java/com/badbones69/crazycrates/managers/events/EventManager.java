@@ -8,7 +8,7 @@ import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.ryderbelserion.vital.common.utils.FileUtil;
-import com.ryderbelserion.vital.paper.util.AdvUtil;
+import com.ryderbelserion.vital.common.util.AdvUtil;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

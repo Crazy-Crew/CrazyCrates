@@ -9,10 +9,11 @@ import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.CrateKeys;
-import com.ryderbelserion.vital.common.utils.math.MathUtil;
+import com.ryderbelserion.vital.common.util.math.MathUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
-import com.ryderbelserion.vital.paper.util.AdvUtil;
+import com.ryderbelserion.vital.common.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
+import com.ryderbelserion.vital.paper.util.MsgUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Material;
@@ -322,7 +323,7 @@ public class Prize {
         final String maxPulls = String.valueOf(getMaxPulls());
         final String pulls = String.valueOf(PrizeManager.getCurrentPulls(this, crate));
 
-        player.sendMessage(AdvUtil.parse(message, new HashMap<>() {{
+        player.sendMessage(MsgUtil.parse(message, new HashMap<>() {{
             put("%player%", target.getName());
             put("%crate%", crate.getCrateName());
             put("%reward%", getPrizeName().replaceAll("%maxpulls%", maxPulls).replaceAll("%pulls%", pulls));

@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
