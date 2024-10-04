@@ -1,8 +1,11 @@
 package com.ryderbelserion.crazycrates;
 
 import com.ryderbelserion.crazycrates.common.plugin.AbstractCratesPlugin;
+import com.ryderbelserion.crazycrates.common.plugin.logger.AbstractLogger;
 import com.ryderbelserion.crazycrates.common.plugin.logger.PluginLogger;
 import com.ryderbelserion.crazycrates.loader.CrazyPlugin;
+import org.bukkit.Server;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.ServicePriority;
 import us.crazycrew.crazycrates.CrazyCratesApi;
 import us.crazycrew.crazycrates.api.users.UserManager;
@@ -10,13 +13,21 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class CrazyCrates extends AbstractCratesPlugin {
 
     private final CrazyPlugin plugin;
 
+    private final PluginLogger logger;
+
+    private final Server server;
+
     public CrazyCrates(final CrazyPlugin plugin) {
         this.plugin = plugin;
+        this.server = plugin.getServer();
+
+        this.logger = new AbstractLogger(this.plugin.getComponentLogger());
     }
 
     @Override
@@ -35,8 +46,13 @@ public class CrazyCrates extends AbstractCratesPlugin {
     }
 
     @Override
+    public void reload() {
+
+    }
+
+    @Override
     protected void registerPlatformAPI(final CrazyCratesApi api) {
-        this.plugin.getServer().getServicesManager().register(CrazyCratesApi.class, api, this.plugin, ServicePriority.Normal);
+        this.server.getServicesManager().register(CrazyCratesApi.class, api, this.plugin, ServicePriority.Normal);
     }
 
     @Override
@@ -55,28 +71,23 @@ public class CrazyCrates extends AbstractCratesPlugin {
     }
 
     @Override
-    public void reload() {
-
-    }
-
-    @Override
     public Path getDataDirectory() {
-        return null;
+        return this.plugin.getDataPath();
     }
 
     @Override
     public PluginLogger getLogger() {
-        return null;
+        return this.logger;
     }
 
     @Override
     public Collection<String> getPlayerList() {
-        return List.of();
+        return this.server.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toSet());
     }
 
     @Override
     public Collection<UUID> getOnlinePlayers() {
-        return List.of();
+        return this.server.getOnlinePlayers().stream().map(Player::getUniqueId).collect(Collectors.toSet());
     }
 
     @Override
