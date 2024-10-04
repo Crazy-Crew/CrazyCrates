@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.ryderbelserion.crazycrates.common.plugin.util.Methods;
-import com.ryderbelserion.vital.common.utils.FileUtil;
+import com.ryderbelserion.vital.common.util.FileUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import me.clip.placeholderapi.PlaceholderAPI;

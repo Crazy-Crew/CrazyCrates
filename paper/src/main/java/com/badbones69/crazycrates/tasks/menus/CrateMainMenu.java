@@ -9,7 +9,7 @@ import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
-import com.ryderbelserion.vital.common.utils.StringUtil;
+import com.ryderbelserion.vital.common.util.StringUtil;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
 import net.kyori.adventure.key.Key;
