@@ -1,7 +1,7 @@
 package us.crazycrew.crazycrates;
 
 import net.kyori.adventure.audience.Audience;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import us.crazycrew.crazycrates.platform.ISettings;
 import java.io.File;
@@ -30,7 +30,7 @@ public interface CrazyCratesApi {
      * @return {@link File}
      * @since 0.9
      */
-    @NonNull File getCrateFolder();
+    @NotNull File getCrateFolder();
 
     /**
      * Gets the plugin/mods folder
@@ -38,7 +38,7 @@ public interface CrazyCratesApi {
      * @return {@link File}
      * @since 0.9
      */
-    @NonNull File getDataFolder();
+    @NotNull File getDataFolder();
 
     /**
      * Gets a list of crate files
@@ -46,7 +46,7 @@ public interface CrazyCratesApi {
      * @return {@link List<String>}
      * @since 0.9
      */
-    List<String> getCrateFiles();
+    @NotNull List<String> getCrateFiles();
 
     /**
      * Gets the instance of the user manager
@@ -54,7 +54,7 @@ public interface CrazyCratesApi {
      * @return {@link UserManager}
      * @since 0.9
      */
-    @NonNull UserManager getUserManager();
+    @NotNull UserManager getUserManager();
 
     /**
      * Gets a current amount of settings
@@ -62,7 +62,7 @@ public interface CrazyCratesApi {
      * @return {@link ISettings}
      * @since 0.9
      */
-    @NonNull ISettings getSettings();
+    @NotNull ISettings getSettings();
 
     /**
      * Parses a string, based on the sender, line, and placeholders
@@ -74,6 +74,6 @@ public interface CrazyCratesApi {
      * @return {@link String}
      * @since 0.9
      */
-    String parse(Audience audience, String line, Map<String, String> placeholders);
+    @NotNull String parse(Audience audience, String line, Map<String, String> placeholders);
 
 }

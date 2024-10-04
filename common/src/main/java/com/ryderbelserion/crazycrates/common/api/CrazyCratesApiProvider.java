@@ -44,7 +44,7 @@ public class CrazyCratesApiProvider implements CrazyCratesApi, IServer {
     }
 
     @Override
-    public List<String> getCrateFiles() {
+    public @NotNull List<String> getCrateFiles() {
         return FileUtil.getFiles(getCrateFolder(), ".yml", false);
     }
 
@@ -59,7 +59,7 @@ public class CrazyCratesApiProvider implements CrazyCratesApi, IServer {
     }
 
     @Override
-    public String parse(Audience audience, String line, Map<String, String> placeholders) {
+    public @NotNull String parse(Audience audience, String line, Map<String, String> placeholders) {
         return this.plugin.parse(audience, line, placeholders);
     }
 }

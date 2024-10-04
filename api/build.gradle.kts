@@ -10,9 +10,11 @@ repositories {
 }
 
 dependencies {
+    compileOnly(libs.bundles.adventure)
+
     compileOnly(libs.vital.common)
 
-    compileOnly(libs.paper)
+    compileOnly(libs.jetbrains)
 }
 
 val javaComponent: SoftwareComponent = components["java"]

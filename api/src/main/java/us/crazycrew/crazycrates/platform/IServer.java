@@ -47,7 +47,7 @@ public interface IServer {
      * @return {@link List<String>}
      * @since 0.5
      */
-    List<String> getCrateFiles();
+    @NotNull List<String> getCrateFiles();
 
     /**
      * Gets the instance of the user manager

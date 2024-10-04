@@ -1,15 +1,15 @@
 package us.crazycrew.crazycrates;
 
 import com.ryderbelserion.vital.common.util.StringUtil;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public final class CrazyCratesProvider {
 
     private static CrazyCratesApi instance = null;
 
-    public static @NonNull CrazyCratesApi get() {
+    public static @NotNull CrazyCratesApi get() {
         CrazyCratesApi instance = CrazyCratesProvider.instance;
 
         if (instance == null) {

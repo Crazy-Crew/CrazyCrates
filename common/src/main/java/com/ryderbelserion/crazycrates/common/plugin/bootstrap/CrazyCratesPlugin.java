@@ -3,6 +3,7 @@ package com.ryderbelserion.crazycrates.common.plugin.bootstrap;
 import com.ryderbelserion.crazycrates.common.api.CrazyCratesApiProvider;
 import com.ryderbelserion.crazycrates.common.plugin.logger.PluginLogger;
 import net.kyori.adventure.audience.Audience;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -70,7 +71,7 @@ public interface CrazyCratesPlugin {
      *
      * @return {@link String}
      */
-    String parse(Audience audience, String line, Map<String, String> placeholders);
+    @NotNull String parse(Audience audience, String line, Map<String, String> placeholders);
 
     /**
      * Gets a resource file from the jar

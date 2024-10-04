@@ -76,7 +76,7 @@ public class CrazyCrates extends AbstractCratesPlugin {
     }
 
     @Override
-    public String parse(Audience audience, String line, Map<String, String> placeholders) {
+    public @NotNull String parse(final @NotNull Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders) {
         final @NotNull Optional<UUID> uuid = audience.get(Identity.UUID);
 
         if (uuid.isPresent()) {
