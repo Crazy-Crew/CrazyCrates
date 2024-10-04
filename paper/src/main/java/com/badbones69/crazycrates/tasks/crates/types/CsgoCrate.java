@@ -117,6 +117,9 @@ public class CsgoCrate extends CrateBuilder {
                                 new CrateSpinMenu(player, new GuiSettings(crate, prize, Files.respin_gui.getConfiguration())).open();
 
                                 return;
+                            } else {
+                                // remove from the cache
+                                userManager.removeRespinCrate(uuid, fileName, 0, false);
                             }
 
                             PrizeManager.givePrize(player, crate, prize);

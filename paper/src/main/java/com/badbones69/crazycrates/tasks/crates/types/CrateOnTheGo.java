@@ -50,6 +50,9 @@ public class CrateOnTheGo extends CrateBuilder {
             this.crateManager.removePlayerKeyType(player);
 
             return;
+        } else {
+            // remove from the cache
+            this.userManager.removeRespinCrate(uuid, fileName, 0, false);
         }
 
         PrizeManager.givePrize(player, crate, prize);
