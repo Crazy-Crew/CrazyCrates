@@ -2,7 +2,6 @@ package com.ryderbelserion.crazycrates.common.enums;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
-import com.ryderbelserion.crazycrates.common.plugin.AbstractCratesPlugin;
 import com.ryderbelserion.crazycrates.common.plugin.enums.MsgState;
 import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.CommandKeys;
@@ -17,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
 import us.crazycrew.crazycrates.CrazyCratesApi;
 import us.crazycrew.crazycrates.CrazyCratesProvider;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
