@@ -3,9 +3,11 @@ package com.ryderbelserion.crazycrates.common.plugin;
 import com.ryderbelserion.crazycrates.common.api.CrazyCratesApiProvider;
 import com.ryderbelserion.crazycrates.common.plugin.bootstrap.CrazyCratesPlugin;
 import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
+import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.ApiStatus;
 import us.crazycrew.crazycrates.CrazyCratesApi;
 import us.crazycrew.crazycrates.CrazyCratesProvider;
+import java.util.Map;
 
 public abstract class AbstractCratesPlugin implements CrazyCratesPlugin {
 

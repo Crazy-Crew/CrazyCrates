@@ -4,6 +4,7 @@ import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
 import com.ryderbelserion.crazycrates.common.Settings;
 import com.ryderbelserion.crazycrates.common.plugin.bootstrap.CrazyCratesPlugin;
 import com.ryderbelserion.vital.common.utils.FileUtil;
+import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CrazyCratesApi;
 import us.crazycrew.crazycrates.api.users.UserManager;
@@ -11,6 +12,7 @@ import us.crazycrew.crazycrates.platform.IServer;
 import us.crazycrew.crazycrates.platform.ISettings;
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 public class CrazyCratesApiProvider implements CrazyCratesApi, IServer {
 
@@ -54,5 +56,10 @@ public class CrazyCratesApiProvider implements CrazyCratesApi, IServer {
     @Override
     public @NotNull ISettings getSettings() {
         return this.settings;
+    }
+
+    @Override
+    public String parse(Audience audience, String line, Map<String, String> placeholders) {
+        return this.plugin.parse(audience, line, placeholders);
     }
 }

@@ -1,16 +1,23 @@
 package com.ryderbelserion.crazycrates;
 
+import com.badbones69.crazycrates.utils.MiscUtils;
 import com.ryderbelserion.crazycrates.common.plugin.AbstractCratesPlugin;
 import com.ryderbelserion.crazycrates.common.plugin.logger.AbstractLogger;
 import com.ryderbelserion.crazycrates.common.plugin.logger.PluginLogger;
 import com.ryderbelserion.crazycrates.loader.CrazyPlugin;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.identity.Identity;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.ServicePriority;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CrazyCratesApi;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -67,6 +74,19 @@ public class CrazyCrates extends AbstractCratesPlugin {
     @Override
     protected void setupManagers() {
 
+    }
+
+    @Override
+    public String parse(Audience audience, String line, Map<String, String> placeholders) {
+        final @NotNull Optional<UUID> uuid = audience.get(Identity.UUID);
+
+        if (uuid.isPresent()) {
+            final Player player = this.server.getPlayer(uuid.get());
+
+            return MiscUtils.populatePlaceholders(player, line, placeholders);
+        }
+
+        return "";
     }
 
     @Override
