@@ -3,13 +3,15 @@ plugins {
 }
 
 project.group = "us.crazycrew.crazycrates"
-project.version = "0.8"
+project.version = "0.9"
 
 repositories {
     maven("https://repo.papermc.io/repository/maven-public")
 }
 
 dependencies {
+    compileOnly(libs.vital.common)
+
     compileOnly(libs.paper)
 }
 
