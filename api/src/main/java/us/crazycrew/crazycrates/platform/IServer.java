@@ -1,6 +1,7 @@
 package us.crazycrew.crazycrates.platform;
 
 import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.CrazyCratesProvider;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import java.io.File;
 import java.util.List;
@@ -11,7 +12,10 @@ import java.util.List;
  * @author Ryder Belserion
  * @version 0.7
  * @since 0.5
+ *
+ * @deprecated Use {@link CrazyCratesProvider#get()} from now on.
  */
+@Deprecated(forRemoval = true, since = "0.9")
 public interface IServer {
 
     /**
