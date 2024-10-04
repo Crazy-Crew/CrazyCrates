@@ -25,7 +25,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
-import java.util.Locale;
 import java.util.Timer;
 import static com.badbones69.crazycrates.utils.MiscUtils.registerPermissions;
 
@@ -39,11 +38,8 @@ public class CrazyCrates extends JavaPlugin {
 
     private final Vital vital;
     private final Timer timer;
-    private final long startTime;
 
     public CrazyCrates() {
-        this.startTime = System.nanoTime();
-
         this.vital = new Vital(this);
 
         this.timer = new Timer();
@@ -121,8 +117,6 @@ public class CrazyCrates extends JavaPlugin {
                     getComponentLogger().info(AdvUtil.parse("<bold><gold>" + value.getName() + " <red>NOT FOUND"));
                 }
             }
-
-            getComponentLogger().info("Done ({})!", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
         }
     }
 
