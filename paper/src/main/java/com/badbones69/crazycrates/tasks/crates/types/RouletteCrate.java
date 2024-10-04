@@ -110,6 +110,9 @@ public class RouletteCrate extends CrateBuilder {
                                 crateManager.removePlayerFromOpeningList(player);
 
                                 return;
+                            } else {
+                                // remove from the cache
+                                userManager.removeRespinCrate(uuid, fileName, 0, false);
                             }
 
                             PrizeManager.givePrize(player, crate, prize);
