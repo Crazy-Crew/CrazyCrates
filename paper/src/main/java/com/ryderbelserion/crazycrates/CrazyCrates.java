@@ -1,10 +1,15 @@
 package com.ryderbelserion.crazycrates;
 
 import com.badbones69.crazycrates.utils.MiscUtils;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.ryderbelserion.crazycrates.commands.BaseCommand;
+import com.ryderbelserion.crazycrates.commands.holograms.HologramBase;
 import com.ryderbelserion.crazycrates.common.plugin.AbstractCratesPlugin;
 import com.ryderbelserion.crazycrates.common.plugin.logger.AbstractLogger;
 import com.ryderbelserion.crazycrates.common.plugin.logger.PluginLogger;
 import com.ryderbelserion.crazycrates.loader.CrazyPlugin;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
 import org.bukkit.Server;
@@ -15,6 +20,7 @@ import us.crazycrew.crazycrates.CrazyCratesApi;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -67,7 +73,15 @@ public class CrazyCrates extends AbstractCratesPlugin {
 
     @Override
     protected void registerCommands() {
+        this.plugin.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            LiteralArgumentBuilder<CommandSourceStack> root = new BaseCommand(this).registerPermission().literal().createBuilder();
 
+            List.of(
+                    new HologramBase(this)
+            ).forEach(command -> root.then(command.registerPermission().literal()));
+
+            event.registrar().register(root.build(), "the base command for RedstonePvP");
+        });
     }
 
     @Override
@@ -111,5 +125,9 @@ public class CrazyCrates extends AbstractCratesPlugin {
     @Override
     public UserManager getUserManager() {
         return null;
+    }
+
+    public CrazyPlugin getPlugin() {
+        return this.plugin;
     }
 }
