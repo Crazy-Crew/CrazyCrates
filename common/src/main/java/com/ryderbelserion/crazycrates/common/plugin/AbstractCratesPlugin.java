@@ -4,6 +4,7 @@ import com.ryderbelserion.crazycrates.common.api.CrazyCratesApiProvider;
 import com.ryderbelserion.crazycrates.common.plugin.bootstrap.CrazyCratesPlugin;
 import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
 import org.jetbrains.annotations.ApiStatus;
+import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.CrazyCratesApi;
 import us.crazycrew.crazycrates.CrazyCratesProvider;
 
@@ -31,6 +32,9 @@ public abstract class AbstractCratesPlugin implements CrazyCratesPlugin {
         // register the api's singleton
         CrazyCratesProvider.register(this.apiProvider);
 
+        // register the old api temporarily
+        CratesProvider.register(this.apiProvider);
+
         // register the platform provider i.e. service manager
         registerPlatformAPI(this.apiProvider);
     }
@@ -38,6 +42,9 @@ public abstract class AbstractCratesPlugin implements CrazyCratesPlugin {
     public final void disable() {
         // unregister the api
         CrazyCratesProvider.unregister();
+
+        // unregister the old api
+        CratesProvider.unregister();
     }
 
     @ApiStatus.Internal
