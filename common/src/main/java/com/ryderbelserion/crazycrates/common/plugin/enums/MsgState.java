@@ -1,13 +1,13 @@
-package com.badbones69.crazycrates.common.enums;
+package com.ryderbelserion.crazycrates.common.plugin.enums;
 
-public enum State {
+public enum MsgState {
 
     send_message("send_message"),
     send_actionbar("send_actionbar");
 
     private final String name;
 
-    State(String name) {
+    MsgState(String name) {
         this.name = name;
     }
 

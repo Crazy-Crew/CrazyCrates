@@ -1,13 +1,13 @@
-package com.badbones69.crazycrates.common.enums;
+package com.ryderbelserion.crazycrates.common.plugin.enums;
 
 import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.resource.PropertyReader;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.CommandKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.CrateKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.ErrorKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.MiscKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.PlayerKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.CommandKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.CrateKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.ErrorKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.MiscKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.PlayerKeys;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
