@@ -90,6 +90,8 @@ Crate:
       Permission:
         # Should this be enabled?
         Toggle: false
+        # Should this persist restarts? i.e. writes to disk the amount of respins, and reads the amount of respins.
+        Persist: false
         # This will define how many permissions will be registered to the server per crate.
         # i.e. crazycrates.respin.<crate_name>.1-20
         # It will simply register multiple permissions, so it shows up in things like LuckPerms.

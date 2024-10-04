@@ -71,7 +71,8 @@ public class CrateButton extends GuiButton {
                         return;
                     }
 
-                    this.userManager.addRespinCrate(uuid, this.crate.getFileName(), 1);
+                    this.userManager.addRespinCrate(uuid, this.crate.getFileName(), 1, crate.isCyclePersistRestart());
+
                     this.crateManager.openCrate(player, this.crate, KeyType.free_key, player.getLocation(), true, false, true, EventType.event_crate_opened);
                 }
 
@@ -79,6 +80,10 @@ public class CrateButton extends GuiButton {
                     final Prize prize = this.crate.getPrize(this.userManager.getRespinPrize(uuid, this.crate.getFileName()));
 
                     PrizeManager.givePrize(player, prize, this.crate);
+
+                    if (!crate.isCyclePersistRestart()) {
+                        this.userManager.removeRespinCrate(uuid, this.crate.getFileName(), 0, false);
+                    }
 
                     this.userManager.removeRespinPrize(uuid, this.crate.getFileName());
 
