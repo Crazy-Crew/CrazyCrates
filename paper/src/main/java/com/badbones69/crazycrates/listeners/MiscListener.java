@@ -76,9 +76,12 @@ public class MiscListener implements Listener {
 
             if (crate.isCyclePrize() && this.userManager.hasRespinPrize(uuid, fileName)) {
                 if (PrizeManager.isCapped(crate, player)) {
-                    PrizeManager.givePrize(player, crate.getPrize(this.userManager.getRespinPrize(player.getUniqueId(), crate.getFileName())), crate);
+                    PrizeManager.givePrize(player, crate.getPrize(this.userManager.getRespinPrize(uuid, fileName)), crate);
 
-                    this.userManager.removeRespinPrize(player.getUniqueId(), crate.getFileName());
+                    this.userManager.removeRespinPrize(uuid, fileName);
+
+                    // remove from the cache
+                    this.userManager.removeRespinCrate(uuid, fileName, 0, false);
 
                     count++;
 
