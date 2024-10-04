@@ -1,13 +1,12 @@
-package com.badbones69.crazycrates.common;
+package com.ryderbelserion.crazycrates.common;
 
-import com.badbones69.crazycrates.common.impl.Settings;
 import com.ryderbelserion.vital.common.utils.FileUtil;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import us.crazycrew.crazycrates.platform.ISettings;
 import us.crazycrew.crazycrates.platform.IServer;
-import com.badbones69.crazycrates.common.config.ConfigManager;
+import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
 import java.io.File;
 import java.util.List;
 

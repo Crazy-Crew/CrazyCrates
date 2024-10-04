@@ -1,7 +1,7 @@
-package com.badbones69.crazycrates.common.utils;
+package com.ryderbelserion.crazycrates.common.plugin.util;
 
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
 import org.jetbrains.annotations.NotNull;
 
 public class Methods {
