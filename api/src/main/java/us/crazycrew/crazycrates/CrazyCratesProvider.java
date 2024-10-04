@@ -1,6 +1,6 @@
 package us.crazycrew.crazycrates;
 
-import com.ryderbelserion.vital.common.utils.StringUtil;
+import com.ryderbelserion.vital.common.util.StringUtil;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.ApiStatus;
 import java.util.List;
