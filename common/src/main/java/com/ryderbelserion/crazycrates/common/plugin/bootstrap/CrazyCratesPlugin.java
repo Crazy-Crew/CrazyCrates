@@ -1,11 +1,19 @@
 package com.ryderbelserion.crazycrates.common.plugin.bootstrap;
 
+import com.ryderbelserion.crazycrates.common.api.CrazyCratesApiProvider;
+import com.ryderbelserion.crazycrates.common.plugin.logger.PluginLogger;
+import us.crazycrew.crazycrates.api.users.UserManager;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.UUID;
 
-public interface CrazyCratesBootstrap {
+public interface CrazyCratesPlugin {
+
+    /**
+     * Reloads the plugin
+     */
+    void reload();
 
     /**
      * Gets the plugin's storage directory.
@@ -15,6 +23,13 @@ public interface CrazyCratesBootstrap {
      * @return the data folder for the platform
      */
     Path getDataDirectory();
+
+    /**
+     * Gets the platform's platform logger
+     *
+     * @return the plugin's logger
+     */
+    PluginLogger getLogger();
 
     /**
      * Gets a list of names of online players
@@ -29,6 +44,20 @@ public interface CrazyCratesBootstrap {
      * @return a {@link java.util.List} of uuids
      */
     Collection<UUID> getOnlinePlayers();
+
+    /**
+     * Gets the user manager
+     *
+     * @return {@link UserManager}
+     */
+    UserManager getUserManager();
+
+    /**
+     * Gets the api provider for this platform
+     *
+     * @return the api
+     */
+    CrazyCratesApiProvider getApiProvider();
 
     /**
      * Gets a resource file from the jar
