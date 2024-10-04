@@ -658,6 +658,10 @@ public class BukkitUserManager extends UserManager {
         }
 
         if (!write) {
+            if (!this.crates.containsKey(uuid)) {
+                return 0;
+            }
+
             return this.crates.get(uuid).getOrDefault(crate.getFileName(), 0);
         }
 
