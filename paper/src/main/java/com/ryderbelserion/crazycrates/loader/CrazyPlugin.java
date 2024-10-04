@@ -2,7 +2,6 @@ package com.ryderbelserion.crazycrates.loader;
 
 import com.ryderbelserion.crazycrates.CrazyCrates;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.util.Locale;
 
 public class CrazyPlugin extends JavaPlugin {
