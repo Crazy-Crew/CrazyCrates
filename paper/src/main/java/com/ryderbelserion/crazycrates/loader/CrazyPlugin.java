@@ -13,12 +13,12 @@ public class CrazyPlugin extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        this.crazyCrates.load();
+        this.crazyCrates.onLoad();
     }
 
     @Override
     public void onEnable() {
-        this.crazyCrates.enable();
+        this.crazyCrates.onEnable();
     }
 
     @Override

@@ -36,18 +36,18 @@ public class CrazyCrates extends AbstractCratesPlugin {
     }
 
     @Override
-    protected void onLoad() {
-
+    public void onLoad() {
+        load();
     }
 
     @Override
-    protected void onEnable() {
-
+    public void onEnable() {
+        enable();
     }
 
     @Override
-    protected void onDisable() {
-
+    public void onDisable() {
+        disable();
     }
 
     @Override
