@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.managers.events;
+package com.badbones69.crazycrates.managers;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
-import com.badbones69.crazycrates.managers.events.enums.EventType;
+import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import com.ryderbelserion.vital.common.util.FileUtil;
 import com.ryderbelserion.vital.common.util.AdvUtil;
 import org.bukkit.OfflinePlayer;

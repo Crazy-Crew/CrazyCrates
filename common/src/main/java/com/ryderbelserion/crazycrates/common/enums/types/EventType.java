@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.managers.events.enums;
+package com.ryderbelserion.crazycrates.common.enums.types;
 
 public enum EventType {
 

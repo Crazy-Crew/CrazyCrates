@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.api.objects.gui;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.badbones69.crazycrates.api.enums.FillerType;
+import com.ryderbelserion.crazycrates.common.enums.types.FillerType;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.gui.buttons.CrateButton;

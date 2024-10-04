@@ -8,7 +8,7 @@ import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
-import com.badbones69.crazycrates.managers.events.enums.EventType;
+import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;

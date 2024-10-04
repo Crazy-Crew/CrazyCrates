@@ -6,7 +6,7 @@ import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
 import com.ryderbelserion.crazycrates.common.plugin.util.Methods;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
-import com.badbones69.crazycrates.managers.events.EventManager;
+import com.badbones69.crazycrates.managers.EventManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;

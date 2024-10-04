@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.api.builders;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.managers.events.enums.EventType;
+import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import com.badbones69.crazycrates.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;

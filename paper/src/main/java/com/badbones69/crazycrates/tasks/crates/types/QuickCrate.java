@@ -10,7 +10,7 @@ import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
-import com.badbones69.crazycrates.managers.events.enums.EventType;
+import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.ryderbelserion.vital.common.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;

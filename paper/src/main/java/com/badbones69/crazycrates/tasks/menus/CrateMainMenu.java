@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.api.builders.gui.StaticInventoryBuilder;
 import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.managers.events.enums.EventType;
+import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
