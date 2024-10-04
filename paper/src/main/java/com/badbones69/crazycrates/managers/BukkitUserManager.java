@@ -658,7 +658,7 @@ public class BukkitUserManager extends UserManager {
         }
 
         if (!write) {
-            return this.crates.get(uuid).get(crate.getFileName());
+            return this.crates.get(uuid).getOrDefault(crate.getFileName(), 0);
         }
 
         return this.data.getConfiguration().getInt("Players." + uuid + ".respins." + crateName + ".amount", 0);
