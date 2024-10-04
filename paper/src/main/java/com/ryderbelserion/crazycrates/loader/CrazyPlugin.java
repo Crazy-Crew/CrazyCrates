@@ -23,6 +23,6 @@ public class CrazyPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.crazyCrates.disable();
+        this.crazyCrates.onDisable();
     }
 }
