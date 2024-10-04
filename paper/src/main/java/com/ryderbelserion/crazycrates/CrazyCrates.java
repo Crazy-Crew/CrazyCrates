@@ -15,7 +15,6 @@ import us.crazycrew.crazycrates.CrazyCratesApi;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
