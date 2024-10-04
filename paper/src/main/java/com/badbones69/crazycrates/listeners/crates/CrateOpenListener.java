@@ -8,7 +8,7 @@ import com.ryderbelserion.crazycrates.common.plugin.util.Methods;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.events.EventManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.ryderbelserion.vital.paper.api.enums.Support;

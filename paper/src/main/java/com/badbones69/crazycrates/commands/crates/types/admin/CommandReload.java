@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.commands.crates.types.admin;
 
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;

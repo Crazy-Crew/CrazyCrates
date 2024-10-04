@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.listeners;
 
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.builders.types.features.CrateSpinMenu;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.tasks.menus.CratePrizeMenu;

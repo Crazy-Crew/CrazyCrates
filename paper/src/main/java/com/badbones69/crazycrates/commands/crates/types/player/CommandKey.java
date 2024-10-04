@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.commands.crates.types.player;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;

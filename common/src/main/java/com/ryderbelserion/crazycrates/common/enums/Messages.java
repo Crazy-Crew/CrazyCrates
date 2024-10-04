@@ -1,22 +1,23 @@
-package com.badbones69.crazycrates.api.enums;
+package com.ryderbelserion.crazycrates.common.enums;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
+import com.ryderbelserion.crazycrates.common.plugin.AbstractCratesPlugin;
 import com.ryderbelserion.crazycrates.common.plugin.enums.MsgState;
-import com.badbones69.crazycrates.utils.MiscUtils;
-import com.ryderbelserion.vital.common.utils.StringUtil;
-import com.ryderbelserion.vital.paper.util.AdvUtil;
-import org.apache.commons.lang3.StringUtils;
-import org.bukkit.command.CommandSender;
 import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.CommandKeys;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.CrateKeys;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.ErrorKeys;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.MiscKeys;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.PlayerKeys;
-import org.bukkit.entity.Player;
+import com.ryderbelserion.vital.common.util.AdvUtil;
+import com.ryderbelserion.vital.common.util.StringUtil;
+import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
+import us.crazycrew.crazycrates.CrazyCratesApi;
+import us.crazycrew.crazycrates.CrazyCratesProvider;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,6 +119,8 @@ public enum Messages {
         this.isList = isList;
     }
 
+    private final CrazyCratesApi plugin = CrazyCratesProvider.get();
+
     private final SettingsManager config = ConfigManager.getConfig();
 
     private final SettingsManager messages = ConfigManager.getMessages();
@@ -134,11 +137,11 @@ public enum Messages {
         return this.messages.getProperty(this.properties);
     }
 
-    public String getMessage(@NotNull final CommandSender sender) {
+    public String getMessage(@NotNull final Audience sender) {
         return getMessage(sender, new HashMap<>());
     }
 
-    public String getMessage(@NotNull final CommandSender sender, @NotNull final String placeholder, @NotNull final String replacement) {
+    public String getMessage(@NotNull final Audience sender, @NotNull final String placeholder, @NotNull final String replacement) {
         Map<String, String> placeholders = new HashMap<>() {{
             put(placeholder, replacement);
         }};
@@ -146,11 +149,11 @@ public enum Messages {
         return getMessage(sender, placeholders);
     }
 
-    public String getMessage(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
+    public String getMessage(@NotNull final Audience sender, @NotNull final Map<String, String> placeholders) {
         return parse(sender, placeholders).replaceAll("\\{prefix}", this.config.getProperty(ConfigKeys.command_prefix));
     }
 
-    public void sendMessage(final CommandSender sender, final String placeholder, final String replacement) {
+    public void sendMessage(final Audience sender, final String placeholder, final String replacement) {
         final MsgState msgState = this.config.getProperty(ConfigKeys.message_state);
 
         switch (msgState) {
@@ -159,7 +162,7 @@ public enum Messages {
         }
     }
 
-    public void sendMessage(final CommandSender sender, final Map<String, String> placeholders) {
+    public void sendMessage(final Audience sender, final Map<String, String> placeholders) {
         final MsgState msgState = this.config.getProperty(ConfigKeys.message_state);
 
         switch (msgState) {
@@ -168,7 +171,7 @@ public enum Messages {
         }
     }
 
-    public void sendMessage(final CommandSender sender) {
+    public void sendMessage(final Audience sender) {
         final MsgState msgState = this.config.getProperty(ConfigKeys.message_state);
 
         switch (msgState) {
@@ -177,58 +180,52 @@ public enum Messages {
         }
     }
 
-    public void sendActionBar(final CommandSender sender, final String placeholder, final String replacement) {
+    public void sendActionBar(final Audience sender, final String placeholder, final String replacement) {
         final String msg = getMessage(sender, placeholder, replacement);
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        if (sender instanceof Player player) {
-            player.sendActionBar(AdvUtil.parse(msg));
-        }
+        sender.sendActionBar(AdvUtil.parse(msg));
     }
 
-    public void sendActionBar(final CommandSender sender, final Map<String, String> placeholders) {
+    public void sendActionBar(final Audience sender, final Map<String, String> placeholders) {
         final String msg = getMessage(sender, placeholders);
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        if (sender instanceof Player player) {
-            player.sendActionBar(AdvUtil.parse(msg));
-        }
+        sender.sendActionBar(AdvUtil.parse(msg));
     }
 
-    public void sendActionBar(final CommandSender sender) {
+    public void sendActionBar(final Audience sender) {
         final String msg = getMessage(sender);
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        if (sender instanceof Player player) {
-            player.sendActionBar(AdvUtil.parse(msg));
-        }
+        sender.sendActionBar(AdvUtil.parse(msg));
     }
 
-    public void sendRichMessage(final CommandSender sender, final String placeholder, final String replacement) {
+    public void sendRichMessage(final Audience sender, final String placeholder, final String replacement) {
         final String msg = getMessage(sender, placeholder, replacement);
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        sender.sendRichMessage(msg);
+        sender.sendMessage(AdvUtil.parse(msg));
     }
 
-    public void sendRichMessage(final CommandSender sender, final Map<String, String> placeholders) {
+    public void sendRichMessage(final Audience sender, final Map<String, String> placeholders) {
         final String msg = getMessage(sender, placeholders);
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        sender.sendRichMessage(msg);
+        sender.sendMessage(AdvUtil.parse(msg));
     }
 
-    public void sendRichMessage(final CommandSender sender) {
+    public void sendRichMessage(final Audience sender) {
         final String msg = getMessage(sender);
 
         if (msg.isEmpty() || msg.isBlank()) return;
 
-        sender.sendRichMessage(msg);
+        sender.sendMessage(AdvUtil.parse(msg));
     }
 
     public void migrate() {
@@ -241,15 +238,15 @@ public enum Messages {
         this.messages.setProperty(this.property, AdvUtil.convert(this.messages.getProperty(this.property), true));
     }
 
-    private @NotNull String parse(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
+    private @NotNull String parse(@NotNull final Audience sender, @NotNull final Map<String, String> placeholders) {
         String message;
 
         if (isList()) {
-            message = StringUtils.chomp(StringUtil.convertList(getList()));
+            message = StringUtil.chomp(StringUtil.convertList(getList()));
         } else {
             message = getString();
         }
 
-        return MiscUtils.populatePlaceholders(sender, message, placeholders);
+        return this.plugin.parse(sender, message, placeholders);
     }
 }

@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.api;
 
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.CrazyCrates;

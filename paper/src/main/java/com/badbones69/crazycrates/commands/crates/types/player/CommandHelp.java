@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.commands.crates.types.player;
 
 import com.badbones69.crazycrates.tasks.menus.CrateMainMenu;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;

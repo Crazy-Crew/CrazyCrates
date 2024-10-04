@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.keys;
 
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;

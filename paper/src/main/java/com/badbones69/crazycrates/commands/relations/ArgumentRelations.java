@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.commands.MessageManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
 import dev.triumphteam.cmd.core.extention.meta.MetaKey;
 import dev.triumphteam.cmd.core.message.MessageKey;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import java.util.Optional;
 
 public class ArgumentRelations extends MessageManager {

@@ -15,7 +15,7 @@ import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigK
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.SpiralManager;
 import com.badbones69.crazycrates.api.ChestManager;
 import org.bukkit.block.Block;

@@ -17,7 +17,7 @@ import com.badbones69.crazycrates.tasks.crates.other.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.ChestManager;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;

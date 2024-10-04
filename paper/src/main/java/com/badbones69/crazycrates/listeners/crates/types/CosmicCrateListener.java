@@ -34,7 +34,7 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.utils.MiscUtils;
 

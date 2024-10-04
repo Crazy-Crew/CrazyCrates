@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.tasks.menus;
 
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.builders.gui.DynamicInventoryBuilder;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
