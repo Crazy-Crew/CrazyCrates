@@ -9,6 +9,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
+import com.ryderbelserion.crazycrates.common.plugin.util.Methods;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,7 +20,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.utils.MiscUtils;
-import com.badbones69.crazycrates.utils.MsgUtils;
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -232,7 +232,7 @@ public class PrizeManager {
                 .replaceAll("%maxpulls%", maxPulls)
                 .replaceAll("%pulls%", pulls);
 
-        MsgUtils.sendMessage(player, Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
+        Methods.sendMessage(player, Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
     }
 
     public static int getCurrentPulls(final Prize prize, final Crate crate) {

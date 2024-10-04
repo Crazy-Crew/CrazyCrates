@@ -2,6 +2,8 @@ package com.ryderbelserion.crazycrates.common.plugin.util;
 
 import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
+import com.ryderbelserion.vital.common.util.AdvUtil;
+import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 
 public class Methods {
@@ -14,5 +16,19 @@ public class Methods {
         if (msg.isEmpty()) return "";
 
         return getPrefix() + msg;
+    }
+
+    public static void sendMessage(@NotNull final Audience audience, final String message, final boolean toggle) {
+        if (message.isEmpty()) return;
+
+        if (toggle) {
+            final String prefix = getPrefix();
+
+            audience.sendMessage(AdvUtil.parse(message.replace("%prefix%", prefix).replace("%Prefix%", prefix)));
+
+            return;
+        }
+
+        audience.sendMessage(AdvUtil.parse(message));
     }
 }
