@@ -3,7 +3,7 @@ package com.ryderbelserion.crazycrates.common.api;
 import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
 import com.ryderbelserion.crazycrates.common.Settings;
 import com.ryderbelserion.crazycrates.common.plugin.bootstrap.CrazyCratesPlugin;
-import com.ryderbelserion.vital.common.utils.FileUtil;
+import com.ryderbelserion.vital.common.util.FileUtil;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CrazyCratesApi;
