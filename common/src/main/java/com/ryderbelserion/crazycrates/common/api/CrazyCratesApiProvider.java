@@ -1,7 +1,7 @@
 package com.ryderbelserion.crazycrates.common.api;
 
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.impl.Settings;
+import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
+import com.ryderbelserion.crazycrates.common.Settings;
 import com.ryderbelserion.crazycrates.common.plugin.bootstrap.CrazyCratesPlugin;
 import com.ryderbelserion.vital.common.utils.FileUtil;
 import org.jetbrains.annotations.NotNull;

@@ -1,16 +1,16 @@
-package com.badbones69.crazycrates.common.config;
+package com.ryderbelserion.crazycrates.common.plugin.configs;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
-import com.badbones69.crazycrates.common.config.migrate.ConfigMigration;
-import com.badbones69.crazycrates.common.config.migrate.LocaleMigration;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.CommandKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.CrateKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.ErrorKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.MiscKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.PlayerKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.migration.ConfigMigration;
+import com.ryderbelserion.crazycrates.common.plugin.configs.migration.LocaleMigration;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.CommandKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.CrateKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.ErrorKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.MiscKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.PlayerKeys;
 import java.io.File;
 
 public class ConfigManager {

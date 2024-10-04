@@ -2,9 +2,9 @@ package com.badbones69.crazycrates.listeners.crates;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.common.utils.Methods;
+import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
+import com.ryderbelserion.crazycrates.common.plugin.util.Methods;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.events.EventManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
@@ -19,7 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.utils.MsgUtils;
+
 import java.util.List;
 
 public class CrateOpenListener implements Listener {

@@ -21,8 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
 import java.util.HashMap;
 import java.util.Map;
 

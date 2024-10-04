@@ -1,10 +1,10 @@
-package com.badbones69.crazycrates.common.config.impl;
+package com.ryderbelserion.crazycrates.common.plugin.configs.types.config;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
-import com.badbones69.crazycrates.common.enums.State;
+import com.ryderbelserion.crazycrates.common.plugin.enums.MsgState;
 import java.util.Collections;
 import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newBeanProperty;
@@ -94,7 +94,7 @@ public class ConfigKeys implements SettingsHolder {
             "send_actionbar -> sends messages in actionbar.",
             ""
     })
-    public static final Property<State> message_state = newBeanProperty(State.class, "root.message-state", State.send_message);
+    public static final Property<MsgState> message_state = newBeanProperty(MsgState.class, "root.message-state", MsgState.send_message);
 
     @Comment({
             "A list of available hologram plugins:",

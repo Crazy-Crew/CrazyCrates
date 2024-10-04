@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import static com.badbones69.crazycrates.common.utils.Methods.getPrefix;
+import static com.ryderbelserion.crazycrates.common.plugin.util.Methods.getPrefix;
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class MsgUtils {

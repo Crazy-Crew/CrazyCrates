@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates;
 
-import com.badbones69.crazycrates.common.Server;
+import com.ryderbelserion.crazycrates.common.Server;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;

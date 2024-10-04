@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.common.config.impl.messages;
+package com.ryderbelserion.crazycrates.common.plugin.configs.types.locale;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;

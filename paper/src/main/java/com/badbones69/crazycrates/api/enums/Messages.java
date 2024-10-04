@@ -2,21 +2,21 @@ package com.badbones69.crazycrates.api.enums;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
-import com.badbones69.crazycrates.common.enums.State;
+import com.ryderbelserion.crazycrates.common.plugin.enums.MsgState;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.messages.CommandKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.CrateKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.ErrorKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.MiscKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.PlayerKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.CommandKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.CrateKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.ErrorKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.MiscKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.PlayerKeys;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,27 +151,27 @@ public enum Messages {
     }
 
     public void sendMessage(final CommandSender sender, final String placeholder, final String replacement) {
-        final State state = this.config.getProperty(ConfigKeys.message_state);
+        final MsgState msgState = this.config.getProperty(ConfigKeys.message_state);
 
-        switch (state) {
+        switch (msgState) {
             case send_message -> sendRichMessage(sender, placeholder, replacement);
             case send_actionbar -> sendActionBar(sender, placeholder, replacement);
         }
     }
 
     public void sendMessage(final CommandSender sender, final Map<String, String> placeholders) {
-        final State state = this.config.getProperty(ConfigKeys.message_state);
+        final MsgState msgState = this.config.getProperty(ConfigKeys.message_state);
 
-        switch (state) {
+        switch (msgState) {
             case send_message -> sendRichMessage(sender, placeholders);
             case send_actionbar -> sendActionBar(sender, placeholders);
         }
     }
 
     public void sendMessage(final CommandSender sender) {
-        final State state = this.config.getProperty(ConfigKeys.message_state);
+        final MsgState msgState = this.config.getProperty(ConfigKeys.message_state);
 
-        switch (state) {
+        switch (msgState) {
             case send_message -> sendRichMessage(sender);
             case send_actionbar -> sendActionBar(sender);
         }
