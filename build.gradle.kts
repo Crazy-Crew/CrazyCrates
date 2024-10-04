@@ -15,7 +15,7 @@ subprojects {
     apply(plugin = "maven-publish")
     apply(plugin = "java-library")
 
-    group = "com.badbones69.crazycrates"
+    group = "com.ryderbelserion.crazycrates"
     description = "Create unlimited crates with multiple crate types to choose from!"
 
     repositories {
