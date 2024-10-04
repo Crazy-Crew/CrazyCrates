@@ -47,6 +47,11 @@ public abstract class AbstractCratesPlugin implements CrazyCratesPlugin {
         CratesProvider.unregister();
     }
 
+    @Override
+    public void reload() {
+        ConfigManager.refresh();
+    }
+
     @ApiStatus.Internal
     protected abstract void onLoad();
 

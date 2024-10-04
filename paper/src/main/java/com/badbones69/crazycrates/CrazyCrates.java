@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates;
 
-import com.ryderbelserion.crazycrates.common.Server;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
@@ -55,13 +54,8 @@ public class CrazyCrates extends JavaPlugin {
     private CrateManager crateManager;
     private HeadDatabaseAPI api;
 
-    private Server instance;
-
     @Override
     public void onEnable() {
-        this.instance = new Server(getDataFolder());
-        this.instance.apply();
-
         this.vital.getFileManager().addFile("locations.yml").addFile("data.yml").addFile("respin-gui.yml", "guis")
                 .addFile("crates.log", "logs")
                 .addFile("keys.log", "logs")
@@ -83,7 +77,7 @@ public class CrazyCrates extends JavaPlugin {
         this.crateManager = new CrateManager();
         this.userManager = new BukkitUserManager();
 
-        this.instance.setUserManager(this.userManager);
+        //this.instance.setUserManager(this.userManager);
 
         // Load holograms.
         this.crateManager.loadHolograms();
@@ -152,9 +146,9 @@ public class CrazyCrates extends JavaPlugin {
             }
         }
 
-        if (this.instance != null) {
-            this.instance.disable();
-        }
+        //if (this.instance != null) {
+        //    this.instance.disable();
+        //}
 
         MiscUtils.janitor();
     }
@@ -181,11 +175,6 @@ public class CrazyCrates extends JavaPlugin {
         }
 
         return this.api;
-    }
-
-    @ApiStatus.Internal
-    public final Server getInstance() {
-        return this.instance;
     }
 
     @ApiStatus.Internal

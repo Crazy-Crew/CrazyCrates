@@ -52,7 +52,7 @@ public class CrazyCrates extends AbstractCratesPlugin {
 
     @Override
     public void reload() {
-
+        super.reload();
     }
 
     @Override

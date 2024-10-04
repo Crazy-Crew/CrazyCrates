@@ -19,7 +19,7 @@ public class CommandReload extends BaseCommand {
 
         MiscUtils.janitor();
 
-        this.plugin.getInstance().reload();
+        //this.plugin.getInstance().reload();
 
         this.fileManager.reloadFiles().init();
 

@@ -271,7 +271,8 @@ public class CrateManager {
      * @return a list of crate names.
      */
     public List<String> getCrateNames() {
-        return this.plugin.getInstance().getCrateFiles();
+        //return this.plugin.getInstance().getCrateFiles();
+        return new ArrayList<>();
     }
 
     private final SettingsManager config = ConfigManager.getConfig();
