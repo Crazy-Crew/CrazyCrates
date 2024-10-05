@@ -8,7 +8,6 @@ import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import org.bukkit.entity.Player;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;

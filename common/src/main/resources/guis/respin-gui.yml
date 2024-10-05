@@ -1,5 +1,5 @@
 # The title of the gui
-title: "<red>Do you want to re-spin?"
+title: "<red>Do you want to keep your prize?"
 
 # The slot of the prize you currently have won.
 slot: 13
@@ -26,7 +26,7 @@ buttons:
   static:
     accept: # Do not change this
       # The name of the button
-      name: "<green>Yes (Respin the prize)"
+      name: "<green>Yes (Keep the prize)"
       # The slot the item goes in
       slot: 12
       # The type of block
@@ -49,7 +49,7 @@ buttons:
         pitch: 1.0
     deny: # Do not change this
       # The name of the button
-      name: "<red>No (Keep your prize)"
+      name: "<red>No (Respin the prize)"
       # The slot the item goes in
       slot: 14
       # The type of block
