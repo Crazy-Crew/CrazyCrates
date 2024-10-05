@@ -29,6 +29,8 @@ public class CrazyPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.crazyCrates.onDisable();
+        getServer().getGlobalRegionScheduler().cancelTasks(this);
+        getServer().getAsyncScheduler().cancelTasks(this);
+
     }
 }
