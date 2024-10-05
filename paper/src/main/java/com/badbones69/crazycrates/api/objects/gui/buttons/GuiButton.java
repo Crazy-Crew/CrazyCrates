@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class GuiButton {
 
-    protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+    protected final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private final Map<String, String> placeholders;
     private final ConfigurationSection section;

@@ -28,7 +28,7 @@ import static java.util.regex.Matcher.quoteReplacement;
 
 public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
-    protected @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    protected @NotNull final CrazyCrates plugin = CrazyCrates.getInstance();
 
     protected @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
@@ -36,7 +36,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
     protected @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    protected @NotNull final Server server = this.plugin.getServer();
+    protected @NotNull final Server server = this.plugin.getPlugin().getServer();
 
     private Inventory inventory;
     private Player player;
@@ -112,7 +112,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
                 return true;
             }
 
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("The property {} is empty so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
+            if (MiscUtils.isLogging()) plugin.getPlugin().getComponentLogger().warn("The property {} is empty so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
 
             return true;
         }

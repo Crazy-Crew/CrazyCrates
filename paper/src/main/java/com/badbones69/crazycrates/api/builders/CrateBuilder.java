@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.api.builders;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import com.badbones69.crazycrates.tasks.menus.CratePrizeMenu;
@@ -26,14 +27,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.List;
 
 public abstract class CrateBuilder extends FoliaRunnable {
 
-    protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+    protected final CrazyCrates plugin = CrazyCrates.getInstance();
 
     protected final CrateManager crateManager = this.plugin.getCrateManager();
 
@@ -329,15 +329,15 @@ public abstract class CrateBuilder extends FoliaRunnable {
 
                 if (this.config.getProperty(ConfigKeys.use_new_permission_system)) {
                     if (this.player.hasPermission("crazycrates.deny.open." + fileName)) {
-                        this.plugin.getComponentLogger().warn("{} could not open {} due to having the permission preventing them from opening the crate.", this.player.getName(), fileName);
+                        this.plugin.getPlugin().getComponentLogger().warn("{} could not open {} due to having the permission preventing them from opening the crate.", this.player.getName(), fileName);
                     } else {
-                        this.plugin.getComponentLogger().warn("{} could not open {} due to no valid prizes being found which led to the event being cancelled.", this.player.getName(), fileName);
+                        this.plugin.getPlugin().getComponentLogger().warn("{} could not open {} due to no valid prizes being found which led to the event being cancelled.", this.player.getName(), fileName);
                     }
                 } else {
                     if (!this.player.hasPermission("crazycrates.open." + fileName)) {
-                        this.plugin.getComponentLogger().warn("{} could not open {} due to having the permission preventing them from opening the crate.", this.player.getName(), fileName);
+                        this.plugin.getPlugin().getComponentLogger().warn("{} could not open {} due to having the permission preventing them from opening the crate.", this.player.getName(), fileName);
                     } else {
-                        this.plugin.getComponentLogger().warn("{} could not open {} due to no valid prizes being found which led to the event being cancelled.", this.player.getName(), fileName);
+                        this.plugin.getPlugin().getComponentLogger().warn("{} could not open {} due to no valid prizes being found which led to the event being cancelled.", this.player.getName(), fileName);
                     }
                 }
             }

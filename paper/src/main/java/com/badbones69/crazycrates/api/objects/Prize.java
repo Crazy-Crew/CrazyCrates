@@ -30,7 +30,7 @@ import java.util.List;
 
 public class Prize {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private final ConfigurationSection section;
     private final List<ItemBuilder> builders;
@@ -169,7 +169,7 @@ public class Prize {
                         "Deprecated usage of Lore in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
                         "Lore will be removed in the next major version of Minecraft in favor of DisplayLore",
                         "You can turn my nagging off in config.yml, verbose_logging: true -> false"
-                ).forEach(this.plugin.getComponentLogger()::warn);
+                ).forEach(this.plugin.getPlugin().getComponentLogger()::warn);
             }
 
             this.section.getStringList("Lore").forEach(line -> lore.add(player != null && isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, line) : line));
@@ -299,7 +299,7 @@ public class Prize {
         if (this.broadcast) {
             final String permission = this.broadcastPermission;
 
-            this.plugin.getServer().getOnlinePlayers().forEach(player -> {
+            this.plugin.getPlugin().getServer().getOnlinePlayers().forEach(player -> {
                 if (!permission.isEmpty() && player.hasPermission(permission)) return;
 
                 this.broadcastMessages.forEach(message -> sendMessage(target, player, message, crate));
@@ -311,7 +311,7 @@ public class Prize {
         if (crate.isBroadcastToggle()) {
             final String permission = crate.getBroadcastPermission();
 
-            this.plugin.getServer().getOnlinePlayers().forEach(player -> {
+            this.plugin.getPlugin().getServer().getOnlinePlayers().forEach(player -> {
                 if (!permission.isEmpty() && player.hasPermission(permission)) return;
 
                 crate.getBroadcastMessages().forEach(message -> sendMessage(target, player, message, crate));
@@ -363,7 +363,7 @@ public class Prize {
                             "Deprecated usage of Lore in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
                             "Lore will be removed in the next major version of Minecraft in favor of DisplayLore",
                             "You can turn my nagging off in config.yml, verbose_logging: true -> false"
-                    ).forEach(this.plugin.getComponentLogger()::warn);
+                    ).forEach(this.plugin.getPlugin().getComponentLogger()::warn);
                 }
 
                 builder.setDisplayLore(this.section.getStringList("Lore"));
@@ -381,7 +381,7 @@ public class Prize {
                             "Deprecated usage of Patterns in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Patterns to DisplayPatterns",
                             "Patterns will be removed in the next major version of Minecraft in favor of DisplayPatterns",
                             "You can turn my nagging off in config.yml, verbose_logging: true -> false"
-                    ).forEach(this.plugin.getComponentLogger()::warn);
+                    ).forEach(this.plugin.getPlugin().getComponentLogger()::warn);
                 }
 
                 for (final String pattern : this.section.getStringList("Patterns")) {

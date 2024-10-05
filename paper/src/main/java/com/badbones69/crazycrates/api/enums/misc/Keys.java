@@ -1,8 +1,8 @@
 package com.badbones69.crazycrates.api.enums.misc;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataType;
-import com.badbones69.crazycrates.CrazyCrates;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("rawtypes")
@@ -19,7 +19,7 @@ public enum Keys {
     crate_tier("crate_tier", PersistentDataType.STRING),
     crate_key("crate_key", PersistentDataType.STRING);
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private final String NamespacedKey;
     private final PersistentDataType type;
@@ -30,7 +30,7 @@ public enum Keys {
     }
 
     public @NotNull final NamespacedKey getNamespacedKey() {
-        return new NamespacedKey(this.plugin, this.plugin.getName().toLowerCase() + "_" + this.NamespacedKey);
+        return new NamespacedKey(this.plugin.getPlugin(), this.plugin.getPlugin().getName().toLowerCase() + "_" + this.NamespacedKey);
     }
 
     public @NotNull final PersistentDataType getType() {

@@ -53,6 +53,6 @@ public class MojangMappedMigratorMultiple extends ICrateMigrator {
 
     @Override
     public final File getCratesDirectory() {
-        return new File(this.plugin.getDataFolder(), "crates");
+        return new File(this.plugin.getPlugin().getDataFolder(), "crates");
     }
 }

@@ -170,7 +170,7 @@ public class WheelCrate extends CrateBuilder {
                 this.uh++;
                 this.what++;
             }
-        }.runAtFixedRate(this.plugin, 1, 1));
+        }.runAtFixedRate(this.plugin.getPlugin(), 1, 1));
     }
 
     private List<Integer> getBorder() {

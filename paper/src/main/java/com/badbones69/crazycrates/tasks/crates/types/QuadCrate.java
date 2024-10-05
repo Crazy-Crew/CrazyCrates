@@ -42,7 +42,7 @@ public class QuadCrate extends CrateBuilder {
             return;
         }
 
-        final StructureManager handler = new StructureManager(this.plugin);
+        final StructureManager handler = new StructureManager(this.plugin.getPlugin());
 
         handler.applyStructure(crateSchematic.schematicFile());
 

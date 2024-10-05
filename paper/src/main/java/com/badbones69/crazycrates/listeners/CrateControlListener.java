@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.listeners;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import com.badbones69.crazycrates.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.api.events.KeyCheckEvent;
@@ -29,7 +30,6 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.managers.InventoryManager;
@@ -39,7 +39,7 @@ import java.util.Map;
 
 public class CrateControlListener implements Listener {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 

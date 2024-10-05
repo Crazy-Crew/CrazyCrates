@@ -18,7 +18,7 @@ public class MetricsWrapper extends bStats {
      * @param serviceId The id of the service. It can be found at <a href="https://bstats.org/what-is-my-plugin-id">What is my plugin id?</a>
      */
     public MetricsWrapper(CrazyCrates plugin, int serviceId) {
-        super(plugin, serviceId);
+        super(plugin.getPlugin(), serviceId);
 
         this.crateManager = plugin.getCrateManager();
     }

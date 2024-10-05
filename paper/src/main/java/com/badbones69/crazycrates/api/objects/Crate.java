@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.api.objects;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.tasks.menus.CratePreviewMenu;
 import com.badbones69.crazycrates.tasks.menus.CrateTierMenu;
@@ -27,7 +28,6 @@ import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.AbstractCrateManager;
 import org.jetbrains.annotations.NotNull;
@@ -86,7 +86,7 @@ public class Crate {
 
     private List<String> prizeCommands = new ArrayList<>();
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
 

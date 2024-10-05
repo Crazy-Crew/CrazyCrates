@@ -134,7 +134,7 @@ public class CsgoCrate extends CrateBuilder {
                             public void run() {
                                 if (player.getOpenInventory().getTopInventory().equals(getInventory())) player.closeInventory();
                             }
-                        }.runDelayed(plugin, 40);
+                        }.runDelayed(plugin.getPlugin(), 40);
 
                         cancel();
                     } else if (this.time > 60) { // Added this due reports of the prizes spamming when low tps.
@@ -142,7 +142,7 @@ public class CsgoCrate extends CrateBuilder {
                     }
                 }
             }
-        }.runAtFixedRate(this.plugin, 0, 1));
+        }.runAtFixedRate(this.plugin.getPlugin(), 0, 1));
     }
 
     private void populate() {

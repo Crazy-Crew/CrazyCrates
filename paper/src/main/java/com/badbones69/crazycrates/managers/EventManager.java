@@ -19,7 +19,7 @@ import java.util.Date;
 
 public class EventManager {
 
-    private final static CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final static CrazyCrates plugin = CrazyCrates.getInstance();
 
     private final static SettingsManager config = ConfigManager.getConfig();
 
@@ -108,7 +108,7 @@ public class EventManager {
         final boolean log_to_console = config.getProperty(ConfigKeys.log_to_console);
 
         if (log_to_console) {
-            plugin.getComponentLogger().info("[{} {}]: {}", time, type.getEvent(), AdvUtil.parse(message));
+            plugin.getPlugin().getComponentLogger().info("[{} {}]: {}", time, type.getEvent(), AdvUtil.parse(message));
         }
     }
 }

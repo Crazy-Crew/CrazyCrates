@@ -26,7 +26,7 @@ import java.util.UUID;
 public class InventoryManager {
 
     private final SettingsManager config = ConfigManager.getConfig();
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private ItemBuilder menuButton;
     private ItemBuilder nextButton;
@@ -123,7 +123,7 @@ public class InventoryManager {
         while (viewers.hasNext()) {
             final UUID uuid = viewers.next();
 
-            final Player player = this.plugin.getServer().getPlayer(uuid);
+            final Player player = this.plugin.getPlugin().getServer().getPlayer(uuid);
 
             if (player == null || !player.isOnline()) {
                 removePreviewViewer(uuid);
@@ -141,7 +141,7 @@ public class InventoryManager {
         while (viewers.hasNext()) {
             final UUID uuid = viewers.next();
 
-            final Player player = this.plugin.getServer().getPlayer(uuid);
+            final Player player = this.plugin.getPlugin().getServer().getPlayer(uuid);
 
             if (player == null || !player.isOnline()) {
                 removePreviewViewer(uuid);

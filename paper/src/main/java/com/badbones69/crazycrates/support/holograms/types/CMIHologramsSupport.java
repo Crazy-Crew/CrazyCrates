@@ -74,7 +74,7 @@ public class CMIHologramsSupport extends HologramManager {
 
     @Override
     public void purge(final boolean isShutdown) {
-        final String name = this.plugin.getName().toLowerCase();
+        final String name = this.plugin.getPlugin().getName().toLowerCase();
 
         final List<String> holograms = new ArrayList<>() {{
             hologramManager.getHolograms().forEach((id, hologram) -> {

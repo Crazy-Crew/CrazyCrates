@@ -1,10 +1,10 @@
 package com.badbones69.crazycrates.support.placeholders;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.apache.commons.lang3.StringUtils;
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class PlaceholderAPISupport extends PlaceholderExpansion {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private final BukkitUserManager userManager = this.plugin.getUserManager();
 
@@ -62,11 +62,11 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         final String value = PlaceholderAPI.setPlaceholders(human, "%" + StringUtils.substringBetween(identifier.substring(0, index), "{", "}") + "%");
 
         // Get player
-        final Player target = this.plugin.getServer().getPlayer(value);
+        final Player target = this.plugin.getPlugin().getServer().getPlayer(value);
 
         // If player is offline.
         if (target == null) {
-            final UUID offlinePlayer = CompletableFuture.supplyAsync(() -> plugin.getServer().getOfflinePlayer(value)).thenApply(OfflinePlayer::getUniqueId).join();
+            final UUID offlinePlayer = CompletableFuture.supplyAsync(() -> plugin.getPlugin().getServer().getOfflinePlayer(value)).thenApply(OfflinePlayer::getUniqueId).join();
 
             final String crateName = identifier.split("_")[2];
 
@@ -89,7 +89,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         final Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate: {} is not a valid crate name.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getPlugin().getComponentLogger().warn("Crate: {} is not a valid crate name.", crateName);
 
             return "N/A";
         }
@@ -129,7 +129,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
     @Override
     public @NotNull final String getIdentifier() {
-        return this.plugin.getName().toLowerCase();
+        return this.plugin.getPlugin().getName().toLowerCase();
     }
     
     @Override
@@ -139,6 +139,6 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
     
     @Override
     public @NotNull final String getVersion() {
-        return this.plugin.getPluginMeta().getVersion();
+        return this.plugin.getPlugin().getPluginMeta().getVersion();
     }
 }

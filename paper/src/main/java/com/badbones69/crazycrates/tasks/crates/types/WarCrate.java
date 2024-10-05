@@ -87,7 +87,7 @@ public class WarCrate extends CrateBuilder {
                     crateManager.addPicker(player, true);
                 }
             }
-        }.runAtFixedRate(this.plugin, 1, 3));
+        }.runAtFixedRate(this.plugin.getPlugin(), 1, 3));
     }
 
     private void setRandomPrizes() {

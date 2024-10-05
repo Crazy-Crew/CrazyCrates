@@ -17,7 +17,7 @@ import java.util.List;
 // Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
 public class BrokeLocationsListener implements Listener {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
     
@@ -55,9 +55,9 @@ public class BrokeLocationsListener implements Listener {
         this.crateManager.removeBrokeLocation(fixedWorlds);
 
         if (MiscUtils.isLogging()) {
-            this.plugin.getComponentLogger().warn("Fixed {} broken crate locations.", fixedAmount);
+            this.plugin.getPlugin().getComponentLogger().warn("Fixed {} broken crate locations.", fixedAmount);
 
-            if (this.crateManager.getBrokeLocations().isEmpty()) this.plugin.getComponentLogger().warn("All broken crate locations have been fixed.");
+            if (this.crateManager.getBrokeLocations().isEmpty()) this.plugin.getPlugin().getComponentLogger().warn("All broken crate locations have been fixed.");
         }
     }
 }

@@ -81,7 +81,7 @@ public class CasinoCrate extends CrateBuilder {
                     public void run() {
                         if (player.getOpenInventory().getTopInventory().equals(getInventory())) player.closeInventory();
                     }
-                }.runDelayed(this.plugin, 40);
+                }.runDelayed(this.plugin.getPlugin(), 40);
 
                 cancel();
 
@@ -116,7 +116,7 @@ public class CasinoCrate extends CrateBuilder {
 
                 if (row_uno.isEmpty() || row_dos.isEmpty() || row_tres.isEmpty()) {
                     if (MiscUtils.isLogging()) {
-                        final ComponentLogger logger = this.plugin.getComponentLogger();
+                        final ComponentLogger logger = this.plugin.getPlugin().getComponentLogger();
 
                         logger.warn("One of your tiers in the config is empty.");
                         logger.warn("Tier 1: {}", row_uno);
@@ -140,7 +140,7 @@ public class CasinoCrate extends CrateBuilder {
 
         setDisplayItems(true);
 
-        runAtFixedRate(this.plugin, 1, 1);
+        runAtFixedRate(this.plugin.getPlugin(), 1, 1);
 
         player.openInventory(getInventory());
     }

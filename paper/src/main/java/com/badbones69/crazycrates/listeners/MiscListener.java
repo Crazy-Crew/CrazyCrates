@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.listeners;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.builders.types.features.CrateSpinMenu;
 import com.ryderbelserion.crazycrates.common.enums.Messages;
@@ -19,7 +20,6 @@ import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import com.badbones69.crazycrates.CrazyCrates;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -33,7 +33,7 @@ import java.util.UUID;
 
 public class MiscListener implements Listener {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
 

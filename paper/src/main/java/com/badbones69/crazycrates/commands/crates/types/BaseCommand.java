@@ -29,7 +29,7 @@ import java.util.Map;
 @Command(value = "crazycrates", alias = {"crates", "crate"})
 public abstract class BaseCommand {
 
-    protected @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    protected @NotNull final CrazyCrates plugin = CrazyCrates.getInstance();
 
     protected @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
@@ -142,7 +142,7 @@ public abstract class BaseCommand {
             final int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), fileName);
 
             if (totalKeys < 1) {
-                if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("The player {} does not have enough keys to take.", player.getName());
+                if (MiscUtils.isLogging()) this.plugin.getPlugin().getComponentLogger().warn("The player {} does not have enough keys to take.", player.getName());
 
                 Messages.cannot_take_keys.sendMessage(sender, "{player}", player.getName());
 
@@ -190,7 +190,7 @@ public abstract class BaseCommand {
         if (player != null) {
             final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
 
-            this.plugin.getServer().getPluginManager().callEvent(event);
+            this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
 
             if (event.isCancelled()) return;
 
@@ -224,7 +224,7 @@ public abstract class BaseCommand {
         if (offlinePlayer != null) {
             final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(offlinePlayer, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
 
-            this.plugin.getServer().getPluginManager().callEvent(event);
+            this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
 
             if (event.isCancelled()) return;
 

@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.listeners.crates.types;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
@@ -31,7 +32,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.ryderbelserion.crazycrates.common.enums.Messages;
@@ -47,7 +47,7 @@ import java.util.logging.Level;
 
 public class CosmicCrateListener implements Listener {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
@@ -114,7 +114,7 @@ public class CosmicCrateListener implements Listener {
 
         PrizeManager.givePrize(player, prize, crate);
 
-        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+        this.plugin.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
 
         event.setCurrentItem(prize.getDisplayItem(player, crate));
 
@@ -325,7 +325,7 @@ public class CosmicCrateListener implements Listener {
                 if (!broadcastMessage.isBlank()) {
                     String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
-                    this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%player%", player.getName())));
+                    this.plugin.getPlugin().getServer().broadcast(AdvUtil.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%player%", player.getName())));
                 }
             }
 
@@ -339,9 +339,9 @@ public class CosmicCrateListener implements Listener {
                     try {
                         startRollingAnimation(player, view, holder);
                     } catch (Exception exception) {
-                        player.getScheduler().run(plugin, scheduledTask -> {
+                        player.getScheduler().run(plugin.getPlugin(), scheduledTask -> {
                             PlayerReceiveKeyEvent keyEvent = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.REFUND, 1);
-                            plugin.getServer().getPluginManager().callEvent(keyEvent);
+                            plugin.getPlugin().getServer().getPluginManager().callEvent(keyEvent);
 
                             // Check if event is cancelled.
                             if (!event.isCancelled()) {
@@ -365,7 +365,7 @@ public class CosmicCrateListener implements Listener {
 
                                 Messages.key_refund.sendMessage(player, "{crate}", fancyName);
 
-                                if (MiscUtils.isLogging()) plugin.getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + fileName + " crate and so they were issued a key refund.", exception);
+                                if (MiscUtils.isLogging()) plugin.getPlugin().getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + fileName + " crate and so they were issued a key refund.", exception);
 
                                 // Play a sound
                                 crate.playSound(player, player.getLocation(), "stop-sound", "block.anvil.place", Sound.Source.PLAYER);
@@ -436,7 +436,7 @@ public class CosmicCrateListener implements Listener {
             this.crateManager.addCrateTask(player, new TimerTask() {
                 @Override
                 public void run() {
-                    player.getScheduler().run(plugin, scheduledTask -> player.closeInventory(InventoryCloseEvent.Reason.UNLOADED), null);
+                    player.getScheduler().run(plugin.getPlugin(), scheduledTask -> player.closeInventory(InventoryCloseEvent.Reason.UNLOADED), null);
 
                     if (MiscUtils.isLogging()) {
                         List.of(

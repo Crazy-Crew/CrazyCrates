@@ -84,7 +84,7 @@ public class QuickCrate extends CrateBuilder {
                 Prize prize = crate.pickPrize(player);
                 PrizeManager.givePrize(player, prize, crate);
 
-                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+                this.plugin.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
 
                 if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(.5, 1, .5), null);
 
@@ -144,7 +144,7 @@ public class QuickCrate extends CrateBuilder {
 
         PrizeManager.givePrize(player, crate, prize);
 
-        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+        this.plugin.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
 
         final boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
 
@@ -178,8 +178,8 @@ public class QuickCrate extends CrateBuilder {
                 reward = player.getWorld().dropItem(getLocation().clone().add(.5, 1, .5), display);
             } catch (IllegalArgumentException exception) {
                 if (MiscUtils.isLogging()) {
-                    this.plugin.getComponentLogger().warn("A prize could not be given due to an invalid display item for this prize.");
-                    this.plugin.getComponentLogger().warn("Crate: {} Prize: {}", prize.getCrateName(), prize.getPrizeName(), exception);
+                    this.plugin.getPlugin().getComponentLogger().warn("A prize could not be given due to an invalid display item for this prize.");
+                    this.plugin.getPlugin().getComponentLogger().warn("Crate: {} Prize: {}", prize.getCrateName(), prize.getPrizeName(), exception);
                 }
 
                 return;
@@ -207,7 +207,7 @@ public class QuickCrate extends CrateBuilder {
                 public void run() {
                     crateManager.endQuickCrate(player, getLocation(), crate, false);
                 }
-            }.runDelayed(this.plugin, 5 * 20));
+            }.runDelayed(this.plugin.getPlugin(), 5 * 20));
 
             return;
         }
@@ -224,6 +224,6 @@ public class QuickCrate extends CrateBuilder {
             public void run() {
                 crateManager.endQuickCrate(player, getLocation(), crate, false);
             }
-        }.runDelayed(this.plugin, 40));
+        }.runDelayed(this.plugin.getPlugin(), 40));
     }
 }

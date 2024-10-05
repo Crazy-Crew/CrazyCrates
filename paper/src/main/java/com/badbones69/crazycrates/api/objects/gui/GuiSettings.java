@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class GuiSettings {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private final String title;
     private final int rows;
@@ -55,7 +55,7 @@ public class GuiSettings {
 
                 if (this.buttons.containsKey(slot)) {
                     if (MiscUtils.isLogging()) {
-                        this.plugin.getComponentLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
+                        this.plugin.getPlugin().getComponentLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
                     }
 
                     return;
@@ -77,7 +77,7 @@ public class GuiSettings {
 
                 if (this.buttons.containsKey(slot)) {
                     if (MiscUtils.isLogging()) {
-                        this.plugin.getComponentLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
+                        this.plugin.getPlugin().getComponentLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
                     }
 
                     return;

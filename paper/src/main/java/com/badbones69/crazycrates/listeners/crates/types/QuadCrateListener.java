@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.listeners.crates.types;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.utils.ItemUtils;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
@@ -11,7 +12,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.meta.ItemMeta;
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.crates.other.quadcrates.QuadCrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -39,7 +39,7 @@ import java.util.Map;
 
 public class QuadCrateListener implements Listener {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private final SessionManager sessionManager = new SessionManager();
 
@@ -118,7 +118,7 @@ public class QuadCrateListener implements Listener {
 
                         crate.playSound(player, block.getLocation(), "stop-sound", "block.anvil.land", Sound.Source.BLOCK);
                     }
-                }.runDelayed(this.plugin, 60);
+                }.runDelayed(this.plugin.getPlugin(), 60);
             }
         }
     }

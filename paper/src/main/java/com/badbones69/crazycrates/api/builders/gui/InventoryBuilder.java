@@ -30,7 +30,7 @@ public abstract class InventoryBuilder {
         this.player = player;
     }
 
-    protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+    protected final CrazyCrates plugin = CrazyCrates.getInstance();
 
     protected final CrateManager crateManager = this.plugin.getCrateManager();
 
@@ -56,7 +56,7 @@ public abstract class InventoryBuilder {
                         return;
                     }
 
-                    if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("The property {} is empty, so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
+                    if (MiscUtils.isLogging()) this.plugin.getPlugin().getComponentLogger().warn("The property {} is empty, so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
 
                     return;
                 }

@@ -70,7 +70,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null || crate.getCrateType() == CrateType.menu) {
             Messages.internal_error.sendMessage(player);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null or Menu for the crate named {}", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getPlugin().getComponentLogger().error("An error has occurred: The crate type is null or Menu for the crate named {}", crateName);
 
             return;
         }
@@ -138,7 +138,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null) {
             Messages.internal_error.sendMessage(sender);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getPlugin().getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crateName);
 
             return;
         }
@@ -216,7 +216,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null) {
             Messages.internal_error.sendMessage(sender);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getPlugin().getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crateName);
 
             return;
         }
@@ -267,7 +267,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null) {
             Messages.internal_error.sendMessage(player);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crate.getFileName());
+            if (MiscUtils.isLogging()) this.plugin.getPlugin().getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crate.getFileName());
 
             return;
         }
@@ -329,7 +329,7 @@ public class CommandOpen extends BaseCommand {
 
             PrizeManager.givePrize(player, prize, crate);
 
-            this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+            this.plugin.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
 
             if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().clone().add(.5, 1, .5), null);
 

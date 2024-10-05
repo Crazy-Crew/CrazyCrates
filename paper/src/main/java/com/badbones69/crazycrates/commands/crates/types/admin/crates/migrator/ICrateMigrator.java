@@ -22,7 +22,7 @@ import java.util.Locale;
 
 public abstract class ICrateMigrator {
 
-    protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+    protected final CrazyCrates plugin = CrazyCrates.getInstance();
 
     protected final CrateManager crateManager = this.plugin.getCrateManager();
 

@@ -24,7 +24,7 @@ import java.util.List;
 
 public class CrateOpenListener implements Listener {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
@@ -90,7 +90,7 @@ public class CrateOpenListener implements Listener {
             if (!broadcastMessage.isBlank()) {
                 final String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
-                this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%player%", player.getName())));
+                this.plugin.getPlugin().getServer().broadcast(AdvUtil.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%player%", player.getName())));
             }
         }
 
@@ -109,7 +109,7 @@ public class CrateOpenListener implements Listener {
                         builder = line.replaceAll("%crate%", fileName).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%player%", player.getName());
                     }
 
-                    this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), builder);
+                    this.plugin.getPlugin().getServer().dispatchCommand(this.plugin.getPlugin().getServer().getConsoleSender(), builder);
                 });
             }
         }

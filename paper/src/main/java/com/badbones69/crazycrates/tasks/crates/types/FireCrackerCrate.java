@@ -80,6 +80,6 @@ public class FireCrackerCrate extends CrateBuilder {
                     quickCrate.open(KeyType.free_key, false, isSilent, eventType);
                 }
             }
-        }.runAtFixedRate(this.plugin, 0, 2));
+        }.runAtFixedRate(this.plugin.getPlugin(), 0, 2));
     }
 }

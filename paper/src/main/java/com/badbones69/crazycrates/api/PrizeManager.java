@@ -1,9 +1,9 @@
 package com.badbones69.crazycrates.api;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
@@ -30,7 +30,7 @@ import static java.util.regex.Matcher.quoteReplacement;
 
 public class PrizeManager {
     
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final CrazyCrates plugin = CrazyCrates.getInstance();
     private static final BukkitUserManager userManager = plugin.getUserManager();
 
     public static int getCap(final Crate crate, final Player player) {
@@ -88,7 +88,7 @@ public class PrizeManager {
      */
     public static void givePrize(@NotNull final Player player, @Nullable Prize prize, @NotNull final Crate crate) {
         if (prize == null) {
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("No prize was found when giving {} a prize.", player.getName());
+            if (MiscUtils.isLogging()) plugin.getPlugin().getComponentLogger().warn("No prize was found when giving {} a prize.", player.getName());
 
             return;
         }
@@ -188,8 +188,8 @@ public class PrizeManager {
                         commandBuilder.append("1 ");
 
                         if (MiscUtils.isLogging()) {
-                            plugin.getComponentLogger().warn("The prize {} in the {} crate has caused an error when trying to run a command.", prize.getPrizeName(), prize.getCrateName());
-                            plugin.getComponentLogger().warn("Command: {}", cmd);
+                            plugin.getPlugin().getComponentLogger().warn("The prize {} in the {} crate has caused an error when trying to run a command.", prize.getPrizeName(), prize.getCrateName());
+                            plugin.getPlugin().getComponentLogger().warn("Command: {}", cmd);
                         }
                     }
                 } else {
@@ -259,7 +259,7 @@ public class PrizeManager {
 
             if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
-            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+            plugin.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
         } else {
             Messages.prize_error.sendMessage(player, new HashMap<>() {{
                 put("{crate}", crate.getCrateName());

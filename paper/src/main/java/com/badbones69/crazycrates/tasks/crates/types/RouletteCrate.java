@@ -127,11 +127,11 @@ public class RouletteCrate extends CrateBuilder {
                             public void run() {
                                 if (player.getOpenInventory().getTopInventory().equals(getInventory())) player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
                             }
-                        }.runDelayed(plugin, 40);
+                        }.runDelayed(plugin.getPlugin(), 40);
                     }
                 }
             }
-        }.runAtFixedRate(this.plugin, 2, 2));
+        }.runAtFixedRate(this.plugin.getPlugin(), 2, 2));
     }
 
     private void setGlass() {
