@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandAddItem;
+import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandClaim;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandMigrate;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.commands.relations.ArgumentRelations;
@@ -140,6 +141,8 @@ public class CommandManager {
 
                 new CommandTransfer(),
                 new CommandKey(),
+
+                new CommandClaim(),
 
                 new CommandHelp()
         ).forEach(commandManager::registerCommand);

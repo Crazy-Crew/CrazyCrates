@@ -94,7 +94,7 @@ public class MiscListener implements Listener {
         }
 
         if (count > 0) {
-            Messages.crate_prizes_respins_claimed.sendMessage(player, "{amount}", String.valueOf(count));
+            Messages.crate_prize_respins_claimed.sendMessage(player, "{amount}", String.valueOf(count));
         }
     }
 
