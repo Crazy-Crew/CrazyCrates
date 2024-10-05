@@ -12,27 +12,27 @@ public class AbstractLogger implements PluginLogger {
     }
 
     @Override
-    public void info(String message) {
-        this.logger.info(AdvUtil.parse(message));
+    public void info(String message, Object... args) {
+        this.logger.info(AdvUtil.parse(message), args);
     }
 
     @Override
-    public void warn(String message) {
-        this.logger.warn(AdvUtil.parse(message));
+    public void warn(String message, Object... args) {
+        this.logger.warn(AdvUtil.parse(message), args);
     }
 
     @Override
-    public void warn(String message, Throwable throwable) {
-        this.logger.warn(AdvUtil.parse(message), throwable);
+    public void warn(String message, Throwable throwable, Object... args) {
+        this.logger.warn(AdvUtil.parse(message), throwable, args);
     }
 
     @Override
-    public void error(String message) {
-        this.logger.error(AdvUtil.parse(message));
+    public void error(String message, Object... args) {
+        this.logger.error(AdvUtil.parse(message), args);
     }
 
     @Override
-    public void error(String message, Throwable throwable) {
-        this.logger.error(AdvUtil.parse(message), throwable);
+    public void error(String message, Throwable throwable, Object... args) {
+        this.logger.error(AdvUtil.parse(message), throwable, args);
     }
 }
