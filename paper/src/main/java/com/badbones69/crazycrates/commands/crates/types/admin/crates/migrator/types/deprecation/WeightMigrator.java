@@ -20,7 +20,7 @@ public class WeightMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Collection<CustomFile> customFiles = this.plugin.getVital().getFileManager().getCustomFiles().values();
+        final Collection<CustomFile> customFiles = this.plugin.getPlugin().getFileManager().getCustomFiles().values();
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();

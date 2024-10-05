@@ -13,7 +13,7 @@ public class CrazyPlugin extends Vital {
     public CrazyPlugin() {
         this.startTime = System.nanoTime();
 
-        this.instance = new CrazyCrates(this, this);
+        this.instance = new CrazyCrates(this);
     }
 
     @Override

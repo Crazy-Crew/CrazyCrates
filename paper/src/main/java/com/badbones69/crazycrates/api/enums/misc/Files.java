@@ -21,7 +21,7 @@ public enum Files {
 
     private final CrazyCrates plugin = CrazyCrates.getInstance();
 
-    private final FileManager fileManager = this.plugin.getVital().getFileManager();
+    private final FileManager fileManager = this.plugin.getPlugin().getFileManager();
 
     /**
      * A constructor to build a file

@@ -30,7 +30,7 @@ public abstract class ICrateMigrator {
 
     protected final SettingsManager messages = ConfigManager.getMessages();
 
-    protected final FileManager fileManager = this.plugin.getVital().getFileManager();
+    protected final FileManager fileManager = this.plugin.getPlugin().getFileManager();
 
     protected final CommandSender sender;
 

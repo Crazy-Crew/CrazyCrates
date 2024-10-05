@@ -21,7 +21,6 @@ import com.ryderbelserion.crazycrates.common.plugin.AbstractCratesPlugin;
 import com.ryderbelserion.crazycrates.common.plugin.logger.AbstractLogger;
 import com.ryderbelserion.crazycrates.common.plugin.logger.PluginLogger;
 import com.badbones69.crazycrates.loader.CrazyPlugin;
-import com.ryderbelserion.vital.paper.Vital;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.kyori.adventure.audience.Audience;
@@ -56,13 +55,9 @@ public class CrazyCrates extends AbstractCratesPlugin {
 
     private final Timer timer;
 
-    private final Vital vital;
-
-    public CrazyCrates(final CrazyPlugin plugin, final Vital vital) {
+    public CrazyCrates(final CrazyPlugin plugin) {
         this.plugin = plugin;
         this.server = plugin.getServer();
-
-        this.vital = vital;
 
         this.logger = new AbstractLogger(this.plugin.getComponentLogger());
 
@@ -83,7 +78,7 @@ public class CrazyCrates extends AbstractCratesPlugin {
 
     @Override
     public void onEnable() { //todo() work needs to be done, just load order shit
-        this.vital.getFileManager().addFile("locations.yml").addFile("data.yml").addFile("respin-gui.yml", "guis") // temporarily has to go first
+        this.plugin.getFileManager().addFile("locations.yml").addFile("data.yml").addFile("respin-gui.yml", "guis") // temporarily has to go first
                 .addFile("crates.log", "logs")
                 .addFile("keys.log", "logs")
                 .addFolder("crates")
@@ -252,11 +247,6 @@ public class CrazyCrates extends AbstractCratesPlugin {
         }
 
         return this.api;
-    }
-
-    @ApiStatus.Internal
-    public final Vital getVital() {
-        return this.vital;
     }
 
     @ApiStatus.Internal
