@@ -54,7 +54,9 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
 
         this.settings.getButtons().forEach((slot, button) -> this.gui.setItem(slot, button.getGuiItem()));
 
-        this.gui.setOpenGuiAction(action -> this.userManager.addRespinPrize(uuid, fileName, this.settings.getPrize().getSectionName()));
+        this.gui.setOpenGuiAction(action -> {
+            this.userManager.addRespinPrize(uuid, fileName, this.settings.getPrize().getSectionName());
+        });
 
         this.gui.setCloseGuiAction(action -> {
             if (!this.userManager.hasUser(uuid) && this.userManager.hasRespinPrize(uuid, fileName)) { // if they aren't in the cache, then we run this.

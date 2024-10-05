@@ -130,7 +130,7 @@ public class CrateKeys implements SettingsHolder {
     public static final Property<String> crate_prize_respins_redeemed = newProperty("crates.respins.redeemed", "{prefix}<red>You have redeemed your prize with the name {prize} from the crate named {crate}!");
 
     @Comment("A list of available placeholders: {prize}, {crate}, {crate_pretty}")
-    public static final Property<String> crate_prize_respin_not_claimed = newProperty("crates.respins.not-claimed", "{prefix}<red>You closed the inventory, before claiming your prize. Please run /crazycrates claim {crate}");
+    public static final Property<String> crate_prize_respin_not_claimed = newProperty("crates.respins.not-claimed", "{prefix}<red>If you didn't get your prize, please run /crazycrates claim {crate}");
 
     @Comment("A list of available placeholders: {crate}, {crate_pretty}")
     public static final Property<String> crate_prize_respins_empty = newProperty("crates.respins.empty", "{prefix}There is no prize to claim from the crate {crate}.");
