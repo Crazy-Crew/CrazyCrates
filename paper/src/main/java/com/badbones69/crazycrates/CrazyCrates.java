@@ -246,8 +246,7 @@ public class CrazyCrates extends AbstractCratesPlugin {
     }
 
     @ApiStatus.Internal
-    public @Nullable
-    final HeadDatabaseAPI getApi() {
+    public @Nullable final HeadDatabaseAPI getApi() {
         if (this.api == null) {
             return null;
         }
