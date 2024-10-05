@@ -12,7 +12,6 @@ import com.badbones69.crazycrates.listeners.crates.types.WarCrateListener;
 import com.badbones69.crazycrates.listeners.other.EntityDamageListener;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.InventoryManager;
-import com.badbones69.crazycrates.support.MetricsWrapper;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
@@ -40,7 +39,6 @@ import java.util.Optional;
 import java.util.Timer;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
 import static com.badbones69.crazycrates.utils.MiscUtils.registerPermissions;
 
 public class CrazyCrates extends AbstractCratesPlugin {
@@ -117,8 +115,6 @@ public class CrazyCrates extends AbstractCratesPlugin {
 
         // setup managers
         setupManagers();
-
-        new MetricsWrapper(this, 4514).start();
 
         if (Support.placeholder_api.isEnabled()) {
             if (MiscUtils.isLogging()) this.logger.info("PlaceholderAPI support has been enabled!");
