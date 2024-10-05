@@ -34,6 +34,7 @@ public enum Messages {
     key_refund(ErrorKeys.key_refund),
     no_schematics_found(ErrorKeys.no_schematics_found),
     no_prizes_found(ErrorKeys.no_prizes_found),
+    prize_not_found(ErrorKeys.prize_not_found),
     prize_error(ErrorKeys.prize_error),
     cannot_be_empty(ErrorKeys.cannot_be_empty),
     cannot_be_air(ErrorKeys.cannot_be_air),
@@ -75,7 +76,11 @@ public enum Messages {
     crate_prize_max_respins(CrateKeys.crate_prize_max_respins),
     crate_prize_max_respins_left(CrateKeys.crate_prize_max_respins_left),
     crate_prize_max_respins_none(CrateKeys.crate_prize_max_respins_none),
-    crate_prizes_respins_claimed(CrateKeys.crate_prizes_respins_claimed),
+    crate_prize_respins_claimed(CrateKeys.crate_prize_respins_claimed),
+
+    crate_prize_respins_redeemed(CrateKeys.crate_prize_respins_redeemed),
+    crate_prize_respins_empty(CrateKeys.crate_prize_respins_empty),
+    crate_prize_respin_not_claimed(CrateKeys.crate_prize_respin_not_claimed),
 
     gave_a_player_keys(CommandKeys.gave_a_player_keys),
     cannot_give_player_keys(CommandKeys.cannot_give_player_keys),

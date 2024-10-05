@@ -49,6 +49,7 @@ public enum Permissions {
     CRAZYCRATES_LIST("list", "Displays a list of all available crates.", PermissionDefault.OP, new HashMap<>() {{
         put("crazycrates.teleport", true);
     }}),
+    CRAZYCRATES_CLAIM("claim", "Allows access to /crazycrates claim {crate}", PermissionDefault.OP),
     CRAZYCRATES_TELEPORT("teleport", "Teleports to a crate.", PermissionDefault.OP),
     CRAZYCRATES_KEY_ALL("keys-others", "Check the number of keys a player has.", PermissionDefault.OP, new HashMap<>() {{
         put("crazycrates.keys", true);
@@ -67,6 +68,7 @@ public enum Permissions {
 
         put("crazycrates.wand", true);
         put("crazycrates.save", true);
+        put("crazycrates.claim", true);
     }}),
 
     CRAZYCRATES_PLAYER_ALL("players.*", "Give all player based permissions.", PermissionDefault.OP, new HashMap<>() {{
