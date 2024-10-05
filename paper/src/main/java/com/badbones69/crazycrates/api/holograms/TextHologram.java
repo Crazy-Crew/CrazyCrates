@@ -1,4 +1,4 @@
-package com.ryderbelserion.crazycrates.api.holograms;
+package com.badbones69.crazycrates.api.holograms;
 
 import com.ryderbelserion.vital.common.util.AdvUtil;
 import com.ryderbelserion.vital.common.util.StringUtil;
@@ -66,6 +66,24 @@ public class TextHologram {
      */
     public TextDisplay getTextDisplay() {
         return this.textDisplay;
+    }
+
+    /**
+     * Sets the billboard
+     *
+     * @param billboard the billboard
+     */
+    public void setBillboard(Display.Billboard billboard) {
+        this.billboard = billboard;
+    }
+
+    /**
+     * Gets the billboard
+     *
+     * @return the billboard
+     */
+    public Display.Billboard getBillboard() {
+        return this.billboard;
     }
 
     /**

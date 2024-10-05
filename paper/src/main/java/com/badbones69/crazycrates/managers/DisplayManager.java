@@ -1,6 +1,6 @@
-package com.ryderbelserion.crazycrates.managers;
+package com.badbones69.crazycrates.managers;
 
-import com.ryderbelserion.crazycrates.api.holograms.TextHologram;
+import com.badbones69.crazycrates.api.holograms.TextHologram;
 import org.bukkit.entity.TextDisplay;
 import java.util.HashMap;
 import java.util.Map;

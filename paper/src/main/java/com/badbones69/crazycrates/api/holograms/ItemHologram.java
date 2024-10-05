@@ -1,4 +1,4 @@
-package com.ryderbelserion.crazycrates.api.holograms;
+package com.badbones69.crazycrates.api.holograms;
 
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import org.bukkit.Location;
