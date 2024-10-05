@@ -1,48 +1,74 @@
 package com.badbones69.crazycrates;
 
-import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.listeners.CrateControlListener;
 import com.badbones69.crazycrates.listeners.MiscListener;
-import com.badbones69.crazycrates.listeners.crates.types.CosmicCrateListener;
 import com.badbones69.crazycrates.listeners.crates.CrateOpenListener;
+import com.badbones69.crazycrates.listeners.crates.types.CosmicCrateListener;
 import com.badbones69.crazycrates.listeners.crates.types.MobileCrateListener;
 import com.badbones69.crazycrates.listeners.crates.types.QuadCrateListener;
 import com.badbones69.crazycrates.listeners.crates.types.WarCrateListener;
 import com.badbones69.crazycrates.listeners.other.EntityDamageListener;
+import com.badbones69.crazycrates.managers.BukkitUserManager;
+import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.support.MetricsWrapper;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
-import com.badbones69.crazycrates.managers.BukkitUserManager;
-import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.common.util.AdvUtil;
+import com.badbones69.crazycrates.utils.MiscUtils;
+import com.ryderbelserion.crazycrates.common.plugin.AbstractCratesPlugin;
+import com.ryderbelserion.crazycrates.common.plugin.logger.AbstractLogger;
+import com.ryderbelserion.crazycrates.common.plugin.logger.PluginLogger;
+import com.badbones69.crazycrates.loader.CrazyPlugin;
 import com.ryderbelserion.vital.paper.Vital;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
-import org.bukkit.plugin.java.JavaPlugin;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.identity.Identity;
+import org.bukkit.Server;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.ServicePriority;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import us.crazycrew.crazycrates.CrazyCratesApi;
+import java.nio.file.Path;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Timer;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import static com.badbones69.crazycrates.utils.MiscUtils.registerPermissions;
 
-@ApiStatus.Internal
-public class CrazyCrates extends JavaPlugin {
+public class CrazyCrates extends AbstractCratesPlugin {
 
-    @ApiStatus.Internal
-    public static CrazyCrates getPlugin() {
-        return JavaPlugin.getPlugin(CrazyCrates.class);
-    }
+    private static CrazyCrates instance;
 
-    private final Vital vital;
+    private final CrazyPlugin plugin;
+
+    private final PluginLogger logger;
+
+    private final Server server;
+
     private final Timer timer;
 
-    public CrazyCrates() {
-        this.vital = new Vital(this);
+    private final Vital vital;
+
+    public CrazyCrates(final CrazyPlugin plugin, final Vital vital) {
+        this.plugin = plugin;
+        this.server = plugin.getServer();
+
+        this.vital = vital;
+
+        this.logger = new AbstractLogger(this.plugin.getComponentLogger());
 
         this.timer = new Timer();
+
+        instance = this;
     }
 
     private InventoryManager inventoryManager;
@@ -51,18 +77,24 @@ public class CrazyCrates extends JavaPlugin {
     private HeadDatabaseAPI api;
 
     @Override
-    public void onEnable() {
-        this.vital.getFileManager().addFile("locations.yml").addFile("data.yml").addFile("respin-gui.yml", "guis")
+    public void onLoad() {
+        load();
+    }
+
+    @Override
+    public void onEnable() { //todo() work needs to be done, just load order shit
+        this.vital.getFileManager().addFile("locations.yml").addFile("data.yml").addFile("respin-gui.yml", "guis") // temporarily has to go first
                 .addFile("crates.log", "logs")
                 .addFile("keys.log", "logs")
                 .addFolder("crates")
                 .addFolder("schematics")
                 .init();
 
+        enable();
+
         MiscUtils.janitor();
         MiscUtils.save();
 
-        // Register permissions that we need.
         registerPermissions();
 
         if (Support.head_database.isEnabled()) {
@@ -73,8 +105,6 @@ public class CrazyCrates extends JavaPlugin {
         this.crateManager = new CrateManager();
         this.userManager = new BukkitUserManager();
 
-        //this.instance.setUserManager(this.userManager);
-
         // Load holograms.
         this.crateManager.loadHolograms();
 
@@ -84,11 +114,65 @@ public class CrazyCrates extends JavaPlugin {
         // Load the crates.
         this.crateManager.loadCrates();
 
-        // Load commands.
-        CommandManager.load();
+        // register listeners
+        registerListeners();
+
+        // register commands
+        registerCommands();
+
+        // setup managers
+        setupManagers();
 
         new MetricsWrapper(this, 4514).start();
 
+        if (Support.placeholder_api.isEnabled()) {
+            if (MiscUtils.isLogging()) this.logger.info("PlaceholderAPI support is enabled!");
+
+            new PlaceholderAPISupport().register();
+        }
+
+        if (MiscUtils.isLogging()) {
+            for (final Support value : Support.values()) {
+                if (value.isEnabled()) {
+                    this.logger.info("<bold><gold>" + value.getName() + " <green>FOUND");
+                } else {
+                    this.logger.info("<bold><gold>" + value.getName() + " <red>NOT FOUND");
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onDisable() {
+        disable();
+
+        this.timer.cancel();
+
+        if (this.crateManager != null) {
+            this.crateManager.purgeRewards();
+
+            final HologramManager holograms = this.crateManager.getHolograms();
+
+            if (holograms != null) {
+                holograms.purge(true);
+            }
+        }
+
+        MiscUtils.janitor();
+    }
+
+    @Override
+    public void reload() {
+        super.reload();
+    }
+
+    @Override
+    protected void registerPlatformAPI(final CrazyCratesApi api) {
+        this.server.getServicesManager().register(CrazyCratesApi.class, api, this.plugin, ServicePriority.Normal);
+    }
+
+    @Override
+    protected void registerListeners() {
         List.of(
                 // Other listeners.
                 new BrokeLocationsListener(),
@@ -100,51 +184,55 @@ public class CrazyCrates extends JavaPlugin {
                 new CrateOpenListener(),
                 new WarCrateListener(),
                 new MiscListener()
-        ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
-
-        if (Support.placeholder_api.isEnabled()) {
-            if (MiscUtils.isLogging()) getComponentLogger().info("PlaceholderAPI support is enabled!");
-
-            new PlaceholderAPISupport().register();
-        }
-
-        if (MiscUtils.isLogging()) {
-            // Print dependency garbage
-            for (final Support value : Support.values()) {
-                if (value.isEnabled()) {
-                    getComponentLogger().info(AdvUtil.parse("<bold><gold>" + value.getName() + " <green>FOUND"));
-                } else {
-                    getComponentLogger().info(AdvUtil.parse("<bold><gold>" + value.getName() + " <red>NOT FOUND"));
-                }
-            }
-        }
+        ).forEach(listener -> this.server.getPluginManager().registerEvents(listener, this.plugin));
     }
 
     @Override
-    public void onDisable() {
-        // Cancel the tasks
-        getServer().getGlobalRegionScheduler().cancelTasks(this);
-        getServer().getAsyncScheduler().cancelTasks(this);
+    protected void registerCommands() {
+        CommandManager.load();
+    }
 
-        // Cancel the timer task.
-        this.timer.cancel();
+    @Override
+    protected void setupManagers() {
 
-        // Clean up any mess we may have left behind.
-        if (this.crateManager != null) {
-            this.crateManager.purgeRewards();
+    }
 
-            final HologramManager holograms = this.crateManager.getHolograms();
+    @Override
+    public @NotNull String parse(final @NotNull Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders) {
+        final @NotNull Optional<UUID> uuid = audience.get(Identity.UUID);
 
-            if (holograms != null) {
-                holograms.purge(true);
-            }
+        if (uuid.isPresent()) {
+            final Player player = this.server.getPlayer(uuid.get());
+
+            return MiscUtils.populatePlaceholders(player, line, placeholders);
         }
 
-        //if (this.instance != null) {
-        //    this.instance.disable();
-        //}
+        return "";
+    }
 
-        MiscUtils.janitor();
+    @Override
+    public Path getDataDirectory() {
+        return this.plugin.getDataFolder().toPath();
+    }
+
+    @Override
+    public PluginLogger getLogger() {
+        return this.logger;
+    }
+
+    @Override
+    public Collection<String> getPlayerList() {
+        return this.server.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Collection<UUID> getOnlinePlayers() {
+        return this.server.getOnlinePlayers().stream().map(Player::getUniqueId).collect(Collectors.toSet());
+    }
+
+    @Override
+    public BukkitUserManager getUserManager() {
+        return this.userManager;
     }
 
     @ApiStatus.Internal
@@ -153,17 +241,13 @@ public class CrazyCrates extends JavaPlugin {
     }
 
     @ApiStatus.Internal
-    public final BukkitUserManager getUserManager() {
-        return this.userManager;
-    }
-
-    @ApiStatus.Internal
     public final CrateManager getCrateManager() {
         return this.crateManager;
     }
 
     @ApiStatus.Internal
-    public @Nullable final HeadDatabaseAPI getApi() {
+    public @Nullable
+    final HeadDatabaseAPI getApi() {
         if (this.api == null) {
             return null;
         }
@@ -179,5 +263,13 @@ public class CrazyCrates extends JavaPlugin {
     @ApiStatus.Internal
     public final Timer getTimer() {
         return this.timer;
+    }
+
+    public CrazyPlugin getPlugin() {
+        return this.plugin;
+    }
+
+    public static CrazyCrates getInstance() {
+        return instance;
     }
 }

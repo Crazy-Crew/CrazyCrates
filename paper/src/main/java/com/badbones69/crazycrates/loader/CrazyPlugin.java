@@ -1,10 +1,11 @@
-package com.ryderbelserion.crazycrates.loader;
+package com.badbones69.crazycrates.loader;
 
-import com.ryderbelserion.crazycrates.CrazyCrates;
-import org.bukkit.plugin.java.JavaPlugin;
+import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.utils.MiscUtils;
+import com.ryderbelserion.vital.paper.Vital;
 import java.util.Locale;
 
-public class CrazyPlugin extends JavaPlugin {
+public class CrazyPlugin extends Vital {
 
     private final CrazyCrates crazyCrates;
     private final long startTime;
@@ -12,7 +13,7 @@ public class CrazyPlugin extends JavaPlugin {
     public CrazyPlugin() {
         this.startTime = System.nanoTime();
 
-        this.crazyCrates = new CrazyCrates(this);
+        this.crazyCrates = new CrazyCrates(this, this);
     }
 
     @Override
@@ -24,7 +25,7 @@ public class CrazyPlugin extends JavaPlugin {
     public void onEnable() {
         this.crazyCrates.onEnable();
 
-        getComponentLogger().info("Done ({})!", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
+        if (MiscUtils.isLogging()) getComponentLogger().info("Done ({})!", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
     }
 
     @Override
@@ -32,5 +33,6 @@ public class CrazyPlugin extends JavaPlugin {
         getServer().getGlobalRegionScheduler().cancelTasks(this);
         getServer().getAsyncScheduler().cancelTasks(this);
 
+        this.crazyCrates.onDisable();
     }
 }
