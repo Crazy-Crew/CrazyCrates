@@ -18,13 +18,13 @@ public abstract class AbstractCratesPlugin implements CrazyCratesPlugin {
 
     public final void enable() {
         // register listeners
-        registerListeners();
+        //registerListeners();
 
         // register commands
-        registerCommands();
+        //registerCommands();
 
         // setup managers
-        setupManagers();
+        //setupManagers();
 
         // create the provider
         this.apiProvider = new CrazyCratesApiProvider(this);
