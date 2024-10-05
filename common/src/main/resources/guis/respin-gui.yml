@@ -26,7 +26,7 @@ buttons:
   static:
     accept: # Do not change this
       # The name of the button
-      name: "<green>Yes"
+      name: "<green>Yes (Respin the prize)"
       # The slot the item goes in
       slot: 12
       # The type of block
@@ -49,7 +49,7 @@ buttons:
         pitch: 1.0
     deny: # Do not change this
       # The name of the button
-      name: "<red>No"
+      name: "<red>No (Keep your prize)"
       # The slot the item goes in
       slot: 14
       # The type of block
