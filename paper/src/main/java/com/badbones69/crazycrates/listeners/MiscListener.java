@@ -28,8 +28,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class MiscListener implements Listener {
@@ -95,7 +93,7 @@ public class MiscListener implements Listener {
         }
 
         if (count > 0) {
-            Messages.crate_prizes_respins_claimed.sendMessage(player, "{amount}", String.valueOf(count));
+            Messages.crate_prize_respins_claimed.sendMessage(player, "{amount}", String.valueOf(count));
         }
     }
 
