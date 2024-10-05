@@ -7,23 +7,23 @@ import java.util.Locale;
 
 public class CrazyPlugin extends Vital {
 
-    private final CrazyCrates crazyCrates;
+    private final CrazyCrates instance;
     private final long startTime;
 
     public CrazyPlugin() {
         this.startTime = System.nanoTime();
 
-        this.crazyCrates = new CrazyCrates(this, this);
+        this.instance = new CrazyCrates(this, this);
     }
 
     @Override
     public void onLoad() {
-        this.crazyCrates.onLoad();
+        this.instance.onLoad();
     }
 
     @Override
     public void onEnable() {
-        this.crazyCrates.onEnable();
+        this.instance.onEnable();
 
         if (MiscUtils.isLogging()) this.instance.getLogger().info("Done ({})!", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
     }
@@ -33,6 +33,6 @@ public class CrazyPlugin extends Vital {
         getServer().getGlobalRegionScheduler().cancelTasks(this);
         getServer().getAsyncScheduler().cancelTasks(this);
 
-        this.crazyCrates.onDisable();
+        this.instance.onDisable();
     }
 }
