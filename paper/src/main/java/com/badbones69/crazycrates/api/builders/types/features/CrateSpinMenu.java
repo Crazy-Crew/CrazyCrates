@@ -57,7 +57,7 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
         this.gui.setOpenGuiAction(action -> this.userManager.addRespinPrize(uuid, fileName, this.settings.getPrize().getSectionName()));
 
         this.gui.setCloseGuiAction(action -> {
-            if (this.userManager.hasRespinPrize(uuid, fileName)) {
+            if (!this.userManager.hasUser(uuid) && this.userManager.hasRespinPrize(uuid, fileName)) { // if they aren't in the cache, then we run this.
                 Messages.crate_prize_respin_not_claimed.sendMessage(player, new HashMap<>() {{
                     put("{crate_pretty}", crate.getCrateName());
                     put("{crate}", fileName);

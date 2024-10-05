@@ -648,6 +648,10 @@ public class BukkitUserManager extends UserManager {
 
     private final Map<UUID, Map<String, Integer>> crates = new HashMap<>();
 
+    public boolean hasUser(final UUID uuid) {
+        return crates.containsKey(uuid);
+    }
+
     public int getCrateRespin(@NotNull final UUID uuid, @NotNull final String crateName, final boolean write) {
         final Crate crate = isCrateInvalid(crateName);
 
