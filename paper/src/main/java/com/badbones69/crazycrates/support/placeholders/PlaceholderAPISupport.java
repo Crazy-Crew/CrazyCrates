@@ -89,7 +89,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         final Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getPlugin().getComponentLogger().warn("Crate: {} is not a valid crate name.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getLogger().warn("Crate: {} is not a valid crate name.", crateName);
 
             return "N/A";
         }

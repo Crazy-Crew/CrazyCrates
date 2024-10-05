@@ -12,6 +12,7 @@ import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
+import com.ryderbelserion.crazycrates.common.plugin.logger.PluginLogger;
 import com.ryderbelserion.vital.common.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import org.bukkit.Location;
@@ -178,8 +179,10 @@ public class QuickCrate extends CrateBuilder {
                 reward = player.getWorld().dropItem(getLocation().clone().add(.5, 1, .5), display);
             } catch (IllegalArgumentException exception) {
                 if (MiscUtils.isLogging()) {
-                    this.plugin.getPlugin().getComponentLogger().warn("A prize could not be given due to an invalid display item for this prize.");
-                    this.plugin.getPlugin().getComponentLogger().warn("Crate: {} Prize: {}", prize.getCrateName(), prize.getPrizeName(), exception);
+                    final PluginLogger logger = this.plugin.getLogger();
+
+                    logger.warn("A prize could not be given due to an invalid display item for this prize.");
+                    logger.warn("Crate: {} Prize: {}", prize.getCrateName(), prize.getPrizeName(), exception);
                 }
 
                 return;

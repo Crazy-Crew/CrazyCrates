@@ -56,7 +56,7 @@ public abstract class InventoryBuilder {
                         return;
                     }
 
-                    if (MiscUtils.isLogging()) this.plugin.getPlugin().getComponentLogger().warn("The property {} is empty, so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
+                    if (MiscUtils.isLogging()) this.plugin.getLogger().warn("The property {} is empty, so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
 
                     return;
                 }

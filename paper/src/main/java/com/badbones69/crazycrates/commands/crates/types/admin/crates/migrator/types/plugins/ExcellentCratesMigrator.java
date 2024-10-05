@@ -52,7 +52,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             final File crateFile = new File(directory, crateName);
 
             if (crateFile.exists()) {
-                this.plugin.getPlugin().getComponentLogger().warn("Crate {} already exists in {}.", crateName, directory.getName());
+                this.plugin.getLogger().warn("Crate {} already exists in {}.", crateName, directory.getName());
 
                 failed.add("<red>⤷ " + crateName);
 
@@ -62,7 +62,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             try {
                 crateFile.createNewFile();
             } catch (IOException exception) {
-                this.plugin.getPlugin().getComponentLogger().warn("Failed to create crate file {} in {}.", crateName, directory.getName(), exception);
+                this.plugin.getLogger().warn("Failed to create crate file {} in {}.", crateName, directory.getName(), exception);
 
                 failed.add("<red>⤷ " + crateName);
             }

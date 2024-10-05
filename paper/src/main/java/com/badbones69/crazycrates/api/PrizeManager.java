@@ -9,6 +9,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
+import com.ryderbelserion.crazycrates.common.plugin.logger.PluginLogger;
 import com.ryderbelserion.crazycrates.common.plugin.util.Methods;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -88,7 +89,7 @@ public class PrizeManager {
      */
     public static void givePrize(@NotNull final Player player, @Nullable Prize prize, @NotNull final Crate crate) {
         if (prize == null) {
-            if (MiscUtils.isLogging()) plugin.getPlugin().getComponentLogger().warn("No prize was found when giving {} a prize.", player.getName());
+            if (MiscUtils.isLogging()) plugin.getLogger().warn("No prize was found when giving {} a prize.", player.getName());
 
             return;
         }
@@ -188,8 +189,10 @@ public class PrizeManager {
                         commandBuilder.append("1 ");
 
                         if (MiscUtils.isLogging()) {
-                            plugin.getPlugin().getComponentLogger().warn("The prize {} in the {} crate has caused an error when trying to run a command.", prize.getPrizeName(), prize.getCrateName());
-                            plugin.getPlugin().getComponentLogger().warn("Command: {}", cmd);
+                            final PluginLogger logger = plugin.getLogger();
+
+                            logger.warn("The prize {} in the {} crate has caused an error when trying to run a command.", prize.getPrizeName(), prize.getCrateName());
+                            logger.warn("Command: {}", cmd);
                         }
                     }
                 } else {

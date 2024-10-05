@@ -126,7 +126,7 @@ public class CrazyCrates extends AbstractCratesPlugin {
         new MetricsWrapper(this, 4514).start();
 
         if (Support.placeholder_api.isEnabled()) {
-            if (MiscUtils.isLogging()) this.logger.info("PlaceholderAPI support is enabled!");
+            if (MiscUtils.isLogging()) this.logger.info("PlaceholderAPI support has been enabled!");
 
             new PlaceholderAPISupport().register();
         }
@@ -134,9 +134,9 @@ public class CrazyCrates extends AbstractCratesPlugin {
         if (MiscUtils.isLogging()) {
             for (final Support value : Support.values()) {
                 if (value.isEnabled()) {
-                    this.logger.info("<bold><gold>" + value.getName() + " <green>FOUND");
+                    this.logger.info("<bold><gold> {} <green>FOUND", value.getName());
                 } else {
-                    this.logger.info("<bold><gold>" + value.getName() + " <red>NOT FOUND");
+                    this.logger.info("<bold><gold> {} <red>NOT FOUND", value.getName());
                 }
             }
         }

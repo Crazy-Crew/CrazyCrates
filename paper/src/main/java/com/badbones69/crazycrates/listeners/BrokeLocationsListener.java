@@ -55,9 +55,9 @@ public class BrokeLocationsListener implements Listener {
         this.crateManager.removeBrokeLocation(fixedWorlds);
 
         if (MiscUtils.isLogging()) {
-            this.plugin.getPlugin().getComponentLogger().warn("Fixed {} broken crate locations.", fixedAmount);
+            this.plugin.getLogger().warn("Fixed {} broken crate locations.", fixedAmount);
 
-            if (this.crateManager.getBrokeLocations().isEmpty()) this.plugin.getPlugin().getComponentLogger().warn("All broken crate locations have been fixed.");
+            if (this.crateManager.getBrokeLocations().isEmpty()) this.plugin.getLogger().warn("All broken crate locations have been fixed.");
         }
     }
 }

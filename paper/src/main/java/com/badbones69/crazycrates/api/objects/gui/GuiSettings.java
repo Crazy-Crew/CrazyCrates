@@ -55,7 +55,7 @@ public class GuiSettings {
 
                 if (this.buttons.containsKey(slot)) {
                     if (MiscUtils.isLogging()) {
-                        this.plugin.getPlugin().getComponentLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
+                        this.plugin.getLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
                     }
 
                     return;
@@ -77,7 +77,7 @@ public class GuiSettings {
 
                 if (this.buttons.containsKey(slot)) {
                     if (MiscUtils.isLogging()) {
-                        this.plugin.getPlugin().getComponentLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
+                        this.plugin.getLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
                     }
 
                     return;

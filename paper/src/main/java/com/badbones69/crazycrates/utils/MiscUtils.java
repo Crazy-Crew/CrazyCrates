@@ -368,12 +368,12 @@ public class MiscUtils {
         PluginManager pluginManager = plugin.getPlugin().getServer().getPluginManager();
 
         if (pluginManager.getPermission(permission) != null) {
-            if (MiscUtils.isLogging()) plugin.getPlugin().getComponentLogger().warn("Permission {} is already on the server. Pick a different name", permission);
+            if (MiscUtils.isLogging()) plugin.getLogger().warn("Permission {} is already on the server. Pick a different name", permission);
 
             return;
         }
 
-        if (MiscUtils.isLogging()) plugin.getPlugin().getComponentLogger().warn("Permission {} is registered", permission);
+        if (MiscUtils.isLogging()) plugin.getLogger().warn("Permission {} is registered", permission);
 
         pluginManager.addPermission(new Permission(permission, description, isDefault ? PermissionDefault.TRUE : PermissionDefault.OP));
     }
@@ -384,12 +384,12 @@ public class MiscUtils {
         PluginManager pluginManager = plugin.getPlugin().getServer().getPluginManager();
 
         if (pluginManager.getPermission(permission) == null) {
-            //if (MiscUtils.isLogging()) plugin.getPlugin().getComponentLogger().warn("Permission {} is not registered", permission);
+            if (MiscUtils.isLogging()) plugin.getLogger().warn("Permission {} is not registered", permission);
 
             return;
         }
 
-        if (MiscUtils.isLogging()) plugin.getPlugin().getComponentLogger().warn("Permission {} is unregistered", permission);
+        if (MiscUtils.isLogging()) plugin.getLogger().warn("Permission {} is unregistered", permission);
 
         pluginManager.removePermission(permission);
     }

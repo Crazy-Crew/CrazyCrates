@@ -108,7 +108,7 @@ public class EventManager {
         final boolean log_to_console = config.getProperty(ConfigKeys.log_to_console);
 
         if (log_to_console) {
-            plugin.getPlugin().getComponentLogger().info("[{} {}]: {}", time, type.getEvent(), AdvUtil.parse(message));
+            plugin.getLogger().info("[{} {}]: {}", time, type.getEvent(), AdvUtil.parse(message));
         }
     }
 }

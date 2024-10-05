@@ -12,6 +12,7 @@ import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigK
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
+import com.ryderbelserion.crazycrates.common.plugin.logger.PluginLogger;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
@@ -327,17 +328,19 @@ public abstract class CrateBuilder extends FoliaRunnable {
             if (MiscUtils.isLogging()) {
                 final String fileName = crate.getFileName();
 
+                final PluginLogger logger = this.plugin.getLogger();
+
                 if (this.config.getProperty(ConfigKeys.use_new_permission_system)) {
                     if (this.player.hasPermission("crazycrates.deny.open." + fileName)) {
-                        this.plugin.getPlugin().getComponentLogger().warn("{} could not open {} due to having the permission preventing them from opening the crate.", this.player.getName(), fileName);
+                        logger.warn("{} could not open {} due to having the permission preventing them from opening the crate.", this.player.getName(), fileName);
                     } else {
-                        this.plugin.getPlugin().getComponentLogger().warn("{} could not open {} due to no valid prizes being found which led to the event being cancelled.", this.player.getName(), fileName);
+                        logger.warn("{} could not open {} due to no valid prizes being found which led to the event being cancelled.", this.player.getName(), fileName);
                     }
                 } else {
                     if (!this.player.hasPermission("crazycrates.open." + fileName)) {
-                        this.plugin.getPlugin().getComponentLogger().warn("{} could not open {} due to having the permission preventing them from opening the crate.", this.player.getName(), fileName);
+                        logger.warn("{} could not open {} due to having the permission preventing them from opening the crate.", this.player.getName(), fileName);
                     } else {
-                        this.plugin.getPlugin().getComponentLogger().warn("{} could not open {} due to no valid prizes being found which led to the event being cancelled.", this.player.getName(), fileName);
+                        logger.warn("{} could not open {} due to no valid prizes being found which led to the event being cancelled.", this.player.getName(), fileName);
                     }
                 }
             }

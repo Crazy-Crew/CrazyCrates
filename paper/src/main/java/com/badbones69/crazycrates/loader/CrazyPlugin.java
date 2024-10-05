@@ -25,7 +25,7 @@ public class CrazyPlugin extends Vital {
     public void onEnable() {
         this.crazyCrates.onEnable();
 
-        if (MiscUtils.isLogging()) getComponentLogger().info("Done ({})!", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
+        if (MiscUtils.isLogging()) this.instance.getLogger().info("Done ({})!", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
     }
 
     @Override
