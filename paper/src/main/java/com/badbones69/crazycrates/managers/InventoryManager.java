@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.managers;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
@@ -13,8 +13,8 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +26,7 @@ import java.util.UUID;
 public class InventoryManager {
 
     private final SettingsManager config = ConfigManager.getConfig();
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private ItemBuilder menuButton;
     private ItemBuilder nextButton;
@@ -123,7 +123,7 @@ public class InventoryManager {
         while (viewers.hasNext()) {
             final UUID uuid = viewers.next();
 
-            final Player player = this.plugin.getServer().getPlayer(uuid);
+            final Player player = this.plugin.getPlugin().getServer().getPlayer(uuid);
 
             if (player == null || !player.isOnline()) {
                 removePreviewViewer(uuid);
@@ -141,7 +141,7 @@ public class InventoryManager {
         while (viewers.hasNext()) {
             final UUID uuid = viewers.next();
 
-            final Player player = this.plugin.getServer().getPlayer(uuid);
+            final Player player = this.plugin.getPlugin().getServer().getPlayer(uuid);
 
             if (player == null || !player.isOnline()) {
                 removePreviewViewer(uuid);

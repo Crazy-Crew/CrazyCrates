@@ -3,14 +3,18 @@ plugins {
 }
 
 project.group = "us.crazycrew.crazycrates"
-project.version = "0.8"
+project.version = "0.9"
 
 repositories {
     maven("https://repo.papermc.io/repository/maven-public")
 }
 
 dependencies {
-    compileOnly(libs.paper)
+    compileOnly(libs.bundles.adventure)
+
+    compileOnly(libs.vital.common)
+
+    compileOnly(libs.jetbrains)
 }
 
 val javaComponent: SoftwareComponent = components["java"]

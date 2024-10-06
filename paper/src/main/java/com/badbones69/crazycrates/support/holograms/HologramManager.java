@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 @SuppressWarnings("deprecation")
 public abstract class HologramManager {
 
-    protected CrazyCrates plugin = CrazyCrates.getPlugin();
+    protected CrazyCrates plugin = CrazyCrates.getInstance();
     
     public abstract void createHologram(final Location location, final Crate crate, final String id);
 
@@ -31,11 +31,11 @@ public abstract class HologramManager {
     public abstract String getName();
 
     protected @NotNull final String name() {
-        return this.plugin.getName().toLowerCase() + "-" + UUID.randomUUID();
+        return this.plugin.getPlugin().getName().toLowerCase() + "-" + UUID.randomUUID();
     }
 
     protected @NotNull final String name(final String id) {
-        return this.plugin.getName().toLowerCase() + "-" + id;
+        return this.plugin.getPlugin().getName().toLowerCase() + "-" + id;
     }
 
     protected @NotNull final Vector getVector(@NotNull final Crate crate) {

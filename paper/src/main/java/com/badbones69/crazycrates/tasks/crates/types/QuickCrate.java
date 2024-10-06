@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.builders.types.features.CrateSpinMenu;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -10,9 +10,10 @@ import com.badbones69.crazycrates.api.ChestManager;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
-import com.badbones69.crazycrates.managers.events.enums.EventType;
+import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
-import com.ryderbelserion.vital.paper.util.AdvUtil;
+import com.ryderbelserion.crazycrates.common.plugin.logger.PluginLogger;
+import com.ryderbelserion.vital.common.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
@@ -23,8 +24,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.utils.MiscUtils;
@@ -84,7 +85,7 @@ public class QuickCrate extends CrateBuilder {
                 Prize prize = crate.pickPrize(player);
                 PrizeManager.givePrize(player, prize, crate);
 
-                this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+                this.plugin.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
 
                 if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(.5, 1, .5), null);
 
@@ -144,7 +145,7 @@ public class QuickCrate extends CrateBuilder {
 
         PrizeManager.givePrize(player, crate, prize);
 
-        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+        this.plugin.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
 
         final boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
 
@@ -178,8 +179,10 @@ public class QuickCrate extends CrateBuilder {
                 reward = player.getWorld().dropItem(getLocation().clone().add(.5, 1, .5), display);
             } catch (IllegalArgumentException exception) {
                 if (MiscUtils.isLogging()) {
-                    this.plugin.getComponentLogger().warn("A prize could not be given due to an invalid display item for this prize.");
-                    this.plugin.getComponentLogger().warn("Crate: {} Prize: {}", prize.getCrateName(), prize.getPrizeName(), exception);
+                    final PluginLogger logger = this.plugin.getLogger();
+
+                    logger.warn("A prize could not be given due to an invalid display item for this prize.");
+                    logger.warn("Crate: {} Prize: {}", prize.getCrateName(), prize.getPrizeName(), exception);
                 }
 
                 return;
@@ -207,7 +210,7 @@ public class QuickCrate extends CrateBuilder {
                 public void run() {
                     crateManager.endQuickCrate(player, getLocation(), crate, false);
                 }
-            }.runDelayed(this.plugin, 5 * 20));
+            }.runDelayed(this.plugin.getPlugin(), 5 * 20));
 
             return;
         }
@@ -224,6 +227,6 @@ public class QuickCrate extends CrateBuilder {
             public void run() {
                 crateManager.endQuickCrate(player, getLocation(), crate, false);
             }
-        }.runDelayed(this.plugin, 40));
+        }.runDelayed(this.plugin.getPlugin(), 40));
     }
 }

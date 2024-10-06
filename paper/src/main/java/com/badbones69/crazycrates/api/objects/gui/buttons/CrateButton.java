@@ -1,11 +1,11 @@
 package com.badbones69.crazycrates.api.objects.gui.buttons;
 
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
-import com.badbones69.crazycrates.managers.events.enums.EventType;
+import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiAction;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
@@ -52,23 +52,6 @@ public class CrateButton extends GuiButton {
 
             switch (getSection().getName()) {
                 case "accept" -> {
-                    final Prize prize = this.crate.getPrize(this.userManager.getRespinPrize(uuid, this.crate.getFileName()));
-
-                    PrizeManager.givePrize(player, prize, this.crate);
-
-                    if (!crate.isCyclePersistRestart()) {
-                        this.userManager.removeRespinCrate(uuid, this.crate.getFileName(), 0, false);
-                    }
-
-                    this.userManager.removeRespinPrize(uuid, this.crate.getFileName());
-
-                    this.crateManager.removePlayerFromOpeningList(player);
-                    this.crateManager.removeCrateInUse(player);
-                    this.crateManager.removeCrateTask(player);
-                    this.crateManager.endCrate(player);
-                }
-
-                case "deny" -> {
                     if (PrizeManager.isCapped(this.crate, player)) {
                         final Prize prize = this.crate.getPrize(this.userManager.getRespinPrize(uuid, this.crate.getFileName()));
 
@@ -94,6 +77,23 @@ public class CrateButton extends GuiButton {
                     this.userManager.addRespinCrate(uuid, this.crate.getFileName(), 1, crate.isCyclePersistRestart());
 
                     this.crateManager.openCrate(player, this.crate, KeyType.free_key, player.getLocation(), true, false, true, EventType.event_crate_opened);
+                }
+
+                case "deny" -> {
+                    final Prize prize = this.crate.getPrize(this.userManager.getRespinPrize(uuid, this.crate.getFileName()));
+
+                    PrizeManager.givePrize(player, prize, this.crate);
+
+                    if (!crate.isCyclePersistRestart()) {
+                        this.userManager.removeRespinCrate(uuid, this.crate.getFileName(), 0, false);
+                    }
+
+                    this.userManager.removeRespinPrize(uuid, this.crate.getFileName());
+
+                    this.crateManager.removePlayerFromOpeningList(player);
+                    this.crateManager.removeCrateInUse(player);
+                    this.crateManager.removeCrateTask(player);
+                    this.crateManager.endCrate(player);
                 }
             }
         });

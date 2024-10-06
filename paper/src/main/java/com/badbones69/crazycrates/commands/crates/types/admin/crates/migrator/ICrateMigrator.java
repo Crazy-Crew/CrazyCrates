@@ -2,14 +2,14 @@ package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.badbones69.crazycrates.common.config.ConfigManager;
+import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.api.files.CustomFile;
 import com.ryderbelserion.vital.paper.api.files.FileManager;
-import com.ryderbelserion.vital.common.utils.StringUtil;
+import com.ryderbelserion.vital.common.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -22,7 +22,7 @@ import java.util.Locale;
 
 public abstract class ICrateMigrator {
 
-    protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+    protected final CrazyCrates plugin = CrazyCrates.getInstance();
 
     protected final CrateManager crateManager = this.plugin.getCrateManager();
 
@@ -30,7 +30,7 @@ public abstract class ICrateMigrator {
 
     protected final SettingsManager messages = ConfigManager.getMessages();
 
-    protected final FileManager fileManager = this.plugin.getVital().getFileManager();
+    protected final FileManager fileManager = this.plugin.getPlugin().getFileManager();
 
     protected final CommandSender sender;
 

@@ -2,8 +2,9 @@ package com.badbones69.crazycrates.tasks.crates;
 
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.managers.events.enums.EventType;
+import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import com.badbones69.crazycrates.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.api.objects.crates.CrateHologram;
 import com.badbones69.crazycrates.api.objects.crates.quadcrates.CrateSchematic;
@@ -28,7 +29,7 @@ import com.badbones69.crazycrates.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WonderCrate;
 import com.ryderbelserion.vital.paper.api.files.CustomFile;
 import com.ryderbelserion.vital.paper.api.files.FileManager;
-import com.ryderbelserion.vital.common.utils.FileUtil;
+import com.ryderbelserion.vital.common.util.FileUtil;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import io.papermc.paper.persistence.PersistentDataContainerView;
@@ -46,9 +47,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
@@ -62,7 +63,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.utils.ItemUtils;
 import java.io.File;
 import java.nio.file.Path;
@@ -78,9 +78,9 @@ import java.util.WeakHashMap;
 
 public class CrateManager {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
-    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-    private final FileManager fileManager = this.plugin.getVital().getFileManager();
+    private final CrazyCrates instance = CrazyCrates.getInstance();
+    private final InventoryManager inventoryManager = this.instance.getInventoryManager();
+    private final FileManager fileManager = this.instance.getPlugin().getFileManager();
 
     private final List<CrateLocation> crateLocations = new ArrayList<>();
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
@@ -200,7 +200,7 @@ public class CrateManager {
 
             this.brokeCrates.add(fileName);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("There was an error while loading the {}.yml file.", fileName, exception);
+            if (MiscUtils.isLogging()) this.instance.getLogger().warn("There was an error while loading the {}.yml file.", fileName, exception);
         }
     }
 
@@ -258,31 +258,35 @@ public class CrateManager {
                         "There was no hologram plugin found on the server. If you are using CMI",
                         "Please make sure you enabled the hologram module in modules.yml",
                         "You can run /crazycrates reload if using CMI otherwise restart your server."
-                ).forEach(this.plugin.getComponentLogger()::warn);
+                ).forEach(this.instance.getLogger()::warn);
             }
 
             return;
         }
 
-        if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("{} support has been enabled.", this.holograms.getName());
+        if (MiscUtils.isLogging()) this.instance.getLogger().info("{} support has been enabled.", this.holograms.getName());
+
+        return;
     }
 
     /**
      * @return a list of crate names.
      */
     public List<String> getCrateNames() {
-        return this.plugin.getInstance().getCrateFiles();
+        return this.instance.getApiProvider().getCrateFiles();
     }
 
     private final SettingsManager config = ConfigManager.getConfig();
 
     /**
      * Loads the crates.
+     *
+     * @return {@link CrateManager}
      */
     public void loadCrates() {
         if (ConfigManager.getConfig().getProperty(ConfigKeys.update_examples_folder)) {
-            Path path = this.plugin.getDataFolder().toPath();
-            Class<? extends @NotNull CrazyCrates> classObject = this.plugin.getClass();
+            Path path = this.instance.getDataDirectory();
+            Class<? extends @NotNull CrazyCrates> classObject = this.instance.getClass();
 
             List.of(
                     "config.yml",
@@ -306,7 +310,7 @@ public class CrateManager {
             this.holograms.purge(false);
         }
 
-        if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("Loading all crate information...");
+        if (MiscUtils.isLogging()) this.instance.getLogger().info("Loading all crate information...");
 
         for (final String crateName : getCrateNames()) {
             try {
@@ -359,7 +363,7 @@ public class CrateManager {
                 if (isTiersEmpty && tiers.isEmpty()) {
                     this.brokeCrates.add(crateName);
 
-                    if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("No tiers were found for {}.yml file.", crateName);
+                    if (MiscUtils.isLogging()) this.instance.getLogger().warn("No tiers were found for {}.yml file.", crateName);
 
                     continue;
                 }
@@ -429,7 +433,7 @@ public class CrateManager {
                         file.getStringList("Crate.Hologram.Message"));
                 addCrate(new Crate(crateName, previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name", "Crate.PhysicalKey.Name is missing from " + crateName + ".yml"), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, prizeCommands, holo));
 
-                final PluginManager server = this.plugin.getServer().getPluginManager();
+                final PluginManager server = this.instance.getPlugin().getServer().getPluginManager();
 
                 final boolean isNewSystemEnabled = this.config.getProperty(ConfigKeys.use_new_permission_system);
 
@@ -445,7 +449,7 @@ public class CrateManager {
             } catch (Exception exception) {
                 this.brokeCrates.add(crateName);
 
-                if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("There was an error while loading the {}.yml file.", crateName, exception);
+                if (MiscUtils.isLogging()) this.instance.getLogger().warn("There was an error while loading the {}.yml file.", crateName, exception);
             }
         }
 
@@ -455,7 +459,7 @@ public class CrateManager {
             List.of(
                     "All crate information has been loaded.",
                     "Loading all the physical crate locations."
-            ).forEach(line -> this.plugin.getComponentLogger().info(line));
+            ).forEach(line -> this.instance.getLogger().info(line));
         }
 
         final YamlConfiguration locations = Files.locations.getConfiguration();
@@ -476,7 +480,7 @@ public class CrateManager {
                     // If name is empty or blank, we return.
                     if (worldName.isEmpty() || worldName.isBlank()) return;
 
-                    final World world = this.plugin.getServer().getWorld(worldName);
+                    final World world = this.instance.getPlugin().getServer().getWorld(worldName);
                     final int x = locations.getInt("Locations." + locationName + ".X");
                     final int y = locations.getInt("Locations." + locationName + ".Y");
                     final int z = locations.getInt("Locations." + locationName + ".Z");
@@ -503,7 +507,7 @@ public class CrateManager {
 
         // Checking if all physical locations loaded
         if (MiscUtils.isLogging()) {
-            final ComponentLogger logger = this.plugin.getComponentLogger();
+            final ComponentLogger logger = this.instance.getPlugin().getComponentLogger();
 
             if (loadedAmount > 0 || brokeAmount > 0) {
                 if (brokeAmount <= 0) {
@@ -518,19 +522,19 @@ public class CrateManager {
         }
 
         // Loading schematic files
-        final String[] schems = new File(this.plugin.getDataFolder() + "/schematics/").list();
+        final String[] schems = new File(this.instance.getPlugin().getDataFolder() + "/schematics/").list();
 
         if (schems != null) {
             for (final String schematicName : schems) {
                 if (schematicName.endsWith(".nbt")) {
-                    this.crateSchematics.add(new CrateSchematic(schematicName, new File(plugin.getDataFolder() + "/schematics/" + schematicName)));
+                    this.crateSchematics.add(new CrateSchematic(schematicName, new File(this.instance.getPlugin().getDataFolder() + "/schematics/" + schematicName)));
 
-                    if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("{} was successfully found and loaded.", schematicName);
+                    if (MiscUtils.isLogging()) this.instance.getLogger().info("{} was successfully found and loaded.", schematicName);
                 }
             }
         }
 
-        if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("All schematics were found and loaded.");
+        if (MiscUtils.isLogging()) this.instance.getLogger().info("All schematics were found and loaded.");
 
         cleanDataFile();
 
@@ -559,10 +563,6 @@ public class CrateManager {
      * @param location the location that may be needed for some crate types.
      * @param checkHand if it just checks the players hand or if it checks their inventory.
      * @param eventType {@link EventType}
-     * @param player the player that is having the crate opened for them
-     * @param crate the crate that is being used
-     * @param location the location that may be needed for some crate types
-     * @param checkHand if it just checks the players hand or if it checks their inventory
      */
     public void openCrate(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, @NotNull final Location location, final boolean virtualCrate, final boolean checkHand, final EventType eventType) {
         openCrate(player, crate, keyType, location, virtualCrate, checkHand, false, eventType);
@@ -700,7 +700,7 @@ public class CrateManager {
                             crate.getFileName() + " has an invalid crate type. Your Value: " + crate.getFile().getString("Crate.CrateType", "CSGO"),
                             "We will use " + CrateType.csgo.getName() + " until you change the crate type.",
                             "Valid Crate Types: CSGO/Casino/Cosmic/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War"
-                    ).forEach(line -> this.plugin.getComponentLogger().warn(line));
+                    ).forEach(line -> this.instance.getLogger().warn(line));
                 }
             }
         }
@@ -822,7 +822,7 @@ public class CrateManager {
     public void addRepeatingCrateTask(@NotNull final Player player, @NotNull final TimerTask task, final long delay, final long period) {
         this.timerTasks.put(player.getUniqueId(), task);
 
-        this.plugin.getTimer().scheduleAtFixedRate(task, delay, period);
+        this.instance.getTimer().scheduleAtFixedRate(task, delay, period);
     }
 
     /**
@@ -848,7 +848,7 @@ public class CrateManager {
     public void addCrateTask(Player player, TimerTask task, Long delay) {
         this.timerTasks.put(player.getUniqueId(), task);
 
-        this.plugin.getTimer().schedule(task, delay);
+        this.instance.getTimer().schedule(task, delay);
     }
 
     /**
@@ -1326,7 +1326,7 @@ public class CrateManager {
 
         if (!data.contains("Players")) return;
 
-        if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("Cleaning up the data.yml file.");
+        if (MiscUtils.isLogging()) this.instance.getLogger().info("Cleaning up the data.yml file.");
 
         final List<String> removePlayers = new ArrayList<>();
 
@@ -1358,14 +1358,14 @@ public class CrateManager {
         }
 
         if (!removePlayers.isEmpty()) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("{} player's data has been marked to be removed.", removePlayers.size());
+            if (MiscUtils.isLogging()) this.instance.getLogger().info("{} player's data has been marked to be removed.", removePlayers.size());
 
             removePlayers.forEach(uuid -> data.set("Players." + uuid, null));
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("All empty player data has been removed.");
+            if (MiscUtils.isLogging()) this.instance.getLogger().info("All empty player data has been removed.");
         }
 
-        if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("The data.yml file has been cleaned.");
+        if (MiscUtils.isLogging()) this.instance.getLogger().info("The data.yml file has been cleaned.");
 
         Files.data.save();
     }

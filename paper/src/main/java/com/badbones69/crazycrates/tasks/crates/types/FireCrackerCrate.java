@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
-import com.badbones69.crazycrates.managers.events.enums.EventType;
+import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import org.bukkit.Color;
@@ -80,6 +80,6 @@ public class FireCrackerCrate extends CrateBuilder {
                     quickCrate.open(KeyType.free_key, false, isSilent, eventType);
                 }
             }
-        }.runAtFixedRate(this.plugin, 0, 2));
+        }.runAtFixedRate(this.plugin.getPlugin(), 0, 2));
     }
 }

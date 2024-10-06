@@ -2,14 +2,14 @@ package com.badbones69.crazycrates.tasks.menus;
 
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.builders.gui.StaticInventoryBuilder;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.managers.events.enums.EventType;
+import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.utils.MiscUtils;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
-import com.ryderbelserion.vital.common.utils.StringUtil;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
+import com.ryderbelserion.vital.common.util.StringUtil;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
 import net.kyori.adventure.key.Key;
@@ -79,7 +79,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                         case "hide-item-flags" -> item.setHidingItemFlags(StringUtil.tryParseBoolean(value).orElse(false));
 
-                        case "command" -> this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), value);
+                        case "command" -> this.plugin.getPlugin().getServer().dispatchCommand(this.plugin.getPlugin().getServer().getConsoleSender(), value);
                     }
                 }
 

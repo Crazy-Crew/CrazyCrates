@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.api.objects.gui;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.badbones69.crazycrates.api.enums.FillerType;
+import com.ryderbelserion.crazycrates.common.enums.types.FillerType;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.objects.gui.buttons.CrateButton;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class GuiSettings {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private final String title;
     private final int rows;
@@ -55,7 +55,7 @@ public class GuiSettings {
 
                 if (this.buttons.containsKey(slot)) {
                     if (MiscUtils.isLogging()) {
-                        this.plugin.getComponentLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
+                        this.plugin.getLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
                     }
 
                     return;
@@ -77,7 +77,7 @@ public class GuiSettings {
 
                 if (this.buttons.containsKey(slot)) {
                     if (MiscUtils.isLogging()) {
-                        this.plugin.getComponentLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
+                        this.plugin.getLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
                     }
 
                     return;

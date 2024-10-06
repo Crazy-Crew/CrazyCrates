@@ -1,10 +1,11 @@
 package com.badbones69.crazycrates.utils;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.misc.Files;
-import com.badbones69.crazycrates.common.utils.Methods;
-import com.ryderbelserion.vital.common.utils.FileUtil;
+import com.ryderbelserion.crazycrates.common.plugin.util.Methods;
+import com.ryderbelserion.vital.common.util.FileUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -13,8 +14,8 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
@@ -30,7 +31,6 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import java.io.File;
 import java.io.IOException;
@@ -46,12 +46,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class MiscUtils {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final CrazyCrates plugin = CrazyCrates.getInstance();
 
     public static void sendCommand(@Nullable final CommandSender sender, @NotNull final String command, @NotNull final Map<String, String> placeholders) {
         if (command.isEmpty()) return;
 
-        final Server server = plugin.getServer();
+        final Server server = plugin.getPlugin().getServer();
 
         final String result = populatePlaceholders(sender, command, placeholders);
 
@@ -60,7 +60,7 @@ public class MiscUtils {
             public void run() {
                 server.dispatchCommand(server.getConsoleSender(), result);
             }
-        }.run(plugin);
+        }.run(plugin.getPlugin());
     }
 
     public static void sendCommand(@NotNull final String command, @NotNull final Map<String, String> placeholders) {
@@ -96,7 +96,7 @@ public class MiscUtils {
     }
 
     public static void janitor() {
-        final File logsFolder = new File(plugin.getDataFolder(), "logs");
+        final File logsFolder = new File(plugin.getDataDirectory().toFile(), "logs");
 
         if (logsFolder.exists() && ConfigManager.getConfig().getProperty(ConfigKeys.log_to_file)) {
             final File crateLog = Files.crate_log.getFile();
@@ -113,7 +113,7 @@ public class MiscUtils {
                     keyLog.createNewFile();
                 }
             } catch (IOException exception) {
-                plugin.getLogger().warning("Failed to create files.");
+                plugin.getLogger().warn("Failed to create files.");
             }
         }
     }
@@ -143,7 +143,7 @@ public class MiscUtils {
 
         fireworkData.set(Keys.no_firework_damage.getNamespacedKey(), PersistentDataType.BOOLEAN, true);
 
-        plugin.getServer().getRegionScheduler().runDelayed(plugin, location, scheduledTask -> firework.detonate(), 3L);
+        plugin.getPlugin().getServer().getRegionScheduler().runDelayed(plugin.getPlugin(), location, scheduledTask -> firework.detonate(), 3L);
     }
 
     public static @NotNull String location(@NotNull final Location location, boolean getName) {
@@ -256,7 +256,7 @@ public class MiscUtils {
 
             return leftover;
         } else {
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Items cannot be null.");
+            if (MiscUtils.isLogging()) plugin.getLogger().warn("Items cannot be null.");
         }
 
         return null;
@@ -287,7 +287,7 @@ public class MiscUtils {
                     "An error has occurred while trying to take a key from a player.",
                     "Player: " + player.getName(),
                     "Key: " + crateName
-            ).forEach(plugin.getComponentLogger()::warn);
+            ).forEach(plugin.getLogger()::warn);
 
             List.of(
                     "<red>An issue has occurred when trying to take a key.",
@@ -365,15 +365,15 @@ public class MiscUtils {
     public static void registerPermission(final String permission, final String description, final boolean isDefault) {
         if (permission.isEmpty()) return;
 
-        PluginManager pluginManager = plugin.getServer().getPluginManager();
+        PluginManager pluginManager = plugin.getPlugin().getServer().getPluginManager();
 
         if (pluginManager.getPermission(permission) != null) {
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission {} is already on the server. Pick a different name", permission);
+            if (MiscUtils.isLogging()) plugin.getLogger().warn("Permission {} is already on the server. Pick a different name", permission);
 
             return;
         }
 
-        if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission {} is registered", permission);
+        if (MiscUtils.isLogging()) plugin.getLogger().warn("Permission {} is registered", permission);
 
         pluginManager.addPermission(new Permission(permission, description, isDefault ? PermissionDefault.TRUE : PermissionDefault.OP));
     }
@@ -381,21 +381,27 @@ public class MiscUtils {
     public static void unregisterPermission(final String permission) {
         if (permission.isEmpty()) return;
 
-        PluginManager pluginManager = plugin.getServer().getPluginManager();
+        PluginManager pluginManager = plugin.getPlugin().getServer().getPluginManager();
 
         if (pluginManager.getPermission(permission) == null) {
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission {} is not registered", permission);
+            if (MiscUtils.isLogging()) plugin.getLogger().warn("Permission {} is not registered", permission);
 
             return;
         }
 
-        if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission {} is unregistered", permission);
+        if (MiscUtils.isLogging()) plugin.getLogger().warn("Permission {} is unregistered", permission);
 
         pluginManager.removePermission(permission);
     }
 
     public static void registerPermissions() {
         Arrays.stream(Permissions.values()).toList().forEach(permission -> {
+            final PluginManager pluginManager = plugin.getPlugin().getServer().getPluginManager();
+
+            if (pluginManager.getPermission(permission.getPermission()) != null) {
+                return;
+            }
+
             Permission newPermission = new Permission(
                     permission.getPermission(),
                     permission.getDescription(),
@@ -403,15 +409,15 @@ public class MiscUtils {
                     permission.getChildren()
             );
 
-            plugin.getServer().getPluginManager().addPermission(newPermission);
+            pluginManager.addPermission(newPermission);
         });
     }
 
     public static boolean isLogging() {
-        return plugin.getVital().isVerbose();
+        return plugin.getPlugin().isVerbose();
     }
 
     public static boolean isExcellentCratesEnabled() {
-        return plugin.getServer().getPluginManager().isPluginEnabled("ExcellentCrates");
+        return plugin.getPlugin().getServer().getPluginManager().isPluginEnabled("ExcellentCrates");
     }
 }

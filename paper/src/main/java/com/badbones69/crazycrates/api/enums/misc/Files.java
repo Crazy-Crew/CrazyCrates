@@ -19,9 +19,9 @@ public enum Files {
     private final String fileName;
     private final String folder;
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
-    private final FileManager fileManager = this.plugin.getVital().getFileManager();
+    private final FileManager fileManager = this.plugin.getPlugin().getFileManager();
 
     /**
      * A constructor to build a file
@@ -48,7 +48,7 @@ public enum Files {
     }
 
     public void reload() {
-        this.fileManager.addFile(new File(this.plugin.getDataFolder(), this.fileName));
+        this.fileManager.addFile(new File(this.plugin.getPlugin().getDataFolder(), this.fileName));
     }
 
     public void save() {
@@ -56,6 +56,6 @@ public enum Files {
     }
 
     public final File getFile() {
-        return new File(this.folder.isEmpty() ? this.plugin.getDataFolder() : new File(this.plugin.getDataFolder(), this.folder), this.fileName);
+        return new File(this.folder.isEmpty() ? this.plugin.getPlugin().getDataFolder() : new File(this.plugin.getPlugin().getDataFolder(), this.folder), this.fileName);
     }
 }

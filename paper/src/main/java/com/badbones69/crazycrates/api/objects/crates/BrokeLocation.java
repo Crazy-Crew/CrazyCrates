@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class BrokeLocation {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     /**
      * Empty values that get instantiated below.
@@ -86,6 +86,6 @@ public class BrokeLocation {
      * @return the location of the broken crate
      */
     public @NotNull final Location getLocation() {
-        return new Location(this.plugin.getServer().getWorld(this.world), this.x, this.y, this.z);
+        return new Location(this.plugin.getPlugin().getServer().getWorld(this.world), this.x, this.y, this.z);
     }
 }

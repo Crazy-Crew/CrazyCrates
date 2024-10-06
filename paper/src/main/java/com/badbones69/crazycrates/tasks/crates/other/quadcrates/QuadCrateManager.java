@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
@@ -10,12 +11,11 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.CrazyCrates;
+import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.SpiralManager;
 import com.badbones69.crazycrates.api.ChestManager;
 import org.bukkit.block.Block;
@@ -32,7 +32,7 @@ import java.util.HashMap;
 
 public class QuadCrateManager {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
     private final BukkitUserManager userManager = this.plugin.getUserManager();
@@ -256,7 +256,7 @@ public class QuadCrateManager {
                     }
                 }
             }
-        }.runAtFixedRate(this.plugin, 0,1));
+        }.runAtFixedRate(this.plugin.getPlugin(), 0,1));
 
         this.crateManager.addCrateTask(this.player, new FoliaRunnable(getPlayer().getScheduler(), null) {
             @Override
@@ -267,22 +267,22 @@ public class QuadCrateManager {
 
                 crate.playSound(player, player.getLocation(), "stop-sound", "entity.player.levelup", Sound.Source.PLAYER);
             }
-        }.runDelayed(this.plugin, ConfigManager.getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20));
+        }.runDelayed(this.plugin.getPlugin(), ConfigManager.getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20));
     }
 
     /**
      * End the crate gracefully.
      */
     public void endCrate(final boolean immediately) {
-        new FoliaRunnable(this.plugin.getServer().getGlobalRegionScheduler()) {
+        new FoliaRunnable(this.plugin.getPlugin().getServer().getGlobalRegionScheduler()) {
             @Override
             public void run() {
                 // Update spawned crate block states which removes them.
-                crateLocations.forEach(location -> plugin.getServer().getRegionScheduler().run(plugin, location, schedulerTask -> quadCrateChests.get(location).update(true, false)));
+                crateLocations.forEach(location -> plugin.getPlugin().getServer().getRegionScheduler().run(plugin.getPlugin(), location, schedulerTask -> quadCrateChests.get(location).update(true, false)));
 
                 // Remove displayed rewards.
                 for (Entity displayedReward : displayedRewards) {
-                    displayedReward.getScheduler().run(plugin, scheduledTask -> displayedReward.remove(), null);
+                    displayedReward.getScheduler().run(plugin.getPlugin(), scheduledTask -> displayedReward.remove(), null);
                 }
 
                 // Teleport player to last location.
@@ -292,7 +292,7 @@ public class QuadCrateManager {
                 handler.removeStructure();
 
                 // Restore the old blocks.
-                oldBlocks.keySet().forEach(location -> plugin.getServer().getRegionScheduler().run(plugin, location, schedulerTask -> oldBlocks.get(location).update(true, false)));
+                oldBlocks.keySet().forEach(location -> plugin.getPlugin().getServer().getRegionScheduler().run(plugin.getPlugin(), location, schedulerTask -> oldBlocks.get(location).update(true, false)));
 
                 final HologramManager manager = crateManager.getHolograms();
 
@@ -313,7 +313,7 @@ public class QuadCrateManager {
                 // Remove the "instance" from the crate sessions.
                 crateSessions.remove(instance);
             }
-        }.runDelayed(this.plugin, immediately ? 0 : 5);
+        }.runDelayed(this.plugin.getPlugin(), immediately ? 0 : 5);
     }
 
     /**

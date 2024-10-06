@@ -1,9 +1,9 @@
 package com.badbones69.crazycrates.commands.crates.types.admin;
 
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
 import com.ryderbelserion.vital.common.config.ConfigManager;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
@@ -19,7 +19,7 @@ public class CommandReload extends BaseCommand {
 
         MiscUtils.janitor();
 
-        this.plugin.getInstance().reload();
+        //this.plugin.getInstance().reload();
 
         this.fileManager.reloadFiles().init();
 

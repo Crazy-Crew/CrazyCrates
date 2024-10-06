@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.common.utils.StringUtil;
+import com.ryderbelserion.vital.common.util.StringUtil;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.paper.util.DyeUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
@@ -27,7 +27,7 @@ import static com.ryderbelserion.vital.paper.util.ItemUtil.getEnchantment;
 
 public class ItemUtils {
 
-    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private static final CrateManager crateManager = plugin.getCrateManager();
 
@@ -367,7 +367,7 @@ public class ItemUtils {
         } catch (Exception exception) {
             itemBuilder.withType(Material.RED_TERRACOTTA).setDisplayName("<red>Error found!, Prize Name: " + section);
 
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("An error has occurred with the item builder: ", exception);
+            if (MiscUtils.isLogging()) plugin.getLogger().warn("An error has occurred with the item builder: ", exception);
         }
 
         return itemBuilder;
