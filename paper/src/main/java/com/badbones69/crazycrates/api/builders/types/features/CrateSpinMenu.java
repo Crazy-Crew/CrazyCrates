@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
+import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.List;
@@ -58,13 +59,18 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
         });
 
         this.gui.setCloseGuiAction(action -> {
-            if (!this.userManager.hasUser(uuid) && this.userManager.hasRespinPrize(uuid, fileName)) { // if they aren't in the cache, then we run this.
-                Messages.crate_prize_respin_not_claimed.sendMessage(player, new HashMap<>() {{
-                    put("{crate_pretty}", crate.getCrateName());
-                    put("{crate}", fileName);
-                    put("{prize}", userManager.getRespinPrize(uuid, fileName));
-                }});
-            }
+            new FoliaRunnable(this.plugin.getServer().getGlobalRegionScheduler()) {
+                @Override
+                public void run() {
+                    if (!userManager.hasUser(uuid) && userManager.hasRespinPrize(uuid, fileName)) { // if they aren't in the cache, then we run this.
+                        Messages.crate_prize_respin_not_claimed.sendMessage(player, new HashMap<>() {{
+                            put("{crate_pretty}", crate.getCrateName());
+                            put("{crate}", fileName);
+                            put("{prize}", userManager.getRespinPrize(uuid, fileName));
+                        }});
+                    }
+                }
+            }.runDelayed(this.plugin, 20);
 
             this.crateManager.removePlayerFromOpeningList(this.player);
             this.crateManager.removeCrateInUse(this.player);
