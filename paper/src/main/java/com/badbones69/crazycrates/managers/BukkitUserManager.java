@@ -719,13 +719,15 @@ public class BukkitUserManager extends UserManager {
 
         final String fileName = crate.getFileName();
 
-        boolean isSave = configuration.contains("Players." + uuid + ".respins." + fileName + ".prize");
+        String prize = configuration.getString("Players." + uuid + ".respins." + fileName + ".prize");
 
-        if (isSave) {
-            configuration.set("Players." + uuid + ".respins." + fileName + ".prize", null);
-
-            this.data.save();
+        if (prize == null) {
+            return;
         }
+
+        configuration.set("Players." + uuid + ".respins." + fileName + ".prize", null);
+
+        this.data.save();
     }
 
     public String getRespinPrize(@NotNull final UUID uuid, @NotNull final String crateName) {
