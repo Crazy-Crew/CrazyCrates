@@ -18,12 +18,16 @@
 - The files will zip on /crazycrates reload, plugin shutdown, plugin startup.
   - This avoids the files getting large, and leading to issues with crashing the server.
   - It mimics how Paper handles their .log files...
+- Added /crazycrates claim <prize> which claims prizes they didn't get from respins
 
 ### Changes:
 - Added config options, which allow you to configure slots 4 and 22 above the prize in `csgo` crate
 - Added the ability to run commands with the gui customizer.
 - Added the ability to respin prizes to each crate file, if the option is enabled.
 ```yml
+Crate:
+  # Global Settings
+  Settings:
     # Settings related to rewards.
     Rewards:
       # Should a yes/no popup be made, to ask if they want to keep the prize?
@@ -32,12 +36,16 @@
       Permission:
         # Should this be enabled?
         Toggle: false
+        # Should this persist restarts? i.e. writes to disk the amount of respins, and reads the amount of respins.
+        Persist: false
         # This will define how many permissions will be registered to the server per crate.
         # i.e. crazycrates.respin.<crate_name>.1-20
         # It will simply register multiple permissions, so it shows up in things like LuckPerms.
-        Max-Cap: 20 
+        Max-Cap: 20
 ```
 - You can view an example of this in `examples/crates/CrateExample.yml`
+- If `Permission.Persist` is set to true, we will write to disk, and the re-spins will be considered global
+  - If the option is set to false, it will be cached... and allow re-spins for X amount every time they open a crate.
 - You must have `Re-Roll-Spin` set to true to allow re-rolls.
 - You must have `Permission.Toggle` set to true, for it to be permission based.
   - The higher the permission, the more spins they have.
