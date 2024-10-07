@@ -67,10 +67,6 @@ Crate:
   - WarCrate is in a similar situation, where it's picked prizes.
 - The complexity for these crate types above will take some time to add it in while it not being a train wreck.
 
-### Fixed:
-- Fixed an issue, where if the border was toggled off. and you didn't have a second page, a glass pane would be there.
-  - It will simply be air now until the border is on.
-
 </details>
 
 <details>
