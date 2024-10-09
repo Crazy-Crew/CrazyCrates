@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Command(value = "keys", alias = { "key" })
 @Description("Views the amount of keys you/others have.")
@@ -54,7 +55,9 @@ public class CommandKey {
             return;
         }
 
-        if (target.getName().equalsIgnoreCase(sender.getName())) {
+        final String targetName = target.getName();
+
+        if (targetName.equalsIgnoreCase(sender.getName())) {
             personal(target);
 
             return;
@@ -62,12 +65,12 @@ public class CommandKey {
 
         Map<String, String> placeholders = new HashMap<>();
 
-        placeholders.put("{player}", target.getName());
+        placeholders.put("{player}", targetName);
         placeholders.put("{crates_opened}", String.valueOf(this.userManager.getTotalCratesOpened(target.getUniqueId())));
 
         String header = Messages.other_player_no_keys_header.getMessage(target, placeholders);
 
-        String content = Messages.other_player_no_keys.getMessage(target, "{player}", target.getName());
+        String content = Messages.other_player_no_keys.getMessage(target, "{player}", targetName);
 
         getKeys(target, sender, header, content);
     }
@@ -83,13 +86,15 @@ public class CommandKey {
     private void getKeys(@NotNull final Player player, @NotNull final CommandSender sender, @NotNull final String header, @NotNull final String content) {
         if (header.isEmpty() || content.isEmpty()) return;
 
+        final UUID uuid = player.getUniqueId();
+
         final List<String> message = new ArrayList<>();
 
         message.add(header);
 
         final Map<Crate, Integer> keys = new HashMap<>();
 
-        this.crateManager.getUsableCrates().forEach(crate -> keys.put(crate, this.userManager.getVirtualKeys(player.getUniqueId(), crate.getFileName())));
+        this.crateManager.getUsableCrates().forEach(crate -> keys.put(crate, this.userManager.getVirtualKeys(uuid, crate.getFileName())));
 
         boolean hasKeys = false;
 
@@ -103,7 +108,7 @@ public class CommandKey {
 
                 placeholders.put("{crate}", crate.getCrateName());
                 placeholders.put("{keys}", String.valueOf(amount));
-                placeholders.put("{crate_opened}", String.valueOf(this.userManager.getCrateOpened(player.getUniqueId(), crate.getFileName())));
+                placeholders.put("{crate_opened}", String.valueOf(this.userManager.getCrateOpened(uuid, crate.getFileName())));
 
                 message.add(Messages.per_crate.getMessage(player, placeholders));
             }

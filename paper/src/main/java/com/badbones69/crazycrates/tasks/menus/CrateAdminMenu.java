@@ -125,7 +125,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
                         if (this.config.getProperty(ConfigKeys.enable_crate_menu)) {
                             this.player.playSound(this.player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
 
-                            new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_rows)).open();
+                            new CrateMainMenu(this.player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_rows)).open();
                         }
                     }));
 

@@ -15,12 +15,13 @@ import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.ryderbelserion.crazycrates.common.plugin.logger.PluginLogger;
 import com.ryderbelserion.vital.common.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -38,6 +39,13 @@ public class QuickCrate extends CrateBuilder {
         super(crate, player, location);
     }
 
+    private final PluginManager server = this.plugin.getServer().getPluginManager();
+
+    private final Player player = getPlayer();
+    private final Location location = getLocation();
+    private final UUID uuid = this.player.getUniqueId();
+    private final Crate crate = getCrate();
+
     @Override
     public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType) {
         // Crate event failed so we return.
@@ -45,21 +53,18 @@ public class QuickCrate extends CrateBuilder {
             return;
         }
 
-        final Player player = getPlayer();
-        final UUID uuid = player.getUniqueId();
-        final Crate crate = getCrate();
-        final String fileName = crate.getFileName();
+        final String fileName = this.crate.getFileName();
 
         int keys = switch (type) {
-            case virtual_key -> this.userManager.getVirtualKeys(uuid, fileName);
-            case physical_key -> this.userManager.getPhysicalKeys(uuid, fileName);
+            case virtual_key -> this.userManager.getVirtualKeys(this.uuid, fileName);
+            case physical_key -> this.userManager.getPhysicalKeys(this.uuid, fileName);
             default -> 1;
         };
 
-        if (crate.useRequiredKeys() && keys < crate.getRequiredKeys()) {
+        if (this.crate.useRequiredKeys() && keys < this.crate.getRequiredKeys()) {
             final int finalKeys = keys;
 
-            Messages.not_enough_keys.sendMessage(player, new HashMap<>() {{
+            Messages.not_enough_keys.sendMessage(this.player, new HashMap<>() {{
                 put("{required_amount}", String.valueOf(crate.getRequiredKeys()));
                 put("{key_amount}", String.valueOf(crate.getRequiredKeys())); // deprecated, remove in next major version of minecraft.
                 put("{amount}", String.valueOf(finalKeys));
@@ -68,84 +73,84 @@ public class QuickCrate extends CrateBuilder {
             }});
 
             // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(player);
+            this.crateManager.removePlayerFromOpeningList(this.player);
 
             return;
         }
 
-        this.crateManager.addCrateInUse(player, getLocation());
+        this.crateManager.addCrateInUse(this.player, this.location);
 
-        if (player.isSneaking() && keys > 1) {
+        if (this.player.isSneaking() && keys > 1) {
             int used = 0;
 
             for (;keys > 0; keys--) {
-                if (MiscUtils.isInventoryFull(player)) break;
-                if (used >= crate.getMaxMassOpen()) break;
+                if (MiscUtils.isInventoryFull(this.player)) break;
+                if (used >= this.crate.getMaxMassOpen()) break;
 
-                Prize prize = crate.pickPrize(player);
-                PrizeManager.givePrize(player, prize, crate);
+                Prize prize = this.crate.pickPrize(this.player);
+                PrizeManager.givePrize(this.player, prize, this.crate);
 
-                this.plugin.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+                this.server.callEvent(new PlayerPrizeEvent(this.player, this.crate, prize));
 
-                if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(.5, 1, .5), null);
+                if (prize.useFireworks()) MiscUtils.spawnFirework(this.location.clone().add(.5, 1, .5), null);
 
                 used++;
             }
 
-            final boolean keyCheck = this.userManager.takeKeys(uuid, fileName, type, used, false);
+            final boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, used, false);
 
             if (!keyCheck) {
                 // Send the message about failing to take the key.
-                MiscUtils.failedToTakeKey(player, fileName);
+                MiscUtils.failedToTakeKey(this.player, fileName);
 
                 // Remove from opening list.
-                this.crateManager.removePlayerFromOpeningList(player);
+                this.crateManager.removePlayerFromOpeningList(this.player);
 
                 // Remove crates in use
-                this.crateManager.removeCrateInUse(player);
+                this.crateManager.removeCrateInUse(this.player);
 
                 return;
             }
 
-            this.crateManager.endQuickCrate(player, getLocation(), crate, true);
+            this.crateManager.endQuickCrate(this.player, this.location, this.crate, true);
 
             return;
         }
 
-        final boolean keyCheck = this.userManager.takeKeys(uuid, fileName, type, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, true);
+        final boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, true);
 
         if (!keyCheck) {
             // Send the message about failing to take the key.
-            MiscUtils.failedToTakeKey(player, fileName);
+            MiscUtils.failedToTakeKey(this.player, fileName);
 
             // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(player);
+            this.crateManager.removePlayerFromOpeningList(this.player);
 
             // Remove crates in use
-            this.crateManager.removeCrateInUse(player);
+            this.crateManager.removeCrateInUse(this.player);
 
             return;
         }
 
-        Prize prize = crate.pickPrize(player, getLocation().clone().add(.5, 1.3, .5));
+        Prize prize = this.crate.pickPrize(this.player, this.location.clone().add(.5, 1.3, .5));
 
-        if (crate.isCyclePrize() && !PrizeManager.isCapped(crate, player)) { // re-open this menu
-            new CrateSpinMenu(player, new GuiSettings(crate, prize, Files.respin_gui.getConfiguration())).open();
+        if (this.crate.isCyclePrize() && !PrizeManager.isCapped(this.crate, this.player)) { // re-open this menu
+            new CrateSpinMenu(this.player, new GuiSettings(this.crate, prize, Files.respin_gui.getConfiguration())).open();
 
-            this.crateManager.removePlayerFromOpeningList(player);
-            this.crateManager.removeCrateInUse(player);
+            this.crateManager.removePlayerFromOpeningList(this.player);
+            this.crateManager.removeCrateInUse(this.player);
 
             return;
         } else {
-            this.userManager.removeRespinPrize(uuid, fileName);
+            this.userManager.removeRespinPrize(this.uuid, fileName);
 
             // remove from the cache
-            this.userManager.removeRespinCrate(uuid, fileName, 0, false);
+            this.userManager.removeRespinCrate(this.uuid, fileName, 0, false);
         }
 
-        PrizeManager.givePrize(player, crate, prize);
+        PrizeManager.givePrize(this.player, this.crate, prize);
 
-        this.plugin.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+        this.server.callEvent(new PlayerPrizeEvent(this.player, this.crate, prize));
 
         final boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
 
@@ -153,8 +158,8 @@ public class QuickCrate extends CrateBuilder {
         if (showQuickCrateItem) {
             final HologramManager manager = this.crateManager.getHolograms();
 
-            if (manager != null && crate.getHologram().isEnabled()) {
-                CrateLocation crateLocation = this.crateManager.getCrateLocation(getLocation());
+            if (manager != null && this.crate.getHologram().isEnabled()) {
+                CrateLocation crateLocation = this.crateManager.getCrateLocation(this.location);
 
                 if (crateLocation != null) {
                     manager.removeHologram(crateLocation.getID());
@@ -162,21 +167,15 @@ public class QuickCrate extends CrateBuilder {
             }
 
             // Get the display item.
-            ItemStack display = prize.getDisplayItem(player, crate);
+            ItemStack display = prize.getDisplayItem(this.player, this.crate); //todo() use display entities
 
             // Get the item meta.
-            ItemMeta itemMeta = display.getItemMeta();
-
-            // Set the key
-            itemMeta.getPersistentDataContainer().set(Keys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1");
-
-            // Set the item meta.
-            display.setItemMeta(itemMeta);
+            display.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(Keys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1"));
 
             Item reward;
 
             try {
-                reward = player.getWorld().dropItem(getLocation().clone().add(.5, 1, .5), display);
+                reward = this.player.getWorld().dropItem(this.location.clone().add(.5, 1, .5), display);
             } catch (IllegalArgumentException exception) {
                 if (MiscUtils.isLogging()) {
                     final PluginLogger logger = this.plugin.getLogger();
@@ -196,19 +195,19 @@ public class QuickCrate extends CrateBuilder {
             reward.setCanMobPickup(false);
             reward.setCanPlayerPickup(false);
 
-            this.crateManager.addReward(player, reward);
+            this.crateManager.addReward(this.player, reward);
 
             // Always open the chest.
-            ChestManager.openChest(getLocation().getBlock(), true);
+            ChestManager.openChest(this.location.getBlock(), true);
 
             // Always spawn fireworks if enabled.
-            if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(0.5, 1, .5), null);
+            if (prize.useFireworks()) MiscUtils.spawnFirework(this.location.clone().add(0.5, 1, .5), null);
 
             // Always end the crate.
-            addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
+            addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
                 @Override
                 public void run() {
-                    crateManager.endQuickCrate(player, getLocation(), crate, false);
+                    crateManager.endQuickCrate(player, location, crate, false);
                 }
             }.runDelayed(this.plugin.getPlugin(), 5 * 20));
 
@@ -216,16 +215,16 @@ public class QuickCrate extends CrateBuilder {
         }
 
         // Always open the chest.
-        ChestManager.openChest(getLocation().getBlock(), true);
+        ChestManager.openChest(this.location.getBlock(), true);
 
         // Always spawn fireworks if enabled.
-        if (prize.useFireworks()) MiscUtils.spawnFirework(getLocation().clone().add(0.5, 1, .5), null);
+        if (prize.useFireworks()) MiscUtils.spawnFirework(location.clone().add(0.5, 1, .5), null);
 
         // Always end the crate.
-        addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
+        addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
             @Override
             public void run() {
-                crateManager.endQuickCrate(player, getLocation(), crate, false);
+                crateManager.endQuickCrate(player, location, crate, false);
             }
         }.runDelayed(this.plugin.getPlugin(), 40));
     }

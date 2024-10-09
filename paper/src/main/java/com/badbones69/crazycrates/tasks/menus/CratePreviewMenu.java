@@ -8,6 +8,8 @@ import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class CratePreviewMenu extends DynamicInventoryBuilder {
 
     private final Tier tier;
@@ -36,11 +38,13 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
             guiFiller.fillBottom(guiItem);
         }
 
+        final UUID uuid = this.player.getUniqueId();
+
         crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> this.gui.addItem(new GuiItem(itemStack)));
 
-        this.gui.setOpenGuiAction(event -> this.inventoryManager.addPreviewViewer(event.getPlayer().getUniqueId()));
+        this.gui.setOpenGuiAction(event -> this.inventoryManager.addPreviewViewer(uuid));
 
-        this.gui.setCloseGuiAction(event -> this.inventoryManager.removePreviewViewer(event.getPlayer().getUniqueId()));
+        this.gui.setCloseGuiAction(event -> this.inventoryManager.removePreviewViewer(uuid));
 
         this.gui.open(this.player, gui -> {
             final int rows = gui.getRows();

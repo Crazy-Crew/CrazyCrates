@@ -12,6 +12,7 @@ import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -29,6 +30,11 @@ public class WheelCrate extends CrateBuilder {
         super(crate, player, size);
     }
 
+    private final Inventory inventory = getInventory();
+    private final Player player = getPlayer();
+    private final UUID uuid = this.player.getUniqueId();
+    private final Crate crate = getCrate();
+
     private Map<Integer, ItemStack> rewards;
 
     @Override
@@ -38,16 +44,13 @@ public class WheelCrate extends CrateBuilder {
             return;
         }
 
-        final Player player = getPlayer();
-        final UUID uuid = player.getUniqueId();
-        final Crate crate = getCrate();
-        final String fileName = crate.getFileName();
+        final String fileName = this.crate.getFileName();
 
-        boolean keyCheck = this.userManager.takeKeys(uuid, fileName, type, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, checkHand);
+        boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(player);
+            this.crateManager.removePlayerFromOpeningList(this.player);
 
             return;
         }
@@ -59,18 +62,18 @@ public class WheelCrate extends CrateBuilder {
         this.rewards = new HashMap<>();
 
         for (int number : getBorder()) {
-            final Prize prize = crate.pickPrize(player);
+            final Prize prize = this.crate.pickPrize(this.player);
 
-            setItem(number, prize.getDisplayItem(player, crate));
+            setItem(number, prize.getDisplayItem(this.player, this.crate));
 
-            this.rewards.put(number, prize.getDisplayItem(player, crate));
+            this.rewards.put(number, prize.getDisplayItem(this.player, this.crate));
         }
 
-        player.openInventory(getInventory());
+        this.player.openInventory(this.inventory);
 
         final Material material = Material.LIME_STAINED_GLASS_PANE;
 
-        addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
+        addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
             final List<Integer> slots = getBorder();
 
             int uh = 0;
@@ -150,7 +153,7 @@ public class WheelCrate extends CrateBuilder {
                 this.open++;
 
                 if (this.open > 5) {
-                    player.openInventory(getInventory());
+                    player.openInventory(inventory);
 
                     this.open = 0;
                 }

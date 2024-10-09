@@ -7,6 +7,7 @@ import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -25,6 +26,11 @@ public class WarCrate extends CrateBuilder {
         super(crate, player, size);
     }
 
+    private final Inventory inventory = getInventory();
+    private final Player player = getPlayer();
+    private final UUID uuid = this.player.getUniqueId();
+    private final Crate crate = getCrate();
+
     @Override
     public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType) {
         // Crate event failed so we return.
@@ -32,32 +38,29 @@ public class WarCrate extends CrateBuilder {
             return;
         }
 
-        final Player player = getPlayer();
-        final UUID uuid = player.getUniqueId();
-        final Crate crate = getCrate();
-        final String fileName = crate.getFileName();
+        final String fileName = this.crate.getFileName();
 
-        final boolean keyCheck = this.userManager.takeKeys(uuid, fileName, type, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, checkHand);
+        final boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(player);
+            this.crateManager.removePlayerFromOpeningList(this.player);
 
             // Remove closer/picker
-            this.crateManager.removeCloser(player);
-            this.crateManager.removePicker(player);
+            this.crateManager.removeCloser(this.player);
+            this.crateManager.removePicker(this.player);
 
             return;
         }
 
-        this.crateManager.addPicker(player, false);
-        this.crateManager.addCloser(player, false);
+        this.crateManager.addPicker(this.player, false);
+        this.crateManager.addCloser(this.player, false);
 
         setRandomPrizes();
 
-        player.openInventory(getInventory());
+        this.player.openInventory(this.inventory);
 
-        addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
+        addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
             int full = 0;
             int open = 0;
 
@@ -91,20 +94,17 @@ public class WarCrate extends CrateBuilder {
     }
 
     private void setRandomPrizes() {
-        final Player player = getPlayer();
-        final Crate crate = getCrate();
-
-        if (!this.crateManager.isInOpeningList(player) && !(getInventory().getHolder(false) instanceof CratePrizeMenu)) return;
+        if (!this.crateManager.isInOpeningList(this.player) && !(this.inventory.getHolder(false) instanceof CratePrizeMenu)) return;
 
         for (int index = 0; index < 9; index++) {
-            setItem(index, crate.pickPrize(player).getDisplayItem(player, crate));
+            setItem(index, this.crate.pickPrize(this.player).getDisplayItem(this.player, this.crate));
         }
     }
 
     private void setRandomGlass() {
         final Player player = getPlayer();
 
-        if (!this.crateManager.isInOpeningList(player) && !(getInventory().getHolder(false) instanceof CratePrizeMenu)) return;
+        if (!this.crateManager.isInOpeningList(player) && !(this.inventory.getHolder(false) instanceof CratePrizeMenu)) return;
 
         if (this.colorCodes.isEmpty()) getColorCode();
 

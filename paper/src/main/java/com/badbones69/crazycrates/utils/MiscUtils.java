@@ -113,7 +113,7 @@ public class MiscUtils {
                     keyLog.createNewFile();
                 }
             } catch (IOException exception) {
-                plugin.getLogger().warn("Failed to create files.");
+                plugin.getComponentLogger().warn("Failed to create files.");
             }
         }
     }
@@ -180,7 +180,7 @@ public class MiscUtils {
         if (!location.contains("Locations")) {
             location.set("Locations.Clear", null);
 
-            Files.locations.save();
+            isSave = true;
         }
 
         if (!data.contains("Players")) {

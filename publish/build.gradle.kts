@@ -5,7 +5,7 @@ plugins {
 
 val content: String = rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
 
-val isSnapshot = false
+val isBeta = false
 val pluginName = rootProject.name
 val mcVersion = libs.versions.minecraft.get()
 
@@ -15,7 +15,7 @@ tasks {
 
         projectId.set(rootProject.name)
 
-        versionType.set(if (isSnapshot) "beta" else "release")
+        versionType.set(if (isBeta) "beta" else "release")
 
         versionName.set("$pluginName ${rootProject.version}")
         versionNumber.set(rootProject.version as String)
@@ -46,7 +46,7 @@ tasks {
 
             version.set(rootProject.version as String)
 
-            channel.set(if (isSnapshot) "Beta" else "Release")
+            channel.set(if (isBeta) "Beta" else "Release")
 
             changelog.set(content)
 

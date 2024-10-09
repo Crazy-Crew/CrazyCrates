@@ -2,6 +2,175 @@
 Date format: (YYYY-MM-DD)
 
 <details>
+  <summary>v4.0 (1.21.1) - 2024-10-07</summary>
+
+### Breaking Changes:
+- The weight system has been merged in, which effectively replaces the Chance/Max Range system.
+  - You must run the command /crazycrates migrate WeightMigration, which will convert your configurations.
+  - https://docs.crazycrew.us/docs/plugins/crazycrates/guides/crates/weight-system
+
+### Additions:
+- Added the ability to log the plugin actions to file i.e. crates.log and keys.log... A list of events currently tracked
+  - event_key_given
+  - event_key_sent
+  - event_key_received
+  - event_key_transferred
+  - event_key_removed
+  - event_key_taken
+  - event_key_taken_multiple
+  - event_crate_opened
+  - event_crate_force_opened
+  - event_crate_mass_opened
+- If you notice anything not tracking right, or lacking tracking. Create an issue.
+- The files will zip on /crazycrates reload, plugin shutdown, plugin startup.
+  - This avoids the files getting large, and leading to issues with crashing the server.
+  - It mimics how Paper handles their .log files...
+- Added /crazycrates claim <prize> which claims prizes they didn't get from respins
+
+### Changes:
+- Added config options, which allow you to configure slots 4 and 22 above the prize in `csgo` crate
+- Added the ability to run commands with the gui customizer.
+- Added the ability to respin prizes to each crate file, if the option is enabled.
+```yml
+Crate:
+  # Global Settings
+  Settings:
+    # Settings related to rewards.
+    Rewards:
+      # Should a yes/no popup be made, to ask if they want to keep the prize?
+      Re-Roll-Spin: false
+      # Should there be a limit to how many times they can re-roll?
+      Permission:
+        # Should this be enabled?
+        Toggle: false
+        # Should this persist restarts? i.e. writes to disk the amount of respins, and reads the amount of respins.
+        Persist: false
+        # This will define how many permissions will be registered to the server per crate.
+        # i.e. crazycrates.respin.<crate_name>.1-20
+        # It will simply register multiple permissions, so it shows up in things like LuckPerms.
+        Max-Cap: 20
+```
+- You can view an example of this in `examples/crates/CrateExample.yml`
+- If `Permission.Persist` is set to true, we will write to disk, and the re-spins will be considered global
+  - If the option is set to false, it will be cached... and allow re-spins for X amount every time they open a crate.
+- You must have `Re-Roll-Spin` set to true to allow re-rolls.
+- You must have `Permission.Toggle` set to true, for it to be permission based.
+  - The higher the permission, the more spins they have.
+  - Internally, we loop through a player's permissions.... and find the highest matching one with `crazycrates.respin.<crate_name>.<amount>`
+  - The permissions will be registered on startup, and on /crates reload if not found.
+    - We also unregister on /crates reload, if you set `Permissions.Toggle` to false.
+  - `<amount>` is the `Max-Cap`, It will not go any higher... The higher that number is, the heavier the permission checks.
+- Crate Types such as Cosmic Crate, Casino Crate, QuadCrate, and WarCrate do not have support for re-spins
+  - Casino Crate has 3 prizes, the gui currently only supports 1 prize.
+  - Cosmic Crate has 4 prizes that you pick, the gui currently only supports 1 prize.
+  - QuadCrate has 4 prizes, the gui currently only supports 1 prize.
+  - WarCrate is in a similar situation, where it's picked prizes.
+- The complexity for these crate types above will take some time to add it in while it not being a train wreck.
+
+</details>
+
+<details>
+  <summary>v3.8.3 (1.21.1) - 2024-09-24</summary>
+
+### Fixed:
+- Fixed an issue, where if the border was toggled off. and you didn't have a second page, a glass pane would be there.
+  - It will simply be air now until the border is on.
+
+</details>
+
+<details>
+  <summary>v3.8.2 (1.21.1) - 2024-09-18</summary>
+
+### Fixed:
+- Fixed an issue with pagination on prizes.
+- Fixed an issue with the next/main/back buttons being static not dynamic.
+  - They would not re-size with the gui if you changed the row size.
+
+</details>
+
+<details>
+  <summary>v3.8.1 (1.21.1) - 2024-09-17</summary>
+
+### Changes:
+- No longer do hefty checks on PlayerMoveEvent if the player is not in the session for QuadCrate
+
+</details>
+
+<details>
+  <summary>v3.8 (1.21.1) - 2024-09-14</summary>
+
+### Big Changes: ( only for existing configurations )
+#### If you DO not change this, all your previews will look weird.
+- config.yml has had a change that cannot be automatically done.
+  - the customizer specifically the `slot` option, due to recent inventory changes.
+  - you must subtract 1 from each option, and start from `slot:0` instead of `slot:1`
+- Similar tweaks have to be made with subtracting `1` from each option in the `crate` files
+  - Specifically, related to the position of the crates in `/crates` and the position of the tiers in the tier previews
+- Why did this change? Inventories naturally start from `0`, and the gui framework I switched to does start from `0`
+  - This change allows for much easier inventory management and future features.
+
+### Added:
+- Added a new feature to prizes, The ability to set a limit on prizes.
+  - If a prize has Max-Pulls set to any number i.e. 1 or higher.
+  - That is limit globally for any player to claim it.
+  - Once that limit is reached, It will no longer be winnable.
+    - %pulls%, %maxpulls% are 2 new placeholders which can be used in `DisplayLore`, `DisplayName`, `Messages`, `Commands` and the global/per prize broadcast.
+  - A lore will be added to any prize that meets the criteria.
+    - This message can be edited in messages.yml, and set to empty if you don't want it appended.
+
+An example of what a prize would look like with the `Max-Pulls` option
+```yml
+    '6':
+      # The name of the item to display in the gui.
+      DisplayName: "<green>Fancy Shield <gray>| <red>%pulls%<gray>/<red>%maxpulls%"
+      # The enchants to display in the gui.
+      DisplayItem: "shield"
+      # A list of patterns: https://jd.papermc.io/paper/1.21/org/bukkit/block/banner/PatternType.html
+      # The patterns don't need to be uppercased. you can type them lowercased along with the colors.
+      # Patterns have to be laid out in a specific order, otherwise it won't look right.
+      # This also applies to the Items section.
+      DisplayPatterns:
+        - "base:white"
+        - "gradient_up:light_gray"
+        - "straight_cross:light_blue"
+        - "flower:light_blue"
+      # Prize settings
+      Settings:
+        # The custom model data of the item, -1 is disabled.
+        Custom-Model-Data: -1
+        # The amount of times this item can be pulled.
+        Max-Pulls: 10
+```
+
+- Added the ability to have per prize broadcasts and global broadcast for prizes.
+  - The permissions used to filter out who can see the broadcast are registered as proper permissions, so they show up in LuckPerms
+  - They do get removed when you turn off the per prize broadcast or the global broadcast.
+
+### Removed:
+- All legacy color codes are removed, I do not want to maintain it anymore as I've figured out ways around needing it.
+  - You can run /crazycrates migrate LegacyColorAll which should migrate all values in `config.yml`, `messages.yml` and all `crate` files.
+
+### Fixed:
+- CSGO Crate animation was delayed by 1 tick, for some reason.
+- Fixed https://github.com/Crazy-Crew/CrazyCrates/issues/788
+- Fixed spacing in migrate command usage.
+
+### Changes:
+- Improved /crazycrates migrate internally.
+  - ExcellentCrates Migrator has changed significantly, report any bugs you might find. It will convert legacy color codes to MiniMessage.
+  - Properly warn the player/sender if the inputted migration type is not valid.
+- Removed sections of code related to giving a prize if `Editor-Items`, `Commands` or `Items` were all not found.
+  - This would use the `DisplayItem`, `DisplayName`, `DisplayLore`, `DisplayEnchantments` and `DisplayAmount` as the prize.
+- Updated the /crazycrates additem command
+  - CrazyCrates additem command now supports MiniMessage, regardless of the item format used.
+  - This is only happening, as legacy colors have been removed and I did some research to improve things.
+- Updated the config option `use-old-editor`, It is now migrated to `use-new-editor`
+  - `true` uses the new editor, `false` uses the old one which is more readable. The option should be migrated on startup.
+- Updated Vital API.
+
+</details>
+
+<details>
   <summary>v3.7.4 (1.21.1) - 2024-07-30</summary>
 
 ### Fixed:
