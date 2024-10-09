@@ -160,7 +160,7 @@ public class QuadCrateManager {
 
                 return;
             } else {
-                if (!loc.getBlock().getType().equals(Material.AIR)) this.oldBlocks.put(loc.getBlock().getLocation(), loc.getBlock().getState());
+                if (type != Material.AIR) this.oldBlocks.put(block.getLocation(), block.getState());
             }
         }
 
