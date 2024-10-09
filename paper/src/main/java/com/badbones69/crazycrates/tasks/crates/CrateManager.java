@@ -27,6 +27,7 @@ import com.badbones69.crazycrates.tasks.crates.types.RouletteCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WonderCrate;
+import com.ryderbelserion.crazycrates.common.plugin.logger.PluginLogger;
 import com.ryderbelserion.vital.paper.api.files.CustomFile;
 import com.ryderbelserion.vital.paper.api.files.FileManager;
 import com.ryderbelserion.vital.common.util.FileUtil;
@@ -507,7 +508,7 @@ public class CrateManager {
 
         // Checking if all physical locations loaded
         if (MiscUtils.isLogging()) {
-            final ComponentLogger logger = this.instance.getPlugin().getComponentLogger();
+            final PluginLogger logger = this.instance.getLogger();
 
             if (loadedAmount > 0 || brokeAmount > 0) {
                 if (brokeAmount <= 0) {

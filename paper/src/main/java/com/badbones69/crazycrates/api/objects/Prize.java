@@ -9,6 +9,7 @@ import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
 import com.ryderbelserion.crazycrates.common.plugin.configs.types.locale.CrateKeys;
+import com.ryderbelserion.crazycrates.common.plugin.logger.PluginLogger;
 import com.ryderbelserion.vital.common.util.math.MathUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.common.util.AdvUtil;
@@ -31,6 +32,7 @@ import java.util.List;
 public class Prize {
 
     private final CrazyCrates plugin = CrazyCrates.getInstance();
+    private final PluginLogger logger = this.plugin.getLogger();
 
     private final ConfigurationSection section;
     private final List<ItemBuilder> builders;
@@ -169,7 +171,7 @@ public class Prize {
                         "Deprecated usage of Lore in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
                         "Lore will be removed in the next major version of Minecraft in favor of DisplayLore",
                         "You can turn my nagging off in config.yml, verbose_logging: true -> false"
-                ).forEach(this.plugin.getPlugin().getComponentLogger()::warn);
+                ).forEach(this.logger::warn);
             }
 
             this.section.getStringList("Lore").forEach(line -> lore.add(player != null && isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, line) : line));
@@ -363,7 +365,7 @@ public class Prize {
                             "Deprecated usage of Lore in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
                             "Lore will be removed in the next major version of Minecraft in favor of DisplayLore",
                             "You can turn my nagging off in config.yml, verbose_logging: true -> false"
-                    ).forEach(this.plugin.getPlugin().getComponentLogger()::warn);
+                    ).forEach(this.logger::warn);
                 }
 
                 builder.setDisplayLore(this.section.getStringList("Lore"));
@@ -381,7 +383,7 @@ public class Prize {
                             "Deprecated usage of Patterns in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Patterns to DisplayPatterns",
                             "Patterns will be removed in the next major version of Minecraft in favor of DisplayPatterns",
                             "You can turn my nagging off in config.yml, verbose_logging: true -> false"
-                    ).forEach(this.plugin.getPlugin().getComponentLogger()::warn);
+                    ).forEach(this.logger::warn);
                 }
 
                 for (final String pattern : this.section.getStringList("Patterns")) {

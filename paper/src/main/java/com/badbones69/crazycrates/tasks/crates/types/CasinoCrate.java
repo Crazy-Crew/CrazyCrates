@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.api.objects.Tier;
 import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.ryderbelserion.crazycrates.common.plugin.logger.PluginLogger;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
@@ -116,7 +117,7 @@ public class CasinoCrate extends CrateBuilder {
 
                 if (row_uno.isEmpty() || row_dos.isEmpty() || row_tres.isEmpty()) {
                     if (MiscUtils.isLogging()) {
-                        final ComponentLogger logger = this.plugin.getPlugin().getComponentLogger();
+                        final PluginLogger logger = this.plugin.getLogger();
 
                         logger.warn("One of your tiers in the config is empty.");
                         logger.warn("Tier 1: {}", row_uno);
