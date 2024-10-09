@@ -180,7 +180,7 @@ public class MiscUtils {
         if (!location.contains("Locations")) {
             location.set("Locations.Clear", null);
 
-            Files.locations.save();
+            isSave = true;
         }
 
         if (!data.contains("Players")) {
