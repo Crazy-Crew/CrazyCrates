@@ -113,7 +113,7 @@ public class MiscUtils {
                     keyLog.createNewFile();
                 }
             } catch (IOException exception) {
-                plugin.getLogger().warning("Failed to create files.");
+                plugin.getComponentLogger().warn("Failed to create files.");
             }
         }
     }
