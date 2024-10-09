@@ -24,7 +24,7 @@ import com.badbones69.crazycrates.utils.MiscUtils;
 
 public class MobileCrateListener implements Listener {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
@@ -64,7 +64,7 @@ public class MobileCrateListener implements Listener {
 
         PrizeManager.givePrize(player, prize, crate);
 
-        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+        this.plugin.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
 
         if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 

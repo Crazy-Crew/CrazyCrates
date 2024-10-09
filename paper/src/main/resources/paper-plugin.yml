@@ -1,5 +1,5 @@
 name: '${name}'
-main: '${group}.CrazyCrates'
+main: '${group}.loader.CrazyPlugin'
 
 version: '${version}'
 api-version: '${apiVersion}'

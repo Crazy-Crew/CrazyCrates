@@ -9,14 +9,14 @@ import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.api.enums.Support;
-import com.ryderbelserion.vital.paper.util.AdvUtil;
+import com.ryderbelserion.vital.common.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.MiscUtil;
 import org.bukkit.Server;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -28,7 +28,7 @@ import static java.util.regex.Matcher.quoteReplacement;
 
 public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
-    protected @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    protected @NotNull final CrazyCrates plugin = CrazyCrates.getInstance();
 
     protected @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
@@ -36,7 +36,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
     protected @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    protected @NotNull final Server server = this.plugin.getServer();
+    protected @NotNull final Server server = this.plugin.getPlugin().getServer();
 
     private Inventory inventory;
     private Player player;
@@ -112,7 +112,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
                 return true;
             }
 
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("The property {} is empty so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
+            if (MiscUtils.isLogging()) this.plugin.getLogger().warn("The property {} is empty so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
 
             return true;
         }

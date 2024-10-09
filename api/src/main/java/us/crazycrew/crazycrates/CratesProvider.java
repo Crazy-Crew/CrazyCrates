@@ -18,7 +18,10 @@ public class CratesProvider {
     /**
      * @return {@link IServer}
      * @since 0.4
+     *
+     * @deprecated Use {@link CrazyCratesProvider#get()} from now on.
      */
+    @Deprecated(forRemoval = true, since = "0.9")
     public static IServer get() {
         if (instance == null) {
             throw new IllegalStateException("CrazyCrates API is not loaded.");

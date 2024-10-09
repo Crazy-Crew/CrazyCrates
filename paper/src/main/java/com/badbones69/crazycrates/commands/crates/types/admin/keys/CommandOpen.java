@@ -1,12 +1,12 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.keys;
 
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.managers.events.EventManager;
-import com.badbones69.crazycrates.managers.events.enums.EventType;
+import com.badbones69.crazycrates.managers.EventManager;
+import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -20,7 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,7 +70,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null || crate.getCrateType() == CrateType.menu) {
             Messages.internal_error.sendMessage(player);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null or Menu for the crate named {}", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getLogger().error("An error has occurred: The crate type is null or Menu for the crate named {}", crateName);
 
             return;
         }
@@ -138,7 +138,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null) {
             Messages.internal_error.sendMessage(sender);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getLogger().error("An error has occurred: The crate type is null for the crate named {}", crateName);
 
             return;
         }
@@ -216,7 +216,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null) {
             Messages.internal_error.sendMessage(sender);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getLogger().error("An error has occurred: The crate type is null for the crate named {}", crateName);
 
             return;
         }
@@ -267,7 +267,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null) {
             Messages.internal_error.sendMessage(player);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crate.getFileName());
+            if (MiscUtils.isLogging()) this.plugin.getLogger().error("An error has occurred: The crate type is null for the crate named {}", crate.getFileName());
 
             return;
         }
@@ -329,7 +329,7 @@ public class CommandOpen extends BaseCommand {
 
             PrizeManager.givePrize(player, prize, crate);
 
-            this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+            this.plugin.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
 
             if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().clone().add(.5, 1, .5), null);
 

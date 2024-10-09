@@ -19,7 +19,7 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Collection<CustomFile> customFiles = this.plugin.getVital().getFileManager().getCustomFiles().values();
+        final Collection<CustomFile> customFiles = this.plugin.getPlugin().getFileManager().getCustomFiles().values();
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
@@ -106,6 +106,6 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
 
     @Override
     public final File getCratesDirectory() {
-        return new File(this.plugin.getDataFolder(), "crates");
+        return new File(this.plugin.getPlugin().getDataFolder(), "crates");
     }
 }
