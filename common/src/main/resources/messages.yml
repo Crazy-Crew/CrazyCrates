@@ -131,7 +131,7 @@ crates:
       # The command will act as a way to get their latest respin prize before they open a respin menu
       # 
       # A list of available placeholders: {prize}, {crate}, {crate_pretty}
-      redeemed: "{prefix}<red>You have redeemed your prize with the name {prize} from the crate named {crate}!"
+      redeemed: "{prefix}<red>You have redeemed your prize with the name {prize} <red>from the crate named {crate}!"
       # A list of available placeholders: {prize}, {crate}, {crate_pretty}
       not-claimed: "{prefix}<red>If you didn't get your prize, please run /crazycrates claim {crate}"
       # A list of available placeholders: {crate}, {crate_pretty}
