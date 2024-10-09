@@ -262,7 +262,7 @@ public class QuadCrateManager {
             }
         }.runAtFixedRate(this.plugin, 0,1));
 
-        this.crateManager.addCrateTask(this.player, new FoliaRunnable(getPlayer().getScheduler(), null) {
+        this.crateManager.addCrateTask(this.player, new FoliaRunnable(player.getScheduler(), null) {
             @Override
             public void run() {
                 endCrate(true);
