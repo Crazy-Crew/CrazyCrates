@@ -18,6 +18,7 @@ import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.SpiralManager;
 import com.badbones69.crazycrates.api.ChestManager;
+import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
@@ -147,7 +148,10 @@ public class QuadCrateManager {
         // Loop through the blocks and check if the blacklist contains the block type.
         // Do not open the crate if the block is not able to be changed.
         for (Location loc : structureLocations) {
-            if (this.handler.getBlockBlacklist().contains(loc.getBlock().getType())) {
+            final Block block = loc.getBlock();
+            final Material type = block.getType();
+
+            if (this.handler.getBlockBlacklist().contains(type)) {
                 Messages.needs_more_room.sendMessage(player);
 
                 this.crateManager.removePlayerFromOpeningList(this.player);
@@ -166,7 +170,7 @@ public class QuadCrateManager {
             if (entity instanceof Player entityPlayer) {
                 for (QuadCrateManager ongoingCrate : crateSessions) {
                     if (entityPlayer.getUniqueId() == ongoingCrate.player.getUniqueId()) {
-                        Messages.too_close_to_another_player.sendMessage(player, "{player}", entityPlayer.getName());
+                        Messages.too_close_to_another_player.sendMessage(this.player, "{player}", entityPlayer.getName());
 
                         this.crateManager.removePlayerFromOpeningList(this.player);
 
@@ -274,11 +278,13 @@ public class QuadCrateManager {
      * End the crate gracefully.
      */
     public void endCrate(final boolean immediately) {
-        new FoliaRunnable(this.plugin.getServer().getGlobalRegionScheduler()) {
+        final Server server = this.plugin.getServer();
+
+        new FoliaRunnable(server.getGlobalRegionScheduler()) {
             @Override
             public void run() {
                 // Update spawned crate block states which removes them.
-                crateLocations.forEach(location -> plugin.getServer().getRegionScheduler().run(plugin, location, schedulerTask -> quadCrateChests.get(location).update(true, false)));
+                crateLocations.forEach(location -> server.getRegionScheduler().run(plugin, location, schedulerTask -> quadCrateChests.get(location).update(true, false)));
 
                 // Remove displayed rewards.
                 for (Entity displayedReward : displayedRewards) {
@@ -292,7 +298,7 @@ public class QuadCrateManager {
                 handler.removeStructure();
 
                 // Restore the old blocks.
-                oldBlocks.keySet().forEach(location -> plugin.getServer().getRegionScheduler().run(plugin, location, schedulerTask -> oldBlocks.get(location).update(true, false)));
+                oldBlocks.keySet().forEach(location -> server.getRegionScheduler().run(plugin, location, schedulerTask -> oldBlocks.get(location).update(true, false)));
 
                 final HologramManager manager = crateManager.getHolograms();
 

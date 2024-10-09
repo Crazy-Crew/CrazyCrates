@@ -39,10 +39,12 @@ public class ItemUtils {
      */
     public static void removeItem(@NotNull final ItemStack item, @NotNull final Player player) {
         try {
-            if (item.getAmount() <= 1) {
+            final int amount = item.getAmount();
+
+            if (amount <= 1) {
                 player.getInventory().removeItem(item);
             } else {
-                item.setAmount(item.getAmount() - 1);
+                item.setAmount(amount - 1);
             }
         } catch (Exception ignored) {}
     }
@@ -225,7 +227,7 @@ public class ItemUtils {
         }
         
         if (section.contains("DisplayEnchantments")) {
-            for (String ench : section.getStringList("DisplayEnchantments")) {
+            for (final String ench : section.getStringList("DisplayEnchantments")) {
                 String[] value = ench.split(":");
 
                 builder.addEnchantment(value[0], Integer.parseInt(value[1]), true);

@@ -144,7 +144,7 @@ public class CrateManager {
             ConfigurationSection prizesSection = file.getConfigurationSection("Crate.Prizes");
 
             if (prizesSection != null) {
-                for (String prize : prizesSection.getKeys(false)) {
+                for (final String prize : prizesSection.getKeys(false)) {
                     ConfigurationSection prizeSection = prizesSection.getConfigurationSection(prize);
 
                     List<Tier> tierPrizes = new ArrayList<>();
@@ -162,8 +162,8 @@ public class CrateManager {
                             }
                         }
 
-                        for (String tier : prizeSection.getStringList("Tiers")) {
-                            for (Tier key : crate.getTiers()) {
+                        for (final String tier : prizeSection.getStringList("Tiers")) {
+                            for (final Tier key : crate.getTiers()) {
                                 if (key.getName().equalsIgnoreCase(tier)) {
                                     tierPrizes.add(key);
                                 }
@@ -381,14 +381,14 @@ public class CrateManager {
                                 final List<?> keys = prizeSection.getList("Editor-Items");
 
                                 if (keys != null) {
-                                    for (Object key : keys) {
+                                    for (final Object key : keys) {
                                         editorItems.add((ItemStack) key);
                                     }
                                 }
                             }
 
-                            for (String tier : prizeSection.getStringList("Tiers")) {
-                                for (Tier key : tiers) {
+                            for (final String tier : prizeSection.getStringList("Tiers")) {
+                                for (final Tier key : tiers) {
                                     if (key.getName().equalsIgnoreCase(tier)) {
                                         tierPrizes.add(key);
                                     }
@@ -696,11 +696,13 @@ public class CrateManager {
                 crateBuilder = new CsgoCrate(crate, player, 27);
 
                 if (MiscUtils.isLogging()) {
+                    final ComponentLogger logger = this.plugin.getComponentLogger();
+
                     List.of(
                             crate.getFileName() + " has an invalid crate type. Your Value: " + crate.getFile().getString("Crate.CrateType", "CSGO"),
                             "We will use " + CrateType.csgo.getName() + " until you change the crate type.",
                             "Valid Crate Types: CSGO/Casino/Cosmic/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War"
-                    ).forEach(line -> this.plugin.getComponentLogger().warn(line));
+                    ).forEach(logger::warn);
                 }
             }
         }
@@ -757,8 +759,10 @@ public class CrateManager {
      * @param player the player that the crate is being ended for.
      */
     public void endCrate(@NotNull final Player player) {
-        if (this.currentTasks.containsKey(player.getUniqueId())) {
-            this.currentTasks.get(player.getUniqueId()).cancel();
+        final UUID uuid = player.getUniqueId();
+
+        if (this.currentTasks.containsKey(uuid)) {
+            this.currentTasks.get(uuid).cancel();
         }
     }
 
@@ -768,12 +772,14 @@ public class CrateManager {
      * @param player the player using the crate.
      */
     public void endQuadCrate(@NotNull final Player player) {
-        if (this.currentQuadTasks.containsKey(player.getUniqueId())) {
-            for (ScheduledTask task : this.currentQuadTasks.get(player.getUniqueId())) {
+        final UUID uuid = player.getUniqueId();
+
+        if (this.currentQuadTasks.containsKey(uuid)) {
+            for (ScheduledTask task : this.currentQuadTasks.get(uuid)) {
                 task.cancel();
             }
 
-            this.currentQuadTasks.remove(player.getUniqueId());
+            this.currentQuadTasks.remove(uuid);
         }
     }
 
@@ -784,11 +790,13 @@ public class CrateManager {
      * @param task the task of the quad crate.
      */
     public void addQuadCrateTask(@NotNull final Player player, @NotNull final ScheduledTask task) {
-        if (!this.currentQuadTasks.containsKey(player.getUniqueId())) {
-            this.currentQuadTasks.put(player.getUniqueId(), new ArrayList<>());
+        final UUID uuid = player.getUniqueId();
+
+        if (!this.currentQuadTasks.containsKey(uuid)) {
+            this.currentQuadTasks.put(uuid, new ArrayList<>());
         }
 
-        this.currentQuadTasks.get(player.getUniqueId()).add(task);
+        this.currentQuadTasks.get(uuid).add(task);
     }
 
     /**
@@ -1106,7 +1114,7 @@ public class CrateManager {
 
         Crate crate = null;
 
-        for (Crate key : this.crates) {
+        for (final Crate key : this.crates) {
             if (key.getFileName().equalsIgnoreCase(name)) {
                 crate = key;
 
@@ -1125,7 +1133,7 @@ public class CrateManager {
      */
     public final boolean isCrateLocation(@NotNull final Location location) {
         for (final CrateLocation crateLocation : getCrateLocations()) {
-            if (crateLocation.getLocation().equals(location)) return true;
+            if (crateLocation.getLocation().equals(location)) return true; //todo() make this light weight
         }
 
         return false;
@@ -1160,10 +1168,10 @@ public class CrateManager {
     public @Nullable final CrateLocation getCrateLocation(@NotNull final Location location) {
         CrateLocation crateLocation = null;
 
-        String asString = MiscUtils.location(location);
+        final String asString = MiscUtils.location(location);
 
-        for (CrateLocation key : this.crateLocations) {
-            String locationAsString = MiscUtils.location(key.getLocation());
+        for (final CrateLocation key : this.crateLocations) {
+            final String locationAsString = MiscUtils.location(key.getLocation());
 
             if (locationAsString.equals(asString)) {
                 crateLocation = key;
@@ -1184,10 +1192,10 @@ public class CrateManager {
     public @Nullable final Crate getCrateFromLocation(@NotNull final Location location) {
         Crate crate = null;
 
-        String asString = MiscUtils.location(location);
+        final String asString = MiscUtils.location(location);
 
-        for (CrateLocation key : this.crateLocations) {
-            String locationAsString = MiscUtils.location(key.getLocation());
+        for (final CrateLocation key : this.crateLocations) {
+            final String locationAsString = MiscUtils.location(key.getLocation());
 
             if (locationAsString.equals(asString)) {
                 crate = key.getCrate();
@@ -1208,7 +1216,7 @@ public class CrateManager {
     public @Nullable final CrateSchematic getCrateSchematic(@NotNull final String name) {
         if (name.isEmpty()) return null;
 
-        for (CrateSchematic schematic : this.crateSchematics) {
+        for (final CrateSchematic schematic : this.crateSchematics) {
             if (schematic.schematicName().equalsIgnoreCase(name)) {
                 return schematic;
             }
@@ -1334,7 +1342,7 @@ public class CrateManager {
 
         if (section == null) return;
 
-        for (String uuid : section.getKeys(false)) {
+        for (final String uuid : section.getKeys(false)) {
             if (data.contains("Players." + uuid + ".tracking")) return;
 
             boolean hasKeys = false;
@@ -1432,11 +1440,13 @@ public class CrateManager {
             removeCrateTask(player);
         }
 
-        if (this.rewards.get(player.getUniqueId()) != null) {
-            this.allRewards.remove(this.rewards.get(player.getUniqueId()));
+        final UUID uuid = player.getUniqueId();
 
-            this.rewards.get(player.getUniqueId()).remove();
-            this.rewards.remove(player.getUniqueId());
+        if (this.rewards.get(uuid) != null) {
+            this.allRewards.remove(this.rewards.get(uuid));
+
+            this.rewards.get(uuid).remove();
+            this.rewards.remove(uuid);
         }
 
         ChestManager.closeChest(location.getBlock(), false);

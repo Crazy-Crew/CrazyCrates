@@ -4,6 +4,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 public class SessionManager {
 
     /**
@@ -15,8 +17,10 @@ public class SessionManager {
     public final boolean inSession(@NotNull final Player player) {
         if (QuadCrateManager.getCrateSessions().isEmpty()) return false;
 
+        final UUID uuid = player.getUniqueId();
+
         for (QuadCrateManager quadCrateManager : QuadCrateManager.getCrateSessions()) {
-            if (quadCrateManager.getPlayer().getUniqueId().equals(player.getUniqueId())) return true;
+            if (quadCrateManager.getPlayer().getUniqueId().equals(uuid)) return true;
         }
 
         return false;
@@ -29,8 +33,10 @@ public class SessionManager {
      * @return crate session or null.
      */
     public @Nullable final QuadCrateManager getSession(@NotNull final Player player) {
+        final UUID uuid = player.getUniqueId();
+
         for (QuadCrateManager quadCrateManager : QuadCrateManager.getCrateSessions()) {
-            if (quadCrateManager.getPlayer().getUniqueId().equals(player.getUniqueId())) return quadCrateManager;
+            if (quadCrateManager.getPlayer().getUniqueId().equals(uuid)) return quadCrateManager;
         }
 
         return null;

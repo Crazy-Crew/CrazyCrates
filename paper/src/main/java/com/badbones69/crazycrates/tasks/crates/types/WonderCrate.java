@@ -16,6 +16,7 @@ import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -35,6 +36,11 @@ public class WonderCrate extends CrateBuilder {
         super(crate, player, size);
     }
 
+    private final Inventory inventory = getInventory();
+    private final Player player = getPlayer();
+    private final UUID uuid = this.player.getUniqueId();
+    private final Crate crate = getCrate();
+
     @Override
     public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType) {
         // Crate event failed so we return.
@@ -42,12 +48,9 @@ public class WonderCrate extends CrateBuilder {
             return;
         }
 
-        final Player player = getPlayer();
-        final UUID uuid = player.getUniqueId();
-        final Crate crate = getCrate();
-        final String fileName = crate.getFileName();
+        final String fileName = this.crate.getFileName();
 
-        final boolean keyCheck = this.userManager.takeKeys(uuid, fileName, type, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, checkHand);
+        final boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
@@ -59,16 +62,16 @@ public class WonderCrate extends CrateBuilder {
         final List<String> slots = new ArrayList<>();
 
         for (int index = 0; index < getSize(); index++) {
-            final Prize prize = crate.pickPrize(player);
+            final Prize prize = this.crate.pickPrize(this.player);
 
             slots.add(String.valueOf(index));
 
-            setItem(index, prize.getDisplayItem(player, crate));
+            setItem(index, prize.getDisplayItem(this.player, this.crate));
         }
 
-        player.openInventory(getInventory());
+        this.player.openInventory(this.inventory);
 
-        addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
+        addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
             int time = 0;
             int full = 0;
 
@@ -118,7 +121,7 @@ public class WonderCrate extends CrateBuilder {
                 if (this.full > 100) {
                     crateManager.endCrate(player);
 
-                    getPlayer().closeInventory(InventoryCloseEvent.Reason.UNLOADED);
+                    player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
 
                     if (crate.isCyclePrize() && !PrizeManager.isCapped(crate, player)) { // re-open this menu
                         new CrateSpinMenu(player, new GuiSettings(crate, prize, Files.respin_gui.getConfiguration())).open();
@@ -137,7 +140,7 @@ public class WonderCrate extends CrateBuilder {
 
                     playSound("stop-sound", Sound.Source.PLAYER, "entity.player.levelup");
 
-                    if (this.prize.useFireworks()) MiscUtils.spawnFirework(getPlayer().getLocation().add(0, 1, 0), null);
+                    if (this.prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
                     plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, this.prize));
 

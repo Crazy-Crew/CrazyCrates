@@ -15,6 +15,7 @@ import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -35,6 +36,11 @@ public class CsgoCrate extends CrateBuilder {
         super(crate, player, size);
     }
 
+    private final Inventory inventory = getInventory();
+    private final Player player = getPlayer();
+    private final UUID uuid = this.player.getUniqueId();
+    private final Crate crate = getCrate();
+
     @Override
     public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType) {
         // Crate event failed so we return.
@@ -42,16 +48,13 @@ public class CsgoCrate extends CrateBuilder {
             return;
         }
 
-        final Player player = getPlayer();
-        final UUID uuid = player.getUniqueId();
-        final Crate crate = getCrate();
-        final String fileName = crate.getFileName();
+        final String fileName = this.crate.getFileName();
 
-        final boolean keyCheck = this.userManager.takeKeys(uuid, fileName, type, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, checkHand);
+        final boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(player);
+            this.crateManager.removePlayerFromOpeningList(this.player);
 
             return;
         }
@@ -60,9 +63,9 @@ public class CsgoCrate extends CrateBuilder {
         populate();
 
         // Open the inventory.
-        player.openInventory(getInventory());
+        this.player.openInventory(this.inventory);
 
-        addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
+        addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
             int time = 1;
 
             int full = 0;
@@ -80,7 +83,7 @@ public class CsgoCrate extends CrateBuilder {
                 this.open++;
 
                 if (this.open >= 5) {
-                    player.openInventory(getInventory());
+                    player.openInventory(inventory);
 
                     this.open = 0;
                 }
@@ -108,7 +111,7 @@ public class CsgoCrate extends CrateBuilder {
                         setItem(4, itemStack);
                         setItem(22, itemStack);
 
-                        final ItemStack item = getInventory().getItem(13);
+                        final ItemStack item = inventory.getItem(13);
 
                         if (item != null) {
                             final Prize prize = crate.getPrize(item);
@@ -131,8 +134,8 @@ public class CsgoCrate extends CrateBuilder {
 
                         new FoliaRunnable(player.getScheduler(), null) {
                             @Override
-                            public void run() {
-                                if (player.getOpenInventory().getTopInventory().equals(getInventory())) player.closeInventory();
+                            public void run() { //todo() use inventory holders
+                                if (player.getOpenInventory().getTopInventory().equals(inventory)) player.closeInventory();
                             }
                         }.runDelayed(plugin, 40);
 
@@ -159,21 +162,18 @@ public class CsgoCrate extends CrateBuilder {
 
         // Set display items.
         for (int index = 9; index > 8 && index < 18; index++) {
-            setItem(index, getCrate().pickPrize(getPlayer()).getDisplayItem(getPlayer(), getCrate()));
+            setItem(index, this.crate.pickPrize(this.player).getDisplayItem(this.player, this.crate));
         }
     }
 
     private void moveItemsAndSetGlass() {
         final List<ItemStack> items = new ArrayList<>();
 
-        final Player player = getPlayer();
-        final Crate crate = getCrate();
-
         for (int i = 9; i > 8 && i < 17; i++) {
-            items.add(getInventory().getItem(i));
+            items.add(this.inventory.getItem(i));
         }
 
-        setItem(9, crate.pickPrize(player).getDisplayItem(player, crate));
+        setItem(9, this.crate.pickPrize(this.player).getDisplayItem(this.player, this.crate));
 
         for (int i = 0; i < 8; i++) {
             setItem(i + 10, items.get(i));

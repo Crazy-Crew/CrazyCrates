@@ -20,6 +20,10 @@ public class CrateOnTheGo extends CrateBuilder {
         super(crate, player);
     }
 
+    private final Player player = getPlayer();
+    private final UUID uuid = this.player.getUniqueId();
+    private final Crate crate = getCrate();
+
     @Override
     public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType) {
         // Crate event failed so we return.
@@ -27,40 +31,37 @@ public class CrateOnTheGo extends CrateBuilder {
             return;
         }
 
-        final Player player = getPlayer();
-        final UUID uuid = player.getUniqueId();
-        final Crate crate = getCrate();
-        final String fileName = crate.getFileName();
+        final String fileName = this.crate.getFileName();
 
-        final boolean keyCheck = this.userManager.takeKeys(uuid, fileName, KeyType.physical_key, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, true);
+        final boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, KeyType.physical_key, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, true);
 
         if (!keyCheck) {
             // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(player);
+            this.crateManager.removePlayerFromOpeningList(this.player);
 
             return;
         }
 
-        final Prize prize = crate.pickPrize(player);
+        final Prize prize = this.crate.pickPrize(this.player);
 
-        if (crate.isCyclePrize() && !PrizeManager.isCapped(crate, player)) { // re-open this menu
-            new CrateSpinMenu(player, new GuiSettings(crate, prize, Files.respin_gui.getConfiguration())).open();
+        if (this.crate.isCyclePrize() && !PrizeManager.isCapped(this.crate, this.player)) { // re-open this menu
+            new CrateSpinMenu(this.player, new GuiSettings(this.crate, prize, Files.respin_gui.getConfiguration())).open();
 
-            this.crateManager.removePlayerFromOpeningList(player);
-            this.crateManager.removePlayerKeyType(player);
+            this.crateManager.removePlayerFromOpeningList(this.player);
+            this.crateManager.removePlayerKeyType(this.player);
 
             return;
         } else {
-            this.userManager.removeRespinPrize(uuid, fileName);
+            this.userManager.removeRespinPrize(this.uuid, fileName);
 
             // remove from the cache
-            this.userManager.removeRespinCrate(uuid, fileName, 0, false);
+            this.userManager.removeRespinCrate(this.uuid, fileName, 0, false);
         }
 
-        PrizeManager.givePrize(player, crate, prize);
+        PrizeManager.givePrize(this.player, this.crate, prize);
 
-        if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
+        if (prize.useFireworks()) MiscUtils.spawnFirework(this.player.getLocation().add(0, 1, 0), null);
 
-        this.crateManager.removePlayerKeyType(player);
+        this.crateManager.removePlayerKeyType(this.player);
     }
 }

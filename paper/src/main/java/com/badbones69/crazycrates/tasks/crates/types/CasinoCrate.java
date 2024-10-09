@@ -12,6 +12,7 @@ import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
@@ -26,15 +27,17 @@ public class CasinoCrate extends CrateBuilder {
         super(crate, player, size);
     }
 
+    private final Inventory inventory = getInventory();
+    private final Player player = getPlayer();
+    private final UUID uuid = this.player.getUniqueId();
+    private final Crate crate = getCrate();
+
     private int counter = 0;
     private int time = 1;
     private int open = 0;
 
     @Override
     public void run() {
-        final Player player = getPlayer();
-        final Crate crate = getCrate();
-
         // If cancelled, we return.
         if (this.isCancelled) {
             return;
@@ -49,7 +52,7 @@ public class CasinoCrate extends CrateBuilder {
         this.open++;
 
         if (this.open >= 5) {
-            player.openInventory(getInventory());
+            this.player.openInventory(this.inventory);
 
             this.open = 0;
         }
@@ -68,18 +71,18 @@ public class CasinoCrate extends CrateBuilder {
             if (this.time >= 60) { // When the crate task is finished.
                 playSound("stop-sound", Sound.Source.PLAYER, "entity.player.levelup");
 
-                this.crateManager.endCrate(player);
+                this.crateManager.endCrate(this.player);
 
-                PrizeManager.getPrize(crate, getInventory(), 11, player);
-                PrizeManager.getPrize(crate, getInventory(), 13, player);
-                PrizeManager.getPrize(crate, getInventory(), 15, player);
+                PrizeManager.getPrize(this.crate, this.inventory, 11, this.player);
+                PrizeManager.getPrize(this.crate, this.inventory, 13, this.player);
+                PrizeManager.getPrize(this.crate, this.inventory, 15, this.player);
 
-                this.crateManager.removePlayerFromOpeningList(player);
+                this.crateManager.removePlayerFromOpeningList(this.player);
 
-                new FoliaRunnable(player.getScheduler(), null) {
+                new FoliaRunnable(this.player.getScheduler(), null) {
                     @Override
-                    public void run() {
-                        if (player.getOpenInventory().getTopInventory().equals(getInventory())) player.closeInventory();
+                    public void run() { //todo() use inventory holders
+                        if (player.getOpenInventory().getTopInventory().equals(inventory)) player.closeInventory();
                     }
                 }.runDelayed(this.plugin, 40);
 
@@ -99,12 +102,9 @@ public class CasinoCrate extends CrateBuilder {
             return;
         }
 
-        final Player player = getPlayer();
-        final UUID uuid = player.getUniqueId();
-        final Crate crate = getCrate();
-        final String fileName = crate.getFileName();
+        final String fileName = this.crate.getFileName();
 
-        final ConfigurationSection section = crate.getFile().getConfigurationSection("Crate.random");
+        final ConfigurationSection section = this.crate.getFile().getConfigurationSection("Crate.random");
 
         if (section != null) {
             final boolean isRandom = section.getBoolean("toggle", false);
@@ -129,11 +129,11 @@ public class CasinoCrate extends CrateBuilder {
             }
         }
 
-        final boolean keyCheck = this.userManager.takeKeys(uuid, fileName, type, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, checkHand);
+        final boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(player);
+            this.crateManager.removePlayerFromOpeningList(this.player);
 
             return;
         }
@@ -142,13 +142,11 @@ public class CasinoCrate extends CrateBuilder {
 
         runAtFixedRate(this.plugin, 1, 1);
 
-        player.openInventory(getInventory());
+        this.player.openInventory(this.inventory);
     }
 
     private void setDisplayItems(final boolean isStatic) {
-        final Crate crate = getCrate();
-
-        final ConfigurationSection section = crate.getFile().getConfigurationSection("Crate.random");
+        final ConfigurationSection section = this.crate.getFile().getConfigurationSection("Crate.random");
 
         if (isStatic) {
             for (int index = 0; index < 27; index++) {
@@ -160,21 +158,23 @@ public class CasinoCrate extends CrateBuilder {
             final boolean isRandom = section.getBoolean("toggle", false);
 
             if (isRandom) {
-                List<Tier> tiers = crate.getTiers();
+                List<Tier> tiers = this.crate.getTiers();
+
+                int size = tiers.size();
 
                 ThreadLocalRandom random = ThreadLocalRandom.current();
 
-                setItem(2, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
-                setItem(11, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
-                setItem(20, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
+                setItem(2, getDisplayItem(tiers.get(random.nextInt(size))));
+                setItem(11, getDisplayItem(tiers.get(random.nextInt(size))));
+                setItem(20, getDisplayItem(tiers.get(random.nextInt(size))));
 
-                setItem(4, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
-                setItem(13, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
-                setItem(22, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
+                setItem(4, getDisplayItem(tiers.get(random.nextInt(size))));
+                setItem(13, getDisplayItem(tiers.get(random.nextInt(size))));
+                setItem(22, getDisplayItem(tiers.get(random.nextInt(size))));
 
-                setItem(6, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
-                setItem(15, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
-                setItem(24, getDisplayItem(tiers.get(random.nextInt(tiers.size()))));
+                setItem(6, getDisplayItem(tiers.get(random.nextInt(size))));
+                setItem(15, getDisplayItem(tiers.get(random.nextInt(size))));
+                setItem(24, getDisplayItem(tiers.get(random.nextInt(size))));
 
                 return;
             }
@@ -183,7 +183,7 @@ public class CasinoCrate extends CrateBuilder {
             final String row_dos = section.getString("types.row-2", "");
             final String row_tres = section.getString("types.row-3", "");
 
-            Tier tierUno = crate.getTier(row_uno);
+            final Tier tierUno = this.crate.getTier(row_uno);
 
             if (tierUno != null) {
                 setItem(2, getDisplayItem(tierUno));
@@ -191,7 +191,7 @@ public class CasinoCrate extends CrateBuilder {
                 setItem(20, getDisplayItem(tierUno));
             }
 
-            Tier tierDos = crate.getTier(row_dos);
+            final Tier tierDos = this.crate.getTier(row_dos);
 
             if (tierDos != null) {
                 setItem(4, getDisplayItem(tierDos));
@@ -199,7 +199,7 @@ public class CasinoCrate extends CrateBuilder {
                 setItem(22, getDisplayItem(tierDos));
             }
 
-            Tier tierTres = crate.getTier(row_tres);
+            final Tier tierTres = this.crate.getTier(row_tres);
 
             if (tierTres != null) {
                 setItem(6, getDisplayItem(tierTres));
@@ -211,7 +211,7 @@ public class CasinoCrate extends CrateBuilder {
 
     private void cycle() {
         for (int index = 0; index < 27; index++) {
-            final ItemStack itemStack = getInventory().getItem(index);
+            final ItemStack itemStack = this.inventory.getItem(index);
 
             if (itemStack != null) {
                 final PersistentDataContainerView container = itemStack.getPersistentDataContainer();

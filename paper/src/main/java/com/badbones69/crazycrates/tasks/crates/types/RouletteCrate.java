@@ -11,6 +11,7 @@ import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -24,6 +25,11 @@ public class RouletteCrate extends CrateBuilder {
         super(crate, player, size);
     }
 
+    private final Inventory inventory = getInventory();
+    private final Player player = getPlayer();
+    private final UUID uuid = this.player.getUniqueId();
+    private final Crate crate = getCrate();
+
     @Override
     public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType) {
         // Crate event failed so we return.
@@ -31,12 +37,9 @@ public class RouletteCrate extends CrateBuilder {
             return;
         }
 
-        final Player player = getPlayer();
-        final UUID uuid = player.getUniqueId();
-        final Crate crate = getCrate();
-        final String fileName = crate.getFileName();
+        final String fileName = this.crate.getFileName();
 
-        final boolean keyCheck = this.userManager.takeKeys(uuid, fileName, type, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, checkHand);
+        final boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
@@ -45,9 +48,9 @@ public class RouletteCrate extends CrateBuilder {
             return;
         }
 
-        setItem(13, getCrate().pickPrize(getPlayer()).getDisplayItem(player, crate));
+        setItem(13, this.crate.pickPrize(this.player).getDisplayItem(this.player, this.crate));
 
-        addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
+        addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
             int full = 0;
             int time = 1;
 
@@ -76,7 +79,7 @@ public class RouletteCrate extends CrateBuilder {
                 this.open++;
 
                 if (this.open >= 5) {
-                    player.openInventory(getInventory());
+                    player.openInventory(inventory);
 
                     this.open = 0;
                 }
@@ -99,7 +102,7 @@ public class RouletteCrate extends CrateBuilder {
 
                         crateManager.endCrate(player);
 
-                        final ItemStack item = getInventory().getItem(13);
+                        final ItemStack item = inventory.getItem(13);
 
                         if (item != null) {
                             Prize prize = crate.getPrize(item);
@@ -124,8 +127,8 @@ public class RouletteCrate extends CrateBuilder {
 
                         new FoliaRunnable(player.getScheduler(), null) {
                             @Override
-                            public void run() {
-                                if (player.getOpenInventory().getTopInventory().equals(getInventory())) player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
+                            public void run() { //todo() use inventory holders
+                                if (player.getOpenInventory().getTopInventory().equals(inventory)) player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
                             }
                         }.runDelayed(plugin, 40);
                     }

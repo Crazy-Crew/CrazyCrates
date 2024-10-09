@@ -23,6 +23,11 @@ public class FireCrackerCrate extends CrateBuilder {
         super(crate, player, size, location);
     }
 
+    private final Player player = getPlayer();
+    private final Location location = getLocation();
+    private final UUID uuid = this.player.getUniqueId();
+    private final Crate crate = getCrate();
+
     @Override
     public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType) {
         // Crate event failed so we return.
@@ -30,26 +35,23 @@ public class FireCrackerCrate extends CrateBuilder {
             return;
         }
 
-        final Player player = getPlayer();
-        final UUID uuid = player.getUniqueId();
-        final Crate crate = getCrate();
-        final String fileName = crate.getFileName();
+        final String fileName = this.crate.getFileName();
 
-        this.crateManager.addCrateInUse(player, getLocation());
+        this.crateManager.addCrateInUse(this.player, this.location);
 
-        final boolean keyCheck = this.userManager.takeKeys(uuid, fileName, type, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, checkHand);
+        final boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, checkHand);
 
         if (!keyCheck) {
             // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(player);
+            this.crateManager.removePlayerFromOpeningList(this.player);
 
             return;
         }
 
         final HologramManager manager = this.crateManager.getHolograms();
 
-        if (manager != null && crate.getHologram().isEnabled()) {
-            CrateLocation crateLocation = this.crateManager.getCrateLocation(getLocation());
+        if (manager != null && this.crate.getHologram().isEnabled()) {
+            CrateLocation crateLocation = this.crateManager.getCrateLocation(this.location);
 
             if (crateLocation != null) {
                 manager.removeHologram(crateLocation.getID());
@@ -58,24 +60,24 @@ public class FireCrackerCrate extends CrateBuilder {
 
         final List<Color> colors = Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.AQUA, Color.MAROON, Color.PURPLE);
 
-        addCrateTask(new FoliaRunnable(player.getScheduler(), null) {
+        addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
             final int random = ThreadLocalRandom.current().nextInt(colors.size());
-            final Location location = getLocation().clone().add(.5, 25, .5);
+            final Location clonedLocation = location.clone().add(.5, 25, .5);
 
             int length = 0;
 
             @Override
             public void run() {
-                this.location.subtract(0, 1, 0);
+                this.clonedLocation.subtract(0, 1, 0);
 
-                MiscUtils.spawnFirework(this.location, colors.get(this.random));
+                MiscUtils.spawnFirework(this.clonedLocation, colors.get(this.random));
 
                 this.length++;
 
                 if (this.length == 25) {
                     crateManager.endCrate(player);
 
-                    QuickCrate quickCrate = new QuickCrate(crate, player, getLocation());
+                    QuickCrate quickCrate = new QuickCrate(crate, player, location);
 
                     quickCrate.open(KeyType.free_key, false, isSilent, eventType);
                 }

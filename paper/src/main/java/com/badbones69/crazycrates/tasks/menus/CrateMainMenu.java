@@ -14,11 +14,13 @@ import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
+import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.text.NumberFormat;
 import java.util.UUID;
@@ -79,7 +81,11 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                         case "hide-item-flags" -> item.setHidingItemFlags(StringUtil.tryParseBoolean(value).orElse(false));
 
-                        case "command" -> this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), value);
+                        case "command" -> {
+                            final Server server = this.plugin.getServer();
+
+                            server.dispatchCommand(server.getConsoleSender(), value);
+                        }
                     }
                 }
 
@@ -106,7 +112,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                             .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, fileName)))
                             .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, fileName)))
                             .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(uuid, fileName)))
-                            .addLorePlaceholder("%player%", getPlayer().getName())
+                            .addLorePlaceholder("%player%", player.getName())
                             .setPersistentString(Keys.crate_key.getNamespacedKey(), fileName);
 
                     this.gui.setItem(slot, ItemUtils.getItem(section, builder, this.player).asGuiItem(event -> {
