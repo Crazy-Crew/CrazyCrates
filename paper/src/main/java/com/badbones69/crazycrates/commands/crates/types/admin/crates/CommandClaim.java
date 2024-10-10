@@ -65,6 +65,10 @@ public class CommandClaim extends BaseCommand {
             put("{prize}", prize.getPrizeName());
         }});
 
+        if (!crate.isCyclePersistRestart()) {
+            this.userManager.removeRespinCrate(uuid, crateName, this.userManager.getCrateRespin(uuid, crateName));
+        }
+
         this.userManager.removeRespinPrize(uuid, crateName);
     }
 }
