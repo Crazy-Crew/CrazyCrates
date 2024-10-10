@@ -42,6 +42,10 @@ public class CommandClaim extends BaseCommand {
                 put("{crate}", crate.getFileName());
             }});
 
+            if (!crate.isCyclePersistRestart()) {
+                this.userManager.removeRespinCrate(uuid, crateName, this.userManager.getCrateRespin(uuid, crateName));
+            }
+
             return;
         }
 
