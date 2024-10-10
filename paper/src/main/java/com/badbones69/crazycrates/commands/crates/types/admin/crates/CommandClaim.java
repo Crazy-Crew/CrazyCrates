@@ -35,21 +35,22 @@ public class CommandClaim extends BaseCommand {
         }
 
         final UUID uuid = player.getUniqueId();
+        final String fileName = crate.getFileName();
 
-        if (!this.userManager.hasRespinPrize(uuid, crateName)) {
+        if (!this.userManager.hasRespinPrize(uuid, fileName)) {
             Messages.crate_prize_respins_empty.sendMessage(player, new HashMap<>() {{
                 put("{crate_pretty}", crate.getCrateName());
-                put("{crate}", crate.getFileName());
+                put("{crate}", fileName);
             }});
 
             if (!crate.isCyclePersistRestart()) {
-                this.userManager.removeRespinCrate(uuid, crateName, this.userManager.getCrateRespin(uuid, crateName));
+                this.userManager.removeRespinCrate(uuid, fileName, this.userManager.getCrateRespin(uuid, fileName));
             }
 
             return;
         }
 
-        final String prizeName = this.userManager.getRespinPrize(uuid, crateName);
+        final String prizeName = this.userManager.getRespinPrize(uuid, fileName);
 
         final Prize prize = crate.getPrize(prizeName);
 
@@ -57,10 +58,10 @@ public class CommandClaim extends BaseCommand {
             Messages.prize_not_found.sendMessage(player, "{prize}", prizeName);
 
             if (!crate.isCyclePersistRestart()) {
-                this.userManager.removeRespinCrate(uuid, crateName, this.userManager.getCrateRespin(uuid, crateName));
+                this.userManager.removeRespinCrate(uuid, fileName, this.userManager.getCrateRespin(uuid, fileName));
             }
 
-            this.userManager.removeRespinPrize(uuid, crateName);
+            this.userManager.removeRespinPrize(uuid, fileName);
 
             return;
         }
@@ -69,14 +70,14 @@ public class CommandClaim extends BaseCommand {
 
         Messages.crate_prize_respins_redeemed.sendMessage(player, new HashMap<>() {{
             put("{crate_pretty}", crate.getCrateName());
-            put("{crate}", crate.getFileName());
+            put("{crate}", fileName);
             put("{prize}", prize.getPrizeName());
         }});
 
         if (!crate.isCyclePersistRestart()) {
-            this.userManager.removeRespinCrate(uuid, crateName, this.userManager.getCrateRespin(uuid, crateName));
+            this.userManager.removeRespinCrate(uuid, fileName, this.userManager.getCrateRespin(uuid, fileName));
         }
 
-        this.userManager.removeRespinPrize(uuid, crateName);
+        this.userManager.removeRespinPrize(uuid, fileName);
     }
 }
