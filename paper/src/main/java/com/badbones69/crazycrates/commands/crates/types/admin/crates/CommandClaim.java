@@ -52,6 +52,10 @@ public class CommandClaim extends BaseCommand {
         if (prize == null) {
             Messages.prize_not_found.sendMessage(player, "{prize}", prizeName);
 
+            if (!crate.isCyclePersistRestart()) {
+                this.userManager.removeRespinCrate(uuid, crateName, this.userManager.getCrateRespin(uuid, crateName));
+            }
+
             this.userManager.removeRespinPrize(uuid, crateName);
 
             return;
