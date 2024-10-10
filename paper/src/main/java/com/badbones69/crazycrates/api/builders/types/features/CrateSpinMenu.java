@@ -62,7 +62,7 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
             new FoliaRunnable(this.plugin.getServer().getGlobalRegionScheduler()) {
                 @Override
                 public void run() {
-                    if (!userManager.hasUser(uuid) && userManager.hasRespinPrize(uuid, fileName)) { // if they aren't in the cache, then we run this.
+                    if (userManager.hasRespinPrize(uuid, fileName)) { // if they have a respin prize, add it.
                         Messages.crate_prize_respin_not_claimed.sendMessage(player, new HashMap<>() {{
                             put("{crate_pretty}", crate.getCrateName());
                             put("{crate}", fileName);

@@ -54,8 +54,9 @@ public class CrateOnTheGo extends CrateBuilder {
         } else {
             this.userManager.removeRespinPrize(this.uuid, fileName);
 
-            // remove from the cache
-            this.userManager.removeRespinCrate(this.uuid, fileName, 0, false);
+            if (!crate.isCyclePersistRestart()) {
+                userManager.removeRespinCrate(uuid, fileName, userManager.getCrateRespin(uuid, fileName));
+            }
         }
 
         PrizeManager.givePrize(this.player, this.crate, prize);

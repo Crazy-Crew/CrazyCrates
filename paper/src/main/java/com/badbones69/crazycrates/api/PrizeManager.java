@@ -61,7 +61,7 @@ public class PrizeManager {
             return false;
         }
 
-        final int wins = userManager.getCrateRespin(player.getUniqueId(), crate.getFileName(), crate.isCyclePersistRestart());
+        final int wins = userManager.getCrateRespin(player.getUniqueId(), crate.getFileName());
 
         int cap = getCap(crate, player);
 

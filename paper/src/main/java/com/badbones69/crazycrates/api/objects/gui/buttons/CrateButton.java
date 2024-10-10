@@ -56,8 +56,8 @@ public class CrateButton extends GuiButton {
 
                     PrizeManager.givePrize(player, prize, this.crate);
 
-                    if (!crate.isCyclePersistRestart()) {
-                        this.userManager.removeRespinCrate(uuid, this.crate.getFileName(), 0, false);
+                    if (!this.crate.isCyclePersistRestart()) {
+                        this.userManager.removeRespinCrate(uuid, this.crate.getFileName(), this.userManager.getCrateRespin(uuid, this.crate.getFileName()));
                     }
 
                     this.userManager.removeRespinPrize(uuid, this.crate.getFileName());
@@ -77,7 +77,9 @@ public class CrateButton extends GuiButton {
                         this.userManager.removeRespinPrize(uuid, this.crate.getFileName()); // remove just in case
 
                         // remove from the cache
-                        this.userManager.removeRespinCrate(uuid, this.crate.getFileName(), 0, false);
+                        if (!this.crate.isCyclePersistRestart()) {
+                            this.userManager.removeRespinCrate(uuid, this.crate.getFileName(), this.userManager.getCrateRespin(uuid, this.crate.getFileName()));
+                        }
 
                         final int cap = PrizeManager.getCap(crate, player);
 
@@ -91,7 +93,7 @@ public class CrateButton extends GuiButton {
                         return;
                     }
 
-                    this.userManager.addRespinCrate(uuid, this.crate.getFileName(), 1, crate.isCyclePersistRestart());
+                    this.userManager.addRespinCrate(uuid, this.crate.getFileName(), 1);
 
                     this.crateManager.openCrate(player, this.crate, KeyType.free_key, player.getLocation(), true, false, true, EventType.event_crate_opened);
                 }

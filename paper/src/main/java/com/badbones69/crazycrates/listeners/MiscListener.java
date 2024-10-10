@@ -78,8 +78,9 @@ public class MiscListener implements Listener {
 
                     this.userManager.removeRespinPrize(uuid, fileName);
 
-                    // remove from the cache
-                    this.userManager.removeRespinCrate(uuid, fileName, 0, false);
+                    if (!crate.isCyclePersistRestart()) {
+                        this.userManager.removeRespinCrate(uuid, fileName, this.userManager.getCrateRespin(uuid, fileName));
+                    }
 
                     count++;
 
@@ -134,12 +135,6 @@ public class MiscListener implements Listener {
         this.crateManager.removePlayerKeyType(player);
 
         this.crateManager.removeSlot(player);
-
-        for (final Crate crate : this.crateManager.getUsableCrates()) {
-            if (!crate.isCyclePersistRestart()) {
-                this.userManager.removeRespinCrate(player.getUniqueId(), crate.getFileName(), 0, false);
-            }
-        }
     }
 
     @EventHandler
