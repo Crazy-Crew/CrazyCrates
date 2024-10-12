@@ -127,6 +127,29 @@ public class CasinoCrate extends CrateBuilder {
 
                     return;
                 }
+
+                final Tier tier_uno = this.crate.getTier(row_uno);
+                final Tier tier_dos = this.crate.getTier(row_dos);
+                final Tier tier_tres = this.crate.getTier(row_tres);
+
+                if (tier_uno == null || tier_dos == null || tier_tres == null) {
+                    final Logger logger = this.plugin.getLogger();
+
+                    if (MiscUtils.isLogging()) {
+                        List.of(
+                                "One of your rows has a tier that doesn't exist supplied in " + fileName,
+                                "You can find this in your crate config, search for row-1, row-2, and row-3"
+                        ).forEach(logger::warning);
+                    }
+
+                    this.crateManager.endCrate(this.player);
+
+                    this.crateManager.removeCrateTask(this.player);
+
+                    this.player.closeInventory();
+
+                    return;
+                }
             }
         }
 
@@ -184,32 +207,12 @@ public class CasinoCrate extends CrateBuilder {
             final String row_dos = section.getString("types.row-2", null);
             final String row_tres = section.getString("types.row-3", null);
 
-            final Logger logger = this.plugin.getLogger();
-            final String fileName = this.crate.getFileName();
-
             final Tier tierUno = this.crate.getTier(row_uno);
 
             if (tierUno != null) {
                 setItem(2, getDisplayItem(tierUno));
                 setItem(11, getDisplayItem(tierUno));
                 setItem(20, getDisplayItem(tierUno));
-            } else {
-                if (MiscUtils.isLogging()) {
-                    List.of(
-                            "row-1 has a tier that doesn't exist supplied in " + fileName,
-                            "Refunding the key to the player..."
-                    ).forEach(logger::warning);
-                }
-
-                this.userManager.addVirtualKeys(this.uuid, fileName, 1);
-
-                this.crateManager.endCrate(this.player);
-
-                this.crateManager.removeCrateTask(this.player);
-
-                this.player.closeInventory();
-
-                return;
             }
 
             final Tier tierDos = this.crate.getTier(row_dos);
@@ -218,23 +221,6 @@ public class CasinoCrate extends CrateBuilder {
                 setItem(4, getDisplayItem(tierDos));
                 setItem(13, getDisplayItem(tierDos));
                 setItem(22, getDisplayItem(tierDos));
-            } else {
-                if (MiscUtils.isLogging()) {
-                    List.of(
-                            "row-2 has a tier that doesn't exist supplied in " + fileName,
-                            "Refunding the key to the player..."
-                    ).forEach(logger::warning);
-                }
-
-                this.userManager.addVirtualKeys(this.uuid, fileName, 1);
-
-                this.crateManager.endCrate(this.player);
-
-                this.crateManager.removeCrateTask(this.player);
-
-                this.player.closeInventory();
-
-                return;
             }
 
             final Tier tierTres = this.crate.getTier(row_tres);
@@ -243,21 +229,6 @@ public class CasinoCrate extends CrateBuilder {
                 setItem(6, getDisplayItem(tierTres));
                 setItem(15, getDisplayItem(tierTres));
                 setItem(24, getDisplayItem(tierTres));
-            } else {
-                if (MiscUtils.isLogging()) {
-                    List.of(
-                            "row-3 has a tier that doesn't exist supplied in " + fileName,
-                            "Refunding the key to the player..."
-                    ).forEach(logger::warning);
-                }
-
-                this.userManager.addVirtualKeys(this.uuid, fileName, 1);
-
-                this.crateManager.endCrate(this.player);
-
-                this.crateManager.removeCrateTask(this.player);
-
-                this.player.closeInventory();
             }
         }
     }
