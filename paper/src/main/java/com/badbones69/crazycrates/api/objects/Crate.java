@@ -363,7 +363,7 @@ public class Crate {
             prizes.add(prize);
         }
 
-        return getPrize(prizes, MiscUtils.useOtherRandom() ? ThreadLocalRandom.current() : new Random());
+        return getPrize(prizes);
     }
 
     /**
@@ -384,14 +384,13 @@ public class Crate {
             if (prize.getTiers().contains(tier)) prizes.add(prize);
         }
 
-        return getPrize(prizes, MiscUtils.useOtherRandom() ? ThreadLocalRandom.current() : new Random());
+        return getPrize(prizes);
     }
 
     /**
      * Checks the chances and returns usable prizes.
      *
      * @param prizes The prizes to check
-     * @param random The random variable
      * @return {@link Prize}
      */
     private Prize getPrize(@NotNull final List<Prize> prizes, @NotNull final Random random) {
@@ -399,7 +398,7 @@ public class Crate {
 
         int index = 0;
 
-        for (double value = random.nextDouble() * weight; index < prizes.size() - 1; index++) {
+        for (double value = MiscUtils.getRandom().nextDouble() * totalWeight; index < prizes.size() - 1; index++) {
             value -= prizes.get(index).getWeight();
 
             if (value < 0.0) break;
