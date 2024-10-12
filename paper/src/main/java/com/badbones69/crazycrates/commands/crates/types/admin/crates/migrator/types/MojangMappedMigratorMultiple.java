@@ -18,7 +18,7 @@ public class MojangMappedMigratorMultiple extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Set<CustomFile> customFiles = (Set<CustomFile>) this.plugin.getVital().getFileManager().getCustomFiles().values();
+        final Set<CustomFile> customFiles = (Set<CustomFile>) this.plugin.getPlugin().getFileManager().getCustomFiles().values();
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
@@ -53,6 +53,6 @@ public class MojangMappedMigratorMultiple extends ICrateMigrator {
 
     @Override
     public final File getCratesDirectory() {
-        return new File(this.plugin.getDataFolder(), "crates");
+        return new File(this.plugin.getPlugin().getDataFolder(), "crates");
     }
 }
