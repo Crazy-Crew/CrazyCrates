@@ -201,10 +201,16 @@ public class Crate {
 
         this.hologram = hologram;
 
-        if (this.crateType == CrateType.cosmic) {
-            if (this.file != null) this.manager = new CosmicCrateManager(this.file);
+        switch (this.crateType) {
+            case cosmic -> {
+                if (this.file != null) this.manager = new CosmicCrateManager(this.file);
 
-            this.tierSum = this.tiers.stream().filter(tier -> tier.getWeight() != -1).mapToDouble(Tier::getWeight).sum();
+                this.tierSum = this.tiers.stream().filter(tier -> tier.getWeight() != -1).mapToDouble(Tier::getWeight).sum();
+            }
+
+            case casino -> {
+                this.tierSum = this.tiers.stream().filter(tier -> tier.getWeight() != -1).mapToDouble(Tier::getWeight).sum();
+            }
         }
     }
 
