@@ -303,7 +303,7 @@ public class MiscUtils {
         max++;
 
         try {
-            return useDifferentRandom() ? min + new Random(System.nanoTime()).nextLong(max - min) : new Random().nextLong(max - min);
+            return min + getRandom().nextLong(max - min);
         } catch (IllegalArgumentException exception) {
             return min;
         }
@@ -314,7 +314,7 @@ public class MiscUtils {
     }
 
     public static Random getRandom() {
-        return useDifferentRandom() ? new Random(System.nanoTime()) : new Random();
+        return useDifferentRandom() ? ThreadLocalRandom.current() : new Random();
     }
 
     public static ItemBuilder getRandomPaneColor() {
