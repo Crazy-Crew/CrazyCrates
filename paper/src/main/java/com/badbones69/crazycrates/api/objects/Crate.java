@@ -393,8 +393,8 @@ public class Crate {
      * @param prizes The prizes to check
      * @return {@link Prize}
      */
-    private Prize getPrize(@NotNull final List<Prize> prizes, @NotNull final Random random) {
-        double weight = this.sum;
+    private Prize getPrize(@NotNull final List<Prize> prizes) {
+        double totalWeight = this.crateType == CrateType.casino || this.crateType == CrateType.cosmic ? prizes.stream().mapToDouble(Prize::getWeight).sum() : this.sum;
 
         int index = 0;
 
