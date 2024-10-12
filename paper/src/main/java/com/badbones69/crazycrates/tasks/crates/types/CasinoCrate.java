@@ -20,6 +20,7 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Logger;
 
 public class CasinoCrate extends CrateBuilder {
 
@@ -200,6 +201,10 @@ public class CasinoCrate extends CrateBuilder {
                     ).forEach(logger::warning);
                 }
 
+                this.userManager.addVirtualKeys(this.uuid, fileName, 1);
+
+                this.crateManager.endCrate(this.player);
+
                 return;
             }
 
@@ -217,6 +222,10 @@ public class CasinoCrate extends CrateBuilder {
                     ).forEach(logger::warning);
                 }
 
+                this.userManager.addVirtualKeys(this.uuid, fileName, 1);
+
+                this.crateManager.endCrate(this.player);
+
                 return;
             }
 
@@ -233,6 +242,10 @@ public class CasinoCrate extends CrateBuilder {
                             "Refunding the key to the player..."
                     ).forEach(logger::warning);
                 }
+
+                this.userManager.addVirtualKeys(this.uuid, fileName, 1);
+
+                this.crateManager.endCrate(this.player);
             }
         }
     }
