@@ -183,12 +183,24 @@ public class CasinoCrate extends CrateBuilder {
             final String row_dos = section.getString("types.row-2", "");
             final String row_tres = section.getString("types.row-3", "");
 
+            final Logger logger = this.plugin.getLogger();
+            final String fileName = this.crate.getFileName();
+
             final Tier tierUno = this.crate.getTier(row_uno);
 
             if (tierUno != null) {
                 setItem(2, getDisplayItem(tierUno));
                 setItem(11, getDisplayItem(tierUno));
                 setItem(20, getDisplayItem(tierUno));
+            } else {
+                if (MiscUtils.isLogging()) {
+                    List.of(
+                            "row-1 has a tier that doesn't exist supplied in " + fileName,
+                            "Refunding the key to the player..."
+                    ).forEach(logger::warning);
+                }
+
+                return;
             }
 
             final Tier tierDos = this.crate.getTier(row_dos);
@@ -197,6 +209,15 @@ public class CasinoCrate extends CrateBuilder {
                 setItem(4, getDisplayItem(tierDos));
                 setItem(13, getDisplayItem(tierDos));
                 setItem(22, getDisplayItem(tierDos));
+            } else {
+                if (MiscUtils.isLogging()) {
+                    List.of(
+                            "row-2 has a tier that doesn't exist supplied in " + fileName,
+                            "Refunding the key to the player..."
+                    ).forEach(logger::warning);
+                }
+
+                return;
             }
 
             final Tier tierTres = this.crate.getTier(row_tres);
@@ -205,6 +226,13 @@ public class CasinoCrate extends CrateBuilder {
                 setItem(6, getDisplayItem(tierTres));
                 setItem(15, getDisplayItem(tierTres));
                 setItem(24, getDisplayItem(tierTres));
+            } else {
+                if (MiscUtils.isLogging()) {
+                    List.of(
+                            "row-3 has a tier that doesn't exist supplied in " + fileName,
+                            "Refunding the key to the player..."
+                    ).forEach(logger::warning);
+                }
             }
         }
     }
