@@ -146,6 +146,8 @@ public class CasinoCrate extends CrateBuilder {
 
                     this.crateManager.removeCrateTask(this.player);
 
+                    this.crateManager.removePlayerFromOpeningList(this.player);
+
                     this.player.closeInventory();
 
                     return;
