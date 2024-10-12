@@ -179,9 +179,9 @@ public class CasinoCrate extends CrateBuilder {
                 return;
             }
 
-            final String row_uno = section.getString("types.row-1", "");
-            final String row_dos = section.getString("types.row-2", "");
-            final String row_tres = section.getString("types.row-3", "");
+            final String row_uno = section.getString("types.row-1", null);
+            final String row_dos = section.getString("types.row-2", null);
+            final String row_tres = section.getString("types.row-3", null);
 
             final Logger logger = this.plugin.getLogger();
             final String fileName = this.crate.getFileName();
