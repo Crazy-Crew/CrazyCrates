@@ -280,7 +280,7 @@ public class PrizeManager {
     public static @Nullable Tier getTier(@NotNull final Crate crate) {
         if (crate.getTiers().isEmpty()) return null;
 
-        final Random random = MiscUtils.useOtherRandom() ? ThreadLocalRandom.current() : new Random();
+        final Random random = MiscUtils.getRandom();
 
         double weight = 0.0;
 
