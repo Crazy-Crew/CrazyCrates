@@ -82,7 +82,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                         case "hide-item-flags" -> item.setHidingItemFlags(StringUtil.tryParseBoolean(value).orElse(false));
 
                         case "command" -> {
-                            final Server server = this.plugin.getServer();
+                            final Server server = this.plugin.getPlugin().getServer();
 
                             server.dispatchCommand(server.getConsoleSender(), value);
                         }

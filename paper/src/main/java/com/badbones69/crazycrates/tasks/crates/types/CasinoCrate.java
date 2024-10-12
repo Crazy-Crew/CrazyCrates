@@ -11,7 +11,6 @@ import com.ryderbelserion.crazycrates.common.plugin.logger.PluginLogger;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -127,6 +126,31 @@ public class CasinoCrate extends CrateBuilder {
 
                     return;
                 }
+
+                final Tier tier_uno = this.crate.getTier(row_uno);
+                final Tier tier_dos = this.crate.getTier(row_dos);
+                final Tier tier_tres = this.crate.getTier(row_tres);
+
+                if (tier_uno == null || tier_dos == null || tier_tres == null) {
+                    final PluginLogger logger = this.plugin.getLogger();
+
+                    if (MiscUtils.isLogging()) {
+                        List.of(
+                                "One of your rows has a tier that doesn't exist supplied in " + fileName,
+                                "You can find this in your crate config, search for row-1, row-2, and row-3"
+                        ).forEach(logger::warn);
+                    }
+
+                    this.crateManager.endCrate(this.player);
+
+                    this.crateManager.removeCrateTask(this.player);
+
+                    this.crateManager.removePlayerFromOpeningList(this.player);
+
+                    this.player.closeInventory();
+
+                    return;
+                }
             }
         }
 
@@ -180,9 +204,9 @@ public class CasinoCrate extends CrateBuilder {
                 return;
             }
 
-            final String row_uno = section.getString("types.row-1", "");
-            final String row_dos = section.getString("types.row-2", "");
-            final String row_tres = section.getString("types.row-3", "");
+            final String row_uno = section.getString("types.row-1", null);
+            final String row_dos = section.getString("types.row-2", null);
+            final String row_tres = section.getString("types.row-3", null);
 
             final Tier tierUno = this.crate.getTier(row_uno);
 

@@ -49,18 +49,38 @@ public class CrateButton extends GuiButton {
 
             final Player player = (Player) event.getWhoClicked();
             final UUID uuid = player.getUniqueId();
+            final String crateName = this.crate.getFileName();
 
             switch (getSection().getName()) {
                 case "accept" -> {
+                    final Prize prize = this.crate.getPrize(this.userManager.getRespinPrize(uuid, crateName));
+
+                    PrizeManager.givePrize(player, prize, this.crate);
+
+                    if (!this.crate.isCyclePersistRestart()) {
+                        this.userManager.removeRespinCrate(uuid, crateName, this.userManager.getCrateRespin(uuid, crateName));
+                    }
+
+                    this.userManager.removeRespinPrize(uuid, crateName);
+
+                    this.crateManager.removePlayerFromOpeningList(player);
+                    this.crateManager.removeCrateInUse(player);
+                    this.crateManager.removeCrateTask(player);
+                    this.crateManager.endCrate(player);
+                }
+
+                case "deny" -> {
                     if (PrizeManager.isCapped(this.crate, player)) {
-                        final Prize prize = this.crate.getPrize(this.userManager.getRespinPrize(uuid, this.crate.getFileName()));
+                        final Prize prize = this.crate.getPrize(this.userManager.getRespinPrize(uuid, crateName));
 
                         PrizeManager.givePrize(player, prize, this.crate);
 
-                        this.userManager.removeRespinPrize(uuid, this.crate.getFileName()); // remove just in case
+                        this.userManager.removeRespinPrize(uuid, crateName); // remove just in case
 
                         // remove from the cache
-                        this.userManager.removeRespinCrate(uuid, this.crate.getFileName(), 0, false);
+                        if (!this.crate.isCyclePersistRestart()) {
+                            this.userManager.removeRespinCrate(uuid, crateName, this.userManager.getCrateRespin(uuid, crateName));
+                        }
 
                         final int cap = PrizeManager.getCap(crate, player);
 
@@ -74,26 +94,9 @@ public class CrateButton extends GuiButton {
                         return;
                     }
 
-                    this.userManager.addRespinCrate(uuid, this.crate.getFileName(), 1, crate.isCyclePersistRestart());
+                    this.userManager.addRespinCrate(uuid, crateName, 1);
 
                     this.crateManager.openCrate(player, this.crate, KeyType.free_key, player.getLocation(), true, false, true, EventType.event_crate_opened);
-                }
-
-                case "deny" -> {
-                    final Prize prize = this.crate.getPrize(this.userManager.getRespinPrize(uuid, this.crate.getFileName()));
-
-                    PrizeManager.givePrize(player, prize, this.crate);
-
-                    if (!crate.isCyclePersistRestart()) {
-                        this.userManager.removeRespinCrate(uuid, this.crate.getFileName(), 0, false);
-                    }
-
-                    this.userManager.removeRespinPrize(uuid, this.crate.getFileName());
-
-                    this.crateManager.removePlayerFromOpeningList(player);
-                    this.crateManager.removeCrateInUse(player);
-                    this.crateManager.removeCrateTask(player);
-                    this.crateManager.endCrate(player);
                 }
             }
         });

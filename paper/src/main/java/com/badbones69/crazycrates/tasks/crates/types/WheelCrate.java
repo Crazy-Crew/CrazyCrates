@@ -129,8 +129,9 @@ public class WheelCrate extends CrateBuilder {
                         } else {
                             userManager.removeRespinPrize(uuid, fileName);
 
-                            // remove from the cache
-                            userManager.removeRespinCrate(uuid, fileName, 0, false);
+                            if (!crate.isCyclePersistRestart()) {
+                                userManager.removeRespinCrate(uuid, fileName, userManager.getCrateRespin(uuid, fileName));
+                            }
                         }
 
                         PrizeManager.givePrize(player, crate, prize);

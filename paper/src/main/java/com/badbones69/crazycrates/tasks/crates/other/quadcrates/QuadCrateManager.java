@@ -278,13 +278,13 @@ public class QuadCrateManager {
      * End the crate gracefully.
      */
     public void endCrate(final boolean immediately) {
-        final Server server = this.plugin.getServer();
+        final Server server = this.plugin.getPlugin().getServer();
 
         new FoliaRunnable(server.getGlobalRegionScheduler()) {
             @Override
             public void run() {
                 // Update spawned crate block states which removes them.
-                crateLocations.forEach(location -> server.getRegionScheduler().run(plugin, location, schedulerTask -> quadCrateChests.get(location).update(true, false)));
+                crateLocations.forEach(location -> server.getRegionScheduler().run(plugin.getPlugin(), location, schedulerTask -> quadCrateChests.get(location).update(true, false)));
 
                 // Remove displayed rewards.
                 for (Entity displayedReward : displayedRewards) {
@@ -298,7 +298,7 @@ public class QuadCrateManager {
                 handler.removeStructure();
 
                 // Restore the old blocks.
-                oldBlocks.keySet().forEach(location -> server.getRegionScheduler().run(plugin, location, schedulerTask -> oldBlocks.get(location).update(true, false)));
+                oldBlocks.keySet().forEach(location -> server.getRegionScheduler().run(plugin.getPlugin(), location, schedulerTask -> oldBlocks.get(location).update(true, false)));
 
                 final HologramManager manager = crateManager.getHolograms();
 

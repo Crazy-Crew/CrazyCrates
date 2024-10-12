@@ -38,8 +38,6 @@ import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Crate {
 
@@ -203,10 +201,16 @@ public class Crate {
 
         this.hologram = hologram;
 
-        if (this.crateType == CrateType.cosmic) {
-            if (this.file != null) this.manager = new CosmicCrateManager(this.file);
+        switch (this.crateType) {
+            case cosmic -> {
+                if (this.file != null) this.manager = new CosmicCrateManager(this.file);
 
-            this.tierSum = this.tiers.stream().filter(tier -> tier.getWeight() != -1).mapToDouble(Tier::getWeight).sum();
+                this.tierSum = this.tiers.stream().filter(tier -> tier.getWeight() != -1).mapToDouble(Tier::getWeight).sum();
+            }
+
+            case casino -> {
+                this.tierSum = this.tiers.stream().filter(tier -> tier.getWeight() != -1).mapToDouble(Tier::getWeight).sum();
+            }
         }
     }
 
@@ -359,7 +363,7 @@ public class Crate {
             prizes.add(prize);
         }
 
-        return getPrize(prizes, MiscUtils.useOtherRandom() ? ThreadLocalRandom.current() : new Random());
+        return getPrize(prizes);
     }
 
     /**
@@ -380,22 +384,21 @@ public class Crate {
             if (prize.getTiers().contains(tier)) prizes.add(prize);
         }
 
-        return getPrize(prizes, MiscUtils.useOtherRandom() ? ThreadLocalRandom.current() : new Random());
+        return getPrize(prizes);
     }
 
     /**
      * Checks the chances and returns usable prizes.
      *
      * @param prizes The prizes to check
-     * @param random The random variable
      * @return {@link Prize}
      */
-    private Prize getPrize(@NotNull final List<Prize> prizes, @NotNull final Random random) {
-        double weight = this.sum;
+    private Prize getPrize(@NotNull final List<Prize> prizes) {
+        double totalWeight = this.crateType == CrateType.casino || this.crateType == CrateType.cosmic ? prizes.stream().mapToDouble(Prize::getWeight).sum() : this.sum;
 
         int index = 0;
 
-        for (double value = random.nextDouble() * weight; index < prizes.size() - 1; index++) {
+        for (double value = MiscUtils.getRandom().nextDouble() * totalWeight; index < prizes.size() - 1; index++) {
             value -= prizes.get(index).getWeight();
 
             if (value < 0.0) break;
@@ -702,10 +705,6 @@ public class Crate {
         if (prizeName.isEmpty() || section == null || weight <= 0 || itemStack == null) return;
 
         final String tiers = getPath(prizeName, "Tiers");
-
-        if (!section.contains(prizeName)) {
-            section.set(getPath(prizeName, "MaxRange"), 100);
-        }
 
         if (itemStack.hasItemMeta()) {
             final ItemMeta itemMeta = itemStack.getItemMeta();

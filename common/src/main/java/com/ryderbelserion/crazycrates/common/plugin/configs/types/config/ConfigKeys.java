@@ -60,7 +60,11 @@ public class ConfigKeys implements SettingsHolder {
         conf.setComment("root", header);
     }
 
-    @Comment("This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.")
+    @Comment({
+            "This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.",
+            "",
+            "If the option is set to false, items should be more random in theory."
+    })
     public static final Property<Boolean> use_different_random = newProperty("root.use-different-random", false);
 
     @Comment({

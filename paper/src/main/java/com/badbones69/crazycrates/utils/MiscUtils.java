@@ -303,14 +303,18 @@ public class MiscUtils {
         max++;
 
         try {
-            return min + ThreadLocalRandom.current().nextLong(max - min);
+            return min + getRandom().nextLong(max - min);
         } catch (IllegalArgumentException exception) {
             return min;
         }
     }
 
     public static int randomNumber(final int min, final int max) {
-        return MiscUtils.useOtherRandom() ? min + ThreadLocalRandom.current().nextInt(max - min) : min + new Random().nextInt(max - min);
+        return min + getRandom().nextInt(max - min);
+    }
+
+    public static Random getRandom() {
+        return useDifferentRandom() ? ThreadLocalRandom.current() : new Random();
     }
 
     public static ItemBuilder getRandomPaneColor() {
@@ -358,7 +362,7 @@ public class MiscUtils {
         return slow;
     }
 
-    public static boolean useOtherRandom() {
+    public static boolean useDifferentRandom() {
         return ConfigManager.getConfig().getProperty(ConfigKeys.use_different_random);
     }
 
