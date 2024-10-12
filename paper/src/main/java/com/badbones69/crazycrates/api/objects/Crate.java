@@ -703,10 +703,6 @@ public class Crate {
 
         final String tiers = getPath(prizeName, "Tiers");
 
-        if (!section.contains(prizeName)) {
-            section.set(getPath(prizeName, "MaxRange"), 100);
-        }
-
         if (itemStack.hasItemMeta()) {
             final ItemMeta itemMeta = itemStack.getItemMeta();
 
