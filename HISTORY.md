@@ -2,6 +2,29 @@
 Date format: (YYYY-MM-DD)
 
 <details>
+  <summary>v4.0.2 (1.21.1) - 2024-10-12</summary>
+
+### Changes:
+- Updated `use-different-random` comment in `config.yml`.
+- Add more verbose logging, and an extra safety net to Casino Crate.
+  - This requires `is_verbose` set to true in `vital.yml`
+
+### Fixed:
+- Properly including calculate the total weight of the tiers for casino crate.
+- Properly calculate the per tier prize pools total weight, for things like Casino or Cosmic Crate.
+
+</details>
+
+<details>
+  <summary>v4.0.1 (1.21.1) - 2024-10-10</summary>
+
+### Fixed:
+- Fixed an issue with infinite re-spins on join due to using temporary cache.
+- Fixed case-sensitive issue with /crazycrates claim
+
+</details>
+
+<details>
   <summary>v4.0 (1.21.1) - 2024-10-07</summary>
 
 ### Breaking Changes:
