@@ -205,6 +205,8 @@ public class CasinoCrate extends CrateBuilder {
 
                 this.crateManager.endCrate(this.player);
 
+                this.crateManager.removeCrateTask(this.player);
+
                 this.player.closeInventory();
 
                 return;
@@ -228,6 +230,8 @@ public class CasinoCrate extends CrateBuilder {
 
                 this.crateManager.endCrate(this.player);
 
+                this.crateManager.removeCrateTask(this.player);
+
                 this.player.closeInventory();
 
                 return;
@@ -250,6 +254,8 @@ public class CasinoCrate extends CrateBuilder {
                 this.userManager.addVirtualKeys(this.uuid, fileName, 1);
 
                 this.crateManager.endCrate(this.player);
+
+                this.crateManager.removeCrateTask(this.player);
 
                 this.player.closeInventory();
             }
