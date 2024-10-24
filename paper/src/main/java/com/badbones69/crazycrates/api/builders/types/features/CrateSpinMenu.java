@@ -1,9 +1,9 @@
 package com.badbones69.crazycrates.api.builders.types.features;
 
 import com.badbones69.crazycrates.api.builders.gui.StaticInventoryBuilder;
-import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
@@ -54,12 +54,10 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
 
         this.settings.getButtons().forEach((slot, button) -> this.gui.setItem(slot, button.getGuiItem()));
 
-        this.gui.setOpenGuiAction(action -> {
-            this.userManager.addRespinPrize(uuid, fileName, this.settings.getPrize().getSectionName());
-        });
+        this.gui.setOpenGuiAction(action -> this.userManager.addRespinPrize(uuid, fileName, this.settings.getPrize().getSectionName()));
 
         this.gui.setCloseGuiAction(action -> {
-            new FoliaRunnable(this.plugin.getServer().getGlobalRegionScheduler()) {
+            new FoliaRunnable(this.plugin.getPlugin().getServer().getGlobalRegionScheduler()) {
                 @Override
                 public void run() {
                     if (userManager.hasRespinPrize(uuid, fileName)) { // if they have a respin prize, add it.
@@ -70,7 +68,7 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
                         }});
                     }
                 }
-            }.runDelayed(this.plugin, 20);
+            }.runDelayed(this.plugin.getPlugin(), 20);
 
             this.crateManager.removePlayerFromOpeningList(this.player);
             this.crateManager.removeCrateInUse(this.player);

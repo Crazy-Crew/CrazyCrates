@@ -1,11 +1,11 @@
 package com.badbones69.crazycrates.commands.crates.types.player;
 
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
-import com.badbones69.crazycrates.managers.events.EventManager;
-import com.badbones69.crazycrates.managers.events.enums.EventType;
+import com.badbones69.crazycrates.managers.EventManager;
+import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
@@ -59,7 +59,7 @@ public class CommandTransfer extends BaseCommand {
         }
 
         final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.TRANSFER, amount);
-        this.plugin.getServer().getPluginManager().callEvent(event);
+        this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
 
         // If the event is cancelled, We return.
         if (event.isCancelled()) return;

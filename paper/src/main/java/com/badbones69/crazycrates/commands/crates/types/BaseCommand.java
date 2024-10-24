@@ -2,11 +2,11 @@ package com.badbones69.crazycrates.commands.crates.types;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.managers.events.EventManager;
-import com.badbones69.crazycrates.managers.events.enums.EventType;
+import com.badbones69.crazycrates.managers.EventManager;
+import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.InventoryManager;
@@ -21,15 +21,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.ConfigManager;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
 import java.util.HashMap;
 import java.util.Map;
 
 @Command(value = "crazycrates", alias = {"crates", "crate"})
 public abstract class BaseCommand {
 
-    protected @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    protected @NotNull final CrazyCrates plugin = CrazyCrates.getInstance();
 
     protected @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
@@ -37,7 +37,7 @@ public abstract class BaseCommand {
 
     protected @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    protected @NotNull final FileManager fileManager = this.plugin.getVital().getFileManager();
+    protected @NotNull final FileManager fileManager = this.plugin.getPlugin().getFileManager();
 
     protected @NotNull final SettingsManager config = ConfigManager.getConfig();
 
@@ -142,7 +142,7 @@ public abstract class BaseCommand {
             final int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), fileName);
 
             if (totalKeys < 1) {
-                if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("The player {} does not have enough keys to take.", player.getName());
+                if (MiscUtils.isLogging()) this.plugin.getLogger().warn("The player {} does not have enough keys to take.", player.getName());
 
                 Messages.cannot_take_keys.sendMessage(sender, "{player}", player.getName());
 
@@ -190,7 +190,7 @@ public abstract class BaseCommand {
         if (player != null) {
             final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
 
-            this.plugin.getServer().getPluginManager().callEvent(event);
+            this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
 
             if (event.isCancelled()) return;
 
@@ -224,7 +224,7 @@ public abstract class BaseCommand {
         if (offlinePlayer != null) {
             final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(offlinePlayer, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
 
-            this.plugin.getServer().getPluginManager().callEvent(event);
+            this.plugin.getPlugin().getServer().getPluginManager().callEvent(event);
 
             if (event.isCancelled()) return;
 

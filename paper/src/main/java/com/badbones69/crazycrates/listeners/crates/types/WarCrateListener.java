@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.listeners.crates.types;
 
+import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
@@ -15,13 +16,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.utils.MiscUtils;
 
 public class WarCrateListener implements Listener {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCrates plugin = CrazyCrates.getInstance();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
@@ -57,7 +57,7 @@ public class WarCrateListener implements Listener {
 
                     if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
 
-                    this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+                    this.plugin.getPlugin().getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
                     this.crateManager.removePlayerFromOpeningList(player);
 
                     crate.playSound(player, player.getLocation(), "cycle-sound", "block.anvil.land", Sound.Source.PLAYER);
@@ -91,11 +91,11 @@ public class WarCrateListener implements Listener {
 
                                             player.closeInventory();
                                         }
-                                    }.runDelayed(plugin, 30));
+                                    }.runDelayed(plugin.getPlugin(), 30));
                                 }
-                            }.runDelayed(plugin, 30));
+                            }.runDelayed(plugin.getPlugin(), 30));
                         }
-                    }.runDelayed(this.plugin,30));
+                    }.runDelayed(this.plugin.getPlugin(),30));
                 }
             }
         }

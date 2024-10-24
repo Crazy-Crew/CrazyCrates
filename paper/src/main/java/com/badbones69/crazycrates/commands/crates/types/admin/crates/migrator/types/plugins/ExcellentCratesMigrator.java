@@ -3,9 +3,9 @@ package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.t
 import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.ryderbelserion.crazycrates.common.plugin.configs.types.config.ConfigKeys;
 import com.ryderbelserion.vital.paper.api.files.CustomFile;
-import com.ryderbelserion.vital.paper.util.AdvUtil;
+import com.ryderbelserion.vital.common.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
@@ -52,7 +52,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             final File crateFile = new File(directory, crateName);
 
             if (crateFile.exists()) {
-                this.plugin.getComponentLogger().warn("Crate {} already exists in {}.", crateName, directory.getName());
+                this.plugin.getLogger().warn("Crate {} already exists in {}.", crateName, directory.getName());
 
                 failed.add("<red>⤷ " + crateName);
 
@@ -62,7 +62,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             try {
                 crateFile.createNewFile();
             } catch (IOException exception) {
-                this.plugin.getComponentLogger().warn("Failed to create crate file {} in {}.", crateName, directory.getName(), exception);
+                this.plugin.getLogger().warn("Failed to create crate file {} in {}.", crateName, directory.getName(), exception);
 
                 failed.add("<red>⤷ " + crateName);
             }
@@ -353,6 +353,6 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
     @Override
     public final File getCratesDirectory() {
-        return new File(this.plugin.getDataFolder(), "crates");
+        return new File(this.plugin.getPlugin().getDataFolder(), "crates");
     }
 }

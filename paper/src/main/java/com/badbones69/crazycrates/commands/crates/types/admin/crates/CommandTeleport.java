@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates;
 
 import com.badbones69.crazycrates.api.enums.misc.Files;
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
@@ -41,7 +41,7 @@ public class CommandTeleport extends BaseCommand {
 
         for (final String name : section.getKeys(false)) {
             if (name.equalsIgnoreCase(id)) {
-                final World world = this.plugin.getServer().getWorld(Objects.requireNonNull(this.locations.getString("Locations." + name + ".World")));
+                final World world = this.plugin.getPlugin().getServer().getWorld(Objects.requireNonNull(this.locations.getString("Locations." + name + ".World")));
 
                 final int x = this.locations.getInt("Locations." + name + ".X");
                 final int y = this.locations.getInt("Locations." + name + ".Y");

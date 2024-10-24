@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types;
 
-import com.badbones69.crazycrates.api.enums.Messages;
+import com.ryderbelserion.crazycrates.common.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
@@ -26,7 +26,7 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
             return;
         }
 
-        final CustomFile customFile = this.plugin.getVital().getFileManager().getFile(this.crateName, true);
+        final CustomFile customFile = this.plugin.getPlugin().getFileManager().getFile(this.crateName, true);
 
         if (customFile == null) {
             Messages.error_migrating.sendMessage(this.sender, new HashMap<>() {{
@@ -69,6 +69,6 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
 
     @Override
     public final File getCratesDirectory() {
-        return new File(this.plugin.getDataFolder(), "crates");
+        return new File(this.plugin.getPlugin().getDataFolder(), "crates");
     }
 }

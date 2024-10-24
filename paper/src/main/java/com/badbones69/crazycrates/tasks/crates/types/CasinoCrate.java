@@ -4,13 +4,13 @@ import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.badbones69.crazycrates.managers.events.enums.EventType;
+import com.ryderbelserion.crazycrates.common.enums.types.EventType;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.ryderbelserion.crazycrates.common.plugin.logger.PluginLogger;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -20,7 +20,6 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Logger;
 
 public class CasinoCrate extends CrateBuilder {
 
@@ -85,7 +84,7 @@ public class CasinoCrate extends CrateBuilder {
                     public void run() { //todo() use inventory holders
                         if (player.getOpenInventory().getTopInventory().equals(inventory)) player.closeInventory();
                     }
-                }.runDelayed(this.plugin, 40);
+                }.runDelayed(this.plugin.getPlugin(), 40);
 
                 cancel();
 
@@ -117,7 +116,7 @@ public class CasinoCrate extends CrateBuilder {
 
                 if (row_uno.isEmpty() || row_dos.isEmpty() || row_tres.isEmpty()) {
                     if (MiscUtils.isLogging()) {
-                        final ComponentLogger logger = this.plugin.getComponentLogger();
+                        final PluginLogger logger = this.plugin.getLogger();
 
                         logger.warn("One of your tiers in the config is empty.");
                         logger.warn("Tier 1: {}", row_uno);
@@ -133,13 +132,13 @@ public class CasinoCrate extends CrateBuilder {
                 final Tier tier_tres = this.crate.getTier(row_tres);
 
                 if (tier_uno == null || tier_dos == null || tier_tres == null) {
-                    final Logger logger = this.plugin.getLogger();
+                    final PluginLogger logger = this.plugin.getLogger();
 
                     if (MiscUtils.isLogging()) {
                         List.of(
                                 "One of your rows has a tier that doesn't exist supplied in " + fileName,
                                 "You can find this in your crate config, search for row-1, row-2, and row-3"
-                        ).forEach(logger::warning);
+                        ).forEach(logger::warn);
                     }
 
                     this.crateManager.endCrate(this.player);
@@ -166,7 +165,7 @@ public class CasinoCrate extends CrateBuilder {
 
         setDisplayItems(true);
 
-        runAtFixedRate(this.plugin, 1, 1);
+        runAtFixedRate(this.plugin.getPlugin(), 1, 1);
 
         this.player.openInventory(this.inventory);
     }
