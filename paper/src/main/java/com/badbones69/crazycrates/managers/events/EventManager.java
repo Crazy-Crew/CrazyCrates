@@ -102,7 +102,7 @@ public class EventManager {
         final String time = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(System.currentTimeMillis()));
 
         if (log_to_file) {
-            FileUtil.write(file, "[" + time + " " + type.getEvent() + "]: " + message);
+            FileUtil.write(file, "[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(AdvUtil.parse(message)));
         }
 
         final boolean log_to_console = config.getProperty(ConfigKeys.log_to_console);
