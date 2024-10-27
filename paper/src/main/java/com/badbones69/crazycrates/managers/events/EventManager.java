@@ -9,6 +9,7 @@ import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.ryderbelserion.vital.common.utils.FileUtil;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -37,7 +38,7 @@ public class EventManager {
 
         switch (type) {
             case event_key_given, event_key_removed, event_key_received, event_key_sent, event_key_taken, event_key_taken_multiple -> {
-                message = "Player: %player% | Sender: %sender% | Key Name: %key_name% | Key Type: %key_type%"
+                message = "Player: %player% | Sender: %sender% | Key Name: %key_name%<reset> | Key Type: %key_type%"
                         .replace("%key_type%", keyType.getFriendlyName())
                         .replace("%player%", player.getName())
                         .replace("%sender%", sender.getName())
@@ -59,7 +60,7 @@ public class EventManager {
             }*/
 
             case event_crate_opened -> {
-                message = "Player: %player% | Crate Name: %crate_name% | Force Opened: %force_opened% | Crate Type: %crate_type% | Key Name: %key_name% | Key Type: %key_type% | Key Item: %key_item%"
+                message = "Player: %player% | Crate Name: %crate_name%<reset> | Force Opened: %force_opened% | Crate Type: %crate_type% | Key Name: %key_name%<reset> | Key Type: %key_type% | Key Item: %key_item%"
                         .replace("%player%", player.getName())
                         .replace("%crate_name%", crate.getCrateName())
                         .replace("%crate_type%", crate.getCrateType().getName())
@@ -76,7 +77,7 @@ public class EventManager {
             }
 
             case event_crate_force_opened -> {
-                message = "Player: %player% | Crate Name: %crate_name% | Force Opened: %force_opened% | Crate Type: %crate_type% | Key Name: %key_name% | Key Type: %key_type% | Key Item: %key_item%"
+                message = "Player: %player% | Crate Name: %crate_name%<reset> | Force Opened: %force_opened% | Crate Type: %crate_type% | Key Name: %key_name%<reset> | Key Type: %key_type% | Key Item: %key_item%"
                         .replace("%player%", player.getName())
                         .replace("%crate_name%", crate.getCrateName())
                         .replace("%crate_type%", crate.getCrateType().getName())
