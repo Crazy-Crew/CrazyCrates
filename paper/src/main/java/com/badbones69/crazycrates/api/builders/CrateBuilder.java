@@ -21,6 +21,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -274,23 +275,23 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * Sets an item to a slot.
      *
      * @param slot slot to set at
-     * @param material material to use
+     * @param itemType material to use
      * @param name name of item
      * @param lore lore of item
      */
-    public void setItem(final int slot, @NotNull final Material material, @NotNull final String name, @NotNull final List<String> lore) {
-        getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).setDisplayLore(lore).asItemStack());
+    public void setItem(final int slot, @NotNull final ItemType itemType, @NotNull final String name, @NotNull final List<String> lore) {
+        getInventory().setItem(slot, new ItemBuilder(itemType).setPlayer(getPlayer()).setDisplayName(name).setDisplayLore(lore).asItemStack());
     }
 
     /**
      * Sets an item to a slot.
      *
      * @param slot slot to set at
-     * @param material material to use
+     * @param itemType material to use
      * @param name name of item
      */
-    public void setItem(final int slot, @NotNull final Material material, @NotNull final String name) {
-        getInventory().setItem(slot, new ItemBuilder(material).setPlayer(getPlayer()).setDisplayName(name).asItemStack());
+    public void setItem(final int slot, @NotNull final ItemType itemType, @NotNull final String name) {
+        getInventory().setItem(slot, new ItemBuilder(itemType).setPlayer(getPlayer()).setDisplayName(name).asItemStack());
     }
 
     /**

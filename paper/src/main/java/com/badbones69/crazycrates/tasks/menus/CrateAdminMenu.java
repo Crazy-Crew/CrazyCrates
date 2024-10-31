@@ -9,11 +9,11 @@ import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.ItemType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +32,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
     public void open() {
         final GuiFiller guiFiller = this.gui.getFiller();
 
-        final GuiItem guiItem = new GuiItem(Material.BLACK_STAINED_GLASS_PANE);
+        final GuiItem guiItem = new GuiItem(ItemType.BLACK_STAINED_GLASS_PANE);
 
         guiFiller.fillTop(guiItem);
         guiFiller.fillBottom(guiItem);
@@ -104,7 +104,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
         this.gui.open(this.player, gui -> {
             final int rows = gui.getRows();
 
-            gui.setItem(rows, 5, new ItemBuilder(Material.CHEST)
+            gui.setItem(rows, 5, new ItemBuilder(ItemType.CHEST)
                     .setDisplayName("<red>What is this menu?")
                     .addDisplayLore(" <gold>⤷ Right click to go back to the main menu!")
                     .addDisplayLore("")
