@@ -3,12 +3,11 @@ package com.badbones69.crazycrates.support;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.paper.api.bStats;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MetricsWrapper extends bStats {
+/*public class MetricsWrapper extends bStats {
 
     private final CrateManager crateManager;
 
@@ -16,7 +15,6 @@ public class MetricsWrapper extends bStats {
      * Creates a new Metrics instance.
      *
      * @param serviceId The id of the service. It can be found at <a href="https://bstats.org/what-is-my-plugin-id">What is my plugin id?</a>
-     */
     public MetricsWrapper(CrazyCrates plugin, int serviceId) {
         super(plugin, serviceId);
 
@@ -39,4 +37,4 @@ public class MetricsWrapper extends bStats {
             addCustomChart(chart);
         });
     }
-}
+}*/

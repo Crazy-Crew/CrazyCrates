@@ -12,14 +12,12 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.ryderbelserion.vital.paper.api.enums.Support;
-import com.ryderbelserion.vital.paper.util.AdvUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.utils.MsgUtils;
 import java.util.List;
 
 public class CrateOpenListener implements Listener {
@@ -90,7 +88,7 @@ public class CrateOpenListener implements Listener {
             if (!broadcastMessage.isBlank()) {
                 final String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
-                this.plugin.getServer().broadcast(AdvUtil.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%player%", player.getName())));
+                this.plugin.getServer().broadcast(com.ryderbelserion.vital.utils.Methods.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%player%", player.getName())));
             }
         }
 

@@ -12,15 +12,14 @@ import com.badbones69.crazycrates.listeners.crates.types.MobileCrateListener;
 import com.badbones69.crazycrates.listeners.crates.types.QuadCrateListener;
 import com.badbones69.crazycrates.listeners.crates.types.WarCrateListener;
 import com.badbones69.crazycrates.listeners.other.EntityDamageListener;
-import com.badbones69.crazycrates.support.MetricsWrapper;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.paper.Vital;
+import com.ryderbelserion.vital.paper.VitalPaper;
 import com.ryderbelserion.vital.paper.api.enums.Support;
-import com.ryderbelserion.vital.paper.util.AdvUtil;
+import com.ryderbelserion.vital.utils.Methods;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
@@ -38,14 +37,14 @@ public class CrazyCrates extends JavaPlugin {
         return JavaPlugin.getPlugin(CrazyCrates.class);
     }
 
-    private final Vital vital;
+    private final VitalPaper vital;
     private final Timer timer;
     private final long startTime;
 
     public CrazyCrates() {
         this.startTime = System.nanoTime();
 
-        this.vital = new Vital(this);
+        this.vital = new VitalPaper(this);
 
         this.timer = new Timer();
     }
@@ -97,7 +96,7 @@ public class CrazyCrates extends JavaPlugin {
         // Load commands.
         CommandManager.load();
 
-        new MetricsWrapper(this, 4514).start();
+        //new MetricsWrapper(this, 4514).start();
 
         List.of(
                 // Other listeners.
@@ -122,9 +121,9 @@ public class CrazyCrates extends JavaPlugin {
             // Print dependency garbage
             for (final Support value : Support.values()) {
                 if (value.isEnabled()) {
-                    getComponentLogger().info(AdvUtil.parse("<bold><gold>" + value.getName() + " <green>FOUND"));
+                    getComponentLogger().info(Methods.parse("<bold><gold>" + value.getName() + " <green>FOUND"));
                 } else {
-                    getComponentLogger().info(AdvUtil.parse("<bold><gold>" + value.getName() + " <red>NOT FOUND"));
+                    getComponentLogger().info(Methods.parse("<bold><gold>" + value.getName() + " <red>NOT FOUND"));
                 }
             }
 
@@ -189,7 +188,7 @@ public class CrazyCrates extends JavaPlugin {
     }
 
     @ApiStatus.Internal
-    public final Vital getVital() {
+    public final VitalPaper getVital() {
         return this.vital;
     }
 

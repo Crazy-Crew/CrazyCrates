@@ -4,18 +4,17 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.ryderbelserion.vital.paper.util.DyeUtil;
-import com.ryderbelserion.vital.paper.util.ItemUtil;
+import com.ryderbelserion.vital.paper.util.PaperMethods;
+import com.ryderbelserion.vital.utils.Methods;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.DyeColor;
-import org.bukkit.Material;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ItemType;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +22,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import static com.ryderbelserion.vital.paper.util.ItemUtil.getEnchantment;
 
 public class ItemUtils {
 
@@ -245,7 +243,7 @@ public class ItemUtils {
      * @return the {@link ItemBuilder}
      */
     public static ItemBuilder convertItemStack(Player player, ItemStack itemStack) {
-        ItemBuilder itemBuilder = new ItemBuilder(itemStack.getType(), itemStack.getAmount());
+        ItemBuilder itemBuilder = new ItemBuilder(itemStack);
 
         if (player != null) {
             itemBuilder.setPlayer(player);
@@ -315,7 +313,7 @@ public class ItemUtils {
                     case "data" -> itemBuilder = itemBuilder.fromBase64(value);
                     case "name" -> itemBuilder.setDisplayName(value);
                     case "mob" -> {
-                        final EntityType type = ItemUtil.getEntity(value);
+                        final EntityType type = PaperMethods.getEntity(value);
 
                         if (type != null) {
                             itemBuilder.setEntityType(type);
@@ -323,23 +321,23 @@ public class ItemUtils {
                     }
                     case "glowing" -> itemBuilder.setGlowing(Boolean.valueOf(value));
                     case "amount" -> {
-                        final Optional<Number> amount = StringUtil.tryParseInt(value);
+                        final Optional<Number> amount = Methods.tryParseInt(value);
                         itemBuilder.setAmount(amount.map(Number::intValue).orElse(1));
                     }
                     case "damage" -> {
-                        final Optional<Number> amount = StringUtil.tryParseInt(value);
+                        final Optional<Number> amount = Methods.tryParseInt(value);
                         itemBuilder.setDamage(amount.map(Number::intValue).orElse(1));
                     }
                     case "lore" -> itemBuilder.setDisplayLore(List.of(value.split(",")));
                     case "player" -> itemBuilder.setPlayer(value);
                     case "skull" -> itemBuilder.setSkull(value, plugin.getApi());
-                    case "custom-model-data" -> itemBuilder.setCustomModelData(StringUtil.tryParseInt(value).orElse(-1).intValue());
+                    case "custom-model-data" -> itemBuilder.setCustomModelData(Methods.tryParseInt(value).orElse(-1).intValue());
                     case "unbreakable-item" -> itemBuilder.setUnbreakable(value.isEmpty() || value.equalsIgnoreCase("true"));
                     case "trim-pattern" -> itemBuilder.applyTrimPattern(value);
                     case "trim-material" -> itemBuilder.applyTrimMaterial(value);
                     default -> {
-                        if (getEnchantment(option.toLowerCase()) != null) {
-                            final Optional<Number> amount = StringUtil.tryParseInt(value);
+                        if (PaperMethods.getEnchantment(option.toLowerCase()) != null) {
+                            final Optional<Number> amount = Methods.tryParseInt(value);
 
                             itemBuilder.addEnchantment(option.toLowerCase(), amount.map(Number::intValue).orElse(1), true);
 
@@ -355,9 +353,9 @@ public class ItemUtils {
                         }
 
                         try {
-                            DyeColor color = DyeUtil.getDyeColor(value);
+                            DyeColor color = PaperMethods.getDyeColor(value);
 
-                            PatternType patternType = ItemUtil.getPatternType(option.toLowerCase());
+                            PatternType patternType = PaperMethods.getPatternType(option.toLowerCase());
 
                             if (patternType != null) {
                                 itemBuilder.addPattern(patternType, color);
@@ -367,7 +365,7 @@ public class ItemUtils {
                 }
             }
         } catch (Exception exception) {
-            itemBuilder.withType(Material.RED_TERRACOTTA).setDisplayName("<red>Error found!, Prize Name: " + section);
+            itemBuilder.withType(ItemType.RED_TERRACOTTA).setDisplayName("<red>Error found!, Prize Name: " + section);
 
             if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("An error has occurred with the item builder: ", exception);
         }

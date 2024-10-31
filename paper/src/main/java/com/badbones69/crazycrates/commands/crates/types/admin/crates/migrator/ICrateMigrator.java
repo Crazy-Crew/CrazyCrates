@@ -9,7 +9,7 @@ import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.api.files.CustomFile;
 import com.ryderbelserion.vital.paper.api.files.FileManager;
-import com.ryderbelserion.vital.common.utils.StringUtil;
+import com.ryderbelserion.vital.utils.Methods;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -64,7 +64,7 @@ public abstract class ICrateMigrator {
     public void sendMessage(List<String> files, final int success, final int failed) {
         Messages.successfully_migrated.sendMessage(this.sender, new HashMap<>() {{
             if (files.size() > 1) {
-                put("{files}", StringUtils.chomp(StringUtil.convertList(files)));
+                put("{files}", StringUtils.chomp(Methods.toString(files)));
             } else {
                 put("{files}", files.getFirst());
             }

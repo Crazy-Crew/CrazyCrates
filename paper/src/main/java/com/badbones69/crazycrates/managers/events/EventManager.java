@@ -7,8 +7,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
-import com.ryderbelserion.vital.common.utils.FileUtil;
-import com.ryderbelserion.vital.paper.util.AdvUtil;
+import com.ryderbelserion.vital.utils.Methods;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -103,13 +102,13 @@ public class EventManager {
         final String time = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(System.currentTimeMillis()));
 
         if (log_to_file) {
-            FileUtil.write(file, "[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(AdvUtil.parse(message)));
+            Methods.write(file, "[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(Methods.parse(message)));
         }
 
         final boolean log_to_console = config.getProperty(ConfigKeys.log_to_console);
 
         if (log_to_console) {
-            plugin.getComponentLogger().info("[{} {}]: {}", time, type.getEvent(), AdvUtil.parse(message));
+            plugin.getComponentLogger().info("[{} {}]: {}", time, type.getEvent(), Methods.parse(message));
         }
     }
 }
