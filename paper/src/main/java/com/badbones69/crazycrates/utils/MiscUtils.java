@@ -3,9 +3,10 @@ package com.badbones69.crazycrates.utils;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.misc.Files;
-import com.badbones69.crazycrates.common.utils.Methods;
+import com.badbones69.crazycrates.common.utils.CrazyUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
+import com.ryderbelserion.vital.utils.Methods;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemType;
@@ -18,7 +19,6 @@ import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
@@ -102,7 +102,7 @@ public class MiscUtils {
             final File crateLog = Files.crate_log.getFile();
             final File keyLog = Files.key_log.getFile();
 
-            com.ryderbelserion.vital.utils.Methods.zip(logsFolder, ".log", true);
+            Methods.zip(logsFolder, ".log", true);
 
             try {
                 if (!crateLog.exists()) {
@@ -295,7 +295,7 @@ public class MiscUtils {
                     "",
                     " <yellow>-> <light_purple>Not enough keys.",
                     " <yellow>-> <light_purple>Key is in off hand."
-            ).forEach(line -> player.sendRichMessage(Methods.getPrefix(line)));
+            ).forEach(line -> player.sendRichMessage(CrazyUtil.getPrefix(line)));
         }
     }
 

@@ -4,7 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.common.utils.Methods;
+import com.badbones69.crazycrates.common.utils.CrazyUtil;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.events.EventManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
@@ -12,6 +12,7 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.ryderbelserion.vital.paper.api.enums.Support;
+import com.ryderbelserion.vital.utils.Methods;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -88,7 +89,7 @@ public class CrateOpenListener implements Listener {
             if (!broadcastMessage.isBlank()) {
                 final String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
-                this.plugin.getServer().broadcast(com.ryderbelserion.vital.utils.Methods.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%player%", player.getName())));
+                this.plugin.getServer().broadcast(Methods.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", CrazyUtil.getPrefix()).replaceAll("%player%", player.getName())));
             }
         }
 
@@ -102,9 +103,9 @@ public class CrateOpenListener implements Listener {
                     String builder;
 
                     if (Support.placeholder_api.isEnabled() ) {
-                        builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%crate%", fileName).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%player%", player.getName()));
+                        builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%crate%", fileName).replaceAll("%prefix%", CrazyUtil.getPrefix()).replaceAll("%player%", player.getName()));
                     } else {
-                        builder = line.replaceAll("%crate%", fileName).replaceAll("%prefix%", Methods.getPrefix()).replaceAll("%player%", player.getName());
+                        builder = line.replaceAll("%crate%", fileName).replaceAll("%prefix%", CrazyUtil.getPrefix()).replaceAll("%player%", player.getName());
                     }
 
                     this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), builder);
