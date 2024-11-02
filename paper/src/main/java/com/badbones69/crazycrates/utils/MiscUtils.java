@@ -3,12 +3,13 @@ package com.badbones69.crazycrates.utils;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.misc.Files;
-import com.badbones69.crazycrates.common.utils.Methods;
-import com.ryderbelserion.vital.common.utils.FileUtil;
+import com.badbones69.crazycrates.common.utils.CrazyUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
+import com.ryderbelserion.vital.utils.Methods;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemType;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
@@ -18,7 +19,6 @@ import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
@@ -102,7 +102,7 @@ public class MiscUtils {
             final File crateLog = Files.crate_log.getFile();
             final File keyLog = Files.key_log.getFile();
 
-            FileUtil.zip(logsFolder, ".log", true);
+            Methods.zip(logsFolder, ".log", true);
 
             try {
                 if (!crateLog.exists()) {
@@ -295,7 +295,7 @@ public class MiscUtils {
                     "",
                     " <yellow>-> <light_purple>Not enough keys.",
                     " <yellow>-> <light_purple>Key is in off hand."
-            ).forEach(line -> player.sendRichMessage(Methods.getPrefix(line)));
+            ).forEach(line -> player.sendRichMessage(CrazyUtil.getPrefix(line)));
         }
     }
 
@@ -318,21 +318,21 @@ public class MiscUtils {
     }
 
     public static ItemBuilder getRandomPaneColor() {
-        List<Material> panes = Arrays.asList(
-                Material.LIGHT_BLUE_STAINED_GLASS_PANE,
-                Material.MAGENTA_STAINED_GLASS_PANE,
-                Material.YELLOW_STAINED_GLASS_PANE,
-                Material.PURPLE_STAINED_GLASS_PANE,
-                Material.ORANGE_STAINED_GLASS_PANE,
-                Material.GREEN_STAINED_GLASS_PANE,
-                Material.BROWN_STAINED_GLASS_PANE,
-                Material.BLACK_STAINED_GLASS_PANE,
-                Material.BLUE_STAINED_GLASS_PANE,
-                Material.CYAN_STAINED_GLASS_PANE,
-                Material.GRAY_STAINED_GLASS_PANE,
-                Material.LIME_STAINED_GLASS_PANE,
-                Material.PINK_STAINED_GLASS_PANE,
-                Material.RED_STAINED_GLASS_PANE
+        List<ItemType> panes = Arrays.asList(
+                ItemType.LIGHT_BLUE_STAINED_GLASS_PANE,
+                ItemType.MAGENTA_STAINED_GLASS_PANE,
+                ItemType.YELLOW_STAINED_GLASS_PANE,
+                ItemType.PURPLE_STAINED_GLASS_PANE,
+                ItemType.ORANGE_STAINED_GLASS_PANE,
+                ItemType.GREEN_STAINED_GLASS_PANE,
+                ItemType.BROWN_STAINED_GLASS_PANE,
+                ItemType.BLACK_STAINED_GLASS_PANE,
+                ItemType.BLUE_STAINED_GLASS_PANE,
+                ItemType.CYAN_STAINED_GLASS_PANE,
+                ItemType.GRAY_STAINED_GLASS_PANE,
+                ItemType.LIME_STAINED_GLASS_PANE,
+                ItemType.PINK_STAINED_GLASS_PANE,
+                ItemType.RED_STAINED_GLASS_PANE
         );
 
         return new ItemBuilder(panes.get(ThreadLocalRandom.current().nextInt(panes.size())));

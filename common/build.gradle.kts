@@ -1,5 +1,5 @@
 dependencies {
-    compileOnly(libs.vital.common)
+    compileOnly(libs.vital.api)
 
     compileOnly(libs.jetbrains)
 

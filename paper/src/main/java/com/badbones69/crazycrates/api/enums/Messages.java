@@ -4,8 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
 import com.badbones69.crazycrates.common.enums.State;
 import com.badbones69.crazycrates.utils.MiscUtils;
-import com.ryderbelserion.vital.common.utils.StringUtil;
-import com.ryderbelserion.vital.paper.util.AdvUtil;
+import com.ryderbelserion.vital.utils.Methods;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 import com.badbones69.crazycrates.common.config.ConfigManager;
@@ -188,7 +187,7 @@ public enum Messages {
         if (msg.isEmpty() || msg.isBlank()) return;
 
         if (sender instanceof Player player) {
-            player.sendActionBar(AdvUtil.parse(msg));
+            player.sendActionBar(Methods.parse(msg));
         }
     }
 
@@ -198,7 +197,7 @@ public enum Messages {
         if (msg.isEmpty() || msg.isBlank()) return;
 
         if (sender instanceof Player player) {
-            player.sendActionBar(AdvUtil.parse(msg));
+            player.sendActionBar(Methods.parse(msg));
         }
     }
 
@@ -208,7 +207,7 @@ public enum Messages {
         if (msg.isEmpty() || msg.isBlank()) return;
 
         if (sender instanceof Player player) {
-            player.sendActionBar(AdvUtil.parse(msg));
+            player.sendActionBar(Methods.parse(msg));
         }
     }
 
@@ -238,19 +237,19 @@ public enum Messages {
 
     public void migrate() {
         if (this.isList) {
-            this.messages.setProperty(this.properties, AdvUtil.convert(this.messages.getProperty(this.properties), true));
+            this.messages.setProperty(this.properties, Methods.convert(this.messages.getProperty(this.properties), true));
 
             return;
         }
 
-        this.messages.setProperty(this.property, AdvUtil.convert(this.messages.getProperty(this.property), true));
+        this.messages.setProperty(this.property, Methods.convert(this.messages.getProperty(this.property), true));
     }
 
     private @NotNull String parse(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
         String message;
 
         if (isList()) {
-            message = StringUtils.chomp(StringUtil.convertList(getList()));
+            message = StringUtils.chomp(Methods.toString(getList()));
         } else {
             message = getString();
         }

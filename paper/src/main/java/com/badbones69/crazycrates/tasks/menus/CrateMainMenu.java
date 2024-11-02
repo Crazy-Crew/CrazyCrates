@@ -9,9 +9,9 @@ import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
-import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
 import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
+import com.ryderbelserion.vital.utils.Methods;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Server;
@@ -20,7 +20,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.text.NumberFormat;
 import java.util.UUID;
@@ -71,15 +70,15 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                             }
                         }
 
-                        case "custom-model-data" -> item.setCustomModelData(StringUtil.tryParseInt(value).orElse(-1).intValue());
+                        case "custom-model-data" -> item.setCustomModelData(Methods.tryParseInt(value).orElse(-1).intValue());
 
-                        case "glowing" -> item.setGlowing(StringUtil.tryParseBoolean(value).orElse(null));
+                        case "glowing" -> item.setGlowing(Methods.tryParseBoolean(value).orElse(null));
 
-                        case "slot" -> slot = StringUtil.tryParseInt(value).orElse(-1).intValue();
+                        case "slot" -> slot = Methods.tryParseInt(value).orElse(-1).intValue();
 
-                        case "unbreakable-item" -> item.setUnbreakable(StringUtil.tryParseBoolean(value).orElse(false));
+                        case "unbreakable-item" -> item.setUnbreakable(Methods.tryParseBoolean(value).orElse(false));
 
-                        case "hide-item-flags" -> item.setHidingItemFlags(StringUtil.tryParseBoolean(value).orElse(false));
+                        case "hide-item-flags" -> item.setHidingItemFlags(Methods.tryParseBoolean(value).orElse(false));
 
                         case "command" -> {
                             final Server server = this.plugin.getServer();

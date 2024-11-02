@@ -1,8 +1,9 @@
 package com.badbones69.crazycrates.api.builders;
 
-import com.ryderbelserion.vital.paper.util.ItemUtil;
+import com.ryderbelserion.vital.paper.util.PaperMethods;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 
 public class ItemBuilder extends com.ryderbelserion.vital.paper.api.builders.items.ItemBuilder<ItemBuilder> {
@@ -11,16 +12,16 @@ public class ItemBuilder extends com.ryderbelserion.vital.paper.api.builders.ite
         super(itemBuilder, createNewStack);
     }
 
-    public ItemBuilder(final Material material, final int amount) {
-        super(material, amount);
+    public ItemBuilder(final ItemType itemType, final int amount) {
+        super(itemType, amount);
     }
 
     public ItemBuilder(final ItemBuilder itemBuilder) {
         super(itemBuilder);
     }
 
-    public ItemBuilder(final Material material) {
-        super(material, 1);
+    public ItemBuilder(final ItemType itemType) {
+        super(itemType, 1);
     }
 
     public ItemBuilder(final ItemStack itemStack) {
@@ -33,6 +34,6 @@ public class ItemBuilder extends com.ryderbelserion.vital.paper.api.builders.ite
     public @NotNull ItemBuilder fromBase64(@NotNull String base64) {
         if (base64.isEmpty()) return this;
 
-        return new ItemBuilder(ItemUtil.fromBase64(base64));
+        return new ItemBuilder(PaperMethods.fromBase64(base64));
     }
 }

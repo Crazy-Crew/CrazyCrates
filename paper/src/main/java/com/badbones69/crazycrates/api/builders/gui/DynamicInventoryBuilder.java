@@ -6,6 +6,7 @@ import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
 
@@ -107,7 +108,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
             if (!isPreview) {
                 this.gui.removeItem(row, column);
 
-                this.gui.setItem(row, column, new GuiItem(Material.BLACK_STAINED_GLASS_PANE));
+                this.gui.setItem(row, column, new GuiItem(ItemType.BLACK_STAINED_GLASS_PANE));
             }
         }
     }
@@ -140,7 +141,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
                     if (!isPreview) {
                         this.gui.removeItem(rows, 4);
 
-                        this.gui.setItem(rows, 4, new GuiItem(Material.BLACK_STAINED_GLASS_PANE));
+                        this.gui.setItem(rows, 4, new GuiItem(ItemType.BLACK_STAINED_GLASS_PANE));
                     }
                 }
             } else {

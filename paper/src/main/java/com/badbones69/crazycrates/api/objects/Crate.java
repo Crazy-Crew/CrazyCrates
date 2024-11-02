@@ -13,9 +13,8 @@ import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.paper.api.files.CustomFile;
-import com.ryderbelserion.vital.paper.util.AdvUtil;
-import com.ryderbelserion.vital.paper.util.DyeUtil;
-import com.ryderbelserion.vital.paper.util.ItemUtil;
+import com.ryderbelserion.vital.paper.util.PaperMethods;
+import com.ryderbelserion.vital.utils.Methods;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
@@ -194,9 +193,9 @@ public class Crate {
         setTierPreviewRows(file.getInt("Crate.tier-preview.rows", 5));
 
         if (this.crateType == CrateType.quad_crate) {
-            this.particle = ItemUtil.getParticleType(file.getString("Crate.particles.type", "dust"));
+            this.particle = PaperMethods.getParticleType(file.getString("Crate.particles.type", "dust"));
 
-            this.color = DyeUtil.getColor(file.getString("Crate.particles.color", "235,64,52"));
+            this.color = PaperMethods.getColor(file.getString("Crate.particles.color", "235,64,52"));
         }
 
         this.hologram = hologram;
@@ -713,7 +712,7 @@ public class Crate {
                 final Component displayName = itemMeta.displayName();
 
                 if (displayName != null) {
-                    section.set(getPath(prizeName, "DisplayName"), AdvUtil.fromComponent(displayName));
+                    section.set(getPath(prizeName, "DisplayName"), Methods.fromComponent(displayName));
                 }
             }
 
@@ -721,13 +720,13 @@ public class Crate {
                 final List<Component> lore = itemMeta.lore();
 
                 if (lore != null) {
-                    section.set(getPath(prizeName, "DisplayLore"), AdvUtil.fromComponent(lore));
+                    section.set(getPath(prizeName, "DisplayLore"), Methods.fromComponent(lore));
                 }
             }
         }
 
         if (this.config.getProperty(ConfigKeys.use_new_item_editor)) {
-            String toBase64 = ItemUtil.toBase64(itemStack);
+            String toBase64 = PaperMethods.toBase64(itemStack);
 
             section.set(getPath(prizeName, "DisplayData"), toBase64);
 

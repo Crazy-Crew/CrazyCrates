@@ -28,9 +28,9 @@ import com.badbones69.crazycrates.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WonderCrate;
 import com.ryderbelserion.vital.paper.api.files.CustomFile;
 import com.ryderbelserion.vital.paper.api.files.FileManager;
-import com.ryderbelserion.vital.common.utils.FileUtil;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.paper.api.enums.Support;
+import com.ryderbelserion.vital.utils.Methods;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -289,12 +289,12 @@ public class CrateManager {
                     "data.yml",
                     "locations.yml",
                     "messages.yml"
-            ).forEach(file -> FileUtil.extract(file, "examples", true));
+            ).forEach(file -> Methods.extract(file, "examples", true));
 
-            FileUtil.extracts(classObject, "/guis/", path.resolve("examples").resolve("guis"), true);
-            FileUtil.extracts(classObject, "/logs/", path.resolve("examples").resolve("logs"), true);
-            FileUtil.extracts(classObject, "/crates/", path.resolve("examples").resolve("crates"), true);
-            FileUtil.extracts(classObject, "/schematics/", path.resolve("examples").resolve("schematics"), true);
+            Methods.extracts(classObject, "/guis/", path.resolve("examples").resolve("guis"), true);
+            Methods.extracts(classObject, "/logs/", path.resolve("examples").resolve("logs"), true);
+            Methods.extracts(classObject, "/crates/", path.resolve("examples").resolve("crates"), true);
+            Methods.extracts(classObject, "/schematics/", path.resolve("examples").resolve("schematics"), true);
         }
 
         this.giveNewPlayersKeys = false;

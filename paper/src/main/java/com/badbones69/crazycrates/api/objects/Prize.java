@@ -9,16 +9,16 @@ import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.impl.messages.CrateKeys;
-import com.ryderbelserion.vital.common.utils.math.MathUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
-import com.ryderbelserion.vital.paper.util.AdvUtil;
-import com.ryderbelserion.vital.paper.util.ItemUtil;
+import com.ryderbelserion.vital.paper.util.PaperMethods;
+import com.ryderbelserion.vital.utils.Methods;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
@@ -125,7 +125,7 @@ public class Prize {
     }
 
     public @NotNull final String getStrippedName() {
-        return PlainTextComponentSerializer.plainText().serialize(AdvUtil.parse(getPrizeName()));
+        return PlainTextComponentSerializer.plainText().serialize(Methods.parse(getPrizeName()));
     }
 
     /**
@@ -198,7 +198,7 @@ public class Prize {
             this.displayItem.setPlayer(player);
         }
 
-        final String weight = MathUtil.format(crate.getChance(getWeight()));
+        final String weight = Methods.format(crate.getChance(getWeight()));
 
         this.displayItem.addLorePlaceholder("%chance%", weight).addLorePlaceholder("%maxpulls%", maxPulls).addLorePlaceholder("%pulls%", amount);
         this.displayItem.addNamePlaceholder("%chance%", weight).addNamePlaceholder("%maxpulls%", maxPulls).addNamePlaceholder("%pulls%", amount);
@@ -322,14 +322,14 @@ public class Prize {
         final String maxPulls = String.valueOf(getMaxPulls());
         final String pulls = String.valueOf(PrizeManager.getCurrentPulls(this, crate));
 
-        player.sendMessage(AdvUtil.parse(message, new HashMap<>() {{
+        this.plugin.getVital().sendMessage(player, message, new HashMap<>() {{
             put("%player%", target.getName());
             put("%crate%", crate.getCrateName());
             put("%reward%", getPrizeName().replaceAll("%maxpulls%", maxPulls).replaceAll("%pulls%", pulls));
             put("%maxpulls%", maxPulls);
             put("%pulls%", pulls);
             put("%reward_stripped%", getStrippedName());
-        }}, player));
+        }});
     }
 
     private @NotNull ItemBuilder display() {
@@ -403,7 +403,7 @@ public class Prize {
             builder.setCustomModelData(this.section.getInt("Settings.Custom-Model-Data", -1));
 
             if (this.section.contains("Settings.Mob-Type")) {
-                final EntityType type = ItemUtil.getEntity(this.section.getString("Settings.Mob-Type", "cow"));
+                final EntityType type = PaperMethods.getEntity(this.section.getString("Settings.Mob-Type", "cow"));
 
                 if (type != null) {
                     builder.setEntityType(type);
@@ -436,7 +436,7 @@ public class Prize {
 
             return builder;
         } catch (Exception exception) {
-            return new ItemBuilder(Material.RED_TERRACOTTA).setDisplayName("&l&cERROR").setDisplayLore(new ArrayList<>() {{
+            return new ItemBuilder(ItemType.RED_TERRACOTTA).setDisplayName("&l&cERROR").setDisplayLore(new ArrayList<>() {{
                 add("&cThere was an error with one of your prizes!");
                 add("&cThe reward in question is labeled: &e" + section.getName() + " &cin crate: &e" + crateName);
                 add("&cName of the reward is " + section.getString("DisplayName"));
