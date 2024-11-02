@@ -1,3 +1,2 @@
-### Changes:
-- Added <reset> after the `key name` or `crate name` when logging crate/key events to console.
-- Strip colors when logging to the crates.log/keys.log file.
+### Changes
+- No longer ignore items with a -1 weight when building the *preview*, this prevented prizes being able to be used as filler items.
