@@ -1,2 +1,2 @@
-### Changes:
-- Updated global crate broadcast, and per prize broadcast which overrides crate broadcasts
+### Fixed:
+- An issue with the max pull lore being appended, despite the config option being set to -1 for max pulls
