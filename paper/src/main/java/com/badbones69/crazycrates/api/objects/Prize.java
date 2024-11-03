@@ -52,7 +52,7 @@ public class Prize {
     private List<Tier> tiers = new ArrayList<>();
     private Prize alternativePrize;
 
-    private boolean broadcast = false;
+    private boolean broadcastToggle = false;
     private List<String> broadcastMessages = new ArrayList<>();
     private String broadcastPermission = "";
 
@@ -86,13 +86,13 @@ public class Prize {
             this.permissions.replaceAll(String::toLowerCase);
         }
 
-        this.broadcast = section.getBoolean("Settings.Broadcast.Toggle", false);
+        this.broadcastToggle = section.getBoolean("Settings.Broadcast.Toggle", false);
         this.broadcastMessages = section.getStringList("Settings.Broadcast.Messages");
         this.broadcastPermission = section.getString("Settings.Broadcast.Permission", "");
 
-        if (this.broadcast && !this.broadcastPermission.isEmpty()) {
+        if (this.broadcastToggle && !this.broadcastPermission.isEmpty()) {
             MiscUtils.registerPermission(this.broadcastPermission, "Hides the broadcast message for prize: " + this.prizeName + " if a player has this permission", false);
-        } else if (!this.broadcast && !this.broadcastPermission.isEmpty()) {
+        } else if (!this.broadcastToggle && !this.broadcastPermission.isEmpty()) {
             MiscUtils.unregisterPermission(this.broadcastPermission);
         }
 
@@ -298,7 +298,7 @@ public class Prize {
     }
 
     public void broadcast(final Player target, final Crate crate) {
-        if (this.broadcast) {
+        if (this.broadcastToggle) {
             final String permission = this.broadcastPermission;
 
             final Server server = this.plugin.getServer();

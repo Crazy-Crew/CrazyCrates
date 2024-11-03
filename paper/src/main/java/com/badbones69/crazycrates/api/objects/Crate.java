@@ -149,9 +149,9 @@ public class Crate {
             }
         }
 
-        if (this.broadcastToggle) {
+        if (this.broadcastToggle && !this.broadcastPermission.isEmpty()) {
             MiscUtils.registerPermission(this.broadcastPermission, "Hides the broadcast message if a player has this permission", false);
-        } else {
+        } else if (!this.broadcastToggle && !this.broadcastPermission.isEmpty()) {
             MiscUtils.unregisterPermission(this.broadcastPermission);
         }
 
