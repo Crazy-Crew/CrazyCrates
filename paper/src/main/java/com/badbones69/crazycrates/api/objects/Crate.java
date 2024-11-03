@@ -867,7 +867,7 @@ public class Crate {
         List<ItemStack> prizes = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
-            if (prize.getWeight() == -1) continue;
+            // if (prize.getWeight() == -1) continue;
 
             if (tier == null) {
                 prizes.add(player == null ? prize.getDisplayItem(this) : prize.getDisplayItem(player, this));
