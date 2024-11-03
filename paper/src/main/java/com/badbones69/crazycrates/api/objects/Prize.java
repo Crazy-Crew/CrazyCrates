@@ -297,51 +297,30 @@ public class Prize {
     }
 
     public void broadcast(final Player target, final Crate crate) {
-        if (this.broadcastToggle) {
-            final String permission = this.broadcastPermission;
+        final Server server = this.plugin.getServer();
 
-            final Server server = this.plugin.getServer();
+        final List<String> messages = this.broadcastToggle ? this.broadcastMessages : crate.getBroadcastMessages();
+        final String permission = this.broadcastToggle ? this.broadcastPermission : crate.getBroadcastPermission();
 
-            final List<String> messages = this.broadcastMessages;
+        final String current_pulls = String.valueOf(PrizeManager.getCurrentPulls(this, crate));
+        final String max_pulls = String.valueOf(getMaxPulls());
 
-            send(target, crate, permission, server, messages);
-        } else if (crate.isBroadcastToggle()) {
-            final String permission = crate.getBroadcastPermission();
+        final Component message = this.plugin.getVital().color(target, StringUtils.chomp(Methods.toString(messages)), new HashMap<>() {{
+            put("%player%", target.getName());
+            put("%crate%", crate.getCrateName());
+            put("%reward%", getPrizeName().replaceAll("%maxpulls%", max_pulls).replaceAll("%pulls%", current_pulls));
+            put("%maxpulls%", max_pulls);
+            put("%pulls%", current_pulls);
+            put("%reward_stripped%", getStrippedName());
+        }});
 
-            final Server server = this.plugin.getServer();
-
-            final List<String> messages = crate.getBroadcastMessages();
-
-            send(target, crate, permission, server, messages);
-        }
-    }
-
-    private void send(Player target, Crate crate, String permission, Server server, List<String> messages) {
         if (permission.isEmpty()) {
-            final Component message = getMessage(target, StringUtils.chomp(Methods.toString(messages)), crate);
-
             server.broadcast(message);
 
             return;
         }
 
-        final Component message = getMessage(target, StringUtils.chomp(Methods.toString(messages)), crate);
-
         server.broadcast(message, permission);
-    }
-
-    private @NotNull Component getMessage(final Player target, final String message, final Crate crate) {
-        final String maxPulls = String.valueOf(getMaxPulls());
-        final String pulls = String.valueOf(PrizeManager.getCurrentPulls(this, crate));
-
-        return this.plugin.getVital().color(target, message, new HashMap<>() {{
-            put("%player%", target.getName());
-            put("%crate%", crate.getCrateName());
-            put("%reward%", getPrizeName().replaceAll("%maxpulls%", maxPulls).replaceAll("%pulls%", pulls));
-            put("%maxpulls%", maxPulls);
-            put("%pulls%", pulls);
-            put("%reward_stripped%", getStrippedName());
-        }});
     }
 
     private @NotNull ItemBuilder display() {
