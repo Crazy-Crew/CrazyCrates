@@ -51,7 +51,7 @@ public class Prize {
     private List<Tier> tiers = new ArrayList<>();
     private Prize alternativePrize;
 
-    private boolean broadcast = false;
+    private boolean broadcastToggle = false;
     private List<String> broadcastMessages = new ArrayList<>();
     private String broadcastPermission = "";
 
@@ -85,13 +85,13 @@ public class Prize {
             this.permissions.replaceAll(String::toLowerCase);
         }
 
-        this.broadcast = section.getBoolean("Settings.Broadcast.Toggle", false);
+        this.broadcastToggle = section.getBoolean("Settings.Broadcast.Toggle", false);
         this.broadcastMessages = section.getStringList("Settings.Broadcast.Messages");
         this.broadcastPermission = section.getString("Settings.Broadcast.Permission", "");
 
-        if (this.broadcast && !this.broadcastPermission.isEmpty()) {
+        if (this.broadcastToggle && !this.broadcastPermission.isEmpty()) {
             MiscUtils.registerPermission(this.broadcastPermission, "Hides the broadcast message for prize: " + this.prizeName + " if a player has this permission", false);
-        } else if (!this.broadcast && !this.broadcastPermission.isEmpty()) {
+        } else if (!this.broadcastToggle && !this.broadcastPermission.isEmpty()) {
             MiscUtils.unregisterPermission(this.broadcastPermission);
         }
 
@@ -149,7 +149,7 @@ public class Prize {
      */
     public @NotNull final ItemStack getDisplayItem(@Nullable final Player player, final Crate crate) {
         final int pulls = PrizeManager.getCurrentPulls(this, crate);
-        final String maxPulls = String.valueOf(getMaxPulls());
+        final int maxPulls = getMaxPulls();
         final String amount = String.valueOf(pulls);
 
         List<String> lore = new ArrayList<>();
@@ -176,12 +176,12 @@ public class Prize {
             this.section.getStringList("Lore").forEach(line -> lore.add(player != null && isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, line) : line));
         }
 
-        if (pulls != 0 && pulls >= getMaxPulls()) {
+        if (maxPulls != 0 && pulls != 0 && pulls >= maxPulls) {
             if (player != null) {
                 final String line = Messages.crate_prize_max_pulls.getMessage(player);
 
                 if (!line.isEmpty()) {
-                    final String variable = line.replaceAll("\\{maxpulls}", maxPulls).replaceAll("\\{pulls}", amount);
+                    final String variable = line.replaceAll("\\{maxpulls}", String.valueOf(maxPulls)).replaceAll("\\{pulls}", amount);
 
                     lore.add(isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, variable) : variable);
                 }
@@ -189,7 +189,7 @@ public class Prize {
                 final String line = ConfigManager.getMessages().getProperty(CrateKeys.crate_prize_max_pulls);
 
                 if (!line.isEmpty()) {
-                    lore.add(line.replaceAll("\\{maxpulls}", maxPulls).replaceAll("\\{pulls}", amount));
+                    lore.add(line.replaceAll("\\{maxpulls}", String.valueOf(maxPulls)).replaceAll("\\{pulls}", amount));
                 }
             }
         }
@@ -202,8 +202,8 @@ public class Prize {
 
         final String weight = Methods.format(crate.getChance(getWeight()));
 
-        this.displayItem.addLorePlaceholder("%chance%", weight).addLorePlaceholder("%maxpulls%", maxPulls).addLorePlaceholder("%pulls%", amount);
-        this.displayItem.addNamePlaceholder("%chance%", weight).addNamePlaceholder("%maxpulls%", maxPulls).addNamePlaceholder("%pulls%", amount);
+        this.displayItem.addLorePlaceholder("%chance%", weight).addLorePlaceholder("%maxpulls%", String.valueOf(maxPulls)).addLorePlaceholder("%pulls%", amount);
+        this.displayItem.addNamePlaceholder("%chance%", weight).addNamePlaceholder("%maxpulls%", String.valueOf(maxPulls)).addNamePlaceholder("%pulls%", amount);
 
         return this.displayItem.setPersistentString(Keys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack();
     }
@@ -297,7 +297,7 @@ public class Prize {
     }
 
     public void broadcast(final Player target, final Crate crate) {
-        if (this.broadcast) {
+        if (this.broadcastToggle) {
             final String permission = this.broadcastPermission;
 
             final Server server = this.plugin.getServer();
@@ -462,8 +462,6 @@ public class Prize {
     }
 
     public final int getMaxPulls() {
-        if (this.maxPulls == -1) return 0;
-
-        return this.maxPulls;
+        return this.maxPulls == -1 ? 0 : this.maxPulls;
     }
 }
