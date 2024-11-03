@@ -9,13 +9,16 @@ import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.impl.messages.CrateKeys;
+import com.ryderbelserion.vital.common.utils.StringUtil;
 import com.ryderbelserion.vital.common.utils.math.MathUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.AdvUtil;
 import com.ryderbelserion.vital.paper.util.ItemUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Material;
+import org.bukkit.Server;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -298,38 +301,48 @@ public class Prize {
         if (this.broadcast) {
             final String permission = this.broadcastPermission;
 
-            this.plugin.getServer().getOnlinePlayers().forEach(player -> {
-                if (!permission.isEmpty() && player.hasPermission(permission)) return;
+            final Server server = this.plugin.getServer();
 
-                this.broadcastMessages.forEach(message -> sendMessage(target, player, message, crate));
-            });
+            final String messages = StringUtil.chomp(StringUtil.convertList(this.broadcastMessages));
 
-            return;
-        }
+            if (permission.isEmpty()) {
+                server.broadcast(getMessage(target, messages, crate));
 
-        if (crate.isBroadcastToggle()) {
+                return;
+            }
+
+            server.broadcast(getMessage(target, messages, crate), permission);
+        } else if (crate.isBroadcastToggle()) {
             final String permission = crate.getBroadcastPermission();
 
-            this.plugin.getServer().getOnlinePlayers().forEach(player -> {
-                if (!permission.isEmpty() && player.hasPermission(permission)) return;
+            final Server server = this.plugin.getServer();
 
-                crate.getBroadcastMessages().forEach(message -> sendMessage(target, player, message, crate));
-            });
+            final String messages = StringUtil.chomp(StringUtil.convertList(crate.getBroadcastMessages()));
+
+            if (permission.isEmpty()) {
+                server.broadcast(getMessage(target, messages, crate));
+
+                return;
+            }
+
+            server.broadcast(getMessage(target, messages, crate), permission);
         }
     }
 
-    private void sendMessage(final Player target, final Player player, final String message, final Crate crate) {
+    private @NotNull Component getMessage(final Player target, final String message, final Crate crate) {
         final String maxPulls = String.valueOf(getMaxPulls());
         final String pulls = String.valueOf(PrizeManager.getCurrentPulls(this, crate));
 
-        player.sendMessage(AdvUtil.parse(message, new HashMap<>() {{
-            put("%player%", target.getName());
-            put("%crate%", crate.getCrateName());
+        return AdvUtil.parse(message, new HashMap<>() {{
             put("%reward%", getPrizeName().replaceAll("%maxpulls%", maxPulls).replaceAll("%pulls%", pulls));
+            put("%reward_stripped%", getStrippedName());
+
+            put("%crate%", crate.getCrateName());
+            put("%player%", target.getName());
+
             put("%maxpulls%", maxPulls);
             put("%pulls%", pulls);
-            put("%reward_stripped%", getStrippedName());
-        }}, player));
+        }}, target);
     }
 
     private @NotNull ItemBuilder display() {
