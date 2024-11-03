@@ -13,8 +13,10 @@ import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.util.PaperMethods;
 import com.ryderbelserion.vital.utils.Methods;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Material;
+import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Server;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -87,9 +89,9 @@ public class Prize {
         this.broadcastMessages = section.getStringList("Settings.Broadcast.Messages");
         this.broadcastPermission = section.getString("Settings.Broadcast.Permission", "");
 
-        if (this.broadcast) {
-            MiscUtils.registerPermission(this.broadcastPermission, "Hides the broadcast message for prize: " + this.prizeName +  " if a player has this permission", false);
-        } else {
+        if (this.broadcast && !this.broadcastPermission.isEmpty()) {
+            MiscUtils.registerPermission(this.broadcastPermission, "Hides the broadcast message for prize: " + this.prizeName + " if a player has this permission", false);
+        } else if (!this.broadcast && !this.broadcastPermission.isEmpty()) {
             MiscUtils.unregisterPermission(this.broadcastPermission);
         }
 
