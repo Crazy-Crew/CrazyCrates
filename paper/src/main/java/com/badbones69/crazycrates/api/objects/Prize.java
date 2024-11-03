@@ -298,31 +298,41 @@ public class Prize {
         if (this.broadcast) {
             final String permission = this.broadcastPermission;
 
-            this.plugin.getServer().getOnlinePlayers().forEach(player -> {
-                if (!permission.isEmpty() && player.hasPermission(permission)) return;
+            final Server server = this.plugin.getServer();
 
-                this.broadcastMessages.forEach(message -> sendMessage(target, player, message, crate));
-            });
+            final List<String> messages = this.broadcastMessages;
+
+            send(target, crate, permission, server, messages);
+        } else if (crate.isBroadcastToggle()) {
+            final String permission = crate.getBroadcastPermission();
+
+            final Server server = this.plugin.getServer();
+
+            final List<String> messages = crate.getBroadcastMessages();
+
+            send(target, crate, permission, server, messages);
+        }
+    }
+
+    private void send(Player target, Crate crate, String permission, Server server, List<String> messages) {
+        if (permission.isEmpty()) {
+            final Component message = getMessage(target, StringUtils.chomp(Methods.toString(messages)), crate);
+
+            server.broadcast(message);
 
             return;
         }
 
-        if (crate.isBroadcastToggle()) {
-            final String permission = crate.getBroadcastPermission();
+        final Component message = getMessage(target, StringUtils.chomp(Methods.toString(messages)), crate);
 
-            this.plugin.getServer().getOnlinePlayers().forEach(player -> {
-                if (!permission.isEmpty() && player.hasPermission(permission)) return;
-
-                crate.getBroadcastMessages().forEach(message -> sendMessage(target, player, message, crate));
-            });
-        }
+        server.broadcast(message, permission);
     }
 
-    private void sendMessage(final Player target, final Player player, final String message, final Crate crate) {
+    private @NotNull Component getMessage(final Player target, final String message, final Crate crate) {
         final String maxPulls = String.valueOf(getMaxPulls());
         final String pulls = String.valueOf(PrizeManager.getCurrentPulls(this, crate));
 
-        this.plugin.getVital().sendMessage(player, message, new HashMap<>() {{
+        return this.plugin.getVital().color(target, message, new HashMap<>() {{
             put("%player%", target.getName());
             put("%crate%", crate.getCrateName());
             put("%reward%", getPrizeName().replaceAll("%maxpulls%", maxPulls).replaceAll("%pulls%", pulls));
