@@ -150,7 +150,11 @@ public class CsgoCrate extends CrateBuilder {
     }
 
     private void populate() {
-        getBorder().forEach(this::setCustomGlassPane);
+        final boolean addBorder = this.config.getProperty(ConfigKeys.crate_csgo_has_border);
+
+        if (addBorder) {
+            getBorder().forEach(this::setCustomGlassPane);
+        }
 
         final String material = this.config.getProperty(ConfigKeys.crate_csgo_cycling_material);
 
@@ -180,7 +184,11 @@ public class CsgoCrate extends CrateBuilder {
             setItem(i + 10, items.get(i));
         }
 
-        getBorder().forEach(this::setCustomGlassPane);
+        final boolean addBorder = this.config.getProperty(ConfigKeys.crate_csgo_has_border);
+
+        if (addBorder) {
+            getBorder().forEach(this::setCustomGlassPane);
+        }
     }
 
     private List<Integer> getBorder() {
