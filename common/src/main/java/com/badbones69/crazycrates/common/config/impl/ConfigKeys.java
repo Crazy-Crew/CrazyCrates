@@ -187,12 +187,6 @@ public class ConfigKeys implements SettingsHolder {
     })
     public static final Property<String> crate_csgo_cycling_material = newProperty("crate.types.csgo.cycling-material", "gold_ingot");
 
-
-    @Comment({
-            "Enable the ability to put or not the glass pane as a border."
-    })
-    public static final Property<Boolean> crate_csgo_has_border = newProperty("crate.types.csgo.has-border", true);
-
     @Comment({
             "Sets a static material in the csgo crate in slot 4 and 22",
             "This is above and below the prize and only shows up when the crate ends.",

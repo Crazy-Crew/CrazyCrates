@@ -91,6 +91,8 @@ public class Crate {
 
     private final SettingsManager config = ConfigManager.getConfig();
 
+    private boolean enableBorder = true;
+
     private boolean broadcastToggle = false;
     private List<String> broadcastMessages = new ArrayList<>();
     private String broadcastPermission = "";
@@ -129,6 +131,8 @@ public class Crate {
         this.requiredKeys = requiredKeys;
         this.prizeMessage = prizeMessage;
         this.prizeCommands = prizeCommands;
+
+        this.enableBorder = this.file.getBoolean("Crate.Settings.Border.Enabled", this.enableBorder);
 
         this.broadcastToggle = this.file.getBoolean("Crate.Settings.Broadcast.Toggle", false);
         this.broadcastMessages = this.file.getStringList("Crate.Settings.Broadcast.Messages");
@@ -259,6 +263,10 @@ public class Crate {
      */
     public @NotNull final AbstractCrateManager getManager() {
         return this.manager;
+    }
+
+    public final boolean isEnableBorder() {
+        return this.enableBorder;
     }
 
     public final boolean isBroadcastToggle() {
