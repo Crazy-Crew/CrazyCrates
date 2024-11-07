@@ -73,6 +73,10 @@ Crate:
   Prize-Commands: []
   # Global Settings
   Settings:
+    # Configuration Glass Pane
+    GlassPane:
+      # Enable the Glass Pane in crate
+      Enabled: true
     # Broadcast a message to the server
     Broadcast:
       # If the messages should be sent.
