@@ -91,7 +91,7 @@ public class Crate {
 
     private final SettingsManager config = ConfigManager.getConfig();
 
-    private boolean enableGlassPane = true;
+    private boolean glassBorderToggle = true;
 
     private boolean broadcastToggle = false;
     private List<String> broadcastMessages = new ArrayList<>();
@@ -132,7 +132,7 @@ public class Crate {
         this.prizeMessage = prizeMessage;
         this.prizeCommands = prizeCommands;
 
-        this.enableGlassPane = this.file.getBoolean("Crate.Settings.GlassPane.Enabled", this.enableGlassPane);
+        this.glassBorderToggle = this.file.getBoolean("Crate.Settings.Border.Glass-Border.Toggle", this.glassBorderToggle);
 
         this.broadcastToggle = this.file.getBoolean("Crate.Settings.Broadcast.Toggle", false);
         this.broadcastMessages = this.file.getStringList("Crate.Settings.Broadcast.Messages");
@@ -265,8 +265,8 @@ public class Crate {
         return this.manager;
     }
 
-    public final boolean isEnableGlassPane() {
-        return this.enableGlassPane;
+    public final boolean isGlassBorderToggled() {
+        return this.glassBorderToggle;
     }
 
     public final boolean isBroadcastToggle() {

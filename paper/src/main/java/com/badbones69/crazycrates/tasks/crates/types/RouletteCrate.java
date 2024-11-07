@@ -50,6 +50,8 @@ public class RouletteCrate extends CrateBuilder {
 
         setItem(13, this.crate.pickPrize(this.player).getDisplayItem(this.player, this.crate));
 
+        final boolean isGlassBorderToggled = this.crate.isGlassBorderToggled();
+
         addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
             int full = 0;
             int time = 1;
@@ -61,7 +63,8 @@ public class RouletteCrate extends CrateBuilder {
             public void run() {
                 if (this.full <= 15) {
                     setItem(13, crate.pickPrize(player).getDisplayItem(player, crate));
-                    if (crate.isEnableGlassPane()) {
+
+                    if (isGlassBorderToggled) {
                         setGlass();
                     }
 
@@ -90,7 +93,7 @@ public class RouletteCrate extends CrateBuilder {
 
                 if (this.full > 16) {
                     if (MiscUtils.slowSpin(46, 9).contains(this.time)) {
-                        if (crate.isEnableGlassPane()) {
+                        if (isGlassBorderToggled) {
                             setGlass();
                         }
 

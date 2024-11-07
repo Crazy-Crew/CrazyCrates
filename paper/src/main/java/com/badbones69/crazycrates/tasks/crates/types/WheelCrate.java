@@ -55,7 +55,9 @@ public class WheelCrate extends CrateBuilder {
             return;
         }
 
-        if (this.crate.isEnableGlassPane()) {
+        final boolean isGlassBorderToggled = this.crate.isGlassBorderToggled();
+
+        if (isGlassBorderToggled) {
             for (int index = 0; index < getSize(); index ++) {
                 setCustomGlassPane(index);
             }
@@ -104,7 +106,7 @@ public class WheelCrate extends CrateBuilder {
                         populateMenu();
                     }
 
-                    if (crate.isEnableGlassPane() && this.full >= this.timer + 47) {
+                    if (isGlassBorderToggled && this.full >= this.timer + 47) {
                         this.slow++;
 
                         if (this.slow >= 2) {

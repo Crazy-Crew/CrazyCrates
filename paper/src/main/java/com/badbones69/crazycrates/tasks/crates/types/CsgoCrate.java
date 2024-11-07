@@ -150,7 +150,7 @@ public class CsgoCrate extends CrateBuilder {
     }
 
     private void populate() {
-        if (this.crate.isEnableGlassPane()) {
+        if (this.crate.isGlassBorderToggled()) {
             getBorder().forEach(this::setCustomGlassPane);
         }
 
@@ -182,7 +182,7 @@ public class CsgoCrate extends CrateBuilder {
             setItem(i + 10, items.get(i));
         }
 
-        if (this.crate.isEnableGlassPane()) {
+        if (this.crate.isGlassBorderToggled()) {
             getBorder().forEach(this::setCustomGlassPane);
         }
     }
