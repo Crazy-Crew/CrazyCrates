@@ -73,6 +73,11 @@ Crate:
   Prize-Commands: []
   # Global Settings
   Settings:
+    # Handles settings related to the border
+    Border:
+      # Settings related to the glass border
+      Glass-Border:
+        Toggle: true # Should the glass border be enabled?
     # Broadcast a message to the server
     Broadcast:
       # If the messages should be sent.
