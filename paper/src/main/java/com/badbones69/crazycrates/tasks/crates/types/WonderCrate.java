@@ -91,7 +91,7 @@ public class WonderCrate extends CrateBuilder {
                     other.add(this.slot1);
                     other.add(this.slot2);
 
-                    final ItemStack material = new ItemBuilder(ItemType.BLACK_STAINED_GLASS_PANE).setDisplayName(" ").asItemStack();
+                    final ItemStack material = new ItemBuilder(crate.isEnableGlassPane() ? ItemType.BLACK_STAINED_GLASS_PANE : ItemType.AIR).setDisplayName(" ").asItemStack();
 
                     setItem(this.slot1, material);
                     setItem(this.slot2, material);
@@ -109,8 +109,10 @@ public class WonderCrate extends CrateBuilder {
                 }
 
                 if (this.full > 67) {
-                    for (int slot : this.other) {
-                        setCustomGlassPane(slot);
+                    if (crate.isEnableGlassPane()) {
+                        for (int slot : this.other) {
+                            setCustomGlassPane(slot);
+                        }
                     }
 
                     playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");

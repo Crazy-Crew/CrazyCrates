@@ -73,9 +73,9 @@ Crate:
   Prize-Commands: []
   # Global Settings
   Settings:
-    # Configuration Border
-    Border:
-      # Enable the Border
+    # Configuration Glass Pane
+    GlassPane:
+      # Enable the Glass Pane in crate
       Enabled: true
     # Broadcast a message to the server
     Broadcast:

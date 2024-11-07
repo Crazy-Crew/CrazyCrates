@@ -55,8 +55,10 @@ public class WheelCrate extends CrateBuilder {
             return;
         }
 
-        for (int index = 0; index < getSize(); index ++) {
-            setCustomGlassPane(index);
+        if (this.crate.isEnableGlassPane()) {
+            for (int index = 0; index < getSize(); index ++) {
+                setCustomGlassPane(index);
+            }
         }
 
         this.rewards = new HashMap<>();
@@ -102,7 +104,7 @@ public class WheelCrate extends CrateBuilder {
                         populateMenu();
                     }
 
-                    if (this.full >= this.timer + 47) {
+                    if (crate.isEnableGlassPane() && this.full >= this.timer + 47) {
                         this.slow++;
 
                         if (this.slow >= 2) {

@@ -61,7 +61,9 @@ public class RouletteCrate extends CrateBuilder {
             public void run() {
                 if (this.full <= 15) {
                     setItem(13, crate.pickPrize(player).getDisplayItem(player, crate));
-                    setGlass();
+                    if (crate.isEnableGlassPane()) {
+                        setGlass();
+                    }
 
                     if (this.full >= 2) {
                         playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
@@ -88,7 +90,9 @@ public class RouletteCrate extends CrateBuilder {
 
                 if (this.full > 16) {
                     if (MiscUtils.slowSpin(46, 9).contains(this.time)) {
-                        setGlass();
+                        if (crate.isEnableGlassPane()) {
+                            setGlass();
+                        }
 
                         setItem(13, crate.pickPrize(player).getDisplayItem(player, crate));
 
