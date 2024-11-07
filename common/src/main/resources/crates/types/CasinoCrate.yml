@@ -73,6 +73,10 @@ Crate:
   Prize-Commands: []
   # Global Settings
   Settings:
+    # Configuration Border
+    Border:
+      # Enable the Border
+      Enabled: true
     # Broadcast a message to the server
     Broadcast:
       # If the messages should be sent.
