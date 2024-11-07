@@ -189,7 +189,7 @@ public class ConfigKeys implements SettingsHolder {
 
 
     @Comment({
-            "Enable the ability to put or not the windows as a border."
+            "Enable the ability to put or not the glass pane as a border."
     })
     public static final Property<Boolean> crate_csgo_has_border = newProperty("crate.types.csgo.has-border", true);
 
