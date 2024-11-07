@@ -269,8 +269,13 @@ public class Crate {
         return this.glassBorderToggle;
     }
 
-    public final boolean isBroadcastToggle() {
+    public final boolean isBroadcastToggled() {
         return this.broadcastToggle;
+    }
+
+    @Deprecated(forRemoval = true, since = "4.2.0")
+    public final boolean isBroadcastToggle() {
+        return isBroadcastToggled();
     }
 
     public final String getBroadcastPermission() {
