@@ -85,7 +85,7 @@ public class CrateOpenListener implements Listener {
         final String broadcastMessage = configuration.getString("Crate.BroadCast", "");
         final boolean broadcastToggle = configuration.getBoolean("Crate.OpeningBroadCast", false);
 
-        if (broadcastToggle && crate.getCrateType() != CrateType.cosmic && !event.isSilent()) {
+        if (broadcastToggle && crate.getCrateType() != CrateType.cosmic && !event.isSilent()) { //todo() add a permission?
             if (!broadcastMessage.isBlank()) {
                 final String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 

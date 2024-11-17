@@ -321,7 +321,7 @@ public class CosmicCrateListener implements Listener {
             final String broadcastMessage = configuration.getString("Crate.BroadCast", "");
             final boolean broadcastToggle = configuration.getBoolean("Crate.OpeningBroadCast", false);
 
-            if (broadcastToggle) {
+            if (broadcastToggle) {  //todo() add a permission?
                 if (!broadcastMessage.isBlank()) {
                     String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
