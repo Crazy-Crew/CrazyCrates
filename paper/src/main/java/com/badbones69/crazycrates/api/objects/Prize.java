@@ -297,6 +297,14 @@ public class Prize {
     }
 
     public void broadcast(final Player target, final Crate crate) {
+        if (this.broadcastToggle) {
+            send(target, crate);
+        } else if (crate.isBroadcastToggled()) {
+            send(target, crate);
+        }
+    }
+
+    private void send(final Player target, final Crate crate) {
         final Server server = this.plugin.getServer();
 
         final List<String> messages = this.broadcastToggle ? this.broadcastMessages : crate.getBroadcastMessages();
