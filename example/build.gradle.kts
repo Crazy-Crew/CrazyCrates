@@ -28,12 +28,12 @@ tasks {
 
     processResources {
         val properties = hashMapOf(
-            "name" to rootProject.name,
-            "version" to rootProject.version,
-            "group" to rootProject.group,
-            "description" to rootProject.description,
-            "apiVersion" to providers.gradleProperty("apiVersion").get(),
-            "authors" to providers.gradleProperty("authors").get()
+            "name" to "ExamplePlugin",
+            "version" to project.version,
+            "group" to project.group,
+            "description" to project.description,
+            "apiVersion" to libs.versions.minecraft.get(),
+            "authors" to listOf("ryderbelserion", "badbones69")
         )
 
         filesMatching("plugin.yml") {

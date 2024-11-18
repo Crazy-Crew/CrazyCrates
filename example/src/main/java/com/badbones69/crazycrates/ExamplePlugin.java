@@ -1,4 +1,4 @@
-package com.ryderbelserion.example;
+package com.badbones69.crazycrates;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
