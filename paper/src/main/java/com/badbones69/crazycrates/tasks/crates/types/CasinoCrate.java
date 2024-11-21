@@ -10,17 +10,16 @@ import com.badbones69.crazycrates.api.PrizeManager;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Logger;
 
 public class CasinoCrate extends CrateBuilder {
 
@@ -111,35 +110,13 @@ public class CasinoCrate extends CrateBuilder {
             final boolean isRandom = section.getBoolean("toggle", false);
 
             if (!isRandom) {
-                final String row_uno = section.getString("types.row-1", "");
-                final String row_dos = section.getString("types.row-2", "");
-                final String row_tres = section.getString("types.row-3", "");
-
-                if (row_uno.isEmpty() || row_dos.isEmpty() || row_tres.isEmpty()) {
-                    if (MiscUtils.isLogging()) {
-                        final ComponentLogger logger = this.plugin.getComponentLogger();
-
-                        logger.warn("One of your tiers in the config is empty.");
-                        logger.warn("Tier 1: {}", row_uno);
-                        logger.warn("Tier 2: {}", row_dos);
-                        logger.warn("Tier 3: {}", row_tres);
-                    }
-
-                    return;
-                }
-
-                final Tier tier_uno = this.crate.getTier(row_uno);
-                final Tier tier_dos = this.crate.getTier(row_dos);
-                final Tier tier_tres = this.crate.getTier(row_tres);
+                final @Nullable Tier tier_uno = this.crate.getTier(section.getString("types.row-3", ""));
+                final @Nullable Tier tier_dos = this.crate.getTier(section.getString("types.row-2", ""));
+                final @Nullable Tier tier_tres = this.crate.getTier(section.getString("types.row-1", ""));
 
                 if (tier_uno == null || tier_dos == null || tier_tres == null) {
-                    final Logger logger = this.plugin.getLogger();
-
                     if (MiscUtils.isLogging()) {
-                        List.of(
-                                "One of your rows has a tier that doesn't exist supplied in " + fileName,
-                                "You can find this in your crate config, search for row-1, row-2, and row-3"
-                        ).forEach(logger::warning);
+                        this.plugin.getComponentLogger().warn("One of your tiers in {} could not be found, or is empty. Search for row-1, row-2 or row-3", fileName);
                     }
 
                     this.crateManager.endCrate(this.player);
@@ -205,11 +182,7 @@ public class CasinoCrate extends CrateBuilder {
                 return;
             }
 
-            final String row_uno = section.getString("types.row-1", null);
-            final String row_dos = section.getString("types.row-2", null);
-            final String row_tres = section.getString("types.row-3", null);
-
-            final Tier tierUno = this.crate.getTier(row_uno);
+            final @Nullable Tier tierUno = this.crate.getTier(section.getString("types.row-1", ""));
 
             if (tierUno != null) {
                 setItem(2, getDisplayItem(tierUno));
@@ -217,7 +190,7 @@ public class CasinoCrate extends CrateBuilder {
                 setItem(20, getDisplayItem(tierUno));
             }
 
-            final Tier tierDos = this.crate.getTier(row_dos);
+            final @Nullable Tier tierDos = this.crate.getTier(section.getString("types.row-2", ""));
 
             if (tierDos != null) {
                 setItem(4, getDisplayItem(tierDos));
@@ -225,7 +198,7 @@ public class CasinoCrate extends CrateBuilder {
                 setItem(22, getDisplayItem(tierDos));
             }
 
-            final Tier tierTres = this.crate.getTier(row_tres);
+            final @Nullable Tier tierTres = this.crate.getTier(section.getString("types.row-3", ""));
 
             if (tierTres != null) {
                 setItem(6, getDisplayItem(tierTres));
