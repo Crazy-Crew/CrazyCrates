@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.builders.types.features.CrateSpinMenu;
 import com.badbones69.crazycrates.api.enums.misc.Files;
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
@@ -21,7 +20,6 @@ import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -143,9 +141,8 @@ public class WonderCrate extends CrateBuilder {
 
                     playSound("stop-sound", Sound.Source.PLAYER, "entity.player.levelup");
 
-                    if (this.prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
-
-                    plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, this.prize));
+                    //if (this.prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null); // ryder, moved to givePrize method.
+                    //plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, this.prize)); // ryder, moved to givePrize method.
 
                     crateManager.removePlayerFromOpeningList(player);
 

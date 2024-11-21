@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.listeners.crates.types;
 
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.common.utils.CrazyUtil;
@@ -114,13 +113,13 @@ public class CosmicCrateListener implements Listener {
 
         PrizeManager.givePrize(player, prize, crate);
 
-        this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+        //this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize)); // ryder, moved to givePrize method.
 
         event.setCurrentItem(prize.getDisplayItem(player, crate));
 
         holder.getCrate().playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.PLAYER);
 
-        if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
+        //if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null); // ryder, moved to givePrize method.
 
         this.crateManager.addSlot(player, slot);
     }

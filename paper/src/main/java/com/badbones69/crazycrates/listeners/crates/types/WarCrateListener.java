@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.listeners.crates.types;
 
 import com.badbones69.crazycrates.tasks.menus.CratePrizeMenu;
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
@@ -17,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.utils.MiscUtils;
 
 public class WarCrateListener implements Listener {
 
@@ -55,9 +53,9 @@ public class WarCrateListener implements Listener {
 
                     PrizeManager.givePrize(player, prize, crate);
 
-                    if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
+                    //if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null); // ryder, moved to givePrize method.
+                    //this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize)); // ryder, moved to givePrize method.
 
-                    this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
                     this.crateManager.removePlayerFromOpeningList(player);
 
                     crate.playSound(player, player.getLocation(), "cycle-sound", "block.anvil.land", Sound.Source.PLAYER);

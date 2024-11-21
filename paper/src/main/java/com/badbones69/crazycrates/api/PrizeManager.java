@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class PrizeManager {
@@ -156,6 +155,10 @@ public class PrizeManager {
 
         prize.broadcast(player, crate);
 
+        plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize)); // run player prize event here, since we are giving a prize.
+
+        if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().clone().add(.5, 1, .5), null); // spawn firework, since well... it's related to prizes lol.
+
         if (!crate.getPrizeMessage().isEmpty() && prize.getMessages().isEmpty()) {
             for (final String message : crate.getPrizeMessage()) {
                 sendMessage(player, prize, crate, message);
@@ -257,9 +260,8 @@ public class PrizeManager {
         if (prize != null) {
             givePrize(player, prize, crate);
 
-            if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null);
-
-            plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+            //if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null); // ryder, moved to givePrize method.
+            //plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize)); // ryder, moved to givePrize method.
         } else {
             Messages.prize_error.sendMessage(player, new HashMap<>() {{
                 put("{crate}", crate.getCrateName());

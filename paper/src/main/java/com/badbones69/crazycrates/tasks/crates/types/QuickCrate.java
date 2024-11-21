@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.tasks.crates.types;
 import com.badbones69.crazycrates.api.builders.types.features.CrateSpinMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Files;
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.ChestManager;
@@ -86,12 +85,11 @@ public class QuickCrate extends CrateBuilder {
                 if (MiscUtils.isInventoryFull(this.player)) break;
                 if (used >= this.crate.getMaxMassOpen()) break;
 
-                Prize prize = this.crate.pickPrize(this.player);
+                final Prize prize = this.crate.pickPrize(this.player);
                 PrizeManager.givePrize(this.player, prize, this.crate);
 
-                this.server.callEvent(new PlayerPrizeEvent(this.player, this.crate, prize));
-
-                if (prize.useFireworks()) MiscUtils.spawnFirework(this.location.clone().add(.5, 1, .5), null);
+                //this.server.callEvent(new PlayerPrizeEvent(this.player, this.crate, prize)); // ryder, moved to givePrize method.
+                //if (prize.useFireworks()) MiscUtils.spawnFirework(this.location.clone().add(.5, 1, .5), null); // ryder, moved to givePrize method.
 
                 used++;
             }
@@ -150,7 +148,7 @@ public class QuickCrate extends CrateBuilder {
 
         PrizeManager.givePrize(this.player, this.crate, prize);
 
-        this.server.callEvent(new PlayerPrizeEvent(this.player, this.crate, prize));
+        //this.server.callEvent(new PlayerPrizeEvent(this.player, this.crate, prize)); // ryder, moved to givePrize method.
 
         final boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
 
@@ -201,7 +199,7 @@ public class QuickCrate extends CrateBuilder {
             ChestManager.openChest(this.location.getBlock(), true);
 
             // Always spawn fireworks if enabled.
-            if (prize.useFireworks()) MiscUtils.spawnFirework(this.location.clone().add(0.5, 1, .5), null);
+            //if (prize.useFireworks()) MiscUtils.spawnFirework(this.location.clone().add(0.5, 1, .5), null); // ryder, moved to givePrize method.
 
             // Always end the crate.
             addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
