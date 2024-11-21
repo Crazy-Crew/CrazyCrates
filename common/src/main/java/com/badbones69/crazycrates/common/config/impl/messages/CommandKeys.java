@@ -57,6 +57,8 @@ public class CommandKeys implements SettingsHolder {
 
     public static final Property<String> migration_plugin_not_enabled = newProperty("command.migrate.plugin-not-available", "{prefix}<green>The plugin <red>{name} <green>is not enabled. Cannot use as migration!");
 
+    public static final Property<String> migration_no_crates_available = newProperty("command.migrate.no-crates-available", "{prefix}<green>There is no crates available for migration!");
+
     @Comment({
             "A list of available placeholders: {type}, {files}",
             "",
