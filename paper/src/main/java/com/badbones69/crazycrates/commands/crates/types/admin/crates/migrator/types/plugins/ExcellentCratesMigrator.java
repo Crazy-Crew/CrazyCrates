@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.plugins;
 
+import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
@@ -14,6 +15,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
 import su.nightexpress.excellentcrates.CratesAPI;
 import su.nightexpress.excellentcrates.crate.impl.Crate;
 import su.nightexpress.excellentcrates.key.CrateKey;
@@ -21,7 +23,7 @@ import su.nightexpress.nightcore.config.FileConfig;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -47,7 +49,15 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
         YamlConfiguration locationData = Files.locations.getConfiguration();
 
-        for (final Crate crate : CratesAPI.getCrateManager().getCrates()) {
+        final @NotNull Collection<Crate> crates = CratesAPI.getCrateManager().getCrates();
+
+        if (crates.isEmpty()) {
+            Messages.migration_no_crates_available.sendMessage(sender);
+
+            return;
+        }
+
+        for (final Crate crate : crates) {
             final String crateName = crate.getFile().getName();
 
             final File crateFile = new File(directory, crateName);
