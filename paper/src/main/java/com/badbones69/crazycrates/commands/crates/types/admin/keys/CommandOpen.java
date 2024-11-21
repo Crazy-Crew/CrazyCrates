@@ -2,11 +2,12 @@ package com.badbones69.crazycrates.commands.crates.types.admin.keys;
 
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.managers.events.EventManager;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
+import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -16,13 +17,18 @@ import dev.triumphteam.cmd.core.annotations.Suggestion;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
+import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Logger;
 
 public class CommandOpen extends BaseCommand {
 
@@ -277,7 +283,7 @@ public class CommandOpen extends BaseCommand {
         final String keyName = crate.getKeyName();
 
         // Prevent it from working with these crate types.
-        if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
+        /*if (crateType == CrateType.quad_crate) {
             final Map<String, String> placeholders = new HashMap<>();
 
             placeholders.put("{cratetype}", crateType.getName());
@@ -286,7 +292,7 @@ public class CommandOpen extends BaseCommand {
             Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
 
             return;
-        }
+        }*/
 
         final KeyType keyType = getKeyType(type);
 
@@ -325,18 +331,96 @@ public class CommandOpen extends BaseCommand {
             if (used >= amount) break;
             if (used >= crate.getMaxMassOpen()) break;
 
-            Prize prize = crate.pickPrize(player);
+            switch (crateType) {
+                case casino -> {
+                    final ConfigurationSection section = crate.getFile().getConfigurationSection("Crate.random");
 
-            PrizeManager.givePrize(player, prize, crate);
+                    if (section != null) {
+                        final boolean isRandom = section.getBoolean("toggle", false);
 
-            this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+                        if (isRandom) {
+                            final List<Tier> tiers = crate.getTiers();
 
-            if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().clone().add(.5, 1, .5), null);
+                            final int size = tiers.size();
+
+                            final ThreadLocalRandom random = ThreadLocalRandom.current();
+
+                            final Tier tier = tiers.get(random.nextInt(size));
+
+                            PrizeManager.givePrize(player, crate.pickPrize(player, tier), crate);
+                            PrizeManager.givePrize(player, crate.pickPrize(player, tier), crate);
+                            PrizeManager.givePrize(player, crate.pickPrize(player, tier), crate);
+                        } else {
+                            final @Nullable Tier row_uno = crate.getTier(section.getString("types.row-1", ""));
+                            final @Nullable Tier row_dos = crate.getTier(section.getString("types.row-2", ""));
+                            final @Nullable Tier row_tres = crate.getTier(section.getString("types.row-3", ""));
+
+                            if (row_uno == null || row_dos == null || row_tres == null) {
+                                final Logger logger = this.plugin.getLogger();
+
+                                if (MiscUtils.isLogging()) {
+                                    List.of(
+                                            "One of your rows has a tier that doesn't exist supplied in " + fileName,
+                                            "You can find this in your crate config, search for row-1, row-2, and row-3"
+                                    ).forEach(logger::warning);
+                                }
+
+                                used--;
+
+                                break;
+                            }
+
+                            PrizeManager.givePrize(player, crate.pickPrize(player, row_uno), crate);
+                            PrizeManager.givePrize(player, crate.pickPrize(player, row_dos), crate);
+                            PrizeManager.givePrize(player, crate.pickPrize(player, row_tres), crate);
+                        }
+                    }
+                }
+
+                case cosmic -> {
+                    final List<Tier> tiers = crate.getTiers();
+
+                    if (tiers.isEmpty()) {
+                        used--;
+
+                        break;
+                    }
+
+                    final int size = tiers.size();
+
+                    final ThreadLocalRandom random = ThreadLocalRandom.current();
+
+                    final CosmicCrateManager cosmicCrateManager = (CosmicCrateManager) crate.getManager();
+
+                    final int totalPrizes = cosmicCrateManager.getTotalPrizes();
+
+                    for (int i = 0; i < totalPrizes; i++) {
+                        final Tier tier = tiers.get(random.nextInt(size));
+
+                        final Prize prize = crate.pickPrize(player, tier);
+
+                        PrizeManager.givePrize(player, prize, crate);
+                    }
+                }
+
+                case quad_crate -> {
+                    for (int i = 0; i < 4; i++) {
+                        PrizeManager.givePrize(player, crate.pickPrize(player), crate);
+                    }
+                }
+
+                default -> {
+                    final Prize prize = crate.pickPrize(player);
+
+                    PrizeManager.givePrize(player, prize, crate);
+                }
+            }
 
             used++;
         }
 
-        if (crateType != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), fileName, used);
+        //if (crateType != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), fileName, used); //todo() hmm?, since we account for cosmic crate, it should be fine to let it count as opened?
+        this.userManager.addOpenedCrate(player.getUniqueId(), fileName, used);
 
         EventManager.logEvent(EventType.event_crate_opened, player, player, crate, keyType, used);
         EventManager.logEvent(EventType.event_key_taken, player, player, crate, keyType, used);
