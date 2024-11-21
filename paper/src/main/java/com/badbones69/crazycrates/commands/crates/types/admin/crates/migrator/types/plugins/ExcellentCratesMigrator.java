@@ -269,7 +269,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 set(root, "Prizes." + id + ".BlackListed-Permissions", reward.getIgnoredForPermissions());
 
-                set(root, "Prizes." + id + ".Chance", (int) reward.getWeight());
+                set(root, "Prizes." + id + ".Weight", (int) reward.getWeight());
 
                 set(root, "Prizes." + id + ".DisplayItem", itemStack.getType().getKey().getKey());
 
