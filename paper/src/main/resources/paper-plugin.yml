@@ -2,7 +2,7 @@ name: '${name}'
 main: '${group}.CrazyCrates'
 
 version: '${version}'
-api-version: '{$apiVersion}'
+api-version: '${$apiVersion}'
 description: '${description}'
 website: '${website}'
 
