@@ -24,7 +24,7 @@ tasks {
 
         uploadFile.set(rootProject.projectDir.resolve("jars/$pluginName-${rootProject.version}.jar"))
 
-        gameVersions.set(listOf(mcVersion, "1.21.1"))
+        gameVersions.set(listOf(mcVersion))
 
         loaders.addAll(listOf("purpur", "paper", "folia"))
 
@@ -54,7 +54,7 @@ tasks {
                 paper {
                     jar.set(rootProject.projectDir.resolve("jars/$pluginName-${rootProject.version}.jar"))
 
-                    platformVersions.set(listOf(mcVersion, "1.21.1"))
+                    platformVersions.set(listOf(mcVersion))
 
                     dependencies {
                         hangar("PlaceholderAPI") {

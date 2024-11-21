@@ -8,5 +8,3 @@
 - Updated logging messages for tiers in CasinoCrate
   - Only checking if a tier is null, rather than if the config option is empty, then checking if a tier is null.
 - Moved calling the player prize event, and spawning fireworks to the method which gives the prize.
-- De-bumped api-version to 1.21.1
-  - Paper is still not out of experimental, which is why this is being done.
