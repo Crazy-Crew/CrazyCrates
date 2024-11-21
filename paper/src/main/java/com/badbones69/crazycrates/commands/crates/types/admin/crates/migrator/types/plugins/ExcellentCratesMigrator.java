@@ -21,6 +21,7 @@ import su.nightexpress.nightcore.config.FileConfig;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -267,7 +268,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                 set(root, "Prizes." + id + ".Settings.Broadcast.Messages", List.of());
                 set(root, "Prizes." + id + ".Settings.Broadcast.Permission", "your_permission");
 
-                set(root, "Prizes." + id + ".BlackListed-Permissions", reward.getIgnoredForPermissions());
+                set(root, "Prizes." + id + ".BlackListed-Permissions", List.of(reward.getIgnoredForPermissions()));
 
                 set(root, "Prizes." + id + ".Weight", (int) reward.getWeight());
 
