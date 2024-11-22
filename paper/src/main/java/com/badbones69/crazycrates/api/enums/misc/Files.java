@@ -48,7 +48,7 @@ public enum Files {
     }
 
     public void reload() {
-        this.fileManager.addFile(new File(this.plugin.getDataFolder(), this.fileName));
+        this.fileManager.addFile(this.fileName);
     }
 
     public void save() {
