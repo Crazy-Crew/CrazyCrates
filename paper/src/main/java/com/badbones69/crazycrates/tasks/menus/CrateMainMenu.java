@@ -117,70 +117,92 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                     this.gui.setItem(slot, ItemUtils.getItem(section, builder, this.player).asGuiItem(event -> {
                         final String fancyName = crate.getCrateName();
 
-                        if (event.getClick() == ClickType.RIGHT) { // Right-clicked the item
-                            if (crate.isPreviewEnabled()) {
-                                crate.playSound(this.player, this.player.getLocation(), "click-sound", "ui.button.click", Sound.Source.PLAYER);
+                        switch (event.getClick()) {
+                            case ClickType.LEFT -> {
+                                final boolean isLeftClickToPreview = this.config.getProperty(ConfigKeys.crate_virtual_interaction);
 
-                                this.gui.close(this.player, InventoryCloseEvent.Reason.OPEN_NEW, false);
-
-                                this.inventoryManager.openNewCratePreview(this.player, crate);
-                            } else {
-                                Messages.preview_disabled.sendMessage(this.player, "{crate}", fancyName);
+                                if (isLeftClickToPreview) {
+                                    openPreview(crate, fancyName);
+                                } else {
+                                    openCrate(uuid, crate, fileName, fancyName);
+                                }
                             }
 
-                            return;
-                        }
+                            case ClickType.RIGHT -> {
+                                final boolean isRightClickToOpen = this.config.getProperty(ConfigKeys.crate_virtual_interaction);
 
-                        if (this.crateManager.isInOpeningList(this.player)) {
-                            Messages.already_opening_crate.sendMessage(this.player, "{crate}", fancyName);
-
-                            return;
-                        }
-
-                        boolean hasKey = false;
-                        KeyType keyType = KeyType.virtual_key;
-
-                        if (this.userManager.getVirtualKeys(uuid, fileName) >= 1) {
-                            hasKey = true;
-                        } else {
-                            if (this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && this.userManager.hasPhysicalKey(uuid, fileName, false)) {
-                                hasKey = true;
-                                keyType = KeyType.physical_key;
+                                if (isRightClickToOpen) {
+                                    openCrate(uuid, crate, fileName, fancyName);
+                                } else {
+                                    openPreview(crate, fancyName);
+                                }
                             }
                         }
-
-                        if (!hasKey) {
-                            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                                Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
-
-                                this.player.playSound(sound);
-                            }
-
-                            Messages.no_virtual_key.sendMessage(this.player, "{crate}", fancyName);
-
-                            return;
-                        }
-
-                        for (String world : this.config.getProperty(ConfigKeys.disabled_worlds)) {
-                            if (world.equalsIgnoreCase(this.player.getWorld().getName())) {
-                                Messages.world_disabled.sendMessage(this.player, "{world}", this.player.getWorld().getName());
-
-                                return;
-                            }
-                        }
-
-                        if (MiscUtils.isInventoryFull(this.player)) {
-                            Messages.inventory_not_empty.sendMessage(this.player, "{crate}", fancyName);
-
-                            return;
-                        }
-
-                        this.crateManager.openCrate(this.player, crate, keyType, this.player.getLocation(), true, false, EventType.event_crate_opened);
                     }));
                 }
             }
         }
 
         this.gui.open(this.player);
+    }
+
+    private void openCrate(UUID uuid, Crate crate, String fileName, String fancyName) {
+        if (this.crateManager.isInOpeningList(this.player)) {
+            Messages.already_opening_crate.sendMessage(this.player, "{crate}", fancyName);
+
+            return;
+        }
+
+        boolean hasKey = false;
+        KeyType keyType = KeyType.virtual_key;
+
+        if (this.userManager.getVirtualKeys(uuid, fileName) >= 1) {
+            hasKey = true;
+        } else {
+            if (this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && this.userManager.hasPhysicalKey(uuid, fileName, false)) {
+                hasKey = true;
+                keyType = KeyType.physical_key;
+            }
+        }
+
+        if (!hasKey) {
+            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
+                Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
+
+                this.player.playSound(sound);
+            }
+
+            Messages.no_virtual_key.sendMessage(this.player, "{crate}", fancyName);
+
+            return;
+        }
+
+        for (String world : this.config.getProperty(ConfigKeys.disabled_worlds)) {
+            if (world.equalsIgnoreCase(this.player.getWorld().getName())) {
+                Messages.world_disabled.sendMessage(this.player, "{world}", this.player.getWorld().getName());
+
+                return;
+            }
+        }
+
+        if (MiscUtils.isInventoryFull(this.player)) {
+            Messages.inventory_not_empty.sendMessage(this.player, "{crate}", fancyName);
+
+            return;
+        }
+
+        this.crateManager.openCrate(this.player, crate, keyType, this.player.getLocation(), true, false, EventType.event_crate_opened);
+    }
+
+    private void openPreview(Crate crate, String fancyName) {
+        if (crate.isPreviewEnabled()) {
+            crate.playSound(this.player, this.player.getLocation(), "click-sound", "ui.button.click", Sound.Source.PLAYER);
+
+            this.gui.close(this.player, InventoryCloseEvent.Reason.OPEN_NEW, false);
+
+            this.inventoryManager.openNewCratePreview(this.player, crate);
+        } else {
+            Messages.preview_disabled.sendMessage(this.player, "{crate}", fancyName);
+        }
     }
 }

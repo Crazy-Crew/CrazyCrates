@@ -125,6 +125,22 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("The amount of rows for a gui.")
     public static final Property<Integer> inventory_rows = newProperty("gui.inventory.rows", 5);
 
+    @Comment({
+            "This will switch how previews/opening the physical crates are handled.",
+            "",
+            " true -> Right click to open, Left click to preview",
+            " false -> Left click to open, Right click to preview"
+    })
+    public static final Property<Boolean> crate_physical_interaction = newProperty("crate.interaction.physical", true);
+
+    @Comment({
+            "This will switch how previews/opening the virtual crates are handled.",
+            "",
+            " true -> Right click to open, Left click to preview",
+            " false -> Left click to open, Right click to preview"
+    })
+    public static final Property<Boolean> crate_virtual_interaction = newProperty("crate.interaction.virtual", false);
+
     @Comment("Whether to show the display item when opening QuickCrate")
     public static final Property<Boolean> show_quickcrate_item = newProperty("crate.quickcrate-display-item", true);
 

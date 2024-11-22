@@ -49,86 +49,130 @@ public class CrateControlListener implements Listener {
 
     private final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    @EventHandler
-    public void onGroundClick(PlayerInteractEvent event) {
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerClick(PlayerInteractEvent event) {
         final Player player = event.getPlayer();
-
-        if (!event.getAction().isRightClick()) return;
-
-        final Block clickedBlock = event.getClickedBlock();
-
-        if (clickedBlock == null) return;
-
-        final boolean isKey = event.getHand() == EquipmentSlot.OFF_HAND ? this.crateManager.isKey(player.getInventory().getItemInOffHand()) : this.crateManager.isKey(player.getInventory().getItemInMainHand());
-
-        if (isKey) {
-            event.setUseItemInHand(Event.Result.DENY);
-        }
-    }
-
-    @EventHandler
-    public void onCrateInteract(PlayerInteractEvent event) {
-        final Player player = event.getPlayer();
-
-        if (!event.getAction().isLeftClick()) return;
 
         final Block block = event.getClickedBlock();
 
         if (block == null) return;
 
         final Location location = block.getLocation();
-        final CrateLocation crateLocation = this.crateManager.getCrateLocation(location);
 
-        if (crateLocation == null) return;
+        switch (event.getAction()) {
+            case LEFT_CLICK_BLOCK, LEFT_CLICK_AIR -> {
+                final CrateLocation crateLocation = this.crateManager.getCrateLocation(location);
 
-        event.setUseInteractedBlock(Event.Result.DENY);
-        event.setUseItemInHand(Event.Result.DENY);
+                if (crateLocation == null) return;
 
-        if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin")) {
-            final String arg1 = MiscUtils.location(location, true);
-            final String arg2 = MiscUtils.location(crateLocation.getLocation(), true);
+                event.setUseInteractedBlock(Event.Result.DENY);
+                event.setUseItemInHand(Event.Result.DENY);
 
-            if (arg1.equals(arg2)) {
-                this.crateManager.removeCrateLocation(crateLocation.getID());
+                if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin")) {
+                    final String arg1 = MiscUtils.location(location, true);
+                    final String arg2 = MiscUtils.location(crateLocation.getLocation(), true);
 
-                Messages.removed_physical_crate.sendMessage(player, "{id}", crateLocation.getID());
+                    if (arg1.equals(arg2)) {
+                        this.crateManager.removeCrateLocation(crateLocation.getID());
+
+                        Messages.removed_physical_crate.sendMessage(player, "{id}", crateLocation.getID());
+                    }
+
+                    return;
+                }
+
+                final boolean isLeftClickToPreview = this.config.getProperty(ConfigKeys.crate_physical_interaction);
+
+                final Crate crate = crateLocation.getCrate();
+
+                if (crate.getCrateType() == CrateType.menu) {
+                    preview(player, crate, true);
+
+                    return;
+                }
+
+                if (isLeftClickToPreview) {
+                    preview(player, crateLocation.getCrate(), false);
+                } else {
+                    openCrate(player, location, crateLocation, crate);
+                }
             }
 
-            return;
-        }
+            case RIGHT_CLICK_AIR, RIGHT_CLICK_BLOCK -> {
+                final boolean isKey = event.getHand() == EquipmentSlot.OFF_HAND ? this.crateManager.isKey(player.getInventory().getItemInOffHand()) : this.crateManager.isKey(player.getInventory().getItemInMainHand());
 
-        preview(player, crateLocation.getCrate(), false);
+                if (isKey) {
+                    event.setUseItemInHand(Event.Result.DENY);
+                }
+
+                final CrateLocation crateLocation = this.crateManager.getCrateLocation(location);
+
+                if (crateLocation == null) return;
+
+                event.setUseInteractedBlock(Event.Result.DENY);
+                event.setUseItemInHand(Event.Result.DENY);
+
+                final boolean isRightClickToOpen = this.config.getProperty(ConfigKeys.crate_physical_interaction);
+
+                final Crate crate = crateLocation.getCrate();
+
+                if (crate.getCrateType() == CrateType.menu) {
+                    preview(player, crate, true);
+
+                    return;
+                }
+
+                if (isRightClickToOpen) {
+                    openCrate(player, location, crateLocation, crate);
+                } else {
+                    preview(player, crateLocation.getCrate(), false);
+                }
+            }
+        }
     }
 
-    // This must run as highest, so it doesn't cause other plugins to check
-    // the items that were added to the players inventory and replaced the item in the player's hand.
-    // This is only an issue with QuickCrate
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onRightClick(PlayerInteractEvent event) {
+    @EventHandler
+    public void onPistonPushCrate(BlockPistonExtendEvent event) {
+        for (final Block block : event.getBlocks()) {
+            final Location location = block.getLocation();
+
+            final Crate crate = this.crateManager.getCrateFromLocation(location);
+
+            if (crate != null) {
+                event.setCancelled(true);
+
+                return;
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPistonPullCrate(BlockPistonRetractEvent event) {
+        for (final Block block : event.getBlocks()) {
+            final Location location = block.getLocation();
+
+            final Crate crate = this.crateManager.getCrateFromLocation(location);
+
+            if (crate != null) {
+                event.setCancelled(true);
+
+                return;
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
         final Player player = event.getPlayer();
 
-        if (!event.getAction().isRightClick() || event.getHand() != EquipmentSlot.HAND) return;
+        if (this.crateManager.hasCrateTask(player)) this.crateManager.endCrate(player);
 
-        final Block clickedBlock = event.getClickedBlock();
+        if (this.crateManager.hasQuadCrateTask(player)) this.crateManager.endQuadCrate(player);
 
-        if (clickedBlock == null) return;
+        if (this.crateManager.isInOpeningList(player)) this.crateManager.removePlayerFromOpeningList(player);
+    }
 
-        final Location location = clickedBlock.getLocation();
-        final CrateLocation crateLocation = this.crateManager.getCrateLocation(location);
-
-        if (crateLocation == null) return;
-
-        final Crate crate = crateLocation.getCrate();
-
-        event.setUseInteractedBlock(Event.Result.DENY);
-        event.setUseItemInHand(Event.Result.DENY);
-
-        if (crate.getCrateType() == CrateType.menu) {
-            preview(player, crate, true);
-
-            return;
-        }
-
+    private void openCrate(Player player, Location location, CrateLocation crateLocation, Crate crate) {
         final KeyCheckEvent key = new KeyCheckEvent(player, crateLocation);
         player.getServer().getPluginManager().callEvent(key);
 
@@ -216,47 +260,6 @@ public class CrateControlListener implements Listener {
         lackingKey(player, crate, location, true);
 
         key.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onPistonPushCrate(BlockPistonExtendEvent event) {
-        for (final Block block : event.getBlocks()) {
-            final Location location = block.getLocation();
-
-            final Crate crate = this.crateManager.getCrateFromLocation(location);
-
-            if (crate != null) {
-                event.setCancelled(true);
-
-                return;
-            }
-        }
-    }
-
-    @EventHandler
-    public void onPistonPullCrate(BlockPistonRetractEvent event) {
-        for (final Block block : event.getBlocks()) {
-            final Location location = block.getLocation();
-
-            final Crate crate = this.crateManager.getCrateFromLocation(location);
-
-            if (crate != null) {
-                event.setCancelled(true);
-
-                return;
-            }
-        }
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        final Player player = event.getPlayer();
-
-        if (this.crateManager.hasCrateTask(player)) this.crateManager.endCrate(player);
-
-        if (this.crateManager.hasQuadCrateTask(player)) this.crateManager.endQuadCrate(player);
-
-        if (this.crateManager.isInOpeningList(player)) this.crateManager.removePlayerFromOpeningList(player);
     }
 
     private void lackingKey(final Player player, final Crate crate, final Location location, final boolean sendMessage) {
