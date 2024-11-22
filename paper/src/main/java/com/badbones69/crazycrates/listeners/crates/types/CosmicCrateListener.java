@@ -106,7 +106,7 @@ public class CosmicCrateListener implements Listener {
 
         Prize prize = crate.pickPrize(player, tier);
 
-        for (int stop = 0; prize == null && stop <= 2000; stop++) {
+        for (int stop = 0; prize == null && stop <= 2000; stop++) { //todo() wtf?
             prize = crate.pickPrize(player, tier);
         }
 
