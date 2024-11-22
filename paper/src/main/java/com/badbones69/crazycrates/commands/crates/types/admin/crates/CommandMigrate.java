@@ -53,7 +53,7 @@ public class CommandMigrate extends BaseCommand {
                 if (!hasCrateFlag) {
                     Messages.lacking_flag.sendMessage(sender, new HashMap<>() {{
                         put("{flag}", "-c");
-                        put("{usage}", "/crazycrates migrate -t <insert_type> -c <crate>");
+                        put("{usage}", "/crazycrates migrate -mt <migration_type> -c <crate>");
                     }});
 
                     return;

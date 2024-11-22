@@ -27,7 +27,7 @@ public class ArgumentRelations extends MessageManager {
             case "give-random" -> usage = order + " <key_type> <amount> <player_name>";
             case "give", "take" -> usage = order + " <key_type> <crate_name> <amount> <player_name>";
             case "giveall" -> usage = order + " <key_type> <crate_name> <amount>";
-            case "migrate" -> usage = order + " <migration_type> [-i] [-c]";
+            case "migrate" -> usage = order + " -mt <migration_type> -c <crate> -d";
             case "respin-accept" -> usage = order + " <player> <crate_name> [prize_name]";
             case "respin-deny" -> usage = order + " <player> <crate_name>";
             case "respin-remove", "respin-add" -> usage = order + " <player> <crate_name> <amount>";
