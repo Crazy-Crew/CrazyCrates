@@ -64,7 +64,7 @@ public class CommandKeys implements SettingsHolder {
             "<dark_gray>»</dark_gray> <green>Successful Conversions: ",
             " ⤷ {succeeded_amount}</green>",
             "<dark_gray>»</dark_gray> <red>Failed Conversions: ",
-            " ⤷ {failed_names}</red>",
+            " ⤷ {failed_amount}</red>",
             "",
             "<red>Conversion Time: <yellow>{time}",
             "<red>Conversion Type: <yellow>{type}",

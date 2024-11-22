@@ -77,7 +77,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             Messages.successfully_migrated_users.sendMessage(this.sender, new HashMap<>() {{
                 put("{succeeded_amount}", String.valueOf(success.size()));
-                put("{failed_names}", !failed.isEmpty() ? String.join(",", failed) : "<red>No Names");
+                put("{failed_amount}", String.valueOf(failed.size()));
                 put("{type}", type.getName());
                 put("{time}", time());
             }});
