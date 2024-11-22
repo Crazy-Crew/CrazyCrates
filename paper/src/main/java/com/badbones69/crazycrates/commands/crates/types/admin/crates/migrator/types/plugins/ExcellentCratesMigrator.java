@@ -67,7 +67,6 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                             data.set("Players." + uuid + "." + key, (Math.max((keys + amount), 0)));
 
                             Files.data.save();
-                            Files.data.reload();
                         }
                     });
 
