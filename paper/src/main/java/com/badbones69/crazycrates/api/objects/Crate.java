@@ -458,21 +458,6 @@ public class Crate {
     public void purge() {
         this.prizes.clear();
     }
-    
-    /**
-     * Picks a random prize based on BlackList Permissions and the Chance System. Spawns the display item at the location.
-     *
-     * @param player the player that will be winning the prize.
-     * @param location the location the firework will spawn at.
-     * @return the winning prize.
-     */
-    public Prize pickPrize(@NotNull final Player player, @NotNull final Location location) {
-        Prize prize = pickPrize(player);
-
-        if (prize.useFireworks()) MiscUtils.spawnFirework(location, null);
-
-        return prize;
-    }
 
     public final boolean isCyclePermissionToggle() {
         return this.cyclePermissionToggle;

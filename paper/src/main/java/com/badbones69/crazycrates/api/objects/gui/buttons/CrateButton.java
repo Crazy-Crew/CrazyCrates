@@ -55,7 +55,7 @@ public class CrateButton extends GuiButton {
                 case "accept" -> {
                     final Prize prize = this.crate.getPrize(this.userManager.getRespinPrize(uuid, crateName));
 
-                    PrizeManager.givePrize(player, prize, this.crate);
+                    PrizeManager.givePrize(player, this.crate, prize);
 
                     if (!this.crate.isCyclePersistRestart()) {
                         this.userManager.removeRespinCrate(uuid, crateName, this.userManager.getCrateRespin(uuid, crateName));
@@ -73,7 +73,7 @@ public class CrateButton extends GuiButton {
                     if (PrizeManager.isCapped(this.crate, player)) {
                         final Prize prize = this.crate.getPrize(this.userManager.getRespinPrize(uuid, crateName));
 
-                        PrizeManager.givePrize(player, prize, this.crate);
+                        PrizeManager.givePrize(player, this.crate, prize);
 
                         this.userManager.removeRespinPrize(uuid, crateName); // remove just in case
 

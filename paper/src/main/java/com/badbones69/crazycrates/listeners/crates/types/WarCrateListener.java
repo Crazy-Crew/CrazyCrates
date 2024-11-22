@@ -1,9 +1,11 @@
 package com.badbones69.crazycrates.listeners.crates.types;
 
+import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
@@ -51,10 +53,7 @@ public class WarCrateListener implements Listener {
                     this.crateManager.removePicker(player);
                     this.crateManager.addCloser(player, true);
 
-                    PrizeManager.givePrize(player, prize, crate);
-
-                    //if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null); // ryder, moved to givePrize method.
-                    //this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize)); // ryder, moved to givePrize method.
+                    PrizeManager.givePrize(player, crate, prize);
 
                     this.crateManager.removePlayerFromOpeningList(player);
 

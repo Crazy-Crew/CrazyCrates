@@ -3,9 +3,11 @@ package com.badbones69.crazycrates.listeners.crates.types;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
+import com.badbones69.crazycrates.utils.MiscUtils;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -60,10 +62,7 @@ public class MobileCrateListener implements Listener {
 
         final Prize prize = crate.pickPrize(player);
 
-        PrizeManager.givePrize(player, prize, crate);
-
-        //this.plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize)); // ryder, moved to givePrize method.
-        //if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null); // ryder, moved to givePrize method.
+        PrizeManager.givePrize(player, crate, prize);
 
         this.crateManager.removePlayerFromOpeningList(player);
     }

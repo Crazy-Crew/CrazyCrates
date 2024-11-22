@@ -11,6 +11,7 @@ import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -79,17 +80,55 @@ public class PrizeManager {
     }
 
     /**
+     * Gets the prize for the player with an offset location.
+     *
+     * @param player who the prize is for
+     * @param crate the player is opening
+     * @param prize the player is being given
+     *
+     * @deprecated
+     */
+    @Deprecated(forRemoval = true, since = "4.2.1")
+    public static void givePrize(@NotNull final Player player, @Nullable final Prize prize, @NotNull final Crate crate) {
+        givePrize(player, crate, prize);
+    }
+
+    /**
+     * Gets the prize for the player with an offset location.
+     *
+     * @param player who the prize is for
+     * @param crate the player is opening
+     * @param prize the player is being given
+     */
+    public static void givePrize(@NotNull final Player player, @NotNull final Crate crate, @Nullable final Prize prize) {
+        if (prize != null) {
+            givePrize(player, player.getLocation().clone().add(0, 1, 0), crate, prize);
+        } else {
+            Messages.prize_error.sendMessage(player, new HashMap<>() {{
+                put("{crate}", crate.getCrateName());
+            }});
+        }
+    }
+
+    /**
      * Gets the prize for the player.
      *
-     * @param player who the prize is for.
-     * @param crate the player is opening.
-     * @param prize the player is being given.
+     * @param player who the prize is for
+     * @param location the location
+     * @param crate the player is opening
+     * @param prize the player is being given
      */
-    public static void givePrize(@NotNull final Player player, @Nullable Prize prize, @NotNull final Crate crate) {
+    public static void givePrize(@NotNull final Player player, @NotNull Location location, @NotNull final Crate crate, @Nullable Prize prize) {
         if (prize == null) {
             if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("No prize was found when giving {} a prize.", player.getName());
 
             return;
+        }
+
+        plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+
+        if (prize.useFireworks()) {
+            MiscUtils.spawnFirework(location, null);
         }
 
         prize = prize.hasPermission(player) ? prize.getAlternativePrize() : prize;
@@ -154,10 +193,6 @@ public class PrizeManager {
         }
 
         prize.broadcast(player, crate);
-
-        plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize)); // run player prize event here, since we are giving a prize.
-
-        if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().clone().add(.5, 1, .5), null); // spawn firework, since well... it's related to prizes lol.
 
         if (!crate.getPrizeMessage().isEmpty() && prize.getMessages().isEmpty()) {
             for (final String message : crate.getPrizeMessage()) {
@@ -249,34 +284,12 @@ public class PrizeManager {
         return section.getInt("Pulls", 0);
     }
 
-    /**
-     * Gets the prize for the player.
-     *
-     * @param player who the prize is for.
-     * @param crate the player is opening.
-     * @param prize the player is being given.
-     */
-    public static void givePrize(@NotNull final Player player, @NotNull final Crate crate, @Nullable final Prize prize) {
-        if (prize != null) {
-            givePrize(player, prize, crate);
-
-            //if (prize.useFireworks()) MiscUtils.spawnFirework(player.getLocation().add(0, 1, 0), null); // ryder, moved to givePrize method.
-            //plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize)); // ryder, moved to givePrize method.
-        } else {
-            Messages.prize_error.sendMessage(player, new HashMap<>() {{
-                put("{crate}", crate.getCrateName());
-            }});
-        }
-    }
-
     public static void getPrize(@NotNull final Crate crate, @NotNull final Inventory inventory, final int slot, @NotNull final Player player) {
         final ItemStack item = inventory.getItem(slot);
 
         if (item == null) return;
 
-        final Prize prize = crate.getPrize(item);
-
-        givePrize(player, prize, crate);
+        givePrize(player, player.getLocation().clone().add(0, 1, 0), crate, crate.getPrize(item));
     }
 
     public static @Nullable Tier getTier(@NotNull final Crate crate) {

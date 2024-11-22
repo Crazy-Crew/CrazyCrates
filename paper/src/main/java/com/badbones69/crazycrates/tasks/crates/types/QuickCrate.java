@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.tasks.crates.types;
 import com.badbones69.crazycrates.api.builders.types.features.CrateSpinMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Files;
+import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.ChestManager;
@@ -86,10 +87,8 @@ public class QuickCrate extends CrateBuilder {
                 if (used >= this.crate.getMaxMassOpen()) break;
 
                 final Prize prize = this.crate.pickPrize(this.player);
-                PrizeManager.givePrize(this.player, prize, this.crate);
 
-                //this.server.callEvent(new PlayerPrizeEvent(this.player, this.crate, prize)); // ryder, moved to givePrize method.
-                //if (prize.useFireworks()) MiscUtils.spawnFirework(this.location.clone().add(.5, 1, .5), null); // ryder, moved to givePrize method.
+                PrizeManager.givePrize(this.player, this.location.clone().add(.5, 1, .5), this.crate, prize);
 
                 used++;
             }
@@ -129,7 +128,7 @@ public class QuickCrate extends CrateBuilder {
             return;
         }
 
-        Prize prize = this.crate.pickPrize(this.player, this.location.clone().add(.5, 1.3, .5));
+        final Prize prize = this.crate.pickPrize(this.player);
 
         if (this.crate.isCyclePrize() && !PrizeManager.isCapped(this.crate, this.player)) { // re-open this menu
             new CrateSpinMenu(this.player, new GuiSettings(this.crate, prize, Files.respin_gui.getConfiguration())).open();
@@ -145,10 +144,6 @@ public class QuickCrate extends CrateBuilder {
                 userManager.removeRespinCrate(uuid, fileName, userManager.getCrateRespin(uuid, fileName));
             }
         }
-
-        PrizeManager.givePrize(this.player, this.crate, prize);
-
-        //this.server.callEvent(new PlayerPrizeEvent(this.player, this.crate, prize)); // ryder, moved to givePrize method.
 
         final boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
 
@@ -195,13 +190,10 @@ public class QuickCrate extends CrateBuilder {
 
             this.crateManager.addReward(this.player, reward);
 
-            // Always open the chest.
             ChestManager.openChest(this.location.getBlock(), true);
 
-            // Always spawn fireworks if enabled.
-            //if (prize.useFireworks()) MiscUtils.spawnFirework(this.location.clone().add(0.5, 1, .5), null); // ryder, moved to givePrize method.
+            PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, .5), this.crate, prize);
 
-            // Always end the crate.
             addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
                 @Override
                 public void run() {
@@ -212,13 +204,10 @@ public class QuickCrate extends CrateBuilder {
             return;
         }
 
-        // Always open the chest.
         ChestManager.openChest(this.location.getBlock(), true);
 
-        // Always spawn fireworks if enabled.
-        if (prize.useFireworks()) MiscUtils.spawnFirework(location.clone().add(0.5, 1, .5), null);
+        PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, .5), this.crate, prize);
 
-        // Always end the crate.
         addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
             @Override
             public void run() {

@@ -74,7 +74,7 @@ public class MiscListener implements Listener {
 
             if (crate.isCyclePrize() && this.userManager.hasRespinPrize(uuid, fileName)) {
                 if (PrizeManager.isCapped(crate, player)) { // if the option is false, we want to run this. || !crate.isCyclePersistRestart()
-                    PrizeManager.givePrize(player, crate.getPrize(this.userManager.getRespinPrize(uuid, fileName)), crate);
+                    PrizeManager.givePrize(player, crate, crate.getPrize(this.userManager.getRespinPrize(uuid, fileName)));
 
                     this.userManager.removeRespinPrize(uuid, fileName);
 
@@ -180,7 +180,7 @@ public class MiscListener implements Listener {
                                     prize = crate.pickPrize(player, tier);
                                 }
 
-                                PrizeManager.givePrize(player, prize, crate);
+                                PrizeManager.givePrize(player, crate, prize);
 
                                 playSound = true;
                             }

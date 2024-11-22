@@ -61,8 +61,6 @@ public class CrateOnTheGo extends CrateBuilder {
 
         PrizeManager.givePrize(this.player, this.crate, prize);
 
-        if (prize.useFireworks()) MiscUtils.spawnFirework(this.player.getLocation().add(0, 1, 0), null);
-
         this.crateManager.removePlayerKeyType(this.player);
     }
 }

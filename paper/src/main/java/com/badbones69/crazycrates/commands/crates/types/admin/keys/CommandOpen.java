@@ -282,18 +282,6 @@ public class CommandOpen extends BaseCommand {
         final String fileName = crate.getFileName();
         final String keyName = crate.getKeyName();
 
-        // Prevent it from working with these crate types.
-        /*if (crateType == CrateType.quad_crate) {
-            final Map<String, String> placeholders = new HashMap<>();
-
-            placeholders.put("{cratetype}", crateType.getName());
-            placeholders.put("{crate}", fancyName);
-
-            Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
-
-            return;
-        }*/
-
         final KeyType keyType = getKeyType(type);
 
         int keys = keyType == KeyType.physical_key ? this.userManager.getPhysicalKeys(player.getUniqueId(), fileName) : this.userManager.getVirtualKeys(player.getUniqueId(), fileName);
@@ -347,9 +335,9 @@ public class CommandOpen extends BaseCommand {
 
                             final Tier tier = tiers.get(random.nextInt(size));
 
-                            PrizeManager.givePrize(player, crate.pickPrize(player, tier), crate);
-                            PrizeManager.givePrize(player, crate.pickPrize(player, tier), crate);
-                            PrizeManager.givePrize(player, crate.pickPrize(player, tier), crate);
+                            PrizeManager.givePrize(player, crate, crate.pickPrize(player, tier));
+                            PrizeManager.givePrize(player, crate, crate.pickPrize(player, tier));
+                            PrizeManager.givePrize(player, crate, crate.pickPrize(player, tier));
                         } else {
                             final @Nullable Tier row_uno = crate.getTier(section.getString("types.row-1", ""));
                             final @Nullable Tier row_dos = crate.getTier(section.getString("types.row-2", ""));
@@ -370,9 +358,9 @@ public class CommandOpen extends BaseCommand {
                                 break;
                             }
 
-                            PrizeManager.givePrize(player, crate.pickPrize(player, row_uno), crate);
-                            PrizeManager.givePrize(player, crate.pickPrize(player, row_dos), crate);
-                            PrizeManager.givePrize(player, crate.pickPrize(player, row_tres), crate);
+                            PrizeManager.givePrize(player, crate, crate.pickPrize(player, row_uno));
+                            PrizeManager.givePrize(player, crate, crate.pickPrize(player, row_dos));
+                            PrizeManager.givePrize(player, crate, crate.pickPrize(player, row_tres));
                         }
                     }
                 }
@@ -399,20 +387,20 @@ public class CommandOpen extends BaseCommand {
 
                         final Prize prize = crate.pickPrize(player, tier);
 
-                        PrizeManager.givePrize(player, prize, crate);
+                        PrizeManager.givePrize(player, crate, prize);
                     }
                 }
 
                 case quad_crate -> {
                     for (int i = 0; i < 4; i++) {
-                        PrizeManager.givePrize(player, crate.pickPrize(player), crate);
+                        PrizeManager.givePrize(player, crate, crate.pickPrize(player));
                     }
                 }
 
                 default -> {
                     final Prize prize = crate.pickPrize(player);
 
-                    PrizeManager.givePrize(player, prize, crate);
+                    PrizeManager.givePrize(player, crate, prize);
                 }
             }
 
