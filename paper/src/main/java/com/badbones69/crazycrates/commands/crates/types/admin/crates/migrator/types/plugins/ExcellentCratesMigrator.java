@@ -105,6 +105,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
         for (final Crate crate : crates) {
             final String crateName = crate.getFile().getName();
+            final String strippedName = crateName.replace(".yml", "");
 
             final File crateFile = new File(directory, crateName);
 
@@ -155,7 +156,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                     String arg1 = splitter[1];
                     String arg2 = splitter[2];
 
-                    locationData.set("Locations." + id + ".Crate", crateName.replace(".yml", ""));
+                    locationData.set("Locations." + id + ".Crate", strippedName);
                     locationData.set("Locations." + id + ".World", arg5);
                     locationData.set("Locations." + id + ".X", (int) Double.parseDouble(arg0));
                     locationData.set("Locations." + id + ".Y", (int) Double.parseDouble(arg1));
@@ -174,7 +175,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             if (file.exists()) {
                 final YamlConfiguration menuFile = YamlConfiguration.loadConfiguration(file);
 
-                final String previewName = menuFile.getString("Crate.Name", "<bold><#9af7ff>%crate%</bold>").replace("%crate_name%", "%crate%").replace("%crate%", crateName.replace(".yml", ""));
+                final String previewName = menuFile.getString("Crate.Name", "<bold><#9af7ff>%crate%</bold>").replace("%crate_name%", "%crate%").replace("%crate%", strippedName);
 
                 final List<String> previewLore = new ArrayList<>();
 
@@ -259,8 +260,8 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             List<String> hologramText = new ArrayList<>();
             crate.getHologramText().forEach(line -> {
                 final String filtered = line.replace(
-                        "%excellentcrates_keys_" + crateName.replace(".yml", "") + "%",
-                        "%crazycrates_" + crateName.replace(".yml", "") + "%"
+                        "%excellentcrates_keys_" + strippedName + "%",
+                        "%crazycrates_" + strippedName + "%"
                 ).replace(
                         "%crate%",
                         crate.getName()
