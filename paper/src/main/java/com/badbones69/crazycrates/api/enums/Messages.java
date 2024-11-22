@@ -25,6 +25,7 @@ public enum Messages {
     no_teleporting(MiscKeys.no_teleporting),
     no_commands_while_in_crate(MiscKeys.no_commands_while_using_crate),
     feature_disabled(MiscKeys.feature_disabled),
+    lacking_flag(MiscKeys.lacking_flag),
     unknown_command(MiscKeys.unknown_command),
     correct_usage(MiscKeys.correct_usage),
     no_keys(MiscKeys.no_keys),

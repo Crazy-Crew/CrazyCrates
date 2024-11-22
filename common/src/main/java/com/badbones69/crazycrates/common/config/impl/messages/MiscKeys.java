@@ -42,4 +42,7 @@ public class MiscKeys implements SettingsHolder {
     public static final Property<String> correct_usage = newProperty("misc.correct-usage", "{prefix}<red>The correct usage for this command is <yellow>{usage}");
 
     public static final Property<String> feature_disabled = newProperty("misc.feature-disabled", "{prefix}<red>This feature is disabled.");
+
+    @Comment("A list of available placeholders: {flag}, {usage}")
+    public static final Property<String> lacking_flag = newProperty("misc.lacking-flag", "{prefix}<red>{flag} is not present in the command, expected format: {usage}");
 }

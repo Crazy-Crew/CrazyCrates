@@ -55,6 +55,7 @@ public class CommandKeys implements SettingsHolder {
     @Comment("A list of available placeholders: {prefix}")
     public static final Property<String> migration_not_available = newProperty("command.migrate.not-available", "{prefix}<green>This migration type is not available.");
 
+    @Comment("A list of available placeholders: {name}")
     public static final Property<String> migration_plugin_not_enabled = newProperty("command.migrate.plugin-not-available", "{prefix}<green>The plugin <red>{name} <green>is not enabled. Cannot use as migration!");
 
     public static final Property<String> migration_no_crates_available = newProperty("command.migrate.no-crates-available", "{prefix}<green>There is no crates available for migration!");
