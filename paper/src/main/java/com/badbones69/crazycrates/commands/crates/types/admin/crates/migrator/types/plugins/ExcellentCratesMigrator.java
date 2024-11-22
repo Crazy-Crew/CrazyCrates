@@ -180,8 +180,8 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 menuFile.getStringList("Crate.Lore").forEach(line -> previewLore.add(line.replaceAll("<l", "<").replaceAll("</l", "</")));
 
-                set(root, "Name", previewName);
-                set(root, "Lore", previewLore);
+                set(root, "Name", Methods.convert(previewName));
+                set(root, "Lore", Methods.convert(previewLore));
 
                 final org.bukkit.configuration.ConfigurationSection section = menuFile.getConfigurationSection("Crate.Slots");
 
@@ -201,7 +201,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             set(root, "Preview.Toggle", true);
             set(root, "Preview.ChestLines", 6);
-            set(root, "Preview.Name", crate.getName());
+            set(root, "Preview.Name", Methods.convert(crate.getName()));
             set(root, "Preview.Glass.Toggle", true);
             set(root, "Preview.Glass.Name", " ");
             set(root, "Preview.Glass.Item", "gray_stained_glass_pane");
@@ -240,7 +240,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             final String itemName = crateConfig.getString("Item.Name", "%crate%").replace("%crate%", crateName);
 
-            set(root, "Preview-Name", itemName + " Preview");
+            set(root, "Preview-Name", Methods.convert(itemName + " Preview"));
 
             if (crateItem.hasItemMeta()) {
                 final ItemMeta itemMeta = crateItem.getItemMeta();
@@ -266,7 +266,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                         crate.getName()
                 );
 
-                hologramText.add(filtered);
+                hologramText.add(Methods.convert(filtered));
             });
 
             set(root, "Hologram.Message", hologramText);
@@ -282,12 +282,10 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 set(root, "PhysicalKey.Data", PaperMethods.toBase64(itemStack));
 
-                set(root, "PhysicalKey.Name", Methods.fromComponent(itemStack.displayName()));
+                set(root, "PhysicalKey.Name", Methods.convert(key.getName()));
                 set(root, "PhysicalKey.Item", itemStack.getType().getKey().getKey());
 
-                final List<Component> keyLore = itemStack.lore();
-
-                set(root, "PhysicalKey.Lore", keyLore != null ? Methods.fromComponent(keyLore) : List.of());
+                set(root, "PhysicalKey.Lore", Methods.convert(key.getConfig().getStringList("Lore")));
 
                 set(root, "PhysicalKey.Glowing", config.contains("Item.Enchants"));
             }
@@ -301,14 +299,6 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                 if (itemStack.hasItemMeta()) {
                     final ItemMeta itemMeta = itemStack.getItemMeta();
 
-                    if (itemMeta.hasDisplayName()) {
-                        final Component displayName = itemMeta.displayName();
-
-                        if (displayName != null) {
-                            set(root, "Prizes." + id + ".DisplayName", Methods.fromComponent(itemStack.displayName()));
-                        }
-                    }
-
                     if (itemMeta.hasLore()) {
                         final List<Component> lore = itemMeta.lore();
 
@@ -317,6 +307,8 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                         }
                     }
                 }
+
+                set(root, "Prizes." + id + ".DisplayName", Methods.convert(reward.getName()));
 
                 set(root, "Prizes." + id + ".Commands", reward.getCommands());
 
