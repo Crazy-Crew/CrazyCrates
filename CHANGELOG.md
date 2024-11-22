@@ -1,13 +1,11 @@
-### Changes:
-- Allow mass-open to be used on the following crate types:
-  - QuadCrates
-  - CasinoCrate
-  - CosmicCrate
-  - FireCracker
-  - QuickCrate
-- Updated logging messages for tiers in CasinoCrate
-  - Only checking if a tier is null, rather than if the config option is empty, then checking if a tier is null.
-- Moved calling the player prize event, and spawning fireworks to the method which gives the prize.
-
-### Fixed:
-- The migrator for `ExcellentCrates` was setting to `Chance` not `Weight` in our crate configs during migration.
+### Update
+- Added 2 new toggles in the config.yml which allow you to switch what right/left do when interacting with physical or virtual crates.
+- Added the ability to migrate user data with ExcellentCrates by adding -data to the command which ignores migrating crates.
+  - `crazycrates migrate ExcellentCrates -d`
+- Updated the migration command format
+  - `crazycrates migrate -mt <migration_type> -c <crate_name> -d`
+    - `-d`/`--data` is used for migrating from user data from other crate plugins.
+      - If you wish to migrate from a crates plugin like ExcellentCrates, Do not use `-d`
+    - `-mt`/`--migration_type` is used to specify what migration type you want to use.
+    - `-c`/`--crate` is used for supplying a crate name.
+- Fixed multiple issues with the ExcellentCrates Migrator.
