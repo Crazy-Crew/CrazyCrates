@@ -213,7 +213,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             set(root, "Max-Mass-Open", 10);
 
             set(root, "OpeningBroadCast", false);
-            set(root, "BroadCast", "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><green>%crate%.</bold>".replace("%crate%", crate.getName()));
+            set(root, "BroadCast", "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><green>%crate%.</bold>".replace("%crate%", Methods.convert(crate.getName())));
 
             set(root, "opening-command.toggle", false);
             set(root, "opening-command.commands", List.of("put your command here."));
@@ -283,7 +283,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 set(root, "PhysicalKey.Data", PaperMethods.toBase64(itemStack));
 
-                set(root, "PhysicalKey.Name", Methods.convert(key.getName()));
+                set(root, "PhysicalKey.Name", Methods.convert(key.getName().replace("#", "#&")));
                 set(root, "PhysicalKey.Item", itemStack.getType().getKey().getKey());
 
                 set(root, "PhysicalKey.Lore", Methods.convert(key.getConfig().getStringList("Lore")));
@@ -309,7 +309,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                     }
                 }
 
-                set(root, "Prizes." + id + ".DisplayName", Methods.convert(reward.getName()));
+                set(root, "Prizes." + id + ".DisplayName", Methods.convert(reward.getName().replace("#", "#&")));
 
                 set(root, "Prizes." + id + ".Commands", reward.getCommands());
 
