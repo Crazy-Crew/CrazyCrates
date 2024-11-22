@@ -9,3 +9,8 @@
     - `-mt`/`--migration_type` is used to specify what migration type you want to use.
     - `-c`/`--crate` is used for supplying a crate name.
 - Fixed multiple issues with the ExcellentCrates Migrator.
+- Fixed an issue where sometimes fireworks would spawn double stacked or triple stacked.
+  - This is because in the sections handling giving the prizes, we forgot how many times we actually spawned fireworks.
+- Fixed a similar issue where the PlayerPrizeEvent was called multiple times, sometimes even 3 times.
+  - This is a similar reason to above, we forgot where we used it, or method stacking.
+- No longer spawns a firework when a prize is picked before opening the re-spin menu as the idea of the fireworks is only when the prize is actually given to the player.
