@@ -57,16 +57,18 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                     final UUID uuid = user.getId();
 
                     user.getKeysMap().forEach((key, amount) -> {
-                        final YamlConfiguration data = Files.data.getConfiguration();
+                        if (amount > 0) {
+                            final YamlConfiguration data = Files.data.getConfiguration();
 
-                        final int keys = userManager.getVirtualKeys(uuid, crateName);
+                            final int keys = userManager.getVirtualKeys(uuid, crateName);
 
-                        if (!data.contains("Players." + uuid + ".Name")) data.set("Players." + uuid + ".Name", name);
+                            if (!data.contains("Players." + uuid + ".Name")) data.set("Players." + uuid + ".Name", name);
 
-                        data.set("Players." + uuid + "." + key, (Math.max((keys + amount), 0)));
+                            data.set("Players." + uuid + "." + key, (Math.max((keys + amount), 0)));
 
-                        Files.data.save();
-                        Files.data.reload();
+                            Files.data.save();
+                            Files.data.reload();
+                        }
                     });
 
                     success.add("<green>⤷ " + name);
