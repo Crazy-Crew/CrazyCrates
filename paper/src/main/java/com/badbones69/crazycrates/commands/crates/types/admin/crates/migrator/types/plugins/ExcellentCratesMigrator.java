@@ -239,9 +239,9 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             set(root, "Item", crateConfig.getString("Item.Material", "player_head").toLowerCase());
 
-            final String itemName = crateConfig.getString("Item.Name", "%crate%").replace("%crate%", crateName);
+            final String itemName = crateConfig.getString("Item.Name", "");
 
-            set(root, "Preview-Name", Methods.convert(itemName + " Preview"));
+            set(root, "Preview-Name", Methods.convert(itemName.isEmpty() ? crateConfig.getString("Name", "%crate%").replace("%crate%", strippedName) : itemName + " Preview"));
 
             if (crateItem.hasItemMeta()) {
                 final ItemMeta itemMeta = crateItem.getItemMeta();
