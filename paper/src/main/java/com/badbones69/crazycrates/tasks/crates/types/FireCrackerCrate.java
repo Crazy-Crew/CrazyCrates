@@ -62,7 +62,7 @@ public class FireCrackerCrate extends CrateBuilder {
 
         addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
             final int random = ThreadLocalRandom.current().nextInt(colors.size());
-            final Location clonedLocation = location.clone().add(.5, 25, .5);
+            final Location clonedLocation = location.clone().add(0.5, 25, 0.5);
 
             int length = 0;
 

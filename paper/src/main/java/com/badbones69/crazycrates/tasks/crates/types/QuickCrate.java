@@ -88,7 +88,7 @@ public class QuickCrate extends CrateBuilder {
 
                 final Prize prize = this.crate.pickPrize(this.player);
 
-                PrizeManager.givePrize(this.player, this.location.clone().add(.5, 1, .5), this.crate, prize);
+                PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, 0.5), this.crate, prize);
 
                 used++;
             }
@@ -168,7 +168,7 @@ public class QuickCrate extends CrateBuilder {
             Item reward;
 
             try {
-                reward = this.player.getWorld().dropItem(this.location.clone().add(.5, 1, .5), display);
+                reward = this.player.getWorld().dropItem(this.location.clone().add(0.5, 1, 0.5), display);
             } catch (IllegalArgumentException exception) {
                 if (MiscUtils.isLogging()) {
                     final ComponentLogger logger = this.plugin.getComponentLogger();
@@ -180,7 +180,7 @@ public class QuickCrate extends CrateBuilder {
                 return;
             }
 
-            reward.setVelocity(new Vector(0, .2, 0));
+            reward.setVelocity(new Vector(0, 0.2, 0));
 
             reward.customName(Methods.parse(prize.getPrizeName()));
 
@@ -192,7 +192,7 @@ public class QuickCrate extends CrateBuilder {
 
             ChestManager.openChest(this.location.getBlock(), true);
 
-            PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, .5), this.crate, prize);
+            PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, 0.5), this.crate, prize);
 
             addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
                 @Override
@@ -206,7 +206,7 @@ public class QuickCrate extends CrateBuilder {
 
         ChestManager.openChest(this.location.getBlock(), true);
 
-        PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, .5), this.crate, prize);
+        PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, 0.5), this.crate, prize);
 
         addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
             @Override

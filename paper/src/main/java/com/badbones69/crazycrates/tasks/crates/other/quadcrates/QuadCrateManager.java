@@ -223,13 +223,13 @@ public class QuadCrateManager {
         // Paste the structure in.
         this.handler.pasteStructure(this.spawnLocation, true);
 
-        this.player.teleportAsync(this.spawnLocation.clone().toCenterLocation().add(0, 1.0, 0));
+        this.player.teleportAsync(this.spawnLocation.clone().toCenterLocation().add(0, 1, 0));
 
         this.crateManager.addQuadCrateTask(this.player, new FoliaRunnable(this.player.getScheduler(), null) {
             double radius = 0.0; // Radius of the particle spiral.
             int crateNumber = 0; // The crate number that spawns next.
             int tickTillSpawn = 0; // At tick 60 the crate will spawn and then reset the tick.
-            Location particleLocation = crateLocations.get(this.crateNumber).clone().add(.5, 3, .5);
+            Location particleLocation = crateLocations.get(this.crateNumber).clone().add(0.5, 3, 0.5);
             List<Location> spiralLocationsClockwise = SpiralManager.getSpiralLocationClockwise(particleLocation);
             List<Location> spiralLocationsCounterClockwise = SpiralManager.getSpiralLocationCounterClockwise(particleLocation);
 
@@ -254,7 +254,7 @@ public class QuadCrateManager {
                         this.tickTillSpawn = 0;
                         this.crateNumber++;
                         this.radius = 0;
-                        this.particleLocation = crateLocations.get(this.crateNumber).clone().add(.5, 3, .5); // Set the new particle location for the new crate
+                        this.particleLocation = crateLocations.get(this.crateNumber).clone().add(0.5, 3, 0.5); // Set the new particle location for the new crate
                         this.spiralLocationsClockwise = SpiralManager.getSpiralLocationClockwise(this.particleLocation);
                         this.spiralLocationsCounterClockwise = SpiralManager.getSpiralLocationCounterClockwise(this.particleLocation);
                     }
