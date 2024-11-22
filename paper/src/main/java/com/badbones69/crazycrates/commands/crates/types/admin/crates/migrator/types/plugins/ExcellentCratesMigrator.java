@@ -18,24 +18,73 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.excellentcrates.CratesAPI;
 import su.nightexpress.excellentcrates.crate.impl.Crate;
+import su.nightexpress.excellentcrates.data.impl.CrateUser;
 import su.nightexpress.excellentcrates.key.CrateKey;
 import su.nightexpress.nightcore.config.FileConfig;
+import us.crazycrew.crazycrates.api.users.UserManager;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 public class ExcellentCratesMigrator extends ICrateMigrator {
 
-    public ExcellentCratesMigrator(final CommandSender sender) {
+    private final boolean ignoreCrates;
+
+    public ExcellentCratesMigrator(final CommandSender sender, boolean ignoreCrates) {
         super(sender, MigrationType.EXCELLENT_CRATES);
+
+        this.ignoreCrates = ignoreCrates;
     }
 
     @Override
     public void run() {
+        final List<String> failed = new ArrayList<>();
+        final List<String> success = new ArrayList<>();
+
+        if (this.ignoreCrates) {
+            final UserManager userManager = this.plugin.getUserManager();
+
+            for (final CrateUser user : CratesAPI.getUserManager().getAllUsers()) {
+                final String name = user.getName();
+
+                try {
+                    final UUID uuid = user.getId();
+
+                    user.getKeysMap().forEach((key, amount) -> {
+                        final YamlConfiguration data = Files.data.getConfiguration();
+
+                        final int keys = userManager.getVirtualKeys(uuid, crateName);
+
+                        if (!data.contains("Players." + uuid + ".Name")) data.set("Players." + uuid + ".Name", name);
+
+                        data.set("Players." + uuid + "." + key, (Math.max((keys + amount), 0)));
+
+                        Files.data.save();
+                        Files.data.reload();
+                    });
+
+                    success.add("<green>⤷ " + name);
+                } catch (Exception exception) {
+                    failed.add("<red>⤷ " + name);
+                }
+            }
+
+            Messages.successfully_migrated_users.sendMessage(this.sender, new HashMap<>() {{
+                put("{succeeded_amount}", String.valueOf(success.size()));
+                put("{failed_names}", !failed.isEmpty() ? String.join(",", failed) : "<red>No Names");
+                put("{type}", type.getName());
+                put("{time}", time());
+            }});
+
+            return;
+        }
+
         final File directory = getCratesDirectory();
 
         if (!directory.exists()) {
@@ -43,9 +92,6 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
         }
 
         final File crateDirectory = CratesAPI.PLUGIN.getDataFolder();
-
-        final List<String> failed = new ArrayList<>();
-        final List<String> success = new ArrayList<>();
 
         YamlConfiguration locationData = Files.locations.getConfiguration();
 

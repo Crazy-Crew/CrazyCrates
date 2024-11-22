@@ -59,6 +59,19 @@ public class CommandKeys implements SettingsHolder {
 
     public static final Property<String> migration_no_crates_available = newProperty("command.migrate.no-crates-available", "{prefix}<green>There is no crates available for migration!");
 
+    public static final Property<List<String>> successfully_migrated_users = newListProperty("command.migrate.success-users", List.of(
+            "<bold><gold>━━━━━━━━━━━━━━━━━━━ Migration Stats ━━━━━━━━━━━━━━━━━━━</gold></bold>",
+            "<dark_gray>»</dark_gray> <green>Successful Conversions: ",
+            " ⤷ {succeeded_amount}</green>",
+            "<dark_gray>»</dark_gray> <red>Failed Conversions: ",
+            " ⤷ {failed_names}</red>",
+            "",
+            "<red>Conversion Time: <yellow>{time}",
+            "<red>Conversion Type: <yellow>{type}",
+            "",
+            "<bold><gold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</gold></bold>"
+    ));
+
     @Comment({
             "A list of available placeholders: {type}, {files}",
             "",
