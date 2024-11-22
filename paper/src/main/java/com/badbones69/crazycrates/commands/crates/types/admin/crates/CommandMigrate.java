@@ -11,24 +11,33 @@ import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ty
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.deprecation.WeightMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.plugins.ExcellentCratesMigrator;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
-import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Flag;
-import dev.triumphteam.cmd.core.annotations.Suggestion;
 import dev.triumphteam.cmd.core.argument.keyed.Flags;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
-import org.jetbrains.annotations.NotNull;
-import java.util.Optional;
+import java.util.HashMap;
 
 public class CommandMigrate extends BaseCommand {
 
     @Command("migrate")
     @Permission(value = "crazycrates.migrate", def = PermissionDefault.OP)
-    @Flag(flag = "c")
-    @Flag(flag = "i")
-    public void migrate(final CommandSender sender, @ArgName("migration_type") @Suggestion("migrators") final String name, Flags flags) {
-        final MigrationType type = MigrationType.fromName(name);
+    @Flag(flag = "mt", longFlag = "migration_type", argument = String.class, suggestion = "migrators")
+    @Flag(flag = "c", longFlag = "crate", argument = String.class, suggestion = "crates")
+    @Flag(flag = "d", longFlag = "data")
+    public void migrate(final CommandSender sender, Flags flags) {
+        final boolean hasFlag = flags.hasFlag("mt");
+
+        if (!hasFlag) {
+            Messages.lacking_flag.sendMessage(sender, new HashMap<>() {{
+                put("{flag}", "-mt");
+                put("{usage}", "/crazycrates migrate -mt <migration_type>");
+            }});
+
+            return;
+        }
+
+        final MigrationType type = MigrationType.fromName(flags.getFlagValue("mt").orElse(null));
 
         if (type == null) {
             Messages.migration_not_available.sendMessage(sender);
@@ -39,23 +48,26 @@ public class CommandMigrate extends BaseCommand {
         switch (type) {
             case MOJANG_MAPPED_ALL -> new MojangMappedMigratorMultiple(sender, type).run();
             case MOJANG_MAPPED_SINGLE -> {
-                final boolean hasCrate = flags.hasFlag("c");
+                final boolean hasCrateFlag = flags.hasFlag("c");
 
-                if (!hasCrate) {
+                if (!hasCrateFlag) {
+                    Messages.lacking_flag.sendMessage(sender, new HashMap<>() {{
+                        put("{flag}", "-c");
+                        put("{usage}", "/crazycrates migrate -t <insert_type> -c <crate>");
+                    }});
+
+                    return;
+                }
+
+                final String crateName = flags.getFlagValue("c").orElse(null);
+
+                if (crateName == null || crateName.isBlank() || crateName.equalsIgnoreCase("Menu")) {
                     Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
 
                     return;
                 }
 
-                final @NotNull Optional<String> crateName = flags.getFlagValue("c");
-
-                if (crateName.isEmpty() || crateName.get().isBlank() || crateName.get().equalsIgnoreCase("Menu")) {
-                    Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
-
-                    return;
-                }
-
-                new MojangMappedMigratorSingle(sender, type, crateName.orElse(null)).run();
+                new MojangMappedMigratorSingle(sender, type, crateName).run();
             }
 
             case WEIGHT_MIGRATION -> new WeightMigrator(sender, type).run();
@@ -73,7 +85,7 @@ public class CommandMigrate extends BaseCommand {
                     return;
                 }
 
-                new ExcellentCratesMigrator(sender, flags.hasFlag("i")).run();
+                new ExcellentCratesMigrator(sender, flags.hasFlag("d")).run();
             }
         }
     }
