@@ -5,7 +5,6 @@
 # Features: https://github.com/Crazy-Crew/CrazyCrates/issues
 #
 # List of all sounds: https://minecraft.wiki/w/Sounds.json#Java_Edition_values
-# List of all enchantments: https://jd.papermc.io/paper/1.20/org/bukkit/enchantments/Enchantment.html
 root:
   # This option will let you test a different way of picking random numbers. If you have any issues, You can set it back to false.
   #
@@ -34,18 +33,18 @@ root:
   # send_message -> sends messages in chat.
   # send_actionbar -> sends messages in actionbar.
   #
-  message-state: send_message
+  message-state: "send_message"
   # A list of available hologram plugins:
   #  -> DecentHolograms
   #  -> FancyHolograms
   #  -> CMI
   #
   # If the option is set to blank, it'll pick whatever plugin it feels like picking.
-  hologram-plugin: ''
+  hologram-plugin: ""
   # This will wipe the example folder on /crazycrates reload or plugin startup. so you always have fresh examples to look at.
   update-examples-folder: true
   # The prefix used in commands
-  command_prefix: '<dark_gray>[<blue>CrazyCrates<dark_gray>]: '
+  command_prefix: "<dark_gray>[<blue>CrazyCrates<dark_gray>]: "
 # Settings related to guis.
 gui:
   # If /crates should open the main menu. Warning: This will remove the menu button from crate previews.
@@ -53,7 +52,7 @@ gui:
   # Inventory settings like size.
   inventory:
     # The name of the gui.
-    name: <bold><blue>Crazy <dark_red>Crates</bold>
+    name: "<bold><blue>Crazy <dark_red>Crates</bold>"
     # The amount of rows for a gui.
     rows: 5
     # The buttons in the gui.
@@ -61,52 +60,52 @@ gui:
       # The main menu button.
       menu:
         # The item the button should be.
-        item: compass
+        item: "compass"
         override:
           # This will disable our current functionality of our main menu button in crate previews.
           # It allows you to override and use a menu of your choice from your plugin using a command.
           toggle: false
           # A list of commands to run when the main menu button is clicked. The override option above has to be set to true.
           list:
-            - see {player}
+            - "see {player}"
         # The custom model data for the item, -1 is disabled.
         custom-model-data: -1
         # The name of the item.
-        name: <bold><gray>» <red>Menu <gray>«</bold>
+        name: "<bold><gray>» <red>Menu <gray>«</bold>"
         # The lore of the item.
         lore:
-          - <gray>Return to the menu.
+          - "<gray>Return to the menu."
       # The next button.
       next:
         # The item the button should be.
-        item: feather
+        item: "feather"
         # The custom model data for the item, -1 is disabled.
         custom-model-data: -1
         # The name of the item.
-        name: <bold><gold>Next »</bold>
+        name: "<bold><gold>Next »</bold>"
         # The lore of the item.
         lore:
-          - <bold><gray>Page:</bold> <blue>{page}
+          - "<bold><gray>Page:</bold> <blue>{page}"
       # The back button.
       back:
         # The item the button should be.
-        item: feather
+        item: "feather"
         # The custom model data for the item, -1 is disabled.
         custom-model-data: -1
         # The name of the item.
-        name: <bold><gold>« Back</bold>
+        name: "<bold><gold>« Back</bold>"
         # The lore of the item.
         lore:
-          - <bold><gray>Page:</bold> <blue>{page}
+          - "<bold><gray>Page:</bold> <blue>{page}"
       filler:
         # Should the menu should be filled with one type of item?
         toggle: false
         # The item to fill the menu with.
-        item: black_stained_glass_pane
+        item: "black_stained_glass_pane"
         # The custom model data for the item, -1 is disabled.
         custom-model-data: -1
         # The name of the item.
-        name: ' '
+        name: " "
         # The lore of the item.
         lore: []
       customizer:
@@ -114,50 +113,61 @@ gui:
         toggle: true
         # The items to set to the gui.
         items:
-          - 'slot:0, item:red_stained_glass_pane, name: '
-          - 'slot:1, item:red_stained_glass_pane, name: '
-          - 'slot:2, item:red_stained_glass_pane, name: '
-          - 'slot:3, item:red_stained_glass_pane, name: '
-          - 'slot:4, item:red_stained_glass_pane, name: '
-          - 'slot:5, item:red_stained_glass_pane, name: '
-          - 'slot:6, item:red_stained_glass_pane, name: '
-          - 'slot:7, item:red_stained_glass_pane, name: '
-          - 'slot:8, item:red_stained_glass_pane, name: '
-          - 'slot:36, item:red_stained_glass_pane, name: '
-          - 'slot:37, item:red_stained_glass_pane, name: '
-          - 'slot:38, item:red_stained_glass_pane, name: '
-          - 'slot:39, item:red_stained_glass_pane, name: '
-          - 'slot:40, item:red_stained_glass_pane, name: '
-          - 'slot:41, item:red_stained_glass_pane, name: '
-          - 'slot:42, item:red_stained_glass_pane, name: '
-          - 'slot:43, item:red_stained_glass_pane, name: '
-          - 'slot:44, item:red_stained_glass_pane, name: '
-          - 'slot:9, item:blue_stained_glass_pane, name: '
-          - 'slot:18, item:blue_stained_glass_pane, name: '
-          - 'slot:27, item:blue_stained_glass_pane, name: '
-          - 'slot:17, item:blue_stained_glass_pane, name: '
-          - 'slot:26, item:blue_stained_glass_pane, name: '
-          - 'slot:35, item:blue_stained_glass_pane, name: '
-          - 'slot:10, item:cyan_stained_glass_pane, name: '
-          - 'slot:12, item:cyan_stained_glass_pane, name: '
-          - 'slot:14, item:cyan_stained_glass_pane, name: '
-          - 'slot:24, item:cyan_stained_glass_pane, name: '
-          - 'slot:16, item:cyan_stained_glass_pane, name: '
-          - 'slot:19, item:cyan_stained_glass_pane, name: '
-          - 'slot:20, item:cyan_stained_glass_pane, name: '
-          - 'slot:21, item:cyan_stained_glass_pane, name: '
-          - 'slot:22, item:cyan_stained_glass_pane, name: '
-          - 'slot:23, item:cyan_stained_glass_pane, name: '
-          - 'slot:24, item:cyan_stained_glass_pane, name: '
-          - 'slot:25, item:cyan_stained_glass_pane, name: '
-          - 'slot:28, item:cyan_stained_glass_pane, name: '
-          - 'slot:30, item:cyan_stained_glass_pane, name: '
-          - 'slot:31, item:cyan_stained_glass_pane, name: '
-          - 'slot:32, item:cyan_stained_glass_pane, name: '
-          - 'slot:33, item:cyan_stained_glass_pane, name: '
-          - 'slot:34, item:cyan_stained_glass_pane, name: '
+          - "slot:0, item:red_stained_glass_pane, name: "
+          - "slot:1, item:red_stained_glass_pane, name: "
+          - "slot:2, item:red_stained_glass_pane, name: "
+          - "slot:3, item:red_stained_glass_pane, name: "
+          - "slot:4, item:red_stained_glass_pane, name: "
+          - "slot:5, item:red_stained_glass_pane, name: "
+          - "slot:6, item:red_stained_glass_pane, name: "
+          - "slot:7, item:red_stained_glass_pane, name: "
+          - "slot:8, item:red_stained_glass_pane, name: "
+          - "slot:36, item:red_stained_glass_pane, name: "
+          - "slot:37, item:red_stained_glass_pane, name: "
+          - "slot:38, item:red_stained_glass_pane, name: "
+          - "slot:39, item:red_stained_glass_pane, name: "
+          - "slot:40, item:red_stained_glass_pane, name: "
+          - "slot:41, item:red_stained_glass_pane, name: "
+          - "slot:42, item:red_stained_glass_pane, name: "
+          - "slot:43, item:red_stained_glass_pane, name: "
+          - "slot:44, item:red_stained_glass_pane, name: "
+          - "slot:9, item:blue_stained_glass_pane, name: "
+          - "slot:18, item:blue_stained_glass_pane, name: "
+          - "slot:27, item:blue_stained_glass_pane, name: "
+          - "slot:17, item:blue_stained_glass_pane, name: "
+          - "slot:26, item:blue_stained_glass_pane, name: "
+          - "slot:35, item:blue_stained_glass_pane, name: "
+          - "slot:10, item:cyan_stained_glass_pane, name: "
+          - "slot:12, item:cyan_stained_glass_pane, name: "
+          - "slot:14, item:cyan_stained_glass_pane, name: "
+          - "slot:24, item:cyan_stained_glass_pane, name: "
+          - "slot:16, item:cyan_stained_glass_pane, name: "
+          - "slot:19, item:cyan_stained_glass_pane, name: "
+          - "slot:20, item:cyan_stained_glass_pane, name: "
+          - "slot:21, item:cyan_stained_glass_pane, name: "
+          - "slot:22, item:cyan_stained_glass_pane, name: "
+          - "slot:23, item:cyan_stained_glass_pane, name: "
+          - "slot:24, item:cyan_stained_glass_pane, name: "
+          - "slot:25, item:cyan_stained_glass_pane, name: "
+          - "slot:28, item:cyan_stained_glass_pane, name: "
+          - "slot:30, item:cyan_stained_glass_pane, name: "
+          - "slot:31, item:cyan_stained_glass_pane, name: "
+          - "slot:32, item:cyan_stained_glass_pane, name: "
+          - "slot:33, item:cyan_stained_glass_pane, name: "
+          - "slot:34, item:cyan_stained_glass_pane, name: "
 # Settings related to crates.
 crate:
+  interaction:
+    # This will switch how previews/opening the physical crates are handled.
+    #
+    #  true -> Right click to open, Left click to preview
+    #  false -> Left click to open, Right click to preview
+    physical: true
+    # This will switch how previews/opening the virtual crates are handled.
+    #
+    #  true -> Right click to open, Left click to preview
+    #  false -> Left click to open, Right click to preview
+    virtual: false
   # Whether to show the display item when opening QuickCrate
   quickcrate-display-item: true
   # If crates should knock you back if you have no keys.
@@ -191,14 +201,14 @@ crate:
       toggle: true
       # The type of sound to use.
       # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
-      name: entity.villager.no
+      name: "entity.villager.no"
   # Settings related to QuadCrate
   quad-crate:
     # How long should the quad crate be active?
     timer: 300
   # What worlds do you want Crates to be disabled in?
   disabled-worlds:
-    - world_nether
+    - "world_nether"
   # This option if set to true will force the crate to take the required keys set in the crate file
   use-required-keys: false
   # This section contains settings related to different crate types.
@@ -209,12 +219,12 @@ crate:
       # This is above and below the prize.
       #
       # Set this to blank to have it populate with glass.
-      cycling-material: gold_ingot
+      cycling-material: "gold_ingot"
       # Sets a static material in the csgo crate in slot 4 and 22
       # This is above and below the prize and only shows up when the crate ends.
       #
       # Set this to blank to have it populate with glass.
-      finished-material: iron_ingot
+      finished-material: "iron_ingot"
   # Logs all crate actions to console if enabled.
   log-to-console: false
   # Logs all crate/key actions to individual files, on plugin reload and shutdown. the files will zip to avoid size errors.
