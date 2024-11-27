@@ -21,7 +21,7 @@ import com.badbones69.crazycrates.commands.crates.types.admin.keys.CommandTake;
 import com.badbones69.crazycrates.commands.crates.types.player.CommandKey;
 import com.badbones69.crazycrates.commands.crates.types.player.CommandTransfer;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.paper.api.builders.PlayerBuilder;
+import com.badbones69.crazycrates.api.PlayerBuilder;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
 import org.bukkit.command.CommandSender;

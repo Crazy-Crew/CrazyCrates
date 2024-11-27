@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.commands.crates.types.admin.keys;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
-import com.ryderbelserion.vital.paper.api.builders.PlayerBuilder;
+import com.badbones69.crazycrates.api.PlayerBuilder;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
