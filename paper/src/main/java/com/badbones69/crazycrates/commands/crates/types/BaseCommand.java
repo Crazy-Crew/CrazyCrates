@@ -160,6 +160,7 @@ public abstract class BaseCommand {
             placeholders.put("{amount}", String.valueOf(amount));
             placeholders.put("{keytype}", type.getFriendlyName());
             placeholders.put("{player}", player.getName());
+            placeholders.put("{key}", crate.getKeyName());
 
             Messages.take_player_keys.sendMessage(sender, placeholders);
 
@@ -174,6 +175,7 @@ public abstract class BaseCommand {
             placeholders.put("{amount}", String.valueOf(amount));
             placeholders.put("{keytype}", type.getFriendlyName());
             placeholders.put("{player}", offlinePlayer.getName());
+            placeholders.put("{key}", crate.getKeyName());
 
             Messages.take_offline_player_keys.sendMessage(sender, placeholders);
 
@@ -236,6 +238,7 @@ public abstract class BaseCommand {
                 placeholders.put("{amount}", String.valueOf(amount));
                 placeholders.put("{keytype}", type.getFriendlyName());
                 placeholders.put("{player}", offlinePlayer.getName());
+                placeholders.put("{key}", crate.getKeyName());
 
                 Messages.given_offline_player_keys.sendMessage(sender, placeholders);
 
