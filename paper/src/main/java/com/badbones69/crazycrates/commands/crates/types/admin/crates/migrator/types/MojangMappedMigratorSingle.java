@@ -14,8 +14,8 @@ import java.util.List;
 
 public class MojangMappedMigratorSingle extends ICrateMigrator {
 
-    public MojangMappedMigratorSingle(final CommandSender sender, final MigrationType type, final String crateName) {
-        super(sender, type, crateName);
+    public MojangMappedMigratorSingle(final CommandSender sender, final String crateName) {
+        super(sender, MigrationType.MOJANG_MAPPED_SINGLE, crateName);
     }
 
     @Override

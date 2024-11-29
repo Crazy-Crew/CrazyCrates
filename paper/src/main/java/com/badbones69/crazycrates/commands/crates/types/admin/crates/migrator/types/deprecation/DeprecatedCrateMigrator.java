@@ -13,8 +13,8 @@ import java.util.List;
 
 public class DeprecatedCrateMigrator extends ICrateMigrator {
 
-    public DeprecatedCrateMigrator(final CommandSender sender, final MigrationType type) {
-        super(sender, type);
+    public DeprecatedCrateMigrator(final CommandSender sender) {
+        super(sender, MigrationType.CRATES_DEPRECATED_ALL);
     }
 
     @Override

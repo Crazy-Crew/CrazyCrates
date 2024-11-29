@@ -14,8 +14,8 @@ import java.util.List;
 
 public class WeightMigrator extends ICrateMigrator {
 
-    public WeightMigrator(final CommandSender sender, final MigrationType type) {
-        super(sender, type);
+    public WeightMigrator(final CommandSender sender) {
+        super(sender, MigrationType.WEIGHT_MIGRATION);
     }
 
     @Override

@@ -9,12 +9,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public class MojangMappedMigratorMultiple extends ICrateMigrator {
 
-    public MojangMappedMigratorMultiple(final CommandSender sender, final MigrationType type) {
-        super(sender, type);
+    public MojangMappedMigratorMultiple(final CommandSender sender) {
+        super(sender, MigrationType.MOJANG_MAPPED_ALL);
     }
 
     @Override

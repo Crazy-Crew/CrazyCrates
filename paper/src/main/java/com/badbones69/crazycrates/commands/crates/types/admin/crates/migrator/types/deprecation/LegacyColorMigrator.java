@@ -15,8 +15,8 @@ import java.util.List;
 
 public class LegacyColorMigrator extends ICrateMigrator {
 
-    public LegacyColorMigrator(final CommandSender sender, final MigrationType type) {
-        super(sender, type);
+    public LegacyColorMigrator(final CommandSender sender) {
+        super(sender, MigrationType.LEGACY_COLOR_ALL);
     }
 
     @Override

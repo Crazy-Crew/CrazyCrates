@@ -15,6 +15,8 @@ public enum MigrationType {
 
     EXCELLENT_CRATES("ExcellentCrates"),
 
+    PRIZE_NAME_SHUFFLER("PrizeNameShuffler"),
+
     SPECIALIZED_CRATES("SpecializedCrates");
 
     private final String name;

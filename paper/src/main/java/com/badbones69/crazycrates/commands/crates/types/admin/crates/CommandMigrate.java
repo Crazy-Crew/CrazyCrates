@@ -46,7 +46,7 @@ public class CommandMigrate extends BaseCommand {
         }
 
         switch (type) {
-            case MOJANG_MAPPED_ALL -> new MojangMappedMigratorMultiple(sender, type).run();
+            case MOJANG_MAPPED_ALL -> new MojangMappedMigratorMultiple(sender).run();
             case MOJANG_MAPPED_SINGLE -> {
                 final boolean hasCrateFlag = flags.hasFlag("c");
 
@@ -67,14 +67,14 @@ public class CommandMigrate extends BaseCommand {
                     return;
                 }
 
-                new MojangMappedMigratorSingle(sender, type, crateName).run();
+                new MojangMappedMigratorSingle(sender, crateName).run();
             }
 
-            case WEIGHT_MIGRATION -> new WeightMigrator(sender, type).run();
+            case WEIGHT_MIGRATION -> new WeightMigrator(sender).run();
 
-            case LEGACY_COLOR_ALL -> new LegacyColorMigrator(sender, type).run();
+            case LEGACY_COLOR_ALL -> new LegacyColorMigrator(sender).run();
 
-            case CRATES_DEPRECATED_ALL -> new DeprecatedCrateMigrator(sender, type).run();
+            case CRATES_DEPRECATED_ALL -> new DeprecatedCrateMigrator(sender).run();
 
             case SPECIALIZED_CRATES -> sender.sendRichMessage(Messages.migration_not_available.getMessage(sender));
 
