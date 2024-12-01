@@ -157,7 +157,7 @@ An example of what a prize would look like with the `Max-Pulls` option
         - "gradient_up:light_gray"
         - "straight_cross:light_blue"
         - "flower:light_blue"
-      # Prize settings
+      # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
@@ -369,7 +369,7 @@ Crate:
       # The item to display in the gui.
       # The enchanted book will function with the enchants properly in an anvil.
       DisplayItem: "sunflower"
-      # Prize settings
+      # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
@@ -455,7 +455,7 @@ Items:
       DisplayName: "<green>Creeper Spawner"
       # The enchants to display in the gui.
       DisplayItem: "spawner"
-      # Prize settings
+      # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1

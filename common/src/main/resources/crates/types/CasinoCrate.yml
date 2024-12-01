@@ -230,7 +230,7 @@ Crate:
       DisplayName: "<gold>BadBones69"
       # The item to display in the gui.
       DisplayItem: "player_head"
-      # Prize settings
+      # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
@@ -255,7 +255,7 @@ Crate:
       DisplayName: "<bold><dark_red>Warlord's Set</bold>"
       # The item to display in the gui.
       DisplayItem: "netherite_helmet"
-      # Prize settings
+      # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
@@ -316,7 +316,7 @@ Crate:
       # The item to display in the gui.
       # The enchanted book will function with the enchants properly in an anvil.
       DisplayItem: "enchanted_book"
-      # Prize settings
+      # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
@@ -339,7 +339,7 @@ Crate:
       DisplayName: "<bold><green>Fancy Pants</bold>"
       # The item to display in the gui.
       DisplayItem: "chainmail_leggings"
-      # Prize settings
+      # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
@@ -380,7 +380,7 @@ Crate:
       DisplayName: "<bold><blue>Classic Sword</bold>"
       # The item to display in the gui.
       DisplayItem: "diamond_sword"
-      # Prize settings
+      # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1

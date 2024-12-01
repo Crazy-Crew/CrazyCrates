@@ -249,7 +249,7 @@ Crate:
       DisplayName: "<gold>BadBones69"
       # The item to display in the gui.
       DisplayItem: "player_head"
-      # Prize settings
+      # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
@@ -272,7 +272,7 @@ Crate:
     "2":
       DisplayName: "<bold><blue>Cheap Helmet</bold>"
       DisplayItem: "golden_helmet"
-      # Prize settings
+      # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
@@ -310,7 +310,7 @@ Crate:
       DisplayName: "<bold><yellow>$1,000</bold>"
       # The item to display in the gui.
       DisplayItem: "sunflower"
-      # Prize settings
+      # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
@@ -337,7 +337,7 @@ Crate:
       DisplayName: "<bold><blue>Crazy <dark_red>Sword</bold>"
       # The item to display in the gui.
       DisplayItem: "golden_sword"
-      # Prize settings
+      # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
@@ -367,7 +367,7 @@ Crate:
       DisplayName: "<bold><yellow>$1,000,000</bold>"
       # The item to display in the gui.
       DisplayItem: "sunflower"
-      # Prize settings
+      # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
@@ -392,7 +392,7 @@ Crate:
       DisplayName: "<bold><blue>Crazy Crate <gold>Key <gray>(x2)</bold>"
       # The item to display in the gui.
       DisplayItem: "lime_dye"
-      # Prize settings
+      # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1

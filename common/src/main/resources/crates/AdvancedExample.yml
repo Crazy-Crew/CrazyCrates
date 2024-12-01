@@ -162,7 +162,7 @@ Crate:
       DisplayName: "<bold><dark_red>Warlord's Set</bold>"
       # The item to display in the gui.
       DisplayItem: "netherite_helmet"
-      # Prize settings
+      # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
@@ -219,7 +219,7 @@ Crate:
       # The item to display in the gui.
       # The enchanted book will function with the enchants properly in an anvil.
       DisplayItem: "enchanted_book"
-      # Prize settings
+      # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
