@@ -134,7 +134,7 @@ public class RouletteCrate extends CrateBuilder {
 
                         crateManager.removePlayerFromOpeningList(player);
 
-                        new FoliaScheduler(plugin, SchedulerType.entity_scheduler) {
+                        new FoliaScheduler(plugin, null, player) {
                             @Override
                             public void run() { //todo() use inventory holders
                                 if (player.getOpenInventory().getTopInventory().equals(inventory)) player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);

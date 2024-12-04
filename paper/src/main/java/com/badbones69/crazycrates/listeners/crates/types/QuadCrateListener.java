@@ -112,7 +112,7 @@ public class QuadCrateListener implements Listener {
 
             // Check if all crates have spawned then end if so.
             if (session.allCratesOpened()) {
-                new FoliaScheduler(plugin, SchedulerType.entity_scheduler) {
+                new FoliaScheduler(plugin, null, player) {
                     @Override
                     public void run() {
                         session.endCrate(false);
