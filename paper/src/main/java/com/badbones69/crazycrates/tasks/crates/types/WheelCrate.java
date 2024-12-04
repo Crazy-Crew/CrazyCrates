@@ -7,7 +7,8 @@ import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
-import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
+import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
+import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -77,7 +78,7 @@ public class WheelCrate extends CrateBuilder {
 
         final Material material = Material.LIME_STAINED_GLASS_PANE;
 
-        addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
+        addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
             final List<Integer> slots = getBorder();
 
             int uh = 0;
@@ -178,7 +179,7 @@ public class WheelCrate extends CrateBuilder {
                 this.uh++;
                 this.what++;
             }
-        }.runAtFixedRate(this.plugin, 1, 1));
+        }.runAtFixedRate(1, 1));
     }
 
     private List<Integer> getBorder() {

@@ -7,7 +7,8 @@ import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
+import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
+import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
@@ -79,12 +80,12 @@ public class CasinoCrate extends CrateBuilder {
 
                 this.crateManager.removePlayerFromOpeningList(this.player);
 
-                new FoliaRunnable(this.player.getScheduler(), null) {
+                new FoliaScheduler(this.plugin, null, this.player) {
                     @Override
                     public void run() { //todo() use inventory holders
                         if (player.getOpenInventory().getTopInventory().equals(inventory)) player.closeInventory();
                     }
-                }.runDelayed(this.plugin, 40);
+                }.runDelayed(40);
 
                 cancel();
 
@@ -143,7 +144,7 @@ public class CasinoCrate extends CrateBuilder {
 
         setDisplayItems(true);
 
-        runAtFixedRate(this.plugin, 1, 1);
+        runAtFixedRate(1, 1);
 
         this.player.openInventory(this.inventory);
     }

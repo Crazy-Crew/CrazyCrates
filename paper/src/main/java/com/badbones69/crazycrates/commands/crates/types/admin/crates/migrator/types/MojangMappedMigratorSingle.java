@@ -4,7 +4,8 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.vital.paper.api.files.CustomFile;
+import com.ryderbelserion.vital.files.enums.FileType;
+import com.ryderbelserion.vital.paper.api.files.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import java.io.File;
@@ -26,13 +27,23 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
             return;
         }
 
-        final CustomFile customFile = this.plugin.getVital().getFileManager().getFile(this.crateName, true);
+        final PaperCustomFile customFile = this.plugin.getVital().getFileManager().getFile(this.crateName, FileType.YAML);
 
         if (customFile == null) {
             Messages.error_migrating.sendMessage(this.sender, new HashMap<>() {{
                 put("{file}", crateName);
                 put("{type}", type.getName());
                 put("{reason}", "File was not loaded properly.");
+            }});
+
+            return;
+        }
+
+        if (!customFile.isDynamic()) {
+            Messages.error_migrating.sendMessage(this.sender, new HashMap<>() {{
+                put("{file}", crateName);
+                put("{type}", type.getName());
+                put("{reason}", "File requested is not a crate config file.");
             }});
 
             return;

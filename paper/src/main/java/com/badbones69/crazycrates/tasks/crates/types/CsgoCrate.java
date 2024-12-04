@@ -9,9 +9,10 @@ import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
-import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
+import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -65,7 +66,7 @@ public class CsgoCrate extends CrateBuilder {
         // Open the inventory.
         this.player.openInventory(this.inventory);
 
-        addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
+        addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
             int time = 1;
 
             int full = 0;
@@ -133,12 +134,12 @@ public class CsgoCrate extends CrateBuilder {
 
                         crateManager.removePlayerFromOpeningList(player);
 
-                        new FoliaRunnable(player.getScheduler(), null) {
+                        new FoliaScheduler(plugin, null, player) {
                             @Override
                             public void run() { //todo() use inventory holders
                                 if (player.getOpenInventory().getTopInventory().equals(inventory)) player.closeInventory();
                             }
-                        }.runDelayed(plugin, 40);
+                        }.runDelayed(40);
 
                         cancel();
                     } else if (this.time > 60) { // Added this due reports of the prizes spamming when low tps.
@@ -146,7 +147,7 @@ public class CsgoCrate extends CrateBuilder {
                     }
                 }
             }
-        }.runAtFixedRate(this.plugin, 0, 1));
+        }.runAtFixedRate(0, 1));
     }
 
     private void populate() {

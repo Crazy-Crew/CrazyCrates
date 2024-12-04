@@ -26,10 +26,11 @@ import com.badbones69.crazycrates.tasks.crates.types.RouletteCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WonderCrate;
-import com.ryderbelserion.vital.paper.api.files.CustomFile;
-import com.ryderbelserion.vital.paper.api.files.FileManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
+import com.ryderbelserion.vital.files.enums.FileType;
 import com.ryderbelserion.vital.paper.api.enums.Support;
+import com.ryderbelserion.vital.paper.api.files.PaperCustomFile;
+import com.ryderbelserion.vital.paper.api.files.PaperFileManager;
 import com.ryderbelserion.vital.utils.Methods;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
@@ -80,7 +81,7 @@ public class CrateManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-    private final FileManager fileManager = this.plugin.getVital().getFileManager();
+    private final PaperFileManager fileManager = this.plugin.getVital().getFileManager();
 
     private final List<CrateLocation> crateLocations = new ArrayList<>();
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
@@ -310,7 +311,7 @@ public class CrateManager {
 
         for (final String crateName : getCrateNames()) {
             try {
-                final CustomFile customFile = this.fileManager.getFile(crateName, true);
+                final PaperCustomFile customFile = this.fileManager.getFile(crateName, FileType.YAML);
 
                 if (customFile == null) continue;
 

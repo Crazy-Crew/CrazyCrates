@@ -5,7 +5,8 @@ import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.common.utils.CrazyUtil;
 import com.ryderbelserion.vital.paper.api.enums.Support;
-import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
+import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
+import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
 import com.ryderbelserion.vital.utils.Methods;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -55,12 +56,12 @@ public class MiscUtils {
 
         final String result = populatePlaceholders(sender, command, placeholders);
 
-        new FoliaRunnable(server.getGlobalRegionScheduler()) {
+        new FoliaScheduler(plugin, SchedulerType.global_scheduler) {
             @Override
             public void run() {
                 server.dispatchCommand(server.getConsoleSender(), result);
             }
-        }.run(plugin);
+        }.runNow();
     }
 
     public static void sendCommand(@NotNull final String command, @NotNull final Map<String, String> placeholders) {

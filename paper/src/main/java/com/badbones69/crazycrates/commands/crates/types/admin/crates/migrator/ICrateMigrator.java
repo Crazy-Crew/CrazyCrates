@@ -7,8 +7,8 @@ import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.paper.api.files.CustomFile;
-import com.ryderbelserion.vital.paper.api.files.FileManager;
+import com.ryderbelserion.vital.paper.api.files.PaperCustomFile;
+import com.ryderbelserion.vital.paper.api.files.PaperFileManager;
 import com.ryderbelserion.vital.utils.Methods;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
@@ -30,7 +30,7 @@ public abstract class ICrateMigrator {
 
     protected final SettingsManager messages = ConfigManager.getMessages();
 
-    protected final FileManager fileManager = this.plugin.getVital().getFileManager();
+    protected final PaperFileManager fileManager = this.plugin.getVital().getFileManager();
 
     protected final CommandSender sender;
 
@@ -76,7 +76,7 @@ public abstract class ICrateMigrator {
         }});
     }
 
-    public void migrate(final CustomFile customFile, final String crateName) {
+    public void migrate(final PaperCustomFile customFile, final String crateName) {
         final YamlConfiguration configuration = customFile.getConfiguration();
 
         if (configuration == null) return;
@@ -85,7 +85,7 @@ public abstract class ICrateMigrator {
 
         if (crate == null) {
             Messages.error_migrating.sendMessage(sender, new HashMap<>() {{
-                put("{file}", crateName.isEmpty() ? customFile.getCleanName() : crateName);
+                put("{file}", crateName.isEmpty() ? customFile.getEffectiveName() : crateName);
                 put("{type}", type.getName());
                 put("{reason}", "File could not be found in our data, likely invalid yml file that didn't load properly.");
             }});

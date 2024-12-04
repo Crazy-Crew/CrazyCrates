@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.tasks.crates.types;
 import com.badbones69.crazycrates.api.builders.types.features.CrateSpinMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.misc.Files;
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.ChestManager;
@@ -12,7 +11,8 @@ import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
-import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
+import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
+import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
 import com.ryderbelserion.vital.utils.Methods;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
@@ -194,12 +194,12 @@ public class QuickCrate extends CrateBuilder {
 
             PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, 0.5), this.crate, prize);
 
-            addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
+            addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
                 @Override
                 public void run() {
                     crateManager.endQuickCrate(player, location, crate, false);
                 }
-            }.runDelayed(this.plugin, 5 * 20));
+            }.runDelayed(5 * 20));
 
             return;
         }
@@ -208,11 +208,11 @@ public class QuickCrate extends CrateBuilder {
 
         PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, 0.5), this.crate, prize);
 
-        addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
+        addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
             @Override
             public void run() {
                 crateManager.endQuickCrate(player, location, crate, false);
             }
-        }.runDelayed(this.plugin, 40));
+        }.runDelayed(40));
     }
 }

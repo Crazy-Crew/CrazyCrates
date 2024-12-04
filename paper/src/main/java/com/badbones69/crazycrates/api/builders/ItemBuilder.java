@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.api.builders;
 
 import com.ryderbelserion.vital.paper.util.PaperMethods;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;

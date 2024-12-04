@@ -23,15 +23,16 @@ headdatabaseapi = "1.3.1"
 placeholderapi = "2.11.6"
 fancyholograms = "2.3.3"
 oraxen = "1.171.0"
+nexo = "0.1.0-dev.0"
 
 # Vital API
-vital-paper = "2.2.4"
-vital-api = "0.0.5"
+vital = "0.1.0-snapshot"
 
 # Common API
 triumph-cmd = "2.0.0-ALPHA-10"
 jetbrains = "24.1.0"
 adventure = "4.17.0"
+jalu = "1.4.1"
 
 [libraries]
 # Velocity API
@@ -56,26 +57,27 @@ placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholder
 oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }
 cmi-api = { module = "CMI-API:CMI-API", version = "9.7.4.1" }
 cmi-lib = { module = "CMILib:CMILib", version = "1.5.1.4" }
+nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }
 
 # Crate Plugins API
 excellentcrates = { module = "su.nightexpress.excellentcrates:ExcellentCrates", version = "5.3.1" }
 nightcore = { module = "su.nightexpress.nightcore:nightcore", version = "2.6.3" }
 
 # Vital API
-vital-paper = { module = "com.ryderbelserion.vital:paper", version.ref = "vital-paper" }
-vital-api = { module = "com.ryderbelserion.vital:api", version.ref = "vital-api" }
+vital-paper = { module = "com.ryderbelserion.vital:paper", version.ref = "vital" }
+vital-api = { module = "com.ryderbelserion.vital:api", version.ref = "vital" }
 
 # Common API
 triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmd" }
-
 jetbrains = { module = "org.jetbrains:annotations", version.ref = "jetbrains" }
+jalu = { module = "ch.jalu:configme", version.ref = "jalu" }
 
 [bundles]
 # Soft Depends
 dependencies = ["decent-holograms", "fancy-holograms", "cmi-lib", "cmi-api"]
 
 # Shared with the git submodules
-shared = ["headdatabaseapi", "placeholderapi", "oraxen"]
+shared = ["headdatabaseapi", "placeholderapi", "oraxen", "nexo"]
 
 # Only used for migrations from other crate plugins
 crates = ["excellentcrates", "nightcore"]

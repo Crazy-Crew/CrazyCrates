@@ -2,9 +2,10 @@ package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 
 import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
-import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
+import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
 import com.ryderbelserion.vital.paper.util.structures.StructureManager;
+import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -225,7 +226,7 @@ public class QuadCrateManager {
 
         this.player.teleportAsync(this.spawnLocation.clone().toCenterLocation().add(0, 1, 0));
 
-        this.crateManager.addQuadCrateTask(this.player, new FoliaRunnable(this.player.getScheduler(), null) {
+        this.crateManager.addQuadCrateTask(this.player, new FoliaScheduler(this.plugin, null, this.player) {
             double radius = 0.0; // Radius of the particle spiral.
             int crateNumber = 0; // The crate number that spawns next.
             int tickTillSpawn = 0; // At tick 60 the crate will spawn and then reset the tick.
@@ -260,9 +261,9 @@ public class QuadCrateManager {
                     }
                 }
             }
-        }.runAtFixedRate(this.plugin, 0,1));
+        }.runAtFixedRate(0,1));
 
-        this.crateManager.addCrateTask(this.player, new FoliaRunnable(player.getScheduler(), null) {
+        this.crateManager.addCrateTask(this.player, new FoliaScheduler(this.plugin, null, this.player) {
             @Override
             public void run() {
                 endCrate(true);
@@ -271,7 +272,7 @@ public class QuadCrateManager {
 
                 crate.playSound(player, player.getLocation(), "stop-sound", "entity.player.levelup", Sound.Source.PLAYER);
             }
-        }.runDelayed(this.plugin, ConfigManager.getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20));
+        }.runDelayed(ConfigManager.getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20));
     }
 
     /**
@@ -280,7 +281,7 @@ public class QuadCrateManager {
     public void endCrate(final boolean immediately) {
         final Server server = this.plugin.getServer();
 
-        new FoliaRunnable(server.getGlobalRegionScheduler()) {
+        new FoliaScheduler(this.plugin, SchedulerType.global_scheduler) {
             @Override
             public void run() {
                 // Update spawned crate block states which removes them.
@@ -319,7 +320,7 @@ public class QuadCrateManager {
                 // Remove the "instance" from the crate sessions.
                 crateSessions.remove(instance);
             }
-        }.runDelayed(this.plugin, immediately ? 0 : 5);
+        }.runDelayed(immediately ? 0 : 5);
     }
 
     /**

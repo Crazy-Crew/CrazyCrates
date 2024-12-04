@@ -4,4 +4,6 @@ dependencies {
     compileOnly(libs.jetbrains)
 
     api(project(":api"))
+
+    api(libs.jalu)
 }

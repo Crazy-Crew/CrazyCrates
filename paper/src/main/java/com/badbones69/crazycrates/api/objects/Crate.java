@@ -12,7 +12,8 @@ import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.ryderbelserion.vital.paper.api.files.CustomFile;
+import com.ryderbelserion.vital.files.enums.FileType;
+import com.ryderbelserion.vital.paper.api.files.PaperCustomFile;
 import com.ryderbelserion.vital.paper.util.PaperMethods;
 import com.ryderbelserion.vital.utils.Methods;
 import net.kyori.adventure.sound.Sound;
@@ -800,7 +801,7 @@ public class Crate {
     private void saveFile() {
         if (this.name.isEmpty()) return;
 
-        final CustomFile customFile = this.plugin.getVital().getFileManager().getFile(this.name, true);
+        final PaperCustomFile customFile = this.plugin.getVital().getFileManager().getFile(this.name, FileType.YAML);
 
         if (customFile != null) customFile.save();
 

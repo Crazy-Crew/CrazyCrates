@@ -12,6 +12,8 @@ repositories {
 
     maven("https://repo.fancyplugins.de/releases")
 
+    maven("https://repo.nexomc.com/snapshots")
+
     maven("https://repo.oraxen.com/releases")
 }
 
@@ -57,7 +59,8 @@ tasks {
 
         listOf(
             "com.ryderbelserion.vital",
-            "dev.triumphteam.cmd"
+            "dev.triumphteam.cmd",
+            "ch.jalu"
         ).forEach {
             relocate(it, "libs.$it")
         }

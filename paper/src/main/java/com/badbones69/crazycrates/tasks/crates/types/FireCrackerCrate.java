@@ -4,7 +4,8 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
-import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
+import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
+import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -60,7 +61,7 @@ public class FireCrackerCrate extends CrateBuilder {
 
         final List<Color> colors = Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.AQUA, Color.MAROON, Color.PURPLE);
 
-        addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
+        addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
             final int random = ThreadLocalRandom.current().nextInt(colors.size());
             final Location clonedLocation = location.clone().add(0.5, 25, 0.5);
 
@@ -82,6 +83,6 @@ public class FireCrackerCrate extends CrateBuilder {
                     quickCrate.open(KeyType.free_key, false, isSilent, eventType);
                 }
             }
-        }.runAtFixedRate(this.plugin, 0, 2));
+        }.runAtFixedRate(0, 2));
     }
 }
