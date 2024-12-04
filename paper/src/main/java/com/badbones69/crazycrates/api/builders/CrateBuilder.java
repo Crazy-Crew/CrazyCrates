@@ -11,13 +11,13 @@ import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
-import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
+import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
+import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -32,7 +32,7 @@ import com.badbones69.crazycrates.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.List;
 
-public abstract class CrateBuilder extends FoliaRunnable {
+public abstract class CrateBuilder extends FoliaScheduler {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
@@ -56,7 +56,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param title inventory title
      */
     public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final String title) {
-        super(player.getScheduler(), null);
+        super(CrazyCrates.getPlugin(), SchedulerType.entity_scheduler);
 
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
@@ -91,7 +91,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param location location of player
      */
     public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final Location location) {
-        super(player.getScheduler(), null);
+        super(CrazyCrates.getPlugin(), SchedulerType.entity_scheduler);
 
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
@@ -115,7 +115,7 @@ public abstract class CrateBuilder extends FoliaRunnable {
      * @param location location of player
      */
     public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location) {
-        super(player.getScheduler(), null);
+        super(CrazyCrates.getPlugin(), SchedulerType.entity_scheduler);
 
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");

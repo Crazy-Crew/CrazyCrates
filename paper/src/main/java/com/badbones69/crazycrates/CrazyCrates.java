@@ -17,6 +17,7 @@ import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.ryderbelserion.vital.files.enums.FileType;
 import com.ryderbelserion.vital.paper.VitalPaper;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.utils.Methods;
@@ -61,12 +62,11 @@ public class CrazyCrates extends JavaPlugin {
         this.instance = new Server(getDataFolder());
         this.instance.apply();
 
-        this.vital.getFileManager().addFile("locations.yml").addFile("data.yml").addFile("respin-gui.yml", "guis")
-                .addFile("crates.log", "logs")
-                .addFile("keys.log", "logs")
-                .addFolder("crates")
-                .addFolder("schematics")
-                .init();
+        this.vital.getFileManager().addFile("locations.yml", FileType.YAML).addFile("data.yml", FileType.YAML).addFile("respin-gui.yml", "guis", false, FileType.YAML)
+                .addFile("crates.log", "logs", false, FileType.NONE)
+                .addFile("keys.log", "logs", false, FileType.NONE)
+                .addFolder("crates", FileType.YAML)
+                .addFolder("schematics", FileType.NONE);
 
         MiscUtils.janitor();
         MiscUtils.save();

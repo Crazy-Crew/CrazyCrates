@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
-import com.ryderbelserion.vital.config.ConfigManager;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.command.CommandSender;
@@ -15,7 +14,7 @@ public class CommandReload extends BaseCommand {
     @Command("reload")
     @Permission(value = "crazycrates.reload", def = PermissionDefault.OP)
     public void reload(CommandSender sender) {
-        ConfigManager.reload();
+        this.plugin.getVital().reload();
 
         MiscUtils.janitor();
 

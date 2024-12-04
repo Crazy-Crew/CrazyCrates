@@ -3,7 +3,8 @@ package com.badbones69.crazycrates.tasks.crates.types;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
-import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
+import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
+import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -60,7 +61,7 @@ public class WarCrate extends CrateBuilder {
 
         this.player.openInventory(this.inventory);
 
-        addCrateTask(new FoliaRunnable(this.player.getScheduler(), null) {
+        addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
             int full = 0;
             int open = 0;
 
@@ -90,7 +91,7 @@ public class WarCrate extends CrateBuilder {
                     crateManager.addPicker(player, true);
                 }
             }
-        }.runAtFixedRate(this.plugin, 1, 3));
+        }.runAtFixedRate(1, 3));
     }
 
     private void setRandomPrizes() {

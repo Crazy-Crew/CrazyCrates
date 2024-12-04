@@ -2,7 +2,8 @@ package com.badbones69.crazycrates.listeners.crates.types;
 
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.utils.ItemUtils;
-import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
+import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
+import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -111,14 +112,14 @@ public class QuadCrateListener implements Listener {
 
             // Check if all crates have spawned then end if so.
             if (session.allCratesOpened()) {
-                new FoliaRunnable(player.getScheduler(), null) {
+                new FoliaScheduler(plugin, SchedulerType.entity_scheduler) {
                     @Override
                     public void run() {
                         session.endCrate(false);
 
                         crate.playSound(player, block.getLocation(), "stop-sound", "block.anvil.land", Sound.Source.BLOCK);
                     }
-                }.runDelayed(this.plugin, 60);
+                }.runDelayed(60);
             }
         }
     }

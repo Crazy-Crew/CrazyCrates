@@ -5,7 +5,7 @@ plugins {
 
 val buildNumber: String? = System.getenv("BUILD_NUMBER")
 
-rootProject.version = if (buildNumber != null) "${libs.versions.minecraft.get()}-$buildNumber" else "4.2.2"
+rootProject.version = if (buildNumber != null) "${libs.versions.minecraft.get()}-$buildNumber" else "4.3.0"
 
 subprojects.filter { it.name != "api" }.forEach {
     it.project.version = rootProject.version
@@ -20,6 +20,8 @@ subprojects {
 
     repositories {
         maven("https://repo.codemc.io/repository/maven-public")
+
+        maven("https://repo.ryderbelserion.com/snapshots")
 
         maven("https://repo.crazycrew.us/libraries")
         maven("https://repo.crazycrew.us/releases")

@@ -1,12 +1,11 @@
 package com.badbones69.crazycrates.listeners.crates.types;
 
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.utils.MiscUtils;
-import com.ryderbelserion.vital.paper.util.scheduler.FoliaRunnable;
+import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
+import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -59,7 +58,7 @@ public class WarCrateListener implements Listener {
 
                     crate.playSound(player, player.getLocation(), "cycle-sound", "block.anvil.land", Sound.Source.PLAYER);
 
-                    this.crateManager.addCrateTask(player, new FoliaRunnable(player.getScheduler(), null) {
+                    this.crateManager.addCrateTask(player, new FoliaScheduler(this.plugin, null, player) {
                         @Override
                         public void run() {
                             for (int i = 0; i < 9; i++) {
@@ -69,7 +68,7 @@ public class WarCrateListener implements Listener {
                             if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
 
                             // Removing other items then the prize.
-                            crateManager.addCrateTask(player, new FoliaRunnable(player.getScheduler(), null) {
+                            crateManager.addCrateTask(player, new FoliaScheduler(plugin, SchedulerType.entity_scheduler) {
                                 @Override
                                 public void run() {
                                     for (int i = 0; i < 9; i++) {
@@ -79,7 +78,7 @@ public class WarCrateListener implements Listener {
                                     if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
 
                                     // Closing the inventory when finished.
-                                    crateManager.addCrateTask(player, new FoliaRunnable(player.getScheduler(), null) {
+                                    crateManager.addCrateTask(player, new FoliaScheduler(plugin, SchedulerType.entity_scheduler) {
                                         @Override
                                         public void run() {
                                             if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
@@ -88,11 +87,11 @@ public class WarCrateListener implements Listener {
 
                                             player.closeInventory();
                                         }
-                                    }.runDelayed(plugin, 30));
+                                    }.runDelayed(30));
                                 }
-                            }.runDelayed(plugin, 30));
+                            }.runDelayed(30));
                         }
-                    }.runDelayed(this.plugin,30));
+                    }.runDelayed(30));
                 }
             }
         }

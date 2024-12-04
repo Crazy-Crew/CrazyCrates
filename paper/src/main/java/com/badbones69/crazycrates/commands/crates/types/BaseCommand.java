@@ -11,7 +11,7 @@ import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.paper.api.files.FileManager;
+import com.ryderbelserion.vital.paper.api.files.PaperFileManager;
 import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -37,7 +37,7 @@ public abstract class BaseCommand {
 
     protected @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
 
-    protected @NotNull final FileManager fileManager = this.plugin.getVital().getFileManager();
+    protected @NotNull final PaperFileManager fileManager = this.plugin.getVital().getFileManager();
 
     protected @NotNull final SettingsManager config = ConfigManager.getConfig();
 

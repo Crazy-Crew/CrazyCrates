@@ -25,13 +25,14 @@ fancyholograms = "2.3.3"
 oraxen = "1.171.0"
 
 # Vital API
-vital-paper = "2.2.4"
+vital = "0.1.0-snapshot"
 vital-api = "0.0.5"
 
 # Common API
 triumph-cmd = "2.0.0-ALPHA-10"
 jetbrains = "24.1.0"
 adventure = "4.17.0"
+jalu = "1.4.1"
 
 [libraries]
 # Velocity API
@@ -62,13 +63,14 @@ excellentcrates = { module = "su.nightexpress.excellentcrates:ExcellentCrates", 
 nightcore = { module = "su.nightexpress.nightcore:nightcore", version = "2.6.3" }
 
 # Vital API
-vital-paper = { module = "com.ryderbelserion.vital:paper", version.ref = "vital-paper" }
-vital-api = { module = "com.ryderbelserion.vital:api", version.ref = "vital-api" }
+vital-paper = { module = "com.ryderbelserion.vital:paper", version.ref = "vital" }
+vital-api = { module = "com.ryderbelserion.vital:api", version.ref = "vital" }
 
 # Common API
 triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmd" }
 
 jetbrains = { module = "org.jetbrains:annotations", version.ref = "jetbrains" }
+jalu = { module = "ch.jalu:configme", version.ref = "jalu" }
 
 [bundles]
 # Soft Depends
