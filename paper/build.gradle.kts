@@ -12,6 +12,8 @@ repositories {
 
     maven("https://repo.fancyplugins.de/releases")
 
+    maven("https://repo.nexomc.com/snapshots")
+
     maven("https://repo.oraxen.com/releases")
 }
 

@@ -1,3 +1,2 @@
 ### Update
-- Added {key} placeholder in places it was missing
-- Use Server#getPlayerExact() instead of Server#getPlayer()
+- Added [Nexo](https://polymart.org/resource/nexo.6901) support.
