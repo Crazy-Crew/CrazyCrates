@@ -69,6 +69,10 @@ tasks {
                             required = false
                         }
 
+                        url("Nexo", "https://polymart.org/resource/nexo.6901") {
+                            required = false
+                        }
+
                         url("CMI", "https://www.spigotmc.org/resources/cmi-298-commands-insane-kits-portals-essentials-economy-mysql-sqlite-much-more.3742/") {
                             required = false
                         }
