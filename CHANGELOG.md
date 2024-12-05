@@ -1,2 +1,2 @@
 ### Update
-- Added [Nexo](https://polymart.org/resource/nexo.6901) support.
+- Fixed an issue on startup with extracting files.
