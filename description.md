@@ -19,7 +19,7 @@
 2) You must be using at least https://papermc.io/.
 3) The file you downloaded goes in the `plugins` folder.
 4) Restart the server.
-5) Create new files in the `crates`, and look at the existing files in there to help figure out how to use the plugin.
+5) Create new files in the `crates` folder, and look at the existing files in there to help figure out how to use the plugin.
 6) Test prizes using `/crazycrates debug <crate>`.
 7) View the documentation @ https://docs.crazycrew.us/docs/plugins/crazycrates.
 
