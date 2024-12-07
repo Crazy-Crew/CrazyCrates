@@ -35,5 +35,7 @@ public class MetricsWrapper extends bStats {
 
             addCustomChart(chart);
         });
+
+        //todo() add more charts
     }
 }
