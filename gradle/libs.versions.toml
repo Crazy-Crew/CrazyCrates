@@ -26,7 +26,7 @@ oraxen = "1.171.0"
 nexo = "0.1.0-dev.0"
 
 # Vital API
-vital = "0.1.0-snapshot"
+vital = "0.1.2"
 
 # Common API
 triumph-cmd = "2.0.0-ALPHA-10"

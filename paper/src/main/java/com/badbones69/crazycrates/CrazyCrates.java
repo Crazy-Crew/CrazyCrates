@@ -1,6 +1,9 @@
 package com.badbones69.crazycrates;
 
 import com.badbones69.crazycrates.common.Server;
+import com.badbones69.crazycrates.common.config.ConfigManager;
+import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.support.MetricsWrapper;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
 import com.badbones69.crazycrates.listeners.BrokeLocationsListener;
@@ -57,6 +60,8 @@ public class CrazyCrates extends JavaPlugin {
 
     private Server instance;
 
+    private MetricsWrapper metrics;
+
     @Override
     public void onEnable() {
         this.instance = new Server(getDataFolder());
@@ -93,10 +98,13 @@ public class CrazyCrates extends JavaPlugin {
         // Load the crates.
         this.crateManager.loadCrates();
 
+        if (ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics)) {
+            this.metrics = new MetricsWrapper(this, 4514, true);
+            this.metrics.start();
+        }
+
         // Load commands.
         CommandManager.load();
-
-        //new MetricsWrapper(this, 4514).start();
 
         List.of(
                 // Other listeners.
@@ -185,6 +193,11 @@ public class CrazyCrates extends JavaPlugin {
     @ApiStatus.Internal
     public final Server getInstance() {
         return this.instance;
+    }
+
+    @ApiStatus.Internal
+    public @Nullable final MetricsWrapper getMetrics() {
+        return this.metrics;
     }
 
     @ApiStatus.Internal

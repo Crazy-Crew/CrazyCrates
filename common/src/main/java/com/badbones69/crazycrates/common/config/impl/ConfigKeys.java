@@ -67,6 +67,9 @@ public class ConfigKeys implements SettingsHolder {
     })
     public static final Property<Boolean> use_different_random = newProperty("root.use-different-random", false);
 
+    @Comment("Sends anonymous statistics to https://bstats.org/plugin/bukkit/CrazyCrates/4514")
+    public static final Property<Boolean> toggle_metrics = newProperty("root.toggle-metrics", true);
+
     @Comment({
             "This option defines what in-game editor format is used in CrazyCrates.",
             "",
