@@ -15,7 +15,7 @@
 
 ## Installation
 1) Download the update from modrinth/hangar for your version of Minecraft.
-    1) Note, Any version that is not the newest version of Minecraft is not supported.
+   1) Note, Any version that is not the newest version of Minecraft is not supported.
 2) You must be using at least https://papermc.io/.
 3) The file you downloaded goes in the `plugins` folder.
 4) Restart the server.
@@ -40,11 +40,11 @@ If you do not want this anonymous data sent, You currently have to go to the `bS
 
 <hr>
 
-Crazy-Crates has been happily sponsored by [Apex Hosting](https://billing.apexminecrafthosting.com/aff.php?aff=5511) for the last decade and will continue to be happy.
+Crazy-Crates has been partnered with [Apex Hosting](https://billing.apexminecrafthosting.com/aff.php?aff=5511) for the last decade.
 
-Apex Hosting is a well established hosting company expanding even beyond the scope of Minecraft into various other games such as Rust, or Palworld. They even allow you to play Satisfactory.
+Apex Hosting is a well established hosting company letting you create servers for various other games such as Rust, or Palworld, and Satisfactory.
 
-The game servers offered will get the job done for whatever crazy activity you are getting up to. Click that nifty ole blue link above to create your server today! You can use code `APEX25` for 25% off your first month!
+The game servers offered will get the job done for whatever crazy activity you are getting up to. Click that nifty ole link above to create your server today, You can use code `APEX25` for 25% off your first month.
 
 [contributors-shield]: https://img.shields.io/github/contributors/Crazy-Crew/CrazyCrates.svg?style=flat&logo=appveyor
 [contributors-url]: https://github.com/Crazy-Crew/CrazyCrates/graphs/contributors
