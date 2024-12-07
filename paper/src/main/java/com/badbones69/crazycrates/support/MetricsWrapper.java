@@ -2,6 +2,8 @@ package com.badbones69.crazycrates.support;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.Crate;
+import com.badbones69.crazycrates.common.config.ConfigManager;
+import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.paper.api.bStats;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +22,8 @@ public class MetricsWrapper extends bStats {
     }
 
     public void start() {
+        if (!isEnabled() || !ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics)) return;
+
         final List<Crate> crates = new ArrayList<>(this.crateManager.getCrates());
 
         crates.forEach(crate -> {
