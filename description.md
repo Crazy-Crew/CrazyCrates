@@ -2,13 +2,14 @@
 
 ![CrazyCrates](https://raw.githubusercontent.com/Crazy-Crew/Branding/main/crazycrates/banner/webp/banner.webp)
 
-[![Discord](https://discord.com/api/guilds/182615261403283459/widget.png)](https://discord.gg/badbones-s-live-chat-182615261403283459)
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![CodeFactor](https://www.codefactor.io/repository/github/crazy-crew/crazycrates/badge)](https://www.codefactor.io/repository/github/crazy-crew/crazycrates)
+[![][build-shield]][build-url]
+[![][discord-shield]][discord-url]
+[![][contributors-shield]][contributors-url]
+[![][forks-shield]][forks-url]
+[![][stars-shield]][stars-url]
+[![][issues-shield]][issues-url]
+[![][license-shield]][license-url]
+[![][codefactor-shield]][codefactor-url]
 
 </div></center>
 
@@ -55,3 +56,9 @@ The game servers offered will get the job done for whatever crazy activity you a
 [issues-url]: https://github.com/Crazy-Crew/CrazyCrates/issues
 [license-shield]: https://img.shields.io/github/license/Crazy-Crew/CrazyCrates.svg?style=flat&logo=appveyor
 [license-url]: https://github.com/Crazy-Crew/CrazyCrates/blob/main/LICENSE
+[build-shield]: https://ci.crazycrew.us/job/CrazyCrates//badge/icon
+[build-url]: https://ci.crazycrew.us/job/CrazyCrates
+[discord-shield]: https://img.shields.io/discord/241667244927483904.svg?label=discord&logo=discord
+[discord-url]: https://discord.gg/badbones-s-live-chat-182615261403283459
+[codefactor-shield]: https://www.codefactor.io/repository/github/crazy-crew/crazycrates/badge
+[codefactor-url]: https://www.codefactor.io/repository/github/crazy-crew/crazycrates
