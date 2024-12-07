@@ -12,7 +12,6 @@ import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
-import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
 import com.ryderbelserion.vital.utils.Methods;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
@@ -20,7 +19,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -37,8 +35,6 @@ public class QuickCrate extends CrateBuilder {
     public QuickCrate(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location) {
         super(crate, player, location);
     }
-
-    private final PluginManager server = this.plugin.getServer().getPluginManager();
 
     private final Player player = getPlayer();
     private final Location location = getLocation();
