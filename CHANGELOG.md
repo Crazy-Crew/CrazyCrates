@@ -1,2 +1,2 @@
 ### Update
-- Fixed an issue on startup with extracting files.
+- Fixed an issue an entity task error on Folia

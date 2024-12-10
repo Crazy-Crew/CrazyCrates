@@ -56,7 +56,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param title inventory title
      */
     public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final String title) {
-        super(CrazyCrates.getPlugin(), SchedulerType.entity_scheduler);
+        super(CrazyCrates.getPlugin(), null, player);
 
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
@@ -91,7 +91,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param location location of player
      */
     public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final Location location) {
-        super(CrazyCrates.getPlugin(), SchedulerType.entity_scheduler);
+        super(CrazyCrates.getPlugin(), null, player);
 
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
@@ -115,7 +115,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param location location of player
      */
     public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location) {
-        super(CrazyCrates.getPlugin(), SchedulerType.entity_scheduler);
+        super(CrazyCrates.getPlugin(), null, player);
 
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
