@@ -34,7 +34,7 @@ tasks {
         detectLoaders.set(false)
 
         dependencies {
-            optional.version("fancyholograms", "2.3.2")
+            optional.version("fancyholograms")
         }
     }
 
