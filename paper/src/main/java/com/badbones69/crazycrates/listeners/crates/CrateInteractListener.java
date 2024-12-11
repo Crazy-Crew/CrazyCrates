@@ -18,15 +18,12 @@ import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
@@ -48,32 +45,30 @@ public class CrateInteractListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCrateInteract(final CrateInteractEvent event) {
+        if (event.isCancelled()) return; // return for any reason. interaction already cancelled at this stage.
+
         final Player player = event.getPlayer();
 
-        final CrateLocation location = event.getCrateLocation();
+        final Location location = event.getLocation();
 
-        if (location == null) return;
-
-        final Crate crate = location.getCrate();
+        final CrateLocation crateLocation = event.getCrateLocation();
+        final Crate crate = crateLocation.getCrate();
         final CrateType crateType = crate.getCrateType();
 
         final Action action = event.getAction();
 
         switch (action) {
             case LEFT_CLICK_BLOCK, LEFT_CLICK_AIR -> {
-                runVanilla(event); // runs code if the boolean isVanilla is true
+                if (this.crateManager.hasEditorCrate(player)) {
+                    if (!player.hasPermission("crazycrates.editor")) {
+                        this.crateManager.removeEditorCrate(player);
 
-                if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin")) { // deprecated
-                    final String arg1 = MiscUtils.location(location.getLocation(), true);
-                    final String arg2 = MiscUtils.location(event.getLocation(), true);
+                        Messages.force_editor_exit.sendMessage(player, "{reason}", "Lacking permission crazycrates.editor");
 
-                    if (arg1.equals(arg2)) {
-                        final String id = location.getID();
-
-                        this.crateManager.removeCrateLocation(id);
-
-                        Messages.removed_physical_crate.sendMessage(player, "{id}", id);
+                        return;
                     }
+
+                    this.crateManager.removeCrateByLocation(player, location);
 
                     return;
                 }
@@ -93,11 +88,25 @@ public class CrateInteractListener implements Listener {
                 }
 
                 // left click to open
-                openCrate(player, location, crate);
+                openCrate(player, crateLocation, crate);
             }
 
             case RIGHT_CLICK_BLOCK, RIGHT_CLICK_AIR -> {
-                runVanilla(event); // runs code if the boolean isVanilla is true
+                if (this.crateManager.hasEditorCrate(player)) {
+                    if (!player.hasPermission("crazycrates.editor")) {
+                        this.crateManager.removeEditorCrate(player);
+
+                        Messages.force_editor_exit.sendMessage(player, "{reason}", "Lacking permission crazycrates.editor");
+
+                        return;
+                    }
+
+                    this.crateManager.addCrateByLocation(player, location);
+
+                    event.setCancelled(true);
+
+                    return;
+                }
 
                 if (crateType == CrateType.menu) {
                     preview(player, crate, true);
@@ -108,24 +117,13 @@ public class CrateInteractListener implements Listener {
                 final boolean isRightClickToOpen = this.config.getProperty(ConfigKeys.crate_physical_interaction);
 
                 if (isRightClickToOpen) { // right click to open
-                    openCrate(player, location, crate);
+                    openCrate(player, crateLocation, crate);
 
                     return;
                 }
 
                 // right click to preview
                 preview(player, crate, false);
-            }
-        }
-    }
-
-    private void runVanilla(CrateInteractEvent event) {
-        if (event.isVanilla()) {
-            final PlayerInteractEvent interactEvent = event.getEvent();
-
-            if (interactEvent != null) {
-                interactEvent.setUseInteractedBlock(Event.Result.DENY);
-                interactEvent.setUseItemInHand(Event.Result.DENY);
             }
         }
     }

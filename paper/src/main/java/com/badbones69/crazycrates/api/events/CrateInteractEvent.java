@@ -3,6 +3,10 @@ package com.badbones69.crazycrates.api.events;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.nexomc.nexo.api.NexoFurniture;
+import com.nexomc.nexo.api.events.furniture.NexoFurnitureBreakEvent;
+import com.nexomc.nexo.api.events.furniture.NexoFurnitureInteractEvent;
+import com.ryderbelserion.vital.paper.api.enums.Support;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -12,7 +16,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class CrateInteractEvent extends Event implements Cancellable {
 
@@ -20,55 +23,82 @@ public class CrateInteractEvent extends Event implements Cancellable {
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private final CrateLocation crateLocation;
-    private final EquipmentSlot equipmentSlot;
+    private NexoFurnitureInteractEvent nexoInteractEvent;
+    private NexoFurnitureBreakEvent nexoBreakEvent;
+    private PlayerInteractEvent paperEvent;
+
+    private CrateLocation crateLocation = null;
+    private boolean isCancelled;
+
+    private final EquipmentSlot slot;
     private final Location location;
     private final Player player;
     private final Action action;
 
-    private boolean isCancelled;
+    public CrateInteractEvent(@NotNull final NexoFurnitureInteractEvent nexoInteractEvent, @NotNull final Action action, @NotNull final Location location) {
+        this.nexoInteractEvent = nexoInteractEvent;
 
-    private final boolean isVanilla;
-
-    public CrateInteractEvent(@NotNull final Location location, @NotNull final EquipmentSlot equipmentSlot, @NotNull final Player player, @NotNull final Action action) {
-        this.crateLocation = this.crateManager.getCrateLocation(location);
-
-        this.equipmentSlot = equipmentSlot;
+        this.player = this.nexoInteractEvent.getPlayer();
+        this.slot = this.nexoInteractEvent.getHand();
         this.location = location;
-        this.player = player;
         this.action = action;
 
-        this.isCancelled = false;
-        this.isVanilla = false;
+        setCancelled(this.slot == EquipmentSlot.OFF_HAND);
 
-        this.event = null;
+        if (!isCancelled()) {
+            this.crateLocation = this.crateManager.getCrateLocation(this.location);
+        }
     }
 
-    private final PlayerInteractEvent event;
+    public CrateInteractEvent(@NotNull final NexoFurnitureBreakEvent nexoBreakEvent, @NotNull final Action action, @NotNull final Location location) {
+        this.nexoBreakEvent = nexoBreakEvent;
 
-    public CrateInteractEvent(@NotNull final PlayerInteractEvent event, @NotNull final Location location) {
-        this.crateLocation = this.crateManager.getCrateLocation(location);
+        this.player = this.nexoBreakEvent.getPlayer();
+        this.slot = this.player.getActiveItemHand();
+        this.location = location;
+        this.action = action;
+
+        setCancelled(this.slot == EquipmentSlot.OFF_HAND);
+
+        if (!isCancelled()) {
+            this.crateLocation = this.crateManager.getCrateLocation(this.location);
+        }
+    }
+
+    public CrateInteractEvent(@NotNull final PlayerInteractEvent paperEvent, @NotNull final Location location) {
+        this.paperEvent = paperEvent;
+
+        this.player = this.paperEvent.getPlayer();
+        this.action = this.paperEvent.getAction();
+        this.slot = this.paperEvent.getHand();
         this.location = location;
 
-        this.equipmentSlot = event.getHand();
-        this.player = event.getPlayer();
-        this.action = event.getAction();
-        this.event = event;
+        setCancelled(this.slot == EquipmentSlot.OFF_HAND || Support.nexo.isEnabled() && NexoFurniture.isFurniture(location));
 
-        this.isCancelled = false;
-        this.isVanilla = true;
+        if (!isCancelled()) {
+            this.crateLocation = this.crateManager.getCrateLocation(this.location);
+        }
     }
 
-    public @Nullable CrateLocation getCrateLocation() {
+    /**
+     * Prevents interacting/breaking the blocks.
+     *
+     * @return {@link CrateInteractEvent}
+     */
+    public CrateInteractEvent preventUse() {
+        if (this.nexoInteractEvent != null) {
+            this.nexoInteractEvent.setCancelled(true);
+        } else if (this.nexoBreakEvent != null) {
+            this.nexoBreakEvent.setCancelled(true);
+        } else if (this.paperEvent != null) {
+            this.paperEvent.setCancelled(true);
+        }
+
+        return this;
+    }
+
+    public @NotNull CrateLocation getCrateLocation() {
         return this.crateLocation;
-    }
-
-    public @NotNull EquipmentSlot getEquipmentSlot() {
-        return this.equipmentSlot;
-    }
-
-    public @Nullable PlayerInteractEvent getEvent() {
-        return this.event;
     }
 
     public @NotNull Location getLocation() {
@@ -81,14 +111,6 @@ public class CrateInteractEvent extends Event implements Cancellable {
 
     public @NotNull Action getAction() {
         return this.action;
-    }
-
-    public boolean isKey() {
-        return this.crateManager.isKey(this.player, this.equipmentSlot);
-    }
-
-    public boolean isVanilla() {
-        return this.isVanilla;
     }
 
     private static final HandlerList handlers = new HandlerList();
@@ -108,7 +130,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
     }
 
     @Override
-    public void setCancelled(final boolean isCancelled) {
-        this.isCancelled = isCancelled;
+    public void setCancelled(boolean cancel) {
+        this.isCancelled = cancel;
     }
 }

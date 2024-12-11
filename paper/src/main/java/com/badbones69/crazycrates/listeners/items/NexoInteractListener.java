@@ -1,20 +1,15 @@
 package com.badbones69.crazycrates.listeners.items;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.CrateInteractEvent;
-import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.nexomc.nexo.api.events.furniture.NexoFurnitureBreakEvent;
 import com.nexomc.nexo.api.events.furniture.NexoFurnitureInteractEvent;
 import org.bukkit.Location;
 import org.bukkit.entity.ItemDisplay;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.inventory.EquipmentSlot;
 
 public class NexoInteractListener implements Listener {
 
@@ -22,96 +17,24 @@ public class NexoInteractListener implements Listener {
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler
     public void onNexoFurnitureInteractEvent(NexoFurnitureInteractEvent event) {
-        final EquipmentSlot equipmentSlot = event.getHand();
-
-        if (equipmentSlot == EquipmentSlot.OFF_HAND) return;
-
-        final Player player = event.getPlayer();
-
-        // get item display.
         final ItemDisplay itemDisplay = event.getBaseEntity();
-
-        // fetch location.
         final Location location = itemDisplay.getLocation();
 
-        if (this.crateManager.hasEditorCrate(player)) {
-            if (!player.hasPermission("crazycrates.editor")) {
-                this.crateManager.removeEditorCrate(player);
-
-                Messages.force_editor_exit.sendMessage(player, "{reason}", "Lacking permission crazycrates.editor");
-
-                return;
-            }
-
-            this.crateManager.addCrateByLocation(player, location);
-
-            event.setCancelled(true);
-
-            return;
-        }
-
-        // check if key, then cancel.
-        if (this.crateManager.isKey(player, equipmentSlot)) {
-            event.setCancelled(true);
-        }
-
-
         if (this.crateManager.isCrateLocation(location)) {
-            // build our interact event.
-            final CrateInteractEvent interactEvent = new CrateInteractEvent(location, equipmentSlot, player, Action.RIGHT_CLICK_BLOCK);
-
-            // call our interact event.
-            interactEvent.callEvent();
-
-            // cancel the interact event.
-            event.setCancelled(true);
+            new CrateInteractEvent(event, Action.RIGHT_CLICK_BLOCK, location).preventUse().callEvent();
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler
     public void onNexoFurnitureBreakEvent(NexoFurnitureBreakEvent event) {
-        final Player player = event.getPlayer();
-
-        // get item display.
         final ItemDisplay itemDisplay = event.getBaseEntity();
-
-        // fetch location.
         final Location location = itemDisplay.getLocation();
 
-        if (this.crateManager.hasEditorCrate(player)) {
-            if (!player.hasPermission("crazycrates.editor")) {
-                this.crateManager.removeEditorCrate(player);
-
-                Messages.force_editor_exit.sendMessage(player, "{reason}", "Lacking permission crazycrates.editor");
-
-                return;
-            }
-
-            this.crateManager.removeCrateByLocation(player, location);
-
-            event.setCancelled(true);
-
-            return;
-        }
-
-        final EquipmentSlot equipmentSlot = player.getActiveItemHand();
-
-        // check if key, then cancel again.
-        if (this.crateManager.isKey(player, equipmentSlot)) {
-            event.setCancelled(true);
-        }
-
-
         if (this.crateManager.isCrateLocation(location)) {
-            // build our interact event.
-            final CrateInteractEvent interactEvent = new CrateInteractEvent(location, equipmentSlot, player, Action.LEFT_CLICK_BLOCK);
+            new CrateInteractEvent(event, Action.LEFT_CLICK_BLOCK, location).preventUse().callEvent();
 
-            // call our interact event.
-            interactEvent.callEvent();
-
-            // cancel break event.
             event.setCancelled(true);
         }
     }
