@@ -1048,7 +1048,13 @@ public class CrateManager {
     private final SettingsManager editor = ConfigManager.getEditor();
 
     public void addCrateByLocation(final Player player, final Location location) {
-        if (location == null) return;
+        if (!player.hasPermission("crazycrates.editor")) {
+            removeEditorCrate(player);
+
+            Messages.force_editor_exit.sendMessage(player, "{reason}", "lacking the permission crazycrates.editor");
+
+            return;
+        }
 
         final Crate crate = getEditorCrate(player);
 
@@ -1593,6 +1599,14 @@ public class CrateManager {
     }
 
     public void removeCrateByLocation(final Player player, final Location location) {
+        if (!player.hasPermission("crazycrates.editor")) {
+            removeEditorCrate(player);
+
+            Messages.force_editor_exit.sendMessage(player, "{reason}", "lacking the permission crazycrates.editor");
+
+            return;
+        }
+
         if (isCrateLocation(location)) {
             final CrateLocation crateLocation = getCrateLocation(location);
 

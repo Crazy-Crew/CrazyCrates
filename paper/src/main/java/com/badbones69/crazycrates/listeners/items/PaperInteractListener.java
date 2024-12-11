@@ -36,14 +36,6 @@ public class PaperInteractListener implements Listener {
 
         if (!this.crateManager.hasEditorCrate(player)) return;
 
-        if (!player.hasPermission("crazycrates.editor")) {
-            this.crateManager.removeEditorCrate(player);
-
-            Messages.force_editor_exit.sendMessage(player, "{reason}", "Lacking permission crazycrates.editor");
-
-            return;
-        }
-
         final Location location = block.getLocation();
 
         switch (action) {

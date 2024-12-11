@@ -7,6 +7,7 @@ import com.nexomc.nexo.api.events.furniture.NexoFurnitureBreakEvent;
 import com.nexomc.nexo.api.events.furniture.NexoFurnitureInteractEvent;
 import org.bukkit.Location;
 import org.bukkit.entity.ItemDisplay;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -19,14 +20,18 @@ public class NexoInteractListener implements Listener {
 
     @EventHandler
     public void onNexoFurnitureInteractEvent(NexoFurnitureInteractEvent event) {
-        if (this.crateManager.hasEditorCrate(event.getPlayer())) {
+        final ItemDisplay itemDisplay = event.getBaseEntity();
+        final Location location = itemDisplay.getLocation();
+
+        final Player player = event.getPlayer();
+
+        if (this.crateManager.hasEditorCrate(player)) {
+            this.crateManager.addCrateByLocation(player, location);
+
             event.setCancelled(true);
 
             return;
         }
-
-        final ItemDisplay itemDisplay = event.getBaseEntity();
-        final Location location = itemDisplay.getLocation();
 
         if (this.crateManager.isCrateLocation(location)) {
             new CrateInteractEvent(event, Action.RIGHT_CLICK_BLOCK, location).callEvent();
@@ -35,14 +40,18 @@ public class NexoInteractListener implements Listener {
 
     @EventHandler
     public void onNexoFurnitureBreakEvent(NexoFurnitureBreakEvent event) {
-        if (this.crateManager.hasEditorCrate(event.getPlayer())) {
+        final ItemDisplay itemDisplay = event.getBaseEntity();
+        final Location location = itemDisplay.getLocation();
+
+        final Player player = event.getPlayer();
+
+        if (this.crateManager.hasEditorCrate(player)) {
+            this.crateManager.removeCrateByLocation(player, location);
+
             event.setCancelled(true);
 
             return;
         }
-
-        final ItemDisplay itemDisplay = event.getBaseEntity();
-        final Location location = itemDisplay.getLocation();
 
         if (this.crateManager.isCrateLocation(location)) {
             new CrateInteractEvent(event, Action.LEFT_CLICK_BLOCK, location).callEvent();
