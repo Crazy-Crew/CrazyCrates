@@ -84,6 +84,13 @@ crates:
   need-more-room: "{prefix}<red>There is not enough space to open that here"
   # A list of available placeholders: {world}
   world-disabled: "{prefix}<red>I am sorry but Crates are disabled in {world}."
+  editor:
+    # A list of available placeholders: {crate}
+    enter: "{prefix}<red>You are now in editor mode."
+    # A list of available placeholders: {crate}
+    exit: "{prefix}<red>You are no longer in editor mode."
+    # A list of available placeholders: {reason}
+    force-exit: "{prefix}<red>You have been forced out of the editor mode for {reason}."
   physical-crate:
     # A list of available placeholders: {crate}
     created:
