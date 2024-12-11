@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.inventory.EquipmentSlot;
 
 public class NexoInteractListener implements Listener {
 
@@ -22,6 +23,8 @@ public class NexoInteractListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onNexoFurnitureInteractEvent(NexoFurnitureInteractEvent event) {
+        if (event.getHand() == EquipmentSlot.OFF_HAND) return;
+
         final Player player = event.getPlayer();
 
         // get item display.
