@@ -1080,7 +1080,7 @@ public class CrateManager {
                     put("{crate}", crate.getCrateName());
                 }});
 
-                //spawnItem(location, ItemType.EMERALD.createItemStack());
+                spawnItem(location, ItemType.EMERALD.createItemStack());
 
                 return;
             }
@@ -1092,7 +1092,7 @@ public class CrateManager {
                 put("{crate}", crateLocation != null ? crateLocation.getCrate().getCrateName() : "N/A");
             }});
 
-            //spawnItem(location, ItemType.REDSTONE.createItemStack());
+            spawnItem(location, ItemType.REDSTONE.createItemStack());
 
             return;
         }
@@ -1101,13 +1101,13 @@ public class CrateManager {
 
         Messages.created_physical_crate.sendMessage(player, "{crate}", crate.getCrateName());
 
-        //spawnItem(location, ItemType.EMERALD.createItemStack());
+        spawnItem(location, ItemType.EMERALD.createItemStack());
     }
 
     private void spawnItem(final Location location, final ItemStack itemStack) {
         final World world = location.getWorld();
 
-        final ItemDisplay itemDisplay = world.spawn(location.toCenterLocation().add(0.0, 0.5, 0.0), ItemDisplay.class, entity -> entity.setItemStack(itemStack));
+        final ItemDisplay itemDisplay = world.spawn(location.toCenterLocation().add(0.0, 1.0, 0.0), ItemDisplay.class, entity -> entity.setItemStack(itemStack));
 
         itemDisplay.setPersistent(false);
         itemDisplay.setBillboard(Display.Billboard.CENTER);
@@ -1129,7 +1129,7 @@ public class CrateManager {
                 itemDisplay.setInterpolationDelay(0);
                 itemDisplay.setInterpolationDuration(20);
             }
-        }.runAtFixedRate(0, 20);
+        }.runAtFixedRate(1, 20);
 
         // remove item display after 5 seconds.
         new FoliaScheduler(this.plugin, location) {
