@@ -65,7 +65,7 @@ public class CrateInteractListener implements Listener {
             case LEFT_CLICK_BLOCK, LEFT_CLICK_AIR -> {
                 runVanilla(event); // runs code if the boolean isVanilla is true
 
-                if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin")) {
+                if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin")) { // deprecated
                     final String arg1 = MiscUtils.location(location.getLocation(), true);
                     final String arg2 = MiscUtils.location(event.getLocation(), true);
 
