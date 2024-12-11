@@ -342,7 +342,7 @@ public class CosmicCrateListener implements Listener {
                             // Check if event is cancelled.
                             if (!event.isCancelled()) {
                                 // Add the keys
-                                userManager.addKeys(uuid, fileName, type == null ? KeyType.virtual_key : type, 1);
+                                userManager.addKeys(uuid, fileName, type, 1);
 
                                 // Remove opening stuff.
                                 crateManager.removePlayerFromOpeningList(player);
