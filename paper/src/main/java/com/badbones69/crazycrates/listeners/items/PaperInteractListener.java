@@ -27,7 +27,7 @@ public class PaperInteractListener implements Listener {
 
         final Block block = event.getClickedBlock();
 
-        if (block == null || block.getType().isAir()) return;
+        if (block == null || block.isEmpty()) return;
 
         final Player player = event.getPlayer();
 
