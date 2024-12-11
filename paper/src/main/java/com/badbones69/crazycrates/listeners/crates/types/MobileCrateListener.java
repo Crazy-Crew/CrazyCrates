@@ -7,7 +7,6 @@ import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.utils.MiscUtils;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -30,9 +29,9 @@ public class MobileCrateListener implements Listener {
 
     @EventHandler
     public void onCrateUse(PlayerInteractEvent event) {
-        final Player player = event.getPlayer();
-
         if (event.getHand() == EquipmentSlot.OFF_HAND) return;
+
+        final Player player = event.getPlayer();
 
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 

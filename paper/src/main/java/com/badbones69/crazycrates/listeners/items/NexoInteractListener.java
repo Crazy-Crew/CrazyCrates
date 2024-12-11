@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.inventory.EquipmentSlot;
 
 public class NexoInteractListener implements Listener {
 
@@ -25,7 +26,7 @@ public class NexoInteractListener implements Listener {
 
         final Player player = event.getPlayer();
 
-        if (this.crateManager.hasEditorCrate(player)) {
+        if (this.crateManager.hasEditorCrate(player) && event.getHand() != EquipmentSlot.OFF_HAND) {
             this.crateManager.addCrateByLocation(player, location);
 
             event.setCancelled(true);
@@ -45,7 +46,7 @@ public class NexoInteractListener implements Listener {
 
         final Player player = event.getPlayer();
 
-        if (this.crateManager.hasEditorCrate(player)) {
+        if (this.crateManager.hasEditorCrate(player) && player.getActiveItemHand() != EquipmentSlot.OFF_HAND) {
             this.crateManager.removeCrateByLocation(player, location);
 
             event.setCancelled(true);

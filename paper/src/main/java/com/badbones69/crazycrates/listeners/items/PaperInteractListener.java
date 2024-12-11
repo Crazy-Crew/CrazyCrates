@@ -47,6 +47,8 @@ public class PaperInteractListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
+        if (event.getHand() == EquipmentSlot.OFF_HAND) return;
+
         final Block block = event.getClickedBlock();
 
         if (block == null || block.isEmpty()) return;
