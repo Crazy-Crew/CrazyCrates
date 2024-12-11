@@ -79,7 +79,7 @@ public class NexoInteractListener implements Listener {
                 return;
             }
 
-            if (player.isSneaking() && this.crateManager.isCrateLocation(location)) {
+            if (this.crateManager.isCrateLocation(location)) {
                 final CrateLocation crateLocation = this.crateManager.getCrateLocation(location);
 
                 if (crateLocation != null) {

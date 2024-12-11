@@ -48,7 +48,7 @@ public class CrateEditorListener implements Listener {
         switch (action) {
             case RIGHT_CLICK_BLOCK -> this.crateManager.addEditorCrateLocation(player, location);
             case LEFT_CLICK_BLOCK -> {
-                if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && this.crateManager.isCrateLocation(location)) {
+                if (this.crateManager.isCrateLocation(location)) {
                     final CrateLocation crateLocation = this.crateManager.getCrateLocation(location);
 
                     if (crateLocation != null) {
