@@ -52,9 +52,7 @@ public class CrateInteractListener implements Listener {
 
         final CrateLocation location = event.getCrateLocation();
 
-        if (location == null) {
-            return;
-        }
+        if (location == null) return;
 
         final Crate crate = location.getCrate();
         final CrateType crateType = crate.getCrateType();

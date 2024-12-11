@@ -26,7 +26,7 @@ public class CrateEditorListener implements Listener {
 
         final Block block = event.getClickedBlock();
 
-        if (block == null) return;
+        if (block == null || block.getType().isAir()) return;
 
         final Player player = event.getPlayer();
 
