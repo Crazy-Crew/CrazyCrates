@@ -1,8 +1,6 @@
 name: Publish Release
+
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       logLevel:
@@ -13,7 +11,6 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    if: "contains(github.event.commits[0].message, '[build]')"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
