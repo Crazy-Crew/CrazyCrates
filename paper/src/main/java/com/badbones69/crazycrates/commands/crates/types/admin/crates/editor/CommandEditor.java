@@ -23,7 +23,7 @@ public class CommandEditor extends BaseCommand {
         if (flags.hasFlag("e")) {
             this.crateManager.removeEditorCrate(player);
 
-            Messages.force_editor_exit.sendMessage(player);
+            Messages.force_editor_exit.sendMessage(player, "{reason}", "You asked.");
 
             return;
         }

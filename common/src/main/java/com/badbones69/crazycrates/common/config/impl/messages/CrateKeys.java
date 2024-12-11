@@ -69,8 +69,8 @@ public class CrateKeys implements SettingsHolder {
     @Comment("A list of available placeholders: {crate}")
     public static final Property<String> editor_exit = newProperty("crates.editor.exit", "{prefix}<red>You are no longer in editor mode.");
 
-    @Comment("This is only used, when the crate does not exist or you use --exit/-e on /crazycrates editor")
-    public static final Property<String> force_editor_exit = newProperty("crates.editor.force-exit", "{prefix}<red>You have been forced out of the editor mode.");
+    @Comment("A list of available placeholders: {reason}")
+    public static final Property<String> force_editor_exit = newProperty("crates.editor.force-exit", "{prefix}<red>You have been forced out of the editor mode for {reason}.");
 
     @Comment("A list of available placeholders: {crate}")
     public static final Property<List<String>> created_physical_crate = newListProperty("crates.physical-crate.created", List.of(
