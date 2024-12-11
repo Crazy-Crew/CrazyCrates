@@ -90,6 +90,24 @@ public class CrateManager {
     private final List<String> brokeCrates = new ArrayList<>();
     private final List<Crate> crates = new ArrayList<>();
 
+    private final Map<UUID, Crate> crateEditors = new HashMap<>();
+
+    public void addEditorCrate(final Player player, final Crate crate) {
+        this.crateEditors.put(player.getUniqueId(), crate);
+    }
+
+    public void removeEditorCrate(final Player player) {
+        this.crateEditors.remove(player.getUniqueId());
+    }
+
+    public boolean hasEditorCrate(final Player player) {
+        return this.crateEditors.containsKey(player.getUniqueId());
+    }
+
+    public @Nullable Crate getEditorCrate(final Player player) {
+        return this.crateEditors.getOrDefault(player.getUniqueId(), null);
+    }
+
     private final Map<UUID, Map<Integer, Tier>> tiers = new WeakHashMap<>();
 
     public void addTier(final Player player, final int slot, final Tier tier) {

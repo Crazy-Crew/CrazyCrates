@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates;
 
+import com.badbones69.crazycrates.listeners.crates.CrateEditorListener;
 import com.badbones69.crazycrates.common.Server;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
@@ -31,7 +32,6 @@ import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Locale;
@@ -127,6 +127,7 @@ public class CrazyCrates extends JavaPlugin {
         ).forEach(listener -> manager.registerEvents(listener, this));
 
         manager.registerEvents(new CrateInteractListener(), this); // always register this
+        manager.registerEvents(new CrateEditorListener(), this); // this handles crate editing
 
         if (Support.nexo.isEnabled()) { // check for nexo
             manager.registerEvents(new NexoInteractListener(), this);

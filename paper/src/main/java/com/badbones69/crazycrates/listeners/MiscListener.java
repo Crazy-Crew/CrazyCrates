@@ -135,6 +135,8 @@ public class MiscListener implements Listener {
         this.crateManager.removePlayerKeyType(player);
 
         this.crateManager.removeSlot(player);
+
+        this.crateManager.removeEditorCrate(player);
     }
 
     @EventHandler

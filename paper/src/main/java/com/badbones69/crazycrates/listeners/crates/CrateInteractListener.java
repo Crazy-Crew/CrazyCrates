@@ -48,13 +48,14 @@ public class CrateInteractListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCrateInteract(final CrateInteractEvent event) {
+        final Player player = event.getPlayer();
+
         final CrateLocation location = event.getCrateLocation();
 
         if (location == null) {
             return;
         }
 
-        final Player player = event.getPlayer();
         final Crate crate = location.getCrate();
         final CrateType crateType = crate.getCrateType();
 
