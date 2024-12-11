@@ -33,7 +33,7 @@ public class PaperInteractListener implements Listener {
         final @Nullable Block block = event.getClickedBlock();
 
         // check location.
-        if (block == null) return;
+        if (block == null || block.getType().isAir()) return;
 
         // build our interact event.
         final CrateInteractEvent interactEvent = new CrateInteractEvent(event, block.getLocation());
