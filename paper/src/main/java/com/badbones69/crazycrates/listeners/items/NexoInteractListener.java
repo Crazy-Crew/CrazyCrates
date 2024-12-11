@@ -24,7 +24,9 @@ public class NexoInteractListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onNexoFurnitureInteractEvent(NexoFurnitureInteractEvent event) {
-        if (event.getHand() == EquipmentSlot.OFF_HAND) return;
+        final EquipmentSlot equipmentSlot = event.getHand();
+
+        if (equipmentSlot == EquipmentSlot.OFF_HAND) return;
 
         final Player player = event.getPlayer();
 
@@ -50,9 +52,15 @@ public class NexoInteractListener implements Listener {
             return;
         }
 
+        // check if key, then cancel.
+        if (this.crateManager.isKey(player, equipmentSlot)) {
+            event.setCancelled(true);
+        }
+
+
         if (this.crateManager.isCrateLocation(location)) {
             // build our interact event.
-            final CrateInteractEvent interactEvent = new CrateInteractEvent(location, event.getHand(), player, Action.RIGHT_CLICK_BLOCK);
+            final CrateInteractEvent interactEvent = new CrateInteractEvent(location, equipmentSlot, player, Action.RIGHT_CLICK_BLOCK);
 
             // call our interact event.
             interactEvent.callEvent();
@@ -88,9 +96,17 @@ public class NexoInteractListener implements Listener {
             return;
         }
 
+        final EquipmentSlot equipmentSlot = player.getActiveItemHand();
+
+        // check if key, then cancel again.
+        if (this.crateManager.isKey(player, equipmentSlot)) {
+            event.setCancelled(true);
+        }
+
+
         if (this.crateManager.isCrateLocation(location)) {
             // build our interact event.
-            final CrateInteractEvent interactEvent = new CrateInteractEvent(location, player.getActiveItemHand(), player, Action.LEFT_CLICK_BLOCK);
+            final CrateInteractEvent interactEvent = new CrateInteractEvent(location, equipmentSlot, player, Action.LEFT_CLICK_BLOCK);
 
             // call our interact event.
             interactEvent.callEvent();
