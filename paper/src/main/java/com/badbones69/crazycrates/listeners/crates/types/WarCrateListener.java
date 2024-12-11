@@ -68,7 +68,7 @@ public class WarCrateListener implements Listener {
                             if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
 
                             // Removing other items then the prize.
-                            crateManager.addCrateTask(player, new FoliaScheduler(plugin, SchedulerType.entity_scheduler) {
+                            crateManager.addCrateTask(player, new FoliaScheduler(plugin, null, player) {
                                 @Override
                                 public void run() {
                                     for (int i = 0; i < 9; i++) {
@@ -78,7 +78,7 @@ public class WarCrateListener implements Listener {
                                     if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
 
                                     // Closing the inventory when finished.
-                                    crateManager.addCrateTask(player, new FoliaScheduler(plugin, SchedulerType.entity_scheduler) {
+                                    crateManager.addCrateTask(player, new FoliaScheduler(plugin, null, player) {
                                         @Override
                                         public void run() {
                                             if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);

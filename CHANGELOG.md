@@ -1,2 +1,1 @@
-### Update
-- Ignore offhand when right-clicking a physical crate.
+- Fixed an error with war crate throwing an exception.
