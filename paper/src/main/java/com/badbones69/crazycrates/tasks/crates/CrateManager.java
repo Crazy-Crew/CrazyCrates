@@ -40,6 +40,7 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.ItemDisplay;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -1603,6 +1604,17 @@ public class CrateManager {
                 Messages.removed_physical_crate.sendMessage(player, "{id}", id);
             }
         }
+    }
+
+    /**
+     * Checks if the player's equipment slot item is a key.
+     *
+     * @param player the player
+     * @param equipmentSlot the equipment slot
+     * @return true or false
+     */
+    public boolean isKey(final Player player, final EquipmentSlot equipmentSlot) {
+        return isKey(player.getInventory().getItem(equipmentSlot));
     }
 
     /**

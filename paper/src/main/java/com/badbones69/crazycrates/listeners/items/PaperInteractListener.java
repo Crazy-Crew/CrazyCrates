@@ -3,7 +3,11 @@ package com.badbones69.crazycrates.listeners.items;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.CrateInteractEvent;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.nexomc.nexo.api.NexoFurniture;
+import com.ryderbelserion.vital.paper.api.enums.Support;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -20,9 +24,13 @@ public class PaperInteractListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
-        if (event.getHand() == EquipmentSlot.OFF_HAND) return;
+        final EquipmentSlot equipmentSlot = event.getHand();
 
-        if (this.crateManager.hasEditorCrate(event.getPlayer())) {
+        if (equipmentSlot == EquipmentSlot.OFF_HAND) return;
+
+        final Player player = event.getPlayer();
+
+        if (this.crateManager.hasEditorCrate(player)) {
             event.setUseInteractedBlock(Event.Result.DENY);
             event.setUseItemInHand(Event.Result.DENY);
 
@@ -36,17 +44,18 @@ public class PaperInteractListener implements Listener {
         if (block == null || block.getType().isAir()) return;
 
         final Location location = block.getLocation();
-        final CrateInteractEvent interactEvent = new CrateInteractEvent(event, block.getLocation());
 
         // check if key, cancel.
-        if (interactEvent.isKey()) {
+        if (this.crateManager.isKey(player, equipmentSlot)) {
             event.setUseItemInHand(Event.Result.DENY);
         }
 
         if (Support.nexo.isEnabled()) {
-        if (NexoFurniture.isFurniture(location)) return; // return because it's furniture
+            if (NexoFurniture.isFurniture(location)) return; // return because it's furniture
         }
 
+        // build our interact event.
+        final CrateInteractEvent interactEvent = new CrateInteractEvent(event, location);
 
         // call our event.
         interactEvent.callEvent();

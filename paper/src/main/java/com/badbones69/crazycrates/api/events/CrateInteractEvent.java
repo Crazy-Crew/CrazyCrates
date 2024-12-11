@@ -84,7 +84,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
     }
 
     public boolean isKey() {
-        return this.plugin.getCrateManager().isKey(this.player.getInventory().getItem(this.equipmentSlot));
+        return this.crateManager.isKey(this.player, this.equipmentSlot);
     }
 
     public boolean isVanilla() {
