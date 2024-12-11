@@ -45,35 +45,20 @@ public class CrateInteractListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCrateInteract(final CrateInteractEvent event) {
-        if (event.isCancelled()) return; // return for any reason. interaction already cancelled at this stage.
+        if (event.isCancelled()) return; // do not run this event.
+
+        event.cancel(); // cancel the event
 
         final Player player = event.getPlayer();
 
-        final Location location = event.getLocation();
-
         final CrateLocation crateLocation = event.getCrateLocation();
         final Crate crate = crateLocation.getCrate();
-        final CrateType crateType = crate.getCrateType();
 
         final Action action = event.getAction();
 
         switch (action) {
             case LEFT_CLICK_BLOCK, LEFT_CLICK_AIR -> {
-                if (this.crateManager.hasEditorCrate(player)) {
-                    if (!player.hasPermission("crazycrates.editor")) {
-                        this.crateManager.removeEditorCrate(player);
-
-                        Messages.force_editor_exit.sendMessage(player, "{reason}", "Lacking permission crazycrates.editor");
-
-                        return;
-                    }
-
-                    this.crateManager.removeCrateByLocation(player, location);
-
-                    return;
-                }
-
-                if (crateType == CrateType.menu) {
+                if (crate.getCrateType() == CrateType.menu) {
                     preview(player, crate, true);
 
                     return;
@@ -92,23 +77,7 @@ public class CrateInteractListener implements Listener {
             }
 
             case RIGHT_CLICK_BLOCK, RIGHT_CLICK_AIR -> {
-                if (this.crateManager.hasEditorCrate(player)) {
-                    if (!player.hasPermission("crazycrates.editor")) {
-                        this.crateManager.removeEditorCrate(player);
-
-                        Messages.force_editor_exit.sendMessage(player, "{reason}", "Lacking permission crazycrates.editor");
-
-                        return;
-                    }
-
-                    this.crateManager.addCrateByLocation(player, location);
-
-                    event.setCancelled(true);
-
-                    return;
-                }
-
-                if (crateType == CrateType.menu) {
+                if (crate.getCrateType() == CrateType.menu) {
                     preview(player, crate, true);
 
                     return;

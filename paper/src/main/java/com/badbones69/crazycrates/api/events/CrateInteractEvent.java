@@ -82,10 +82,8 @@ public class CrateInteractEvent extends Event implements Cancellable {
 
     /**
      * Prevents interacting/breaking the blocks.
-     *
-     * @return {@link CrateInteractEvent}
      */
-    public CrateInteractEvent preventUse() {
+    public void cancel() {
         if (this.nexoInteractEvent != null) {
             this.nexoInteractEvent.setCancelled(true);
         } else if (this.nexoBreakEvent != null) {
@@ -93,8 +91,6 @@ public class CrateInteractEvent extends Event implements Cancellable {
         } else if (this.paperEvent != null) {
             this.paperEvent.setCancelled(true);
         }
-
-        return this;
     }
 
     public @NotNull CrateLocation getCrateLocation() {

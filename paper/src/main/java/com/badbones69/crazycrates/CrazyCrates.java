@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates;
 
-import com.badbones69.crazycrates.listeners.crates.CrateEditorListener;
 import com.badbones69.crazycrates.common.Server;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
@@ -125,7 +124,6 @@ public class CrazyCrates extends JavaPlugin {
 
                 new CrateInteractListener(),
                 new CrateControlListener(),
-                new CrateEditorListener(),
                 new CrateOpenListener(),
 
                 new PaperInteractListener()

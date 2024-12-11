@@ -19,23 +19,33 @@ public class NexoInteractListener implements Listener {
 
     @EventHandler
     public void onNexoFurnitureInteractEvent(NexoFurnitureInteractEvent event) {
+        if (this.crateManager.hasEditorCrate(event.getPlayer())) {
+            event.setCancelled(true);
+
+            return;
+        }
+
         final ItemDisplay itemDisplay = event.getBaseEntity();
         final Location location = itemDisplay.getLocation();
 
         if (this.crateManager.isCrateLocation(location)) {
-            new CrateInteractEvent(event, Action.RIGHT_CLICK_BLOCK, location).preventUse().callEvent();
+            new CrateInteractEvent(event, Action.RIGHT_CLICK_BLOCK, location).callEvent();
         }
     }
 
     @EventHandler
     public void onNexoFurnitureBreakEvent(NexoFurnitureBreakEvent event) {
+        if (this.crateManager.hasEditorCrate(event.getPlayer())) {
+            event.setCancelled(true);
+
+            return;
+        }
+
         final ItemDisplay itemDisplay = event.getBaseEntity();
         final Location location = itemDisplay.getLocation();
 
         if (this.crateManager.isCrateLocation(location)) {
-            new CrateInteractEvent(event, Action.LEFT_CLICK_BLOCK, location).preventUse().callEvent();
-
-            event.setCancelled(true);
+            new CrateInteractEvent(event, Action.LEFT_CLICK_BLOCK, location).callEvent();
         }
     }
 }
