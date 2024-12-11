@@ -1046,7 +1046,7 @@ public class CrateManager {
 
     private final SettingsManager editor = ConfigManager.getEditor();
 
-    public void addEditorCrateLocation(final Player player, final Location location) {
+    public void addCrateByLocation(final Player player, final Location location) {
         if (location == null) return;
 
         final Crate crate = getEditorCrate(player);
@@ -1587,6 +1587,20 @@ public class CrateManager {
                 final CrateLocation crateLocation = getCrateLocation(location);
 
                 if (crateLocation != null) this.holograms.createHologram(location, crate, crateLocation.getID());
+            }
+        }
+    }
+
+    public void removeCrateByLocation(final Player player, final Location location) {
+        if (isCrateLocation(location)) {
+            final CrateLocation crateLocation = getCrateLocation(location);
+
+            if (crateLocation != null) {
+                final String id = crateLocation.getID();
+
+                removeCrateLocation(id);
+
+                Messages.removed_physical_crate.sendMessage(player, "{id}", id);
             }
         }
     }

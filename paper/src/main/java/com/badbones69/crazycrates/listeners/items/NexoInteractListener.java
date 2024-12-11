@@ -43,21 +43,23 @@ public class NexoInteractListener implements Listener {
                 return;
             }
 
-            this.crateManager.addEditorCrateLocation(player, location);
+            this.crateManager.addCrateByLocation(player, location);
 
             event.setCancelled(true);
 
             return;
         }
 
-        // build our interact event.
-        final CrateInteractEvent interactEvent = new CrateInteractEvent(location, event.getHand(), player, Action.RIGHT_CLICK_BLOCK);
+        if (this.crateManager.isCrateLocation(location)) {
+            // build our interact event.
+            final CrateInteractEvent interactEvent = new CrateInteractEvent(location, event.getHand(), player, Action.RIGHT_CLICK_BLOCK);
 
-        // call our interact event.
-        interactEvent.callEvent();
+            // call our interact event.
+            interactEvent.callEvent();
 
-        // cancel the interact event.
-        event.setCancelled(true);
+            // cancel the interact event.
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -79,30 +81,22 @@ public class NexoInteractListener implements Listener {
                 return;
             }
 
-            if (this.crateManager.isCrateLocation(location)) {
-                final CrateLocation crateLocation = this.crateManager.getCrateLocation(location);
-
-                if (crateLocation != null) {
-                    final String id = crateLocation.getID();
-
-                    this.crateManager.removeCrateLocation(id);
-
-                    Messages.removed_physical_crate.sendMessage(player, "{id}", id);
-                }
-            }
+            this.crateManager.removeCrateByLocation(player, location);
 
             event.setCancelled(true);
 
             return;
         }
 
-        // build our interact event.
-        final CrateInteractEvent interactEvent = new CrateInteractEvent(location, player.getActiveItemHand(), player, Action.LEFT_CLICK_BLOCK);
+        if (this.crateManager.isCrateLocation(location)) {
+            // build our interact event.
+            final CrateInteractEvent interactEvent = new CrateInteractEvent(location, player.getActiveItemHand(), player, Action.LEFT_CLICK_BLOCK);
 
-        // call our interact event.
-        interactEvent.callEvent();
+            // call our interact event.
+            interactEvent.callEvent();
 
-        // cancel break event.
-        event.setCancelled(true);
+            // cancel break event.
+            event.setCancelled(true);
+        }
     }
 }

@@ -45,20 +45,8 @@ public class CrateEditorListener implements Listener {
         final Location location = block.getLocation();
 
         switch (action) {
-            case RIGHT_CLICK_BLOCK -> this.crateManager.addEditorCrateLocation(player, location);
-            case LEFT_CLICK_BLOCK -> {
-                if (this.crateManager.isCrateLocation(location)) {
-                    final CrateLocation crateLocation = this.crateManager.getCrateLocation(location);
-
-                    if (crateLocation != null) {
-                        final String id = crateLocation.getID();
-
-                        this.crateManager.removeCrateLocation(id);
-
-                        Messages.removed_physical_crate.sendMessage(player, "{id}", id);
-                    }
-                }
-            }
+            case RIGHT_CLICK_BLOCK -> this.crateManager.addCrateByLocation(player, location);
+            case LEFT_CLICK_BLOCK -> this.crateManager.removeCrateByLocation(player, location);
         }
 
         event.setUseInteractedBlock(Event.Result.DENY);
