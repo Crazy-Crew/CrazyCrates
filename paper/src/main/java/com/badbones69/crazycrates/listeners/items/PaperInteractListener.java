@@ -35,13 +35,18 @@ public class PaperInteractListener implements Listener {
         // check location.
         if (block == null || block.getType().isAir()) return;
 
-        // build our interact event.
+        final Location location = block.getLocation();
         final CrateInteractEvent interactEvent = new CrateInteractEvent(event, block.getLocation());
 
         // check if key, cancel.
         if (interactEvent.isKey()) {
             event.setUseItemInHand(Event.Result.DENY);
         }
+
+        if (Support.nexo.isEnabled()) {
+        if (NexoFurniture.isFurniture(location)) return; // return because it's furniture
+        }
+
 
         // call our event.
         interactEvent.callEvent();
