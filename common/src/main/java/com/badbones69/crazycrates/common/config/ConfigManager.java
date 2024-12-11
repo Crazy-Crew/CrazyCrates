@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.common.config;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
+import com.badbones69.crazycrates.common.config.impl.EditorKeys;
 import com.badbones69.crazycrates.common.config.migrate.ConfigMigration;
 import com.badbones69.crazycrates.common.config.migrate.LocaleMigration;
 import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
@@ -16,6 +17,8 @@ import java.io.File;
 public class ConfigManager {
 
     private static SettingsManager config;
+
+    private static SettingsManager editor;
 
     private static SettingsManager messages;
 
@@ -31,6 +34,12 @@ public class ConfigManager {
                 .configurationData(ConfigKeys.class)
                 .create();
 
+        editor = SettingsManagerBuilder
+                .withYamlFile(new File(dataFolder, "editor.yml"), builder)
+                .migrationService(new ConfigMigration())
+                .configurationData(EditorKeys.class)
+                .create();
+
         messages = SettingsManagerBuilder
                 .withYamlFile(new File(dataFolder, "messages.yml"), builder)
                 .migrationService(new LocaleMigration())
@@ -43,6 +52,7 @@ public class ConfigManager {
      */
     public static void refresh() {
         config.reload();
+        editor.reload();
         messages.reload();
     }
 
@@ -51,6 +61,13 @@ public class ConfigManager {
      */
     public static SettingsManager getConfig() {
         return config;
+    }
+
+    /**
+     * @return gets editor.yml
+     */
+    public static SettingsManager getEditor() {
+        return editor;
     }
 
     /**

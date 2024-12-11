@@ -1,0 +1,10 @@
+# Support: https://discord.gg/badbones-s-live-chat-182615261403283459
+# Github: https://github.com/Crazy-Crew
+# 
+# Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
+# Features: https://github.com/Crazy-Crew/CrazyCrates/issues
+# 
+# List of all sounds: https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+editor:
+  # If this is set to true, when you are in /crazycrates editor... any existing crate locations will be overridden on right click.
+  overwrite-old-crate-locations: false
