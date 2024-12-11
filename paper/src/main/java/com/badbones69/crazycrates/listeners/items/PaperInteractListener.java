@@ -68,6 +68,8 @@ public class PaperInteractListener implements Listener {
     public void onBlockBreak(BlockPlaceEvent event) {
         final ItemStack itemStack = event.getItemInHand();
 
+        if (itemStack.isEmpty()) return;
+
         if (this.crateManager.isKey(itemStack)) {
             event.setBuild(false);
         }
