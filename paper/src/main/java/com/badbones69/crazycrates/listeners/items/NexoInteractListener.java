@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.listeners.items;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.CrateInteractEvent;
+import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.nexomc.nexo.api.events.furniture.NexoFurnitureBreakEvent;
 import com.nexomc.nexo.api.events.furniture.NexoFurnitureInteractEvent;
@@ -63,17 +64,37 @@ public class NexoInteractListener implements Listener {
     public void onNexoFurnitureBreakEvent(NexoFurnitureBreakEvent event) {
         final Player player = event.getPlayer();
 
-        if (this.crateManager.hasEditorCrate(player)) {
-            event.setCancelled(true);
-
-            return;
-        }
-
         // get item display.
         final ItemDisplay itemDisplay = event.getBaseEntity();
 
         // fetch location.
         final Location location = itemDisplay.getLocation();
+
+        if (this.crateManager.hasEditorCrate(player)) {
+            if (!player.hasPermission("crazycrates.editor")) {
+                this.crateManager.removeEditorCrate(player);
+
+                Messages.force_editor_exit.sendMessage(player, "{reason}", "Lacking permission crazycrates.editor");
+
+                return;
+            }
+
+            if (player.isSneaking() && this.crateManager.isCrateLocation(location)) {
+                final CrateLocation crateLocation = this.crateManager.getCrateLocation(location);
+
+                if (crateLocation != null) {
+                    final String id = crateLocation.getID();
+
+                    this.crateManager.removeCrateLocation(id);
+
+                    Messages.removed_physical_crate.sendMessage(player, "{id}", id);
+                }
+            }
+
+            event.setCancelled(true);
+
+            return;
+        }
 
         // build our interact event.
         final CrateInteractEvent interactEvent = new CrateInteractEvent(location, player.getActiveItemHand(), player, Action.LEFT_CLICK_BLOCK);
