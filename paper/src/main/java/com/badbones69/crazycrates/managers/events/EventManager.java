@@ -23,15 +23,11 @@ public class EventManager {
 
     private final static SettingsManager config = ConfigManager.getConfig();
 
-    public static void logEvent(final EventType type, final Player player, final CommandSender sender, final Crate crate, final KeyType keyType, final int amount) {
-        handle(type, player, sender, crate, keyType, amount);
+    public static void logEvent(final EventType type, final String name, final CommandSender sender, final Crate crate, final KeyType keyType, final int amount) {
+        handle(type, name, sender, crate, keyType, amount);
     }
 
-    public static void logEvent(final EventType type, final OfflinePlayer player, final CommandSender sender, final Crate crate, final KeyType keyType, final int amount) {
-        handle(type, player, sender, crate, keyType, amount);
-    }
-
-    private static void handle(final EventType type, final OfflinePlayer player, final CommandSender sender, final Crate crate, final KeyType keyType, final int amount) {
+    private static void handle(final EventType type, final String name, final CommandSender sender, final Crate crate, final KeyType keyType, final int amount) {
         String message = "";
         File file = null;
 
@@ -39,7 +35,7 @@ public class EventManager {
             case event_key_given, event_key_removed, event_key_received, event_key_sent, event_key_taken, event_key_taken_multiple -> {
                 message = "Player: %player% | Sender: %sender% | Key Name: %key_name%<reset> | Key Type: %key_type%"
                         .replace("%key_type%", keyType.getFriendlyName())
-                        .replace("%player%", player.getName())
+                        .replace("%player%", name)
                         .replace("%sender%", sender.getName())
                         .replace("%key_name%", crate.getKeyName());
 
@@ -60,7 +56,7 @@ public class EventManager {
 
             case event_crate_opened -> {
                 message = "Player: %player% | Crate Name: %crate_name%<reset> | Force Opened: %force_opened% | Crate Type: %crate_type% | Key Name: %key_name%<reset> | Key Type: %key_type% | Key Item: %key_item%"
-                        .replace("%player%", player.getName())
+                        .replace("%player%", name)
                         .replace("%crate_name%", crate.getCrateName())
                         .replace("%crate_type%", crate.getCrateType().getName())
                         .replace("%key_name%", crate.getKeyName())

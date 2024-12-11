@@ -325,7 +325,7 @@ public class CosmicCrateListener implements Listener {
                 }
             }
 
-            EventManager.logEvent(EventType.event_crate_opened, player, player, crate, type, 1);
+            EventManager.logEvent(EventType.event_crate_opened, player.getName(), player, crate, type, 1);
 
             this.crateManager.addRepeatingCrateTask(player, new TimerTask() {
                 int time = 0;

@@ -164,7 +164,7 @@ public abstract class BaseCommand {
 
             Messages.take_player_keys.sendMessage(sender, placeholders);
 
-            EventManager.logEvent(EventType.event_key_removed, player, sender, crate, type, amount);
+            EventManager.logEvent(EventType.event_key_removed, player.getName(), sender, crate, type, amount);
 
             return;
         }
@@ -181,7 +181,7 @@ public abstract class BaseCommand {
 
             this.userManager.takeOfflineKeys(offlinePlayer.getUniqueId(), fileName, type, amount);
 
-            EventManager.logEvent(EventType.event_key_removed, offlinePlayer, sender, crate, type, amount);
+            EventManager.logEvent(EventType.event_key_removed, offlinePlayer.getName(), sender, crate, type, amount);
         }
     }
 
@@ -218,7 +218,7 @@ public abstract class BaseCommand {
                 Messages.obtaining_keys.sendMessage(player, placeholders);
             }
 
-            EventManager.logEvent(EventType.event_key_given, player, sender, crate, type, amount);
+            EventManager.logEvent(EventType.event_key_given, player.getName(), sender, crate, type, amount);
 
             return;
         }
@@ -242,7 +242,7 @@ public abstract class BaseCommand {
 
                 Messages.given_offline_player_keys.sendMessage(sender, placeholders);
 
-                EventManager.logEvent(EventType.event_key_given, offlinePlayer, sender, crate, type, amount);
+                EventManager.logEvent(EventType.event_key_given, offlinePlayer.getName(), sender, crate, type, amount);
             }
         }
     }

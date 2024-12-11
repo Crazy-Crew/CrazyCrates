@@ -410,8 +410,8 @@ public class CommandOpen extends BaseCommand {
         //if (crateType != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), fileName, used); //todo() hmm?, since we account for cosmic crate, it should be fine to let it count as opened?
         this.userManager.addOpenedCrate(player.getUniqueId(), fileName, used);
 
-        EventManager.logEvent(EventType.event_crate_opened, player, player, crate, keyType, used);
-        EventManager.logEvent(EventType.event_key_taken, player, player, crate, keyType, used);
+        EventManager.logEvent(EventType.event_crate_opened, player.getName(), player, crate, keyType, used);
+        EventManager.logEvent(EventType.event_key_taken, player.getName(), player, crate, keyType, used);
 
         if (!this.userManager.takeKeys(player.getUniqueId(), fileName, keyType, used, false)) {
             this.crateManager.removeCrateInUse(player);

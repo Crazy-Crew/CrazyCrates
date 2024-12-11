@@ -113,6 +113,6 @@ public class CrateOpenListener implements Listener {
             }
         }
 
-        EventManager.logEvent(event.getEventType(), player, player, crate, event.getKeyType(), 1);
+        EventManager.logEvent(event.getEventType(), player.getName(), player, crate, event.getKeyType(), 1);
     }
 }

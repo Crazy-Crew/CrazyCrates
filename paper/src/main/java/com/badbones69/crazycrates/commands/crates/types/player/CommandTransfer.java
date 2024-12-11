@@ -78,6 +78,6 @@ public class CommandTransfer extends BaseCommand {
 
         Messages.transfer_received_keys.sendMessage(target, "{player}", player.getName());
 
-        EventManager.logEvent(EventType.event_key_transferred, target, player, crate, KeyType.virtual_key, amount);
+        EventManager.logEvent(EventType.event_key_transferred, target.getName(), player, crate, KeyType.virtual_key, amount);
     }
 }
