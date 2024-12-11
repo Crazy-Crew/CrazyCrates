@@ -151,8 +151,8 @@ public class CommandKeys implements SettingsHolder {
             "<gold>/crates mass-open <crate_name> <physical/virtual> [amount] <gray>- <yellow>Mass opens a set amount of crates.",
             "<gold>/crates tp <location> <gray>- <yellow>Teleport to a Crate.",
             "<gold>/crates give <physical/virtual> <crate_name> [amount] [player] <gray>- <yellow>Allows you to take keys from a player.",
-            "<gold>/crates set <crate_name> <gray>- <yellow>Set the block you are looking at as a crate.",
-            "<gold>/crates set Menu <gray>- <yellow>Set the block you are looking at to open the /crates menu.",
+            "<gold>/crates editor -c/--crate <crate_name> or -e/--exit <gray>- <yellow>Allows you to enter/exit editor mode.",
+            "<gold>/crates migrate -mt/--migration_type <migration_type> --crate/-crate <crate> --data/-d <gray>- <yellow>A command to migrate from other plugins or for internal changes.",
             "<gold>/crates reload <gray>- <yellow>Reloads the config/data files.",
             "<gold>/crates set1/set2 <gray>- <yellow>Sets position <red>#1 <yellow>or <red>#2 <yellow>for when making a new schematic for QuadCrates.",
             "<gold>/crates save <file name> <gray>- <yellow>Create a new nbt file in the schematics folder.",
@@ -161,6 +161,6 @@ public class CommandKeys implements SettingsHolder {
             "<gold>/keys <gray>- <yellow>Shows how many keys you have.",
             "<gold>/crates <gray>- <yellow>Opens the menu.",
             "",
-            "<gray>You can find a list of permissions @ <yellow>https://docs.crazycrew.us/crazycrates/info/commands/permissions"
+            "<gray>You can find a list of permissions @ <yellow>https://docs.crazycrew.us/docs/plugins/crazycrates/commands/permissions"
     ));
 }

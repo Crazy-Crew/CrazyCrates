@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandAddItem;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandClaim;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandMigrate;
+import com.badbones69.crazycrates.commands.crates.types.admin.crates.editor.CommandEditor;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.commands.relations.ArgumentRelations;
 import com.badbones69.crazycrates.commands.crates.types.player.CommandHelp;
@@ -13,7 +14,6 @@ import com.badbones69.crazycrates.commands.crates.types.admin.CommandReload;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandDebug;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandList;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandPreview;
-import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandSet;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.CommandTeleport;
 import com.badbones69.crazycrates.commands.crates.types.admin.keys.CommandGive;
 import com.badbones69.crazycrates.commands.crates.types.admin.keys.CommandOpen;
@@ -128,7 +128,7 @@ public class CommandManager {
                 new CommandPreview(),
                 new CommandDebug(),
                 new CommandList(),
-                new CommandSet(),
+                new CommandEditor(),
 
                 new CommandGive(),
                 new CommandOpen(),
