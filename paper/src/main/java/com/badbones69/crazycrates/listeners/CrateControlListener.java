@@ -51,6 +51,8 @@ public class CrateControlListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerClick(PlayerInteractEvent event) {
+        if (event.getHand() == EquipmentSlot.OFF_HAND) return;
+
         final Player player = event.getPlayer();
 
         final Block block = event.getClickedBlock();

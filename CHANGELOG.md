@@ -1,2 +1,2 @@
 ### Update
-- Fixed an issue an entity task error on Folia
+- Ignore offhand when right-clicking a physical crate.
