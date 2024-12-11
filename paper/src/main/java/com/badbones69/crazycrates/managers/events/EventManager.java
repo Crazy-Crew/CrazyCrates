@@ -73,7 +73,7 @@ public class EventManager {
 
             case event_crate_force_opened -> {
                 message = "Player: %player% | Crate Name: %crate_name%<reset> | Force Opened: %force_opened% | Crate Type: %crate_type% | Key Name: %key_name%<reset> | Key Type: %key_type% | Key Item: %key_item%"
-                        .replace("%player%", player.getName())
+                        .replace("%player%", name)
                         .replace("%crate_name%", crate.getCrateName())
                         .replace("%crate_type%", crate.getCrateType().getName())
                         .replace("%key_name%", crate.getKeyName())
