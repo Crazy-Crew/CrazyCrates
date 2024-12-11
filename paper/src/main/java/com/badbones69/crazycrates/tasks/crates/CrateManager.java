@@ -1130,7 +1130,10 @@ public class CrateManager {
      */
     public final boolean isCrateLocation(@NotNull final Location location) {
         for (final CrateLocation crateLocation : getCrateLocations()) {
-            if (crateLocation.getLocation().equals(location)) return true; //todo() make this light weight
+            final String arg1 = MiscUtils.location(crateLocation.getLocation());
+            final String arg2 = MiscUtils.location(location);
+
+            if (arg1.equals(arg2)) return true;
         }
 
         return false;
