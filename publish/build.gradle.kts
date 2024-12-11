@@ -1,4 +1,8 @@
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+
 plugins {
+    id("net.darkhax.curseforgegradle") version "1.1.25"
+
     alias(libs.plugins.minotaur)
     alias(libs.plugins.hangar)
 }
@@ -34,7 +38,7 @@ tasks {
         detectLoaders.set(false)
 
         dependencies {
-            optional.version("fancyholograms")
+            optional.project("fancyholograms")
         }
     }
 
