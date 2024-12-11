@@ -116,24 +116,23 @@ public class CrazyCrates extends JavaPlugin {
         List.of(
                 // Other listeners.
                 new BrokeLocationsListener(),
-                new CrateControlListener(),
                 new EntityDamageListener(),
                 new MobileCrateListener(),
                 new CosmicCrateListener(),
                 new QuadCrateListener(),
-                new CrateOpenListener(),
                 new WarCrateListener(),
-                new MiscListener()
+                new MiscListener(),
+
+                new CrateInteractListener(),
+                new CrateControlListener(),
+                new CrateEditorListener(),
+                new CrateOpenListener(),
+
+                new PaperInteractListener()
         ).forEach(listener -> manager.registerEvents(listener, this));
-
-        manager.registerEvents(new CrateInteractListener(), this); // always register this
-
-        manager.registerEvents(new CrateEditorListener(), this);
 
         if (Support.nexo.isEnabled()) { // check for nexo
             manager.registerEvents(new NexoInteractListener(), this);
-        } else { // otherwise enable our listeners if nexo isn't enabled.
-            manager.registerEvents(new PaperInteractListener(), this);
         }
 
         if (Support.placeholder_api.isEnabled()) {
