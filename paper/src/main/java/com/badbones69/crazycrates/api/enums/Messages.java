@@ -65,6 +65,7 @@ public enum Messages {
     preview_disabled(CrateKeys.preview_disabled),
     not_enough_keys(CrateKeys.not_enough_keys),
     editor_enter(CrateKeys.editor_enter),
+    editor_already_in(CrateKeys.editor_already_in),
     editor_exit(CrateKeys.editor_exit),
     force_editor_exit(CrateKeys.force_editor_exit),
     created_physical_crate(CrateKeys.created_physical_crate, true),
