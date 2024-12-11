@@ -1044,7 +1044,9 @@ public class CrateManager {
      * @param location the location you wish to add.
      * @param crate the crate which you would like to set it to.
      */
-    public void addCrateLocation(@NotNull final Location location, @NotNull final Crate crate) {
+    public void addCrateLocation(@NotNull final Location location, @Nullable final Crate crate) {
+        if (crate == null) return;
+
         final YamlConfiguration locations = Files.locations.getConfiguration();
         String id = "1"; // Location ID
 
