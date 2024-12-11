@@ -127,12 +127,13 @@ public class CrazyCrates extends JavaPlugin {
         ).forEach(listener -> manager.registerEvents(listener, this));
 
         manager.registerEvents(new CrateInteractListener(), this); // always register this
-        manager.registerEvents(new CrateEditorListener(), this); // this handles crate editing
 
         if (Support.nexo.isEnabled()) { // check for nexo
             manager.registerEvents(new NexoInteractListener(), this);
-        } else { // otherwise enable our listener if nexo isn't enabled.
+        } else { // otherwise enable our listeners if nexo isn't enabled.
             manager.registerEvents(new PaperInteractListener(), this);
+
+            manager.registerEvents(new CrateEditorListener(), this);
         }
 
         if (Support.placeholder_api.isEnabled()) {

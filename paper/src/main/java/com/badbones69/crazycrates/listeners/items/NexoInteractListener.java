@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.listeners.items;
 
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.CrateInteractEvent;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.nexomc.nexo.api.events.furniture.NexoFurnitureBreakEvent;
@@ -23,17 +24,27 @@ public class NexoInteractListener implements Listener {
     public void onNexoFurnitureInteractEvent(NexoFurnitureInteractEvent event) {
         final Player player = event.getPlayer();
 
-        if (this.crateManager.hasEditorCrate(player)) {
-            event.setCancelled(true);
-
-            return;
-        }
-
         // get item display.
         final ItemDisplay itemDisplay = event.getBaseEntity();
 
         // fetch location.
         final Location location = itemDisplay.getLocation();
+
+        if (this.crateManager.hasEditorCrate(player)) {
+            if (!player.hasPermission("crazycrates.editor")) {
+                this.crateManager.removeEditorCrate(player);
+
+                Messages.force_editor_exit.sendMessage(player, "{reason}", "Lacking permission crazycrates.editor");
+
+                return;
+            }
+
+            this.crateManager.addEditorCrateLocation(player, location);
+
+            event.setCancelled(true);
+
+            return;
+        }
 
         // build our interact event.
         final CrateInteractEvent interactEvent = new CrateInteractEvent(location, event.getHand(), player, Action.RIGHT_CLICK_BLOCK);

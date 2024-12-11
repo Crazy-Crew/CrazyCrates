@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.tasks.crates;
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
+import com.badbones69.crazycrates.common.config.impl.EditorKeys;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.api.objects.crates.CrateHologram;
@@ -31,11 +32,15 @@ import com.ryderbelserion.vital.files.enums.FileType;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.api.files.PaperCustomFile;
 import com.ryderbelserion.vital.paper.api.files.PaperFileManager;
+import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
 import com.ryderbelserion.vital.utils.Methods;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Display;
+import org.bukkit.entity.ItemDisplay;
+import org.bukkit.inventory.ItemType;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.persistence.PersistentDataType;
@@ -44,6 +49,7 @@ import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.joml.Matrix4f;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
@@ -1036,6 +1042,108 @@ public class CrateManager {
      */
     public boolean hasCrate(@NotNull final Crate crate) {
         return this.crates.contains(crate);
+    }
+
+    private final SettingsManager editor = ConfigManager.getEditor();
+
+    public void addEditorCrateLocation(final Player player, final Location location) {
+        if (location == null) return;
+
+        final Crate crate = getEditorCrate(player);
+
+        if (crate == null) {
+            removeEditorCrate(player);
+
+            Messages.force_editor_exit.sendMessage(player, "{reason}", "Crate does not exist.");
+
+            return;
+        }
+
+        if (crate.getCrateType() == CrateType.menu && !this.config.getProperty(ConfigKeys.enable_crate_menu)) {
+            Messages.cannot_set_type.sendMessage(player);
+
+            return;
+        }
+
+        if (isCrateLocation(location)) {
+            if (this.editor.getProperty(EditorKeys.overwrite_old_crate_locations)) {
+                final CrateLocation crateLocation = getCrateLocation(location);
+
+                if (crateLocation == null) return;
+
+                removeLocation(crateLocation); // remove old location
+
+                addCrateLocation(location, crate); // add new location
+
+                Messages.physical_crate_overridden.sendMessage(player, new HashMap<>() {{
+                    put("{id}", crateLocation.getID());
+                    put("{crate}", crate.getCrateName());
+                }});
+
+                //spawnItem(location, ItemType.EMERALD.createItemStack());
+
+                return;
+            }
+
+            Messages.physical_crate_already_exists.sendMessage(player, new HashMap<>() {{
+                final CrateLocation crateLocation = getCrateLocation(location);
+
+                put("{id}", crateLocation != null ? crateLocation.getID() : "N/A");
+                put("{crate}", crateLocation != null ? crateLocation.getCrate().getCrateName() : "N/A");
+            }});
+
+            //spawnItem(location, ItemType.REDSTONE.createItemStack());
+
+            return;
+        }
+
+        addCrateLocation(location, crate);
+
+        Messages.created_physical_crate.sendMessage(player, "{crate}", crate.getCrateName());
+
+        //spawnItem(location, ItemType.EMERALD.createItemStack());
+    }
+
+    private void spawnItem(final Location location, final ItemStack itemStack) {
+        final World world = location.getWorld();
+
+        final ItemDisplay itemDisplay = world.spawn(location.toCenterLocation().add(0.0, 0.5, 0.0), ItemDisplay.class, entity -> entity.setItemStack(itemStack));
+
+        itemDisplay.setPersistent(false);
+        itemDisplay.setBillboard(Display.Billboard.CENTER);
+        itemDisplay.setDisplayHeight(0.5f);
+        itemDisplay.setDisplayWidth(0.5f);
+
+        final Matrix4f scale = new Matrix4f().scale(0.5f);
+
+        new FoliaScheduler(this.plugin, null, itemDisplay) {
+            @Override
+            public void run() {
+                if (!itemDisplay.isValid()) { // cancel just in case
+                    cancel();
+
+                    return;
+                }
+
+                itemDisplay.setTransformationMatrix(scale.rotateY(((float) Math.toRadians(180)) + 0.1F));
+                itemDisplay.setInterpolationDelay(0);
+                itemDisplay.setInterpolationDuration(20);
+            }
+        }.runAtFixedRate(0, 20);
+
+        // remove item display after 5 seconds.
+        new FoliaScheduler(this.plugin, location) {
+            @Override
+            public void run() {
+                if (!itemDisplay.isValid()) { // cancel just in case
+                    cancel();
+
+                    return;
+                }
+
+                itemDisplay.remove();
+            }
+        }.runDelayed(100);
     }
 
     /**
