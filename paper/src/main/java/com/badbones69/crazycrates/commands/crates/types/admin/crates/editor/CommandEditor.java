@@ -45,6 +45,12 @@ public class CommandEditor extends BaseCommand {
             return;
         }
 
+        if (this.crateManager.hasEditorCrate(player)) {
+            Messages.editor_already_in.sendMessage(player);
+
+            return;
+        }
+
         final Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null) {
