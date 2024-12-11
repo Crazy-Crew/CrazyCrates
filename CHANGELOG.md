@@ -1,1 +1,1 @@
-- Fixed an error with war crate throwing an exception.
+- Fixed an error with War Crate which was thrown when clicking.
