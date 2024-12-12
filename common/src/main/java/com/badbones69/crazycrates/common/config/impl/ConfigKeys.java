@@ -4,6 +4,7 @@ import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
+import com.badbones69.crazycrates.common.enums.Items;
 import com.badbones69.crazycrates.common.enums.State;
 import java.util.Collections;
 import java.util.List;
@@ -102,6 +103,15 @@ public class ConfigKeys implements SettingsHolder {
             ""
     })
     public static final Property<State> message_state = newBeanProperty(State.class, "root.message-state", State.send_message);
+
+    @Comment({
+            "A list of available custom item plugins:",
+            " -> Oraxen",
+            " -> Nexo",
+            "",
+            "If the option is set to blank, it'll pick whatever plugin it feels like picking."
+    })
+    public static final Property<String> custom_items_plugin = newProperty("root.custom-items-plugin", "");
 
     @Comment({
             "A list of available hologram plugins:",

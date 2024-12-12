@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.common.Server;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.listeners.crates.CrateInteractListener;
-import com.badbones69.crazycrates.listeners.items.NexoInteractListener;
 import com.badbones69.crazycrates.listeners.items.PaperInteractListener;
 import com.badbones69.crazycrates.support.MetricsWrapper;
 import com.badbones69.crazycrates.utils.MiscUtils;
@@ -129,9 +128,7 @@ public class CrazyCrates extends JavaPlugin {
                 new PaperInteractListener()
         ).forEach(listener -> manager.registerEvents(listener, this));
 
-        if (Support.nexo.isEnabled()) { // check for nexo
-            manager.registerEvents(new NexoInteractListener(), this);
-        }
+        this.crateManager.loadCustomItems();
 
         if (Support.placeholder_api.isEnabled()) {
             if (MiscUtils.isLogging()) getComponentLogger().info("PlaceholderAPI support is enabled!");

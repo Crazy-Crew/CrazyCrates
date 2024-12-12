@@ -4,6 +4,9 @@ import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.common.config.impl.EditorKeys;
+import com.badbones69.crazycrates.common.enums.Items;
+import com.badbones69.crazycrates.listeners.items.NexoInteractListener;
+import com.badbones69.crazycrates.listeners.items.OraxenInteractListener;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.api.objects.crates.CrateHologram;
@@ -227,6 +230,28 @@ public class CrateManager {
             this.brokeCrates.add(fileName);
 
             if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("There was an error while loading the {}.yml file.", fileName, exception);
+        }
+    }
+
+    public void loadCustomItems() {
+        final PluginManager manager = this.plugin.getServer().getPluginManager();
+
+        final String pluginName = this.config.getProperty(ConfigKeys.custom_items_plugin).toLowerCase();
+
+        switch (pluginName) {
+            case "nexo" -> manager.registerEvents(new NexoInteractListener(), this.plugin);
+
+            case "oraxen" -> manager.registerEvents(new OraxenInteractListener(), this.plugin);
+
+            default -> {
+                if (Support.nexo.isEnabled()) {
+                    manager.registerEvents(new NexoInteractListener(), this.plugin);
+                }
+
+                if (Support.oraxen.isEnabled()) {
+                    manager.registerEvents(new OraxenInteractListener(), this.plugin);
+                }
+            }
         }
     }
 

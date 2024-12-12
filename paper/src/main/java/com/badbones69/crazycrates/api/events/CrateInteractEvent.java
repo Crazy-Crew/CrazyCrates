@@ -7,6 +7,9 @@ import com.nexomc.nexo.api.NexoFurniture;
 import com.nexomc.nexo.api.events.furniture.NexoFurnitureBreakEvent;
 import com.nexomc.nexo.api.events.furniture.NexoFurnitureInteractEvent;
 import com.ryderbelserion.vital.paper.api.enums.Support;
+import io.th0rgal.oraxen.api.OraxenFurniture;
+import io.th0rgal.oraxen.api.events.furniture.OraxenFurnitureBreakEvent;
+import io.th0rgal.oraxen.api.events.furniture.OraxenFurnitureInteractEvent;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -25,6 +28,10 @@ public class CrateInteractEvent extends Event implements Cancellable {
 
     private NexoFurnitureInteractEvent nexoInteractEvent;
     private NexoFurnitureBreakEvent nexoBreakEvent;
+
+    private OraxenFurnitureInteractEvent oraxenInteractEvent;
+    private OraxenFurnitureBreakEvent oraxenBreakEvent;
+
     private PlayerInteractEvent paperEvent;
 
     private CrateLocation crateLocation = null;
@@ -34,6 +41,36 @@ public class CrateInteractEvent extends Event implements Cancellable {
     private final Location location;
     private final Player player;
     private final Action action;
+
+    public CrateInteractEvent(@NotNull final OraxenFurnitureInteractEvent nexoInteractEvent, @NotNull final Action action, @NotNull final Location location) {
+        this.oraxenInteractEvent = nexoInteractEvent;
+
+        this.player = this.oraxenInteractEvent.getPlayer();
+        this.slot = this.oraxenInteractEvent.getHand();
+        this.location = location;
+        this.action = action;
+
+        setCancelled(this.slot == EquipmentSlot.OFF_HAND);
+
+        if (!isCancelled()) {
+            this.crateLocation = this.crateManager.getCrateLocation(this.location);
+        }
+    }
+
+    public CrateInteractEvent(@NotNull final OraxenFurnitureBreakEvent nexoBreakEvent, @NotNull final Action action, @NotNull final Location location) {
+        this.oraxenBreakEvent = nexoBreakEvent;
+
+        this.player = this.oraxenBreakEvent.getPlayer();
+        this.slot = this.player.getActiveItemHand();
+        this.location = location;
+        this.action = action;
+
+        setCancelled(this.slot == EquipmentSlot.OFF_HAND);
+
+        if (!isCancelled()) {
+            this.crateLocation = this.crateManager.getCrateLocation(this.location);
+        }
+    }
 
     public CrateInteractEvent(@NotNull final NexoFurnitureInteractEvent nexoInteractEvent, @NotNull final Action action, @NotNull final Location location) {
         this.nexoInteractEvent = nexoInteractEvent;
@@ -73,7 +110,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
         this.slot = this.paperEvent.getHand();
         this.location = location;
 
-        setCancelled(this.slot == EquipmentSlot.OFF_HAND || Support.nexo.isEnabled() && NexoFurniture.isFurniture(location));
+        setCancelled(this.slot == EquipmentSlot.OFF_HAND || Support.nexo.isEnabled() && NexoFurniture.isFurniture(location) || Support.oraxen.isEnabled() && OraxenFurniture.isFurniture(location.getBlock()));
 
         if (!isCancelled()) {
             this.crateLocation = this.crateManager.getCrateLocation(this.location);
@@ -86,9 +123,29 @@ public class CrateInteractEvent extends Event implements Cancellable {
     public void cancel() {
         if (this.nexoInteractEvent != null) {
             this.nexoInteractEvent.setCancelled(true);
-        } else if (this.nexoBreakEvent != null) {
+
+            return;
+        }
+
+        if (this.nexoBreakEvent != null) {
             this.nexoBreakEvent.setCancelled(true);
-        } else if (this.paperEvent != null) {
+
+            return;
+        }
+
+        if (this.oraxenInteractEvent != null) {
+            this.oraxenInteractEvent.setCancelled(true);
+
+            return;
+        }
+
+        if (this.oraxenBreakEvent != null) {
+            this.oraxenBreakEvent.setCancelled(true);
+
+            return;
+        }
+
+        if (this.paperEvent != null) {
             this.paperEvent.setCancelled(true);
         }
     }
