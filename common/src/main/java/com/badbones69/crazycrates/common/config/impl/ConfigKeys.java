@@ -4,7 +4,6 @@ import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
-import com.badbones69.crazycrates.common.enums.Items;
 import com.badbones69.crazycrates.common.enums.State;
 import java.util.Collections;
 import java.util.List;
