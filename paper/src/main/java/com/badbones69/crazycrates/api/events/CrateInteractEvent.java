@@ -177,7 +177,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
             case "oraxen" -> isFurniture = Support.oraxen.isEnabled() && OraxenFurniture.isFurniture(location.getBlock());
 
             case "itemsadder" -> {
-                if (Support.nexo.isEnabled()) {
+                if (Support.items_adder.isEnabled()) {
                     final Entity entity = CustomFurniture.byAlreadySpawned(location.getBlock()).getEntity();
 
                     if (entity != null && entity.isValid()) {
