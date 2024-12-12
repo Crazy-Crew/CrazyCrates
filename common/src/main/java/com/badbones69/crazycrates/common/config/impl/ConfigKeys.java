@@ -105,6 +105,7 @@ public class ConfigKeys implements SettingsHolder {
 
     @Comment({
             "A list of available custom item plugins:",
+            " -> ItemsAdder",
             " -> Oraxen",
             " -> Nexo",
             "",

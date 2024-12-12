@@ -4,7 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.common.config.impl.EditorKeys;
-import com.badbones69.crazycrates.common.enums.Items;
+import com.badbones69.crazycrates.listeners.items.ItemsAdderInteractListener;
 import com.badbones69.crazycrates.listeners.items.NexoInteractListener;
 import com.badbones69.crazycrates.listeners.items.OraxenInteractListener;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
@@ -243,6 +243,10 @@ public class CrateManager {
 
             case "oraxen" -> manager.registerEvents(new OraxenInteractListener(), this.plugin);
 
+            case "itemsadder" -> manager.registerEvents(new ItemsAdderInteractListener(), this.plugin);
+
+            case "none" -> {}
+
             default -> {
                 if (Support.nexo.isEnabled()) {
                     manager.registerEvents(new NexoInteractListener(), this.plugin);
@@ -250,6 +254,10 @@ public class CrateManager {
 
                 if (Support.oraxen.isEnabled()) {
                     manager.registerEvents(new OraxenInteractListener(), this.plugin);
+                }
+
+                if (Support.items_adder.isEnabled()) {
+                    manager.registerEvents(new ItemsAdderInteractListener(), this.plugin);
                 }
             }
         }
@@ -283,6 +291,8 @@ public class CrateManager {
 
                 this.holograms = new CMIHologramsSupport();
             }
+
+            case "None" -> {}
 
             default -> {
                 if (Support.decent_holograms.isEnabled()) {

@@ -20,7 +20,7 @@ public class NexoInteractListener implements Listener {
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @EventHandler
-    public void onNexoFurnitureInteractEvent(NexoFurnitureInteractEvent event) {
+    public void onFurnitureInteractEvent(NexoFurnitureInteractEvent event) {
         final ItemDisplay itemDisplay = event.getBaseEntity();
         final Location location = itemDisplay.getLocation();
 
@@ -40,7 +40,7 @@ public class NexoInteractListener implements Listener {
     }
 
     @EventHandler
-    public void onNexoFurnitureBreakEvent(NexoFurnitureBreakEvent event) {
+    public void onFurnitureBreakEvent(NexoFurnitureBreakEvent event) {
         final ItemDisplay itemDisplay = event.getBaseEntity();
         final Location location = itemDisplay.getLocation();
 

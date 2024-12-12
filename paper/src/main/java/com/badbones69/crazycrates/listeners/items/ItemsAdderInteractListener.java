@@ -3,8 +3,8 @@ package com.badbones69.crazycrates.listeners.items;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.CrateInteractEvent;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import io.th0rgal.oraxen.api.events.furniture.OraxenFurnitureBreakEvent;
-import io.th0rgal.oraxen.api.events.furniture.OraxenFurnitureInteractEvent;
+import dev.lone.itemsadder.api.Events.FurnitureBreakEvent;
+import dev.lone.itemsadder.api.Events.FurnitureInteractEvent;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -13,20 +13,22 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.EquipmentSlot;
 
-public class OraxenInteractListener implements Listener {
+public class ItemsAdderInteractListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
     @EventHandler
-    public void onFurnitureInteractEvent(OraxenFurnitureInteractEvent event) {
-        final Entity itemDisplay = event.getBaseEntity();
-        final Location location = itemDisplay.getLocation();
+    public void onFurnitureInteractEvent(FurnitureInteractEvent event) {
+        final Entity entity = event.getBukkitEntity();
+        final Location location = entity.getLocation();
 
         final Player player = event.getPlayer();
 
-        if (this.crateManager.hasEditorCrate(player) && event.getHand() != EquipmentSlot.OFF_HAND) {
+        final EquipmentSlot slot = player.getActiveItemHand();
+
+        if (this.crateManager.hasEditorCrate(player) && slot != EquipmentSlot.OFF_HAND) {
             this.crateManager.addCrateByLocation(player, location);
 
             event.setCancelled(true);
@@ -40,13 +42,15 @@ public class OraxenInteractListener implements Listener {
     }
 
     @EventHandler
-    public void onFurnitureBreakEvent(OraxenFurnitureBreakEvent event) {
-        final Entity itemDisplay = event.getBaseEntity();
-        final Location location = itemDisplay.getLocation();
+    public void onFurnitureBreakEvent(FurnitureBreakEvent event) {
+        final Entity entity = event.getBukkitEntity();
+        final Location location = entity.getLocation();
 
         final Player player = event.getPlayer();
 
-        if (this.crateManager.hasEditorCrate(player) && player.getActiveItemHand() != EquipmentSlot.OFF_HAND) {
+        final EquipmentSlot slot = player.getActiveItemHand();
+
+        if (this.crateManager.hasEditorCrate(player) && slot != EquipmentSlot.OFF_HAND) {
             this.crateManager.removeCrateByLocation(player, location);
 
             event.setCancelled(true);
