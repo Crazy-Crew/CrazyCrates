@@ -184,8 +184,10 @@ public class PrizeManager {
             }
         }
 
-        for (final String command : crate.getPrizeCommands()) {
-            runCommands(player, prize, crate, command);
+        if (!crate.getPrizeCommands().isEmpty() && prize.getCommands().isEmpty()) {
+            for (final String command : crate.getPrizeCommands()) {
+                runCommands(player, prize, crate, command);
+            }
         }
 
         for (final String command : prize.getCommands()) {
