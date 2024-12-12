@@ -108,8 +108,10 @@ public class ConfigKeys implements SettingsHolder {
             " -> ItemsAdder",
             " -> Oraxen",
             " -> Nexo",
+            " -> None",
             "",
-            "If the option is set to blank, it'll pick whatever plugin it feels like picking."
+            "If the option is set to blank, it'll pick whatever plugin it feels like picking.",
+            "Set the value to None if you do not want any."
     })
     public static final Property<String> custom_items_plugin = newProperty("root.custom-items-plugin", "");
 
@@ -118,8 +120,10 @@ public class ConfigKeys implements SettingsHolder {
             " -> DecentHolograms",
             " -> FancyHolograms",
             " -> CMI",
+            " -> None",
             "",
-            "If the option is set to blank, it'll pick whatever plugin it feels like picking."
+            "If the option is set to blank, it'll pick whatever plugin it feels like picking.",
+            "Set the value to None if you do not want any."
     })
     public static final Property<String> hologram_plugin = newProperty("root.hologram-plugin", "");
 
