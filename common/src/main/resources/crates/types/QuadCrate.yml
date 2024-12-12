@@ -74,8 +74,8 @@ Crate:
   # i.e. Messages: [] or the value isn't there.
   Prize-Message:
     - "<gray>You have won <red>%reward% <gray>from <red>%crate%."
-  # A default command if the prize doesn't have any commands
-  # i.e. Commands: [] or the value isn't there.
+  # A list of commands to run by default on every prize.
+  # If you do not want these commands to run, set this to []
   Prize-Commands: []
   # Global Settings
   Settings:
