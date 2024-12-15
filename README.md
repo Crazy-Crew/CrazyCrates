@@ -63,7 +63,7 @@ CrazyCrates is a proud user of the MIT license, You can take a little peak at [L
 [license-url]: https://github.com/Crazy-Crew/CrazyCrates/blob/main/LICENSE
 [build-shield]: https://ci.crazycrew.us/job/CrazyCrates//badge/icon
 [build-url]: https://ci.crazycrew.us/job/CrazyCrates
-[discord-shield]: https://img.shields.io/discord/241667244927483904.svg?label=discord&logo=discord
+[discord-shield]: https://img.shields.io/discord/182615261403283459.svg?label=discord&logo=discord
 [discord-url]: https://discord.gg/badbones-s-live-chat-182615261403283459
 [codefactor-shield]: https://www.codefactor.io/repository/github/crazy-crew/crazycrates/badge
 [codefactor-url]: https://www.codefactor.io/repository/github/crazy-crew/crazycrates
