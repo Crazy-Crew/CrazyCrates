@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.utils;
 
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.badbones69.crazycrates.api.enums.misc.Files;
+import com.badbones69.crazycrates.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.common.utils.CrazyUtil;
 import com.badbones69.crazycrates.api.enums.other.Plugins;
 import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
@@ -32,7 +32,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -100,8 +100,8 @@ public class MiscUtils {
         final File logsFolder = new File(plugin.getDataFolder(), "logs");
 
         if (logsFolder.exists() && ConfigManager.getConfig().getProperty(ConfigKeys.log_to_file)) {
-            final File crateLog = Files.crate_log.getFile();
-            final File keyLog = Files.key_log.getFile();
+            final File crateLog = FileKeys.crate_log.getFile();
+            final File keyLog = FileKeys.key_log.getFile();
 
             Methods.zip(logsFolder, ".log", true);
 
@@ -142,7 +142,7 @@ public class MiscUtils {
 
         PersistentDataContainer fireworkData = firework.getPersistentDataContainer();
 
-        fireworkData.set(Keys.no_firework_damage.getNamespacedKey(), PersistentDataType.BOOLEAN, true);
+        fireworkData.set(ItemKeys.no_firework_damage.getNamespacedKey(), PersistentDataType.BOOLEAN, true);
 
         plugin.getServer().getRegionScheduler().runDelayed(plugin, location, scheduledTask -> firework.detonate(), 3L);
     }
@@ -173,8 +173,8 @@ public class MiscUtils {
     }
 
     public static void save() {
-        YamlConfiguration data = Files.data.getConfiguration();
-        YamlConfiguration location = Files.locations.getConfiguration();
+        YamlConfiguration data = FileKeys.data.getConfiguration();
+        YamlConfiguration location = FileKeys.locations.getConfiguration();
 
         boolean isSave = false;
 
@@ -197,7 +197,7 @@ public class MiscUtils {
         }
 
         if (isSave) {
-            Files.data.save();
+            FileKeys.data.save();
         }
     }
 

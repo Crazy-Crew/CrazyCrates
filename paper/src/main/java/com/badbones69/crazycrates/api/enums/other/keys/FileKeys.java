@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.enums.misc;
+package com.badbones69.crazycrates.api.enums.other.keys;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.ryderbelserion.vital.api.exceptions.GenericException;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 
-public enum Files {
+public enum FileKeys {
 
     respin_gui(FileType.YAML, "respin-gui.yml", "guis"),
 
@@ -36,7 +36,7 @@ public enum Files {
      * @param fileName the name of the file
      * @param folder the folder
      */
-    Files(final FileType fileType, final String fileName, final String folder) {
+    FileKeys(final FileType fileType, final String fileName, final String folder) {
         this.fileType = fileType;
         this.fileName = fileName;
         this.folder = folder;
@@ -48,7 +48,7 @@ public enum Files {
      * @param fileType the file type
      * @param fileName the name of the file
      */
-    Files(final FileType fileType, final String fileName) {
+    FileKeys(final FileType fileType, final String fileName) {
         this.fileType = fileType;
         this.fileName = fileName;
         this.folder = "";

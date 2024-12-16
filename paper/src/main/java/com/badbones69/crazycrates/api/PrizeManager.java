@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.api.enums.misc.Files;
+import com.badbones69.crazycrates.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
@@ -137,12 +137,12 @@ public class PrizeManager {
             final int pulls = getCurrentPulls(prize, crate);
 
             if (pulls != -1 && pulls < prize.getMaxPulls()) {
-                YamlConfiguration configuration = Files.data.getConfiguration();
+                YamlConfiguration configuration = FileKeys.data.getConfiguration();
 
                 configuration.set("Prizes." + crate.getFileName()  + "." + prize.getSectionName() + ".Pulls", pulls + 1);
 
                 // save to file!
-                Files.data.save();
+                FileKeys.data.save();
             }
         }
 
@@ -276,7 +276,7 @@ public class PrizeManager {
     public static int getCurrentPulls(final Prize prize, final Crate crate) {
         if (prize.getMaxPulls() == -1) return 0;
 
-        final YamlConfiguration configuration = Files.data.getConfiguration();
+        final YamlConfiguration configuration = FileKeys.data.getConfiguration();
         final ConfigurationSection section = configuration.getConfigurationSection("Prizes." + crate.getFileName()  + "." + prize.getSectionName());
 
         if (section == null) return 0;

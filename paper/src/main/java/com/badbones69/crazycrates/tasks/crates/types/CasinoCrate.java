@@ -1,14 +1,13 @@
 package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
-import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
@@ -216,7 +215,7 @@ public class CasinoCrate extends CrateBuilder {
             if (itemStack != null) {
                 final PersistentDataContainerView container = itemStack.getPersistentDataContainer();
 
-                if (!container.has(Keys.crate_prize.getNamespacedKey())) {
+                if (!container.has(ItemKeys.crate_prize.getNamespacedKey())) {
                     setItem(index, getRandomGlassPane());
                 }
             }

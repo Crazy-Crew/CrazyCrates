@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.api.enums.misc;
+package com.badbones69.crazycrates.api.enums.other.keys;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.persistence.PersistentDataType;
@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("rawtypes")
-public enum Keys {
+public enum ItemKeys {
 
     no_firework_damage("firework", PersistentDataType.BOOLEAN),
     cosmic_mystery_crate("cosmic_mystery_crate", PersistentDataType.INTEGER),
@@ -24,7 +24,7 @@ public enum Keys {
     private final String NamespacedKey;
     private final PersistentDataType type;
 
-    Keys(@NotNull final String NamespacedKey, @NotNull final PersistentDataType type) {
+    ItemKeys(@NotNull final String NamespacedKey, @NotNull final PersistentDataType type) {
         this.NamespacedKey = NamespacedKey;
         this.type = type;
     }
