@@ -26,6 +26,10 @@ dependencies:
      load: BEFORE
      required: false
      join-classpath: true
+    ItemsAdder:
+      load: BEFORE
+      required: false
+      join-classpath: true
     Oraxen:
      load: BEFORE
      required: false

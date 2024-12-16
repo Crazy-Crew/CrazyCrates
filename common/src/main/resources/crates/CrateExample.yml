@@ -234,7 +234,7 @@ Crate:
       Weight: 15.0
       # The list of items to win.
       Items:
-        - "Item:diamond_helmet, Name:<red>Diamond Helmet, protection:5, unbreaking:3"
+        - "Item:diamond_helmet, Name:<red>Diamond Helmet, protection:5, unbreaking:3, Trim-Material:quartz, Trim-Pattern:sentry"
     "4":
       # The enchants to be stored on the book.
       DisplayEnchantments:

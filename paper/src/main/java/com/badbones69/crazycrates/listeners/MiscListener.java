@@ -53,18 +53,6 @@ public class MiscListener implements Listener {
         // Also add the new data.
         this.userManager.loadOfflinePlayersKeys(player, this.crateManager.getUsableCrates());
 
-        /*final Map<Crate, Prize> prizes = new HashMap<>() {{
-            final UUID uuid = player.getUniqueId();
-
-            crateManager.getUsableCrates().forEach(crate -> {
-                final String fileName = crate.getFileName();
-
-                if (userManager.hasRespinPrize(uuid, fileName)) {
-                    put(crateManager.getCrateFromName(fileName), crate.getPrize(userManager.getRespinPrize(uuid, fileName)));
-                }
-            });
-        }};*/
-
         final UUID uuid = player.getUniqueId();
 
         int count = 0;
@@ -135,6 +123,8 @@ public class MiscListener implements Listener {
         this.crateManager.removePlayerKeyType(player);
 
         this.crateManager.removeSlot(player);
+
+        this.crateManager.removeEditorCrate(player);
     }
 
     @EventHandler

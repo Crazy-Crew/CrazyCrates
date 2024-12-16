@@ -3,6 +3,10 @@ package com.badbones69.crazycrates.tasks.crates;
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
+import com.badbones69.crazycrates.common.config.impl.EditorKeys;
+import com.badbones69.crazycrates.listeners.items.ItemsAdderInteractListener;
+import com.badbones69.crazycrates.listeners.items.NexoInteractListener;
+import com.badbones69.crazycrates.listeners.items.OraxenInteractListener;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.api.objects.crates.CrateHologram;
@@ -31,11 +35,16 @@ import com.ryderbelserion.vital.files.enums.FileType;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.paper.api.files.PaperCustomFile;
 import com.ryderbelserion.vital.paper.api.files.PaperFileManager;
+import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
 import com.ryderbelserion.vital.utils.Methods;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Display;
+import org.bukkit.entity.ItemDisplay;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemType;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.persistence.PersistentDataType;
@@ -44,6 +53,7 @@ import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.joml.Matrix4f;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.api.enums.misc.Keys;
@@ -89,6 +99,24 @@ public class CrateManager {
     private final Map<UUID, Location> cratesInUse = new HashMap<>();
     private final List<String> brokeCrates = new ArrayList<>();
     private final List<Crate> crates = new ArrayList<>();
+
+    private final Map<UUID, Crate> crateEditors = new HashMap<>();
+
+    public void addEditorCrate(final Player player, final Crate crate) {
+        this.crateEditors.put(player.getUniqueId(), crate);
+    }
+
+    public void removeEditorCrate(final Player player) {
+        this.crateEditors.remove(player.getUniqueId());
+    }
+
+    public boolean hasEditorCrate(final Player player) {
+        return this.crateEditors.containsKey(player.getUniqueId());
+    }
+
+    public @Nullable Crate getEditorCrate(final Player player) {
+        return this.crateEditors.getOrDefault(player.getUniqueId(), null);
+    }
 
     private final Map<UUID, Map<Integer, Tier>> tiers = new WeakHashMap<>();
 
@@ -205,6 +233,36 @@ public class CrateManager {
         }
     }
 
+    public void loadCustomItems() {
+        final PluginManager manager = this.plugin.getServer().getPluginManager();
+
+        final String pluginName = this.config.getProperty(ConfigKeys.custom_items_plugin).toLowerCase();
+
+        switch (pluginName) {
+            case "nexo" -> manager.registerEvents(new NexoInteractListener(), this.plugin);
+
+            case "oraxen" -> manager.registerEvents(new OraxenInteractListener(), this.plugin);
+
+            case "itemsadder" -> manager.registerEvents(new ItemsAdderInteractListener(), this.plugin);
+
+            case "none" -> {}
+
+            default -> {
+                if (Support.nexo.isEnabled()) {
+                    manager.registerEvents(new NexoInteractListener(), this.plugin);
+                }
+
+                if (Support.oraxen.isEnabled()) {
+                    manager.registerEvents(new OraxenInteractListener(), this.plugin);
+                }
+
+                if (Support.items_adder.isEnabled()) {
+                    manager.registerEvents(new ItemsAdderInteractListener(), this.plugin);
+                }
+            }
+        }
+    }
+
     /**
      * Load the holograms.
      */
@@ -233,6 +291,8 @@ public class CrateManager {
 
                 this.holograms = new CMIHologramsSupport();
             }
+
+            case "None" -> {}
 
             default -> {
                 if (Support.decent_holograms.isEnabled()) {
@@ -1020,13 +1080,123 @@ public class CrateManager {
         return this.crates.contains(crate);
     }
 
+    private final SettingsManager editor = ConfigManager.getEditor();
+
+    public void addCrateByLocation(final Player player, final Location location) {
+        if (!player.hasPermission("crazycrates.editor")) {
+            removeEditorCrate(player);
+
+            Messages.force_editor_exit.sendMessage(player, "{reason}", "lacking the permission crazycrates.editor");
+
+            return;
+        }
+
+        final Crate crate = getEditorCrate(player);
+
+        if (crate == null) {
+            removeEditorCrate(player);
+
+            Messages.force_editor_exit.sendMessage(player, "{reason}", "Crate does not exist.");
+
+            return;
+        }
+
+        if (crate.getCrateType() == CrateType.menu && !this.config.getProperty(ConfigKeys.enable_crate_menu)) {
+            Messages.cannot_set_type.sendMessage(player);
+
+            return;
+        }
+
+        if (isCrateLocation(location)) {
+            if (this.editor.getProperty(EditorKeys.overwrite_old_crate_locations)) {
+                final CrateLocation crateLocation = getCrateLocation(location);
+
+                if (crateLocation == null) return;
+
+                removeLocation(crateLocation); // remove old location
+
+                addCrateLocation(location, crate); // add new location
+
+                Messages.physical_crate_overridden.sendMessage(player, new HashMap<>() {{
+                    put("{id}", crateLocation.getID());
+                    put("{crate}", crate.getCrateName());
+                }});
+
+                spawnItem(location, ItemType.EMERALD.createItemStack());
+
+                return;
+            }
+
+            Messages.physical_crate_already_exists.sendMessage(player, new HashMap<>() {{
+                final CrateLocation crateLocation = getCrateLocation(location);
+
+                put("{id}", crateLocation != null ? crateLocation.getID() : "N/A");
+                put("{crate}", crateLocation != null ? crateLocation.getCrate().getCrateName() : "N/A");
+            }});
+
+            spawnItem(location, ItemType.REDSTONE.createItemStack());
+
+            return;
+        }
+
+        addCrateLocation(location, crate);
+
+        Messages.created_physical_crate.sendMessage(player, "{crate}", crate.getCrateName());
+
+        spawnItem(location, ItemType.EMERALD.createItemStack());
+    }
+
+    private void spawnItem(final Location location, final ItemStack itemStack) {
+        final World world = location.getWorld();
+
+        final ItemDisplay itemDisplay = world.spawn(location.toCenterLocation().add(0.0, 1.0, 0.0), ItemDisplay.class, entity -> entity.setItemStack(itemStack));
+
+        itemDisplay.setPersistent(false);
+        itemDisplay.setBillboard(Display.Billboard.CENTER);
+        itemDisplay.setDisplayHeight(0.5f);
+        itemDisplay.setDisplayWidth(0.5f);
+
+        final Matrix4f scale = new Matrix4f().scale(0.5f);
+
+        new FoliaScheduler(this.plugin, null, itemDisplay) {
+            @Override
+            public void run() {
+                if (!itemDisplay.isValid()) { // cancel just in case
+                    cancel();
+
+                    return;
+                }
+
+                itemDisplay.setTransformationMatrix(scale.rotateY(((float) Math.toRadians(180)) + 0.1F));
+                itemDisplay.setInterpolationDelay(0);
+                itemDisplay.setInterpolationDuration(20);
+            }
+        }.runAtFixedRate(1, 20);
+
+        // remove item display after 5 seconds.
+        new FoliaScheduler(this.plugin, location) {
+            @Override
+            public void run() {
+                if (!itemDisplay.isValid()) { // cancel just in case
+                    cancel();
+
+                    return;
+                }
+
+                itemDisplay.remove();
+            }
+        }.runDelayed(100);
+    }
+
     /**
      * Add a new physical crate location.
      *
      * @param location the location you wish to add.
      * @param crate the crate which you would like to set it to.
      */
-    public void addCrateLocation(@NotNull final Location location, @NotNull final Crate crate) {
+    public void addCrateLocation(@NotNull final Location location, @Nullable final Crate crate) {
+        if (crate == null) return;
+
         final YamlConfiguration locations = Files.locations.getConfiguration();
         String id = "1"; // Location ID
 
@@ -1130,7 +1300,10 @@ public class CrateManager {
      */
     public final boolean isCrateLocation(@NotNull final Location location) {
         for (final CrateLocation crateLocation : getCrateLocations()) {
-            if (crateLocation.getLocation().equals(location)) return true; //todo() make this light weight
+            final String arg1 = MiscUtils.location(crateLocation.getLocation());
+            final String arg2 = MiscUtils.location(location);
+
+            if (arg1.equals(arg2)) return true;
         }
 
         return false;
@@ -1458,6 +1631,39 @@ public class CrateManager {
                 if (crateLocation != null) this.holograms.createHologram(location, crate, crateLocation.getID());
             }
         }
+    }
+
+    public void removeCrateByLocation(final Player player, final Location location) {
+        if (!player.hasPermission("crazycrates.editor")) {
+            removeEditorCrate(player);
+
+            Messages.force_editor_exit.sendMessage(player, "{reason}", "lacking the permission crazycrates.editor");
+
+            return;
+        }
+
+        if (isCrateLocation(location)) {
+            final CrateLocation crateLocation = getCrateLocation(location);
+
+            if (crateLocation != null) {
+                final String id = crateLocation.getID();
+
+                removeCrateLocation(id);
+
+                Messages.removed_physical_crate.sendMessage(player, "{id}", id);
+            }
+        }
+    }
+
+    /**
+     * Checks if the player's equipment slot item is a key.
+     *
+     * @param player the player
+     * @param equipmentSlot the equipment slot
+     * @return true or false
+     */
+    public boolean isKey(final Player player, final EquipmentSlot equipmentSlot) {
+        return isKey(player.getInventory().getItem(equipmentSlot));
     }
 
     /**

@@ -84,6 +84,13 @@ crates:
   need-more-room: "{prefix}<red>There is not enough space to open that here"
   # A list of available placeholders: {world}
   world-disabled: "{prefix}<red>I am sorry but Crates are disabled in {world}."
+  editor:
+    # A list of available placeholders: {crate}
+    enter: "{prefix}<red>You are now in editor mode."
+    # A list of available placeholders: {crate}
+    exit: "{prefix}<red>You are no longer in editor mode."
+    # A list of available placeholders: {reason}
+    force-exit: "{prefix}<red>You have been forced out of the editor mode for {reason}."
   physical-crate:
     # A list of available placeholders: {crate}
     created:
@@ -267,10 +274,8 @@ command:
     - "<gold>/crates tp <location> <gray>- <yellow>Teleport to a Crate."
     - "<gold>/crates give <physical/virtual> <crate_name> [amount] [player] <gray>- <yellow>Allows
       you to take keys from a player."
-    - "<gold>/crates set <crate_name> <gray>- <yellow>Set the block you are looking at
-      as a crate."
-    - "<gold>/crates set Menu <gray>- <yellow>Set the block you are looking at to open
-      the /crates menu."
+    - "<gold>/crates editor -c/--crate <crate_name> or -e/--exit <gray>- <yellow>Allows you to enter/exit editor mode."
+    - "<gold>/crates migrate -mt/--migration_type <migration_type> --crate/-crate <crate> --data/-d <gray>- <yellow>A command to migrate from other plugins or for internal changes."
     - "<gold>/crates reload <gray>- <yellow>Reloads the config/data files."
     - "<gold>/crates set1/set2 <gray>- <yellow>Sets position <red>#1 <yellow>or <red>#2
       <yellow>for when making a new schematic for QuadCrates."
@@ -281,4 +286,4 @@ command:
     - "<gold>/keys <gray>- <yellow>Shows how many keys you have."
     - "<gold>/crates <gray>- <yellow>Opens the menu."
     - ""
-    - "<gray>You can find a list of permissions @ <yellow>https://docs.crazycrew.us/crazycrates/info/commands/permissions"
+    - "<gray>You can find a list of permissions @ <yellow>https://docs.crazycrew.us/docs/plugins/crazycrates/commands/permissions"
