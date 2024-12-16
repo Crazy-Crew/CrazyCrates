@@ -9,7 +9,7 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
-import com.ryderbelserion.vital.paper.api.enums.Support;
+import com.badbones69.crazycrates.api.enums.other.Plugins;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -155,7 +155,7 @@ public class PrizeManager {
         }
 
         if (!prize.getItemBuilders().isEmpty()) {
-            final boolean isPlaceholderAPIEnabled = Support.placeholder_api.isEnabled();
+            final boolean isPlaceholderAPIEnabled = Plugins.placeholder_api.isEnabled();
 
             for (final ItemBuilder item : prize.getItemBuilders()) {
                 if (isPlaceholderAPIEnabled) {
@@ -239,7 +239,7 @@ public class PrizeManager {
             cmd = cmd.substring(0, cmd.length() - 1);
         }
 
-        if (Support.placeholder_api.isEnabled() ) cmd = PlaceholderAPI.setPlaceholders(player, cmd);
+        if (Plugins.placeholder_api.isEnabled() ) cmd = PlaceholderAPI.setPlaceholders(player, cmd);
 
         final String maxPulls = String.valueOf(prize.getMaxPulls());
         final String pulls = String.valueOf(getCurrentPulls(prize, crate));
@@ -270,7 +270,7 @@ public class PrizeManager {
                 .replaceAll("%maxpulls%", maxPulls)
                 .replaceAll("%pulls%", pulls);
 
-        MsgUtils.sendMessage(player, Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
+        MsgUtils.sendMessage(player, Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
     }
 
     public static int getCurrentPulls(final Prize prize, final Crate crate) {

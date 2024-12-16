@@ -11,7 +11,7 @@ import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.ryderbelserion.vital.paper.api.enums.Support;
+import com.badbones69.crazycrates.api.enums.other.Plugins;
 import com.ryderbelserion.vital.utils.Methods;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
@@ -87,7 +87,7 @@ public class CrateOpenListener implements Listener {
 
         if (broadcastToggle && crate.getCrateType() != CrateType.cosmic && !event.isSilent()) { //todo() add a permission?
             if (!broadcastMessage.isBlank()) {
-                final String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
+                final String builder = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
                 this.plugin.getServer().broadcast(Methods.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", CrazyUtil.getPrefix()).replaceAll("%player%", player.getName())));
             }
@@ -102,7 +102,7 @@ public class CrateOpenListener implements Listener {
                 commands.forEach(line -> {
                     String builder;
 
-                    if (Support.placeholder_api.isEnabled() ) {
+                    if (Plugins.placeholder_api.isEnabled() ) {
                         builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%crate%", fileName).replaceAll("%prefix%", CrazyUtil.getPrefix()).replaceAll("%player%", player.getName()));
                     } else {
                         builder = line.replaceAll("%crate%", fileName).replaceAll("%prefix%", CrazyUtil.getPrefix()).replaceAll("%player%", player.getName());

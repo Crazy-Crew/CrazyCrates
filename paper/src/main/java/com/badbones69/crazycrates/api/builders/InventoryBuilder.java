@@ -8,7 +8,7 @@ import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.paper.api.enums.Support;
+import com.badbones69.crazycrates.api.enums.other.Plugins;
 import com.ryderbelserion.vital.paper.util.PaperMethods;
 import com.ryderbelserion.vital.utils.Methods;
 import org.bukkit.Server;
@@ -51,7 +51,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
         this.title = title;
         this.size = size;
 
-        final String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
+        final String inventoryTitle = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
         this.inventory = this.server.createInventory(this, this.size, Methods.parse(inventoryTitle));
     }
@@ -63,7 +63,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         this.crate = crate;
 
-        final String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
+        final String inventoryTitle = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
         this.inventory = this.server.createInventory(this, this.size, Methods.parse(inventoryTitle));
     }
@@ -76,7 +76,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         this.crate = crate;
 
-        final String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
+        final String inventoryTitle = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
         this.inventory = this.server.createInventory(this, this.size, Methods.parse(inventoryTitle));
     }
@@ -89,7 +89,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
         this.crate = crate;
         this.tiers = tiers;
 
-        final String inventoryTitle = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
+        final String inventoryTitle = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
 
         this.inventory = this.server.createInventory(this, this.size, Methods.parse(inventoryTitle));
     }

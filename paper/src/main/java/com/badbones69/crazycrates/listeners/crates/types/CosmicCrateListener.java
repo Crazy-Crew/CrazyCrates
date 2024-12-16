@@ -1,12 +1,11 @@
 package com.badbones69.crazycrates.listeners.crates.types;
 
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.common.utils.CrazyUtil;
 import com.badbones69.crazycrates.managers.events.EventManager;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
-import com.ryderbelserion.vital.paper.api.enums.Support;
+import com.badbones69.crazycrates.api.enums.other.Plugins;
 import com.ryderbelserion.vital.utils.Methods;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -319,7 +318,7 @@ public class CosmicCrateListener implements Listener {
 
             if (broadcastToggle) {  //todo() add a permission?
                 if (!broadcastMessage.isBlank()) {
-                    String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
+                    String builder = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
                     this.plugin.getServer().broadcast(Methods.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", CrazyUtil.getPrefix()).replaceAll("%player%", player.getName())));
                 }

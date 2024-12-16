@@ -32,7 +32,7 @@ import com.badbones69.crazycrates.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WonderCrate;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.ryderbelserion.vital.files.enums.FileType;
-import com.ryderbelserion.vital.paper.api.enums.Support;
+import com.badbones69.crazycrates.api.enums.other.Plugins;
 import com.ryderbelserion.vital.paper.api.files.PaperCustomFile;
 import com.ryderbelserion.vital.paper.api.files.PaperFileManager;
 import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
@@ -248,15 +248,15 @@ public class CrateManager {
             case "none" -> {}
 
             default -> {
-                if (Support.nexo.isEnabled()) {
+                if (Plugins.nexo.isEnabled()) {
                     manager.registerEvents(new NexoInteractListener(), this.plugin);
                 }
 
-                if (Support.oraxen.isEnabled()) {
+                if (Plugins.oraxen.isEnabled()) {
                     manager.registerEvents(new OraxenInteractListener(), this.plugin);
                 }
 
-                if (Support.items_adder.isEnabled()) {
+                if (Plugins.items_adder.isEnabled()) {
                     manager.registerEvents(new ItemsAdderInteractListener(), this.plugin);
                 }
             }
@@ -275,19 +275,19 @@ public class CrateManager {
 
         switch (pluginName) {
             case "DecentHolograms" -> {
-                if (!Support.decent_holograms.isEnabled()) return;
+                if (!Plugins.decent_holograms.isEnabled()) return;
 
                 this.holograms = new DecentHologramsSupport();
             }
 
             case "FancyHolograms" -> {
-                if (!Support.fancy_holograms.isEnabled()) return;
+                if (!Plugins.fancy_holograms.isEnabled()) return;
 
                 this.holograms = new FancyHologramsSupport();
             }
 
             case "CMI" -> {
-                if (!Support.cmi.isEnabled() && !CMIModule.holograms.isEnabled()) return;
+                if (!Plugins.cmi.isEnabled() && !CMIModule.holograms.isEnabled()) return;
 
                 this.holograms = new CMIHologramsSupport();
             }
@@ -295,19 +295,19 @@ public class CrateManager {
             case "None" -> {}
 
             default -> {
-                if (Support.decent_holograms.isEnabled()) {
+                if (Plugins.decent_holograms.isEnabled()) {
                     this.holograms = new DecentHologramsSupport();
 
                     break;
                 }
 
-                if (Support.fancy_holograms.isEnabled()) {
+                if (Plugins.fancy_holograms.isEnabled()) {
                     this.holograms = new FancyHologramsSupport();
 
                     break;
                 }
 
-                if (Support.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
+                if (Plugins.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
                     this.holograms = new CMIHologramsSupport();
                 }
             }

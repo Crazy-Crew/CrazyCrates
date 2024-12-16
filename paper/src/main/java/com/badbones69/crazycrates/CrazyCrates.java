@@ -24,7 +24,7 @@ import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.vital.files.enums.FileType;
 import com.ryderbelserion.vital.paper.VitalPaper;
-import com.ryderbelserion.vital.paper.api.enums.Support;
+import com.badbones69.crazycrates.api.enums.other.Plugins;
 import com.ryderbelserion.vital.utils.Methods;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.plugin.PluginManager;
@@ -82,7 +82,7 @@ public class CrazyCrates extends JavaPlugin {
         // Register permissions that we need.
         registerPermissions();
 
-        if (Support.head_database.isEnabled()) {
+        if (Plugins.head_database.isEnabled()) {
             this.api = new HeadDatabaseAPI();
         }
 
@@ -130,7 +130,7 @@ public class CrazyCrates extends JavaPlugin {
 
         this.crateManager.loadCustomItems();
 
-        if (Support.placeholder_api.isEnabled()) {
+        if (Plugins.placeholder_api.isEnabled()) {
             if (MiscUtils.isLogging()) getComponentLogger().info("PlaceholderAPI support is enabled!");
 
             new PlaceholderAPISupport().register();
@@ -138,7 +138,7 @@ public class CrazyCrates extends JavaPlugin {
 
         if (MiscUtils.isLogging()) {
             // Print dependency garbage
-            for (final Support value : Support.values()) {
+            for (final Plugins value : Plugins.values()) {
                 if (value.isEnabled()) {
                     getComponentLogger().info(Methods.parse("<bold><gold>" + value.getName() + " <green>FOUND"));
                 } else {

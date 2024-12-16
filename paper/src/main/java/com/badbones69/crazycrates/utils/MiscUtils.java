@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.misc.Files;
 import com.badbones69.crazycrates.common.utils.CrazyUtil;
-import com.ryderbelserion.vital.paper.api.enums.Support;
+import com.badbones69.crazycrates.api.enums.other.Plugins;
 import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
 import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
 import com.ryderbelserion.vital.utils.Methods;
@@ -73,7 +73,7 @@ public class MiscUtils {
     }
 
     public static String populatePlaceholders(@Nullable final CommandSender sender, @NotNull String line, @NotNull final Map<String, String> placeholders) {
-        if (sender != null && Support.placeholder_api.isEnabled()) {
+        if (sender != null && Plugins.placeholder_api.isEnabled()) {
             if (sender instanceof Player player) {
                 line = PlaceholderAPI.setPlaceholders(player, line);
             }
