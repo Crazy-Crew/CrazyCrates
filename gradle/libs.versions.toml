@@ -38,6 +38,7 @@ fusion-core = { module = "com.ryderbelserion:fusion-core", version.ref = "fusion
 triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmd" }
 jetbrains = { module = "org.jetbrains:annotations", version.ref = "jetbrains" }
 metrics = { module = "org.bstats:bstats-bukkit", version.ref = "bStats" }
+hikari-cp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 jalu = { module = "ch.jalu:configme", version.ref = "jalu" }
 
 [versions]
@@ -69,6 +70,7 @@ fusion = "0.1.0"
 # Common API
 triumph-cmd = "2.0.0-ALPHA-10"
 jetbrains = "24.1.0"
+hikari = "4.0.3"
 bStats = "3.1.0"
 jalu = "1.4.1"
 
