@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.concurrent.CompletableFuture;
 
 public class SqliteConnector implements Connector {
 
@@ -30,6 +32,9 @@ public class SqliteConnector implements Connector {
         return this;
     }
 
+    public static final String user_table_creation = "create table if not exists user(user_id varchar(32) primary key, total_crates_opened int)";
+    public static final String crate_table_creation = "create table if not exists crate(user_id varchar(32) primary key, crate_name varchar(16) primary key, amount int, times_opened int, current_respins int, foreign key (user_id) references user(user_id))";
+
     @Override
     public void start() {
         final HikariConfig config = new HikariConfig();
@@ -39,6 +44,21 @@ public class SqliteConnector implements Connector {
         config.setConnectionInitSql("PRAGMA foreign_keys = ON;");
 
         this.source = new HikariDataSource(config);
+
+        CompletableFuture.runAsync(() -> {
+            try (final Connection connection = getConnection()) {
+                if (connection == null || connection.isClosed()) return;
+
+                try (final Statement statement = connection.createStatement()) {
+                    statement.executeUpdate(user_table_creation);
+                    statement.executeUpdate(crate_table_creation);
+                } catch (final SQLException exception) {
+                    throw new CratesException("Failed to create user table.", exception);
+                }
+            } catch (final SQLException exception) {
+                throw new CratesException("Failed to create connection", exception);
+            }
+        });
     }
 
     @Override
