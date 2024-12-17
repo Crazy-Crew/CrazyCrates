@@ -6,6 +6,8 @@ api-version: '${apiVersion}'
 description: '${description}'
 website: '${website}'
 
+loader: '${group}.CrazyLoader'
+
 folia-supported: true
 
 dependencies:
