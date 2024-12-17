@@ -134,7 +134,7 @@ public enum Property {
      * @param newString the new property
      * @param oldString the old property
      */
-    Property(ch.jalu.configme.properties.Property<String> newString, ch.jalu.configme.properties.Property<String> oldString) {
+    Property(final ch.jalu.configme.properties.Property<String> newString, final ch.jalu.configme.properties.Property<String> oldString) {
         this.newString = newString;
         this.oldString = oldString;
     }
@@ -146,8 +146,8 @@ public enum Property {
      * @param configuration the configuration data
      * @return true or false
      */
-    public boolean moveString(PropertyReader reader, ConfigurationData configuration) {
-        String key = reader.getString(this.oldString.getPath());
+    public boolean moveString(final PropertyReader reader, final ConfigurationData configuration) {
+        final String key = reader.getString(this.oldString.getPath());
 
         if (key == null) return false;
 
@@ -166,7 +166,7 @@ public enum Property {
      * @param oldBoolean the old property
      * @param dummy only to differentiate from previous constructors
      */
-    Property(ch.jalu.configme.properties.Property<Boolean> newBoolean, ch.jalu.configme.properties.Property<Boolean> oldBoolean, boolean dummy) {
+    Property(final ch.jalu.configme.properties.Property<Boolean> newBoolean, final ch.jalu.configme.properties.Property<Boolean> oldBoolean, boolean dummy) {
         this.newBoolean = newBoolean;
         this.oldBoolean = oldBoolean;
     }
@@ -178,8 +178,8 @@ public enum Property {
      * @param configuration the configuration data
      * @return true or false
      */
-    public boolean moveBoolean(PropertyReader reader, ConfigurationData configuration) {
-        Boolean key = reader.getBoolean(this.oldBoolean.getPath());
+    public boolean moveBoolean(final PropertyReader reader, final ConfigurationData configuration) {
+        final Boolean key = reader.getBoolean(this.oldBoolean.getPath());
 
         if (key == null) return false;
 
@@ -204,7 +204,7 @@ public enum Property {
      * @param oldInteger the old property
      * @param dummy only to differentiate from previous constructors
      */
-    Property(ch.jalu.configme.properties.Property<Integer> newInteger, ch.jalu.configme.properties.Property<Integer> oldInteger, int dummy) {
+    Property(final ch.jalu.configme.properties.Property<Integer> newInteger, final ch.jalu.configme.properties.Property<Integer> oldInteger, int dummy) {
         this.newInteger = newInteger;
         this.oldInteger = oldInteger;
     }
@@ -216,8 +216,8 @@ public enum Property {
      * @param configuration the configuration data
      * @return true or false
      */
-    public boolean moveInteger(PropertyReader reader, ConfigurationData configuration) {
-        Integer key = reader.getInt(this.oldInteger.getPath());
+    public boolean moveInteger(final PropertyReader reader, final ConfigurationData configuration) {
+        final Integer key = reader.getInt(this.oldInteger.getPath());
 
         if (key == null) return false;
 
@@ -242,7 +242,7 @@ public enum Property {
      * @param oldList the old property
      * @param dummy only to differentiate from previous constructors
      */
-    Property(ch.jalu.configme.properties.Property<List<String>> newList, ch.jalu.configme.properties.Property<List<String>> oldList, List<String> dummy) {
+    Property(final ch.jalu.configme.properties.Property<List<String>> newList, final ch.jalu.configme.properties.Property<List<String>> oldList, final List<String> dummy) {
         this.newList = newList;
         this.oldList = oldList;
     }
@@ -254,12 +254,12 @@ public enum Property {
      * @param configuration the configuration data
      * @return true or false
      */
-    public boolean moveList(PropertyReader reader, ConfigurationData configuration) {
-        List<?> key = reader.getList(this.oldList.getPath());
+    public boolean moveList(final PropertyReader reader, final ConfigurationData configuration) {
+        final List<?> key = reader.getList(this.oldList.getPath());
 
         if (key == null) return false;
 
-        List<String> list = new ArrayList<>();
+        final List<String> list = new ArrayList<>();
 
         if (this.oldList.getPath().equalsIgnoreCase("Settings.GUI-Customizer")) {
             this.oldList.determineValue(reader).getValue().forEach(line -> list.add(line.replaceAll("Item:", "item:")
@@ -285,7 +285,7 @@ public enum Property {
      * @param message the message to check
      * @return the finalized message to set
      */
-    private String replace(String message) {
+    private String replace(final String message) {
         return message.replaceAll("%page%", "{page}")
                 .replaceAll("%prefix%", "{prefix}")
                 .replaceAll("%world%", "{world}")
