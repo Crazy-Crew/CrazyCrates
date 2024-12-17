@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.common;
 
 import com.badbones69.crazycrates.common.impl.Settings;
-import com.ryderbelserion.vital.utils.Methods;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.users.UserManager;
@@ -9,6 +8,7 @@ import us.crazycrew.crazycrates.platform.ISettings;
 import us.crazycrew.crazycrates.platform.IServer;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Server implements IServer {
@@ -59,7 +59,8 @@ public class Server implements IServer {
 
     @Override
     public @NotNull final List<String> getCrateFiles() {
-        return Methods.getNames(getCrateFolder(), ".yml", false);
+        return new ArrayList<>();
+        //return Methods.getNames(getCrateFolder(), ".yml", false);
     }
 
     @Override
