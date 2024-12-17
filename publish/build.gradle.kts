@@ -1,13 +1,11 @@
-import net.darkhax.curseforgegradle.TaskPublishCurseForge
-
 plugins {
-    id("net.darkhax.curseforgegradle") version "1.1.25"
-
     alias(libs.plugins.minotaur)
     alias(libs.plugins.hangar)
+
+    id("crates.base")
 }
 
-val content: String = rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
+val content: String = rootProject.file("changelog.md").readText(Charsets.UTF_8)
 
 val isBeta = false
 val pluginName = rootProject.name
