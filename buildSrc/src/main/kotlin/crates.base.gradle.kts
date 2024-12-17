@@ -49,6 +49,8 @@ tasks {
 
     javadoc {
         options.encoding = Charsets.UTF_8.name()
+
+        options.quiet()
     }
 
     processResources {
