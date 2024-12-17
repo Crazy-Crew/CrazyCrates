@@ -31,7 +31,7 @@ public enum KeyType {
      * @param name name of the {@link KeyType}
      * @since 0.1
      */
-    KeyType(String name, String friendlyName) {
+    KeyType(final String name, final String friendlyName) {
         this.friendlyName = friendlyName;
         this.name = name;
     }
@@ -43,7 +43,7 @@ public enum KeyType {
      * @return the {@link KeyType}
      * @since 0.1
      */
-    public static KeyType getFromName(String type) {
+    public static KeyType getFromName(final String type) {
         if (type.isEmpty()) return KeyType.virtual_key;
 
         if (type.equalsIgnoreCase("virtual") || type.equalsIgnoreCase("v")) {
