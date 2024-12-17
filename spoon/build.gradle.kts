@@ -1,5 +1,5 @@
 plugins {
-    //alias(libs.plugins.runPaper)
+    alias(libs.plugins.runPaper)
     alias(libs.plugins.shadow)
 
     id("crates.base")
@@ -18,17 +18,15 @@ repositories {
 }
 
 dependencies {
+    implementation(projects.crazycratesCore)
+
+    implementation(libs.fusion.paper)
+
+    compileOnly(libs.hikari.cp)
+
     compileOnly(libs.paper)
 
-    //implementation(projects.crazycratesCore)
-
     //implementation(libs.triumph.cmds)
-
-    implementation(libs.fusion.paper) {
-        exclude("org.yaml")
-    }
-
-    implementation(libs.hikari.cp)
 
     //implementation(libs.metrics)
 
@@ -38,19 +36,18 @@ dependencies {
 }
 
 tasks {
-    /*shadowJar {
+    shadowJar {
         archiveBaseName.set(rootProject.name)
         archiveClassifier.set("")
 
         listOf(
-            "com.ryderbelserion",
-            "com.zaxxer",
+            "com.ryderbelserion"
         ).forEach {
             relocate(it, "libs.$it")
         }
-    }*/
+    }
 
-    /*assemble {
+    assemble {
         dependsOn(shadowJar)
 
         doLast {
@@ -59,9 +56,9 @@ tasks {
                 into(rootProject.projectDir.resolve("jars"))
             }
         }
-    }*/
+    }
 
-    /*processResources {
+    processResources {
         inputs.properties("name" to rootProject.name)
         inputs.properties("version" to project.version)
         inputs.properties("group" to project.group)
@@ -72,13 +69,13 @@ tasks {
         filesMatching("paper-plugin.yml") {
             expand(inputs.properties)
         }
-    }*/
+    }
 
-    /*runServer {
+    runServer {
         jvmArgs("-Dnet.kyori.ansi.colorLevel=truecolor")
 
         defaultCharacterEncoding = Charsets.UTF_8.name()
 
         minecraftVersion(libs.versions.minecraft.get())
-    }*/
+    }
 }

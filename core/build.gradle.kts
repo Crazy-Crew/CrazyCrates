@@ -7,7 +7,7 @@ dependencies {
 
     compileOnly(libs.jetbrains)
 
-    //api(projects.crazycratesApi)
+    compileOnlyApi(libs.jalu)
 
-    api(libs.jalu)
+    api(projects.crazycratesApi)
 }

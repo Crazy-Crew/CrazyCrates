@@ -15,15 +15,22 @@ kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref =
 kyori-text = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 kyori-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
 
-# Plugin API
+# Libby API
+libby-paper = { module = "net.byteflux:libby-paper", version.ref = "libby-paper" }
+
+# Hologram API
 decent-holograms = { module = "com.github.decentsoftware-eu:decentholograms", version.ref = "decentholograms" }
-headdatabaseapi = { module = "com.arcaniax:HeadDatabase-API", version.ref = "headdatabaseapi" }
-itemsadder = { module = "com.github.LoneDev6:api-itemsadder", version.ref = "itemsadder" }
 fancy-holograms = { module = "de.oliver:FancyHolograms", version.ref = "fancyholograms" }
-placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }
-oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }
 cmi-api = { module = "CMI-API:CMI-API", version.ref = "cmi-api" }
 cmi-lib = { module = "CMILib:CMILib", version.ref = "cmi-lib" }
+
+# Placeholder API
+placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }
+
+# Custom Item API
+headdatabaseapi = { module = "com.arcaniax:HeadDatabase-API", version.ref = "headdatabaseapi" }
+itemsadder = { module = "com.github.LoneDev6:api-itemsadder", version.ref = "itemsadder" }
+oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }
 nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }
 
 # Plugin API
@@ -53,15 +60,22 @@ runPaper = "2.3.1"
 minotaur = "2.8.7"
 hangar = "0.1.2"
 
-# Plugin API
+# Libby API
+libby-paper = "1.3.1"
+
+# Hologram API
 decentholograms = "2.8.8"
-headdatabaseapi = "1.3.1"
-placeholderapi = "2.11.6"
 fancyholograms = "2.4.1"
-nexo = "0.5.0-dev.14"
-itemsadder = "3.6.1"
 cmi-api = "9.7.4.1"
 cmi-lib = "1.5.1.4"
+
+# Placeholder API
+placeholderapi = "2.11.6"
+
+# Custom Item API
+headdatabaseapi = "1.3.1"
+nexo = "0.5.0-dev.14"
+itemsadder = "3.6.1"
 oraxen = "1.171.0"
 
 # Fusion API
@@ -78,7 +92,7 @@ jalu = "1.4.1"
 adventure = "4.17.0"
 
 [bundles]
-# Soft Depend
+# Hologram API
 dependencies = ["decent-holograms", "fancy-holograms", "cmi-lib", "cmi-api"]
 
 # Shared API

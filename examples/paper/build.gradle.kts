@@ -5,5 +5,7 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.crazycratesApi)
+
     compileOnly(libs.paper)
 }
