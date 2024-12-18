@@ -6,10 +6,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.concurrent.CompletableFuture;
 
 public class SqliteConnector implements Connector {
@@ -47,13 +44,11 @@ public class SqliteConnector implements Connector {
 
         CompletableFuture.runAsync(() -> {
             try (final Connection connection = getConnection()) {
-                if (connection == null || connection.isClosed()) return;
+                if (connection == null) return;
 
                 try (final Statement statement = connection.createStatement()) {
-                    statement.executeUpdate(user_table_creation);
-                    statement.executeUpdate(crate_table_creation);
-                } catch (final SQLException exception) {
-                    throw new CratesException("Failed to create user table.", exception);
+                    statement.executeUpdate(user_table);
+                    statement.executeUpdate(crate_table);
                 }
             } catch (final SQLException exception) {
                 throw new CratesException("Failed to create connection.", exception);
