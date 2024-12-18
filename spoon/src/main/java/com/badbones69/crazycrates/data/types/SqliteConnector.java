@@ -56,7 +56,7 @@ public class SqliteConnector implements Connector {
                     throw new CratesException("Failed to create user table.", exception);
                 }
             } catch (final SQLException exception) {
-                throw new CratesException("Failed to create connection", exception);
+                throw new CratesException("Failed to create connection.", exception);
             }
         });
     }
