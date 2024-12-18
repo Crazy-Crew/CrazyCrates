@@ -32,8 +32,8 @@ public class SqliteConnector implements Connector {
         return this;
     }
 
-    public static final String user_table_creation = "create table if not exists user(user_id varchar(32) primary key, total_crates_opened int)";
-    public static final String crate_table_creation = "create table if not exists crate(user_id varchar(32) primary key, crate_name varchar(16) primary key, amount int, times_opened int, current_respins int, foreign key (user_id) references user(user_id))";
+    private static final String user_table = "create table if not exists users(user_id varchar(32) primary key, total_crates_opened int)";
+    private static final String crate_table = "create table if not exists crates(user_id varchar(32), crate_name varchar(16), amount int, times_opened int, current_respins int, foreign key (user_id) references users(user_id) on delete cascade, primary key (user_id, crate_name))";
 
     @Override
     public void start() {
