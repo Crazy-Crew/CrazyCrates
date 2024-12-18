@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates;
 
-import com.badbones69.crazycrates.data.DataManager;
+import com.badbones69.crazycrates.api.exception.data.DataManager;
 import com.ryderbelserion.FusionApi;
 import com.ryderbelserion.api.enums.FileType;
 import com.ryderbelserion.paper.files.FileManager;

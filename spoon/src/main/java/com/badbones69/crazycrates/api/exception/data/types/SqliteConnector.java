@@ -1,7 +1,7 @@
-package com.badbones69.crazycrates.data.types;
+package com.badbones69.crazycrates.api.exception.data.types;
 
 import com.badbones69.crazycrates.api.exception.CratesException;
-import com.badbones69.crazycrates.data.interfaces.Connector;
+import com.badbones69.crazycrates.api.exception.data.interfaces.Connector;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import java.io.File;

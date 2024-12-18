@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.data.interfaces;
+package com.badbones69.crazycrates.api.exception.data.interfaces;
 
 import java.io.File;
 import java.sql.Connection;

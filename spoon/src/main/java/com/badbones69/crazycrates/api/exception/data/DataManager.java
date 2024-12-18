@@ -1,8 +1,8 @@
-package com.badbones69.crazycrates.data;
+package com.badbones69.crazycrates.api.exception.data;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.data.interfaces.Connector;
-import com.badbones69.crazycrates.data.types.SqliteConnector;
+import com.badbones69.crazycrates.api.exception.data.interfaces.Connector;
+import com.badbones69.crazycrates.api.exception.data.types.SqliteConnector;
 import java.io.File;
 
 public class DataManager {
