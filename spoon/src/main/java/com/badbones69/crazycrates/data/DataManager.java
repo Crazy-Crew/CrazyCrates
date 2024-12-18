@@ -12,7 +12,7 @@ public class DataManager {
     private Connector connector;
 
     public final DataManager init() {
-        this.connector = new SqliteConnector().init(new File(this.plugin.getDataFolder(), "users.db"));
+        this.connector = new SqliteConnector().init(new File(this.plugin.getDataFolder(), "crazycrates.db"));
 
         return this;
     }
