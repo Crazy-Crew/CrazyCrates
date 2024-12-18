@@ -14,7 +14,7 @@ public class CrazyLoader implements PluginLoader {
         final MavenLibraryResolver resolver = new MavenLibraryResolver();
 
         resolver.addDependency(new Dependency(new DefaultArtifact("ch.jalu:configme:1.4.1"), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("com.zaxxer:HikariCP:4.0.3"), null));
+        resolver.addDependency(new Dependency(new DefaultArtifact("com.zaxxer:HikariCP:6.2.1"), null));
 
         resolver.addRepository(new RemoteRepository.Builder("paper", "default", "https://repo.papermc.io/repository/maven-public/").build());
 

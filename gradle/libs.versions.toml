@@ -84,7 +84,7 @@ fusion = "0.1.0"
 # Common API
 triumph-cmd = "2.0.0-ALPHA-10"
 jetbrains = "24.1.0"
-hikari = "4.0.3"
+hikari = "6.2.1"
 bStats = "3.1.0"
 jalu = "1.4.1"
 
