@@ -31,6 +31,18 @@ public class BukkitUserManager {
         }
     }
 
+    public void removeUser(final UUID uuid) {
+        try (final Connection connection = this.connector.getConnection()) {
+            try (final PreparedStatement statement = connection.prepareStatement("delete from users where user_id = ?")) {
+                statement.setString(1, uuid.toString());
+
+                statement.executeUpdate();
+            }
+        } catch (final SQLException exception) {
+            throw new CratesException("Failed to remove user " + uuid, exception);
+        }
+    }
+
     public int getVirtualKeys(final UUID uuid, final String crateName) {
         int amount = 0;
 
