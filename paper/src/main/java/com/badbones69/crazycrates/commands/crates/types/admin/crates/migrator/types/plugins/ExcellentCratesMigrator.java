@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.types.plugins;
 
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.api.enums.misc.Files;
+import com.badbones69.crazycrates.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
@@ -59,7 +59,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                     user.getKeysMap().forEach((key, amount) -> {
                         if (amount > 0) {
-                            final YamlConfiguration data = Files.data.getConfiguration();
+                            final YamlConfiguration data = FileKeys.data.getConfiguration();
 
                             final int keys = userManager.getVirtualKeys(uuid, crateName);
 
@@ -67,7 +67,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                             data.set("Players." + uuid + "." + key, (Math.max((keys + amount), 0)));
 
-                            Files.data.save();
+                            FileKeys.data.save();
                         }
                     });
 
@@ -95,7 +95,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
         final File crateDirectory = CratesAPI.PLUGIN.getDataFolder();
 
-        YamlConfiguration locationData = Files.locations.getConfiguration();
+        YamlConfiguration locationData = FileKeys.locations.getConfiguration();
 
         final @NotNull Collection<Crate> crates = CratesAPI.getCrateManager().getCrates();
 
@@ -164,7 +164,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                     locationData.set("Locations." + id + ".Y", (int) Double.parseDouble(arg1));
                     locationData.set("Locations." + id + ".Z", (int) Double.parseDouble(arg2));
 
-                    Files.locations.save();
+                    FileKeys.locations.save();
                 });
             }
 

@@ -66,7 +66,7 @@ public enum CrateType {
      * @param name the name of the {@link CrateType}
      * @since 0.1
      */
-    CrateType(String name) {
+    CrateType(final String name) {
         this.name = name;
     }
 
@@ -77,10 +77,10 @@ public enum CrateType {
      * @return {@link CrateType}
      * @since 0.1
      */
-    public static CrateType getFromName(String name) {
+    public static CrateType getFromName(final String name) {
         if (name.isEmpty()) return CrateType.csgo;
 
-        for (CrateType crate : CrateType.values()) {
+        for (final CrateType crate : CrateType.values()) {
             if (crate.getName().equalsIgnoreCase(name)) return crate;
         }
 

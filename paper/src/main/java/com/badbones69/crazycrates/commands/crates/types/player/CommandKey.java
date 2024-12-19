@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.paper.api.enums.Support;
+import com.badbones69.crazycrates.api.enums.other.Plugins;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
@@ -114,7 +114,7 @@ public class CommandKey {
             }
         }
 
-        if (Support.placeholder_api.isEnabled() ) {
+        if (Plugins.placeholder_api.isEnabled() ) {
             if (sender instanceof Player person) {
                 if (hasKeys) {
                     message.forEach(line -> person.sendRichMessage(PlaceholderAPI.setPlaceholders(person, line)));

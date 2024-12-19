@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.managers;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
@@ -61,7 +61,7 @@ public class InventoryManager {
         }
 
         if (tier != null) {
-            button.setPersistentString(Keys.crate_tier.getNamespacedKey(), tier.getName());
+            button.setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), tier.getName());
         }
 
         return button.asItemStack();
@@ -79,7 +79,7 @@ public class InventoryManager {
         }
 
         if (tier != null) {
-            button.setPersistentString(Keys.crate_tier.getNamespacedKey(), tier.getName());
+            button.setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), tier.getName());
         }
 
         return button.asItemStack();

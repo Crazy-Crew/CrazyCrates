@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.listeners.other;
 
-import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Firework;
 import org.bukkit.event.EventHandler;
@@ -17,7 +17,7 @@ public class EntityDamageListener implements Listener {
         if (directEntity instanceof final Firework firework) {
             final PersistentDataContainer container = firework.getPersistentDataContainer();
 
-            if (container.has(Keys.no_firework_damage.getNamespacedKey())) {
+            if (container.has(ItemKeys.no_firework_damage.getNamespacedKey())) {
                 event.setCancelled(true);
             }
         }
