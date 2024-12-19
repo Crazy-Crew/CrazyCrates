@@ -51,7 +51,8 @@ public class BukkitUserManager extends UserManager {
     @Override
     public void addVirtualKeys(@NotNull final UUID uuid, @NotNull final String crateName, final int amount) {
         if (isPlayerNull(uuid)) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Player with the uuid: {} is null.", uuid);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Player with the uuid: {} is null.", uuid);
 
             return;
         }
@@ -59,7 +60,8 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -72,7 +74,8 @@ public class BukkitUserManager extends UserManager {
 
         final YamlConfiguration configuration = this.data.getConfiguration();
 
-        if (!configuration.contains("Players." + uuid + ".Name")) configuration.set("Players." + uuid + ".Name", player.getName());
+        if (!configuration.contains("Players." + uuid + ".Name")) configuration
+                .set("Players." + uuid + ".Name", player.getName());
 
         configuration.set("Players." + uuid + "." + fileName, (Math.max((keys + amount), 0)));
 
@@ -82,7 +85,8 @@ public class BukkitUserManager extends UserManager {
     @Override
     public void setKeys(@NotNull final UUID uuid, @NotNull final String crateName, final int amount) {
         if (isPlayerNull(uuid)) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Player with the uuid: {} is null.", uuid);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Player with the uuid: {} is null.", uuid);
 
             return;
         }
@@ -90,7 +94,8 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -112,9 +117,11 @@ public class BukkitUserManager extends UserManager {
     }
 
     @Override
-    public void addKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull final KeyType keyType, final int amount) {
+    public void addKeys(@NotNull final UUID uuid, @NotNull final String crateName,
+                        @NotNull final KeyType keyType, final int amount) {
         if (isPlayerNull(uuid)) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Player with the uuid {} is null.", uuid);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Player with the uuid {} is null.", uuid);
 
             return;
         }
@@ -122,7 +129,8 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -173,7 +181,8 @@ public class BukkitUserManager extends UserManager {
     @Override
     public int getPhysicalKeys(@NotNull final UUID uuid, @NotNull final String crateName) {
         if (isPlayerNull(uuid)) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Player with the uuid {} is null.", uuid);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Player with the uuid {} is null.", uuid);
 
             return 0;
         }
@@ -181,7 +190,8 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return 0;
         }
@@ -204,7 +214,8 @@ public class BukkitUserManager extends UserManager {
     @Override
     public boolean takeKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull final KeyType keyType, final int amount, final boolean checkHand) {
         if (isPlayerNull(uuid)) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Player with the uuid {} is null.", uuid);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Player with the uuid {} is null.", uuid);
 
             return false;
         }
@@ -212,7 +223,8 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return false;
         }
@@ -242,13 +254,15 @@ public class BukkitUserManager extends UserManager {
                             if ((takeAmount - keyAmount) >= 0) {
                                 MiscUtils.removeMultipleItemStacks(player.getInventory(), item);
 
-                                if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), fileName, amount);
+                                if (crate.getCrateType() == CrateType.cosmic)
+                                    addOpenedCrate(player.getUniqueId(), fileName, amount);
 
                                 takeAmount -= keyAmount;
                             } else {
                                 item.setAmount(keyAmount - takeAmount);
 
-                                if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), fileName, amount);
+                                if (crate.getCrateType() == CrateType.cosmic)
+                                    addOpenedCrate(player.getUniqueId(), fileName, amount);
 
                                 takeAmount = 0;
                             }
@@ -269,11 +283,13 @@ public class BukkitUserManager extends UserManager {
                             player.getEquipment().setItemInOffHand(null);
                             takeAmount -= keyAmount;
 
-                            if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), fileName, amount);
+                            if (crate.getCrateType() == CrateType.cosmic)
+                                addOpenedCrate(player.getUniqueId(), fileName, amount);
                         } else {
                             item.setAmount(keyAmount - takeAmount);
 
-                            if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), fileName, amount);
+                            if (crate.getCrateType() == CrateType.cosmic)
+                                addOpenedCrate(player.getUniqueId(), fileName, amount);
 
                             takeAmount = 0;
                         }
@@ -298,7 +314,8 @@ public class BukkitUserManager extends UserManager {
                     configuration.set("Players." + uuid + "." + fileName, newAmount);
                 }
 
-                if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), fileName, amount);
+                if (crate.getCrateType() == CrateType.cosmic)
+                    addOpenedCrate(player.getUniqueId(), fileName, amount);
 
                 this.data.save();
 
@@ -320,7 +337,8 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return false;
         }
@@ -351,7 +369,8 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return false;
         }
@@ -362,7 +381,8 @@ public class BukkitUserManager extends UserManager {
             final YamlConfiguration configuration = this.data.getConfiguration();
 
             if (keyType == KeyType.physical_key) {
-                if (configuration.contains("Offline-Players." + uuid + ".Physical." + fileName)) keys += configuration.getInt("Offline-Players." + uuid + ".Physical." + fileName);
+                if (configuration.contains("Offline-Players." + uuid + ".Physical." + fileName))
+                    keys += configuration.getInt("Offline-Players." + uuid + ".Physical." + fileName);
 
                 configuration.set("Offline-Players." + uuid + ".Physical." + fileName, keys);
 
@@ -371,7 +391,8 @@ public class BukkitUserManager extends UserManager {
                 return true;
             }
 
-            if (configuration.contains("Offline-Players." + uuid + "." + fileName)) keys += configuration.getInt("Offline-Players." + uuid + "." + fileName);
+            if (configuration.contains("Offline-Players." + uuid + "." + fileName))
+                keys += configuration.getInt("Offline-Players." + uuid + "." + fileName);
 
             configuration.set("Offline-Players." + uuid + "." + fileName, keys);
 
@@ -379,7 +400,8 @@ public class BukkitUserManager extends UserManager {
 
             return true;
         } catch (Exception exception) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("Could not add keys to offline player with uuid: {}", uuid, exception);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .error("Could not add keys to offline player with uuid: {}", uuid, exception);
 
             return false;
         }
@@ -390,7 +412,8 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return false;
         }
@@ -401,30 +424,36 @@ public class BukkitUserManager extends UserManager {
             final YamlConfiguration configuration = this.data.getConfiguration();
 
             if (keyType == KeyType.physical_key) {
-                final int offlineKeys = configuration.getInt("Offline-Players." + uuid + ".Physical." + fileName);
+                final int offlineKeys = configuration
+                        .getInt("Offline-Players." + uuid + ".Physical." + fileName);
 
                 // If the offline keys are less than the keys the person wants to take. We will set the keys variable to how many offline keys they have.
                 if (offlineKeys < keys) {
                     keys = offlineKeys;
                 }
 
-                configuration.set("Offline-Players." + uuid + ".Physical." + fileName, configuration.getInt("Offline-Players." + uuid + ".Physical." + fileName) - keys);
+                configuration.set("Offline-Players." + uuid + ".Physical." + fileName,
+                        configuration.getInt("Offline-Players." + uuid + ".Physical." + fileName) -
+                                keys);
 
                 // Remove the data if 0 keys remain after if checks.
-                if (configuration.getInt("Offline-Players." + uuid + ".Physical." + fileName) <= 0) configuration.set("Offline-Players." + uuid + ".Physical." + fileName, null);
+                if (configuration.getInt("Offline-Players." + uuid + ".Physical." + fileName) <= 0)
+                    configuration.set("Offline-Players." + uuid + ".Physical." + fileName, null);
 
                 this.data.save();
 
                 return true;
             }
 
-            configuration.set("Offline-Players." + uuid + "." + fileName, configuration.getInt("Offline-Players." + uuid + "." + fileName) - keys);
+            configuration.set("Offline-Players." + uuid + "." + fileName,
+                    configuration.getInt("Offline-Players." + uuid + "." + fileName) - keys);
 
             this.data.save();
 
             return true;
         } catch (Exception exception) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("Could not take keys from offline player with uuid: {}", uuid, exception);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .error("Could not take keys from offline player with uuid: {}", uuid, exception);
 
             return false;
         }
@@ -445,9 +474,11 @@ public class BukkitUserManager extends UserManager {
 
                     if (!event.isCancelled()) {
                         final int keys = getVirtualKeys(player.getUniqueId(), fileName);
-                        final int addedKeys = configuration.getInt("Offline-Players." + name + "." + fileName);
+                        final int addedKeys = configuration
+                                .getInt("Offline-Players." + name + "." + fileName);
 
-                        configuration.set("Players." + player.getUniqueId() + "." + fileName, (Math.max((keys + addedKeys), 0)));
+                        configuration.set("Players." + player.getUniqueId() + "." + fileName,
+                                (Math.max((keys + addedKeys), 0)));
 
                         this.data.save();
                     }
@@ -468,7 +499,8 @@ public class BukkitUserManager extends UserManager {
     public void loadOfflinePlayersKeys(@NotNull final Player player, @NotNull final List<Crate> crates) {
         final YamlConfiguration configuration = this.data.getConfiguration();
 
-        if (!configuration.contains("Offline-Players." + player.getUniqueId()) || crates.isEmpty()) return;
+        if (!configuration.contains("Offline-Players." + player.getUniqueId()) ||
+                crates.isEmpty()) return;
 
         final UUID uuid = player.getUniqueId();
 
@@ -476,7 +508,9 @@ public class BukkitUserManager extends UserManager {
             final String fileName = crate.getFileName();
 
             if (configuration.contains("Offline-Players." + uuid + "." + fileName)) {
-                final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.OFFLINE_PLAYER, 1);
+                final PlayerReceiveKeyEvent event =
+                        new PlayerReceiveKeyEvent(player, crate,
+                                PlayerReceiveKeyEvent.KeyReceiveReason.OFFLINE_PLAYER, 1);
                 this.plugin.getServer().getPluginManager().callEvent(event);
 
                 if (event.isCancelled()) return;
@@ -491,7 +525,9 @@ public class BukkitUserManager extends UserManager {
                     if (crate.getCrateType() == CrateType.crate_on_the_go) {
                         // If the inventory is full, drop the items then stop.
                         if (MiscUtils.isInventoryFull(player)) {
-                            player.getWorld().dropItemNaturally(player.getLocation(), crate.getKey(amount, player));
+                            player.getWorld()
+                                    .dropItemNaturally(player.getLocation(),
+                                            crate.getKey(amount, player));
                             break;
                         }
                     }
@@ -509,18 +545,21 @@ public class BukkitUserManager extends UserManager {
                 }
 
                 // If keys given is greater or equal than, remove data.
-                if (keysGiven >= amount) configuration.set("Offline-Players." + uuid + "." + crate.getFileName(), null);
+                if (keysGiven >= amount) configuration.set("Offline-Players." +
+                        uuid + "." + crate.getFileName(), null);
             }
 
             if (configuration.contains("Offline-Players." + uuid + ".Physical." + fileName)) {
-                final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.OFFLINE_PLAYER, 1);
+                final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate,
+                        PlayerReceiveKeyEvent.KeyReceiveReason.OFFLINE_PLAYER, 1);
                 this.plugin.getServer().getPluginManager().callEvent(event);
 
                 if (event.isCancelled()) return;
 
                 int keysGiven = 0;
 
-                final int amount = configuration.getInt("Offline-Players." + uuid + ".Physical." + fileName);
+                final int amount = configuration.getInt("Offline-Players." + uuid + ".Physical." +
+                        fileName);
 
                 while (keysGiven < amount) {
                     // If the inventory is full, drop the remaining keys then stop.
@@ -537,20 +576,26 @@ public class BukkitUserManager extends UserManager {
                 MiscUtils.addItem(player, crate.getKey(keysGiven, player));
 
                 // If keys given is greater or equal than, remove data.
-                if (keysGiven >= amount) configuration.set("Offline-Players." + uuid + ".Physical." + fileName, null);
+                if (keysGiven >= amount) configuration.set("Offline-Players." +
+                        uuid + ".Physical." + fileName, null);
             }
         }
 
-        final ConfigurationSection physicalSection = configuration.getConfigurationSection("Offline-Players." + uuid + ".Physical");
+        final ConfigurationSection physicalSection = configuration
+                .getConfigurationSection("Offline-Players." + uuid + ".Physical");
 
         if (physicalSection != null) {
-            if (physicalSection.getKeys(false).isEmpty()) configuration.set("Offline-Players." + uuid + ".Physical", null);
+            if (physicalSection.getKeys(false).isEmpty()) configuration
+                    .set("Offline-Players." + uuid + ".Physical", null);
         }
 
-        final ConfigurationSection section = configuration.getConfigurationSection("Offline-Players." + uuid);
+        final ConfigurationSection section = configuration
+                .getConfigurationSection("Offline-Players." + uuid);
 
         if (section != null) {
-            if (section.getKeys(false).isEmpty()) configuration.set("Offline-Players." + uuid, null);
+            if (section.getKeys(false).isEmpty()) configuration
+
+                    .set("Offline-Players." + uuid, null);
         }
 
         this.data.save();
@@ -558,7 +603,8 @@ public class BukkitUserManager extends UserManager {
 
     @Override
     public int getTotalCratesOpened(@NotNull final UUID uuid) {
-        return this.data.getConfiguration().getInt("Players." + uuid + ".tracking.total-crates", 0);
+        return this.data.getConfiguration().getInt("Players." +
+                uuid + ".tracking.total-crates", 0);
     }
 
     @Override
@@ -566,12 +612,14 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return 0;
         }
 
-        return this.data.getConfiguration().getInt("Players." + uuid + ".tracking." + crateName, 0);
+        return this.data.getConfiguration().getInt("Players." +
+                uuid + ".tracking." + crateName, 0);
     }
 
     @Override
@@ -579,7 +627,8 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -588,7 +637,8 @@ public class BukkitUserManager extends UserManager {
 
         final String fileName = crate.getFileName();
 
-        final boolean hasValue = configuration.contains("Players." + uuid + ".tracking." + fileName);
+        final boolean hasValue = configuration.contains("Players." +
+                uuid + ".tracking." + fileName);
 
         int newAmount;
 
@@ -596,14 +646,16 @@ public class BukkitUserManager extends UserManager {
             newAmount = configuration.getInt("Players." + uuid + ".tracking." + fileName) + amount;
 
             configuration.set("Players." + uuid + ".tracking." + fileName, newAmount);
-            configuration.set("Players." + uuid + ".tracking.total-crates", configuration.getInt("Players." + uuid + ".tracking.total-crates") + amount);
+            configuration.set("Players." + uuid + ".tracking.total-crates",
+                    configuration.getInt("Players." + uuid + ".tracking.total-crates") + amount);
 
             this.data.save();
 
             return;
         }
 
-        configuration.set("Players." + uuid + ".tracking.total-crates", configuration.getInt("Players." + uuid + ".tracking.total-crates", 0)+amount);
+        configuration.set("Players." + uuid + ".tracking.total-crates",
+                configuration.getInt("Players." + uuid + ".tracking.total-crates", 0)+amount);
         configuration.set("Players." + uuid + ".tracking." + fileName, amount);
 
         this.data.save();
@@ -614,7 +666,8 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -631,14 +684,16 @@ public class BukkitUserManager extends UserManager {
             amount = configuration.getInt("Players." + uuid + ".tracking." + fileName);
 
             configuration.set("Players." + uuid + ".tracking." + fileName, amount + 1);
-            configuration.set("Players." + uuid + ".tracking.total-crates", configuration.getInt("Players." + uuid + ".tracking.total-crates") + 1);
+            configuration.set("Players." + uuid + ".tracking.total-crates",
+                    configuration.getInt("Players." + uuid + ".tracking.total-crates") + 1);
 
             this.data.save();
 
             return;
         }
 
-        amount = configuration.contains("Players." + uuid + ".tracking.total-crates") ? configuration.getInt("Players." + uuid + ".tracking.total-crates") + 1 : 1;
+        amount = configuration.contains("Players." + uuid + ".tracking.total-crates") ?
+                configuration.getInt("Players." + uuid + ".tracking.total-crates") + 1 : 1;
 
         configuration.set("Players." + uuid + ".tracking.total-crates", amount);
         configuration.set("Players." + uuid + ".tracking." + fileName, 1);
@@ -650,19 +705,22 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return 0;
         }
 
-        return this.data.getConfiguration().getInt("Players." + uuid + ".respins." + crateName + ".amount", 0);
+        return this.data.getConfiguration().getInt("Players." + uuid + ".respins." +
+                crateName + ".amount", 0);
     }
 
     public void addRespinPrize(@NotNull final UUID uuid, @NotNull final String crateName, final String prize) {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -680,7 +738,8 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return false;
         }
@@ -696,7 +755,8 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -705,7 +765,8 @@ public class BukkitUserManager extends UserManager {
 
         final String fileName = crate.getFileName();
 
-        String prize = configuration.getString("Players." + uuid + ".respins." + fileName + ".prize");
+        String prize = configuration.getString("Players." +
+                uuid + ".respins." + fileName + ".prize");
 
         if (prize == null) {
             return;
@@ -720,7 +781,8 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return "";
         }
@@ -729,14 +791,16 @@ public class BukkitUserManager extends UserManager {
 
         final String fileName = crate.getFileName();
 
-        return configuration.getString("Players." + uuid + ".respins." + fileName + ".prize", "");
+        return configuration.getString("Players." +
+                uuid + ".respins." + fileName + ".prize", "");
     }
 
     public void removeRespinCrate(@NotNull final UUID uuid, @NotNull final String crateName, final int amount) {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -745,14 +809,17 @@ public class BukkitUserManager extends UserManager {
 
         final String fileName = crate.getFileName();
 
-        final boolean hasValue = configuration.contains("Players." + uuid + ".respins." + fileName);
+        final boolean hasValue = configuration.contains("Players." +
+                uuid + ".respins." + fileName);
 
         int newAmount;
 
         if (hasValue) {
-            newAmount = configuration.getInt("Players." + uuid + ".respins." + fileName + ".amount") - amount;
+            newAmount = configuration.getInt("Players." +
+                    uuid + ".respins." + fileName + ".amount") - amount;
 
-            configuration.set("Players." + uuid + ".respins." + fileName + ".amount", newAmount <= 0 ? null : newAmount);
+            configuration.set("Players." +
+                    uuid + ".respins." + fileName + ".amount", newAmount <= 0 ? null : newAmount);
 
             this.data.save();
         }
@@ -762,7 +829,8 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate {} doesn't exist.", crateName);
+            if (MiscUtils.isLogging()) this.plugin.getComponentLogger()
+                    .warn("Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -771,21 +839,25 @@ public class BukkitUserManager extends UserManager {
 
         final YamlConfiguration configuration = this.data.getConfiguration();
 
-        final boolean hasValue = configuration.contains("Players." + uuid + ".respins." + fileName);
+        final boolean hasValue = configuration.contains("Players." +
+                uuid + ".respins." + fileName);
 
         int newAmount;
 
         if (hasValue) {
-            newAmount = configuration.getInt("Players." + uuid + ".respins." + fileName + ".amount") + amount;
+            newAmount = configuration.getInt("Players." +
+                    uuid + ".respins." + fileName + ".amount") + amount;
 
-            configuration.set("Players." + uuid + ".respins." + fileName + ".amount", newAmount);
+            configuration.set("Players." +
+                    uuid + ".respins." + fileName + ".amount", newAmount);
 
             this.data.save();
 
             return;
         }
 
-        configuration.set("Players." + uuid + ".respins." + fileName + ".amount", amount);
+        configuration.set("Players." +
+                uuid + ".respins." + fileName + ".amount", amount);
 
         this.data.save();
     }
@@ -814,9 +886,13 @@ public class BukkitUserManager extends UserManager {
         final UUID uuid = itemBuilder.getPlayer();
         if (uuid == null) return itemBuilder;
 
-        return itemBuilder.addNamePlaceholder("%keys%", NumberFormat.getNumberInstance().format(getVirtualKeys(uuid, fileName)))
-                .addNamePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(getPhysicalKeys(uuid, fileName)))
-                .addNamePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(getTotalKeys(uuid, fileName)))
-                .addNamePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(getCrateOpened(uuid, fileName)));
+        return itemBuilder.addNamePlaceholder("%keys%",
+                        NumberFormat.getNumberInstance().format(getVirtualKeys(uuid, fileName)))
+                .addNamePlaceholder("%keys_physical%",
+                        NumberFormat.getNumberInstance().format(getPhysicalKeys(uuid, fileName)))
+                .addNamePlaceholder("%keys_total%",
+                        NumberFormat.getNumberInstance().format(getTotalKeys(uuid, fileName)))
+                .addNamePlaceholder("%crate_opened%",
+                        NumberFormat.getNumberInstance().format(getCrateOpened(uuid, fileName)));
     }
 }

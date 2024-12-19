@@ -4,6 +4,9 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.exception.CratesException;
 import com.badbones69.crazycrates.api.exception.data.DataManager;
 import com.badbones69.crazycrates.api.exception.data.interfaces.Connector;
+import org.bukkit.entity.Player;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
+
 import java.sql.*;
 import java.util.UUID;
 
@@ -51,56 +54,86 @@ public class BukkitUserManager {
     }
 
     public int getVirtualKeys(final UUID uuid, final String crateName) {
+        return getKeys(uuid, crateName, KeyType.virtual_key);
+    }
+
+    public int getKeys(final UUID uuid, final String crateName, final KeyType keyType) {
         int amount = 0;
 
-        try (final Connection connection = this.connector.getConnection()) {
-            try (final PreparedStatement statement = connection.prepareStatement("select amount from crates where user_id = ? and crate_name = ?")) {
-                statement.setString(1, uuid.toString());
-                statement.setString(2, crateName);
+        switch (keyType) {
+            case physical_key -> {
 
-                final ResultSet resultSet = statement.executeQuery();
+            }
 
-                while (resultSet.next()) {
-                    amount = resultSet.getInt("amount");
+            case virtual_key -> {
+                try (final Connection connection = this.connector.getConnection()) {
+                    try (final PreparedStatement statement = connection.prepareStatement("select amount from crates where user_id = ? and crate_name = ?")) {
+                        statement.setString(1, uuid.toString());
+                        statement.setString(2, crateName);
+
+                        final ResultSet resultSet = statement.executeQuery();
+
+                        while (resultSet.next()) {
+                            amount = resultSet.getInt("amount");
+                        }
+                    }
+                } catch (final SQLException exception) {
+                    throw new CratesException("Failed to get the virtual keys for " + uuid, exception);
                 }
             }
-        } catch (final SQLException exception) {
-            throw new CratesException("Failed to get the virtual keys for " + uuid, exception);
         }
 
         return amount;
     }
 
-    public void addVirtualKeys(final UUID uuid, final String crateName, final int amount) {
-        final int keys = getVirtualKeys(uuid, crateName);
+    public void addKeys(final UUID uuid, final String crateName, final int amount, final KeyType keyType) {
+        switch (keyType) {
+            case physical_key -> {
+                final Player player = this.plugin.getServer().getPlayer(uuid);
 
-        try (final Connection connection = this.connector.getConnection()) {
-            try (final PreparedStatement statement = connection.prepareStatement("update crates set amount = ? where user_id = ? and crate_name = ?")) {
-                statement.setString(1, uuid.toString());
-                statement.setString(2, crateName);
+                if (player == null) return;
 
-                statement.setInt(3, Math.max(keys, amount));
-
-                statement.executeUpdate();
+                //todo() add keys to inventory
             }
-        } catch (final SQLException exception) {
-            throw new CratesException("Failed to add the virtual keys for " + uuid, exception);
+
+            case virtual_key -> {
+                final int keys = getVirtualKeys(uuid, crateName);
+
+                try (final Connection connection = this.connector.getConnection()) {
+                    try (final PreparedStatement statement = connection.prepareStatement("update crates set amount = ? where user_id = ? and crate_name = ?")) {
+                        statement.setString(1, uuid.toString());
+                        statement.setString(2, crateName);
+
+                        statement.setInt(3, Math.max(keys, amount));
+
+                        statement.executeUpdate();
+                    }
+                } catch (final SQLException exception) {
+                    throw new CratesException("Failed to add the virtual keys for " + uuid, exception);
+                }
+            }
         }
     }
 
-    public void setVirtualKeys(final UUID uuid, final String crateName, final int amount) { // todo() cascade trigger if inserted into the crates table, users table gets the uuid etc
-        try (final Connection connection = this.connector.getConnection()) {
-            try (final PreparedStatement statement = connection.prepareStatement("insert into crates(user_id, crate_name, amount, times_opened, current_respins) values (?, ?, ?, ?, ?)")) {
-                statement.setString(1, uuid.toString());
-                statement.setString(2, crateName);
-                statement.setInt(3, Math.max(1, amount)); // always set 1 key
-                statement.setInt(4, 0);
-                statement.setInt(5, 0);
+    public void setKeys(final UUID uuid, final String crateName, final int amount, final KeyType keyType) {
+        switch (keyType) {
+            case physical_key -> addKeys(uuid, crateName, amount, keyType);
 
-                statement.executeUpdate();
+            case virtual_key -> {
+                try (final Connection connection = this.connector.getConnection()) {
+                    try (final PreparedStatement statement = connection.prepareStatement("insert into crates(user_id, crate_name, amount, times_opened, current_respins) values (?, ?, ?, ?, ?)")) {
+                        statement.setString(1, uuid.toString());
+                        statement.setString(2, crateName);
+                        statement.setInt(3, Math.max(1, amount)); // always set 1 key
+                        statement.setInt(4, 0);
+                        statement.setInt(5, 0);
+
+                        statement.executeUpdate();
+                    }
+                } catch (final SQLException exception) {
+                    throw new CratesException("Failed to set the virtual keys for " + uuid, exception);
+                }
             }
-        } catch (final SQLException exception) {
-            throw new CratesException("Failed to set the virtual keys for " + uuid, exception);
         }
     }
 }
