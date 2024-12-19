@@ -24,13 +24,9 @@ public class BukkitUserManager {
                 statement.executeUpdate();
             }
 
-            final String trigger = "create trigger after_users_insert after insert on users for each row begin insert into " +
-                    "crates(user_id, crate_name, amount, times_opened, current_respins)" +
-                    "values (?, ?, ?, ?, ?); end;";
-
-            try (final PreparedStatement statement = connection.prepareStatement(trigger)) {
+            try (final PreparedStatement statement = connection.prepareStatement("insert into crates (user_id, crate_name, amount, times_opened, current_respins) values (?, ?, ?, ?, ?)")) {
                 statement.setString(1, uuid.toString());
-                statement.setString(2, "");
+                statement.setString(2, null);
                 statement.setInt(3, 0);
                 statement.setInt(4, 0);
                 statement.setInt(5, 0);
