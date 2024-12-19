@@ -4,10 +4,7 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.exception.CratesException;
 import com.badbones69.crazycrates.api.exception.data.DataManager;
 import com.badbones69.crazycrates.api.exception.data.interfaces.Connector;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.UUID;
 
 public class BukkitUserManager {
@@ -23,6 +20,20 @@ public class BukkitUserManager {
             try (final PreparedStatement statement = connection.prepareStatement("insert into users (user_id, total_crates_opened) values (?, ?)")) {
                 statement.setString(1, uuid.toString());
                 statement.setInt(2, 0);
+
+                statement.executeUpdate();
+            }
+
+            final String trigger = "create trigger after_users_insert after insert on users for each row begin insert into " +
+                    "crates(user_id, crate_name, amount, times_opened, current_respins)" +
+                    "values (?, ?, ?, ?, ?); end;";
+
+            try (final PreparedStatement statement = connection.prepareStatement(trigger)) {
+                statement.setString(1, uuid.toString());
+                statement.setString(2, "");
+                statement.setInt(3, 0);
+                statement.setInt(4, 0);
+                statement.setInt(5, 0);
 
                 statement.executeUpdate();
             }
