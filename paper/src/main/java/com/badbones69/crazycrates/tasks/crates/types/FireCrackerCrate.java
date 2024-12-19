@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
-import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

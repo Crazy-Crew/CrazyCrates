@@ -3,13 +3,13 @@ package com.badbones69.crazycrates.api.objects;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.impl.messages.CrateKeys;
-import com.ryderbelserion.vital.paper.api.enums.Support;
+import com.badbones69.crazycrates.api.enums.other.Plugins;
 import com.ryderbelserion.vital.paper.util.PaperMethods;
 import com.ryderbelserion.vital.utils.Methods;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -154,7 +154,7 @@ public class Prize {
 
         List<String> lore = new ArrayList<>();
 
-        final boolean isPapiEnabled = Support.placeholder_api.isEnabled();
+        final boolean isPapiEnabled = Plugins.placeholder_api.isEnabled();
 
         final String displayName = this.displayItem.getDisplayName();
 
@@ -205,7 +205,7 @@ public class Prize {
         this.displayItem.addLorePlaceholder("%chance%", weight).addLorePlaceholder("%maxpulls%", String.valueOf(maxPulls)).addLorePlaceholder("%pulls%", amount);
         this.displayItem.addNamePlaceholder("%chance%", weight).addNamePlaceholder("%maxpulls%", String.valueOf(maxPulls)).addNamePlaceholder("%pulls%", amount);
 
-        return this.displayItem.setPersistentString(Keys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack();
+        return this.displayItem.setPersistentString(ItemKeys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack();
     }
 
     /**
