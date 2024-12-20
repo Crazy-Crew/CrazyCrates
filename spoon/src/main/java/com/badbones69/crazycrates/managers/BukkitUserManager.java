@@ -6,7 +6,6 @@ import com.badbones69.crazycrates.api.exception.data.DataManager;
 import com.badbones69.crazycrates.api.exception.data.interfaces.Connector;
 import org.bukkit.entity.Player;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-
 import java.sql.*;
 import java.util.UUID;
 
@@ -18,16 +17,18 @@ public class BukkitUserManager {
 
     private final Connector connector = this.dataManager.getConnector();
 
-    public void createUser(final UUID uuid) { // todo() cascade insert, i.e. we create a trigger that listens for inserts on the crates table, and then we check if the user exists then insert!
+    public void createUser(final UUID uuid) {
         try (final Connection connection = this.connector.getConnection()) {
-            try (final PreparedStatement statement = connection.prepareStatement("insert into users (user_id, total_crates_opened) values (?, ?)")) {
+            try (final PreparedStatement statement = connection.prepareStatement("insert into " +
+                    "users(user_id, total_crates_opened) values (?, ?)")) {
                 statement.setString(1, uuid.toString());
                 statement.setInt(2, 0);
 
                 statement.executeUpdate();
             }
 
-            try (final PreparedStatement statement = connection.prepareStatement("insert into crates (user_id, crate_name, amount, times_opened, current_respins) values (?, ?, ?, ?, ?)")) {
+            try (final PreparedStatement statement = connection.prepareStatement("insert into " +
+                    "crates(user_id, crate_name, amount, times_opened, current_respins) values (?, ?, ?, ?, ?)")) {
                 statement.setString(1, uuid.toString());
                 statement.setString(2, null);
                 statement.setInt(3, 0);
@@ -60,6 +61,8 @@ public class BukkitUserManager {
     public int getKeys(final UUID uuid, final String crateName, final KeyType keyType) {
         int amount = 0;
 
+        //todo() fetch crate from cache.
+
         switch (keyType) {
             case physical_key -> {
 
@@ -87,6 +90,8 @@ public class BukkitUserManager {
     }
 
     public void addKeys(final UUID uuid, final String crateName, final int amount, final KeyType keyType) {
+        //todo() fetch crate from cache.
+
         switch (keyType) {
             case physical_key -> {
                 final Player player = this.plugin.getServer().getPlayer(uuid);
@@ -116,12 +121,15 @@ public class BukkitUserManager {
     }
 
     public void setKeys(final UUID uuid, final String crateName, final int amount, final KeyType keyType) {
+        //todo() fetch crate from cache.
+
         switch (keyType) {
             case physical_key -> addKeys(uuid, crateName, amount, keyType);
 
             case virtual_key -> {
                 try (final Connection connection = this.connector.getConnection()) {
-                    try (final PreparedStatement statement = connection.prepareStatement("insert into crates(user_id, crate_name, amount, times_opened, current_respins) values (?, ?, ?, ?, ?)")) {
+                    try (final PreparedStatement statement = connection.prepareStatement("insert into " +
+                            "crates(user_id, crate_name, amount, times_opened, current_respins) values (?, ?, ?, ?, ?)")) {
                         statement.setString(1, uuid.toString());
                         statement.setString(2, crateName);
                         statement.setInt(3, Math.max(1, amount)); // always set 1 key
