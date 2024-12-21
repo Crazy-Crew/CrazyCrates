@@ -3,9 +3,9 @@ package com.badbones69.crazycrates.tasks.crates.other.quadcrates;
 import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
-import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
-import com.ryderbelserion.vital.paper.util.structures.StructureManager;
-import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
+import com.ryderbelserion.paper.enums.Scheduler;
+import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
+import com.ryderbelserion.paper.util.structure.StructureManager;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -226,7 +226,7 @@ public class QuadCrateManager {
 
         this.player.teleportAsync(this.spawnLocation.clone().toCenterLocation().add(0, 1, 0));
 
-        this.crateManager.addQuadCrateTask(this.player, new FoliaScheduler(this.plugin, null, this.player) {
+        this.crateManager.addQuadCrateTask(this.player, new FoliaScheduler(null, this.player) {
             double radius = 0.0; // Radius of the particle spiral.
             int crateNumber = 0; // The crate number that spawns next.
             int tickTillSpawn = 0; // At tick 60 the crate will spawn and then reset the tick.
@@ -263,7 +263,7 @@ public class QuadCrateManager {
             }
         }.runAtFixedRate(0,1));
 
-        this.crateManager.addCrateTask(this.player, new FoliaScheduler(this.plugin, null, this.player) {
+        this.crateManager.addCrateTask(this.player, new FoliaScheduler(null, this.player) {
             @Override
             public void run() {
                 endCrate(true);
@@ -281,7 +281,7 @@ public class QuadCrateManager {
     public void endCrate(final boolean immediately) {
         final Server server = this.plugin.getServer();
 
-        new FoliaScheduler(this.plugin, SchedulerType.global_scheduler) {
+        new FoliaScheduler(Scheduler.global_scheduler) {
             @Override
             public void run() {
                 // Update spawned crate block states which removes them.
@@ -296,7 +296,7 @@ public class QuadCrateManager {
                 player.teleportAsync(lastLocation);
 
                 // Remove the structure blocks.
-                handler.removeStructure();
+                //handler.removeStructure();
 
                 // Restore the old blocks.
                 oldBlocks.keySet().forEach(location -> server.getRegionScheduler().run(plugin, location, schedulerTask -> oldBlocks.get(location).update(true, false)));
@@ -340,7 +340,7 @@ public class QuadCrateManager {
             crateSessions.remove(this.instance);
         }
 
-        this.handler.removeStructure();
+        //this.handler.removeStructure();
     }
 
     /**
