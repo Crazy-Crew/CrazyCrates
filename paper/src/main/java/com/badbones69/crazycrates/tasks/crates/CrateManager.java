@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.tasks.crates;
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
+import com.badbones69.crazycrates.api.exception.CratesException;
 import com.badbones69.crazycrates.common.config.impl.EditorKeys;
 import com.badbones69.crazycrates.listeners.items.ItemsAdderInteractListener;
 import com.badbones69.crazycrates.listeners.items.NexoInteractListener;
@@ -532,11 +533,8 @@ public class CrateManager {
                 try {
                     final String worldName = locations.getString("Locations." + locationName + ".World");
 
-                    // If name is null, we return.
-                    if (worldName == null) return;
-
-                    // If name is empty or blank, we return.
-                    if (worldName.isEmpty() || worldName.isBlank()) return;
+                    // If name is null or empty, we return.
+                    if (worldName == null || worldName.isBlank()) return;
 
                     final World world = this.plugin.getServer().getWorld(worldName);
                     final int x = locations.getInt("Locations." + locationName + ".X");
@@ -545,7 +543,7 @@ public class CrateManager {
                     final Location location = new Location(world, x, y, z);
                     final Crate crate = getCrateFromName(locations.getString("Locations." + locationName + ".Crate"));
 
-                    if (world != null && crate != null) {
+                    if (world != null) {
                         this.crateLocations.add(new CrateLocation(locationName, crate, location));
 
                         if (this.holograms != null) {
