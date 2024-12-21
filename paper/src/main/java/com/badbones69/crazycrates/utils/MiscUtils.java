@@ -3,11 +3,10 @@ package com.badbones69.crazycrates.utils;
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.other.keys.FileKeys;
-import com.badbones69.crazycrates.common.utils.CrazyUtil;
 import com.badbones69.crazycrates.api.enums.other.Plugins;
-import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
-import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
-import com.ryderbelserion.vital.utils.Methods;
+import com.ryderbelserion.paper.enums.Scheduler;
+import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
+import com.ryderbelserion.util.FileMethods;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemType;
@@ -56,7 +55,7 @@ public class MiscUtils {
 
         final String result = populatePlaceholders(sender, command, placeholders);
 
-        new FoliaScheduler(plugin, SchedulerType.global_scheduler) {
+        new FoliaScheduler(Scheduler.global_scheduler) {
             @Override
             public void run() {
                 server.dispatchCommand(server.getConsoleSender(), result);
@@ -103,7 +102,7 @@ public class MiscUtils {
             final File crateLog = FileKeys.crate_log.getFile();
             final File keyLog = FileKeys.key_log.getFile();
 
-            Methods.zip(logsFolder, ".log", true);
+            FileMethods.zip(logsFolder, ".log", true);
 
             try {
                 if (!crateLog.exists()) {
@@ -296,7 +295,7 @@ public class MiscUtils {
                     "",
                     " <yellow>-> <light_purple>Not enough keys.",
                     " <yellow>-> <light_purple>Key is in off hand."
-            ).forEach(line -> player.sendRichMessage(CrazyUtil.getPrefix(line)));
+            ).forEach(line -> player.sendRichMessage(ConfigManager.getConfig().getProperty(ConfigKeys.command_prefix) + line));
         }
     }
 
@@ -413,7 +412,7 @@ public class MiscUtils {
     }
 
     public static boolean isLogging() {
-        return plugin.getVital().isVerbose();
+        return plugin.getApi().getFusion().isVerbose();
     }
 
     public static boolean isExcellentCratesEnabled() {

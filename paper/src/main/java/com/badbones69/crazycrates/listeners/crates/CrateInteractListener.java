@@ -14,7 +14,6 @@ import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.menus.CrateMainMenu;
-import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;

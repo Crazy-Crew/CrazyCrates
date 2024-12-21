@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.listeners.crates.types;
 
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.utils.ItemUtils;
 import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;

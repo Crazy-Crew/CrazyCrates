@@ -18,7 +18,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.utils.ItemUtils;
 
 public class MobileCrateListener implements Listener {
 

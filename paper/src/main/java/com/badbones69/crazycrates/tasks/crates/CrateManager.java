@@ -14,6 +14,7 @@ import com.badbones69.crazycrates.api.objects.crates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.api.objects.crates.BrokeLocation;
 import com.badbones69.crazycrates.api.ChestManager;
+import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.support.holograms.types.CMIHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.DecentHologramsSupport;
@@ -31,12 +32,12 @@ import com.badbones69.crazycrates.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WonderCrate;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.ryderbelserion.vital.files.enums.FileType;
 import com.badbones69.crazycrates.api.enums.other.Plugins;
-import com.ryderbelserion.vital.paper.api.files.PaperCustomFile;
-import com.ryderbelserion.vital.paper.api.files.PaperFileManager;
-import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
-import com.ryderbelserion.vital.utils.Methods;
+import com.ryderbelserion.api.enums.FileType;
+import com.ryderbelserion.paper.files.CustomFile;
+import com.ryderbelserion.paper.files.FileManager;
+import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
+import com.ryderbelserion.util.FileMethods;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -74,7 +75,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.utils.ItemUtils;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public class CrateManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-    private final PaperFileManager fileManager = this.plugin.getVital().getFileManager();
+    private final FileManager fileManager = this.plugin.getFileManager();
 
     private final List<CrateLocation> crateLocations = new ArrayList<>();
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
@@ -350,12 +351,12 @@ public class CrateManager {
                     "data.yml",
                     "locations.yml",
                     "messages.yml"
-            ).forEach(file -> Methods.extract(file, "examples", true));
+            ).forEach(file -> FileMethods.extract(file, "examples", true));
 
-            Methods.extracts(classObject, "/guis/", path.resolve("examples").resolve("guis"), true);
-            Methods.extracts(classObject, "/logs/", path.resolve("examples").resolve("logs"), true);
-            Methods.extracts(classObject, "/crates/", path.resolve("examples").resolve("crates"), true);
-            Methods.extracts(classObject, "/schematics/", path.resolve("examples").resolve("schematics"), true);
+            FileMethods.extracts(classObject, "/guis/", path.resolve("examples").resolve("guis"), true);
+            FileMethods.extracts(classObject, "/logs/", path.resolve("examples").resolve("logs"), true);
+            FileMethods.extracts(classObject, "/crates/", path.resolve("examples").resolve("crates"), true);
+            FileMethods.extracts(classObject, "/schematics/", path.resolve("examples").resolve("schematics"), true);
         }
 
         this.giveNewPlayersKeys = false;
@@ -371,7 +372,7 @@ public class CrateManager {
 
         for (final String crateName : getCrateNames()) {
             try {
-                final PaperCustomFile customFile = this.fileManager.getFile(crateName, FileType.YAML);
+                final CustomFile customFile = this.fileManager.getFile(crateName, FileType.YAML);
 
                 if (customFile == null) continue;
 
@@ -1158,7 +1159,7 @@ public class CrateManager {
 
         final Matrix4f scale = new Matrix4f().scale(0.5f);
 
-        new FoliaScheduler(this.plugin, null, itemDisplay) {
+        new FoliaScheduler(null, itemDisplay) {
             @Override
             public void run() {
                 if (!itemDisplay.isValid()) { // cancel just in case
@@ -1174,7 +1175,7 @@ public class CrateManager {
         }.runAtFixedRate(1, 20);
 
         // remove item display after 5 seconds.
-        new FoliaScheduler(this.plugin, location) {
+        new FoliaScheduler(location) {
             @Override
             public void run() {
                 if (!itemDisplay.isValid()) { // cancel just in case

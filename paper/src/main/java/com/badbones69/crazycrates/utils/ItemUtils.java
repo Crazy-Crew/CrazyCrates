@@ -5,8 +5,8 @@ import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.ryderbelserion.vital.paper.util.PaperMethods;
-import com.ryderbelserion.vital.utils.Methods;
+import com.ryderbelserion.paper.util.PaperMethods;
+import com.ryderbelserion.util.Methods;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.DyeColor;
 import org.bukkit.block.banner.PatternType;
@@ -206,8 +206,8 @@ public class ItemUtils {
 
         builder.setUnbreakable(section.getBoolean("Unbreakable", false));
         
-        if (section.contains("Skull") && plugin.getApi() != null) {
-            builder.setSkull(section.getString("Skull", ""), plugin.getApi());
+        if (section.contains("Skull")) {
+            builder.setSkull(section.getString("Skull", ""));
         }
         
         if (section.contains("Player") && builder.isPlayerHead()) {
@@ -330,7 +330,7 @@ public class ItemUtils {
                     }
                     case "lore" -> itemBuilder.setDisplayLore(List.of(value.split(",")));
                     case "player" -> itemBuilder.setPlayer(value);
-                    case "skull" -> itemBuilder.setSkull(value, plugin.getApi());
+                    case "skull" -> itemBuilder.setSkull(value);
                     case "custom-model-data" -> itemBuilder.setCustomModelData(Methods.tryParseInt(value).orElse(-1).intValue());
                     case "unbreakable-item" -> itemBuilder.setUnbreakable(value.isEmpty() || value.equalsIgnoreCase("true"));
                     case "trim-pattern" -> itemBuilder.applyTrimPattern(value);

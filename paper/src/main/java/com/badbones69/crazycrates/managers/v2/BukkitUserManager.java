@@ -2,8 +2,8 @@ package com.badbones69.crazycrates.managers;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.exception.CratesException;
-import com.badbones69.crazycrates.api.exception.data.DataManager;
-import com.badbones69.crazycrates.api.exception.data.interfaces.Connector;
+import com.badbones69.crazycrates.managers.data.DataManager;
+import com.badbones69.crazycrates.managers.data.interfaces.Connector;
 import org.bukkit.entity.Player;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.sql.*;

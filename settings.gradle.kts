@@ -7,7 +7,7 @@ listOf(
 
     "publish" to "publish",
 
-    "spoon" to "spoon",
+    "paper" to "paper",
     "core" to "core",
     "api" to "api"
 ).forEach(::includeProject)

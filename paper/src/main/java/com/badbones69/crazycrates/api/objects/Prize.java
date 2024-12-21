@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
-import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.common.config.ConfigManager;
