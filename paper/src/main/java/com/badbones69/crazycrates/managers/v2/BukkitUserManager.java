@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.managers;
+package com.badbones69.crazycrates.managers.v2;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.exception.CratesException;
