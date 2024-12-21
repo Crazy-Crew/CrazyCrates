@@ -61,11 +61,29 @@ public class BukkitUserManager {
     public int getKeys(final UUID uuid, final String crateName, final KeyType keyType) {
         int amount = 0;
 
-        //todo() fetch crate from cache.
-
         switch (keyType) {
             case physical_key -> {
+                final Player player = this.plugin.getServer().getPlayer(uuid);
 
+                if (player == null) {
+                    throw new CratesException("The uuid " + uuid + " has no available player.");
+                }
+
+                final PlayerInventory inventory = player.getInventory();
+
+                if (!inventory.isEmpty()) {
+                    final ItemStack[] contents = inventory.getContents();
+
+                    for (final ItemStack itemStack : contents) {
+                        if (itemStack == null) continue;
+
+                        final @NotNull PersistentDataContainerView container = itemStack.getPersistentDataContainer();
+
+                        if (container.has(ItemKeys.crate_key.getNamespacedKey())) {
+                            amount += itemStack.getAmount();
+                        }
+                    }
+                }
             }
 
             case virtual_key -> {
