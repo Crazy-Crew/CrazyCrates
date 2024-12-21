@@ -1276,10 +1276,7 @@ public class CrateManager {
      * @param name name of the crate.
      * @return the crate object.
      */
-    public @Nullable final Crate getCrateFromName(@Nullable final String name) {
-        if (name == null) return null;
-        if (name.isEmpty()) return null;
-
+    public @NotNull final Crate getCrateFromName(@Nullable final String name) {
         Crate crate = null;
 
         for (final Crate key : this.crates) {
@@ -1288,6 +1285,10 @@ public class CrateManager {
 
                 break;
             }
+        }
+
+        if (crate == null) {
+            throw new CratesException("No crate found with the name name " + name);
         }
 
         return crate;
@@ -1326,7 +1327,7 @@ public class CrateManager {
      * @param item the key ItemStack you are checking.
      * @return a crate if is a key from a crate otherwise null if it is not.
      */
-    public @Nullable final Crate getCrateFromKey(@NotNull final ItemStack item) {
+    public @NotNull final Crate getCrateFromKey(@NotNull final ItemStack item) {
         return getCrateFromName(ItemUtils.getKey(item.getPersistentDataContainer()));
     }
 
