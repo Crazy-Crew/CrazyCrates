@@ -10,7 +10,7 @@ import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
+import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -69,7 +69,7 @@ public class WonderCrate extends CrateBuilder {
 
         this.player.openInventory(this.inventory);
 
-        addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
+        addCrateTask(new FoliaScheduler(null, this.player) {
             int time = 0;
             int full = 0;
 

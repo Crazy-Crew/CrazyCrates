@@ -112,7 +112,7 @@ public class CrazyCrates extends JavaPlugin {
         this.crateManager.loadCrates();
 
         if (ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics)) {
-            this.metrics = new MetricsWrapper(this, 4514, true);
+            this.metrics = new MetricsWrapper(4514);
             this.metrics.start();
         }
 

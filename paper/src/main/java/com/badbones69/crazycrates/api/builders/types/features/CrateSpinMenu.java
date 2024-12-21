@@ -4,11 +4,11 @@ import com.badbones69.crazycrates.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
-import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
-import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
-import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
-import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
-import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
+import com.ryderbelserion.paper.builder.gui.interfaces.Gui;
+import com.ryderbelserion.paper.builder.gui.interfaces.GuiFiller;
+import com.ryderbelserion.paper.builder.gui.interfaces.GuiItem;
+import com.ryderbelserion.paper.enums.Scheduler;
+import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
 import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +60,7 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
         });
 
         this.gui.setCloseGuiAction(action -> {
-            new FoliaScheduler(this.plugin, SchedulerType.global_scheduler) {
+            new FoliaScheduler(Scheduler.global_scheduler) {
                 @Override
                 public void run() {
                     if (userManager.hasRespinPrize(uuid, fileName)) { // if they have a respin prize, add it.

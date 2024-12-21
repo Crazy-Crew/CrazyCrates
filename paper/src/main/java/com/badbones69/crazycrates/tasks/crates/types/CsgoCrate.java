@@ -11,7 +11,7 @@ import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
+import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -65,7 +65,7 @@ public class CsgoCrate extends CrateBuilder {
         // Open the inventory.
         this.player.openInventory(this.inventory);
 
-        addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
+        addCrateTask(new FoliaScheduler(null, this.player) {
             int time = 1;
 
             int full = 0;
@@ -133,7 +133,7 @@ public class CsgoCrate extends CrateBuilder {
 
                         crateManager.removePlayerFromOpeningList(player);
 
-                        new FoliaScheduler(plugin, null, player) {
+                        new FoliaScheduler(null, player) {
                             @Override
                             public void run() { //todo() use inventory holders
                                 if (player.getOpenInventory().getTopInventory().equals(inventory)) player.closeInventory();

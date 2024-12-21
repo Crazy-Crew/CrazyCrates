@@ -17,6 +17,6 @@ public class DataListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
 
-        this.userManager.createUser(player.getUniqueId());
+        //this.userManager.createUser(player.getUniqueId());
     }
 }

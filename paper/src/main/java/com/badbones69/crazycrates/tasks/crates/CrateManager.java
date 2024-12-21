@@ -1421,9 +1421,8 @@ public class CrateManager {
      * @return true if it belongs to that Crate and false if it does not.
      */
     public final boolean isKeyFromCrate(@Nullable final ItemStack item, @Nullable final Crate crate) {
-        if (item == null || crate == null) return false;
-        if (crate.getCrateType() == CrateType.menu) return false;
-        if (item.getType() == Material.AIR) return false;
+        if (item == null || item.isEmpty()) return false;
+        if (crate == null || crate.getCrateType() == CrateType.menu) return false;
 
         final PersistentDataContainerView container = item.getPersistentDataContainer();
 

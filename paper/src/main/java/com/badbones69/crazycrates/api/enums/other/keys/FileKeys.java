@@ -1,13 +1,12 @@
 package com.badbones69.crazycrates.api.enums.other.keys;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.ryderbelserion.vital.api.exceptions.GenericException;
-import com.ryderbelserion.vital.files.enums.FileType;
-import com.ryderbelserion.vital.paper.api.files.PaperCustomFile;
-import com.ryderbelserion.vital.paper.api.files.PaperFileManager;
+import com.badbones69.crazycrates.api.exception.CratesException;
+import com.ryderbelserion.api.enums.FileType;
+import com.ryderbelserion.paper.files.CustomFile;
+import com.ryderbelserion.paper.files.FileManager;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.Nullable;
-
 import java.io.File;
 
 public enum FileKeys {
@@ -27,7 +26,7 @@ public enum FileKeys {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final PaperFileManager fileManager = this.plugin.getVital().getFileManager();
+    private final FileManager fileManager = this.plugin.getFileManager();
 
     /**
      * A constructor to build a file
@@ -55,10 +54,10 @@ public enum FileKeys {
     }
 
     public final YamlConfiguration getConfiguration() {
-        @Nullable final PaperCustomFile customFile = this.fileManager.getFile(this.fileName, this.fileType);
+        @Nullable final CustomFile customFile = this.fileManager.getFile(this.fileName, this.fileType);
 
         if (customFile == null) {
-            throw new GenericException("File configuration for " + this.fileName + " is null.");
+            throw new CratesException("File configuration for " + this.fileName + " is null.");
         }
 
         return customFile.getConfiguration();

@@ -4,8 +4,8 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
-import com.ryderbelserion.vital.paper.api.files.PaperCustomFile;
-import com.ryderbelserion.vital.utils.Methods;
+import com.ryderbelserion.paper.files.CustomFile;
+import com.ryderbelserion.util.Methods;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -61,7 +61,7 @@ public class LegacyColorMigrator extends ICrateMigrator {
             failed.add("<red>⤷ messages.yml");
         }
 
-        final Collection<PaperCustomFile> customFiles = this.plugin.getVital().getFileManager().getFiles().values();
+        final Collection<CustomFile> customFiles = this.plugin.getFileManager().getFiles().values();
 
         customFiles.forEach(customFile -> {
             try {

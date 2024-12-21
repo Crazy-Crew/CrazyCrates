@@ -5,10 +5,10 @@ import com.badbones69.crazycrates.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
-import com.ryderbelserion.vital.files.enums.FileType;
-import com.ryderbelserion.vital.paper.api.files.PaperCustomFile;
-import com.ryderbelserion.vital.paper.util.PaperMethods;
-import com.ryderbelserion.vital.utils.Methods;
+import com.ryderbelserion.api.enums.FileType;
+import com.ryderbelserion.paper.files.CustomFile;
+import com.ryderbelserion.paper.util.PaperMethods;
+import com.ryderbelserion.util.Methods;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -127,7 +127,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                 failed.add("<red>⤷ " + crateName);
             }
 
-            final PaperCustomFile customFile = new PaperCustomFile(FileType.YAML, crateFile, true).load();
+            final CustomFile customFile = new CustomFile(FileType.YAML, crateFile, true).load();
 
             final YamlConfiguration configuration = customFile.getConfiguration();
 

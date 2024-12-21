@@ -4,7 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
 import com.badbones69.crazycrates.common.enums.State;
 import com.badbones69.crazycrates.utils.MiscUtils;
-import com.ryderbelserion.vital.utils.Methods;
+import com.ryderbelserion.util.Methods;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 import com.badbones69.crazycrates.common.config.ConfigManager;
@@ -212,7 +212,7 @@ public enum Messages {
     public void sendActionBar(final CommandSender sender) {
         final String msg = getMessage(sender);
 
-        if (msg.isEmpty() || msg.isBlank()) return;
+        if (msg.isBlank()) return;
 
         if (sender instanceof Player player) {
             player.sendActionBar(Methods.parse(msg));
@@ -222,7 +222,7 @@ public enum Messages {
     public void sendRichMessage(final CommandSender sender, final String placeholder, final String replacement) {
         final String msg = getMessage(sender, placeholder, replacement);
 
-        if (msg.isEmpty() || msg.isBlank()) return;
+        if (msg.isBlank()) return;
 
         sender.sendRichMessage(msg);
     }
@@ -230,7 +230,7 @@ public enum Messages {
     public void sendRichMessage(final CommandSender sender, final Map<String, String> placeholders) {
         final String msg = getMessage(sender, placeholders);
 
-        if (msg.isEmpty() || msg.isBlank()) return;
+        if (msg.isBlank()) return;
 
         sender.sendRichMessage(msg);
     }
@@ -238,7 +238,7 @@ public enum Messages {
     public void sendRichMessage(final CommandSender sender) {
         final String msg = getMessage(sender);
 
-        if (msg.isEmpty() || msg.isBlank()) return;
+        if (msg.isBlank()) return;
 
         sender.sendRichMessage(msg);
     }

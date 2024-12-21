@@ -1,7 +1,8 @@
 package com.badbones69.crazycrates.listeners.crates.types;
 
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
+import com.badbones69.crazycrates.utils.ItemUtils;
+import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -109,7 +110,7 @@ public class QuadCrateListener implements Listener {
 
             // Check if all crates have spawned then end if so.
             if (session.allCratesOpened()) {
-                new FoliaScheduler(plugin, null, player) {
+                new FoliaScheduler(null, player) {
                     @Override
                     public void run() {
                         session.endCrate(false);

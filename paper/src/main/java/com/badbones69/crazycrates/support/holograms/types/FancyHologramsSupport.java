@@ -3,8 +3,8 @@ package com.badbones69.crazycrates.support.holograms.types;
 import com.badbones69.crazycrates.api.objects.crates.CrateHologram;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
-import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
-import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
+import com.ryderbelserion.paper.enums.Scheduler;
+import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
 import de.oliver.fancyholograms.api.FancyHologramsPlugin;
 import de.oliver.fancyholograms.api.data.TextHologramData;
 import de.oliver.fancyholograms.api.hologram.Hologram;
@@ -64,7 +64,7 @@ public class FancyHologramsSupport extends HologramManager {
 
         final Server server = this.plugin.getServer();
 
-        new FoliaScheduler(this.plugin, SchedulerType.async_scheduler) {
+        new FoliaScheduler(Scheduler.async_scheduler) {
             @Override
             public void run() {
                 server.getOnlinePlayers().forEach(hologram::updateShownStateFor);

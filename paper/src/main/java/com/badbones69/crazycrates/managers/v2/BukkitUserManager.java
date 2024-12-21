@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.managers.v2;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.api.exception.CratesException;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.common.config.ConfigManager;
@@ -11,18 +10,16 @@ import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.managers.data.DataManager;
 import com.badbones69.crazycrates.managers.data.interfaces.Connector;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
+import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.utils.MiscUtils;
-import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.sql.*;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -74,8 +71,16 @@ public class BukkitUserManager {
         }
     }
 
+    public int getTotalKeys(final UUID uuid, final String crateName) {
+        return getVirtualKeys(uuid, crateName) + getPhysicalKeys(uuid, crateName);
+    }
+
     public int getVirtualKeys(final UUID uuid, final String crateName) {
         return getKeys(uuid, crateName, KeyType.virtual_key);
+    }
+
+    public int getPhysicalKeys(final UUID uuid, final String crateName) {
+        return getKeys(uuid, crateName, KeyType.physical_key);
     }
 
     public int getKeys(final UUID uuid, final String crateName, final KeyType keyType) {
@@ -89,19 +94,17 @@ public class BukkitUserManager {
                     throw new CratesException("The uuid " + uuid + " has no available player.");
                 }
 
-                final PlayerInventory inventory = player.getInventory();
+                final Inventory inventory = player.getOpenInventory().getBottomInventory();
 
                 if (!inventory.isEmpty()) {
+                    final Crate crate = this.crateManager.getCrateFromName(crateName);
+
                     final ItemStack[] contents = inventory.getContents();
 
                     for (final ItemStack itemStack : contents) {
-                        if (itemStack == null) continue;
+                        if (itemStack == null || itemStack.isEmpty()) continue;
 
-                        final @NotNull PersistentDataContainerView container = itemStack.getPersistentDataContainer();
-
-                        if (container.has(ItemKeys.crate_key.getNamespacedKey())) {
-                            amount += itemStack.getAmount();
-                        }
+                        if (ItemUtils.isSimilar(itemStack, crate)) amount += itemStack.getAmount();
                     }
                 }
             }
@@ -125,6 +128,14 @@ public class BukkitUserManager {
         }
 
         return amount;
+    }
+
+    public void addVirtualKeys(final UUID uuid, final String crateName, final int amount) {
+        addKeys(uuid, crateName, amount, KeyType.virtual_key);
+    }
+
+    public void addPhysicalKeys(final UUID uuid, final String crateName, final int amount) {
+        addKeys(uuid, crateName, amount, KeyType.physical_key);
     }
 
     public void addKeys(final UUID uuid, final String crateName, final int amount, final KeyType keyType) {

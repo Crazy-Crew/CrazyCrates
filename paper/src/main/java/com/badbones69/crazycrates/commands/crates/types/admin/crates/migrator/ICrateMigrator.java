@@ -6,9 +6,10 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.paper.api.files.PaperCustomFile;
-import com.ryderbelserion.vital.paper.api.files.PaperFileManager;
-import com.ryderbelserion.vital.utils.Methods;
+import com.badbones69.crazycrates.utils.ItemUtils;
+import com.ryderbelserion.paper.files.CustomFile;
+import com.ryderbelserion.paper.files.FileManager;
+import com.ryderbelserion.util.Methods;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -29,7 +30,7 @@ public abstract class ICrateMigrator {
 
     protected final SettingsManager messages = ConfigManager.getMessages();
 
-    protected final PaperFileManager fileManager = this.plugin.getVital().getFileManager();
+    protected final FileManager fileManager = this.plugin.getFileManager();
 
     protected final CommandSender sender;
 
@@ -75,7 +76,7 @@ public abstract class ICrateMigrator {
         }});
     }
 
-    public void migrate(final PaperCustomFile customFile, final String crateName) {
+    public void migrate(final CustomFile customFile, final String crateName) {
         final YamlConfiguration configuration = customFile.getConfiguration();
 
         if (configuration == null) return;
