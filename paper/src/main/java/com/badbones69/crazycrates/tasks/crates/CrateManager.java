@@ -11,9 +11,10 @@ import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.api.objects.crates.CrateHologram;
 import com.badbones69.crazycrates.api.objects.crates.quadcrates.CrateSchematic;
-import com.badbones69.crazycrates.api.enums.misc.Files;
+import com.badbones69.crazycrates.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.api.objects.crates.BrokeLocation;
 import com.badbones69.crazycrates.api.ChestManager;
+import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.support.holograms.types.CMIHologramsSupport;
 import com.badbones69.crazycrates.support.holograms.types.DecentHologramsSupport;
@@ -31,12 +32,12 @@ import com.badbones69.crazycrates.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.tasks.crates.types.WonderCrate;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.ryderbelserion.vital.files.enums.FileType;
-import com.ryderbelserion.vital.paper.api.enums.Support;
-import com.ryderbelserion.vital.paper.api.files.PaperCustomFile;
-import com.ryderbelserion.vital.paper.api.files.PaperFileManager;
-import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
-import com.ryderbelserion.vital.utils.Methods;
+import com.badbones69.crazycrates.api.enums.other.Plugins;
+import com.ryderbelserion.api.enums.FileType;
+import com.ryderbelserion.paper.files.CustomFile;
+import com.ryderbelserion.paper.files.FileManager;
+import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
+import com.ryderbelserion.util.FileMethods;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -56,7 +57,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.joml.Matrix4f;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.enums.Messages;
@@ -74,7 +75,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.utils.ItemUtils;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public class CrateManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-    private final PaperFileManager fileManager = this.plugin.getVital().getFileManager();
+    private final FileManager fileManager = this.plugin.getFileManager();
 
     private final List<CrateLocation> crateLocations = new ArrayList<>();
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
@@ -248,15 +249,15 @@ public class CrateManager {
             case "none" -> {}
 
             default -> {
-                if (Support.nexo.isEnabled()) {
+                if (Plugins.nexo.isEnabled()) {
                     manager.registerEvents(new NexoInteractListener(), this.plugin);
                 }
 
-                if (Support.oraxen.isEnabled()) {
+                if (Plugins.oraxen.isEnabled()) {
                     manager.registerEvents(new OraxenInteractListener(), this.plugin);
                 }
 
-                if (Support.items_adder.isEnabled()) {
+                if (Plugins.items_adder.isEnabled()) {
                     manager.registerEvents(new ItemsAdderInteractListener(), this.plugin);
                 }
             }
@@ -275,19 +276,19 @@ public class CrateManager {
 
         switch (pluginName) {
             case "DecentHolograms" -> {
-                if (!Support.decent_holograms.isEnabled()) return;
+                if (!Plugins.decent_holograms.isEnabled()) return;
 
                 this.holograms = new DecentHologramsSupport();
             }
 
             case "FancyHolograms" -> {
-                if (!Support.fancy_holograms.isEnabled()) return;
+                if (!Plugins.fancy_holograms.isEnabled()) return;
 
                 this.holograms = new FancyHologramsSupport();
             }
 
             case "CMI" -> {
-                if (!Support.cmi.isEnabled() && !CMIModule.holograms.isEnabled()) return;
+                if (!Plugins.cmi.isEnabled() && !CMIModule.holograms.isEnabled()) return;
 
                 this.holograms = new CMIHologramsSupport();
             }
@@ -295,19 +296,19 @@ public class CrateManager {
             case "None" -> {}
 
             default -> {
-                if (Support.decent_holograms.isEnabled()) {
+                if (Plugins.decent_holograms.isEnabled()) {
                     this.holograms = new DecentHologramsSupport();
 
                     break;
                 }
 
-                if (Support.fancy_holograms.isEnabled()) {
+                if (Plugins.fancy_holograms.isEnabled()) {
                     this.holograms = new FancyHologramsSupport();
 
                     break;
                 }
 
-                if (Support.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
+                if (Plugins.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
                     this.holograms = new CMIHologramsSupport();
                 }
             }
@@ -350,12 +351,12 @@ public class CrateManager {
                     "data.yml",
                     "locations.yml",
                     "messages.yml"
-            ).forEach(file -> Methods.extract(file, "examples", true));
+            ).forEach(file -> FileMethods.extract(file, "examples", true));
 
-            Methods.extracts(classObject, "/guis/", path.resolve("examples").resolve("guis"), true);
-            Methods.extracts(classObject, "/logs/", path.resolve("examples").resolve("logs"), true);
-            Methods.extracts(classObject, "/crates/", path.resolve("examples").resolve("crates"), true);
-            Methods.extracts(classObject, "/schematics/", path.resolve("examples").resolve("schematics"), true);
+            FileMethods.extracts(classObject, "/guis/", path.resolve("examples").resolve("guis"), true);
+            FileMethods.extracts(classObject, "/logs/", path.resolve("examples").resolve("logs"), true);
+            FileMethods.extracts(classObject, "/crates/", path.resolve("examples").resolve("crates"), true);
+            FileMethods.extracts(classObject, "/schematics/", path.resolve("examples").resolve("schematics"), true);
         }
 
         this.giveNewPlayersKeys = false;
@@ -371,7 +372,7 @@ public class CrateManager {
 
         for (final String crateName : getCrateNames()) {
             try {
-                final PaperCustomFile customFile = this.fileManager.getFile(crateName, FileType.YAML);
+                final CustomFile customFile = this.fileManager.getFile(crateName, FileType.YAML);
 
                 if (customFile == null) continue;
 
@@ -519,7 +520,7 @@ public class CrateManager {
             ).forEach(line -> this.plugin.getComponentLogger().info(line));
         }
 
-        final YamlConfiguration locations = Files.locations.getConfiguration();
+        final YamlConfiguration locations = FileKeys.locations.getConfiguration();
 
         int loadedAmount = 0;
         int brokeAmount = 0;
@@ -1039,8 +1040,8 @@ public class CrateManager {
                 getUsableCrates().stream()
                         .filter(Crate :: doNewPlayersGetKeys)
                         .forEach(crate -> {
-                            Files.data.getConfiguration().set("Players." + uuid + "." + crate.getFileName(), crate.getNewPlayerKeys());
-                            Files.data.save();
+                            FileKeys.data.getConfiguration().set("Players." + uuid + "." + crate.getFileName(), crate.getNewPlayerKeys());
+                            FileKeys.data.save();
                         });
             }
         }
@@ -1158,7 +1159,7 @@ public class CrateManager {
 
         final Matrix4f scale = new Matrix4f().scale(0.5f);
 
-        new FoliaScheduler(this.plugin, null, itemDisplay) {
+        new FoliaScheduler(null, itemDisplay) {
             @Override
             public void run() {
                 if (!itemDisplay.isValid()) { // cancel just in case
@@ -1174,7 +1175,7 @@ public class CrateManager {
         }.runAtFixedRate(1, 20);
 
         // remove item display after 5 seconds.
-        new FoliaScheduler(this.plugin, location) {
+        new FoliaScheduler(location) {
             @Override
             public void run() {
                 if (!itemDisplay.isValid()) { // cancel just in case
@@ -1197,7 +1198,7 @@ public class CrateManager {
     public void addCrateLocation(@NotNull final Location location, @Nullable final Crate crate) {
         if (crate == null) return;
 
-        final YamlConfiguration locations = Files.locations.getConfiguration();
+        final YamlConfiguration locations = FileKeys.locations.getConfiguration();
         String id = "1"; // Location ID
 
         for (int i = 1; locations.contains("Locations." + i); i++) {
@@ -1218,7 +1219,7 @@ public class CrateManager {
         locations.set("Locations." + id + ".Y", location.getBlockY());
         locations.set("Locations." + id + ".Z", location.getBlockZ());
 
-        Files.locations.save();
+        FileKeys.locations.save();
 
         addLocation(new CrateLocation(id, crate, location));
 
@@ -1231,8 +1232,8 @@ public class CrateManager {
      * @param id the id of the location.
      */
     public void removeCrateLocation(@NotNull final String id) {
-        Files.locations.getConfiguration().set("Locations." + id, null);
-        Files.locations.save();
+        FileKeys.locations.getConfiguration().set("Locations." + id, null);
+        FileKeys.locations.save();
 
         CrateLocation location = null;
 
@@ -1407,7 +1408,7 @@ public class CrateManager {
 
             if (itemStack.getType() == Material.AIR) return false;
 
-            return itemStack.getPersistentDataContainer().has(Keys.crate_prize.getNamespacedKey());
+            return itemStack.getPersistentDataContainer().has(ItemKeys.crate_prize.getNamespacedKey());
         }
 
         return false;
@@ -1427,7 +1428,7 @@ public class CrateManager {
 
         final PersistentDataContainerView container = item.getPersistentDataContainer();
 
-        if (!container.has(Keys.crate_key.getNamespacedKey())) return false;
+        if (!container.has(ItemKeys.crate_key.getNamespacedKey())) return false;
 
         return crate.getFileName().equals(ItemUtils.getKey(container));
     }
@@ -1500,7 +1501,7 @@ public class CrateManager {
 
     // Cleans the data file.
     private void cleanDataFile() {
-        final YamlConfiguration data = Files.data.getConfiguration();
+        final YamlConfiguration data = FileKeys.data.getConfiguration();
 
         if (!data.contains("Players")) return;
 
@@ -1545,7 +1546,7 @@ public class CrateManager {
 
         if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("The data.yml file has been cleaned.");
 
-        Files.data.save();
+        FileKeys.data.save();
     }
 
     // War Crate
@@ -1683,7 +1684,7 @@ public class CrateManager {
     public final Tier getTier(final Crate crate, final ItemStack item) {
         final PersistentDataContainerView container = item.getPersistentDataContainer();
 
-        final NamespacedKey key = Keys.crate_tier.getNamespacedKey();
+        final NamespacedKey key = ItemKeys.crate_tier.getNamespacedKey();
 
         if (!container.has(key)) return null;
 

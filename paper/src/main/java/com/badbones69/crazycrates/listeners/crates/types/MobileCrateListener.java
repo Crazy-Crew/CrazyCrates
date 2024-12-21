@@ -2,8 +2,7 @@ package com.badbones69.crazycrates.listeners.crates.types;
 
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.PrizeManager;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
+import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
@@ -19,7 +18,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.utils.ItemUtils;
 
 public class MobileCrateListener implements Listener {
 
@@ -41,7 +39,7 @@ public class MobileCrateListener implements Listener {
 
         final PersistentDataContainerView container = item.getPersistentDataContainer();
 
-        final NamespacedKey key = Keys.crate_key.getNamespacedKey();
+        final NamespacedKey key = ItemKeys.crate_key.getNamespacedKey();
 
         if (!container.has(key)) return;
 
