@@ -5,24 +5,28 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.paper.api.bStats;
-import org.jetbrains.annotations.NotNull;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MetricsWrapper extends bStats {
+public class MetricsWrapper{
+
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrateManager crateManager;
 
-    public MetricsWrapper(@NotNull final CrazyCrates plugin, final int serviceId, final boolean isPaperPlugin) {
-        super(plugin, serviceId, isPaperPlugin);
+    private final Metrics metrics;
 
-        this.crateManager = plugin.getCrateManager();
+    public MetricsWrapper(final int serviceId) {
+        this.metrics = new Metrics(this.plugin, serviceId);
+
+        this.crateManager = this.plugin.getCrateManager();
     }
 
     public void start() {
-        if (!isEnabled() || !ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics)) return;
+        if (this.metrics == null || !ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics)) return;
 
         final List<Crate> crates = new ArrayList<>(this.crateManager.getCrates());
 
@@ -33,9 +37,11 @@ public class MetricsWrapper extends bStats {
 
             SimplePie chart = new SimplePie("crate_types", type::getName);
 
-            addCustomChart(chart);
+            this.metrics.addCustomChart(chart);
         });
+    }
 
-        //todo() add more charts
+    public final Metrics getMetrics() {
+        return this.metrics;
     }
 }
