@@ -1,8 +1,8 @@
 plugins {
+    id("crates.base")
+
     alias(libs.plugins.minotaur)
     alias(libs.plugins.hangar)
-
-    id("crates.base")
 }
 
 val content: String = rootProject.file("changelog.md").readText(Charsets.UTF_8)

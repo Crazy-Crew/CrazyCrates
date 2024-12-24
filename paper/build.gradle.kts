@@ -1,8 +1,8 @@
 plugins {
+    id("crates.base")
+
     alias(libs.plugins.runPaper)
     alias(libs.plugins.shadow)
-
-    id("crates.base")
 }
 
 repositories {

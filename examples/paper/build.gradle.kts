@@ -1,7 +1,7 @@
 plugins {
-    alias(libs.plugins.shadow)
-
     id("crates.base")
+
+    alias(libs.plugins.shadow)
 }
 
 dependencies {

@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemType;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.structure.StructureManager;
 import org.jetbrains.annotations.Nullable;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
@@ -93,6 +94,18 @@ public class MiscUtils {
         }
 
         return line;
+    }
+
+    public static void refreshStructures() {
+        final File directory = new File(plugin.getDataFolder(), "schematics");
+
+        final List<File> files = FileMethods.getFiles(directory, ".nbt", true);
+
+        final StructureManager structureManager = plugin.getServer().getStructureManager();
+
+        files.forEach(file -> {
+
+        });
     }
 
     public static void janitor() {

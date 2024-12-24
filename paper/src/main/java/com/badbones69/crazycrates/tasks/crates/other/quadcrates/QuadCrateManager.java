@@ -222,7 +222,7 @@ public class QuadCrateManager {
         }
 
         // Paste the structure in.
-        this.handler.pasteStructure(this.spawnLocation, true);
+        this.handler.pasteStructure(this.spawnLocation);
 
         this.player.teleportAsync(this.spawnLocation.clone().toCenterLocation().add(0, 1, 0));
 

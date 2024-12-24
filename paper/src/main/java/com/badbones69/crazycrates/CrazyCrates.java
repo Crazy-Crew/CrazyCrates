@@ -31,7 +31,6 @@ import com.ryderbelserion.util.Methods;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Locale;
@@ -77,7 +76,8 @@ public class CrazyCrates extends JavaPlugin {
 
         this.fileManager = this.api.getFileManager();
 
-        this.fileManager.addFile("data.yml", FileType.YAML).addFile("locations.yml", FileType.YAML).addFile("respin-gui.yml", "guis", false, FileType.YAML)
+        this.fileManager.addFile("data.yml", FileType.YAML).addFile("locations.yml", FileType.YAML)
+                .addFile("respin-gui.yml", "guis", false, FileType.YAML)
                 .addFile("crates.log", "logs", false, FileType.NONE)
                 .addFile("keys.log", "logs", false, FileType.NONE)
                 .addFolder("crates", FileType.YAML)
@@ -196,12 +196,10 @@ public class CrazyCrates extends JavaPlugin {
         return this.userManager;
     }
 
-    @ApiStatus.Internal
     public final CrateManager getCrateManager() {
         return this.crateManager;
     }
 
-    @ApiStatus.Internal
     public @Nullable final HeadDatabaseAPI getHdb() {
         if (this.hdb == null) {
             return null;
@@ -210,18 +208,14 @@ public class CrazyCrates extends JavaPlugin {
         return this.hdb;
     }
 
-    @ApiStatus.Internal
     public final Server getInstance() {
         return this.instance;
     }
 
-    @ApiStatus.Internal
-    public @Nullable
-    final MetricsWrapper getMetrics() {
+    public @Nullable final MetricsWrapper getMetrics() {
         return this.metrics;
     }
 
-    @ApiStatus.Internal
     public final Timer getTimer() {
         return this.timer;
     }
