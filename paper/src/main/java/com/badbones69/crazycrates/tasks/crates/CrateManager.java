@@ -267,32 +267,32 @@ public class CrateManager {
      * Load the holograms.
      */
     public void loadHolograms() {
-        final String pluginName = this.config.getProperty(ConfigKeys.hologram_plugin);
+        final String pluginName = this.config.getProperty(ConfigKeys.hologram_plugin).toLowerCase();
 
         if (this.holograms != null && !pluginName.isEmpty()) {
             this.holograms.purge(false);
         }
 
         switch (pluginName) {
-            case "DecentHolograms" -> {
+            case "decentholograms" -> {
                 if (!Support.decent_holograms.isEnabled()) return;
 
                 this.holograms = new DecentHologramsSupport();
             }
 
-            case "FancyHolograms" -> {
+            case "fancyholograms" -> {
                 if (!Support.fancy_holograms.isEnabled()) return;
 
                 this.holograms = new FancyHologramsSupport();
             }
 
-            case "CMI" -> {
+            case "cmi" -> {
                 if (!Support.cmi.isEnabled() && !CMIModule.holograms.isEnabled()) return;
 
                 this.holograms = new CMIHologramsSupport();
             }
 
-            case "None" -> {}
+            case "none" -> {}
 
             default -> {
                 if (Support.decent_holograms.isEnabled()) {
