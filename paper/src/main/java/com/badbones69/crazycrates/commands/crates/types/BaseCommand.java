@@ -26,7 +26,7 @@ import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import java.util.HashMap;
 import java.util.Map;
 
-@Command(value = "crazycrates", alias = {"crates", "crate"})
+@Command(value = "crazycrates", alias = {"crates", "crate", "cc"})
 public abstract class BaseCommand {
 
     protected @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();

@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.listeners.crates.types;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.utils.ItemUtils;
 import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
-import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -33,7 +32,6 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

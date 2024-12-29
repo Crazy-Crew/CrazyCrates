@@ -3,6 +3,8 @@ package com.badbones69.crazycrates;
 import com.badbones69.crazycrates.common.Server;
 import com.badbones69.crazycrates.common.config.ConfigManager;
 import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.listeners.crates.CrateInteractListener;
+import com.badbones69.crazycrates.listeners.items.PaperInteractListener;
 import com.badbones69.crazycrates.support.MetricsWrapper;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.commands.CommandManager;
@@ -25,6 +27,7 @@ import com.ryderbelserion.vital.paper.VitalPaper;
 import com.ryderbelserion.vital.paper.api.enums.Support;
 import com.ryderbelserion.vital.utils.Methods;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
@@ -106,18 +109,26 @@ public class CrazyCrates extends JavaPlugin {
         // Load commands.
         CommandManager.load();
 
+        final PluginManager manager = getServer().getPluginManager();
+
         List.of(
                 // Other listeners.
                 new BrokeLocationsListener(),
-                new CrateControlListener(),
                 new EntityDamageListener(),
                 new MobileCrateListener(),
                 new CosmicCrateListener(),
                 new QuadCrateListener(),
-                new CrateOpenListener(),
                 new WarCrateListener(),
-                new MiscListener()
-        ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
+                new MiscListener(),
+
+                new CrateInteractListener(),
+                new CrateControlListener(),
+                new CrateOpenListener(),
+
+                new PaperInteractListener()
+        ).forEach(listener -> manager.registerEvents(listener, this));
+
+        this.crateManager.loadCustomItems();
 
         if (Support.placeholder_api.isEnabled()) {
             if (MiscUtils.isLogging()) getComponentLogger().info("PlaceholderAPI support is enabled!");

@@ -64,10 +64,23 @@ public class CrateKeys implements SettingsHolder {
     public static final Property<String> world_disabled = newProperty("crates.world-disabled", "{prefix}<red>I am sorry but Crates are disabled in {world}.");
 
     @Comment("A list of available placeholders: {crate}")
+    public static final Property<String> editor_enter = newProperty("crates.editor.enter", "{prefix}<red>You are now in editor mode.");
+
+    public static final Property<String> editor_exit = newProperty("crates.editor.exit", "{prefix}<red>You are no longer in editor mode.");
+
+    public static final Property<String> editor_already_in = newProperty("crates.editor.already-in", "{prefix}<red>You are already in the editor mode.");
+
+    @Comment("A list of available placeholders: {reason}")
+    public static final Property<String> force_editor_exit = newProperty("crates.editor.force-exit", "{prefix}<red>You have been forced out of the editor mode for {reason}.");
+
+    @Comment("A list of available placeholders: {crate}")
     public static final Property<List<String>> created_physical_crate = newListProperty("crates.physical-crate.created", List.of(
             "{prefix}<gray>You have set that block to {crate}.",
             "<gray>To remove the crate shift break in creative to remove."
     ));
+
+    @Comment("A list of available placeholders: {id}, {new_crate}")
+    public static final Property<String> physical_crate_overridden = newProperty("crates.physical-crate.override", "{prefix}<gray>You have overridden the crate's location with id <gold>{id} with {new_crate}.");
 
     @Comment("A list of available placeholders: {crate}")
     public static final Property<String> physical_crate_already_exists = newProperty("crates.physical-crate.exists", "{prefix}<gray>This location already has a crate named <gold>{crate} <gray>with id: <gold>{id}.");
