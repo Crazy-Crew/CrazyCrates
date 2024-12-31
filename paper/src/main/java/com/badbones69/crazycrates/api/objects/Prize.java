@@ -3,19 +3,18 @@ package com.badbones69.crazycrates.api.objects;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.api.enums.other.Plugins;
+import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.messages.CrateKeys;
-import com.ryderbelserion.vital.paper.api.enums.Support;
-import com.ryderbelserion.vital.paper.util.PaperMethods;
-import com.ryderbelserion.vital.utils.Methods;
+import com.badbones69.crazycrates.core.config.ConfigManager;
+import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
+import com.ryderbelserion.paper.util.PaperMethods;
+import com.ryderbelserion.util.Methods;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Server;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -154,7 +153,7 @@ public class Prize {
 
         List<String> lore = new ArrayList<>();
 
-        final boolean isPapiEnabled = Support.placeholder_api.isEnabled();
+        final boolean isPapiEnabled = Plugins.placeholder_api.isEnabled();
 
         final String displayName = this.displayItem.getDisplayName();
 
@@ -205,7 +204,7 @@ public class Prize {
         this.displayItem.addLorePlaceholder("%chance%", weight).addLorePlaceholder("%maxpulls%", String.valueOf(maxPulls)).addLorePlaceholder("%pulls%", amount);
         this.displayItem.addNamePlaceholder("%chance%", weight).addNamePlaceholder("%maxpulls%", String.valueOf(maxPulls)).addNamePlaceholder("%pulls%", amount);
 
-        return this.displayItem.setPersistentString(Keys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack();
+        return this.displayItem.setPersistentString(ItemKeys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack();
     }
 
     /**
@@ -313,7 +312,7 @@ public class Prize {
         final String current_pulls = String.valueOf(PrizeManager.getCurrentPulls(this, crate));
         final String max_pulls = String.valueOf(getMaxPulls());
 
-        final Component message = this.plugin.getVital().color(target, StringUtils.chomp(Methods.toString(messages)), new HashMap<>() {{
+        final Component message = this.plugin.getVital().getFusion().color(target, Methods.toString(messages), new HashMap<>() {{
             put("%player%", target.getName());
             put("%crate%", crate.getCrateName());
             put("%reward%", getPrizeName().replaceAll("%maxpulls%", max_pulls).replaceAll("%pulls%", current_pulls));
@@ -409,8 +408,8 @@ public class Prize {
                 }
             }
 
-            if (this.section.contains("Skull") && this.plugin.getApi() != null) {
-                builder.setSkull(section.getString("Skull", ""), this.plugin.getApi());
+            if (this.section.contains("Skull")) {
+                builder.setSkull(section.getString("Skull", ""));
             }
 
             if (this.section.contains("Player")) {

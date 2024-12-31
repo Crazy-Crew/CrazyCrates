@@ -23,7 +23,7 @@ import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -1,11 +1,11 @@
 package com.badbones69.crazycrates.managers;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.api.enums.misc.Files;
+import com.badbones69.crazycrates.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.utils.ItemUtils;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.core.config.ConfigManager;
+import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +36,7 @@ public class BukkitUserManager extends UserManager {
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private final Files data = Files.data;
+    private final FileKeys data = FileKeys.data;
 
     @Override
     public Player getUser(@NotNull final UUID uuid) {

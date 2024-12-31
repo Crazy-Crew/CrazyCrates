@@ -2,20 +2,19 @@ package com.badbones69.crazycrates.api.enums;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
-import com.badbones69.crazycrates.common.enums.State;
+import com.badbones69.crazycrates.core.enums.State;
 import com.badbones69.crazycrates.utils.MiscUtils;
-import com.ryderbelserion.vital.utils.Methods;
-import org.apache.commons.lang3.StringUtils;
+import com.ryderbelserion.util.Methods;
 import org.bukkit.command.CommandSender;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.messages.CommandKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.CrateKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.ErrorKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.MiscKeys;
-import com.badbones69.crazycrates.common.config.impl.messages.PlayerKeys;
+import com.badbones69.crazycrates.core.config.ConfigManager;
+import com.badbones69.crazycrates.core.config.impl.messages.CommandKeys;
+import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
+import com.badbones69.crazycrates.core.config.impl.messages.ErrorKeys;
+import com.badbones69.crazycrates.core.config.impl.messages.MiscKeys;
+import com.badbones69.crazycrates.core.config.impl.messages.PlayerKeys;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -192,7 +191,7 @@ public enum Messages {
     public void sendActionBar(final CommandSender sender, final String placeholder, final String replacement) {
         final String msg = getMessage(sender, placeholder, replacement);
 
-        if (msg.isEmpty() || msg.isBlank()) return;
+        if (msg.isBlank()) return;
 
         if (sender instanceof Player player) {
             player.sendActionBar(Methods.parse(msg));
@@ -202,7 +201,7 @@ public enum Messages {
     public void sendActionBar(final CommandSender sender, final Map<String, String> placeholders) {
         final String msg = getMessage(sender, placeholders);
 
-        if (msg.isEmpty() || msg.isBlank()) return;
+        if (msg.isBlank()) return;
 
         if (sender instanceof Player player) {
             player.sendActionBar(Methods.parse(msg));
@@ -212,7 +211,7 @@ public enum Messages {
     public void sendActionBar(final CommandSender sender) {
         final String msg = getMessage(sender);
 
-        if (msg.isEmpty() || msg.isBlank()) return;
+        if (msg.isBlank()) return;
 
         if (sender instanceof Player player) {
             player.sendActionBar(Methods.parse(msg));
@@ -222,7 +221,7 @@ public enum Messages {
     public void sendRichMessage(final CommandSender sender, final String placeholder, final String replacement) {
         final String msg = getMessage(sender, placeholder, replacement);
 
-        if (msg.isEmpty() || msg.isBlank()) return;
+        if (msg.isBlank()) return;
 
         sender.sendRichMessage(msg);
     }
@@ -230,7 +229,7 @@ public enum Messages {
     public void sendRichMessage(final CommandSender sender, final Map<String, String> placeholders) {
         final String msg = getMessage(sender, placeholders);
 
-        if (msg.isEmpty() || msg.isBlank()) return;
+        if (msg.isBlank()) return;
 
         sender.sendRichMessage(msg);
     }
@@ -238,7 +237,7 @@ public enum Messages {
     public void sendRichMessage(final CommandSender sender) {
         final String msg = getMessage(sender);
 
-        if (msg.isEmpty() || msg.isBlank()) return;
+        if (msg.isBlank()) return;
 
         sender.sendRichMessage(msg);
     }
@@ -257,7 +256,7 @@ public enum Messages {
         String message;
 
         if (isList()) {
-            message = StringUtils.chomp(Methods.toString(getList()));
+            message = Methods.toString(getList());
         } else {
             message = getString();
         }

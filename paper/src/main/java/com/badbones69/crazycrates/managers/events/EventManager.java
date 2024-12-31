@@ -2,16 +2,15 @@ package com.badbones69.crazycrates.managers.events;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.enums.misc.Files;
+import com.badbones69.crazycrates.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.core.config.ConfigManager;
+import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
-import com.ryderbelserion.vital.utils.Methods;
+import com.ryderbelserion.util.FileMethods;
+import com.ryderbelserion.util.Methods;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -43,7 +42,7 @@ public class EventManager {
                     message = message + " | Amount: %amount%".replace("%amount%", String.valueOf(amount));
                 }
 
-                file = Files.key_log.getFile();
+                file = FileKeys.key_log.getFile();
             }
 
             /*case event_command_sent -> {
@@ -68,7 +67,7 @@ public class EventManager {
                     message = message + " | Amount: %amount%".replace("%amount%", String.valueOf(amount));
                 }
 
-                file = Files.crate_log.getFile();
+                file = FileKeys.crate_log.getFile();
             }
 
             case event_crate_force_opened -> {
@@ -85,7 +84,7 @@ public class EventManager {
                     message = message + " | Amount: %amount%".replace("%amount%", String.valueOf(amount));
                 }
 
-                file = Files.crate_log.getFile();
+                file = FileKeys.crate_log.getFile();
             }
         }
 
@@ -98,7 +97,7 @@ public class EventManager {
         final String time = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(System.currentTimeMillis()));
 
         if (log_to_file) {
-            Methods.write(file, "[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(Methods.parse(message)));
+            FileMethods.write(file, "[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(Methods.parse(message)));
         }
 
         final boolean log_to_console = config.getProperty(ConfigKeys.log_to_console);

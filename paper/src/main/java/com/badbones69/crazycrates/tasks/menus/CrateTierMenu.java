@@ -1,12 +1,12 @@
 package com.badbones69.crazycrates.tasks.menus;
 
 import com.badbones69.crazycrates.api.builders.gui.StaticInventoryBuilder;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
-import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
-import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
-import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
+import com.ryderbelserion.paper.builder.gui.interfaces.Gui;
+import com.ryderbelserion.paper.builder.gui.interfaces.GuiFiller;
+import com.ryderbelserion.paper.builder.gui.interfaces.GuiItem;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
@@ -59,7 +59,7 @@ public class CrateTierMenu extends StaticInventoryBuilder {
 
                 final PersistentDataContainerView tags = itemStack.getPersistentDataContainer();
 
-                if (tags.has(Keys.crate_tier.getNamespacedKey())) {
+                if (tags.has(ItemKeys.crate_tier.getNamespacedKey())) {
                     this.crate.playSound(this.player, this.player.getLocation(), "click-sound", "ui.button.click", Sound.Source.MASTER);
 
                     this.crate.getPreview(this.player, tier).open();

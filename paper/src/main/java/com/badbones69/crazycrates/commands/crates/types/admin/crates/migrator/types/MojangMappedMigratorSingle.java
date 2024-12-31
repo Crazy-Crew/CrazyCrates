@@ -4,8 +4,8 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.vital.files.enums.FileType;
-import com.ryderbelserion.vital.paper.api.files.PaperCustomFile;
+import com.ryderbelserion.api.enums.FileType;
+import com.ryderbelserion.paper.files.CustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import java.io.File;
@@ -27,7 +27,7 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
             return;
         }
 
-        final PaperCustomFile customFile = this.plugin.getVital().getFileManager().getFile(this.crateName, FileType.YAML);
+        final CustomFile customFile = this.plugin.getVital().getFileManager().getFile(this.crateName, FileType.YAML);
 
         if (customFile == null) {
             Messages.error_migrating.sendMessage(this.sender, new HashMap<>() {{

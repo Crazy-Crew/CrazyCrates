@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.t
 
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.vital.paper.api.files.PaperCustomFile;
+import com.ryderbelserion.paper.files.CustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import java.io.File;
@@ -18,7 +18,7 @@ public class MojangMappedMigratorMultiple extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Collection<PaperCustomFile> customFiles = this.plugin.getVital().getFileManager().getFiles().values();
+        final Collection<CustomFile> customFiles = this.plugin.getVital().getFileManager().getFiles().values();
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();

@@ -2,17 +2,16 @@ package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.builders.types.features.CrateSpinMenu;
-import com.badbones69.crazycrates.api.enums.misc.Files;
+import com.badbones69.crazycrates.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
-import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
+import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -66,7 +65,7 @@ public class CsgoCrate extends CrateBuilder {
         // Open the inventory.
         this.player.openInventory(this.inventory);
 
-        addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
+        addCrateTask(new FoliaScheduler(null, this.player) {
             int time = 1;
 
             int full = 0;
@@ -118,7 +117,7 @@ public class CsgoCrate extends CrateBuilder {
                             final Prize prize = crate.getPrize(item);
 
                             if (crate.isCyclePrize() && !PrizeManager.isCapped(crate, player)) { // re-open this menu
-                                new CrateSpinMenu(player, new GuiSettings(crate, prize, Files.respin_gui.getConfiguration())).open();
+                                new CrateSpinMenu(player, new GuiSettings(crate, prize, FileKeys.respin_gui.getConfiguration())).open();
 
                                 return;
                             } else {
@@ -134,7 +133,7 @@ public class CsgoCrate extends CrateBuilder {
 
                         crateManager.removePlayerFromOpeningList(player);
 
-                        new FoliaScheduler(plugin, null, player) {
+                        new FoliaScheduler(null, player) {
                             @Override
                             public void run() { //todo() use inventory holders
                                 if (player.getOpenInventory().getTopInventory().equals(inventory)) player.closeInventory();

@@ -3,18 +3,18 @@ package com.badbones69.crazycrates.managers;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
+import com.ryderbelserion.paper.builder.gui.types.PaginatedGui;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.core.config.ConfigManager;
+import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,7 +61,7 @@ public class InventoryManager {
         }
 
         if (tier != null) {
-            button.setPersistentString(Keys.crate_tier.getNamespacedKey(), tier.getName());
+            button.setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), tier.getName());
         }
 
         return button.asItemStack();
@@ -79,7 +79,7 @@ public class InventoryManager {
         }
 
         if (tier != null) {
-            button.setPersistentString(Keys.crate_tier.getNamespacedKey(), tier.getName());
+            button.setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), tier.getName());
         }
 
         return button.asItemStack();

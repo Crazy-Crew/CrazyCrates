@@ -1,45 +1,48 @@
 plugins {
+    id("crates.base")
+
     alias(libs.plugins.runPaper)
     alias(libs.plugins.shadow)
 }
 
 repositories {
-    maven("https://repo.papermc.io/repository/maven-public")
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 
-    maven("https://repo.extendedclip.com/content/repositories/placeholderapi")
+    maven("https://repo.triumphteam.dev/snapshots/")
 
-    maven("https://repo.triumphteam.dev/snapshots")
+    maven("https://repo.fancyplugins.de/releases/")
 
-    maven("https://repo.fancyplugins.de/releases")
+    maven("https://repo.nexomc.com/snapshots/")
 
-    maven("https://repo.nexomc.com/snapshots")
-
-    maven("https://repo.oraxen.com/releases")
+    maven("https://repo.oraxen.com/releases/")
 }
 
 dependencies {
-    implementation(project(":common"))
+    implementation(projects.crazycratesCore)
 
     implementation(libs.triumph.cmds)
 
-    implementation(libs.vital.paper) {
-        exclude("org.yaml")
-    }
+    implementation(libs.fusion.paper)
+
+    implementation(libs.metrics)
+
+    compileOnly(libs.paper)
 
     compileOnly(libs.bundles.dependencies)
     compileOnly(libs.bundles.shared)
     compileOnly(libs.bundles.crates)
-
-    compileOnly(libs.paper)
 }
 
 tasks {
-    runServer {
-        jvmArgs("-Dnet.kyori.ansi.colorLevel=truecolor")
+    shadowJar {
+        archiveBaseName.set(rootProject.name)
+        archiveClassifier.set("")
 
-        defaultCharacterEncoding = Charsets.UTF_8.name()
-
-        minecraftVersion(libs.versions.minecraft.get())
+        listOf(
+            "com.ryderbelserion"
+        ).forEach {
+            relocate(it, "libs.$it")
+        }
     }
 
     assemble {
@@ -50,19 +53,6 @@ tasks {
                 from(shadowJar.get())
                 into(rootProject.projectDir.resolve("jars"))
             }
-        }
-    }
-
-    shadowJar {
-        archiveBaseName.set(rootProject.name)
-        archiveClassifier.set("")
-
-        listOf(
-            "com.ryderbelserion.vital",
-            "dev.triumphteam.cmd",
-            "ch.jalu"
-        ).forEach {
-            relocate(it, "libs.$it")
         }
     }
 
@@ -77,5 +67,13 @@ tasks {
         filesMatching("paper-plugin.yml") {
             expand(inputs.properties)
         }
+    }
+
+    runServer {
+        jvmArgs("-Dnet.kyori.ansi.colorLevel=truecolor")
+
+        defaultCharacterEncoding = Charsets.UTF_8.name()
+
+        minecraftVersion(libs.versions.minecraft.get())
     }
 }

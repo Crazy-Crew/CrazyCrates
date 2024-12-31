@@ -1,18 +1,17 @@
 package com.badbones69.crazycrates.listeners.crates.types;
 
-import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
+import com.badbones69.crazycrates.api.enums.other.Plugins;
 import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.badbones69.crazycrates.common.utils.CrazyUtil;
+import com.badbones69.crazycrates.core.utils.CrazyUtil;
 import com.badbones69.crazycrates.managers.events.EventManager;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
-import com.ryderbelserion.vital.paper.api.enums.Support;
-import com.ryderbelserion.vital.utils.Methods;
+import com.ryderbelserion.util.Methods;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.core.config.ConfigManager;
+import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.other.CosmicCrateManager;
@@ -33,7 +32,7 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.tasks.menus.CratePrizeMenu;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.utils.MiscUtils;
@@ -175,7 +174,7 @@ public class CosmicCrateListener implements Listener {
         final PersistentDataContainerView container = itemStack.getPersistentDataContainer();
 
         // Check if it has the mystery crate key otherwise check picked key.
-        if (container.has(Keys.cosmic_mystery_crate.getNamespacedKey())) {
+        if (container.has(ItemKeys.cosmic_mystery_crate.getNamespacedKey())) {
             int size = cosmicCrateManager.getPrizes(player).size();
 
             // Check if prizes is less than or equal to totalPrizes before we change any items.
@@ -209,7 +208,7 @@ public class CosmicCrateListener implements Listener {
                 // Play a sound to indicate they clicked a chest.
                 crate.playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.MASTER);
             }
-        } else if (container.has(Keys.cosmic_picked_crate.getNamespacedKey())) {
+        } else if (container.has(ItemKeys.cosmic_picked_crate.getNamespacedKey())) {
             final Tier tier = this.crateManager.getTier(player, slot);
 
             // Get item builder.
@@ -319,7 +318,7 @@ public class CosmicCrateListener implements Listener {
 
             if (broadcastToggle) {  //todo() add a permission?
                 if (!broadcastMessage.isBlank()) {
-                    String builder = Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
+                    String builder = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
                     this.plugin.getServer().broadcast(Methods.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", CrazyUtil.getPrefix()).replaceAll("%player%", player.getName())));
                 }
