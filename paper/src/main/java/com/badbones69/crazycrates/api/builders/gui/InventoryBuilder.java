@@ -61,7 +61,7 @@ public abstract class InventoryBuilder {
                     return;
                 }
 
-                crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", Sound.Source.PLAYER);
+                crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", Sound.Source.MASTER);
 
                 new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_rows)).open();
             }));

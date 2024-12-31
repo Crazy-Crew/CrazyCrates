@@ -101,7 +101,7 @@ public class WonderCrate extends CrateBuilder {
                         setItem(Integer.parseInt(slot), this.prize.getDisplayItem(player, crate));
                     }
 
-                    playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
+                    playSound("cycle-sound", Sound.Source.MASTER, "block.note_block.xylophone");
 
                     this.slot1++;
                     this.slot2--;
@@ -114,7 +114,7 @@ public class WonderCrate extends CrateBuilder {
                         }
                     }
 
-                    playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
+                    playSound("cycle-sound", Sound.Source.MASTER, "block.note_block.xylophone");
                 }
 
                 player.openInventory(getInventory());
@@ -140,7 +140,7 @@ public class WonderCrate extends CrateBuilder {
 
                     PrizeManager.givePrize(player, crate, this.prize);
 
-                    playSound("stop-sound", Sound.Source.PLAYER, "entity.player.levelup");
+                    playSound("stop-sound", Sound.Source.MASTER, "entity.player.levelup");
 
                     crateManager.removePlayerFromOpeningList(player);
 

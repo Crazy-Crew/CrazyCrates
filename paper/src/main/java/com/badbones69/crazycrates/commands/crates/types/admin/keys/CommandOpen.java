@@ -103,7 +103,7 @@ public class CommandOpen extends BaseCommand {
         // If no key, run this.
         if (!hasKey) {
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
+                Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f);
 
                 player.playSound(sound);
             }
@@ -176,7 +176,7 @@ public class CommandOpen extends BaseCommand {
 
         if (!hasKey) {
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
+                Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f);
 
                 player.playSound(sound);
             }

@@ -60,7 +60,7 @@ public class CrateTierMenu extends StaticInventoryBuilder {
                 final PersistentDataContainerView tags = itemStack.getPersistentDataContainer();
 
                 if (tags.has(Keys.crate_tier.getNamespacedKey())) {
-                    this.crate.playSound(this.player, this.player.getLocation(), "click-sound", "ui.button.click", Sound.Source.PLAYER);
+                    this.crate.playSound(this.player, this.player.getLocation(), "click-sound", "ui.button.click", Sound.Source.MASTER);
 
                     this.crate.getPreview(this.player, tier).open();
                 }

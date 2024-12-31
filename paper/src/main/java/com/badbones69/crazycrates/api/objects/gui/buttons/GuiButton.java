@@ -53,7 +53,7 @@ public class GuiButton {
                         this.section,
                         "sound",
                         "entity.villager.yes",
-                        Sound.Source.PLAYER
+                        Sound.Source.MASTER
                 );
 
                 effect.play(player, player.getLocation());

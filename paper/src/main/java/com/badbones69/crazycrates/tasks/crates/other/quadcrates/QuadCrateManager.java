@@ -241,7 +241,7 @@ public class QuadCrateManager {
 
                     this.tickTillSpawn++;
                 } else {
-                    crate.playSound(player, player.getLocation(), "cycle-sound", "block.stone.step", Sound.Source.PLAYER);
+                    crate.playSound(player, player.getLocation(), "cycle-sound", "block.stone.step", Sound.Source.MASTER);
 
                     Block chest = crateLocations.get(crateNumber).getBlock();
 
@@ -270,7 +270,7 @@ public class QuadCrateManager {
 
                 Messages.out_of_time.sendMessage(player, "{crate}", crate.getCrateName());
 
-                crate.playSound(player, player.getLocation(), "stop-sound", "entity.player.levelup", Sound.Source.PLAYER);
+                crate.playSound(player, player.getLocation(), "stop-sound", "entity.player.levelup", Sound.Source.MASTER);
             }
         }.runDelayed(ConfigManager.getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20));
     }

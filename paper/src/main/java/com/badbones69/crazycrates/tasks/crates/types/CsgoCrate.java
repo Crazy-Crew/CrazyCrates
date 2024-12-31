@@ -78,7 +78,7 @@ public class CsgoCrate extends CrateBuilder {
                 if (this.full <= 50) { // When Spinning
                     moveItemsAndSetGlass();
 
-                    playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
+                    playSound("cycle-sound", Sound.Source.MASTER, "block.note_block.xylophone");
                 }
 
                 this.open++;
@@ -95,13 +95,13 @@ public class CsgoCrate extends CrateBuilder {
                     if (MiscUtils.slowSpin(120, 15).contains(this.time)) { // When Slowing Down
                         moveItemsAndSetGlass();
 
-                        playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
+                        playSound("cycle-sound", Sound.Source.MASTER, "block.note_block.xylophone");
                     }
 
                     this.time++;
 
                     if (this.time == 60) { // When done
-                        playSound("stop-sound", Sound.Source.PLAYER, "entity.player.levelup");
+                        playSound("stop-sound", Sound.Source.MASTER, "entity.player.levelup");
 
                         crateManager.endCrate(player);
 

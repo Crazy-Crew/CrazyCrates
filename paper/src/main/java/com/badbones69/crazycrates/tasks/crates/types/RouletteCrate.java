@@ -70,7 +70,7 @@ public class RouletteCrate extends CrateBuilder {
                     }
 
                     if (this.full >= 2) {
-                        playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
+                        playSound("cycle-sound", Sound.Source.MASTER, "block.note_block.xylophone");
                     }
 
                     this.even++;
@@ -100,13 +100,13 @@ public class RouletteCrate extends CrateBuilder {
 
                         setItem(13, crate.pickPrize(player).getDisplayItem(player, crate));
 
-                        playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
+                        playSound("cycle-sound", Sound.Source.MASTER, "block.note_block.xylophone");
                     }
 
                     this.time++;
 
                     if (this.time >= 23) {
-                        playSound("stop-sound", Sound.Source.PLAYER, "entity.player.levelup");
+                        playSound("stop-sound", Sound.Source.MASTER, "entity.player.levelup");
 
                         crateManager.endCrate(player);
 

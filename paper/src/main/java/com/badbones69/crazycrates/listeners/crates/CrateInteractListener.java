@@ -201,7 +201,7 @@ public class CrateInteractListener implements Listener {
             if (this.config.getProperty(ConfigKeys.knock_back)) knockback(player, location);
 
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                net.kyori.adventure.sound.Sound sound = net.kyori.adventure.sound.Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
+                net.kyori.adventure.sound.Sound sound = net.kyori.adventure.sound.Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f);
 
                 player.playSound(sound);
             }

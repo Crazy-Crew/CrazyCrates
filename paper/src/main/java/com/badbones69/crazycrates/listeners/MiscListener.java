@@ -179,7 +179,7 @@ public class MiscListener implements Listener {
                 }
 
                 // Play sound.
-                if (playSound) crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", Sound.Source.PLAYER);
+                if (playSound) crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", Sound.Source.MASTER);
 
                 // Remove opening stuff.
                 this.crateManager.removePlayerFromOpeningList(player);

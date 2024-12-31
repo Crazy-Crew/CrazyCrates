@@ -141,7 +141,7 @@ public class WheelCrate extends CrateBuilder {
 
                         PrizeManager.givePrize(player, crate, prize);
 
-                        playSound("stop-sound", Sound.Source.PLAYER, "entity.player.levelup");
+                        playSound("stop-sound", Sound.Source.MASTER, "entity.player.levelup");
 
                         player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
 
@@ -174,7 +174,7 @@ public class WheelCrate extends CrateBuilder {
 
                 setItem(this.slots.get(this.what), rewards.get(otherSlot));
 
-                playSound("cycle-sound", Sound.Source.PLAYER, "block.note_block.xylophone");
+                playSound("cycle-sound", Sound.Source.MASTER, "block.note_block.xylophone");
 
                 this.uh++;
                 this.what++;

@@ -167,7 +167,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
         if (!hasKey) {
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.PLAYER, 1f, 1f);
+                Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f);
 
                 this.player.playSound(sound);
             }
@@ -196,7 +196,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
     private void openPreview(Crate crate, String fancyName) {
         if (crate.isPreviewEnabled()) {
-            crate.playSound(this.player, this.player.getLocation(), "click-sound", "ui.button.click", Sound.Source.PLAYER);
+            crate.playSound(this.player, this.player.getLocation(), "click-sound", "ui.button.click", Sound.Source.MASTER);
 
             this.gui.close(this.player, InventoryCloseEvent.Reason.OPEN_NEW, false);
 
