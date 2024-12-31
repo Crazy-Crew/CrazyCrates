@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.api.enums;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
-import com.badbones69.crazycrates.core.enums.Action;
+import com.badbones69.crazycrates.core.enums.State;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import com.ryderbelserion.util.Methods;
 import org.bukkit.command.CommandSender;
@@ -162,27 +162,27 @@ public enum Messages {
     }
 
     public void sendMessage(final CommandSender sender, final String placeholder, final String replacement) {
-        final Action action = this.config.getProperty(ConfigKeys.message_state);
+        final State state = this.config.getProperty(ConfigKeys.message_state);
 
-        switch (action) {
+        switch (state) {
             case send_message -> sendRichMessage(sender, placeholder, replacement);
             case send_actionbar -> sendActionBar(sender, placeholder, replacement);
         }
     }
 
     public void sendMessage(final CommandSender sender, final Map<String, String> placeholders) {
-        final Action action = this.config.getProperty(ConfigKeys.message_state);
+        final State state = this.config.getProperty(ConfigKeys.message_state);
 
-        switch (action) {
+        switch (state) {
             case send_message -> sendRichMessage(sender, placeholders);
             case send_actionbar -> sendActionBar(sender, placeholders);
         }
     }
 
     public void sendMessage(final CommandSender sender) {
-        final Action action = this.config.getProperty(ConfigKeys.message_state);
+        final State state = this.config.getProperty(ConfigKeys.message_state);
 
-        switch (action) {
+        switch (state) {
             case send_message -> sendRichMessage(sender);
             case send_actionbar -> sendActionBar(sender);
         }

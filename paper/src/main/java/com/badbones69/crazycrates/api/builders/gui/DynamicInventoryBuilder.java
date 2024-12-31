@@ -36,7 +36,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
     /**
      * Opens the {@link PaginatedGui}.
      *
-     * @param consumer {@link Consumer(DynamicInventoryBuilder)}
+     * @param consumer the consumer
      */
     public void open(@Nullable final Consumer<DynamicInventoryBuilder> consumer) {
         if (consumer != null) {

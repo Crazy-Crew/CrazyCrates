@@ -1,13 +1,13 @@
 package com.badbones69.crazycrates.core.enums;
 
-public enum Action {
+public enum State {
 
     send_message("send_message"),
     send_actionbar("send_actionbar");
 
     private final String name;
 
-    Action(String name) {
+    State(String name) {
         this.name = name;
     }
 
