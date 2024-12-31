@@ -801,7 +801,7 @@ public class Crate {
     private void saveFile() {
         if (this.name.isEmpty()) return;
 
-        final CustomFile customFile = this.plugin.getVital().getFileManager().getFile(this.name, FileType.YAML);
+        final CustomFile customFile = this.plugin.getFileManager().getFile(this.name, FileType.YAML);
 
         if (customFile != null) customFile.save();
 

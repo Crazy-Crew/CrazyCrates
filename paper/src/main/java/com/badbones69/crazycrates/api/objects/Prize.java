@@ -312,7 +312,7 @@ public class Prize {
         final String current_pulls = String.valueOf(PrizeManager.getCurrentPulls(this, crate));
         final String max_pulls = String.valueOf(getMaxPulls());
 
-        final Component message = this.plugin.getVital().getFusion().color(target, Methods.toString(messages), new HashMap<>() {{
+        final Component message = this.plugin.getFusion().color(target, Methods.toString(messages), new HashMap<>() {{
             put("%player%", target.getName());
             put("%crate%", crate.getCrateName());
             put("%reward%", getPrizeName().replaceAll("%maxpulls%", max_pulls).replaceAll("%pulls%", current_pulls));

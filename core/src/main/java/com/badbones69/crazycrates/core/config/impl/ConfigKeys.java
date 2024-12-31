@@ -4,7 +4,7 @@ import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
-import com.badbones69.crazycrates.core.enums.State;
+import com.badbones69.crazycrates.core.enums.Action;
 import java.util.Collections;
 import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newBeanProperty;
@@ -101,7 +101,7 @@ public class ConfigKeys implements SettingsHolder {
             "send_actionbar -> sends messages in actionbar.",
             ""
     })
-    public static final Property<State> message_state = newBeanProperty(State.class, "root.message-state", State.send_message);
+    public static final Property<Action> message_state = newBeanProperty(Action.class, "root.message-state", Action.send_message);
 
     @Comment({
             "A list of available custom item plugins:",

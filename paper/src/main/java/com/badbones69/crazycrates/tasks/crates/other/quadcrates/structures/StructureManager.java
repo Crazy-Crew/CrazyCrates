@@ -21,13 +21,6 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * A structure manager extending {@link IStructureManager} which builds {@link Structure}.
- *
- * @author Ryder Belserion
- * @version 0.1.0
- * @since 0.1.0
- */
 public class StructureManager implements IStructureManager {
 
     private final Set<Location> postStructurePasteBlocks = new HashSet<>();
@@ -43,12 +36,6 @@ public class StructureManager implements IStructureManager {
 
     private boolean doNotApply = false;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param file {@inheritDoc}
-     * @since 0.1.0
-     */
     @Override
     public void applyStructure(@Nullable final File file) {
         if (file == null) {
@@ -70,26 +57,11 @@ public class StructureManager implements IStructureManager {
         }).join();
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     * @since 0.1.0
-     */
     @Override
     public @NotNull org.bukkit.structure.StructureManager getStructureManager() {
         return this.plugin.getServer().getStructureManager();
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param file {@inheritDoc}
-     * @param one {@inheritDoc}
-     * @param two {@inheritDoc}
-     * @param includeEntities {@inheritDoc}
-     * @since 0.1.0
-     */
     @Override
     public void saveStructure(@Nullable final File file, @Nullable final Location one, @Nullable final Location two, boolean includeEntities) {
         if (this.doNotApply) return;
@@ -107,13 +79,6 @@ public class StructureManager implements IStructureManager {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param location {@inheritDoc}
-     * @param storeBlocks {@inheritDoc}
-     * @since 0.1.0
-     */
     @Override
     public void pasteStructure(@Nullable final Location location, final boolean storeBlocks) {
         if (this.doNotApply) return;
@@ -136,11 +101,6 @@ public class StructureManager implements IStructureManager {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @since 0.1.0
-     */
     @Override
     public void removeStructure() {
         if (this.doNotApply) return;
@@ -154,11 +114,6 @@ public class StructureManager implements IStructureManager {
         });
     }
 
-    /**
-     * Gets structure blocks from location
-     *
-     * @since 0.1.0
-     */
     private void getStructureBlocks(@NotNull final Location location) {
         for (int x = 0; x < getStructureX(); x++) {
             for (int y = 0; y < getStructureY(); y++) {
@@ -177,12 +132,6 @@ public class StructureManager implements IStructureManager {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param location {@inheritDoc}
-     * @since 0.1.0
-     */
     @Override
     public @NotNull Set<Location> getBlocks(@Nullable final Location location) {
         if (this.doNotApply) return Collections.emptySet();
@@ -202,12 +151,6 @@ public class StructureManager implements IStructureManager {
         return getNearbyBlocks();
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     * @since 0.1.0
-     */
     @Override
     public double getStructureX() {
         if (this.doNotApply) return 0.0;
@@ -215,12 +158,6 @@ public class StructureManager implements IStructureManager {
         return this.structure.getSize().getX();
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     * @since 0.1.0
-     */
     @Override
     public double getStructureY() {
         if (this.doNotApply) return 0.0;
@@ -228,12 +165,6 @@ public class StructureManager implements IStructureManager {
         return this.structure.getSize().getY();
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     * @since 0.1.0
-     */
     @Override
     public double getStructureZ() {
         if (this.doNotApply) return 0.0;
@@ -241,23 +172,11 @@ public class StructureManager implements IStructureManager {
         return this.structure.getSize().getZ();
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     * @since 0.1.0
-     */
     @Override
     public @NotNull Set<Location> getNearbyBlocks() {
         return Collections.unmodifiableSet(this.preStructurePasteBlocks);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     * @since 0.1.0
-     */
     @Override
     public @NotNull List<Material> getBlockBlacklist() {
         return Lists.newArrayList(
@@ -271,21 +190,11 @@ public class StructureManager implements IStructureManager {
                 Material.CRIMSON_BUTTON, Material.WARPED_BUTTON);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @since 0.1.0
-     */
     @Override
     public void createStructure() {
         this.structure = getStructureManager().createStructure();
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @return {@inheritDoc}
-     */
     @Override
     public @NotNull File getStructureFile() {
         return this.file;

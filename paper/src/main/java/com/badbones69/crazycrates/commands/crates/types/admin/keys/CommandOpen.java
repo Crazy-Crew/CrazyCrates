@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 public class CommandOpen extends BaseCommand {
 
     private boolean isCancelled(final Player player, final String crateName) {
-        if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
+        if (crateName == null || crateName.isBlank()) {
             Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
             return true;

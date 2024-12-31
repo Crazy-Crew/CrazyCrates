@@ -20,7 +20,7 @@ public class CommandClaim extends BaseCommand {
     @Command("claim")
     @Permission(value = "crazycrates.claim", def = PermissionDefault.OP)
     public void add(Player player, @ArgName("crate") @Suggestion("crates") String crateName) {
-        if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
+        if (crateName == null || crateName.isBlank()) {
             Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
             return;

@@ -61,7 +61,7 @@ public class LegacyColorMigrator extends ICrateMigrator {
             failed.add("<red>⤷ messages.yml");
         }
 
-        final Collection<CustomFile> customFiles = this.plugin.getVital().getFileManager().getFiles().values();
+        final Collection<CustomFile> customFiles = this.plugin.getFileManager().getFiles().values();
 
         customFiles.forEach(customFile -> {
             try {

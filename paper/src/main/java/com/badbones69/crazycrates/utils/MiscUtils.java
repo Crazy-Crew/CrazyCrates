@@ -4,9 +4,7 @@ import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.enums.other.Plugins;
 import com.badbones69.crazycrates.api.enums.other.keys.FileKeys;
-import com.badbones69.crazycrates.core.utils.CrazyUtil;
 import com.ryderbelserion.paper.enums.Scheduler;
-import com.ryderbelserion.paper.enums.Support;
 import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
 import com.ryderbelserion.util.FileMethods;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -292,12 +290,14 @@ public class MiscUtils {
             ).forEach(plugin.getComponentLogger()::warn);
 
             List.of(
+                    "=== === === === === === Crates === === === === === ===",
                     "<red>An issue has occurred when trying to take a key.",
                     "<red>A list of potential reasons",
                     "",
                     " <yellow>-> <light_purple>Not enough keys.",
-                    " <yellow>-> <light_purple>Key is in off hand."
-            ).forEach(line -> player.sendRichMessage(CrazyUtil.getPrefix(line)));
+                    " <yellow>-> <light_purple>Key is in off hand.",
+                    "=== === === === === === Crates === === === === === ==="
+            ).forEach(player::sendRichMessage);
         }
     }
 
@@ -414,7 +414,7 @@ public class MiscUtils {
     }
 
     public static boolean isLogging() {
-        return plugin.getVital().getFusion().isVerbose();
+        return plugin.getFusion().isVerbose();
     }
 
     public static boolean isExcellentCratesEnabled() {

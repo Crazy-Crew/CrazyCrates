@@ -25,10 +25,12 @@ import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.FusionApi;
 import com.ryderbelserion.api.enums.FileType;
-import com.ryderbelserion.paper.enums.Support;
+import com.ryderbelserion.paper.Fusion;
+import com.ryderbelserion.paper.files.FileManager;
 import com.ryderbelserion.util.Methods;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Locale;
@@ -129,7 +131,7 @@ public class CrazyCrates extends JavaPlugin {
 
         if (MiscUtils.isLogging()) {
             // Print dependency garbage
-            for (final Support value : Support.values()) {
+            for (final Plugins value : Plugins.values()) {
                 if (value.isEnabled()) {
                     getComponentLogger().info(Methods.parse("<bold><gold>" + value.getName() + " <green>FOUND"));
                 } else {
@@ -186,12 +188,16 @@ public class CrazyCrates extends JavaPlugin {
         return this.instance;
     }
 
-    public @Nullable final MetricsWrapper getMetrics() {
+    public final MetricsWrapper getMetrics() {
         return this.metrics;
     }
 
-    public final FusionApi getVital() {
-        return this.api;
+    public final FileManager getFileManager() {
+        return this.api.getFileManager();
+    }
+
+    public final Fusion getFusion() {
+        return this.api.getFusion();
     }
 
     public final Timer getTimer() {
