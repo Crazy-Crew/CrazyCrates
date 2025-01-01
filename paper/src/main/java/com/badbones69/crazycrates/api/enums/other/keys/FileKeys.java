@@ -1,8 +1,8 @@
 package com.badbones69.crazycrates.api.enums.other.keys;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.ryderbelserion.api.enums.FileType;
-import com.ryderbelserion.api.exception.FusionException;
+import com.ryderbelserion.core.api.enums.FileType;
+import com.ryderbelserion.core.api.exception.FusionException;
 import com.ryderbelserion.paper.files.CustomFile;
 import com.ryderbelserion.paper.files.FileManager;
 import org.bukkit.configuration.file.YamlConfiguration;

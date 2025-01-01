@@ -38,8 +38,8 @@ excellentcrates = { module = "su.nightexpress.excellentcrates:ExcellentCrates", 
 nightcore = { module = "su.nightexpress.nightcore:nightcore", version = "2.6.3" }
 
 # Fusion Core API
-fusion-paper = { module = "com.ryderbelserion:fusion-paper", version.ref = "fusion" }
-fusion-core = { module = "com.ryderbelserion:fusion-core", version.ref = "fusion" }
+fusion-paper = { module = "com.ryderbelserion.fusion:fusion-paper", version.ref = "fusion" }
+fusion-core = { module = "com.ryderbelserion.fusion:fusion-core", version.ref = "fusion" }
 
 # Common API
 triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmd" }
@@ -79,7 +79,7 @@ itemsadder = "3.6.1"
 oraxen = "1.171.0"
 
 # Fusion API
-fusion = "0.3.0"
+fusion = "0.5.1"
 
 # Common API
 triumph-cmd = "2.0.0-ALPHA-10"

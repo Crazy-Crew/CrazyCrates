@@ -11,7 +11,7 @@ import com.badbones69.crazycrates.utils.MiscUtils;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.ryderbelserion.paper.builder.gui.interfaces.Gui;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiFiller;
-import com.ryderbelserion.util.Methods;
+import com.ryderbelserion.core.util.Methods;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Server;

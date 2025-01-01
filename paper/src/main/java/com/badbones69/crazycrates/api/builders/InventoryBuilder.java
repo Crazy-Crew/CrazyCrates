@@ -10,7 +10,7 @@ import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.ryderbelserion.paper.util.PaperMethods;
-import com.ryderbelserion.util.Methods;
+import com.ryderbelserion.core.util.Methods;
 import org.bukkit.Server;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

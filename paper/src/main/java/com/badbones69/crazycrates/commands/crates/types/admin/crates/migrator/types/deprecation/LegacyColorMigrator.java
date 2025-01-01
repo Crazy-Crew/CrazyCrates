@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.IC
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.ryderbelserion.paper.files.CustomFile;
-import com.ryderbelserion.util.Methods;
+import com.ryderbelserion.core.util.Methods;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;

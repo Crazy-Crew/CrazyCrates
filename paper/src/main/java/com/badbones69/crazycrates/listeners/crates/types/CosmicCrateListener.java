@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.managers.events.EventManager;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
-import com.ryderbelserion.util.Methods;
+import com.ryderbelserion.core.util.Methods;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;

@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.api.enums.FileType;
+import com.ryderbelserion.core.api.enums.FileType;
 import com.ryderbelserion.paper.files.CustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;

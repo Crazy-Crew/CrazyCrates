@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.api.enums.other.Plugins;
 import com.badbones69.crazycrates.api.enums.other.keys.FileKeys;
 import com.ryderbelserion.paper.enums.Scheduler;
 import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
-import com.ryderbelserion.util.FileMethods;
+import com.ryderbelserion.core.util.FileMethods;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemType;

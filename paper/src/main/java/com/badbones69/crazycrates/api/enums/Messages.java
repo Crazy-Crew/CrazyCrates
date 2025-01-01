@@ -4,7 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
 import com.badbones69.crazycrates.core.enums.State;
 import com.badbones69.crazycrates.utils.MiscUtils;
-import com.ryderbelserion.util.Methods;
+import com.ryderbelserion.core.util.Methods;
 import org.bukkit.command.CommandSender;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.messages.CommandKeys;

@@ -12,7 +12,7 @@ import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
 import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
-import com.ryderbelserion.util.Methods;
+import com.ryderbelserion.core.util.Methods;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;

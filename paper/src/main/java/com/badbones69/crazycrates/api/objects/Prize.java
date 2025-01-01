@@ -11,7 +11,7 @@ import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
 import com.ryderbelserion.paper.util.PaperMethods;
-import com.ryderbelserion.util.Methods;
+import com.ryderbelserion.core.util.Methods;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
