@@ -23,7 +23,7 @@ import com.badbones69.crazycrates.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.managers.InventoryManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
-import com.ryderbelserion.FusionApi;
+import com.ryderbelserion.paper.FusionApi;
 import com.ryderbelserion.core.api.enums.FileType;
 import com.ryderbelserion.paper.Fusion;
 import com.ryderbelserion.paper.files.FileManager;
