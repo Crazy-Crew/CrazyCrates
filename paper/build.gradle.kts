@@ -39,7 +39,8 @@ tasks {
         archiveClassifier.set("")
 
         listOf(
-            "com.ryderbelserion"
+            "com.ryderbelserion.fusion",
+            "org.bstats"
         ).forEach {
             relocate(it, "libs.$it")
         }
