@@ -3,15 +3,15 @@ package com.badbones69.crazycrates.tasks.menus;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.utils.ItemUtils;
 import com.badbones69.crazycrates.utils.MiscUtils;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
-import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
-import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiFiller;
-import com.ryderbelserion.vital.utils.Methods;
+import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
+import com.ryderbelserion.paper.builder.gui.interfaces.Gui;
+import com.ryderbelserion.paper.builder.gui.interfaces.GuiFiller;
+import com.ryderbelserion.core.util.Methods;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Server;
@@ -112,7 +112,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                             .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, fileName)))
                             .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(uuid, fileName)))
                             .addLorePlaceholder("%player%", player.getName())
-                            .setPersistentString(Keys.crate_key.getNamespacedKey(), fileName);
+                            .setPersistentString(ItemKeys.crate_key.getNamespacedKey(), fileName);
 
                     this.gui.setItem(slot, ItemUtils.getItem(section, builder, this.player).asGuiItem(event -> {
                         final String fancyName = crate.getCrateName();

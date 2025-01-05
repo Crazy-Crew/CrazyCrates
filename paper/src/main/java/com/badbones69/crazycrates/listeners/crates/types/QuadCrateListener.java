@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.listeners.crates.types;
 
 import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.utils.ItemUtils;
-import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
+import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -16,7 +16,7 @@ import com.badbones69.crazycrates.tasks.crates.other.quadcrates.QuadCrateManager
 import com.badbones69.crazycrates.tasks.crates.other.quadcrates.SessionManager;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.api.ChestManager;
 import org.bukkit.block.Block;
@@ -84,7 +84,7 @@ public class QuadCrateListener implements Listener {
             final ItemMeta itemMeta = display.getItemMeta();
 
             // Access the pdc and set "crazycrates-item"
-            itemMeta.getPersistentDataContainer().set(Keys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1");
+            itemMeta.getPersistentDataContainer().set(ItemKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1");
 
             // Set the item meta.
             display.setItemMeta(itemMeta);
@@ -110,7 +110,7 @@ public class QuadCrateListener implements Listener {
 
             // Check if all crates have spawned then end if so.
             if (session.allCratesOpened()) {
-                new FoliaScheduler(plugin, null, player) {
+                new FoliaScheduler(null, player) {
                     @Override
                     public void run() {
                         session.endCrate(false);

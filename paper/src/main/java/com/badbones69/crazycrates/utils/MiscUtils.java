@@ -2,12 +2,11 @@ package com.badbones69.crazycrates.utils;
 
 import com.badbones69.crazycrates.api.enums.Permissions;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.badbones69.crazycrates.api.enums.misc.Files;
-import com.badbones69.crazycrates.common.utils.CrazyUtil;
-import com.ryderbelserion.vital.paper.api.enums.Support;
-import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
-import com.ryderbelserion.vital.schedulers.enums.SchedulerType;
-import com.ryderbelserion.vital.utils.Methods;
+import com.badbones69.crazycrates.api.enums.other.Plugins;
+import com.badbones69.crazycrates.api.enums.other.keys.FileKeys;
+import com.ryderbelserion.paper.enums.Scheduler;
+import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
+import com.ryderbelserion.core.util.FileMethods;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemType;
@@ -15,8 +14,8 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.core.config.ConfigManager;
+import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
@@ -32,7 +31,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -56,7 +55,7 @@ public class MiscUtils {
 
         final String result = populatePlaceholders(sender, command, placeholders);
 
-        new FoliaScheduler(plugin, SchedulerType.global_scheduler) {
+        new FoliaScheduler(Scheduler.global_scheduler) {
             @Override
             public void run() {
                 server.dispatchCommand(server.getConsoleSender(), result);
@@ -73,7 +72,7 @@ public class MiscUtils {
     }
 
     public static String populatePlaceholders(@Nullable final CommandSender sender, @NotNull String line, @NotNull final Map<String, String> placeholders) {
-        if (sender != null && Support.placeholder_api.isEnabled()) {
+        if (sender != null && Plugins.placeholder_api.isEnabled()) {
             if (sender instanceof Player player) {
                 line = PlaceholderAPI.setPlaceholders(player, line);
             }
@@ -100,10 +99,10 @@ public class MiscUtils {
         final File logsFolder = new File(plugin.getDataFolder(), "logs");
 
         if (logsFolder.exists() && ConfigManager.getConfig().getProperty(ConfigKeys.log_to_file)) {
-            final File crateLog = Files.crate_log.getFile();
-            final File keyLog = Files.key_log.getFile();
+            final File crateLog = FileKeys.crate_log.getFile();
+            final File keyLog = FileKeys.key_log.getFile();
 
-            Methods.zip(logsFolder, ".log", true);
+            FileMethods.zip(logsFolder, ".log", true);
 
             try {
                 if (!crateLog.exists()) {
@@ -142,7 +141,7 @@ public class MiscUtils {
 
         PersistentDataContainer fireworkData = firework.getPersistentDataContainer();
 
-        fireworkData.set(Keys.no_firework_damage.getNamespacedKey(), PersistentDataType.BOOLEAN, true);
+        fireworkData.set(ItemKeys.no_firework_damage.getNamespacedKey(), PersistentDataType.BOOLEAN, true);
 
         plugin.getServer().getRegionScheduler().runDelayed(plugin, location, scheduledTask -> firework.detonate(), 3L);
     }
@@ -173,8 +172,8 @@ public class MiscUtils {
     }
 
     public static void save() {
-        YamlConfiguration data = Files.data.getConfiguration();
-        YamlConfiguration location = Files.locations.getConfiguration();
+        YamlConfiguration data = FileKeys.data.getConfiguration();
+        YamlConfiguration location = FileKeys.locations.getConfiguration();
 
         boolean isSave = false;
 
@@ -197,7 +196,7 @@ public class MiscUtils {
         }
 
         if (isSave) {
-            Files.data.save();
+            FileKeys.data.save();
         }
     }
 
@@ -291,12 +290,14 @@ public class MiscUtils {
             ).forEach(plugin.getComponentLogger()::warn);
 
             List.of(
+                    "=== === === === === === Crates === === === === === ===",
                     "<red>An issue has occurred when trying to take a key.",
                     "<red>A list of potential reasons",
                     "",
                     " <yellow>-> <light_purple>Not enough keys.",
-                    " <yellow>-> <light_purple>Key is in off hand."
-            ).forEach(line -> player.sendRichMessage(CrazyUtil.getPrefix(line)));
+                    " <yellow>-> <light_purple>Key is in off hand.",
+                    "=== === === === === === Crates === === === === === ==="
+            ).forEach(player::sendRichMessage);
         }
     }
 
@@ -413,7 +414,7 @@ public class MiscUtils {
     }
 
     public static boolean isLogging() {
-        return plugin.getVital().isVerbose();
+        return plugin.getFusion().isVerbose();
     }
 
     public static boolean isExcellentCratesEnabled() {

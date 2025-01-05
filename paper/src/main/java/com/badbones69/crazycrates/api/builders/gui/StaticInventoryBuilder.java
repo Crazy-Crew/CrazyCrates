@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.api.builders.gui;
 
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
+import com.ryderbelserion.paper.builder.gui.interfaces.Gui;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 

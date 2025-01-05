@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.tasks.crates.types;
 
 import com.badbones69.crazycrates.api.builders.types.features.CrateSpinMenu;
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.api.enums.misc.Files;
+import com.badbones69.crazycrates.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.ChestManager;
@@ -11,8 +11,8 @@ import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
 import com.badbones69.crazycrates.support.holograms.HologramManager;
-import com.ryderbelserion.vital.paper.util.scheduler.impl.FoliaScheduler;
-import com.ryderbelserion.vital.utils.Methods;
+import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
+import com.ryderbelserion.core.util.Methods;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
@@ -22,10 +22,10 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.core.config.ConfigManager;
+import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.utils.MiscUtils;
 import java.util.HashMap;
 import java.util.UUID;
@@ -127,7 +127,7 @@ public class QuickCrate extends CrateBuilder {
         final Prize prize = this.crate.pickPrize(this.player);
 
         if (this.crate.isCyclePrize() && !PrizeManager.isCapped(this.crate, this.player)) { // re-open this menu
-            new CrateSpinMenu(this.player, new GuiSettings(this.crate, prize, Files.respin_gui.getConfiguration())).open();
+            new CrateSpinMenu(this.player, new GuiSettings(this.crate, prize, FileKeys.respin_gui.getConfiguration())).open();
 
             this.crateManager.removePlayerFromOpeningList(this.player);
             this.crateManager.removeCrateInUse(this.player);
@@ -159,7 +159,7 @@ public class QuickCrate extends CrateBuilder {
             ItemStack display = prize.getDisplayItem(this.player, this.crate); //todo() use display entities
 
             // Get the item meta.
-            display.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(Keys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1"));
+            display.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(ItemKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1"));
 
             Item reward;
 
@@ -190,7 +190,7 @@ public class QuickCrate extends CrateBuilder {
 
             PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, 0.5), this.crate, prize);
 
-            addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
+            addCrateTask(new FoliaScheduler(null, this.player) {
                 @Override
                 public void run() {
                     crateManager.endQuickCrate(player, location, crate, false);
@@ -204,7 +204,7 @@ public class QuickCrate extends CrateBuilder {
 
         PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, 0.5), this.crate, prize);
 
-        addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
+        addCrateTask(new FoliaScheduler(null, this.player) {
             @Override
             public void run() {
                 crateManager.endQuickCrate(player, location, crate, false);

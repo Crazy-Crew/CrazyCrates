@@ -19,14 +19,8 @@ public class CommandTake extends BaseCommand {
     @Command("take")
     @Permission(value = "crazycrates.takekey", def = PermissionDefault.OP)
     public void take(CommandSender sender, @ArgName("key_type") @Suggestion("keys") String type, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("amount") @Suggestion("numbers") int amount, @ArgName("player") @Suggestion("players") PlayerBuilder target) {
-        if (crateName == null || crateName.isEmpty() || crateName.isBlank()) {
+        if (crateName == null || crateName.isBlank()) {
             Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
-
-            return;
-        }
-
-        if (amount <= 0) {
-            Messages.not_a_number.sendMessage(sender, "{number}", String.valueOf(amount));
 
             return;
         }
@@ -44,11 +38,11 @@ public class CommandTake extends BaseCommand {
         if (target.getPlayer() != null) {
             final Player player = target.getPlayer();
 
-            takeKey(sender, player, crate, keyType, amount);
+            takeKey(sender, player, crate, keyType, Math.max(amount, 1));
 
             return;
         }
 
-        takeKey(sender, target.getOfflinePlayer(), crate, keyType, amount);
+        takeKey(sender, target.getOfflinePlayer(), crate, keyType, Math.max(amount, 1));
     }
 }

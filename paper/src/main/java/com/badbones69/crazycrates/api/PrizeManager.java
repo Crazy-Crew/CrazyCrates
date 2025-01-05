@@ -1,7 +1,8 @@
 package com.badbones69.crazycrates.api;
 
 import com.badbones69.crazycrates.api.enums.Messages;
-import com.badbones69.crazycrates.api.enums.misc.Files;
+import com.badbones69.crazycrates.api.enums.other.Plugins;
+import com.badbones69.crazycrates.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.api.objects.Tier;
 import com.badbones69.crazycrates.CrazyCrates;
 import com.badbones69.crazycrates.api.events.PlayerPrizeEvent;
@@ -9,7 +10,6 @@ import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.Prize;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
-import com.ryderbelserion.vital.paper.api.enums.Support;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -137,12 +137,12 @@ public class PrizeManager {
             final int pulls = getCurrentPulls(prize, crate);
 
             if (pulls != -1 && pulls < prize.getMaxPulls()) {
-                YamlConfiguration configuration = Files.data.getConfiguration();
+                YamlConfiguration configuration = FileKeys.data.getConfiguration();
 
                 configuration.set("Prizes." + crate.getFileName()  + "." + prize.getSectionName() + ".Pulls", pulls + 1);
 
                 // save to file!
-                Files.data.save();
+                FileKeys.data.save();
             }
         }
 
@@ -155,7 +155,7 @@ public class PrizeManager {
         }
 
         if (!prize.getItemBuilders().isEmpty()) {
-            final boolean isPlaceholderAPIEnabled = Support.placeholder_api.isEnabled();
+            final boolean isPlaceholderAPIEnabled = Plugins.placeholder_api.isEnabled();
 
             for (final ItemBuilder item : prize.getItemBuilders()) {
                 if (isPlaceholderAPIEnabled) {
@@ -239,7 +239,7 @@ public class PrizeManager {
             cmd = cmd.substring(0, cmd.length() - 1);
         }
 
-        if (Support.placeholder_api.isEnabled() ) cmd = PlaceholderAPI.setPlaceholders(player, cmd);
+        if (Plugins.placeholder_api.isEnabled() ) cmd = PlaceholderAPI.setPlaceholders(player, cmd);
 
         final String maxPulls = String.valueOf(prize.getMaxPulls());
         final String pulls = String.valueOf(getCurrentPulls(prize, crate));
@@ -270,13 +270,13 @@ public class PrizeManager {
                 .replaceAll("%maxpulls%", maxPulls)
                 .replaceAll("%pulls%", pulls);
 
-        MsgUtils.sendMessage(player, Support.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
+        MsgUtils.sendMessage(player, Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
     }
 
     public static int getCurrentPulls(final Prize prize, final Crate crate) {
         if (prize.getMaxPulls() == -1) return 0;
 
-        final YamlConfiguration configuration = Files.data.getConfiguration();
+        final YamlConfiguration configuration = FileKeys.data.getConfiguration();
         final ConfigurationSection section = configuration.getConfigurationSection("Prizes." + crate.getFileName()  + "." + prize.getSectionName());
 
         if (section == null) return 0;

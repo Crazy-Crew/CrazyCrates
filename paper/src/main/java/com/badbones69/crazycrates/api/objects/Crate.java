@@ -5,17 +5,17 @@ import com.badbones69.crazycrates.api.PrizeManager;
 import com.badbones69.crazycrates.tasks.menus.CratePreviewMenu;
 import com.badbones69.crazycrates.tasks.menus.CrateTierMenu;
 import com.badbones69.crazycrates.api.objects.crates.CrateHologram;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
+import com.badbones69.crazycrates.core.config.ConfigManager;
+import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.managers.BukkitUserManager;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.ryderbelserion.vital.files.enums.FileType;
-import com.ryderbelserion.vital.paper.api.files.PaperCustomFile;
-import com.ryderbelserion.vital.paper.util.PaperMethods;
-import com.ryderbelserion.vital.utils.Methods;
+import com.ryderbelserion.core.api.enums.FileType;
+import com.ryderbelserion.paper.files.CustomFile;
+import com.ryderbelserion.paper.util.PaperMethods;
+import com.ryderbelserion.core.util.Methods;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
@@ -122,7 +122,7 @@ public class Crate {
                  @NotNull final List<String> prizeMessage,
                  @NotNull final List<String> prizeCommands,
                  @NotNull final CrateHologram hologram) {
-        this.keyBuilder = key.setDisplayName(keyName).setPersistentString(Keys.crate_key.getNamespacedKey(), name);
+        this.keyBuilder = key.setDisplayName(keyName).setPersistentString(ItemKeys.crate_key.getNamespacedKey(), name);
         this.keyName = keyName;
 
         this.file = file;
@@ -380,7 +380,7 @@ public class Crate {
     }
 
     /**
-     * Picks a random prize based on BlackList Permissions and the Chance System. Only used in the Cosmic Crate & Casino Type since it is the only one with tiers.
+     * Picks a random prize based on BlackList Permissions and the Chance System. Only used in the Cosmic Crate and Casino Type since it is the only one with tiers.
      *
      * @param player The player that will be winning the prize.
      * @param tier The tier you wish the prize to be from.
@@ -628,7 +628,7 @@ public class Crate {
     }
     
     public final @Nullable Prize getPrize(@NotNull final ItemStack item) {
-        return getPrize(item.getPersistentDataContainer().getOrDefault(Keys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, ""));
+        return getPrize(item.getPersistentDataContainer().getOrDefault(ItemKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, ""));
     }
     
     /**
@@ -801,7 +801,7 @@ public class Crate {
     private void saveFile() {
         if (this.name.isEmpty()) return;
 
-        final PaperCustomFile customFile = this.plugin.getVital().getFileManager().getFile(this.name, FileType.YAML);
+        final CustomFile customFile = this.plugin.getFileManager().getFile(this.name, FileType.YAML);
 
         if (customFile != null) customFile.save();
 

@@ -1,9 +1,9 @@
 package com.badbones69.crazycrates.api.builders.gui;
 
 import com.badbones69.crazycrates.api.objects.Crate;
-import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.Gui;
-import com.ryderbelserion.vital.paper.api.builders.gui.interfaces.GuiItem;
-import com.ryderbelserion.vital.paper.api.builders.gui.types.PaginatedGui;
+import com.ryderbelserion.paper.builder.gui.interfaces.Gui;
+import com.ryderbelserion.paper.builder.gui.interfaces.GuiItem;
+import com.ryderbelserion.paper.builder.gui.types.PaginatedGui;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.Nullable;
@@ -36,7 +36,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
     /**
      * Opens the {@link PaginatedGui}.
      *
-     * @param consumer {@link Consumer(DynamicInventoryBuilder)}
+     * @param consumer the consumer
      */
     public void open(@Nullable final Consumer<DynamicInventoryBuilder> consumer) {
         if (consumer != null) {

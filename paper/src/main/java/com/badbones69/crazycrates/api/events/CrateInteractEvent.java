@@ -2,18 +2,17 @@ package com.badbones69.crazycrates.api.events;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.CrazyCrates;
+import com.badbones69.crazycrates.api.enums.other.Plugins;
 import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.core.config.ConfigManager;
+import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.nexomc.nexo.api.NexoFurniture;
 import com.nexomc.nexo.api.events.furniture.NexoFurnitureBreakEvent;
 import com.nexomc.nexo.api.events.furniture.NexoFurnitureInteractEvent;
-import com.ryderbelserion.vital.paper.api.enums.Support;
 import dev.lone.itemsadder.api.CustomFurniture;
 import dev.lone.itemsadder.api.Events.FurnitureBreakEvent;
 import dev.lone.itemsadder.api.Events.FurnitureInteractEvent;
-import dev.lone.itemsadder.api.ItemsAdder;
 import io.th0rgal.oraxen.api.OraxenFurniture;
 import io.th0rgal.oraxen.api.events.furniture.OraxenFurnitureBreakEvent;
 import io.th0rgal.oraxen.api.events.furniture.OraxenFurnitureInteractEvent;
@@ -172,12 +171,12 @@ public class CrateInteractEvent extends Event implements Cancellable {
         boolean isFurniture = false;
 
         switch (pluginName) {
-            case "nexo" -> isFurniture = Support.nexo.isEnabled() && NexoFurniture.isFurniture(location);
+            case "nexo" -> isFurniture = Plugins.nexo.isEnabled() && NexoFurniture.isFurniture(location);
 
-            case "oraxen" -> isFurniture = Support.oraxen.isEnabled() && OraxenFurniture.isFurniture(location.getBlock());
+            case "oraxen" -> isFurniture = Plugins.oraxen.isEnabled() && OraxenFurniture.isFurniture(location.getBlock());
 
             case "itemsadder" -> {
-                if (Support.items_adder.isEnabled()) {
+                if (Plugins.items_adder.isEnabled()) {
                     final Entity entity = CustomFurniture.byAlreadySpawned(location.getBlock()).getEntity();
 
                     if (entity != null && entity.isValid()) {

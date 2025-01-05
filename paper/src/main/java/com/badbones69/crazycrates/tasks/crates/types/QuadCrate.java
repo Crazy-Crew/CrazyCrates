@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.api.objects.crates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.managers.events.enums.EventType;
-import com.ryderbelserion.vital.paper.util.structures.StructureManager;
+import com.badbones69.crazycrates.tasks.crates.other.quadcrates.structures.StructureManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -42,7 +42,7 @@ public class QuadCrate extends CrateBuilder {
             return;
         }
 
-        final StructureManager handler = new StructureManager(this.plugin);
+        final StructureManager handler = new StructureManager();
 
         handler.applyStructure(crateSchematic.schematicFile());
 

@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.commands.crates.types.admin.crates;
 
-import com.badbones69.crazycrates.api.enums.misc.Files;
+import com.badbones69.crazycrates.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.api.enums.Messages;
 import com.badbones69.crazycrates.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -18,12 +18,12 @@ import java.util.Objects;
 
 public class CommandTeleport extends BaseCommand {
 
-    private final YamlConfiguration locations = Files.locations.getConfiguration();
+    private final YamlConfiguration locations = FileKeys.locations.getConfiguration();
 
     @Command("teleport")
     @Permission(value = "crazycrates.teleport", def = PermissionDefault.OP)
     public void teleport(Player player, @ArgName("crate_id") @Optional @Suggestion("locations") String id) {
-        if (id == null || id.isEmpty() || id.isBlank()) {
+        if (id == null || id.isBlank()) {
             Messages.cannot_be_empty.sendMessage(player, "{value}", "crate location id");
 
             return;
@@ -34,7 +34,7 @@ public class CommandTeleport extends BaseCommand {
         if (section == null) {
             this.locations.set("Locations.Clear", null);
 
-            Files.locations.save();
+            FileKeys.locations.save();
 
             return;
         }

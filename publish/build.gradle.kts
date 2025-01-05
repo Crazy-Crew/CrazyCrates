@@ -1,15 +1,13 @@
-import net.darkhax.curseforgegradle.TaskPublishCurseForge
-
 plugins {
-    id("net.darkhax.curseforgegradle") version "1.1.25"
+    id("crates.base")
 
     alias(libs.plugins.minotaur)
     alias(libs.plugins.hangar)
 }
 
-val content: String = rootProject.file("CHANGELOG.md").readText(Charsets.UTF_8)
+val content: String = rootProject.file("changelog.md").readText(Charsets.UTF_8)
 
-val isBeta = false
+val isBeta = true
 val pluginName = rootProject.name
 val mcVersion = libs.versions.minecraft.get()
 

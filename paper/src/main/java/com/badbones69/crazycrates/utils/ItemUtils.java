@@ -1,12 +1,12 @@
 package com.badbones69.crazycrates.utils;
 
 import com.badbones69.crazycrates.CrazyCrates;
-import com.badbones69.crazycrates.api.enums.misc.Keys;
+import com.badbones69.crazycrates.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.api.objects.Crate;
 import com.badbones69.crazycrates.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.api.builders.ItemBuilder;
-import com.ryderbelserion.vital.paper.util.PaperMethods;
-import com.ryderbelserion.vital.utils.Methods;
+import com.ryderbelserion.paper.util.PaperMethods;
+import com.ryderbelserion.core.util.Methods;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.DyeColor;
 import org.bukkit.block.banner.PatternType;
@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
-import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
@@ -29,30 +29,20 @@ public class ItemUtils {
 
     private static final CrateManager crateManager = plugin.getCrateManager();
 
-    /**
-     * Removes an {@link ItemStack} from a {@link Player}'s inventory.
-     *
-     * @param item the {@link ItemStack}
-     * @param player the {@link Player}
-     */
     public static void removeItem(@NotNull final ItemStack item, @NotNull final Player player) {
-        try {
-            final int amount = item.getAmount();
+        final int amount = item.getAmount();
 
-            if (amount <= 1) {
-                player.getInventory().removeItem(item);
-            } else {
-                item.setAmount(amount - 1);
-            }
-        } catch (Exception ignored) {}
+        final PlayerInventory inventory = player.getInventory();
+
+        if (amount <= 1 && !inventory.isEmpty()) {
+            inventory.removeItem(item);
+
+            return;
+        }
+
+        item.setAmount(amount - 1);
     }
 
-    /**
-     * Converts {@link org.bukkit.enchantments.Enchantment} to mojang mapped ids.
-     *
-     * @param enchant the {@link org.bukkit.enchantments.Enchantment} to convert
-     * @return the mojang mapped id
-     */
     public static String getEnchant(String enchant) {
         if (enchant.isEmpty()) return "";
 
@@ -143,54 +133,22 @@ public class ItemUtils {
         }
     }
 
-    /**
-     * Converts {@link org.bukkit.potion.PotionEffectType} to mojang mapped ids.
-     *
-     * @param potion the {@link org.bukkit.potion.PotionEffectType} to convert
-     * @return the mojang mapped id
-     */
     public static String getPotion(String potion) {
         return potion.isEmpty() ? "" : potion.toLowerCase();
     }
 
-    /**
-     * Checks if the {@link ItemStack} is a {@link Crate}.
-     *
-     * @param itemStack the {@link ItemStack}
-     * @param crate the {@link Crate}
-     * @return true or false
-     */
     public static boolean isSimilar(@NotNull final ItemStack itemStack, @NotNull final Crate crate) {
         return crateManager.isKeyFromCrate(itemStack, crate);
     }
 
-    /**
-     * @param container the {@link PersistentDataContainer}
-     * @return the {@link String}
-     */
     public static String getKey(@NotNull final PersistentDataContainerView container) {
-        return container.get(Keys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
+        return container.get(ItemKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
     }
 
-    /**
-     * Updates the {@link ItemBuilder} from a {@link ConfigurationSection} with a {@link Player} attached.
-     *
-     * @param section the section in the {@link org.bukkit.configuration.file.YamlConfiguration}
-     * @param builder the {@link ItemBuilder}
-     * @param player the {@link Player}
-     * @return the {@link ItemBuilder}
-     */
     public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder, @NotNull final Player player) {
         return getItem(section, builder.setPlayer(player));
     }
 
-    /**
-     * Updates the {@link ItemBuilder} from a {@link ConfigurationSection}.
-     *
-     * @param section the section in the {@link org.bukkit.configuration.file.YamlConfiguration}
-     * @param builder the {@link ItemBuilder}
-     * @return the {@link ItemBuilder}
-     */
     public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder) {
         builder.setGlowing(section.contains("Glowing") ? section.getBoolean("Glowing") : null);
         
@@ -206,8 +164,8 @@ public class ItemUtils {
 
         builder.setUnbreakable(section.getBoolean("Unbreakable", false));
         
-        if (section.contains("Skull") && plugin.getApi() != null) {
-            builder.setSkull(section.getString("Skull", ""), plugin.getApi());
+        if (section.contains("Skull")) {
+            builder.setSkull(section.getString("Skull", ""));
         }
         
         if (section.contains("Player") && builder.isPlayerHead()) {
@@ -235,13 +193,6 @@ public class ItemUtils {
         return builder;
     }
 
-    /**
-     * Converts an {@link ItemStack} to an {@link ItemBuilder}.
-     *
-     * @param player {@link Player}
-     * @param itemStack the {@link ItemStack}
-     * @return the {@link ItemBuilder}
-     */
     public static ItemBuilder convertItemStack(Player player, ItemStack itemStack) {
         ItemBuilder itemBuilder = new ItemBuilder(itemStack);
 
@@ -252,54 +203,22 @@ public class ItemUtils {
         return itemBuilder;
     }
 
-    /**
-     * Converts an {@link ItemStack} without a {@link Player}.
-     *
-     * @param itemStack the {@link ItemStack}
-     * @return the {@link ItemBuilder}
-     */
     public static ItemBuilder convertItemStack(ItemStack itemStack) {
         return convertItemStack(null, itemStack);
     }
 
-    /**
-     * Converts a {@link List<String>} to a list of {@link ItemBuilder}.
-     *
-     * @param itemStrings the {@link List<String>}
-     * @return list of {@link ItemBuilder}
-     */
     public static List<ItemBuilder> convertStringList(List<String> itemStrings) {
         return convertStringList(itemStrings, null);
     }
 
-    /**
-     * Converts a {@link List<String>} to a list of {@link ItemBuilder}.
-     *
-     * @param itemStrings the {@link List<String>}
-     * @param section the section in the {@link org.bukkit.configuration.file.YamlConfiguration}
-     * @return list of {@link ItemBuilder}
-     */
     public static List<ItemBuilder> convertStringList(List<String> itemStrings, String section) {
         return itemStrings.stream().map(itemString -> convertString(itemString, section)).collect(Collectors.toList());
     }
 
-    /**
-     * Converts a {@link String} to an {@link ItemBuilder}.
-     *
-     * @param itemString the {@link String} you wish to convert
-     * @return the {@link ItemBuilder}
-     */
     public static ItemBuilder convertString(String itemString) {
         return convertString(itemString, null);
     }
 
-    /**
-     * Converts a {@link List<String>} to a list of {@link ItemBuilder}.
-     *
-     * @param itemString the {@link String} you wish to convert
-     * @param section the section in the {@link org.bukkit.configuration.file.YamlConfiguration}
-     * @return the {@link ItemBuilder}
-     */
     public static ItemBuilder convertString(String itemString, String section) {
         ItemBuilder itemBuilder = new ItemBuilder();
 
@@ -330,7 +249,7 @@ public class ItemUtils {
                     }
                     case "lore" -> itemBuilder.setDisplayLore(List.of(value.split(",")));
                     case "player" -> itemBuilder.setPlayer(value);
-                    case "skull" -> itemBuilder.setSkull(value, plugin.getApi());
+                    case "skull" -> itemBuilder.setSkull(value);
                     case "custom-model-data" -> itemBuilder.setCustomModelData(Methods.tryParseInt(value).orElse(-1).intValue());
                     case "unbreakable-item" -> itemBuilder.setUnbreakable(value.isEmpty() || value.equalsIgnoreCase("true"));
                     case "trim-pattern" -> itemBuilder.applyTrimPattern(value);
