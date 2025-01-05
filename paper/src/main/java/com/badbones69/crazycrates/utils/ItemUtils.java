@@ -250,6 +250,7 @@ public class ItemUtils {
                     case "skull" -> itemBuilder.setSkull(value);
                     case "custom-model-data" -> itemBuilder.setCustomModelData(Methods.tryParseInt(value).orElse(-1).intValue());
                     case "unbreakable-item" -> itemBuilder.setUnbreakable(value.isEmpty() || value.equalsIgnoreCase("true"));
+                    case "hide-tool-tip" -> itemBuilder.setHidingItemFlags(value.equalsIgnoreCase("true"));
                     case "trim-pattern" -> itemBuilder.applyTrimPattern(value);
                     case "trim-material" -> itemBuilder.applyTrimMaterial(value);
                     default -> {
