@@ -158,9 +158,7 @@ public class ItemUtils {
 
         builder.addPatterns(section.getStringList("Patterns"));
 
-        builder.setItemFlags(section.getStringList("Flags"));
-
-        builder.setHidingItemFlags(section.getBoolean("HideItemFlags", false));
+        builder.setHidingItemFlags(section.getBoolean("HideItemFlags", false) || !section.getStringList("Flags").isEmpty());
 
         builder.setUnbreakable(section.getBoolean("Unbreakable", false));
         
@@ -265,7 +263,7 @@ public class ItemUtils {
 
                         for (ItemFlag itemFlag : ItemFlag.values()) {
                             if (itemFlag.name().equalsIgnoreCase(option)) {
-                                itemBuilder.addItemFlag(itemFlag);
+                                itemBuilder.setHidingItemFlags(true);
 
                                 break;
                             }

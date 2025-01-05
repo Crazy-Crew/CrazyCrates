@@ -392,9 +392,7 @@ public class Prize {
                 }
             }
 
-            builder.setItemFlags(this.section.getStringList("Flags"));
-
-            builder.setHidingItemFlags(this.section.getBoolean("HideItemFlags", false));
+            builder.setHidingItemFlags(this.section.getBoolean("HideItemFlags", false) || !this.section.getStringList("Flags").isEmpty());
 
             builder.setUnbreakable(section.getBoolean("Unbreakable", false));
 
