@@ -21,12 +21,14 @@ public class OraxenInteractListener implements Listener {
 
     @EventHandler
     public void onFurnitureInteractEvent(OraxenFurnitureInteractEvent event) {
+        if (event.getHand() == EquipmentSlot.OFF_HAND) return;
+
         final Entity itemDisplay = event.getBaseEntity();
         final Location location = itemDisplay.getLocation();
 
         final Player player = event.getPlayer();
 
-        if (this.crateManager.hasEditorCrate(player) && event.getHand() != EquipmentSlot.OFF_HAND) {
+        if (this.crateManager.hasEditorCrate(player)) {
             this.crateManager.addCrateByLocation(player, location);
 
             event.setCancelled(true);
@@ -46,7 +48,9 @@ public class OraxenInteractListener implements Listener {
 
         final Player player = event.getPlayer();
 
-        if (this.crateManager.hasEditorCrate(player) && player.getActiveItemHand() != EquipmentSlot.OFF_HAND) {
+        if (player.getActiveItemHand() == EquipmentSlot.OFF_HAND) return;
+
+        if (this.crateManager.hasEditorCrate(player)) {
             this.crateManager.removeCrateByLocation(player, location);
 
             event.setCancelled(true);
