@@ -26,9 +26,9 @@ public class ItemsAdderInteractListener implements Listener {
 
         final Player player = event.getPlayer();
 
-        final EquipmentSlot slot = player.getActiveItemHand();
+        if (player.getActiveItemHand() == EquipmentSlot.OFF_HAND) return;
 
-        if (this.crateManager.hasEditorCrate(player) && slot != EquipmentSlot.OFF_HAND) {
+        if (this.crateManager.hasEditorCrate(player)) {
             this.crateManager.addCrateByLocation(player, location);
 
             event.setCancelled(true);
@@ -48,9 +48,9 @@ public class ItemsAdderInteractListener implements Listener {
 
         final Player player = event.getPlayer();
 
-        final EquipmentSlot slot = player.getActiveItemHand();
+        if (player.getActiveItemHand() == EquipmentSlot.OFF_HAND) return;
 
-        if (this.crateManager.hasEditorCrate(player) && slot != EquipmentSlot.OFF_HAND) {
+        if (this.crateManager.hasEditorCrate(player)) {
             this.crateManager.removeCrateByLocation(player, location);
 
             event.setCancelled(true);
