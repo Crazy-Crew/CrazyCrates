@@ -16,7 +16,7 @@
 CrazyCrates is a crates plugin for Paper based servers that lets you add unlimited crates. It allows you to bring something to the server to spice up your economy and to give your players something to brag about.
 
 ## Building
-CrazyCrates requires gradle 8.11.1 to build the plugin.
+CrazyCrates requires gradle 8.12 to build the plugin.
 
 ### Requirements
 * Java 21 JDK or newer
@@ -42,8 +42,8 @@ If you have made any changes or improvements which you think could be beneficial
 
 #### Project Structure
 The project has been separated into multiple modules for preemptively supporting other platforms.
-* API Module - This module is the API used by other plugins that wish to properly integrate with our plugin, and receive data from CrazyCrates for use in their own plugins. No implementation details are in this module.
-* Common Module - This module handles a small portion of the implementation for CrazyCrates, mainly the configuration files. and independent enums or utilities.
+* Api Module - This module is the API used by other plugins that wish to properly integrate with our plugin, and receive data from CrazyCrates for use in their own plugins. No implementation details are in this module.
+* Core Module - This module handles a small portion of the implementation for CrazyCrates, mainly the configuration files. and independent enums or utilities.
   * The module does not yet handle implementation details for each platform.
 * Paper Module - This module currently is what provides the implementation for the `API Module`, I have not written an exact abstract module to sit between, and reduce more duplicated code between platforms.
   * Pull Requests that attempt to implement the remaining work of an abstract layer for multi-platform support will likely be ignored, I would like to handle that when the time comes.

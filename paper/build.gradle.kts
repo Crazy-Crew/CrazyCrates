@@ -1,9 +1,13 @@
 plugins {
-    id("crates.base")
+    id("paper-plugin")
 
     alias(libs.plugins.runPaper)
     alias(libs.plugins.shadow)
 }
+
+project.group = "${rootProject.group}.paper"
+project.version = rootProject.version
+project.description = "Add crates to your Paper server with 11 different crate types to choose from!"
 
 repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
@@ -18,15 +22,13 @@ repositories {
 }
 
 dependencies {
-    implementation(projects.crazycratesCore)
+    implementation(project(":crazycrates-core"))
 
     implementation(libs.triumph.cmds)
 
     implementation(libs.fusion.paper)
 
     implementation(libs.metrics)
-
-    compileOnly(libs.paper)
 
     compileOnly(libs.bundles.dependencies)
     compileOnly(libs.bundles.shared)
@@ -63,7 +65,7 @@ tasks {
         inputs.properties("group" to project.group)
         inputs.properties("apiVersion" to libs.versions.minecraft.get())
         inputs.properties("description" to project.description)
-        inputs.properties("website" to "https://modrinth.com/plugin/crazycrates")
+        inputs.properties("website" to rootProject.properties["website"].toString())
 
         filesMatching("paper-plugin.yml") {
             expand(inputs.properties)
