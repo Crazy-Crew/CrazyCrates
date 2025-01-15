@@ -1,10 +1,5 @@
-- Added direct support for Nexo/ItemsAdder/Oraxen furniture.
-  - A new config option was added in the config.yml letting you choose which plugin to use.
-  - If you leave it blank, or as "None"... The plugin will pick whichever it finds first.
-  - If you find an issue with one of the other plugins, Set the option in the config.yml to `None` then restart your server.
-- Updated misleading comment on Prize Commands.
-- Added /cc as an alias.
-- Updated /crates editor.
-  - The new format is /crates editor -c/--crate <crate_name> or -e/--exit (if you want to leave the mode), This will put you an editor mode for this specific crate.
-  - While in this mode, If you right-click a block, You will add a crate location. If you left-click a block, You will remove a crate location.
-  - You no longer need to shift click, or be in creative mode.
+- `Flags` has been removed from being a configuration option for Prizes
+  - If you used `Flags`, as long as it's not empty. It will simply hide everything, but lore/displayname.
+- `HideItemFlags: true/false` will now function, it will hide all, but lore/displayname.
+- `hide-tool-tip:true/false` is now an option for the `Items` section in Prizes.
+- Updated to 1.21.4

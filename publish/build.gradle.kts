@@ -1,5 +1,5 @@
 plugins {
-    id("crates.base")
+    id("root-plugin")
 
     alias(libs.plugins.minotaur)
     alias(libs.plugins.hangar)
@@ -30,7 +30,7 @@ tasks {
 
         loaders.addAll(listOf("purpur", "paper", "folia"))
 
-        syncBodyFrom.set(rootProject.file("README.md").readText(Charsets.UTF_8))
+        syncBodyFrom.set(rootProject.file("description.md").readText(Charsets.UTF_8))
 
         autoAddDependsOn.set(false)
         detectLoaders.set(false)

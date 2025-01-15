@@ -1,5 +1,5 @@
 plugins {
-    id("crates.base")
+    id("root-plugin")
 }
 
 dependencies {
@@ -7,6 +7,7 @@ dependencies {
 
     compileOnly(libs.jetbrains)
 
-    api(projects.crazycratesApi)
+    api(project(":crazycrates-api"))
+
     api(libs.jalu)
 }

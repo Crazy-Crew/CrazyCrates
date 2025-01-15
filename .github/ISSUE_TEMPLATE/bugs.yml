@@ -42,13 +42,15 @@ body:
         - "1.20.6"
         - "1.21"
         - "1.21.1"
+        - "1.21.3"
+        - "1.21.4"
     validations:
       required: true
   - type: dropdown
     id: platform
     attributes:
       label: Server Platform
-      description: What server platform are you using? Spigot is no longer supported. Please update to https://papermc.io
+      description: What server platform are you using? Spigot is no longer supported with Paper's hard-fork.
       options:
         - Spigot
         - Paper

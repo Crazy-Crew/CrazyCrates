@@ -1,11 +1,11 @@
 plugins {
-    id("crates.base")
+    id("paper-plugin")
 
     alias(libs.plugins.shadow)
 }
 
 dependencies {
-    implementation(projects.crazycratesApi)
+    implementation(project(":crazycrates-api"))
 
     compileOnly(libs.paper)
 }
