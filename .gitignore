@@ -1,35 +1,10 @@
-.gradle
+### Intellij
+.kotlin
 .idea
-build
 
-buildSrc/.gradle
-buildSrc/build
+### Gradle
+.gradle
+build/
+run/
 
-api/.gradle
-api/build
-
-paper/.gradle
-paper/build
-
-example/.gradle
-example/build
-
-paper/run
-
-!paper/run/config/paper-global.yml
-!paper/run/config/paper-world-defaults.yml
-!paper/run/bukkit.yml
-!paper/run/eula.txt
-!paper/run/server.properties
-!paper/run/spigot.yml
-
-example/run
-
-!example/run/config/paper-global.yml
-!example/run/config/paper-world-defaults.yml
-!example/run/bukkit.yml
-!example/run/eula.txt
-!example/run/server.properties
-!example/run/spigot.yml
-
-jars
+jars/
