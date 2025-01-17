@@ -15,6 +15,7 @@ import com.ryderbelserion.core.util.Methods;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Color;
 import org.bukkit.Server;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -403,6 +404,20 @@ public class Prize {
 
                 if (type != null) {
                     builder.setEntityType(type);
+                }
+            }
+
+            if (this.section.contains("Settings.RGB")) {
+                final @Nullable Color color = PaperMethods.getRGB(this.section.getString("Settings.RGB", ""));
+
+                if (color != null) {
+                    builder.setColor(color);
+                }
+            } else if (this.section.contains("Settings.Color")) {
+                final @Nullable Color color = PaperMethods.getColor(this.section.getString("Settings.Color", ""));
+
+                if (color != null) {
+                    builder.setColor(color);
                 }
             }
 
