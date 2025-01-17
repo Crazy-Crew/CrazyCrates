@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
 import com.ryderbelserion.paper.util.PaperMethods;
 import com.ryderbelserion.core.util.Methods;
 import io.papermc.paper.persistence.PersistentDataContainerView;
+import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.entity.EntityType;
@@ -19,6 +20,8 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -253,6 +256,18 @@ public class ItemUtils {
                     case "hide-tool-tip" -> itemBuilder.setHidingItemFlags(value.equalsIgnoreCase("true"));
                     case "trim-pattern" -> itemBuilder.applyTrimPattern(value);
                     case "trim-material" -> itemBuilder.applyTrimMaterial(value);
+                    case "rgb" -> {
+                        final @Nullable Color color = PaperMethods.getRGB(value);
+
+                        if (color != null) {
+                            itemBuilder.setColor(color);
+                        }
+                    }
+                    case "color" -> {
+                        final @Nullable Color color = PaperMethods.getColor(value);
+
+                        itemBuilder.setColor(color);
+                    }
                     default -> {
                         if (PaperMethods.getEnchantment(option.toLowerCase()) != null) {
                             final Optional<Number> amount = Methods.tryParseInt(value);
