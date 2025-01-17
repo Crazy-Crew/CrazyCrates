@@ -369,7 +369,7 @@ public class Prize {
 
             //builder.addLorePlaceholder("%chance%", this.getTotalChance());
 
-            builder.setGlowing(this.section.contains("Glowing") ? section.getBoolean("Glowing") : null);
+            builder.setGlowing(this.section.getBoolean("Glowing", false));
 
             builder.setDamage(this.section.getInt("DisplayDamage", 0));
 
@@ -395,7 +395,7 @@ public class Prize {
 
             builder.setHidingItemFlags(this.section.getBoolean("HideItemFlags", false) || !this.section.getStringList("Flags").isEmpty());
 
-            builder.setUnbreakable(section.getBoolean("Unbreakable", false));
+            builder.setUnbreakable(this.section.getBoolean("Unbreakable", false));
 
             builder.setCustomModelData(this.section.getInt("Settings.Custom-Model-Data", -1));
 
@@ -414,11 +414,7 @@ public class Prize {
                     builder.setColor(color);
                 }
             } else if (this.section.contains("Settings.Color")) {
-                final @Nullable Color color = PaperMethods.getColor(this.section.getString("Settings.Color", ""));
-
-                if (color != null) {
-                    builder.setColor(color);
-                }
+                builder.setColor(PaperMethods.getColor(this.section.getString("Settings.Color", "RED")));
             }
 
             if (this.section.contains("Skull")) {
