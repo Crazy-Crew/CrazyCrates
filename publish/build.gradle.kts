@@ -7,7 +7,7 @@ plugins {
 
 val content: String = rootProject.file("changelog.md").readText(Charsets.UTF_8)
 
-val isBeta = true
+val isBeta = false
 val pluginName = rootProject.name
 val mcVersion = libs.versions.minecraft.get()
 
