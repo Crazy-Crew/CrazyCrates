@@ -153,7 +153,9 @@ public class ItemUtils {
     }
 
     public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder) {
-        builder.setGlowing(section.contains("Glowing") ? section.getBoolean("Glowing") : null);
+        if (section.contains("Glowing")) {
+            builder.setGlowing(section.getBoolean("Glowing", false));
+        }
         
         builder.setDamage(section.getInt("DisplayDamage", 0));
         
@@ -239,7 +241,7 @@ public class ItemUtils {
                             itemBuilder.setEntityType(type);
                         }
                     }
-                    case "glowing" -> itemBuilder.setGlowing(Boolean.parseBoolean(value));
+                    case "glowing" -> itemBuilder.setGlowing(Methods.tryParseBoolean(value).orElse(false));
                     case "amount" -> {
                         final Optional<Number> amount = Methods.tryParseInt(value);
                         itemBuilder.setAmount(amount.map(Number::intValue).orElse(1));

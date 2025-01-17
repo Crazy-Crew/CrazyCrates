@@ -369,7 +369,9 @@ public class Prize {
 
             //builder.addLorePlaceholder("%chance%", this.getTotalChance());
 
-            builder.setGlowing(this.section.getBoolean("Glowing", false));
+            if (this.section.contains("Glowing")) {
+                builder.setGlowing(this.section.getBoolean("Glowing", false));
+            }
 
             builder.setDamage(this.section.getInt("DisplayDamage", 0));
 
