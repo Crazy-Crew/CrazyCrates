@@ -34,15 +34,6 @@ root:
   # send_actionbar -> sends messages in actionbar.
   #
   message-state: "send_message"
-  # A list of available custom item plugins:
-  #  -> ItemsAdder
-  #  -> Oraxen
-  #  -> Nexo
-  #  -> None
-  #
-  # If the option is set to blank, it'll pick whatever plugin it feels like picking.
-  # Set the value to None if you do not want any.
-  custom-items-plugin: ""
   # A list of available hologram plugins:
   #  -> DecentHolograms
   #  -> FancyHolograms

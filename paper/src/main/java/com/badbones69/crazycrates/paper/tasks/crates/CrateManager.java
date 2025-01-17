@@ -236,7 +236,7 @@ public class CrateManager {
     public void loadCustomItems() {
         final PluginManager manager = this.plugin.getServer().getPluginManager();
 
-        final String pluginName = this.config.getProperty(ConfigKeys.custom_items_plugin).toLowerCase();
+        final String pluginName = this.plugin.getFusion().getItemPlugin().toLowerCase();
 
         switch (pluginName) {
             case "nexo" -> manager.registerEvents(new NexoInteractListener(), this.plugin);

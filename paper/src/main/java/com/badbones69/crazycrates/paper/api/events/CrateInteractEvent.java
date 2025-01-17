@@ -1,11 +1,8 @@
 package com.badbones69.crazycrates.paper.api.events;
 
-import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
-import com.badbones69.crazycrates.core.config.ConfigManager;
-import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.nexomc.nexo.api.NexoFurniture;
 import com.nexomc.nexo.api.events.furniture.NexoFurnitureBreakEvent;
@@ -157,8 +154,6 @@ public class CrateInteractEvent extends Event implements Cancellable {
         }
     }
 
-    private final SettingsManager config = ConfigManager.getConfig();
-
     /**
      * A wrapper to check if a location has a piece of furniture at it.
      *
@@ -166,7 +161,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
      * @return true or false
      */
     public boolean isFurniture(final Location location) {
-        final String pluginName = this.config.getProperty(ConfigKeys.custom_items_plugin).toLowerCase();
+        final String pluginName = this.plugin.getFusion().getItemPlugin().toLowerCase();
 
         boolean isFurniture = false;
 
