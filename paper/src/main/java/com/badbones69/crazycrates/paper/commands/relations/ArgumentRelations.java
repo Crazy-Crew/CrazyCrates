@@ -16,7 +16,8 @@ public class ArgumentRelations extends MessageManager {
 
         switch (command) {
             case "transfer" -> usage = order + " <crate_name> <player_name> <amount>";
-            case "set", "claim" -> usage = order + " <crate_name>";
+            case "claim" -> usage = order + " <crate_name>";
+            case "editor" -> usage = order + "-c/--crate <crate> or -e/--exit";
             case "debug" -> usage = order + " <crate_name> [player_name]";
             case "open" -> usage = order + " <crate_name> <key_type>";
             case "tp" -> usage = order + " <id>";
@@ -25,9 +26,10 @@ public class ArgumentRelations extends MessageManager {
             case "open-others" -> usage = order + " <crate_name> <player_name> [key_type]";
             case "mass-open" -> usage = order + " <crate_name> <key_type> <amount>";
             case "give-random" -> usage = order + " <key_type> <amount> <player_name>";
-            case "give", "take" -> usage = order + " <key_type> <crate_name> <amount> <player_name>";
-            case "giveall" -> usage = order + " <key_type> <crate_name> <amount>";
-            case "migrate" -> usage = order + " -mt <migration_type> -c <crate> -d";
+            case "take" -> usage = order + " <key_type> <crate_name> <amount> <player_name>";
+            case "give" -> usage = order + " <key_type> <crate_name> <amount> <player_name> [-s/--silent]";
+            case "giveall" -> usage = order + " <key_type> <crate_name> <amount> [-s/--silent]";
+            case "migrate" -> usage = order + " -mt <migration_type> [-c/--crate] <crate> [-d/--data]";
             case "respin-accept" -> usage = order + " <player> <crate_name> [prize_name]";
             case "respin-deny" -> usage = order + " <player> <crate_name>";
             case "respin-remove", "respin-add" -> usage = order + " <player> <crate_name> <amount>";

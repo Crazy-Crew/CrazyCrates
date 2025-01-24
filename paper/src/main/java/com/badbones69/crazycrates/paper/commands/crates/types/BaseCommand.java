@@ -50,8 +50,8 @@ public abstract class BaseCommand {
      * @param type the type of key.
      * @param amount the amount of keys.
      */
-    protected void addKey(@NotNull final CommandSender sender, @NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType type, final int amount) {
-        addKey(sender, player, null, crate, type, amount);
+    protected void addKey(@NotNull final CommandSender sender, @NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType type, final int amount, final boolean isSilent) {
+        addKey(sender, player, null, crate, type, amount, isSilent);
     }
 
     /**
@@ -63,8 +63,8 @@ public abstract class BaseCommand {
      * @param keyType the type of key.
      * @param amount the amount of keys.
      */
-    protected void addKey(@NotNull final CommandSender sender, @Nullable final OfflinePlayer player, @NotNull final Crate crate, @NotNull final KeyType keyType, final int amount) {
-        addKey(sender, null, player, crate, keyType, amount);
+    protected void addKey(@NotNull final CommandSender sender, @Nullable final OfflinePlayer player, @NotNull final Crate crate, @NotNull final KeyType keyType, final int amount, final boolean isSilent) {
+        addKey(sender, null, player, crate, keyType, amount, isSilent);
     }
 
     /**
@@ -186,7 +186,7 @@ public abstract class BaseCommand {
     }
 
     @ApiStatus.Internal
-    private void addKey(@NotNull final CommandSender sender, @Nullable Player player, @Nullable OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount) {
+    private void addKey(@NotNull final CommandSender sender, @Nullable Player player, @Nullable OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount, boolean isSilent) {
         final String fileName = crate.getFileName();
 
         if (player != null) {
@@ -212,13 +212,17 @@ public abstract class BaseCommand {
             boolean fullMessage = this.config.getProperty(ConfigKeys.notify_player_when_inventory_full);
             boolean inventoryCheck = this.config.getProperty(ConfigKeys.give_virtual_keys_when_inventory_full);
 
+            EventManager.logEvent(EventType.event_key_given, player.getName(), sender, crate, type, amount);
+
             Messages.gave_a_player_keys.sendMessage(sender, placeholders);
+
+            if (isSilent) {
+                return;
+            }
 
             if (!inventoryCheck || !fullMessage && !MiscUtils.isInventoryFull(player) && player.isOnline()) {
                 Messages.obtaining_keys.sendMessage(player, placeholders);
             }
-
-            EventManager.logEvent(EventType.event_key_given, player.getName(), sender, crate, type, amount);
 
             return;
         }

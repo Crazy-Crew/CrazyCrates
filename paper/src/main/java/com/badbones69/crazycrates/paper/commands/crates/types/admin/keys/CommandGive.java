@@ -10,7 +10,9 @@ import com.badbones69.crazycrates.paper.api.PlayerBuilder;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
+import dev.triumphteam.cmd.core.annotations.Flag;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
+import dev.triumphteam.cmd.core.argument.keyed.Flags;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
@@ -22,8 +24,11 @@ import java.util.Map;
 public class CommandGive extends BaseCommand {
 
     @Command("give")
+    @Flag(flag = "s", longFlag = "silent")
     @Permission(value = "crazycrates.givekey", def = PermissionDefault.OP)
-    public void give(CommandSender sender, @ArgName("key_type") @Suggestion("keys") String type, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("amount") @Suggestion("numbers") int amount, @ArgName("player") @Suggestion("players") PlayerBuilder target) {
+    public void give(CommandSender sender, @ArgName("key_type") @Suggestion("keys") String type, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("amount") @Suggestion("numbers") int amount, @ArgName("player") @Suggestion("players") PlayerBuilder target, Flags flags) {
+        final boolean isSilent = flags.hasFlag("s");
+
         if (crateName == null || crateName.isBlank()) {
             Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
 
@@ -47,23 +52,27 @@ public class CommandGive extends BaseCommand {
         final KeyType keyType = getKeyType(type);
 
         if (target.getPlayer() != null) {
-            addKey(sender, target.getPlayer(), crate, keyType, amount);
+            addKey(sender, target.getPlayer(), crate, keyType, amount, isSilent);
 
             return;
         }
 
-        addKey(sender, target.getOfflinePlayer(), crate, keyType, amount);
+        addKey(sender, target.getOfflinePlayer(), crate, keyType, amount, isSilent);
     }
 
     @Command("give-random")
+    @Flag(flag = "s", longFlag = "silent")
     @Permission(value = "crazycrates.giverandomkey", def = PermissionDefault.OP)
-    public void random(CommandSender sender, @Suggestion("keys") String type, @Suggestion("numbers") int amount, @Suggestion("players") PlayerBuilder target) {
-        give(sender, type, this.crateManager.getUsableCrates().get((int) MiscUtils.pickNumber(0, (this.crateManager.getUsableCrates().size() - 2))).getFileName(), amount, target);
+    public void random(CommandSender sender, @Suggestion("keys") String type, @Suggestion("numbers") int amount, @Suggestion("players") PlayerBuilder target, Flags flags) {
+        give(sender, type, this.crateManager.getUsableCrates().get((int) MiscUtils.pickNumber(0, (this.crateManager.getUsableCrates().size() - 2))).getFileName(), amount, target, flags);
     }
 
     @Command("giveall")
+    @Flag(flag = "s", longFlag = "silent")
     @Permission(value = "crazycrates.giveall", def = PermissionDefault.OP)
-    public void all(CommandSender sender, @Suggestion("keys") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount) {
+    public void all(CommandSender sender, @Suggestion("keys") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, Flags flags) {
+        final boolean isSilent = flags.hasFlag("s");
+
         if (crateName.isEmpty()) {
             Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
@@ -102,15 +111,13 @@ public class CommandGive extends BaseCommand {
 
             if (event.isCancelled()) return;
 
-            Messages.obtaining_keys.sendMessage(player, placeholders);
-
             if (crate.getCrateType() == CrateType.crate_on_the_go) {
                 MiscUtils.addItem(player, crate.getKey(amount, player));
 
                 return;
             }
 
-            addKey(sender, player, crate, keyType, amount);
+            addKey(sender, player, crate, keyType, amount, isSilent);
         }
     }
 }
