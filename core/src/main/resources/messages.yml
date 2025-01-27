@@ -272,8 +272,10 @@ command:
     - "<gold>/crates mass-open <crate_name> <physical/virtual> [amount] <gray>- <yellow>Mass
       opens a set amount of crates."
     - "<gold>/crates tp <location> <gray>- <yellow>Teleport to a Crate."
-    - "<gold>/crates give <physical/virtual> <crate_name> [amount] [player] <gray>- <yellow>Allows
+    - "<gold>/crates give-all <physical/virtual> <crate> <amount> [-s/--silent] <gray>- <yellow>Gives all online players keys to use on a crate."
+    - "<gold>/crates give <physical/virtual> <crate_name> [amount] [player] [-s/--silent] <gray>- <yellow>Allows
       you to take keys from a player."
+    - "<gold>/crates give-random <physical/virtual> <amount> [-s/--silent] <gray>- <yellow>Gives a player random crate keys."
     - "<gold>/crates editor -c/--crate <crate_name> or -e/--exit <gray>- <yellow>Allows you to enter/exit editor mode."
     - "<gold>/crates migrate -mt/--migration_type <migration_type> --crate/-crate <crate> --data/-d <gray>- <yellow>A command to migrate from other plugins or for internal changes."
     - "<gold>/crates reload <gray>- <yellow>Reloads the config/data files."

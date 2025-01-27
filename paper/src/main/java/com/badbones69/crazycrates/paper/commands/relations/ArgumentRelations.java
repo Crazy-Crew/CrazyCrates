@@ -25,7 +25,7 @@ public class ArgumentRelations extends MessageManager {
             case "preview", "forceopen" -> usage = order + " <crate_name> <player_name>";
             case "open-others" -> usage = order + " <crate_name> <player_name> [key_type]";
             case "mass-open" -> usage = order + " <crate_name> <key_type> <amount>";
-            case "give-random" -> usage = order + " <key_type> <amount> <player_name>";
+            case "give-random" -> usage = order + " <key_type> <amount> <player_name> [-s/--silent]";
             case "take" -> usage = order + " <key_type> <crate_name> <amount> <player_name>";
             case "give" -> usage = order + " <key_type> <crate_name> <amount> <player_name> [-s/--silent]";
             case "giveall" -> usage = order + " <key_type> <crate_name> <amount> [-s/--silent]";
