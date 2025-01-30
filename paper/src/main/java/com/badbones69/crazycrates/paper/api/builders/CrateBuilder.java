@@ -195,7 +195,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @return title of the crate
      */
     public @NotNull final String getTitle() {
-        return this.crate.getCrateName();
+        return this.crate.getAnimationName();
     }
 
     /**

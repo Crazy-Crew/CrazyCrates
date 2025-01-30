@@ -101,6 +101,8 @@ public class Crate {
     private double sum = 0;
     private double tierSum = 0;
 
+    private String animationName;
+
     /**
      * @param name The name of the crate.
      * @param crateType The crate type of the crate.
@@ -177,7 +179,9 @@ public class Crate {
         setPreviewChestLines(file.getInt("Crate.Preview.ChestLines", 6));
         this.maxSlots = this.previewChestLines * 9;
 
-        this.crateName = file.contains("Crate.CrateName") ? file.getString("Crate.CrateName", " ") : file.getString("Crate.Name", " ");
+        this.crateName = file.getString("Crate.Name", " ");
+
+        this.animationName = file.getString("Crate.Animation.Name", this.crateName);
 
         @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
@@ -221,6 +225,10 @@ public class Crate {
     public Crate(@NotNull final String name) {
         this.crateType = CrateType.menu;
         this.name = name;
+    }
+
+    public String getAnimationName() {
+        return this.animationName;
     }
 
     public Color getColor() {
