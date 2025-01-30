@@ -151,7 +151,9 @@ public class CasinoCrate extends CrateBuilder {
     private void setDisplayItems(final boolean isStatic) {
         final ConfigurationSection section = this.crate.getFile().getConfigurationSection("Crate.random");
 
-        if (isStatic) {
+        final boolean isGlassBorderToggled = this.crate.isGlassBorderToggled();
+
+        if (isStatic && isGlassBorderToggled) {
             for (int index = 0; index < 27; index++) {
                 setItem(index, getRandomGlassPane());
             }
@@ -165,7 +167,7 @@ public class CasinoCrate extends CrateBuilder {
 
                 int size = tiers.size();
 
-                ThreadLocalRandom random = ThreadLocalRandom.current();
+                final ThreadLocalRandom random = ThreadLocalRandom.current();
 
                 setItem(2, getDisplayItem(tiers.get(random.nextInt(size))));
                 setItem(11, getDisplayItem(tiers.get(random.nextInt(size))));
