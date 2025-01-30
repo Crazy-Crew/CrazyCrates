@@ -384,19 +384,7 @@ public class CrateManager {
                 final ArrayList<Prize> prizes = new ArrayList<>();
                 final List<Tier> tiers = new ArrayList<>();
 
-                String previewName;
-
-                if (file.contains("Crate.Preview-Name")) {
-                    previewName = file.getString("Crate.Preview-Name", " ");
-                } else if (file.contains("Crate.Preview.Name")) {
-                    previewName = file.getString("Crate.Preview.Name", " ");
-                } else if (file.contains("Crate.CrateName")) {
-                    previewName = file.getString("Crate.CrateName", " ");
-                } else {
-                    previewName = file.getString("Crate.Name", " ");
-                }
-
-                // final String previewName = file.contains("Crate.Preview.Name") ? file.getString("Crate.Preview.Name", " ") : file.getString("Crate.Name", " "), this is for the next version of minecraft once previous options are removed.
+                final String previewName = file.contains("Crate.Preview.Name") ? file.getString("Crate.Preview.Name", " ") : file.getString("Crate.Name", " ");
 
                 final int maxMassOpen = file.getInt("Crate.Max-Mass-Open", 10);
                 final int requiredKeys = file.getInt("Crate.RequiredKeys", 0);
