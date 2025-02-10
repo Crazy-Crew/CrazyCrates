@@ -180,7 +180,15 @@ public class CrateInteractEvent extends Event implements Cancellable {
                 }
             }
 
-            default -> {}
+            default -> {
+                if (Plugins.nexo.isEnabled() && NexoFurniture.isFurniture(location)) {
+                    isFurniture = true;
+                } else if (Plugins.oraxen.isEnabled() && OraxenFurniture.isFurniture(location.getBlock())) {
+                    isFurniture = true;
+                } else if (Plugins.items_adder.isEnabled()) {
+                    isFurniture = true;
+                }
+            }
         }
 
         return isFurniture;
