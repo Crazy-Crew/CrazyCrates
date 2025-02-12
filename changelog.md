@@ -1,1 +1,1 @@
-- Fixed issue with furniture plugins due to a pesky boolean.
+- Fixed an issue with vanilla blocks not working as crates
