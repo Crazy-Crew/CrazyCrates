@@ -147,7 +147,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
         this.slot = this.paperEvent.getHand();
         this.location = location;
 
-        setCancelled(this.slot == EquipmentSlot.OFF_HAND || !isFurniture(location));
+        setCancelled(this.slot == EquipmentSlot.OFF_HAND || isFurniture(location));
 
         if (!isCancelled()) {
             this.crateLocation = this.crateManager.getCrateLocation(this.location);
