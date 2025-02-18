@@ -23,11 +23,11 @@ import com.badbones69.crazycrates.paper.support.placeholders.PlaceholderAPISuppo
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.paper.FusionApi;
-import com.ryderbelserion.core.api.enums.FileType;
-import com.ryderbelserion.paper.Fusion;
-import com.ryderbelserion.paper.files.FileManager;
-import com.ryderbelserion.core.util.Methods;
+import com.ryderbelserion.fusion.core.util.StringUtils;
+import com.ryderbelserion.fusion.paper.FusionApi;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.paper.Fusion;
+import com.ryderbelserion.fusion.paper.files.FileManager;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
@@ -131,9 +131,9 @@ public class CrazyCrates extends JavaPlugin {
             // Print dependency garbage
             for (final Plugins value : Plugins.values()) {
                 if (value.isEnabled()) {
-                    getComponentLogger().info(Methods.parse("<bold><gold>" + value.getName() + " <green>FOUND"));
+                    getComponentLogger().info(StringUtils.parse("<bold><gold>" + value.getName() + " <green>FOUND"));
                 } else {
-                    getComponentLogger().info(Methods.parse("<bold><gold>" + value.getName() + " <red>NOT FOUND"));
+                    getComponentLogger().info(StringUtils.parse("<bold><gold>" + value.getName() + " <red>NOT FOUND"));
                 }
             }
 

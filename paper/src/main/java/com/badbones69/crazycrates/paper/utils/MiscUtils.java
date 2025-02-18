@@ -4,9 +4,9 @@ import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
-import com.ryderbelserion.paper.enums.Scheduler;
-import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
-import com.ryderbelserion.core.util.FileMethods;
+import com.ryderbelserion.fusion.core.util.FileUtils;
+import com.ryderbelserion.fusion.paper.enums.Scheduler;
+import com.ryderbelserion.fusion.paper.util.scheduler.FoliaScheduler;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemType;
@@ -102,7 +102,7 @@ public class MiscUtils {
             final File crateLog = FileKeys.crate_log.getFile();
             final File keyLog = FileKeys.key_log.getFile();
 
-            FileMethods.zip(logsFolder, ".log", true);
+            FileUtils.zip(logsFolder, ".log", true);
 
             try {
                 if (!crateLog.exists()) {

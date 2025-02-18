@@ -10,8 +10,8 @@ import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
-import com.ryderbelserion.paper.util.PaperMethods;
-import com.ryderbelserion.core.util.Methods;
+import com.ryderbelserion.fusion.core.util.StringUtils;
+import com.ryderbelserion.fusion.paper.util.PaperMethods;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -127,7 +127,7 @@ public class Prize {
     }
 
     public @NotNull final String getStrippedName() {
-        return PlainTextComponentSerializer.plainText().serialize(Methods.parse(getPrizeName()));
+        return PlainTextComponentSerializer.plainText().serialize(StringUtils.parse(getPrizeName()));
     }
 
     /**
@@ -200,7 +200,7 @@ public class Prize {
             this.displayItem.setPlayer(player);
         }
 
-        final String weight = Methods.format(crate.getChance(getWeight()));
+        final String weight = StringUtils.format(crate.getChance(getWeight()));
 
         this.displayItem.addLorePlaceholder("%chance%", weight).addLorePlaceholder("%maxpulls%", String.valueOf(maxPulls)).addLorePlaceholder("%pulls%", amount);
         this.displayItem.addNamePlaceholder("%chance%", weight).addNamePlaceholder("%maxpulls%", String.valueOf(maxPulls)).addNamePlaceholder("%pulls%", amount);
@@ -313,7 +313,7 @@ public class Prize {
         final String current_pulls = String.valueOf(PrizeManager.getCurrentPulls(this, crate));
         final String max_pulls = String.valueOf(getMaxPulls());
 
-        final Component message = this.plugin.getFusion().color(target, Methods.toString(messages), new HashMap<>() {{
+        final Component message = this.plugin.getFusion().color(target, StringUtils.toString(messages), new HashMap<>() {{
             put("%player%", target.getName());
             put("%crate%", crate.getCrateName());
             put("%reward%", getPrizeName().replaceAll("%maxpulls%", max_pulls).replaceAll("%pulls%", current_pulls));

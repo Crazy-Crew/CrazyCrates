@@ -1,10 +1,10 @@
 package com.badbones69.crazycrates.paper.api.enums.other.keys;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.ryderbelserion.core.api.enums.FileType;
-import com.ryderbelserion.core.api.exception.FusionException;
-import com.ryderbelserion.paper.files.CustomFile;
-import com.ryderbelserion.paper.files.FileManager;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.api.exception.FusionException;
+import com.ryderbelserion.fusion.paper.files.CustomFile;
+import com.ryderbelserion.fusion.paper.files.FileManager;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.Nullable;
 import java.io.File;

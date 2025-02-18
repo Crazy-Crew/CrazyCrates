@@ -11,7 +11,7 @@ import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.paper.files.FileManager;
+import com.ryderbelserion.fusion.paper.files.FileManager;
 import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;

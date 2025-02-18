@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
-
 import java.util.UUID;
 
 public class CrateOnTheGo extends CrateBuilder {

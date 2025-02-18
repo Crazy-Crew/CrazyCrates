@@ -7,9 +7,9 @@ import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.paper.files.CustomFile;
-import com.ryderbelserion.paper.files.FileManager;
-import com.ryderbelserion.core.util.Methods;
+import com.ryderbelserion.fusion.core.util.StringUtils;
+import com.ryderbelserion.fusion.paper.files.CustomFile;
+import com.ryderbelserion.fusion.paper.files.FileManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -63,7 +63,7 @@ public abstract class ICrateMigrator {
     public void sendMessage(List<String> files, final int success, final int failed) {
         Messages.successfully_migrated.sendMessage(this.sender, new HashMap<>() {{
             if (files.size() > 1) {
-                put("{files}", Methods.toString(files));
+                put("{files}", StringUtils.toString(files));
             } else {
                 put("{files}", files.getFirst());
             }

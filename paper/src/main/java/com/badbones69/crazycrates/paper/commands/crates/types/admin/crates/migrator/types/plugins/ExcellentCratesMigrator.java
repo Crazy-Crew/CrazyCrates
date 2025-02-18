@@ -5,10 +5,10 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import com.ryderbelserion.core.api.enums.FileType;
-import com.ryderbelserion.paper.files.CustomFile;
-import com.ryderbelserion.paper.util.PaperMethods;
-import com.ryderbelserion.core.util.Methods;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.util.StringUtils;
+import com.ryderbelserion.fusion.paper.files.CustomFile;
+import com.ryderbelserion.fusion.paper.util.PaperMethods;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -183,8 +183,8 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 menuFile.getStringList("Crate.Lore").forEach(line -> previewLore.add(line.replaceAll("<l", "<").replaceAll("</l", "</")));
 
-                set(root, "Name", Methods.convert(previewName));
-                set(root, "Lore", Methods.convert(previewLore));
+                set(root, "Name", StringUtils.convert(previewName));
+                set(root, "Lore", StringUtils.convert(previewLore));
 
                 final org.bukkit.configuration.ConfigurationSection section = menuFile.getConfigurationSection("Crate.Slots");
 
@@ -204,7 +204,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             set(root, "Preview.Toggle", true);
             set(root, "Preview.ChestLines", 6);
-            set(root, "Preview.Name", Methods.convert(crate.getName()));
+            set(root, "Preview.Name", StringUtils.convert(crate.getName()));
             set(root, "Preview.Glass.Toggle", true);
             set(root, "Preview.Glass.Name", " ");
             set(root, "Preview.Glass.Item", "gray_stained_glass_pane");
@@ -215,7 +215,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             set(root, "Max-Mass-Open", 10);
 
             set(root, "OpeningBroadCast", false);
-            set(root, "BroadCast", "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><green>%crate%.</bold>".replace("%crate%", Methods.convert(crate.getName())));
+            set(root, "BroadCast", "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><green>%crate%.</bold>".replace("%crate%", StringUtils.convert(crate.getName())));
 
             set(root, "opening-command.toggle", false);
             set(root, "opening-command.commands", List.of("put your command here."));
@@ -243,7 +243,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             final String itemName = crateConfig.getString("Item.Name", "");
 
-            set(root, "Preview-Name", Methods.convert(itemName.isEmpty() ? crateConfig.getString("Name", "%crate%").replace("%crate%", strippedName) : itemName + " Preview"));
+            set(root, "Preview-Name", StringUtils.convert(itemName.isEmpty() ? crateConfig.getString("Name", "%crate%").replace("%crate%", strippedName) : itemName + " Preview"));
 
             if (crateItem.hasItemMeta()) {
                 final ItemMeta itemMeta = crateItem.getItemMeta();
@@ -269,7 +269,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                         crate.getName()
                 );
 
-                hologramText.add(Methods.convert(filtered));
+                hologramText.add(StringUtils.convert(filtered));
             });
 
             set(root, "Hologram.Message", hologramText);
@@ -285,10 +285,10 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 set(root, "PhysicalKey.Data", PaperMethods.toBase64(itemStack));
 
-                set(root, "PhysicalKey.Name", Methods.convert(key.getName().replace("#", "#&")));
+                set(root, "PhysicalKey.Name", StringUtils.convert(key.getName().replace("#", "#&")));
                 set(root, "PhysicalKey.Item", itemStack.getType().getKey().getKey());
 
-                set(root, "PhysicalKey.Lore", Methods.convert(key.getConfig().getStringList("Lore")));
+                set(root, "PhysicalKey.Lore", StringUtils.convert(key.getConfig().getStringList("Lore")));
 
                 set(root, "PhysicalKey.Glowing", config.contains("Item.Enchants"));
             }
@@ -306,12 +306,12 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                         final List<Component> lore = itemMeta.lore();
 
                         if (lore != null) {
-                            set(root, "Prizes." + id + ".DisplayLore", Methods.fromComponent(lore));
+                            set(root, "Prizes." + id + ".DisplayLore", StringUtils.fromComponent(lore));
                         }
                     }
                 }
 
-                set(root, "Prizes." + id + ".DisplayName", Methods.convert(reward.getName().replace("#", "#&")));
+                set(root, "Prizes." + id + ".DisplayName", StringUtils.convert(reward.getName().replace("#", "#&")));
 
                 set(root, "Prizes." + id + ".Commands", reward.getCommands());
 

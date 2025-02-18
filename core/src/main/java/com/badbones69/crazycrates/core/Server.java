@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.core;
 
 import com.badbones69.crazycrates.core.impl.Settings;
-import com.ryderbelserion.core.util.FileMethods;
+import com.ryderbelserion.fusion.core.util.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.users.UserManager;
@@ -59,7 +59,7 @@ public class Server implements IServer {
 
     @Override
     public @NotNull final List<String> getCrateFiles() {
-        return FileMethods.getNames(getCrateFolder(), ".yml", false);
+        return FileUtils.getNames(getCrateFolder(), ".yml", false);
     }
 
     @Override

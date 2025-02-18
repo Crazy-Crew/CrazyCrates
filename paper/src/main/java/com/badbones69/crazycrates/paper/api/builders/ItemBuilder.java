@@ -1,11 +1,11 @@
 package com.badbones69.crazycrates.paper.api.builders;
 
-import com.ryderbelserion.paper.util.PaperMethods;
+import com.ryderbelserion.fusion.paper.util.PaperMethods;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 
-public class ItemBuilder extends com.ryderbelserion.paper.builder.items.ItemBuilder<ItemBuilder> {
+public class ItemBuilder extends com.ryderbelserion.fusion.paper.builder.items.ItemBuilder<ItemBuilder> {
 
     public ItemBuilder(final ItemBuilder itemBuilder, final boolean createNewStack) {
         super(itemBuilder, createNewStack);

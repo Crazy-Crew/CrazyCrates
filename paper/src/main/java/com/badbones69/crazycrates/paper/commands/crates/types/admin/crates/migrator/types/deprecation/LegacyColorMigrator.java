@@ -4,8 +4,8 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import com.ryderbelserion.paper.files.CustomFile;
-import com.ryderbelserion.core.util.Methods;
+import com.ryderbelserion.fusion.core.util.StringUtils;
+import com.ryderbelserion.fusion.paper.files.CustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -25,20 +25,20 @@ public class LegacyColorMigrator extends ICrateMigrator {
         final List<String> success = new ArrayList<>();
 
         try {
-            this.config.setProperty(ConfigKeys.command_prefix, Methods.convert(this.config.getProperty(ConfigKeys.command_prefix), true));
-            this.config.setProperty(ConfigKeys.inventory_name, Methods.convert(this.config.getProperty(ConfigKeys.inventory_name), true));
+            this.config.setProperty(ConfigKeys.command_prefix, StringUtils.convert(this.config.getProperty(ConfigKeys.command_prefix), true));
+            this.config.setProperty(ConfigKeys.inventory_name, StringUtils.convert(this.config.getProperty(ConfigKeys.inventory_name), true));
 
-            this.config.setProperty(ConfigKeys.menu_button_name, Methods.convert(this.config.getProperty(ConfigKeys.menu_button_name), true));
-            this.config.setProperty(ConfigKeys.menu_button_lore, Methods.convert(this.config.getProperty(ConfigKeys.menu_button_lore), true));
+            this.config.setProperty(ConfigKeys.menu_button_name, StringUtils.convert(this.config.getProperty(ConfigKeys.menu_button_name), true));
+            this.config.setProperty(ConfigKeys.menu_button_lore, StringUtils.convert(this.config.getProperty(ConfigKeys.menu_button_lore), true));
 
-            this.config.setProperty(ConfigKeys.next_button_name, Methods.convert(this.config.getProperty(ConfigKeys.next_button_name), true));
-            this.config.setProperty(ConfigKeys.next_button_lore, Methods.convert(this.config.getProperty(ConfigKeys.next_button_lore), true));
+            this.config.setProperty(ConfigKeys.next_button_name, StringUtils.convert(this.config.getProperty(ConfigKeys.next_button_name), true));
+            this.config.setProperty(ConfigKeys.next_button_lore, StringUtils.convert(this.config.getProperty(ConfigKeys.next_button_lore), true));
 
-            this.config.setProperty(ConfigKeys.back_button_name, Methods.convert(this.config.getProperty(ConfigKeys.back_button_name), true));
-            this.config.setProperty(ConfigKeys.back_button_lore, Methods.convert(this.config.getProperty(ConfigKeys.back_button_lore), true));
+            this.config.setProperty(ConfigKeys.back_button_name, StringUtils.convert(this.config.getProperty(ConfigKeys.back_button_name), true));
+            this.config.setProperty(ConfigKeys.back_button_lore, StringUtils.convert(this.config.getProperty(ConfigKeys.back_button_lore), true));
 
-            this.config.setProperty(ConfigKeys.filler_name, Methods.convert(this.config.getProperty(ConfigKeys.filler_name), true));
-            this.config.setProperty(ConfigKeys.filler_lore, Methods.convert(this.config.getProperty(ConfigKeys.filler_lore), true));
+            this.config.setProperty(ConfigKeys.filler_name, StringUtils.convert(this.config.getProperty(ConfigKeys.filler_name), true));
+            this.config.setProperty(ConfigKeys.filler_lore, StringUtils.convert(this.config.getProperty(ConfigKeys.filler_lore), true));
 
             success.add("<green>⤷ config.yml");
 
@@ -78,55 +78,55 @@ public class LegacyColorMigrator extends ICrateMigrator {
                 boolean isSave = false;
 
                 if (section.contains("CrateName")) {
-                    set(section, "Name", Methods.convert(section.getString("CrateName", " "), true));
+                    set(section, "Name", StringUtils.convert(section.getString("CrateName", " "), true));
                     set(section, "CrateName", null);
 
                     isSave = true;
                 } else if (section.contains("Name")) {
-                    set(section, "Name", Methods.convert(section.getString("Name", " "), true));
+                    set(section, "Name", StringUtils.convert(section.getString("Name", " "), true));
 
                     isSave = true;
                 }
 
                 if (section.contains("Preview-Name")) {
-                    set(section, "Preview.Name", Methods.convert(section.getString("Preview.Name", " "), true));
+                    set(section, "Preview.Name", StringUtils.convert(section.getString("Preview.Name", " "), true));
                     set(section, "Preview-Name", null);
 
                     isSave = true;
                 } else if (section.contains("Preview.Name")) {
-                    set(section, "Preview.Name", Methods.convert(section.getString("Preview.Name", " "), true));
+                    set(section, "Preview.Name", StringUtils.convert(section.getString("Preview.Name", " "), true));
 
                     isSave = true;
                 }
 
                 if (section.contains("Preview.Glass.Name")) {
-                    set(section, "Preview.Glass.Name", Methods.convert(section.getString("Preview.Glass.Name", " "), true));
+                    set(section, "Preview.Glass.Name", StringUtils.convert(section.getString("Preview.Glass.Name", " "), true));
 
                     isSave = true;
                 }
 
                 if (section.contains("tier-preview.glass.name")) {
-                    set(section, "tier-preview.glass.name", Methods.convert(section.getString("tier-preview.glass.name", " "), true));
+                    set(section, "tier-preview.glass.name", StringUtils.convert(section.getString("tier-preview.glass.name", " "), true));
 
                     isSave = true;
                 }
 
                 if (section.contains("BroadCast")) {
-                    set(section, "BroadCast", Methods.convert(section.getString("BroadCast", " "), true));
+                    set(section, "BroadCast", StringUtils.convert(section.getString("BroadCast", " "), true));
 
                     isSave = true;
                 }
 
                 if (section.contains("Lore")) {
-                    set(section, "Lore", Methods.convert(section.getStringList("Lore"), true));
+                    set(section, "Lore", StringUtils.convert(section.getStringList("Lore"), true));
 
                     isSave = true;
                 }
 
                 if (section.contains("PhysicalKey")) {
-                    set(section, "PhysicalKey.Name", Methods.convert(section.getString("PhysicalKey.Name", " "), true));
+                    set(section, "PhysicalKey.Name", StringUtils.convert(section.getString("PhysicalKey.Name", " "), true));
 
-                    set(section, "PhysicalKey.Lore", Methods.convert(section.getStringList("PhysicalKey.Lore"), true));
+                    set(section, "PhysicalKey.Lore", StringUtils.convert(section.getStringList("PhysicalKey.Lore"), true));
 
                     isSave = true;
                 }
@@ -140,13 +140,13 @@ public class LegacyColorMigrator extends ICrateMigrator {
                         if (tierSection == null) continue;
 
                         if (tierSection.contains("Name")) {
-                            set(tierSection, "Name", Methods.convert(tierSection.getString("Name", " "), true));
+                            set(tierSection, "Name", StringUtils.convert(tierSection.getString("Name", " "), true));
 
                             isSave = true;
                         }
 
                         if (tierSection.contains("Lore")) {
-                            set(tierSection, "Lore", Methods.convert(tierSection.getStringList("Name"), true));
+                            set(tierSection, "Lore", StringUtils.convert(tierSection.getStringList("Name"), true));
 
                             isSave = true;
                         }
@@ -162,42 +162,42 @@ public class LegacyColorMigrator extends ICrateMigrator {
                         if (prizeSection == null) continue;
 
                         if (prizeSection.contains("Lore")) {
-                            set(prizeSection, "DisplayLore", Methods.convert(prizeSection.getStringList("Lore"), true));
+                            set(prizeSection, "DisplayLore", StringUtils.convert(prizeSection.getStringList("Lore"), true));
                             set(prizeSection, "Lore", null);
 
                             isSave = true;
                         } else if (prizeSection.contains("DisplayLore")) {
-                            set(prizeSection, "DisplayLore", Methods.convert(prizeSection.getStringList("DisplayLore"), true));
+                            set(prizeSection, "DisplayLore", StringUtils.convert(prizeSection.getStringList("DisplayLore"), true));
 
                             isSave = true;
                         }
 
                         if (prizeSection.contains("DisplayName")) {
-                            set(prizeSection, "DisplayName", Methods.convert(prizeSection.getString("DisplayName", " "), true));
+                            set(prizeSection, "DisplayName", StringUtils.convert(prizeSection.getString("DisplayName", " "), true));
 
                             isSave = true;
                         }
 
                         if (prizeSection.contains("Messages")) {
-                            set(prizeSection, "Messages", Methods.convert(prizeSection.getStringList("Messages"), true));
+                            set(prizeSection, "Messages", StringUtils.convert(prizeSection.getStringList("Messages"), true));
 
                             isSave = true;
                         }
 
                         if (prizeSection.contains("Items")) {
-                            set(prizeSection, "Items", Methods.convert(prizeSection.getStringList("Items"), true));
+                            set(prizeSection, "Items", StringUtils.convert(prizeSection.getStringList("Items"), true));
 
                             isSave = true;
                         }
 
                         if (prizeSection.contains("Alternative-Prize.Messages")) {
-                            set(prizeSection, "Alternative-Prize.Messages", Methods.convert(prizeSection.getStringList("Alternative-Prize.Messages"), true));
+                            set(prizeSection, "Alternative-Prize.Messages", StringUtils.convert(prizeSection.getStringList("Alternative-Prize.Messages"), true));
 
                             isSave = true;
                         }
 
                         if (prizeSection.contains("Alternative-Prize.Items")) {
-                            set(prizeSection, "Alternative-Prize.Items", Methods.convert(prizeSection.getStringList("Alternative-Prize.Items"), true));
+                            set(prizeSection, "Alternative-Prize.Items", StringUtils.convert(prizeSection.getStringList("Alternative-Prize.Items"), true));
 
                             isSave = true;
                         }

@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migr
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.paper.files.CustomFile;
+import com.ryderbelserion.fusion.paper.files.CustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;

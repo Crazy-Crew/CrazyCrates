@@ -12,10 +12,10 @@ import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
-import com.ryderbelserion.core.api.enums.FileType;
-import com.ryderbelserion.paper.files.CustomFile;
-import com.ryderbelserion.paper.util.PaperMethods;
-import com.ryderbelserion.core.util.Methods;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.util.StringUtils;
+import com.ryderbelserion.fusion.paper.files.CustomFile;
+import com.ryderbelserion.fusion.paper.util.PaperMethods;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
@@ -719,7 +719,7 @@ public class Crate {
                 final Component displayName = itemMeta.displayName();
 
                 if (displayName != null) {
-                    section.set(getPath(prizeName, "DisplayName"), Methods.fromComponent(displayName));
+                    section.set(getPath(prizeName, "DisplayName"), StringUtils.fromComponent(displayName));
                 }
             }
 
@@ -727,7 +727,7 @@ public class Crate {
                 final List<Component> lore = itemMeta.lore();
 
                 if (lore != null) {
-                    section.set(getPath(prizeName, "DisplayLore"), Methods.fromComponent(lore));
+                    section.set(getPath(prizeName, "DisplayLore"), StringUtils.fromComponent(lore));
                 }
             }
         }

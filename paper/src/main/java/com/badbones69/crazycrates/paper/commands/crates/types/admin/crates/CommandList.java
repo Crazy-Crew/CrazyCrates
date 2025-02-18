@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
-import com.ryderbelserion.core.util.Methods;
+import com.ryderbelserion.fusion.core.util.StringUtils;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.Location;
@@ -50,7 +50,7 @@ public class CommandList extends BaseCommand {
         placeholders.put("{broken_crates}", String.valueOf(this.crateManager.getBrokeCrates().size()));
         placeholders.put("{active_locations}", String.valueOf(this.crateManager.getCrateLocations().size()));
 
-        placeholders.put("{locations}", this.crateManager.getCrateLocations().isEmpty() ? "N/A" : Methods.toString(crates));
+        placeholders.put("{locations}", this.crateManager.getCrateLocations().isEmpty() ? "N/A" : StringUtils.toString(crates));
 
         // this has to use sendRichMessage as it is a list.
         Messages.crate_locations.sendRichMessage(sender, placeholders);

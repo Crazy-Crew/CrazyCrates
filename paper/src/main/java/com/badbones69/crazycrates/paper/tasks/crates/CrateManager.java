@@ -32,11 +32,11 @@ import com.badbones69.crazycrates.paper.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WonderCrate;
 import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
-import com.ryderbelserion.core.api.enums.FileType;
-import com.ryderbelserion.paper.files.CustomFile;
-import com.ryderbelserion.paper.files.FileManager;
-import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
-import com.ryderbelserion.core.util.FileMethods;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.util.FileUtils;
+import com.ryderbelserion.fusion.paper.files.CustomFile;
+import com.ryderbelserion.fusion.paper.files.FileManager;
+import com.ryderbelserion.fusion.paper.util.scheduler.FoliaScheduler;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -350,12 +350,12 @@ public class CrateManager {
                     "data.yml",
                     "locations.yml",
                     "messages.yml"
-            ).forEach(file -> FileMethods.extract(file, "examples", true));
+            ).forEach(file -> FileUtils.extract(file, "examples", true));
 
-            FileMethods.extracts(classObject, "/guis/", path.resolve("examples").resolve("guis"), true);
-            FileMethods.extracts(classObject, "/logs/", path.resolve("examples").resolve("logs"), true);
-            FileMethods.extracts(classObject, "/crates/", path.resolve("examples").resolve("crates"), true);
-            FileMethods.extracts(classObject, "/schematics/", path.resolve("examples").resolve("schematics"), true);
+            FileUtils.extracts("/guis/", path.resolve("examples").resolve("guis"), true);
+            FileUtils.extracts("/logs/", path.resolve("examples").resolve("logs"), true);
+            FileUtils.extracts("/crates/", path.resolve("examples").resolve("crates"), true);
+            FileUtils.extracts("/schematics/", path.resolve("examples").resolve("schematics"), true);
         }
 
         this.giveNewPlayersKeys = false;

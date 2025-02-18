@@ -5,8 +5,8 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
-import com.ryderbelserion.paper.util.PaperMethods;
-import com.ryderbelserion.core.util.Methods;
+import com.ryderbelserion.fusion.core.util.StringUtils;
+import com.ryderbelserion.fusion.paper.util.PaperMethods;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -21,7 +21,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -241,19 +240,19 @@ public class ItemUtils {
                             itemBuilder.setEntityType(type);
                         }
                     }
-                    case "glowing" -> itemBuilder.setGlowing(Methods.tryParseBoolean(value).orElse(false));
+                    case "glowing" -> itemBuilder.setGlowing(StringUtils.tryParseBoolean(value).orElse(false));
                     case "amount" -> {
-                        final Optional<Number> amount = Methods.tryParseInt(value);
+                        final Optional<Number> amount = StringUtils.tryParseInt(value);
                         itemBuilder.setAmount(amount.map(Number::intValue).orElse(1));
                     }
                     case "damage" -> {
-                        final Optional<Number> amount = Methods.tryParseInt(value);
+                        final Optional<Number> amount = StringUtils.tryParseInt(value);
                         itemBuilder.setDamage(amount.map(Number::intValue).orElse(1));
                     }
                     case "lore" -> itemBuilder.setDisplayLore(List.of(value.split(",")));
                     case "player" -> itemBuilder.setPlayer(value);
                     case "skull" -> itemBuilder.setSkull(value);
-                    case "custom-model-data" -> itemBuilder.setCustomModelData(Methods.tryParseInt(value).orElse(-1).intValue());
+                    case "custom-model-data" -> itemBuilder.setCustomModelData(StringUtils.tryParseInt(value).orElse(-1).intValue());
                     case "unbreakable-item" -> itemBuilder.setUnbreakable(value.isEmpty() || value.equalsIgnoreCase("true"));
                     case "hide-tool-tip" -> itemBuilder.setHidingItemFlags(value.equalsIgnoreCase("true"));
                     case "trim-pattern" -> itemBuilder.applyTrimPattern(value);
@@ -272,7 +271,7 @@ public class ItemUtils {
                     }
                     default -> {
                         if (PaperMethods.getEnchantment(option.toLowerCase()) != null) {
-                            final Optional<Number> amount = Methods.tryParseInt(value);
+                            final Optional<Number> amount = StringUtils.tryParseInt(value);
 
                             itemBuilder.addEnchantment(option.toLowerCase(), amount.map(Number::intValue).orElse(1), true);
 
