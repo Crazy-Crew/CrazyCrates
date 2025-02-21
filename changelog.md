@@ -1,4 +1,5 @@
 - Added back the old way of breaking crates via shift left click
   - Creative Mode is still not required
+- Added similar max pull checks, filler checks, and alternative prize checks for tiered prizes
 - Fixed an issue with ItemsAdder and CrateInteractEvent
 - Fixed an issue with Folia servers
