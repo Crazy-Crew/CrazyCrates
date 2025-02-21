@@ -369,17 +369,7 @@ public class Crate {
         final List<Prize> prizes = new ArrayList<>();
 
         for (Prize prize : getPrizes()) {
-            if (prize.getWeight() == -1) continue;
-          
-            final int pulls = PrizeManager.getCurrentPulls(prize, this);
-
-             if (pulls != 0) {
-                if (pulls >= prize.getMaxPulls()) continue;
-            }
-
-            if (prize.hasPermission(player) && !player.isOp()) {
-                if (prize.hasAlternativePrize()) continue;
-            }
+            if (validatePrize(player, prize)) continue;
 
             prizes.add(prize);
         }
@@ -398,22 +388,30 @@ public class Crate {
         final List<Prize> prizes = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
-            if (prize.getWeight() == -1) continue; //todo() test these changes
-
-            final int pulls = PrizeManager.getCurrentPulls(prize, this); //todo() test these changes
-
-            if (pulls != 0) { //todo() test these changes
-                if (pulls >= prize.getMaxPulls()) continue;
-            }
-
-            if (prize.hasPermission(player) && !player.isOp()) { //todo() test these changes
-                if (prize.hasAlternativePrize()) continue;
-            }
+            if (validatePrize(player, prize)) continue;
 
             if (prize.getTiers().contains(tier)) prizes.add(prize);
         }
 
         return getPrize(prizes);
+    }
+
+    private boolean validatePrize(@NotNull Player player, Prize prize) { // if this is true at any point, we should continue the loop
+        if (prize.getWeight() == -1) return true;
+
+        final int pulls = PrizeManager.getCurrentPulls(prize, this);
+
+        if (pulls != 0) {
+            if (pulls >= prize.getMaxPulls()) return true;
+        }
+
+        final boolean hasPermission = !player.isOp() && prize.hasPermission(player);
+
+        if (hasPermission) {
+            return prize.hasAlternativePrize();
+        }
+
+        return false;
     }
 
     /**
