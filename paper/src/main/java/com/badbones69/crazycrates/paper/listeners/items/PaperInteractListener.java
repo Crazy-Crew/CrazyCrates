@@ -56,6 +56,8 @@ public class PaperInteractListener implements Listener {
                     return;
                 }
 
+                if (!hasEditorCrate) return;
+
                 this.crateManager.removeCrateByLocation(player, location);
 
                 event.setCancelled(true);
