@@ -41,26 +41,29 @@ public class PaperInteractListener implements Listener {
 
         switch (action) {
             case RIGHT_CLICK_BLOCK -> {
-                if (!hasEditorCrate) return;
+                if (hasEditorCrate) {
+                    this.crateManager.addCrateByLocation(player, location);
 
-                this.crateManager.addCrateByLocation(player, location);
-
-                event.setCancelled(true);
+                    event.setCancelled(true);
+                }
             }
+
             case LEFT_CLICK_BLOCK -> {
-                if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin") && !hasEditorCrate) {
-                    this.crateManager.removeCrateByLocation(player, location);
+                if (hasEditorCrate) {
+                    this.crateManager.removeCrateByLocation(player, location, false);
 
                     event.setCancelled(true);
 
                     return;
                 }
 
-                if (!hasEditorCrate) return;
+                if (this.crateManager.isCrateLocation(location)) {
+                    if (player.isSneaking() && player.hasPermission("crazycrates.admin")) {
+                        this.crateManager.removeCrateByLocation(player, location, true);
 
-                this.crateManager.removeCrateByLocation(player, location);
-
-                event.setCancelled(true);
+                        event.setCancelled(true);
+                    }
+                }
             }
         }
     }

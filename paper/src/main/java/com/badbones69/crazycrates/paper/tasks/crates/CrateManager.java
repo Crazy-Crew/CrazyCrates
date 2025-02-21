@@ -1621,7 +1621,7 @@ public class CrateManager {
         }
     }
 
-    public void removeCrateByLocation(final Player player, final Location location) {
+    public void removeCrateByLocation(final Player player, final Location location, final boolean isAlreadyChecked) {
         if (!player.hasPermission("crazycrates.editor")) {
             removeEditorCrate(player);
 
@@ -1630,7 +1630,8 @@ public class CrateManager {
             return;
         }
 
-        if (isCrateLocation(location)) {
+        // isAlreadyChecked boolean prevents an unnecessary double lookup
+        if (isAlreadyChecked || isCrateLocation(location)) {
             final CrateLocation crateLocation = getCrateLocation(location);
 
             if (crateLocation != null) {

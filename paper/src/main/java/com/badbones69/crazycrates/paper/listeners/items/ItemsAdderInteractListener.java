@@ -51,7 +51,7 @@ public class ItemsAdderInteractListener implements Listener {
         if (player.getActiveItemHand() == EquipmentSlot.OFF_HAND) return;
 
         if (this.crateManager.hasEditorCrate(player)) {
-            this.crateManager.removeCrateByLocation(player, location);
+            this.crateManager.removeCrateByLocation(player, location, false);
 
             event.setCancelled(true);
 
@@ -59,6 +59,14 @@ public class ItemsAdderInteractListener implements Listener {
         }
 
         if (this.crateManager.isCrateLocation(location)) {
+            if (player.isSneaking() && player.hasPermission("crazycrates.admin")) {
+                this.crateManager.removeCrateByLocation(player, location, true);
+
+                event.setCancelled(true);
+
+                return;
+            }
+
             new CrateInteractEvent(event, Action.LEFT_CLICK_BLOCK, location).callEvent();
         }
     }
