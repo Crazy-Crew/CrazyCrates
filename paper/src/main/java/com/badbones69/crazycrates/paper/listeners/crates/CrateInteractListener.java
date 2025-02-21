@@ -45,8 +45,6 @@ public class CrateInteractListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCrateInteract(final CrateInteractEvent event) {
-        if (event.isCancelled()) return; // do not run this event.
-
         event.cancel(); // cancel the event
 
         final Player player = event.getPlayer();
