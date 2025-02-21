@@ -1,1 +1,2 @@
 - Fixed an issue with ItemsAdder and CrateInteractEvent
+- Fixed an issue with Folia servers
