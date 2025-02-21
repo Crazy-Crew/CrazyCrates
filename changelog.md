@@ -1,2 +1,4 @@
+- Added back the old way of breaking crates via shift left click
+  - Creative Mode is still not required
 - Fixed an issue with ItemsAdder and CrateInteractEvent
 - Fixed an issue with Folia servers
