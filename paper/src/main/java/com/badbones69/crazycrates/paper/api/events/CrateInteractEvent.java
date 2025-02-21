@@ -23,6 +23,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class CrateInteractEvent extends Event implements Cancellable {
 
@@ -172,10 +173,14 @@ public class CrateInteractEvent extends Event implements Cancellable {
 
             case "itemsadder" -> {
                 if (Plugins.items_adder.isEnabled()) {
-                    final Entity entity = CustomFurniture.byAlreadySpawned(location.getBlock()).getEntity();
+                    @Nullable final CustomFurniture furniture = CustomFurniture.byAlreadySpawned(location.getBlock());
 
-                    if (entity != null && entity.isValid()) {
-                        isFurniture = true;
+                    if (furniture != null) {
+                        final Entity entity = furniture.getEntity();
+
+                        if (entity != null && entity.isValid()) {
+                            isFurniture = true;
+                        }
                     }
                 }
             }
@@ -186,7 +191,15 @@ public class CrateInteractEvent extends Event implements Cancellable {
                 } else if (Plugins.oraxen.isEnabled() && OraxenFurniture.isFurniture(location.getBlock())) {
                     isFurniture = true;
                 } else if (Plugins.items_adder.isEnabled()) {
-                    isFurniture = true;
+                    @Nullable final CustomFurniture furniture = CustomFurniture.byAlreadySpawned(location.getBlock());
+
+                    if (furniture != null) {
+                        final Entity entity = furniture.getEntity();
+
+                        if (entity != null && entity.isValid()) {
+                            isFurniture = true;
+                        }
+                    }
                 }
             }
         }

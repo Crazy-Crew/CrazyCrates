@@ -1,1 +1,1 @@
-- Fixed an issue with vanilla blocks not working as crates
+- Fixed an issue with ItemsAdder and CrateInteractEvent
