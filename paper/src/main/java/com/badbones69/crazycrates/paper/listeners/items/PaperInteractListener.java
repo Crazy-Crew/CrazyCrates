@@ -21,7 +21,7 @@ public class PaperInteractListener implements Listener {
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onEditorClick(final PlayerInteractEvent event) {
         if (event.getHand() == EquipmentSlot.OFF_HAND) return;
 
