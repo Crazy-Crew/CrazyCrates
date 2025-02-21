@@ -44,13 +44,11 @@ public class PaperInteractListener implements Listener {
                 this.crateManager.addCrateByLocation(player, location);
             }
             case LEFT_CLICK_BLOCK -> {
-                if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin")) {
+                if (player.getGameMode() == GameMode.CREATIVE && player.isSneaking() && player.hasPermission("crazycrates.admin") && !this.crateManager.hasEditorCrate(player)) {
                     this.crateManager.removeCrateByLocation(player, location);
 
                     return;
                 }
-
-                if (!this.crateManager.hasEditorCrate(player)) return;
 
                 this.crateManager.removeCrateByLocation(player, location);
             }
