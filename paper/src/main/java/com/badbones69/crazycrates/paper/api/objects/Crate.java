@@ -398,6 +398,14 @@ public class Crate {
         final List<Prize> prizes = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
+            if (prize.getWeight() == -1) continue;
+
+            final int pulls = PrizeManager.getCurrentPulls(prize, this);
+
+            if (pulls != 0) {
+                if (pulls >= prize.getMaxPulls()) continue;
+            }
+
             if (prize.hasPermission(player) && !player.isOp()) {
                 if (prize.hasAlternativePrize()) continue;
             }
