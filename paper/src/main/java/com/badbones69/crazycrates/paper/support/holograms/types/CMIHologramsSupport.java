@@ -4,6 +4,7 @@ import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.Display.CMIBillboard;
 import com.Zrips.CMI.Modules.Holograms.CMIHologram;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateHologram;
+import com.ryderbelserion.fusion.paper.util.scheduler.FoliaScheduler;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.CMILocation;
 import org.bukkit.Location;
@@ -55,7 +56,12 @@ public class CMIHologramsSupport extends HologramManager {
 
         this.hologramManager.addHologram(hologram);
 
-        location.getNearbyEntitiesByType(Player.class, crateHologram.getRange()).forEach(player -> this.hologramManager.handleHoloUpdates(player, hologram.getLocation()));
+        new FoliaScheduler(location) {
+            @Override
+            public void run() {
+                location.getNearbyEntitiesByType(Player.class, crateHologram.getRange()).forEach(player -> hologramManager.handleHoloUpdates(player, hologram.getLocation()));
+            }
+        }.runNow();
     }
 
     @Override
