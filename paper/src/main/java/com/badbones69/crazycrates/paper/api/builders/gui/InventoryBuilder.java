@@ -17,6 +17,8 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.UUID;
 
@@ -77,14 +79,27 @@ public abstract class InventoryBuilder {
 
         final UUID uuid = this.player.getUniqueId();
 
+        final NumberFormat instance = NumberFormat.getInstance();
+
         for (Crate crate : this.crateManager.getUsableCrates()) {
             final String fileName = crate.getFileName();
             final String lowerCase = fileName.toLowerCase();
 
-            option = option.replaceAll("%" + lowerCase + "}", this.userManager.getVirtualKeys(uuid, fileName) + "")
-                    .replaceAll("%" + lowerCase + "_physical%", this.userManager.getPhysicalKeys(uuid, fileName) + "")
-                    .replaceAll("%" + lowerCase + "_total%", this.userManager.getTotalKeys(uuid, fileName) + "")
-                    .replaceAll("%" + lowerCase + "_opened%", this.userManager.getCrateOpened(uuid, fileName) + "");
+            final int virtual = this.userManager.getVirtualKeys(uuid, fileName);
+            final int physical = this.userManager.getPhysicalKeys(uuid, fileName);
+
+            final int total = virtual + physical;
+
+            final int opened = this.userManager.getCrateOpened(uuid, fileName);
+
+            option = option.replaceAll("%" + lowerCase + "%", instance.format(virtual))
+                    .replaceAll("%" + lowerCase + "_physical%", instance.format(physical))
+                    .replaceAll("%" + lowerCase + "_total%", instance.format(total))
+                    .replaceAll("%" + lowerCase + "_opened%", instance.format(opened))
+                    .replaceAll("%" + lowerCase + "_raw%", String.valueOf(virtual))
+                    .replaceAll("%" + lowerCase + "_raw_physical%", String.valueOf(physical))
+                    .replaceAll("%" + lowerCase + "_raw_total%", String.valueOf(total))
+                    .replaceAll("%" + lowerCase + "_raw_opened%", String.valueOf(opened));
         }
 
         return option;
