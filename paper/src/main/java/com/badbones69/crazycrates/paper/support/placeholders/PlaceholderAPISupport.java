@@ -23,6 +23,8 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
+    private final NumberFormat instance = NumberFormat.getNumberInstance();
+
     @Override
     public @NotNull final String onRequest(final OfflinePlayer player, @NotNull final String identifier) {
         if (player == null) return "N/A";
@@ -32,28 +34,50 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         // The player who sees the placeholder.
         final Player human = (Player) player;
 
+        final UUID uuid = human.getUniqueId();
+
         // This is if the person opening the gui is to be used.
         for (Crate crate : this.crateManager.getUsableCrates()) {
             final String fileName = crate.getFileName();
 
             if (identifier.equalsIgnoreCase(fileName)) {
-                return NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(human.getUniqueId(), fileName));
+                return this.instance.format(this.userManager.getVirtualKeys(uuid, fileName));
             }
 
             if (identifier.equalsIgnoreCase(fileName + "_physical")) {
-                return NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(human.getUniqueId(), fileName));
+                return this.instance.format(this.userManager.getPhysicalKeys(uuid, fileName));
             }
 
             if (identifier.equalsIgnoreCase(fileName + "_total")) {
-                return NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(human.getUniqueId(), fileName));
+                return this.instance.format(this.userManager.getTotalKeys(uuid, fileName));
             }
 
             if (identifier.equalsIgnoreCase(fileName + "_opened")) {
-                return NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(human.getUniqueId(), fileName));
+                return this.instance.format(this.userManager.getCrateOpened(uuid, fileName));
             }
 
             if (identifier.equalsIgnoreCase("crates_opened")) {
-                return NumberFormat.getNumberInstance().format(this.userManager.getTotalCratesOpened(human.getUniqueId()));
+                return this.instance.format(this.userManager.getTotalCratesOpened(uuid));
+            }
+
+            if (identifier.equalsIgnoreCase(fileName + "_raw")) {
+                return String.valueOf(this.userManager.getVirtualKeys(uuid, fileName));
+            }
+
+            if (identifier.equalsIgnoreCase(fileName + "_physical_raw")) {
+                return String.valueOf(this.userManager.getPhysicalKeys(uuid, fileName));
+            }
+
+            if (identifier.equalsIgnoreCase(fileName + "_total_raw")) {
+                return String.valueOf(this.userManager.getTotalKeys(uuid, fileName));
+            }
+
+            if (identifier.equalsIgnoreCase(fileName + "_opened_raw")) {
+                return String.valueOf(this.userManager.getCrateOpened(uuid, fileName));
+            }
+
+            if (identifier.equalsIgnoreCase("crates_opened_raw")) {
+                return String.valueOf(this.userManager.getTotalCratesOpened(uuid));
             }
         }
 
@@ -99,19 +123,35 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         final String result = value + "_" + fileName + "_" + identifier.split("_")[3];
 
         if (result.endsWith("total")) { // %crazycrates_<player>_<crate>_total%
-            return NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, fileName));
+            return this.instance.format(this.userManager.getTotalKeys(uuid, fileName));
         }
 
         if (result.endsWith("physical")) { // %crazycrates_<player>_<crate>_physical%
-            return NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, fileName));
+            return this.instance.format(this.userManager.getPhysicalKeys(uuid, fileName));
         }
 
         if (result.endsWith("virtual")) { // %crazycrates_<player>_<crate>_virtual%
-            return NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, fileName));
+            return this.instance.format(this.userManager.getVirtualKeys(uuid, fileName));
         }
 
         if (result.endsWith("opened")) { // %crazycrates_<player>_<crate>_opened%
-            return NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(uuid, fileName));
+            return this.instance.format(this.userManager.getCrateOpened(uuid, fileName));
+        }
+
+        if (result.endsWith("total_raw")) { // %crazycrates_<player>_<crate>_total_raw%
+            return String.valueOf(this.userManager.getTotalKeys(uuid, fileName));
+        }
+
+        if (result.endsWith("physical_raw")) { // %crazycrates_<player>_<crate>_physical_raw%
+            return String.valueOf(this.userManager.getPhysicalKeys(uuid, fileName));
+        }
+
+        if (result.endsWith("virtual_raw")) { // %crazycrates_<player>_<crate>_virtual_raw%
+            return String.valueOf(this.userManager.getVirtualKeys(uuid, fileName));
+        }
+
+        if (result.endsWith("opened_raw")) { // %crazycrates_<player>_<crate>_opened_raw%
+            return String.valueOf(this.userManager.getCrateOpened(uuid, fileName));
         }
 
         return "N/A";

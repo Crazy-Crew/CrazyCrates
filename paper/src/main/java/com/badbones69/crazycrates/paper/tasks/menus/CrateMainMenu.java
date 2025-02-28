@@ -103,14 +103,27 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                     int slot = section.getInt("Slot");
 
+                    final int virtualKeys = this.userManager.getVirtualKeys(uuid, fileName);
+                    final int physicalKeys = this.userManager.getPhysicalKeys(uuid, fileName);
+
+                    final int totalKeys = virtualKeys + physicalKeys;
+
+                    final int openedCrates = this.userManager.getCrateOpened(uuid, fileName);
+
+                    final NumberFormat instance = NumberFormat.getNumberInstance();
+
                     final ItemBuilder builder = new ItemBuilder()
                             .withType(section.getString("Item", "chest").toLowerCase())
                             .setDisplayName(crate.getCrateName())
                             .setCustomModelData(section.getInt("Custom-Model-Data", -1))
-                            .addLorePlaceholder("%keys%", NumberFormat.getNumberInstance().format(this.userManager.getVirtualKeys(uuid, fileName)))
-                            .addLorePlaceholder("%keys_physical%", NumberFormat.getNumberInstance().format(this.userManager.getPhysicalKeys(uuid, fileName)))
-                            .addLorePlaceholder("%keys_total%", NumberFormat.getNumberInstance().format(this.userManager.getTotalKeys(uuid, fileName)))
-                            .addLorePlaceholder("%crate_opened%", NumberFormat.getNumberInstance().format(this.userManager.getCrateOpened(uuid, fileName)))
+                            .addNamePlaceholder("%keys%", instance.format(virtualKeys))
+                            .addNamePlaceholder("%keys_physical%", instance.format(physicalKeys))
+                            .addNamePlaceholder("%keys_total%", instance.format(totalKeys))
+                            .addNamePlaceholder("%crate_opened%", instance.format(openedCrates))
+                            .addNamePlaceholder("%keys_raw%", String.valueOf(virtualKeys))
+                            .addNamePlaceholder("%keys_physical_raw%", String.valueOf(physicalKeys))
+                            .addNamePlaceholder("%keys_total_raw%", String.valueOf(totalKeys))
+                            .addNamePlaceholder("%crate_opened_raw", String.valueOf(openedCrates))
                             .addLorePlaceholder("%player%", player.getName())
                             .setPersistentString(ItemKeys.crate_key.getNamespacedKey(), fileName);
 
