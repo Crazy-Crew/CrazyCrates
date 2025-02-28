@@ -11,6 +11,7 @@ import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
 import com.ryderbelserion.fusion.core.util.StringUtils;
+import com.ryderbelserion.fusion.paper.enums.Support;
 import com.ryderbelserion.fusion.paper.util.PaperMethods;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
@@ -325,18 +326,7 @@ public class Prize {
             put("%reward_stripped%", getStrippedName());
         }};
 
-        for (final Map.Entry<String, String> placeholder : placeholders.entrySet()) {
-            if (placeholder != null) {
-                final String key = placeholder.getKey();
-                final String value = placeholder.getValue();
-
-                if (key != null && value != null) {
-                    message = message.replace(key, value).replace(key.toLowerCase(), value);
-                }
-            }
-        }
-
-        final Component component = this.plugin.getFusion().color(target, message, new HashMap<>());
+        final Component component = StringUtils.parse(MiscUtils.populatePlaceholders(target, message, placeholders));
 
         if (permission.isEmpty()) {
             server.broadcast(component);
