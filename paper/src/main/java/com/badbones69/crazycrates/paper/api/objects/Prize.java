@@ -28,6 +28,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Prize {
 
@@ -313,22 +314,37 @@ public class Prize {
         final String current_pulls = String.valueOf(PrizeManager.getCurrentPulls(this, crate));
         final String max_pulls = String.valueOf(getMaxPulls());
 
-        final Component message = this.plugin.getFusion().color(target, StringUtils.toString(messages), new HashMap<>() {{
+        String message = StringUtils.toString(messages);
+
+        Map<String, String> placeholders = new HashMap<>() {{
             put("%player%", target.getName());
             put("%crate%", crate.getCrateName());
             put("%reward%", getPrizeName().replaceAll("%maxpulls%", max_pulls).replaceAll("%pulls%", current_pulls));
             put("%maxpulls%", max_pulls);
             put("%pulls%", current_pulls);
             put("%reward_stripped%", getStrippedName());
-        }});
+        }};
+
+        for (final Map.Entry<String, String> placeholder : placeholders.entrySet()) {
+            if (placeholder != null) {
+                final String key = placeholder.getKey();
+                final String value = placeholder.getValue();
+
+                if (key != null && value != null) {
+                    message = message.replace(key, value).replace(key.toLowerCase(), value);
+                }
+            }
+        }
+
+        final Component component = this.plugin.getFusion().color(target, message, new HashMap<>());
 
         if (permission.isEmpty()) {
-            server.broadcast(message);
+            server.broadcast(component);
 
             return;
         }
 
-        server.broadcast(message, permission);
+        server.broadcast(component, permission);
     }
 
     private @NotNull ItemBuilder display() {
