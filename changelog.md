@@ -1,4 +1,1 @@
-- Fixed an issue with an error when broadcasting a message
-- Added new placeholders without number formatting, https://docs.crazycrew.us/docs/plugins/crazycrates/guides/placeholders
-  - Simply add `_raw` to the end of all placeholders including our internal ones like `%keys%` i.e. `%keys_raw%`
-- Fixed an issue with /crates placeholder not being replaced properly
+- Fixed an issue with internal placeholders in the lore of /crates not working.
