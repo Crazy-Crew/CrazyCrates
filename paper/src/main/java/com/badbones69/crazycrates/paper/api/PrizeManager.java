@@ -174,38 +174,38 @@ public class PrizeManager {
                     }
                 }
             }
-        }
+        } else {
+            final boolean isPlaceholderAPIEnabled = Plugins.placeholder_api.isEnabled();
 
-        final boolean isPlaceholderAPIEnabled = Plugins.placeholder_api.isEnabled();
+            final List<LegacyItemBuilder> legacy = prize.getItemBuilders();
 
-        final List<LegacyItemBuilder> legacy = prize.getItemBuilders();
+            if (!legacy.isEmpty()) { // run this just in case people got leftover shit
+                for (final LegacyItemBuilder item : legacy) {
+                    if (isPlaceholderAPIEnabled) {
+                        final String displayName = item.getDisplayName();
 
-        if (!legacy.isEmpty()) { // run this just in case people got leftover shit
-            for (final LegacyItemBuilder item : legacy) {
-                if (isPlaceholderAPIEnabled) {
-                    final String displayName = item.getDisplayName();
+                        if (!displayName.isEmpty()) {
+                            item.setDisplayName(PlaceholderAPI.setPlaceholders(player, displayName));
+                        }
 
-                    if (!displayName.isEmpty()) {
-                        item.setDisplayName(PlaceholderAPI.setPlaceholders(player, displayName));
+                        final List<String> displayLore = item.getDisplayLore();
+
+                        if (!displayLore.isEmpty()) {
+                            List<String> lore = new ArrayList<>();
+
+                            displayLore.forEach(line -> lore.add(PlaceholderAPI.setPlaceholders(player, line)));
+
+                            item.setDisplayLore(lore);
+                        }
                     }
 
-                    final List<String> displayLore = item.getDisplayLore();
+                    final ItemStack itemStack = item.setPlayer(player).asItemStack();
 
-                    if (!displayLore.isEmpty()) {
-                        List<String> lore = new ArrayList<>();
-
-                        displayLore.forEach(line -> lore.add(PlaceholderAPI.setPlaceholders(player, line)));
-
-                        item.setDisplayLore(lore);
+                    if (!MiscUtils.isInventoryFull(player)) {
+                        MiscUtils.addItem(player, itemStack);
+                    } else {
+                        player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
                     }
-                }
-
-                final ItemStack itemStack = item.setPlayer(player).asItemStack();
-
-                if (!MiscUtils.isInventoryFull(player)) {
-                    MiscUtils.addItem(player, itemStack);
-                } else {
-                    player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
                 }
             }
         }
