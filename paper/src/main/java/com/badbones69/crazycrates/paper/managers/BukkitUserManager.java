@@ -7,7 +7,7 @@ import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -805,7 +805,7 @@ public class BukkitUserManager extends UserManager {
      * @param crate the crate
      * @return the itembuilder
      */
-    public ItemBuilder addPlaceholders(@NotNull final ItemBuilder itemBuilder, @NotNull final Crate crate) {
+    public LegacyItemBuilder addPlaceholders(@NotNull final LegacyItemBuilder itemBuilder, @NotNull final Crate crate) {
         final String fileName = crate.getFileName();
 
         if (fileName.isEmpty()) return itemBuilder;

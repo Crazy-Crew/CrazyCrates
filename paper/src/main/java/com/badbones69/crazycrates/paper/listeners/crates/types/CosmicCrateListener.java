@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.paper.listeners.crates.types;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
-import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.ryderbelserion.fusion.core.util.StringUtils;
@@ -190,7 +190,7 @@ public class CosmicCrateListener implements Listener {
                 final String tierName = tier.getName();
 
                 // Get item builder.
-                ItemBuilder builder = cosmicCrateManager.getPickedCrate().setPlayer(player)
+                LegacyItemBuilder builder = cosmicCrateManager.getPickedCrate().setPlayer(player)
                         .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
                         .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
 
@@ -213,7 +213,7 @@ public class CosmicCrateListener implements Listener {
             final Tier tier = this.crateManager.getTier(player, slot);
 
             // Get item builder.
-            ItemBuilder builder = cosmicCrateManager.getMysteryCrate().setPlayer(player)
+            LegacyItemBuilder builder = cosmicCrateManager.getMysteryCrate().setPlayer(player)
                     .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
                     .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
 

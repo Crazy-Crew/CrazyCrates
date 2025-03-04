@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
-import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
@@ -89,7 +89,7 @@ public class WonderCrate extends CrateBuilder {
                     other.add(this.slot1);
                     other.add(this.slot2);
 
-                    final ItemStack material = new ItemBuilder(crate.isGlassBorderToggled() ? ItemType.BLACK_STAINED_GLASS_PANE : ItemType.AIR).setDisplayName(" ").asItemStack();
+                    final ItemStack material = new LegacyItemBuilder(crate.isGlassBorderToggled() ? ItemType.BLACK_STAINED_GLASS_PANE : ItemType.AIR).setDisplayName(" ").asItemStack();
 
                     setItem(this.slot1, material);
                     setItem(this.slot2, material);

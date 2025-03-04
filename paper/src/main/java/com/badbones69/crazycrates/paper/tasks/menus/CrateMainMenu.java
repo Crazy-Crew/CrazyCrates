@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.tasks.menus;
 
-import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
@@ -40,7 +40,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
         if (this.config.getProperty(ConfigKeys.filler_toggle)) {
             final GuiFiller guiFiller = gui.getFiller();
 
-            guiFiller.fill(new ItemBuilder()
+            guiFiller.fill(new LegacyItemBuilder()
                     .withType(this.config.getProperty(ConfigKeys.filler_item))
                     .setDisplayName(this.config.getProperty(ConfigKeys.filler_name))
                     .setDisplayLore(this.config.getProperty(ConfigKeys.filler_lore))
@@ -50,7 +50,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
         if (this.config.getProperty(ConfigKeys.gui_customizer_toggle)) {
             for (String custom : this.config.getProperty(ConfigKeys.gui_customizer)) {
-                final ItemBuilder item = new ItemBuilder();
+                final LegacyItemBuilder item = new LegacyItemBuilder();
 
                 int slot = 0;
 
@@ -112,7 +112,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                     final NumberFormat instance = NumberFormat.getNumberInstance();
 
-                    final ItemBuilder builder = new ItemBuilder()
+                    final LegacyItemBuilder builder = new LegacyItemBuilder()
                             .withType(section.getString("Item", "chest").toLowerCase())
                             .setDisplayName(crate.getCrateName())
                             .setCustomModelData(section.getInt("Custom-Model-Data", -1))

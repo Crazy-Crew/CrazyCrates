@@ -1,17 +1,19 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
+import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
+import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
 import com.ryderbelserion.fusion.core.util.StringUtils;
-import com.ryderbelserion.fusion.paper.enums.Support;
+import com.ryderbelserion.fusion.paper.builder.items.modern.ItemBuilder;
 import com.ryderbelserion.fusion.paper.util.PaperMethods;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
@@ -35,15 +37,18 @@ public class Prize {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
+    private final SettingsManager config = ConfigManager.getConfig();
+
     private final ConfigurationSection section;
-    private final List<ItemBuilder> builders;
+    private final List<LegacyItemBuilder> builders;
+    private final List<ItemBuilder> items;
     private final List<String> commands;
     private final List<String> messages;
     private final String sectionName;
     private final String prizeName;
 
     private List<String> permissions = new ArrayList<>();
-    private ItemBuilder displayItem = new ItemBuilder();
+    private LegacyItemBuilder displayItem = new LegacyItemBuilder();
     private boolean firework = false;
     private String crateName = "";
     private double weight = -1;
@@ -59,14 +64,20 @@ public class Prize {
 
     private List<ItemStack> editorItems = new ArrayList<>();
 
-    public Prize(@NotNull final ConfigurationSection section, List<ItemStack> editorItems, @NotNull final List<Tier> tierPrizes, @NotNull final String crateName, @Nullable final Prize alternativePrize) {
+    public Prize(@NotNull final ConfigurationSection section, @NotNull final List<ItemStack> editorItems, @NotNull final List<Tier> tierPrizes, @NotNull final String crateName, @Nullable final Prize alternativePrize) {
         this.section = section;
 
         this.sectionName = section.getName();
 
         this.crateName = crateName;
 
-        this.builders = ItemUtils.convertStringList(this.section.getStringList("Items"), this.sectionName);
+        if (this.config.getProperty(ConfigKeys.use_different_items_layout) && !this.section.isList("Items")) {
+            this.items = ItemUtils.convertConfigurationSection(this.section.getConfigurationSection("Items"));
+            this.builders = new ArrayList<>();
+        } else {
+            this.builders = ItemUtils.convertStringList(this.section.getStringList("Items"), this.sectionName);
+            this.items = new ArrayList<>();
+        }
 
         this.maxPulls = section.getInt("Settings.Max-Pulls", -1);
 
@@ -118,7 +129,13 @@ public class Prize {
 
         this.section = section;
 
-        this.builders = ItemUtils.convertStringList(this.section.getStringList("Items"), this.sectionName);
+        if (this.config.getProperty(ConfigKeys.use_different_items_layout) && !this.section.isList("Items")) {
+            this.items = ItemUtils.convertConfigurationSection(this.section.getConfigurationSection("Items"));
+            this.builders = new ArrayList<>();
+        } else {
+            this.builders = ItemUtils.convertStringList(this.section.getStringList("Items"), this.sectionName);
+            this.items = new ArrayList<>();
+        }
     }
 
     /**
@@ -244,10 +261,14 @@ public class Prize {
     /**
      * @return the ItemBuilders for all the custom items made from the Items: option.
      */
-    public @NotNull final List<ItemBuilder> getItemBuilders() {
+    public @NotNull final List<LegacyItemBuilder> getItemBuilders() {
         return this.builders;
     }
-    
+
+    public @NotNull final List<ItemBuilder> getItems() {
+        return this.items;
+    }
+
     /**
      * @return the name of the crate the prize is in.
      */
@@ -337,8 +358,8 @@ public class Prize {
         server.broadcast(component, permission);
     }
 
-    private @NotNull ItemBuilder display() {
-        ItemBuilder builder = new ItemBuilder();
+    private @NotNull LegacyItemBuilder display() {
+        LegacyItemBuilder builder = new LegacyItemBuilder();
 
         try {
             if (this.section.contains("DisplayData")) {
@@ -451,7 +472,7 @@ public class Prize {
 
             return builder;
         } catch (Exception exception) {
-            return new ItemBuilder(ItemType.RED_TERRACOTTA).setDisplayName("<red><bold>ERROR").setDisplayLore(new ArrayList<>() {{
+            return new LegacyItemBuilder(ItemType.RED_TERRACOTTA).setDisplayName("<red><bold>ERROR").setDisplayLore(new ArrayList<>() {{
                 add("<red>There was an error with one of your prizes!");
                 add("<red>The reward in question is labeled: <yellow>" + section.getName() + " <red>in crate: <yellow>" + crateName);
                 add("<red>Name of the reward is " + section.getString("DisplayName"));

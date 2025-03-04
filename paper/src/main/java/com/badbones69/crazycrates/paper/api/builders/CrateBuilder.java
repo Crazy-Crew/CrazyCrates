@@ -279,7 +279,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param lore lore of item
      */
     public void setItem(final int slot, @NotNull final ItemType itemType, @NotNull final String name, @NotNull final List<String> lore) {
-        getInventory().setItem(slot, new ItemBuilder(itemType).setPlayer(getPlayer()).setDisplayName(name).setDisplayLore(lore).asItemStack());
+        getInventory().setItem(slot, new LegacyItemBuilder(itemType).setPlayer(getPlayer()).setDisplayName(name).setDisplayLore(lore).asItemStack());
     }
 
     /**
@@ -290,7 +290,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param name name of item
      */
     public void setItem(final int slot, @NotNull final ItemType itemType, @NotNull final String name) {
-        getInventory().setItem(slot, new ItemBuilder(itemType).setPlayer(getPlayer()).setDisplayName(name).asItemStack());
+        getInventory().setItem(slot, new LegacyItemBuilder(itemType).setPlayer(getPlayer()).setDisplayName(name).asItemStack());
     }
 
     /**
@@ -400,7 +400,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
 
     public final void populateTiers() {
         final CosmicCrateManager manager = (CosmicCrateManager) this.crate.getManager();
-        final ItemBuilder itemBuilder = manager.getMysteryCrate().setPlayer(this.player);
+        final LegacyItemBuilder itemBuilder = manager.getMysteryCrate().setPlayer(this.player);
 
         for (int slot = 0; slot <= this.size; slot++) {
             itemBuilder.addNamePlaceholder("%Slot%", String.valueOf(slot))

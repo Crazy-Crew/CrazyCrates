@@ -11,7 +11,7 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
-import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.ryderbelserion.fusion.core.api.enums.FileType;
 import com.ryderbelserion.fusion.core.util.StringUtils;
 import com.ryderbelserion.fusion.paper.files.CustomFile;
@@ -41,9 +41,9 @@ import java.util.Map;
 
 public class Crate {
 
-    private ItemBuilder previewTierBorderItem;
-    private ItemBuilder borderItem;
-    private ItemBuilder keyBuilder;
+    private LegacyItemBuilder previewTierBorderItem;
+    private LegacyItemBuilder borderItem;
+    private LegacyItemBuilder keyBuilder;
 
     private AbstractCrateManager manager;
     private final String name;
@@ -113,7 +113,7 @@ public class Crate {
     public Crate(@NotNull final String name,
                  @NotNull final String previewName,
                  @NotNull final CrateType crateType,
-                 @NotNull final ItemBuilder key,
+                 @NotNull final LegacyItemBuilder key,
                  @NotNull final String keyName,
                  @NotNull final ArrayList<Prize> prizes,
                  @NotNull final YamlConfiguration file,
@@ -185,7 +185,7 @@ public class Crate {
 
         @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
-        this.borderItem = new ItemBuilder()
+        this.borderItem = new LegacyItemBuilder()
                 .withType(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane").toLowerCase())
                 .setCustomModelData(file.getInt("Crate.Preview.Glass.Custom-Model-Data", -1))
                 .setHidingItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
@@ -193,7 +193,7 @@ public class Crate {
 
         @NotNull final String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
 
-        this.previewTierBorderItem = new ItemBuilder()
+        this.previewTierBorderItem = new LegacyItemBuilder()
                 .withType(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
                 .setCustomModelData(file.getInt("Crate.tier-preview.glass.custom-model-data", -1))
                 .setHidingItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
@@ -263,7 +263,7 @@ public class Crate {
     /**
      * @return item for the preview border.
      */
-    public @NotNull final ItemBuilder getPreviewTierBorderItem() {
+    public @NotNull final LegacyItemBuilder getPreviewTierBorderItem() {
         return this.previewTierBorderItem;
     }
 
@@ -519,7 +519,7 @@ public class Crate {
      *
      * @return the ItemBuilder for the border item.
      */
-    public @NotNull final ItemBuilder getBorderItem() {
+    public @NotNull final LegacyItemBuilder getBorderItem() {
         return this.borderItem;
     }
     

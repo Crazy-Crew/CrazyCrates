@@ -68,6 +68,14 @@ public class ConfigKeys implements SettingsHolder {
     })
     public static final Property<Boolean> use_different_random = newProperty("root.use-different-random", false);
 
+    @Comment({
+            "This will allow you to use a new items layout for Prizes which should be much more straight forward, less prone to errors.",
+            "You can run /crazycrates migrate -mt ItemLayout which should migrate all existing prizes after you set this to true",
+            "",
+            "Take a backup before you run the migration as there may be bugs."
+    })
+    public static final Property<Boolean> use_different_items_layout = newProperty("root.use-different-items-layout", false);
+
     @Comment("Sends anonymous statistics to https://bstats.org/plugin/bukkit/CrazyCrates/4514")
     public static final Property<Boolean> toggle_metrics = newProperty("root.toggle-metrics", true);
 

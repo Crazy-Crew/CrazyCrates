@@ -79,7 +79,7 @@ itemsadder = "3.6.1"
 oraxen = "1.171.0"
 
 # Fusion API
-fusion = "0.21.0"
+fusion = "0.26.0"
 
 # Common API
 triumph-cmd = "2.0.0-ALPHA-10"

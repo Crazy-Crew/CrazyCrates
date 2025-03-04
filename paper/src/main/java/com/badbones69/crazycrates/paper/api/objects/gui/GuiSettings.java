@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.api.objects.gui;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.enums.FillerType;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
@@ -39,7 +39,7 @@ public class GuiSettings {
         this.isFillerToggled = configuration.getBoolean("filler.toggle", false);
         this.fillerType = FillerType.getFromName(configuration.getString("filler.fill-type", "border"));
 
-        this.fillerStack = new ItemBuilder()
+        this.fillerStack = new LegacyItemBuilder()
                 .withType(configuration.getString("filler.toggle.material", "red_stained_glass_pane"))
                 .setDisplayName(configuration.getString("filler.toggle.name", " ")).asGuiItem();
 

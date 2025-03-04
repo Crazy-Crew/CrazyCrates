@@ -1,5 +1,8 @@
 package com.badbones69.crazycrates.paper.api;
 
+import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.core.config.ConfigManager;
+import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
@@ -8,8 +11,9 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
-import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
+import com.ryderbelserion.fusion.paper.builder.items.modern.ItemBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -32,6 +36,8 @@ public class PrizeManager {
     
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
     private static final BukkitUserManager userManager = plugin.getUserManager();
+
+    private static final SettingsManager config = ConfigManager.getConfig();
 
     public static int getCap(final Crate crate, final Player player) {
         final String format = "crazycrates.respin." + crate.getFileName() + ".";
@@ -154,10 +160,28 @@ public class PrizeManager {
             }
         }
 
-        if (!prize.getItemBuilders().isEmpty()) {
-            final boolean isPlaceholderAPIEnabled = Plugins.placeholder_api.isEnabled();
+        if (config.getProperty(ConfigKeys.use_different_items_layout)) {
+            final List<ItemBuilder> builders = prize.getItems();
 
-            for (final ItemBuilder item : prize.getItemBuilders()) {
+            if (!builders.isEmpty()) {
+                for (final ItemBuilder builder : builders) {
+                    final ItemStack itemStack = builder.asItemStack(player, false);
+
+                    if (!MiscUtils.isInventoryFull(player)) {
+                        MiscUtils.addItem(player, itemStack);
+                    } else {
+                        player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
+                    }
+                }
+            }
+        }
+
+        final boolean isPlaceholderAPIEnabled = Plugins.placeholder_api.isEnabled();
+
+        final List<LegacyItemBuilder> legacy = prize.getItemBuilders();
+
+        if (!legacy.isEmpty()) { // run this just in case people got leftover shit
+            for (final LegacyItemBuilder item : legacy) {
                 if (isPlaceholderAPIEnabled) {
                     final String displayName = item.getDisplayName();
 
@@ -176,10 +200,12 @@ public class PrizeManager {
                     }
                 }
 
+                final ItemStack itemStack = item.setPlayer(player).asItemStack();
+
                 if (!MiscUtils.isInventoryFull(player)) {
-                    MiscUtils.addItem(player, item.setPlayer(player).asItemStack());
+                    MiscUtils.addItem(player, itemStack);
                 } else {
-                    player.getWorld().dropItemNaturally(player.getLocation(), item.setPlayer(player).asItemStack());
+                    player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
                 }
             }
         }

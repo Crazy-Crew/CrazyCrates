@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
-import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.ryderbelserion.fusion.core.util.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Tier {
 
-    private final ItemBuilder item;
+    private final LegacyItemBuilder item;
     private final String name;
     private final List<String> lore;
     private final String coloredName;
@@ -26,7 +26,7 @@ public class Tier {
 
         this.lore = section.getStringList("Lore"); // this returns an empty list if not found anyway.
 
-        this.item = new ItemBuilder().withType(section.getString("Item", "chest").toLowerCase()).setHidingItemFlags(section.getBoolean("HideItemFlags", false)).setCustomModelData(section.getInt("Custom-Model-Data", -1));
+        this.item = new LegacyItemBuilder().withType(section.getString("Item", "chest").toLowerCase()).setHidingItemFlags(section.getBoolean("HideItemFlags", false)).setCustomModelData(section.getInt("Custom-Model-Data", -1));
 
         this.weight = section.getDouble("Weight", -1);
 
@@ -50,7 +50,7 @@ public class Tier {
     /**
      * @return the colored glass pane.
      */
-    public @NotNull final ItemBuilder getItem() {
+    public @NotNull final LegacyItemBuilder getItem() {
         return this.item;
     }
 

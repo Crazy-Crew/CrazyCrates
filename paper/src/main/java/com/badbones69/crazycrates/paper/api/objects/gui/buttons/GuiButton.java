@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.api.objects.gui.buttons;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.utils.MsgUtils;
@@ -20,13 +20,13 @@ public class GuiButton {
 
     private final Map<String, String> placeholders;
     private final ConfigurationSection section;
-    private final ItemBuilder guiItem;
+    private final LegacyItemBuilder guiItem;
 
     private final List<String> commands;
     private final List<String> messages;
 
     public GuiButton(final ConfigurationSection section, final Map<String, String> placeholders) {
-        this.guiItem = new ItemBuilder()
+        this.guiItem = new LegacyItemBuilder()
                 .withType(section.getString("material", "emerald_block"))
                 .setDisplayName(section.getString("name", "No display name found."))
                 .setDisplayLore(section.getStringList("lore"));

@@ -66,7 +66,7 @@ public class CrazyCrates extends JavaPlugin {
         this.instance = new Server(getDataFolder());
         this.instance.apply();
 
-        this.api.getFileManager().addFile("locations.yml", FileType.YAML).addFile("data.yml", FileType.YAML).addFile("respin-gui.yml", "guis", false, FileType.YAML)
+        getFileManager().addFile("locations.yml", FileType.YAML).addFile("data.yml", FileType.YAML).addFile("respin-gui.yml", "guis", false, FileType.YAML)
                 .addFile("crates.log", "logs", false, FileType.NONE)
                 .addFile("keys.log", "logs", false, FileType.NONE)
                 .addFolder("crates", FileType.YAML)

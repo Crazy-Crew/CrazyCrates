@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.tasks.crates.types;
 
-import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.builders.types.features.CrateSpinMenu;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -106,7 +106,7 @@ public class CsgoCrate extends CrateBuilder {
 
                         final String material = config.getProperty(ConfigKeys.crate_csgo_finished_material);
 
-                        final ItemStack itemStack = new ItemBuilder().withType(material.isEmpty() ? Material.GRAY_STAINED_GLASS.getKey().getKey() : material).setDisplayName(" ").asItemStack();
+                        final ItemStack itemStack = new LegacyItemBuilder().withType(material.isEmpty() ? Material.GRAY_STAINED_GLASS.getKey().getKey() : material).setDisplayName(" ").asItemStack();
 
                         setItem(4, itemStack);
                         setItem(22, itemStack);
@@ -157,7 +157,7 @@ public class CsgoCrate extends CrateBuilder {
         final String material = this.config.getProperty(ConfigKeys.crate_csgo_cycling_material);
 
         if (!material.isEmpty()) {
-            final ItemStack itemStack = new ItemBuilder().withType(material).setDisplayName(" ").asItemStack();
+            final ItemStack itemStack = new LegacyItemBuilder().withType(material).setDisplayName(" ").asItemStack();
 
             setItem(4, itemStack);
             setItem(22, itemStack);

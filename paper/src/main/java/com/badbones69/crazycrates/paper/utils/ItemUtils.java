@@ -4,8 +4,11 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.ryderbelserion.fusion.core.util.StringUtils;
+import com.ryderbelserion.fusion.paper.builder.items.modern.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builder.items.modern.types.SkullBuilder;
+import com.ryderbelserion.fusion.paper.builder.items.modern.types.SpawnerBuilder;
 import com.ryderbelserion.fusion.paper.util.PaperMethods;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.Color;
@@ -21,6 +24,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -147,11 +152,11 @@ public class ItemUtils {
         return container.get(ItemKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
     }
 
-    public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder, @NotNull final Player player) {
+    public static @NotNull LegacyItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final LegacyItemBuilder builder, @NotNull final Player player) {
         return getItem(section, builder.setPlayer(player));
     }
 
-    public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder) {
+    public static @NotNull LegacyItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final LegacyItemBuilder builder) {
         if (section.contains("Glowing")) {
             builder.setGlowing(section.getBoolean("Glowing", false));
         }
@@ -195,8 +200,8 @@ public class ItemUtils {
         return builder;
     }
 
-    public static ItemBuilder convertItemStack(Player player, ItemStack itemStack) {
-        ItemBuilder itemBuilder = new ItemBuilder(itemStack);
+    public static LegacyItemBuilder convertItemStack(Player player, ItemStack itemStack) {
+        LegacyItemBuilder itemBuilder = new LegacyItemBuilder(itemStack);
 
         if (player != null) {
             itemBuilder.setPlayer(player);
@@ -205,24 +210,101 @@ public class ItemUtils {
         return itemBuilder;
     }
 
-    public static ItemBuilder convertItemStack(ItemStack itemStack) {
+    public static LegacyItemBuilder convertItemStack(ItemStack itemStack) {
         return convertItemStack(null, itemStack);
     }
 
-    public static List<ItemBuilder> convertStringList(List<String> itemStrings) {
+    public static List<ItemBuilder> convertConfigurationSection(final ConfigurationSection section) {
+        final List<ItemBuilder> cache = new ArrayList<>();
+
+        if (section == null) return cache;
+
+        for (final String key : section.getKeys(false)) {
+            final ConfigurationSection item = section.getConfigurationSection(key);
+
+            if (item == null) continue;
+
+            final String base64 = item.getString("data", null);
+
+            final ItemBuilder itemBuilder = ItemBuilder.from(item.getString("material", "stone"));
+
+            if (base64 != null && !base64.isEmpty()) {
+                itemBuilder.withBase64(base64);
+            }
+
+            itemBuilder.setDisplayName(item.getString("name", ""))
+                    .withDisplayLore(item.getStringList("lore"))
+                    .setAmount(item.getInt("amount", 1));
+
+            final ConfigurationSection enchantments = item.getConfigurationSection("enchantments");
+
+            if (enchantments != null) {
+                for (final String enchantment : enchantments.getKeys(false)) {
+                    final int level = enchantments.getInt(enchantment);
+
+                    itemBuilder.addEnchantment(enchantment, level);
+                }
+            }
+
+            itemBuilder.setCustomModelData(item.getInt("custom-model-data", -1));
+
+            if (item.getBoolean("hide-tool-tip", false)) {
+                itemBuilder.hideToolTip();
+            }
+
+            itemBuilder.setUnbreakable(item.getBoolean("unbreakable-item", false));
+
+            // settings
+            itemBuilder.setEnchantGlint(item.getBoolean("settings.glowing", false));
+
+            final String player = item.getString("settings.player", null);
+
+            if (player != null && !player.isEmpty()) {
+                final SkullBuilder skullBuilder = itemBuilder.asSkullBuilder();
+
+                skullBuilder.withName(player).build();
+            }
+
+            itemBuilder.setItemDamage(item.getInt("settings.damage", 0));
+
+            itemBuilder.withSkull(item.getString("settings.skull", ""));
+
+            final String rgb = item.getString("settings.rgb", "");
+
+            final String color = item.getString("settings.color", "");
+
+            itemBuilder.setColor(!color.isEmpty() ? color : !rgb.isEmpty() ? rgb : "");
+
+            final String mobType = item.getString("settings.mob.type", null);
+
+            if (mobType != null && !mobType.isEmpty()) {
+                final SpawnerBuilder spawnerBuilder = itemBuilder.asSpawnerBuilder();
+
+                spawnerBuilder.withEntityType(PaperMethods.getEntity(mobType)).build();
+            }
+
+            itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""), false);
+
+            cache.add(itemBuilder);
+        }
+
+        return cache;
+    }
+
+    public static List<LegacyItemBuilder> convertStringList(List<String> itemStrings) {
         return convertStringList(itemStrings, null);
     }
 
-    public static List<ItemBuilder> convertStringList(List<String> itemStrings, String section) {
+    public static List<LegacyItemBuilder> convertStringList(List<String> itemStrings, String section) {
         return itemStrings.stream().map(itemString -> convertString(itemString, section)).collect(Collectors.toList());
     }
 
-    public static ItemBuilder convertString(String itemString) {
+    public static LegacyItemBuilder convertString(String itemString) {
         return convertString(itemString, null);
     }
 
-    public static ItemBuilder convertString(String itemString, String section) {
-        ItemBuilder itemBuilder = new ItemBuilder();
+    public static LegacyItemBuilder convertString(String itemString, String section) {
+        LegacyItemBuilder itemBuilder = new LegacyItemBuilder();
 
         try {
             for (String optionString : itemString.split(", ")) {

@@ -58,8 +58,13 @@ public class Server implements IServer {
     }
 
     @Override
+    public @NotNull final List<String> getCrateFiles(boolean keepExtension) {
+        return FileUtils.getNames(getCrateFolder(), ".yml", keepExtension);
+    }
+
+    @Override
     public @NotNull final List<String> getCrateFiles() {
-        return FileUtils.getNames(getCrateFolder(), ".yml", false);
+        return getCrateFiles(false);
     }
 
     @Override

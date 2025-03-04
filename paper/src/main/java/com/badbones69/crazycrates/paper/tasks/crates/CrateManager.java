@@ -31,7 +31,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.types.RouletteCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WonderCrate;
-import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.ryderbelserion.fusion.core.api.enums.FileType;
 import com.ryderbelserion.fusion.core.util.FileUtils;
 import com.ryderbelserion.fusion.paper.files.CustomFile;
@@ -41,6 +41,7 @@ import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Server;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.inventory.EquipmentSlot;
@@ -93,6 +94,9 @@ public class CrateManager {
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
     private final FileManager fileManager = this.plugin.getFileManager();
 
+    private final ComponentLogger logger = this.plugin.getComponentLogger();
+    private final Server server = this.plugin.getServer();
+
     private final List<CrateLocation> crateLocations = new ArrayList<>();
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
     private final List<BrokeLocation> brokeLocations = new ArrayList<>();
@@ -121,13 +125,15 @@ public class CrateManager {
     private final Map<UUID, Map<Integer, Tier>> tiers = new WeakHashMap<>();
 
     public void addTier(final Player player, final int slot, final Tier tier) {
-        if (this.tiers.containsKey(player.getUniqueId())) {
-            this.tiers.get(player.getUniqueId()).put(slot, tier);
+        final UUID uuid = player.getUniqueId();
+
+        if (this.tiers.containsKey(uuid)) {
+            this.tiers.get(uuid).put(slot, tier);
 
             return;
         }
 
-        this.tiers.put(player.getUniqueId(), new WeakHashMap<>() {{
+        this.tiers.put(uuid, new WeakHashMap<>() {{
             put(slot, tier);
         }});
     }
@@ -229,12 +235,12 @@ public class CrateManager {
 
             this.brokeCrates.add(fileName);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("There was an error while loading the {}.yml file.", fileName, exception);
+            if (MiscUtils.isLogging()) this.logger.warn("There was an error while loading the {}.yml file.", fileName, exception);
         }
     }
 
     public void loadCustomItems() {
-        final PluginManager manager = this.plugin.getServer().getPluginManager();
+        final PluginManager manager = this.server.getPluginManager();
 
         final String pluginName = this.plugin.getFusion().getItemPlugin().toLowerCase();
 
@@ -319,20 +325,21 @@ public class CrateManager {
                         "There was no hologram plugin found on the server. If you are using CMI",
                         "Please make sure you enabled the hologram module in modules.yml",
                         "You can run /crazycrates reload if using CMI otherwise restart your server."
-                ).forEach(this.plugin.getComponentLogger()::warn);
+                ).forEach(this.logger::warn);
             }
 
             return;
         }
 
-        if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("{} support has been enabled.", this.holograms.getName());
+        if (MiscUtils.isLogging()) this.logger.info("{} support has been enabled.", this.holograms.getName());
     }
 
-    /**
-     * @return a list of crate names.
-     */
+    public List<String> getCrateNames(final boolean keepExtension) {
+        return this.plugin.getInstance().getCrateFiles(keepExtension);
+    }
+
     public List<String> getCrateNames() {
-        return this.plugin.getInstance().getCrateFiles();
+        return this.plugin.getInstance().getCrateFiles(false);
     }
 
     private final SettingsManager config = ConfigManager.getConfig();
@@ -341,9 +348,8 @@ public class CrateManager {
      * Loads the crates.
      */
     public void loadCrates() {
-        if (ConfigManager.getConfig().getProperty(ConfigKeys.update_examples_folder)) {
-            Path path = this.plugin.getDataFolder().toPath();
-            Class<? extends @NotNull CrazyCrates> classObject = this.plugin.getClass();
+        if (this.config.getProperty(ConfigKeys.update_examples_folder)) {
+            final Path path = this.plugin.getDataFolder().toPath();
 
             List.of(
                     "config.yml",
@@ -369,7 +375,7 @@ public class CrateManager {
 
         if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("Loading all crate information...");
 
-        for (final String crateName : getCrateNames()) {
+        for (final String crateName : getCrateNames(true)) {
             try {
                 final CustomFile customFile = this.fileManager.getFile(crateName, FileType.YAML);
 
@@ -408,7 +414,7 @@ public class CrateManager {
                 if (isTiersEmpty && tiers.isEmpty()) {
                     this.brokeCrates.add(crateName);
 
-                    if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("No tiers were found for {}.yml file.", crateName);
+                    if (MiscUtils.isLogging()) this.logger.warn("No tiers were found for {}.yml file.", crateName);
 
                     continue;
                 }
@@ -476,9 +482,10 @@ public class CrateManager {
                         file.getString("Crate.Hologram.Color", "transparent"),
                         file.getInt("Crate.Hologram.Update-Interval", -1),
                         file.getStringList("Crate.Hologram.Message"));
-                addCrate(new Crate(crateName, previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name", "Crate.PhysicalKey.Name is missing from " + crateName + ".yml"), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, prizeCommands, holo));
 
-                final PluginManager server = this.plugin.getServer().getPluginManager();
+                addCrate(new Crate(crateName.replaceAll(".yml", ""), previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name", "Crate.PhysicalKey.Name is missing from " + crateName + ".yml"), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, prizeCommands, holo));
+
+                final PluginManager server = this.server.getPluginManager();
 
                 final boolean isNewSystemEnabled = this.config.getProperty(ConfigKeys.use_new_permission_system);
 
@@ -494,7 +501,7 @@ public class CrateManager {
             } catch (Exception exception) {
                 this.brokeCrates.add(crateName);
 
-                if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("There was an error while loading the {}.yml file.", crateName, exception);
+                if (MiscUtils.isLogging()) this.logger.warn("There was an error while loading the {}.yml file.", crateName, exception);
             }
         }
 
@@ -504,7 +511,7 @@ public class CrateManager {
             List.of(
                     "All crate information has been loaded.",
                     "Loading all the physical crate locations."
-            ).forEach(line -> this.plugin.getComponentLogger().info(line));
+            ).forEach(this.logger::info);
         }
 
         final YamlConfiguration locations = FileKeys.locations.getConfiguration();
@@ -525,7 +532,7 @@ public class CrateManager {
                     // If name is empty or blank, we return.
                     if (worldName.isEmpty() || worldName.isBlank()) return;
 
-                    final World world = this.plugin.getServer().getWorld(worldName);
+                    final World world = this.server.getWorld(worldName);
                     final int x = locations.getInt("Locations." + locationName + ".X");
                     final int y = locations.getInt("Locations." + locationName + ".Y");
                     final int z = locations.getInt("Locations." + locationName + ".Z");
@@ -552,18 +559,16 @@ public class CrateManager {
 
         // Checking if all physical locations loaded
         if (MiscUtils.isLogging()) {
-            final ComponentLogger logger = this.plugin.getComponentLogger();
-
             if (loadedAmount > 0 || brokeAmount > 0) {
                 if (brokeAmount <= 0) {
-                    logger.info("All physical crate locations have been loaded.");
+                    this.logger.info("All physical crate locations have been loaded.");
                 } else {
-                    logger.info("Loaded {} physical crate locations.", loadedAmount);
-                    logger.info("Failed to load {} physical crate locations.", brokeAmount);
+                    this.logger.info("Loaded {} physical crate locations.", loadedAmount);
+                    this.logger.info("Failed to load {} physical crate locations.", brokeAmount);
                 }
             }
 
-            logger.info("Searching for schematics to load.");
+            this.logger.info("Searching for schematics to load.");
         }
 
         // Loading schematic files
@@ -572,14 +577,14 @@ public class CrateManager {
         if (schems != null) {
             for (final String schematicName : schems) {
                 if (schematicName.endsWith(".nbt")) {
-                    this.crateSchematics.add(new CrateSchematic(schematicName, new File(plugin.getDataFolder() + "/schematics/" + schematicName)));
+                    this.crateSchematics.add(new CrateSchematic(schematicName, new File(this.plugin.getDataFolder() + "/schematics/" + schematicName)));
 
-                    if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("{} was successfully found and loaded.", schematicName);
+                    if (MiscUtils.isLogging()) this.logger.info("{} was successfully found and loaded.", schematicName);
                 }
             }
         }
 
-        if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("All schematics were found and loaded.");
+        if (MiscUtils.isLogging()) this.logger.info("All schematics were found and loaded.");
 
         cleanDataFile();
 
@@ -741,13 +746,11 @@ public class CrateManager {
                 crateBuilder = new CsgoCrate(crate, player, 27);
 
                 if (MiscUtils.isLogging()) {
-                    final ComponentLogger logger = this.plugin.getComponentLogger();
-
                     List.of(
                             crate.getFileName() + " has an invalid crate type. Your Value: " + crate.getFile().getString("Crate.CrateType", "CSGO"),
                             "We will use " + CrateType.csgo.getName() + " until you change the crate type.",
                             "Valid Crate Types: CSGO/Casino/Cosmic/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War"
-                    ).forEach(logger::warn);
+                    ).forEach(this.logger::warn);
                 }
             }
         }
@@ -1474,14 +1477,14 @@ public class CrateManager {
     }
 
     // Internal methods.
-    private ItemBuilder getKey(@NotNull final FileConfiguration file) {
+    private LegacyItemBuilder getKey(@NotNull final FileConfiguration file) {
         final String name = file.getString("Crate.PhysicalKey.Name", "");
         final int customModelData = file.getInt("Crate.PhysicalKey.Custom-Model-Data", -1);
         final List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
         final boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
-        final ItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new ItemBuilder().fromBase64(file.getString("Crate.PhysicalKey.Data", "")) : new ItemBuilder().withType(file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase());
+        final LegacyItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new LegacyItemBuilder().fromBase64(file.getString("Crate.PhysicalKey.Data", "")) : new LegacyItemBuilder().withType(file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase());
 
         return itemBuilder.setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setHidingItemFlags(hideFlags).setCustomModelData(customModelData);
     }

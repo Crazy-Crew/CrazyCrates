@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.paper.tasks.crates.other;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
-import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -19,8 +19,8 @@ import java.util.UUID;
 
 public class CosmicCrateManager extends AbstractCrateManager {
 
-    private final ItemBuilder mysteryCrate;
-    private final ItemBuilder pickedCrate;
+    private final LegacyItemBuilder mysteryCrate;
+    private final LegacyItemBuilder pickedCrate;
     private final YamlConfiguration file;
     private final int totalPrizes;
 
@@ -38,7 +38,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
 
         this.totalPrizes = file.getInt(path + "Total-Prize-Amount", 4);
 
-        this.mysteryCrate = new ItemBuilder()
+        this.mysteryCrate = new LegacyItemBuilder()
                 .withType(file.getString(path + "Mystery-Crate.Item", "chest").toLowerCase())
                 .setDisplayName(file.getString(path + "Mystery-Crate.Name", "<bold><white>???</bold>"))
                 .setHidingItemFlags(file.getBoolean(path + "Mystery-Crate.HideItemFlags", false))
@@ -46,7 +46,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
                 .setPersistentInteger(ItemKeys.cosmic_mystery_crate.getNamespacedKey(), 1)
                 .setCustomModelData(file.getInt(path + "Mystery-Crate.Custom-Model-Data", -1));
 
-        this.pickedCrate = new ItemBuilder().withType(file.getString(path + "Picked-Crate.Item", "gray_stained_glass_pane").toLowerCase())
+        this.pickedCrate = new LegacyItemBuilder().withType(file.getString(path + "Picked-Crate.Item", "gray_stained_glass_pane").toLowerCase())
                 .setDisplayName(file.getString(path + "Picked-Crate.Name", "<bold><white>???</white>"))
                 .setHidingItemFlags(file.getBoolean(path + "Picked-Crate.HideItemFlags", false))
                 .setDisplayLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("<gray>You have chosen #%slot%."))
@@ -72,14 +72,14 @@ public class CosmicCrateManager extends AbstractCrateManager {
     /**
      * @return mystery crate builder.
      */
-    public @NotNull final ItemBuilder getMysteryCrate() {
+    public @NotNull final LegacyItemBuilder getMysteryCrate() {
         return this.mysteryCrate;
     }
 
     /**
      * @return picked crate builder.
      */
-    public @NotNull final ItemBuilder getPickedCrate() {
+    public @NotNull final LegacyItemBuilder getPickedCrate() {
         return this.pickedCrate;
     }
 
@@ -107,7 +107,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
      * @param itemBuilder the itembuilder
      * @param name the name of the tier
      */
-    public void setTier(@NotNull final ItemBuilder itemBuilder, @Nullable final String name) {
+    public void setTier(@NotNull final LegacyItemBuilder itemBuilder, @Nullable final String name) {
         if (name == null || name.isEmpty()) return;
 
         itemBuilder.setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), name);

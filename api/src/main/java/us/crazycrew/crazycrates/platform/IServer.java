@@ -33,6 +33,13 @@ public interface IServer {
     @NotNull File getDataFolder();
 
     /**
+     * @param keepExtension true or false
+     * @return {@link List<String>}
+     * @since 0.9
+     */
+    List<String> getCrateFiles(final boolean keepExtension);
+
+    /**
      * @return {@link List<String>}
      * @since 0.5
      */

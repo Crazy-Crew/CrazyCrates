@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
-import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.ryderbelserion.fusion.paper.builder.gui.types.PaginatedGui;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -28,22 +28,22 @@ public class InventoryManager {
     private final SettingsManager config = ConfigManager.getConfig();
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private ItemBuilder menuButton;
-    private ItemBuilder nextButton;
-    private ItemBuilder backButton;
+    private LegacyItemBuilder menuButton;
+    private LegacyItemBuilder nextButton;
+    private LegacyItemBuilder backButton;
 
     public void loadButtons() {
-        this.menuButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.menu_button_item).toLowerCase())
+        this.menuButton = new LegacyItemBuilder().withType(this.config.getProperty(ConfigKeys.menu_button_item).toLowerCase())
                 .setDisplayName(this.config.getProperty(ConfigKeys.menu_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.menu_button_lore))
                 .setCustomModelData(this.config.getProperty(ConfigKeys.menu_button_model_data));
 
-        this.nextButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.next_button_item).toLowerCase())
+        this.nextButton = new LegacyItemBuilder().withType(this.config.getProperty(ConfigKeys.next_button_item).toLowerCase())
                 .setDisplayName(this.config.getProperty(ConfigKeys.next_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.next_button_lore))
                 .setCustomModelData(this.config.getProperty(ConfigKeys.next_button_model_data));
 
-        this.backButton = new ItemBuilder().withType(this.config.getProperty(ConfigKeys.back_button_item).toLowerCase())
+        this.backButton = new LegacyItemBuilder().withType(this.config.getProperty(ConfigKeys.back_button_item).toLowerCase())
                 .setDisplayName(this.config.getProperty(ConfigKeys.back_button_name))
                 .setDisplayLore(this.config.getProperty(ConfigKeys.back_button_lore))
                 .setCustomModelData(this.config.getProperty(ConfigKeys.back_button_model_data));
@@ -54,7 +54,7 @@ public class InventoryManager {
     }
 
     public final ItemStack getNextButton(@Nullable final Player player, @Nullable final Tier tier, @NotNull final PaginatedGui gui) {
-        final ItemBuilder button = new ItemBuilder(this.nextButton);
+        final LegacyItemBuilder button = new LegacyItemBuilder(this.nextButton);
 
         if (player != null) {
             button.setPlayer(player).addLorePlaceholder("{page}", String.valueOf(gui.getNextPageNumber()));
@@ -72,7 +72,7 @@ public class InventoryManager {
     }
 
     public final ItemStack getBackButton(@Nullable final Player player, @Nullable final Tier tier, @NotNull final PaginatedGui gui) {
-        final ItemBuilder button = new ItemBuilder(this.backButton);
+        final LegacyItemBuilder button = new LegacyItemBuilder(this.backButton);
 
         if (player != null) {
             button.setPlayer(player).addLorePlaceholder("{page}", String.valueOf(gui.getPreviousPageNumber()));

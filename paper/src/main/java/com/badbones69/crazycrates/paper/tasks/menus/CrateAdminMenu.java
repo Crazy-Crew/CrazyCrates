@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.tasks.menus;
 
-import com.badbones69.crazycrates.paper.api.builders.ItemBuilder;
+import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.builders.gui.DynamicInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
@@ -104,7 +104,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
         this.gui.open(this.player, gui -> {
             final int rows = gui.getRows();
 
-            gui.setItem(rows, 5, new ItemBuilder(ItemType.CHEST)
+            gui.setItem(rows, 5, new LegacyItemBuilder(ItemType.CHEST)
                     .setDisplayName("<red>What is this menu?")
                     .addDisplayLore(" <gold>⤷ Right click to go back to the main menu!")
                     .addDisplayLore("")
