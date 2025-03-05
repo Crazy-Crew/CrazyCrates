@@ -738,7 +738,7 @@ public class Crate {
             }
         }
 
-        if (this.config.getProperty(ConfigKeys.use_new_item_editor)) {
+        /*if (this.config.getProperty(ConfigKeys.use_new_item_editor)) {
             String toBase64 = PaperMethods.toBase64(itemStack);
 
             section.set(getPath(prizeName, "DisplayData"), toBase64);
@@ -770,7 +770,7 @@ public class Crate {
             editorItems.add(itemStack);
 
             section.set(getPath(prizeName, "Editor-Items"), editorItems);
-        }
+        }*/
 
         section.set(getPath(prizeName, "DisplayItem"), itemStack.getType().getKey().getKey());
 

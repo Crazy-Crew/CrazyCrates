@@ -80,15 +80,6 @@ public class ConfigKeys implements SettingsHolder {
     public static final Property<Boolean> toggle_metrics = newProperty("root.toggle-metrics", true);
 
     @Comment({
-            "This option defines what in-game editor format is used in CrazyCrates.",
-            "",
-            "true -> uses the new editor",
-            "false -> uses the old editor",
-            ""
-    })
-    public static final Property<Boolean> use_new_item_editor = newProperty("root.use-new-editor", false);
-
-    @Comment({
             "A recent change to permissions related to opening crates was made",
             "The way I assumed wildcard permissions worked isn't how they worked",
             "The superperms system for wildcards is stupid... but I digress",

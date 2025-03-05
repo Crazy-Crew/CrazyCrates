@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.ryderbelserion.fusion.core.api.enums.FileType;
 import com.ryderbelserion.fusion.core.util.StringUtils;
 import com.ryderbelserion.fusion.paper.files.CustomFile;
@@ -343,7 +342,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 if (prizeSection == null) return;
 
-                final boolean useNewItemEditor = this.config.getProperty(ConfigKeys.use_new_item_editor);
+                /*final boolean useNewItemEditor = this.config.getProperty(ConfigKeys.use_new_item_editor);
 
                 reward.getItems().forEach(key -> {
                     if (useNewItemEditor) {
@@ -352,7 +351,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                         if (prizeSection.contains("Items")) {
                             final List<String> items = prizeSection.getStringList("Items");
 
-                            items.add("Data: " + base64);
+                        items.add("Data: " + base64);
 
                             set(prizeSection, "Items", items);
                         } else {
@@ -375,7 +374,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                         set(prizeSection, "Editor-Items", editorItems);
                     }
-                });
+                });*/
             });
 
             this.fileManager.addFile(customFile.save());

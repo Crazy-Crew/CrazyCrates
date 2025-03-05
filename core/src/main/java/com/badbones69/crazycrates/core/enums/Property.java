@@ -20,8 +20,6 @@ public enum Property {
 
     show_quickcrate(ConfigKeys.show_quickcrate_item, newProperty("Settings.Show-QuickCrate-Item", ConfigKeys.show_quickcrate_item.getDefaultValue()), false),
 
-    item_editor_toggle(ConfigKeys.use_new_item_editor, newProperty("root.use-old-editor", ConfigKeys.use_new_item_editor.getDefaultValue()), false),
-
     inventory_name(ConfigKeys.inventory_name, newProperty("Settings.InventoryName", ConfigKeys.inventory_name.getDefaultValue())),
     inventory_size(ConfigKeys.inventory_rows, newProperty("Settings.InventorySize", ConfigKeys.inventory_rows.getDefaultValue()), 1),
 
