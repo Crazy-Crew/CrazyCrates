@@ -41,6 +41,11 @@ public abstract class BaseCommand {
 
     protected @NotNull final SettingsManager config = ConfigManager.getConfig();
 
+
+    protected void addKey(@NotNull final CommandSender sender, @NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType type, final int amount, final boolean isSilent, final boolean isGiveAll) {
+        addKey(sender, player, null, crate, type, amount, isSilent, isGiveAll);
+    }
+
     /**
      * Add keys to a player who is online.
      *
@@ -51,7 +56,7 @@ public abstract class BaseCommand {
      * @param amount the amount of keys.
      */
     protected void addKey(@NotNull final CommandSender sender, @NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType type, final int amount, final boolean isSilent) {
-        addKey(sender, player, null, crate, type, amount, isSilent);
+        addKey(sender, player, null, crate, type, amount, isSilent, false);
     }
 
     /**
@@ -64,7 +69,7 @@ public abstract class BaseCommand {
      * @param amount the amount of keys.
      */
     protected void addKey(@NotNull final CommandSender sender, @Nullable final OfflinePlayer player, @NotNull final Crate crate, @NotNull final KeyType keyType, final int amount, final boolean isSilent) {
-        addKey(sender, null, player, crate, keyType, amount, isSilent);
+        addKey(sender, null, player, crate, keyType, amount, isSilent, false);
     }
 
     /**
@@ -186,7 +191,7 @@ public abstract class BaseCommand {
     }
 
     @ApiStatus.Internal
-    private void addKey(@NotNull final CommandSender sender, @Nullable Player player, @Nullable OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount, boolean isSilent) {
+    private void addKey(@NotNull final CommandSender sender, @Nullable Player player, @Nullable OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount, boolean isSilent, boolean isGiveAll) {
         final String fileName = crate.getFileName();
 
         if (player != null) {
@@ -214,7 +219,7 @@ public abstract class BaseCommand {
 
             EventManager.logEvent(EventType.event_key_given, player.getName(), sender, crate, type, amount);
 
-            Messages.gave_a_player_keys.sendMessage(sender, placeholders);
+            if (!isGiveAll) Messages.gave_a_player_keys.sendMessage(sender, placeholders);
 
             if (isSilent) {
                 return;

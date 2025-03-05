@@ -117,7 +117,7 @@ public class CommandGive extends BaseCommand {
                 return;
             }
 
-            addKey(sender, player, crate, keyType, amount, isSilent);
+            addKey(sender, player, crate, keyType, amount, isSilent, true);
         }
     }
 }
