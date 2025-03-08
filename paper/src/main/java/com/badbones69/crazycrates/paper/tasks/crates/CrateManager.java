@@ -273,21 +273,11 @@ public class CrateManager {
     public void loadHolograms() {
         final String pluginName = this.config.getProperty(ConfigKeys.hologram_plugin).toLowerCase();
 
-        /*if (this.holograms != null && !pluginName.isEmpty()) {
-            this.holograms.purge(false);
-        }*/
-
         switch (pluginName) {
             case "decentholograms" -> {
                 if (!Plugins.decent_holograms.isEnabled()) return;
 
-                if (this.holograms != null) {
-                    if (this.holograms.getName().equalsIgnoreCase("Decentholograms")) { // we don't need to do anything.
-                        return;
-                    }
-
-                    this.holograms = new DecentHologramsSupport();
-
+                if (this.holograms != null && this.holograms.getName().equalsIgnoreCase("DecentHolograms")) { // we don't need to do anything.
                     return;
                 }
 
