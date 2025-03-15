@@ -171,7 +171,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
 
             case "oraxen" -> isFurniture = Plugins.oraxen.isEnabled() && OraxenFurniture.isFurniture(location.getBlock());
 
-            case "itemsadder" -> {
+            /*case "itemsadder" -> {
                 if (Plugins.items_adder.isEnabled()) {
                     @Nullable final CustomFurniture furniture = CustomFurniture.byAlreadySpawned(location.getBlock());
 
@@ -183,14 +183,14 @@ public class CrateInteractEvent extends Event implements Cancellable {
                         }
                     }
                 }
-            }
+            }*/
 
             default -> {
                 if (Plugins.nexo.isEnabled() && NexoFurniture.isFurniture(location)) {
                     isFurniture = true;
                 } else if (Plugins.oraxen.isEnabled() && OraxenFurniture.isFurniture(location.getBlock())) {
                     isFurniture = true;
-                } else if (Plugins.items_adder.isEnabled()) {
+                } /*else if (Plugins.items_adder.isEnabled()) {
                     @Nullable final CustomFurniture furniture = CustomFurniture.byAlreadySpawned(location.getBlock());
 
                     if (furniture != null) {
@@ -200,7 +200,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
                             isFurniture = true;
                         }
                     }
-                }
+                }*/
             }
         }
 
@@ -235,7 +235,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
             return;
         }
 
-        if (this.itemsAdderInteractEvent != null) {
+        /*if (this.itemsAdderInteractEvent != null) {
             this.itemsAdderInteractEvent.setCancelled(true);
 
             return;
@@ -245,7 +245,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
             this.itemsAdderBreakEvent.setCancelled(true);
 
             return;
-        }
+        }*/
 
         if (this.paperEvent != null) {
             this.paperEvent.setCancelled(true);
