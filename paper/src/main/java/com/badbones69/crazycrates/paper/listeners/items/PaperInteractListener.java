@@ -69,7 +69,7 @@ public class PaperInteractListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerInteractEvent(PlayerInteractEvent event) {
+    public void onPlayerInteractEvent(final PlayerInteractEvent event) {
         if (event.getHand() == EquipmentSlot.OFF_HAND) return;
 
         final Block block = event.getClickedBlock();
@@ -90,7 +90,7 @@ public class PaperInteractListener implements Listener {
     }
 
     @EventHandler
-    public void onBlockBreak(BlockPlaceEvent event) {
+    public void onBlockBreak(final BlockPlaceEvent event) {
         final ItemStack itemStack = event.getItemInHand();
 
         if (itemStack.isEmpty()) return;

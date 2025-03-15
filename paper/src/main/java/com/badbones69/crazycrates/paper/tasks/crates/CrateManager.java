@@ -5,7 +5,6 @@ import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.core.config.impl.EditorKeys;
-import com.badbones69.crazycrates.paper.listeners.items.ItemsAdderInteractListener;
 import com.badbones69.crazycrates.paper.listeners.items.NexoInteractListener;
 import com.badbones69.crazycrates.paper.listeners.items.OraxenInteractListener;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
@@ -249,16 +248,16 @@ public class CrateManager {
 
             case "oraxen" -> manager.registerEvents(new OraxenInteractListener(), this.plugin);
 
-            case "itemsadder" -> manager.registerEvents(new ItemsAdderInteractListener(), this.plugin);
+            //case "itemsadder" -> manager.registerEvents(new ItemsAdderInteractListener(), this.plugin);
 
             default -> {
                 if (Plugins.nexo.isEnabled()) {
                     manager.registerEvents(new NexoInteractListener(), this.plugin);
                 }
 
-                if (Plugins.items_adder.isEnabled()) {
-                    manager.registerEvents(new ItemsAdderInteractListener(), this.plugin);
-                }
+                //if (Plugins.items_adder.isEnabled()) {
+                //    manager.registerEvents(new ItemsAdderInteractListener(), this.plugin);
+                //}
 
                 if (Plugins.oraxen.isEnabled()) {
                     manager.registerEvents(new OraxenInteractListener(), this.plugin);
