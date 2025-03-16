@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MiscUtils {
@@ -313,6 +314,10 @@ public class MiscUtils {
 
     public static int randomNumber(final int min, final int max) {
         return min + getRandom().nextInt(max - min);
+    }
+
+    public static String randomUUID() {
+        return UUID.randomUUID().toString().replace("-", "").substring(0, 8);
     }
 
     public static Random getRandom() {
