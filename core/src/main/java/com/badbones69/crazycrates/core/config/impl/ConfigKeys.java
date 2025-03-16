@@ -104,18 +104,6 @@ public class ConfigKeys implements SettingsHolder {
     public static final Property<State> message_state = newBeanProperty(State.class, "root.message-state", State.send_message);
 
     @Comment({
-            "A list of available custom item plugins:",
-            " -> ItemsAdder",
-            " -> Oraxen",
-            " -> Nexo",
-            " -> None",
-            "",
-            "If the option is set to blank, it'll pick whatever plugin it feels like picking.",
-            "Set the value to None if you do not want any."
-    })
-    public static final Property<String> custom_items_plugin = newProperty("root.custom-items-plugin", "");
-
-    @Comment({
             "A list of available hologram plugins:",
             " -> DecentHolograms",
             " -> FancyHolograms",
