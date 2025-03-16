@@ -70,7 +70,7 @@ public class ConfigKeys implements SettingsHolder {
 
     @Comment({
             "This will allow you to use a new items layout for Prizes which should be much more straight forward, less prone to errors.",
-            "You can run /crazycrates migrate -mt ItemLayout which should migrate all existing prizes after you set this to true",
+            "You can run /crazycrates migrate -mt NewItemFormat which should migrate all existing prizes after you set this to true",
             "",
             "Take a backup before you run the migration as there may be bugs."
     })
