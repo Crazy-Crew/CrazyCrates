@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates;
 
 import com.badbones69.crazycrates.paper.api.enums.Messages;
+import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.deprecation.NewItemMigrator;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
@@ -69,6 +70,8 @@ public class CommandMigrate extends BaseCommand {
 
                 new MojangMappedMigratorSingle(sender, crateName).run();
             }
+
+            case NEW_ITEM_FORMAT -> new NewItemMigrator(sender).run();
 
             case WEIGHT_MIGRATION -> new WeightMigrator(sender).run();
 

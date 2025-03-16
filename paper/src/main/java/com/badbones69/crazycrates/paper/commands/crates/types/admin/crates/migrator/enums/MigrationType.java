@@ -9,6 +9,8 @@ public enum MigrationType {
 
     WEIGHT_MIGRATION("WeightMigration"),
 
+    NEW_ITEM_FORMAT("NewItemFormat"),
+
     //MIGRATE_OLD_COMMANDS("MigrateOldCommands"),
 
     CRATES_DEPRECATED_ALL("CratesDeprecated"),
