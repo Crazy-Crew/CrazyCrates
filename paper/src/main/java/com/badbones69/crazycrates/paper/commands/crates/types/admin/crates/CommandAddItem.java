@@ -21,7 +21,7 @@ public class CommandAddItem extends BaseCommand {
     public void add(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("prize") @Suggestion("prizes") String prizeName, @ArgName("weight") @Suggestion("doubles") double weight, @ArgName("tier") @Suggestion("tiers") @Optional String tier) {
         Messages.feature_disabled.sendMessage(player);
 
-        /*if (crateName == null || crateName.isBlank()) {
+        if (crateName == null || crateName.isBlank()) {
             Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
             return;
@@ -61,6 +61,6 @@ public class CommandAddItem extends BaseCommand {
         Messages.added_item_with_editor.sendMessage(player, new HashMap<>() {{
             put("{crate}", fancyName);
             put("{prize}", prizeName);
-        }});*/
+        }});
     }
 }
