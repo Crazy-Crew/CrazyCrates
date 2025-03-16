@@ -171,36 +171,12 @@ public class CrateInteractEvent extends Event implements Cancellable {
 
             case "oraxen" -> isFurniture = Plugins.oraxen.isEnabled() && OraxenFurniture.isFurniture(location.getBlock());
 
-            /*case "itemsadder" -> {
-                if (Plugins.items_adder.isEnabled()) {
-                    @Nullable final CustomFurniture furniture = CustomFurniture.byAlreadySpawned(location.getBlock());
-
-                    if (furniture != null) {
-                        final Entity entity = furniture.getEntity();
-
-                        if (entity != null && entity.isValid()) {
-                            isFurniture = true;
-                        }
-                    }
-                }
-            }*/
-
             default -> {
                 if (Plugins.nexo.isEnabled() && NexoFurniture.isFurniture(location)) {
                     isFurniture = true;
                 } else if (Plugins.oraxen.isEnabled() && OraxenFurniture.isFurniture(location.getBlock())) {
                     isFurniture = true;
-                } /*else if (Plugins.items_adder.isEnabled()) {
-                    @Nullable final CustomFurniture furniture = CustomFurniture.byAlreadySpawned(location.getBlock());
-
-                    if (furniture != null) {
-                        final Entity entity = furniture.getEntity();
-
-                        if (entity != null && entity.isValid()) {
-                            isFurniture = true;
-                        }
-                    }
-                }*/
+                }
             }
         }
 

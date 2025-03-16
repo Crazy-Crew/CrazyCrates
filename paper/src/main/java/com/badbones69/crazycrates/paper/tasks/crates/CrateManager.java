@@ -248,16 +248,10 @@ public class CrateManager {
 
             case "oraxen" -> manager.registerEvents(new OraxenInteractListener(), this.plugin);
 
-            //case "itemsadder" -> manager.registerEvents(new ItemsAdderInteractListener(), this.plugin);
-
             default -> {
                 if (Plugins.nexo.isEnabled()) {
                     manager.registerEvents(new NexoInteractListener(), this.plugin);
                 }
-
-                //if (Plugins.items_adder.isEnabled()) {
-                //    manager.registerEvents(new ItemsAdderInteractListener(), this.plugin);
-                //}
 
                 if (Plugins.oraxen.isEnabled()) {
                     manager.registerEvents(new OraxenInteractListener(), this.plugin);
