@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
-import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.tasks.menus.CratePreviewMenu;
 import com.badbones69.crazycrates.paper.tasks.menus.CrateTierMenu;
@@ -89,8 +88,6 @@ public class Crate {
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
     private final BukkitUserManager userManager = this.plugin.getUserManager();
-
-    private final SettingsManager config = ConfigManager.getConfig();
 
     private boolean glassBorderToggle = true;
 
@@ -738,12 +735,14 @@ public class Crate {
             }
         }
 
-        /*if (this.config.getProperty(ConfigKeys.use_new_item_editor)) {
-            String toBase64 = PaperMethods.toBase64(itemStack);
+        final boolean isList = section.isList(getPath(prizeName, "Items"));
 
+        final String items = getPath(prizeName, "Items");
+
+        final String toBase64 = PaperMethods.toBase64(itemStack);
+
+        if (isList) {
             section.set(getPath(prizeName, "DisplayData"), toBase64);
-
-            final String items = getPath(prizeName, "Items");
 
             if (section.contains(items)) {
                 final List<String> list = section.getStringList(items);
@@ -757,20 +756,12 @@ public class Crate {
                 }});
             }
         } else {
-            final List<ItemStack> editorItems = new ArrayList<>();
+            final ConfigurationSection itemsSection = section.getConfigurationSection(items);
 
-            if (section.contains(prizeName + ".Editor-Items")) {
-                final List<?> editors = section.getList(prizeName + ".Editor-Items");
-
-                if (editors != null) {
-                    editors.forEach(item -> editorItems.add((ItemStack) item));
-                }
+            if (itemsSection != null) {
+                itemsSection.set(MiscUtils.randomUUID() + ".data", toBase64);
             }
-
-            editorItems.add(itemStack);
-
-            section.set(getPath(prizeName, "Editor-Items"), editorItems);
-        }*/
+        }
 
         section.set(getPath(prizeName, "DisplayItem"), itemStack.getType().getKey().getKey());
 
