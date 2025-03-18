@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.ryderbelserion.fusion.core.util.StringUtils;
 import com.ryderbelserion.fusion.paper.builder.items.modern.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builder.items.modern.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.builder.items.modern.types.SkullBuilder;
 import com.ryderbelserion.fusion.paper.builder.items.modern.types.SpawnerBuilder;
 import com.ryderbelserion.fusion.paper.util.PaperMethods;
@@ -24,7 +25,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -284,6 +284,20 @@ public class ItemUtils {
             }
 
             itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""), false);
+
+            final ConfigurationSection patterns = item.getConfigurationSection("settings.patterns");
+
+            if (patterns != null) {
+                for (final String pattern : patterns.getKeys(false)) {
+                    final String patternColor = patterns.getString(pattern, "white");
+
+                    final PatternBuilder patternBuilder = itemBuilder.asPatternBuilder();
+
+                    patternBuilder.addPattern(pattern, patternColor);
+
+                    patternBuilder.build();
+                }
+            }
 
             cache.add(itemBuilder);
         }

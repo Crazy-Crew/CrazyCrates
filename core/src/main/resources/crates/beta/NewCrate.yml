@@ -98,3 +98,23 @@ Crate:
               pattern: "sentry"
               # Trim Material
               material: "redstone"
+        "4":
+          # The name of the item
+          name: "<yellow>A pretty shield"
+          # The material
+          material: "shield"
+
+          # The amount
+          amount: 1
+          # Other settings
+          settings:
+            # Should the item glow?
+            # glowing: false
+
+            # Banner patterns
+            patterns:
+              base: white
+              gradient_up: light_gray
+              straight_cross: light_blue
+              flower: light_blue
+              half_horizontal: 255,0,0
