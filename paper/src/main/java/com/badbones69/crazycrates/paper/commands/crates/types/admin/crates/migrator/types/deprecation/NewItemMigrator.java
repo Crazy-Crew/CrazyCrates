@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.deprecation;
 
+import com.badbones69.crazycrates.core.enums.Comments;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
@@ -57,39 +58,90 @@ public class NewItemMigrator extends ICrateMigrator {
                             prizeSection.set("Items", null);
 
                             items.forEach(item -> {
+                                final Map<String, String> patterns = new HashMap<>();
+                                final Map<String, Integer> enchantments = new HashMap<>();
+                                final String uuid = MiscUtils.randomUUID();
+
                                 for (final String key : item.split(", ")) {
                                     final String option = key.split(":")[0];
                                     final String type = key.replace(option + ":", "").replace(option, "");
 
-                                    final String uuid = MiscUtils.randomUUID();
-
                                     switch (option.toLowerCase()) {
-                                        case "item" -> prizeSection.set("Items." + uuid + ".material", type);
-                                        case "data" -> prizeSection.set("Items." + uuid + ".data", type);
-                                        case "name" -> prizeSection.set("Items." + uuid + ".name", type);
-                                        case "mob" -> prizeSection.set("Items." + uuid + ".settings.mob.type", type);
-                                        case "glowing" -> prizeSection.set("Items." + uuid + ".settings.glowing", type);
-                                        case "amount" -> prizeSection.set("Items." + uuid + ".amount", type);
-                                        case "damage" -> prizeSection.set("Items." + uuid + ".settings.damage", type);
-                                        case "lore" -> prizeSection.set("Items." + uuid + ".lore", List.of(type.split(",")));
-                                        case "player" -> prizeSection.set("Items." + uuid + ".settings.player", type);
-                                        case "skull" -> prizeSection.set("Items." + uuid + ".settings.skull", type);
-                                        case "custom-model-data" -> prizeSection.set("Items." + uuid + ".custom-model-data", type);
-                                        case "unbreakable-item" -> prizeSection.set("Items." + uuid + ".unbreakable-item", type);
-                                        case "hide-tool-tip" -> prizeSection.set("Items." + uuid + ".hide-tool-tip", type);
-                                        case "trim-pattern" -> prizeSection.set("Items." + uuid + ".settings.trim.pattern", type);
-                                        case "trim-material" -> prizeSection.set("Items." + uuid + ".settings.trim.material", type);
-                                        case "rgb" -> prizeSection.set("Items." + uuid + ".settings.rgb", type);
-                                        case "color" -> prizeSection.set("Items." + uuid + ".settings.color", type);
+                                        case "item" -> {
+                                            prizeSection.set("Items." + uuid + ".material", type);
+                                            prizeSection.setComments("Items." + uuid + ".Material", Comments.material.getComments());
+                                        }
+                                        case "data" -> {
+                                            prizeSection.set("Items." + uuid + ".data", type);
+                                            prizeSection.setComments("Items." + uuid + ".data", Comments.base64.getComments());
+                                        }
+                                        case "name" -> {
+                                            prizeSection.set("Items." + uuid + ".name", type);
+                                            prizeSection.setComments("Items." + uuid + ".name", Comments.name.getComments());
+                                        }
+                                        case "mob" -> {
+                                            prizeSection.set("Items." + uuid + ".settings.mob.type", type);
+                                            prizeSection.setComments("Items." + uuid + ".settings.mob.type", Comments.mob_type.getComments());
+                                        }
+                                        case "glowing" -> {
+                                            prizeSection.set("Items." + uuid + ".settings.glowing", type);
+                                            prizeSection.setComments("Items." + uuid + ".settings.glowing", Comments.glowing.getComments());
+                                        }
+                                        case "amount" -> {
+                                            prizeSection.set("Items." + uuid + ".amount", type);
+                                            prizeSection.setComments("Items." + uuid + ".amount", Comments.amount.getComments());
+                                        }
+                                        case "damage" -> {
+                                            prizeSection.set("Items." + uuid + ".settings.damage", type);
+                                            prizeSection.setComments("Items." + uuid + ".settings.damage", Comments.damage.getComments());
+                                        }
+                                        case "lore" -> {
+                                            prizeSection.set("Items." + uuid + ".lore", List.of(type.split(",")));
+                                            prizeSection.setComments("Items." + uuid + ".lore", Comments.lore.getComments());
+                                        }
+                                        case "player" -> {
+                                            prizeSection.set("Items." + uuid + ".settings.player", type);
+                                            prizeSection.setComments("Items." + uuid + ".settings.player", Comments.player.getComments());
+                                        }
+                                        case "skull" -> {
+                                            prizeSection.set("Items." + uuid + ".settings.skull", type);
+                                            prizeSection.setComments("Items." + uuid + ".settings.skull", Comments.skull.getComments());
+                                        }
+                                        case "custom-model-data" -> {
+                                            prizeSection.set("Items." + uuid + ".custom-model-data", type);
+                                            prizeSection.setComments("Items." + uuid + ".custom-model-data", Comments.custom_model_data.getComments());
+                                        }
+                                        case "unbreakable-item" -> {
+                                            prizeSection.set("Items." + uuid + ".unbreakable-item", type);
+                                            prizeSection.setComments("Items." + uuid + ".unbreakable-item", Comments.unbreakable.getComments());
+                                        }
+                                        case "hide-tool-tip" -> {
+                                            prizeSection.set("Items." + uuid + ".hide-tool-tip", type);
+                                            prizeSection.setComments("Items." + uuid + ".hide-tool-tip", Comments.hide_tool_tip.getComments());
+                                        }
+                                        case "trim-pattern" -> {
+                                            prizeSection.set("Items." + uuid + ".settings.trim.pattern", type);
+                                            prizeSection.setComments("Items." + uuid + ".trim.pattern", Comments.trim_pattern.getComments());
+                                        }
+                                        case "trim-material" -> {
+                                            prizeSection.set("Items." + uuid + ".settings.trim.material", type);
+                                            prizeSection.setComments("Items." + uuid + ".settings.trim.material", Comments.trim_material.getComments());
+                                        }
+                                        case "rgb" -> {
+                                            prizeSection.set("Items." + uuid + ".settings.rgb", type);
+                                            prizeSection.setComments("Items." + uuid + ".settings.rgb", Comments.rgb.getComments());
+                                        }
+                                        case "color" -> {
+                                            prizeSection.set("Items." + uuid + ".settings.color", type);
+                                            prizeSection.setComments("Items." + uuid + ".settings.color", Comments.color.getComments());
+                                        }
                                         default -> {
-                                            final String toString = option.toLowerCase();
-
-                                            if (PaperMethods.getEnchantment(toString) != null) {
-                                                final Map<String, Integer> enchantments = new HashMap<>();
-
-                                                enchantments.put(toString, StringUtils.tryParseInt(value).map(Number::intValue).orElse(1));
+                                            if (PaperMethods.getEnchantment(option.toLowerCase()) != null) {
+                                                enchantments.put(option.toLowerCase(), StringUtils.tryParseInt(value).map(Number::intValue).orElse(1));
 
                                                 final ConfigurationSection enchantmentSection = prizeSection.createSection("Items." + uuid + ".enchantments");
+
+                                                prizeSection.setComments("Items." + uuid + ".enchantments", Comments.enchantments.getComments());
 
                                                 enchantments.forEach(enchantmentSection::set);
 
@@ -100,6 +152,7 @@ public class NewItemMigrator extends ICrateMigrator {
                                                 for (ItemFlag itemFlag : ItemFlag.values()) {
                                                     if (itemFlag.name().equalsIgnoreCase(option)) {
                                                         prizeSection.set("Items." + uuid + ".hide-tool-tip", true);
+                                                        prizeSection.setComments("Items." + uuid + ".hide-tool-tip", Comments.hide_tool_tip.getComments());
 
                                                         break;
                                                     }
@@ -107,14 +160,14 @@ public class NewItemMigrator extends ICrateMigrator {
                                             }
 
                                             try {
-                                                final PatternType patternType = PaperMethods.getPatternType(toString);
+                                                final PatternType patternType = PaperMethods.getPatternType(option.toLowerCase());
 
                                                 if (patternType != null) {
-                                                    final Map<String, String> patterns = new HashMap<>();
-
-                                                    patterns.put(toString, value);
+                                                    patterns.put(option.toLowerCase(), type);
 
                                                     final ConfigurationSection patternsSection = prizeSection.createSection("Items." + uuid + ".settings.patterns");
+
+                                                    prizeSection.setComments("Items." + uuid + ".settings.patterns", Comments.patterns.getComments());
 
                                                     patterns.forEach(patternsSection::set);
                                                 }
