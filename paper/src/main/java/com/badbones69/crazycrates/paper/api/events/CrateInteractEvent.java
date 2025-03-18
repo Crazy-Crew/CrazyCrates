@@ -7,14 +7,10 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.nexomc.nexo.api.NexoFurniture;
 import com.nexomc.nexo.api.events.furniture.NexoFurnitureBreakEvent;
 import com.nexomc.nexo.api.events.furniture.NexoFurnitureInteractEvent;
-import dev.lone.itemsadder.api.CustomFurniture;
-import dev.lone.itemsadder.api.Events.FurnitureBreakEvent;
-import dev.lone.itemsadder.api.Events.FurnitureInteractEvent;
 import io.th0rgal.oraxen.api.OraxenFurniture;
 import io.th0rgal.oraxen.api.events.furniture.OraxenFurnitureBreakEvent;
 import io.th0rgal.oraxen.api.events.furniture.OraxenFurnitureInteractEvent;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -23,7 +19,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class CrateInteractEvent extends Event implements Cancellable {
 
@@ -36,9 +31,6 @@ public class CrateInteractEvent extends Event implements Cancellable {
 
     private OraxenFurnitureInteractEvent oraxenInteractEvent;
     private OraxenFurnitureBreakEvent oraxenBreakEvent;
-
-    private FurnitureInteractEvent itemsAdderInteractEvent;
-    private FurnitureBreakEvent itemsAdderBreakEvent;
 
     private PlayerInteractEvent paperEvent;
 
@@ -69,36 +61,6 @@ public class CrateInteractEvent extends Event implements Cancellable {
         this.oraxenBreakEvent = breakEvent;
 
         this.player = this.oraxenBreakEvent.getPlayer();
-        this.slot = this.player.getActiveItemHand();
-        this.location = location;
-        this.action = action;
-
-        setCancelled(this.slot == EquipmentSlot.OFF_HAND);
-
-        if (!isCancelled()) {
-            this.crateLocation = this.crateManager.getCrateLocation(this.location);
-        }
-    }
-
-    public CrateInteractEvent(@NotNull final FurnitureInteractEvent interactEvent, @NotNull final Action action, @NotNull final Location location) {
-        this.itemsAdderInteractEvent = interactEvent;
-
-        this.player = this.itemsAdderInteractEvent.getPlayer();
-        this.slot = this.player.getActiveItemHand();
-        this.location = location;
-        this.action = action;
-
-        setCancelled(this.slot == EquipmentSlot.OFF_HAND);
-
-        if (!isCancelled()) {
-            this.crateLocation = this.crateManager.getCrateLocation(this.location);
-        }
-    }
-
-    public CrateInteractEvent(@NotNull final FurnitureBreakEvent breakEvent, @NotNull final Action action, @NotNull final Location location) {
-        this.itemsAdderBreakEvent = breakEvent;
-
-        this.player = this.itemsAdderBreakEvent.getPlayer();
         this.slot = this.player.getActiveItemHand();
         this.location = location;
         this.action = action;
@@ -210,18 +172,6 @@ public class CrateInteractEvent extends Event implements Cancellable {
 
             return;
         }
-
-        /*if (this.itemsAdderInteractEvent != null) {
-            this.itemsAdderInteractEvent.setCancelled(true);
-
-            return;
-        }
-
-        if (this.itemsAdderBreakEvent != null) {
-            this.itemsAdderBreakEvent.setCancelled(true);
-
-            return;
-        }*/
 
         if (this.paperEvent != null) {
             this.paperEvent.setCancelled(true);

@@ -523,7 +523,7 @@ public class CrateManager {
                     if (worldName == null) return;
 
                     // If name is empty or blank, we return.
-                    if (worldName.isEmpty() || worldName.isBlank()) return;
+                    if (worldName.isBlank()) return;
 
                     final World world = this.server.getWorld(worldName);
                     final int x = locations.getInt("Locations." + locationName + ".X");
@@ -652,18 +652,7 @@ public class CrateManager {
             case war -> crateBuilder = new WarCrate(crate, player, 9);
             case cosmic -> crateBuilder = new CosmicCrate(crate, player, 27);
             case quad_crate -> {
-                if (virtualCrate) {
-                    final Map<String, String> placeholders = new HashMap<>();
-
-                    placeholders.put("{cratetype}", crate.getCrateType().getName());
-                    placeholders.put("{crate}", fancyName);
-
-                    Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
-
-                    removePlayerFromOpeningList(player);
-
-                    return;
-                }
+                if (isVirtualCrate(player, crate, virtualCrate, fancyName)) return;
 
                 crateBuilder = new QuadCrate(crate, player, location);
             }
@@ -677,35 +666,13 @@ public class CrateManager {
                     return;
                 }
 
-                if (virtualCrate) {
-                    final Map<String, String> placeholders = new HashMap<>();
-
-                    placeholders.put("{cratetype}", crate.getCrateType().getName());
-                    placeholders.put("{crate}", fancyName);
-
-                    Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
-
-                    removePlayerFromOpeningList(player);
-
-                    return;
-                }
+                if (isVirtualCrate(player, crate, virtualCrate, fancyName)) return;
 
                 crateBuilder = new FireCrackerCrate(crate, player, 45, location);
             }
 
             case crate_on_the_go -> {
-                if (virtualCrate) {
-                    final Map<String, String> placeholders = new HashMap<>();
-
-                    placeholders.put("{cratetype}", crate.getCrateType().getName());
-                    placeholders.put("{crate}", fancyName);
-
-                    Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
-
-                    removePlayerFromOpeningList(player);
-
-                    return;
-                }
+                if (isVirtualCrate(player, crate, virtualCrate, fancyName)) return;
 
                 crateBuilder = new CrateOnTheGo(crate, player);
             }
@@ -719,18 +686,7 @@ public class CrateManager {
                     return;
                 }
 
-                if (virtualCrate) {
-                    final Map<String, String> placeholders = new HashMap<>();
-
-                    placeholders.put("{cratetype}", crate.getCrateType().getName());
-                    placeholders.put("{crate}", fancyName);
-
-                    Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
-
-                    removePlayerFromOpeningList(player);
-
-                    return;
-                }
+                if (isVirtualCrate(player, crate, virtualCrate, fancyName)) return;
 
                 crateBuilder = new QuickCrate(crate, player, location);
             }
@@ -750,6 +706,23 @@ public class CrateManager {
 
         // Open the crate.
         crateBuilder.open(keyType, checkHand, isSilent, eventType);
+    }
+
+    private boolean isVirtualCrate(@NotNull final Player player, @NotNull final Crate crate, final boolean virtualCrate, @NotNull final String fancyName) {
+        if (virtualCrate) {
+            final Map<String, String> placeholders = new HashMap<>();
+
+            placeholders.put("{cratetype}", crate.getCrateType().getName());
+            placeholders.put("{crate}", fancyName);
+
+            Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
+
+            removePlayerFromOpeningList(player);
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -880,7 +853,7 @@ public class CrateManager {
      * @param player player that the crate is being ended for.
      */
     public void removeCrateTask(@NotNull final Player player) {
-        TimerTask task = this.timerTasks.remove(player.getUniqueId());
+        final TimerTask task = this.timerTasks.remove(player.getUniqueId());
 
         if (task != null) {
             task.cancel();
@@ -1520,14 +1493,14 @@ public class CrateManager {
         }
 
         if (!removePlayers.isEmpty()) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("{} player's data has been marked to be removed.", removePlayers.size());
+            if (MiscUtils.isLogging()) this.logger.info("{} player's data has been marked to be removed.", removePlayers.size());
 
             removePlayers.forEach(uuid -> data.set("Players." + uuid, null));
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("All empty player data has been removed.");
+            if (MiscUtils.isLogging()) this.logger.info("All empty player data has been removed.");
         }
 
-        if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("The data.yml file has been cleaned.");
+        if (MiscUtils.isLogging()) this.logger.info("The data.yml file has been cleaned.");
 
         FileKeys.data.save();
     }

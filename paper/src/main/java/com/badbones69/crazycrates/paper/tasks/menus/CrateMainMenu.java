@@ -12,6 +12,7 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.ryderbelserion.fusion.core.util.StringUtils;
 import com.ryderbelserion.fusion.paper.builder.gui.interfaces.Gui;
 import com.ryderbelserion.fusion.paper.builder.gui.interfaces.GuiFiller;
+import com.ryderbelserion.fusion.paper.util.PaperMethods;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Server;
@@ -180,7 +181,8 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
         if (!hasKey) {
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f);
+                final String property = this.config.getProperty(ConfigKeys.need_key_sound);
+                final Sound sound = Sound.sound(Key.key(property), Sound.Source.MASTER, 1f, 1f);
 
                 this.player.playSound(sound);
             }

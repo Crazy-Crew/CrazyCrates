@@ -349,7 +349,8 @@ public class MiscUtils {
         final Inventory inventory = player.getInventory();
 
         inventory.setMaxStackSize(64);
-        inventory.addItem(items);
+
+        Arrays.asList(items).forEach(item -> inventory.addItem(item.clone()));
     }
 
     /**

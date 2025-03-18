@@ -152,11 +152,11 @@ public class PrizeManager {
             }
         }
 
-        for (ItemStack item : prize.getEditorItems()) {
+        for (ItemStack itemStack : prize.getEditorItems()) {
             if (!MiscUtils.isInventoryFull(player)) {
-                player.getInventory().addItem(item);
+                MiscUtils.addItem(player, itemStack);
             } else {
-                player.getWorld().dropItemNaturally(player.getLocation(), item);
+                player.getWorld().dropItemNaturally(player.getLocation(), itemStack.clone());
             }
         }
 
@@ -170,7 +170,7 @@ public class PrizeManager {
                     if (!MiscUtils.isInventoryFull(player)) {
                         MiscUtils.addItem(player, itemStack);
                     } else {
-                        player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
+                        player.getWorld().dropItemNaturally(player.getLocation(), itemStack.clone());
                     }
                 }
             }
@@ -204,7 +204,7 @@ public class PrizeManager {
                     if (!MiscUtils.isInventoryFull(player)) {
                         MiscUtils.addItem(player, itemStack);
                     } else {
-                        player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
+                        player.getWorld().dropItemNaturally(player.getLocation(), itemStack.clone());
                     }
                 }
             }
