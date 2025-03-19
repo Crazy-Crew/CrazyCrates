@@ -59,11 +59,11 @@ tasks {
                     platformVersions.set(listOf(mcVersion))
 
                     dependencies {
-                        hangar("PlaceholderAPI") {
+                        url("PlaceholderAPI", "https://www.spigotmc.org/resources/placeholderapi.6245/") {
                             required = false
                         }
 
-                        hangar("FancyHolograms") {
+                        url("FancyHolograms", "https://modrinth.com/plugin/fancyholograms") {
                             required = false
                         }
 
@@ -80,6 +80,10 @@ tasks {
                         }
 
                         url("DecentHolograms", "https://www.spigotmc.org/resources/decentholograms-1-8-1-20-4-papi-support-no-dependencies.96927/") {
+                            required = false
+                        }
+
+                        url("ItemsAdder", "https://www.spigotmc.org/resources/%E2%9C%A8itemsadder%E2%AD%90emotes-mobs-items-armors-hud-gui-emojis-blocks-wings-hats-liquids.73355/") {
                             required = false
                         }
                     }
