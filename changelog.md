@@ -13,6 +13,7 @@ https://github.com/Crazy-Crew/CrazyCrates/blob/main/core/src/main/resources/crat
 - A double message sent to admins when using /crazycrates giveall
 - Holograms were not refreshing when using DecentHolograms
 - Set the default item plugin option to "None" because it was causing issues
+- Fixed a few other issues like ItemStacks not stacking properly
 
 ## Changes
 - Removed an unused config option from the config.yml
