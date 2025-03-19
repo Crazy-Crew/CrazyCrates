@@ -144,7 +144,7 @@ public class MiscUtils {
 
         fireworkData.set(ItemKeys.no_firework_damage.getNamespacedKey(), PersistentDataType.BOOLEAN, true);
 
-        plugin.getServer().getRegionScheduler().runDelayed(plugin, location, scheduledTask -> firework.detonate(), 3L);
+        firework.getScheduler().runDelayed(plugin, scheduledTask -> firework.detonate(), null, 3L);
     }
 
     public static @NotNull String location(@NotNull final Location location, boolean getName) {
