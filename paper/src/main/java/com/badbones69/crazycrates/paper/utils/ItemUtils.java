@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.ryderbelserion.fusion.core.util.StringUtils;
 import com.ryderbelserion.fusion.paper.builder.items.modern.ItemBuilder;
 import com.ryderbelserion.fusion.paper.builder.items.modern.types.PatternBuilder;
+import com.ryderbelserion.fusion.paper.builder.items.modern.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.builder.items.modern.types.SkullBuilder;
 import com.ryderbelserion.fusion.paper.builder.items.modern.types.SpawnerBuilder;
 import com.ryderbelserion.fusion.paper.util.PaperMethods;
@@ -22,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.Nullable;
@@ -284,6 +286,27 @@ public class ItemUtils {
             }
 
             itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""), false);
+
+            final ConfigurationSection potions = item.getConfigurationSection("settings.potions");
+
+            if (potions != null) {
+                for (final String potion : potions.getKeys(false)) {
+                    final PotionEffectType type = PaperMethods.getPotionEffect(potion);
+
+                    if (type != null) {
+                        final int duration = potions.getInt(potion + ".duration", 60);
+                        final int level = potions.getInt(potion + ".level", 1);
+
+                        final boolean icon = potions.getBoolean(potion + ".style.icon", false);
+                        final boolean ambient = potions.getBoolean(potion + ".style.ambient", false);
+                        final boolean particles = potions.getBoolean(potion + ".style.particles", false);
+
+                        final PotionBuilder potionBuilder = itemBuilder.asPotionBuilder();
+
+                        potionBuilder.withPotionEffect(type, duration, level, ambient, particles, icon).build();
+                    }
+                }
+            }
 
             final ConfigurationSection patterns = item.getConfigurationSection("settings.patterns");
 

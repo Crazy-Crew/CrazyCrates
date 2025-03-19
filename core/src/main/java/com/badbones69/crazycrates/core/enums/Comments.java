@@ -69,6 +69,10 @@ public enum Comments {
             "The configuration section for enchantments, minecraft: is not needed in front of the enchantment.",
             "A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html",
             "enchantment: amount"
+    )),
+    potions(List.of(
+            "The configuration section for potions, minecraft: is not needed in front of the potion.",
+            "A list of potion effects https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/MobEffectKeys.html"
     ));
 
     private final List<String> comments;

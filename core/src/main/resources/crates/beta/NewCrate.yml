@@ -122,3 +122,87 @@ Crate:
               straight_cross: light_blue
               flower: light_blue
               half_horizontal: 255,0,0
+        "5":
+          # The name of the item.
+          name: "<yellow>A potion with multiple effects"
+          # The material of the item.
+          material: "potion"
+
+          # The amount of the item to give.
+          amount: 1
+          # Other settings.
+          settings:
+            # Should the item glow?
+            # glowing: false
+
+            # The configuration section for potions, minecraft: is not needed in front of the potion.
+            # A list of potion effects https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/MobEffectKeys.html
+            potions:
+              absorption: # potion name, must be an exact name.
+                # The length of the potion
+                duration: 30
+                # The strength of the potion
+                level: 3
+                # Cosmetic settings of the potion
+                style:
+                  # Should the icon be enabled?
+                  icon: true
+                  # Should it be ambient?
+                  ambient: true
+                  # Should potion particles show?
+                  particles: true
+              poison: # potion name, must be an exact name.
+                # The length of the potion
+                duration: 30
+                # The strength of the potion
+                level: 3
+                # Cosmetic settings of the potion
+                style:
+                  # Should the icon be enabled?
+                  icon: true
+                  # Should it be ambient?
+                  ambient: true
+                  # Should potion particles show?
+                  particles: true
+        "6":
+          # The name of the item.
+          name: "<yellow>A tipped arrow with multiple effects"
+          # The material of the item.
+          material: "tipped_arrow"
+
+          # The amount of the item to give.
+          amount: 1
+          # Other settings.
+          settings:
+            # Should the item glow?
+            # glowing: false
+
+            # The configuration section for potions, minecraft: is not needed in front of the potion.
+            # A list of potion effects https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/MobEffectKeys.html
+            potions:
+              absorption: # potion name, must be an exact name.
+                # The length of the potion
+                duration: 30
+                # The strength of the potion
+                level: 3
+                # Cosmetic settings of the potion
+                style:
+                  # Should the icon be enabled?
+                  icon: true
+                  # Should it be ambient?
+                  ambient: true
+                  # Should potion particles show?
+                  particles: true
+              poison: # potion name, must be an exact name.
+                # The length of the potion
+                duration: 30
+                # The strength of the potion
+                level: 3
+                # Cosmetic settings of the potion
+                style:
+                  # Should the icon be enabled?
+                  icon: true
+                  # Should it be ambient?
+                  ambient: true
+                  # Should potion particles show?
+                  particles: true

@@ -12,6 +12,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemFlag;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.File;
 import java.util.*;
 
@@ -136,7 +140,28 @@ public class NewItemMigrator extends ICrateMigrator {
                                             prizeSection.setComments("Items." + uuid + ".settings.color", Comments.color.getComments());
                                         }
                                         default -> {
-                                            if (PaperMethods.getEnchantment(option.toLowerCase()) != null) {
+                                            final String placeholder = option.toLowerCase();
+
+                                            try {
+                                                final PotionEffectType effect = PaperMethods.getPotionEffect(placeholder);
+
+                                                if (effect != null) {
+                                                    final ConfigurationSection potionsSection = prizeSection.createSection("Items." + uuid + ".settings.potions");
+
+                                                    final ConfigurationSection potionSection = potionsSection.createSection(placeholder);
+
+                                                    potionSection.set("duration", 60);
+                                                    potionSection.set("level", 1);
+
+                                                    potionSection.set("style.icon", true);
+                                                    potionSection.set("style.ambient", true);
+                                                    potionSection.set("style.particles", true);
+
+                                                    prizeSection.set("Items." + uuid + ".settings.potions", Comments.potions.getComments());
+                                                }
+                                            } catch (Exception ignored) {}
+
+                                            if (PaperMethods.getEnchantment(placeholder) != null) {
                                                 enchantments.put(option.toLowerCase(), StringUtils.tryParseInt(value).map(Number::intValue).orElse(1));
 
                                                 final ConfigurationSection enchantmentSection = prizeSection.createSection("Items." + uuid + ".enchantments");
@@ -160,10 +185,10 @@ public class NewItemMigrator extends ICrateMigrator {
                                             }
 
                                             try {
-                                                final PatternType patternType = PaperMethods.getPatternType(option.toLowerCase());
+                                                final PatternType patternType = PaperMethods.getPatternType(placeholder);
 
                                                 if (patternType != null) {
-                                                    patterns.put(option.toLowerCase(), type);
+                                                    patterns.put(placeholder, type);
 
                                                     final ConfigurationSection patternsSection = prizeSection.createSection("Items." + uuid + ".settings.patterns");
 
