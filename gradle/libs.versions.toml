@@ -79,7 +79,7 @@ itemsadder = "3.6.1"
 oraxen = "1.171.0"
 
 # Fusion API
-fusion = "0.26.0"
+fusion = "0.28.4"
 
 # Common API
 triumph-cmd = "2.0.0-ALPHA-10"
@@ -90,13 +90,13 @@ jalu = "1.4.2"
 
 # Kyori API
 adventure = "4.18.0"
-
 [bundles]
 # Hologram API
 dependencies = ["decent-holograms", "fancy-holograms", "cmi-lib", "cmi-api"]
 
 # Shared API
 shared = ["headdatabaseapi", "placeholderapi", "itemsadder", "oraxen", "nexo"]
+
 
 # Adventure API
 adventure = ["kyori-api", "kyori-text", "kyori-logger"]
