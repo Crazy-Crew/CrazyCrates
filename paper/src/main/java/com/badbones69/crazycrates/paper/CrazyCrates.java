@@ -59,14 +59,20 @@ public class CrazyCrates extends JavaPlugin {
 
     private MetricsWrapper metrics;
 
+    private FileManager fileManager;
+    private Fusion fusion;
+
     @Override
     public void onEnable() {
         this.api.enable(this);
 
+        this.fileManager = this.api.getFileManager();
+        this.fusion = this.api.getFusion();
+
         this.instance = new Server(getDataFolder());
         this.instance.apply();
 
-        getFileManager().addFile("locations.yml", FileType.YAML).addFile("data.yml", FileType.YAML).addFile("respin-gui.yml", "guis", false, FileType.YAML)
+        this.fileManager.addFile("locations.yml", FileType.YAML).addFile("data.yml", FileType.YAML).addFile("respin-gui.yml", "guis", false, FileType.YAML)
                 .addFile("crates.log", "logs", false, FileType.NONE)
                 .addFile("keys.log", "logs", false, FileType.NONE)
                 .addFolder("crates", FileType.YAML)
@@ -191,11 +197,11 @@ public class CrazyCrates extends JavaPlugin {
     }
 
     public final FileManager getFileManager() {
-        return this.api.getFileManager();
+        return this.fileManager;
     }
 
     public final Fusion getFusion() {
-        return this.api.getFusion();
+        return this.fusion;
     }
 
     public final Timer getTimer() {
