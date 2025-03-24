@@ -301,22 +301,28 @@ public class ItemUtils {
             final ConfigurationSection potions = item.getConfigurationSection("settings.potions");
 
             if (potions != null) {
+                final PotionBuilder potionBuilder = itemBuilder.asPotionBuilder();
+
                 for (final String potion : potions.getKeys(false)) {
                     final PotionEffectType type = PaperMethods.getPotionEffect(potion);
 
                     if (type != null) {
-                        final int duration = potions.getInt(potion + ".duration", 60);
-                        final int level = potions.getInt(potion + ".level", 1);
+                        final ConfigurationSection data = potions.getConfigurationSection(potion);
 
-                        final boolean icon = potions.getBoolean(potion + ".style.icon", false);
-                        final boolean ambient = potions.getBoolean(potion + ".style.ambient", false);
-                        final boolean particles = potions.getBoolean(potion + ".style.particles", false);
+                        if (data != null) {
+                            final int duration = data.getInt("duration", 10) * 20;
+                            final int level = data.getInt("level", 1);
 
-                        final PotionBuilder potionBuilder = itemBuilder.asPotionBuilder();
+                            final boolean icon = data.getBoolean("style.icon", false);
+                            final boolean ambient = data.getBoolean("style.ambient", false);
+                            final boolean particles = data.getBoolean("style.particles", false);
 
-                        potionBuilder.withPotionEffect(type, duration, level, ambient, particles, icon).build();
+                            potionBuilder.withPotionEffect(type, duration, level, ambient, particles, icon);
+                        }
                     }
                 }
+
+                potionBuilder.build();
             }
 
             final ConfigurationSection patterns = item.getConfigurationSection("settings.patterns");
@@ -431,7 +437,7 @@ public class ItemUtils {
         } catch (Exception exception) {
             itemBuilder.withType(ItemType.RED_TERRACOTTA).setDisplayName("<red>Error found!, Prize Name: " + section);
 
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("An error has occurred with the item builder: ", exception);
+            if (MiscUtils.isLogging()) logger.warn("An error has occurred with the item builder: ", exception);
         }
 
         return itemBuilder;

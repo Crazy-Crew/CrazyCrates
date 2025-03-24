@@ -139,8 +139,9 @@ Crate:
             # A list of potion effects https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/MobEffectKeys.html
             potions:
               absorption: # potion name, must be an exact name.
-                # The length of the potion
-                duration: 30
+                # The length of the potion in seconds
+                # https://minecraft.wiki/w/Calculators/Tick
+                duration: 10
                 # The strength of the potion
                 level: 3
                 # Cosmetic settings of the potion
@@ -152,8 +153,9 @@ Crate:
                   # Should potion particles show?
                   particles: true
               poison: # potion name, must be an exact name.
-                # The length of the potion
-                duration: 30
+                # The length of the potion in seconds
+                # https://minecraft.wiki/w/Calculators/Tick
+                duration: 10
                 # The strength of the potion
                 level: 3
                 # Cosmetic settings of the potion
@@ -181,8 +183,9 @@ Crate:
             # A list of potion effects https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/MobEffectKeys.html
             potions:
               absorption: # potion name, must be an exact name.
-                # The length of the potion
-                duration: 30
+                # The length of the potion in seconds
+                # https://minecraft.wiki/w/Calculators/Tick
+                duration: 10
                 # The strength of the potion
                 level: 3
                 # Cosmetic settings of the potion
@@ -194,8 +197,9 @@ Crate:
                   # Should potion particles show?
                   particles: true
               poison: # potion name, must be an exact name.
-                # The length of the potion
-                duration: 30
+                # The length of the potion in seconds
+                # https://minecraft.wiki/w/Calculators/Tick
+                duration: 10
                 # The strength of the potion
                 level: 3
                 # Cosmetic settings of the potion
