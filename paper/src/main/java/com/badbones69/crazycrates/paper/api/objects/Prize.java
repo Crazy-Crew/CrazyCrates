@@ -265,8 +265,20 @@ public class Prize {
         return this.builders;
     }
 
+    /**
+     * @return the ItemBuilders for all custom items made by the Items configuration section.
+     */
     public @NotNull final List<ItemBuilder> getItems() {
         return this.items;
+    }
+
+    /**
+     * Checks if there is any valid items.
+     *
+     * @return true or false
+     */
+    public final boolean isItemsNotEmpty() {
+        return this.config.getProperty(ConfigKeys.use_different_items_layout) && !getItems().isEmpty() || !getItemBuilders().isEmpty();
     }
 
     /**
