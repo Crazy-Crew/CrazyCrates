@@ -13,6 +13,7 @@ import com.ryderbelserion.fusion.paper.builder.items.modern.types.SkullBuilder;
 import com.ryderbelserion.fusion.paper.builder.items.modern.types.SpawnerBuilder;
 import com.ryderbelserion.fusion.paper.util.PaperMethods;
 import io.papermc.paper.persistence.PersistentDataContainerView;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.block.banner.PatternType;
@@ -35,6 +36,8 @@ import java.util.stream.Collectors;
 public class ItemUtils {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private static final ComponentLogger logger = plugin.getComponentLogger();
 
     private static final CrateManager crateManager = plugin.getCrateManager();
 
