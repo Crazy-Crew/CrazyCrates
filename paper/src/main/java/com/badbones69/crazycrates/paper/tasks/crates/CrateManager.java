@@ -234,7 +234,7 @@ public class CrateManager {
 
             this.brokeCrates.add(fileName);
 
-            if (MiscUtils.isLogging()) this.logger.warn("There was an error while loading the {}.yml file.", fileName, exception);
+            if (MiscUtils.isLogging()) this.logger.warn("There was an error while loading the {} file.", fileName, exception);
         }
     }
 
@@ -494,7 +494,7 @@ public class CrateManager {
             } catch (Exception exception) {
                 this.brokeCrates.add(crateName);
 
-                if (MiscUtils.isLogging()) this.logger.warn("There was an error while loading the {}.yml file.", crateName, exception);
+                if (MiscUtils.isLogging()) this.logger.warn("There was an error while loading the {} file.", crateName, exception);
             }
         }
 
