@@ -226,17 +226,25 @@ public class ItemUtils {
 
             if (item == null) continue;
 
-            final String base64 = item.getString("data", null);
-
             final ItemBuilder itemBuilder = ItemBuilder.from(item.getString("material", "stone"));
 
-            if (base64 != null && !base64.isEmpty()) {
-                itemBuilder.withBase64(base64);
+            if (item.contains("data")) {
+                final String base64 = item.getString("data", null);
+
+                if (base64 != null && !base64.isEmpty()) { //todo() move this if check to fusion's itembuilder as we should not set a name if it's empty to ensure Minecraft can do it's thing.
+                    itemBuilder.withBase64(base64);
+                }
             }
 
-            itemBuilder.setDisplayName(item.getString("name", ""))
-                    .withDisplayLore(item.getStringList("lore"))
-                    .setAmount(item.getInt("amount", 1));
+            if (item.contains("name")) { //todo() move this if check to fusion's itembuilder as we should not set a name if it's empty to ensure Minecraft can do it's thing.
+                itemBuilder.setDisplayName(item.getString("name", ""));
+            }
+
+            if (item.contains("lore")) {
+                itemBuilder.withDisplayLore(item.getStringList("lore"));
+            }
+
+            itemBuilder.setAmount(item.getInt("amount", 1));
 
             final ConfigurationSection enchantments = item.getConfigurationSection("enchantments");
 
