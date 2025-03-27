@@ -4,7 +4,7 @@ import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.Display.CMIBillboard;
 import com.Zrips.CMI.Modules.Holograms.CMIHologram;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateHologram;
-import com.ryderbelserion.fusion.paper.util.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import net.Zrips.CMILib.Colors.CMIChatColor;
 import net.Zrips.CMILib.Container.CMILocation;
 import org.bukkit.Location;

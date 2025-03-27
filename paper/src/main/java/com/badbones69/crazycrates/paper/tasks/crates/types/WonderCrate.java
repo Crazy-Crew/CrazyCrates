@@ -10,7 +10,7 @@ import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.paper.util.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;

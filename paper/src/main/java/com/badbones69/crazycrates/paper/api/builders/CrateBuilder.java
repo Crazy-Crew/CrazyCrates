@@ -13,7 +13,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
-import com.ryderbelserion.fusion.paper.util.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;

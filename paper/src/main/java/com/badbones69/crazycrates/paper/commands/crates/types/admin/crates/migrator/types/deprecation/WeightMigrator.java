@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migr
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.fusion.paper.files.CustomFile;
+import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -20,7 +20,7 @@ public class WeightMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Collection<CustomFile> customFiles = this.plugin.getFileManager().getFiles().values();
+        final Collection<LegacyCustomFile> customFiles = this.plugin.getFileManager().getFiles().values();
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();

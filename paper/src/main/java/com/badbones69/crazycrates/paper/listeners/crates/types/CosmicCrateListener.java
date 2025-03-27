@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
-import com.ryderbelserion.fusion.core.util.StringUtils;
+import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
@@ -321,7 +321,7 @@ public class CosmicCrateListener implements Listener {
                 if (!broadcastMessage.isBlank()) {
                     String builder = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
-                    this.plugin.getServer().broadcast(StringUtils.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix)).replaceAll("%player%", player.getName())));
+                    this.plugin.getServer().broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix)).replaceAll("%player%", player.getName())));
                 }
             }
 

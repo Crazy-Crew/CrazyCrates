@@ -236,8 +236,8 @@ public class ConfigKeys implements SettingsHolder {
     })
     public static final Property<List<String>> menu_button_command_list = newListProperty("gui.inventory.buttons.menu.override.list", List.of("see {player}"));
 
-    @Comment("The custom model data for the item, -1 is disabled.")
-    public static final Property<Integer> menu_button_model_data = newProperty("gui.inventory.buttons.menu.custom-model-data", -1);
+    @Comment("The custom model data for the item, -1 or blank is disabled.")
+    public static final Property<String> menu_button_model_data = newProperty("gui.inventory.buttons.menu.custom-model-data", "");
 
     @Comment("The name of the item.")
     public static final Property<String> menu_button_name = newProperty("gui.inventory.buttons.menu.name", "<bold><gray>» <red>Menu <gray>«</bold>");
@@ -250,8 +250,8 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("The item the button should be.")
     public static final Property<String> next_button_item = newProperty("gui.inventory.buttons.next.item", "feather");
 
-    @Comment("The custom model data for the item, -1 is disabled.")
-    public static final Property<Integer> next_button_model_data = newProperty("gui.inventory.buttons.next.custom-model-data", -1);
+    @Comment("The custom model data for the item, -1 or blank is disabled.")
+    public static final Property<String> next_button_model_data = newProperty("gui.inventory.buttons.next.custom-model-data", "-1");
 
     @Comment("The name of the item.")
     public static final Property<String> next_button_name = newProperty("gui.inventory.buttons.next.name", "<bold><gold>Next »</bold>");
@@ -264,8 +264,8 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("The item the button should be.")
     public static final Property<String> back_button_item = newProperty("gui.inventory.buttons.back.item", "feather");
 
-    @Comment("The custom model data for the item, -1 is disabled.")
-    public static final Property<Integer> back_button_model_data = newProperty("gui.inventory.buttons.back.custom-model-data", -1);
+    @Comment("The custom model data for the item, -1 or blank is disabled.")
+    public static final Property<String> back_button_model_data = newProperty("gui.inventory.buttons.back.custom-model-data", "");
 
     @Comment("The name of the item.")
     public static final Property<String> back_button_name = newProperty("gui.inventory.buttons.back.name", "<bold><gold>« Back</bold>");
@@ -281,8 +281,8 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("The item to fill the menu with.")
     public static final Property<String> filler_item = newProperty("gui.inventory.buttons.filler.item", "black_stained_glass_pane");
 
-    @Comment("The custom model data for the item, -1 is disabled.")
-    public static final Property<Integer> filler_model_data = newProperty("gui.inventory.buttons.filler.custom-model-data", -1);
+    @Comment("The custom model data for the item, -1 or blank is disabled.")
+    public static final Property<String> filler_model_data = newProperty("gui.inventory.buttons.filler.custom-model-data", "");
 
     @Comment("The name of the item.")
     public static final Property<String> filler_name = newProperty("gui.inventory.buttons.filler.name", " ");

@@ -8,7 +8,7 @@ import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.gui.buttons.CrateButton;
 import com.badbones69.crazycrates.paper.api.objects.gui.buttons.GuiButton;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.paper.builder.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.util.HashMap;

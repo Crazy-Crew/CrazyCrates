@@ -4,18 +4,15 @@ import com.badbones69.crazycrates.core.enums.Comments;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.core.util.StringUtils;
-import com.ryderbelserion.fusion.paper.files.CustomFile;
-import com.ryderbelserion.fusion.paper.util.PaperMethods;
+import com.ryderbelserion.fusion.api.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
+import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemFlag;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.jetbrains.annotations.Nullable;
-
 import java.io.File;
 import java.util.*;
 
@@ -27,7 +24,7 @@ public class NewItemMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Collection<CustomFile> customFiles = this.plugin.getFileManager().getFiles().values();
+        final Collection<LegacyCustomFile> customFiles = this.plugin.getFileManager().getFiles().values();
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
@@ -143,7 +140,7 @@ public class NewItemMigrator extends ICrateMigrator {
                                             final String placeholder = option.toLowerCase();
 
                                             try {
-                                                final PotionEffectType effect = PaperMethods.getPotionEffect(placeholder);
+                                                final PotionEffectType effect = ItemUtils.getPotionEffect(placeholder);
 
                                                 if (effect != null) {
                                                     final ConfigurationSection potionsSection = prizeSection.createSection("Items." + uuid + ".settings.potions");
@@ -161,7 +158,7 @@ public class NewItemMigrator extends ICrateMigrator {
                                                 }
                                             } catch (Exception ignored) {}
 
-                                            if (PaperMethods.getEnchantment(placeholder) != null) {
+                                            if (ItemUtils.getEnchantment(placeholder) != null) {
                                                 enchantments.put(option.toLowerCase(), StringUtils.tryParseInt(value).map(Number::intValue).orElse(1));
 
                                                 final ConfigurationSection enchantmentSection = prizeSection.createSection("Items." + uuid + ".enchantments");
@@ -185,7 +182,7 @@ public class NewItemMigrator extends ICrateMigrator {
                                             }
 
                                             try {
-                                                final PatternType patternType = PaperMethods.getPatternType(placeholder);
+                                                final PatternType patternType = ItemUtils.getPatternType(placeholder);
 
                                                 if (patternType != null) {
                                                     patterns.put(placeholder, type);

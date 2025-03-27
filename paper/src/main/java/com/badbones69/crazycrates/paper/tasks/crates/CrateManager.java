@@ -31,11 +31,11 @@ import com.badbones69.crazycrates.paper.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WonderCrate;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.core.api.enums.FileType;
-import com.ryderbelserion.fusion.core.util.FileUtils;
-import com.ryderbelserion.fusion.paper.files.CustomFile;
-import com.ryderbelserion.fusion.paper.files.FileManager;
-import com.ryderbelserion.fusion.paper.util.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.api.enums.FileType;
+import com.ryderbelserion.fusion.api.utils.FileUtils;
+import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
+import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -91,7 +91,7 @@ public class CrateManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-    private final FileManager fileManager = this.plugin.getFileManager();
+    private final LegacyFileManager fileManager = this.plugin.getFileManager();
 
     private final ComponentLogger logger = this.plugin.getComponentLogger();
     private final Server server = this.plugin.getServer();
@@ -241,7 +241,7 @@ public class CrateManager {
     public void loadCustomItems() {
         final PluginManager manager = this.server.getPluginManager();
 
-        final String pluginName = this.plugin.getFusion().getItemPlugin().toLowerCase();
+        final String pluginName = this.plugin.getFusion().getItemsPlugin().toLowerCase();
 
         switch (pluginName) {
             case "nexo" -> manager.registerEvents(new NexoInteractListener(), this.plugin);
@@ -370,7 +370,7 @@ public class CrateManager {
 
         for (final String crateName : getCrateNames(true)) {
             try {
-                final CustomFile customFile = this.fileManager.getFile(crateName, FileType.YAML);
+                final LegacyCustomFile customFile = this.fileManager.getFile(crateName, FileType.YAML);
 
                 if (customFile == null) continue;
 
@@ -1445,7 +1445,7 @@ public class CrateManager {
     // Internal methods.
     private LegacyItemBuilder getKey(@NotNull final FileConfiguration file) {
         final String name = file.getString("Crate.PhysicalKey.Name", "");
-        final int customModelData = file.getInt("Crate.PhysicalKey.Custom-Model-Data", -1);
+        final String customModelData = file.getString("Crate.PhysicalKey.Custom-Model-Data", "");
         final List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
         final boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);

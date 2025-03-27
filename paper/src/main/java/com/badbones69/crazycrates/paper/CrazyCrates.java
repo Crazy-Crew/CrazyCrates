@@ -23,11 +23,10 @@ import com.badbones69.crazycrates.paper.support.placeholders.PlaceholderAPISuppo
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.core.util.StringUtils;
-import com.ryderbelserion.fusion.paper.FusionApi;
-import com.ryderbelserion.fusion.core.api.enums.FileType;
-import com.ryderbelserion.fusion.paper.Fusion;
-import com.ryderbelserion.fusion.paper.files.FileManager;
+import com.ryderbelserion.fusion.api.enums.FileType;
+import com.ryderbelserion.fusion.core.utils.AdvUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
@@ -41,7 +40,6 @@ public class CrazyCrates extends JavaPlugin {
         return JavaPlugin.getPlugin(CrazyCrates.class);
     }
 
-    private final FusionApi api = FusionApi.get();
     private final Timer timer;
     private final long startTime;
 
@@ -55,19 +53,20 @@ public class CrazyCrates extends JavaPlugin {
     private BukkitUserManager userManager;
     private CrateManager crateManager;
 
+    private FusionPaper api;
+
     private Server instance;
 
     private MetricsWrapper metrics;
 
-    private FileManager fileManager;
-    private Fusion fusion;
+    private LegacyFileManager fileManager;
 
     @Override
     public void onEnable() {
+        this.api = new FusionPaper(getComponentLogger(), getDataFolder());
         this.api.enable(this);
 
-        this.fileManager = this.api.getFileManager();
-        this.fusion = this.api.getFusion();
+        this.fileManager = this.api.getLegacyFileManager();
 
         this.instance = new Server(getDataFolder());
         this.instance.apply();
@@ -137,9 +136,9 @@ public class CrazyCrates extends JavaPlugin {
             // Print dependency garbage
             for (final Plugins value : Plugins.values()) {
                 if (value.isEnabled()) {
-                    getComponentLogger().info(StringUtils.parse("<bold><gold>" + value.getName() + " <green>FOUND"));
+                    getComponentLogger().info(AdvUtils.parse("<bold><gold>" + value.getName() + " <green>FOUND"));
                 } else {
-                    getComponentLogger().info(StringUtils.parse("<bold><gold>" + value.getName() + " <red>NOT FOUND"));
+                    getComponentLogger().info(AdvUtils.parse("<bold><gold>" + value.getName() + " <red>NOT FOUND"));
                 }
             }
 
@@ -173,7 +172,7 @@ public class CrazyCrates extends JavaPlugin {
 
         MiscUtils.janitor();
 
-        this.api.disable();
+        this.api.save();
     }
 
     public final InventoryManager getInventoryManager() {
@@ -196,15 +195,15 @@ public class CrazyCrates extends JavaPlugin {
         return this.metrics;
     }
 
-    public final FileManager getFileManager() {
+    public final LegacyFileManager getFileManager() {
         return this.fileManager;
-    }
-
-    public final Fusion getFusion() {
-        return this.fusion;
     }
 
     public final Timer getTimer() {
         return this.timer;
+    }
+
+    public final FusionPaper getFusion() {
+        return this.api;
     }
 }

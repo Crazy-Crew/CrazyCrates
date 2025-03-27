@@ -3,9 +3,9 @@ package com.badbones69.crazycrates.paper.tasks.menus;
 import com.badbones69.crazycrates.paper.api.builders.gui.DynamicInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
-import com.ryderbelserion.fusion.paper.builder.gui.interfaces.GuiFiller;
-import com.ryderbelserion.fusion.paper.builder.gui.interfaces.GuiItem;
-import com.ryderbelserion.fusion.paper.builder.gui.types.PaginatedGui;
+import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiFiller;
+import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.api.builder.gui.types.PaginatedGui;
 import org.bukkit.entity.Player;
 import java.util.UUID;
 

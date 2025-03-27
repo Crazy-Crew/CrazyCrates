@@ -11,7 +11,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.ryderbelserion.fusion.core.util.StringUtils;
+import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -88,7 +88,7 @@ public class CrateOpenListener implements Listener {
             if (!broadcastMessage.isBlank()) {
                 final String builder = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
-                this.plugin.getServer().broadcast(StringUtils.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix)).replaceAll("%player%", player.getName())));
+                this.plugin.getServer().broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix)).replaceAll("%player%", player.getName())));
             }
         }
 

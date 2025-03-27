@@ -11,8 +11,8 @@ import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
-import com.ryderbelserion.fusion.core.util.StringUtils;
-import com.ryderbelserion.fusion.paper.util.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.core.utils.AdvUtils;
+import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
@@ -178,7 +178,7 @@ public class QuickCrate extends CrateBuilder {
 
             reward.setVelocity(new Vector(0, 0.2, 0));
 
-            reward.customName(StringUtils.parse(prize.getPrizeName()));
+            reward.customName(AdvUtils.parse(prize.getPrizeName()));
 
             reward.setCustomNameVisible(true);
             reward.setCanMobPickup(false);

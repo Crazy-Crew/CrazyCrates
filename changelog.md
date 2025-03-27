@@ -1,12 +1,23 @@
-- /crazycrates debug will tell you no prizes can be won if the item sections are empty, or if there are no prizes.
-
-## New Item Format
-This is only for the new item format behind a toggle in config.yml
-
-### Fixes
-- Fixed an issue with items having blank names with the new item format (not the old format)
-    - This happens only when `name` is not present in the `Items` section
-
-### Additions
-- Added the ability to have multiple potion effects for a potion, or tipped arrows
-  - Potion effects are measured in seconds, https://minecraft.wiki/w/Calculators/Tick
+- Added the ability to use `Item Models` which was introduced in 1.21.4
+  - This replaces `Custom-Model-Data` wherever you see it, It's up to the plugin/resource pack you use to find the new id.
+    - oraxen:emerald_helmet
+    - nexo:emerald_helmet
+    - itemsadder:emerald_helmet
+  - Above are examples of namespace:id.
+```yml
+  PhysicalKey:
+    # Name of the Key.
+    Name: "<bold><gradient:#084CFB:#ADF3FD>Wonder Crate Key</gradient></bold>"
+    # Lore of the Key.
+    Lore:
+      - "<gradient:#084CFB:#ADF3FD>A fancy key to open a wonderful crate!</gradient>"
+    # The item the key is.
+    Item: "blue_dye"
+    # The custom model data of the item, -1 is disabled.
+    # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+    # Set this to blank for it to do nothing.
+    # The format is namespace:id
+    Item-Model: ""
+    # Makes the key look enchanted.
+    Glowing: true 
+```

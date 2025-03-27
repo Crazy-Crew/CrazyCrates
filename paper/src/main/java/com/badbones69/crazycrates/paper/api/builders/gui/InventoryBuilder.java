@@ -11,17 +11,15 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.paper.builder.gui.interfaces.GuiItem;
-import com.ryderbelserion.fusion.paper.builder.gui.types.BaseGui;
+import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.api.builder.gui.types.BaseGui;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.UUID;
-
 import static java.util.regex.Matcher.quoteReplacement;
 
 public abstract class InventoryBuilder {

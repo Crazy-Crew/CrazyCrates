@@ -5,13 +5,13 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.core.util.StringUtils;
-import com.ryderbelserion.fusion.paper.builder.items.modern.ItemBuilder;
-import com.ryderbelserion.fusion.paper.builder.items.modern.types.PatternBuilder;
-import com.ryderbelserion.fusion.paper.builder.items.modern.types.PotionBuilder;
-import com.ryderbelserion.fusion.paper.builder.items.modern.types.SkullBuilder;
-import com.ryderbelserion.fusion.paper.builder.items.modern.types.SpawnerBuilder;
-import com.ryderbelserion.fusion.paper.util.PaperMethods;
+import com.ryderbelserion.fusion.api.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.api.builder.items.modern.ItemBuilder;
+import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.PatternBuilder;
+import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.PotionBuilder;
+import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.SkullBuilder;
+import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.SpawnerBuilder;
+import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Color;
@@ -184,7 +184,7 @@ public class ItemUtils {
             builder.setPlayer(section.getString("Player", ""));
         }
 
-        builder.setCustomModelData(section.getInt("Custom-Model-Data", -1));
+        builder.setCustomModelData(section.getString("Custom-Model-Data", ""));
         
         if (section.contains("DisplayTrim.Pattern") && builder.isArmor()) {
             builder.applyTrimPattern(section.getString("DisplayTrim.Pattern", "sentry"));
@@ -259,7 +259,7 @@ public class ItemUtils {
                 }
             }
 
-            itemBuilder.setCustomModelData(item.getInt("custom-model-data", -1));
+            itemBuilder.setCustomModelData(item.getString("custom-model-data", ""));
 
             if (item.getBoolean("hide-tool-tip", false)) {
                 itemBuilder.hideToolTip();
@@ -293,7 +293,7 @@ public class ItemUtils {
             if (mobType != null && !mobType.isEmpty()) {
                 final SpawnerBuilder spawnerBuilder = itemBuilder.asSpawnerBuilder();
 
-                spawnerBuilder.withEntityType(PaperMethods.getEntity(mobType)).build();
+                spawnerBuilder.withEntityType(com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(mobType)).build();
             }
 
             itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""), false);
@@ -304,7 +304,7 @@ public class ItemUtils {
                 final PotionBuilder potionBuilder = itemBuilder.asPotionBuilder();
 
                 for (final String potion : potions.getKeys(false)) {
-                    final PotionEffectType type = PaperMethods.getPotionEffect(potion);
+                    final PotionEffectType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getPotionEffect(potion);
 
                     if (type != null) {
                         final ConfigurationSection data = potions.getConfigurationSection(potion);
@@ -370,7 +370,7 @@ public class ItemUtils {
                     case "data" -> itemBuilder = itemBuilder.fromBase64(value);
                     case "name" -> itemBuilder.setDisplayName(value);
                     case "mob" -> {
-                        final EntityType type = PaperMethods.getEntity(value);
+                        final EntityType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(value);
 
                         if (type != null) {
                             itemBuilder.setEntityType(type);
@@ -388,25 +388,25 @@ public class ItemUtils {
                     case "lore" -> itemBuilder.setDisplayLore(List.of(value.split(",")));
                     case "player" -> itemBuilder.setPlayer(value);
                     case "skull" -> itemBuilder.setSkull(value);
-                    case "custom-model-data" -> itemBuilder.setCustomModelData(StringUtils.tryParseInt(value).orElse(-1).intValue());
+                    case "custom-model-data" -> itemBuilder.setCustomModelData(value);
                     case "unbreakable-item" -> itemBuilder.setUnbreakable(value.isEmpty() || value.equalsIgnoreCase("true"));
                     case "hide-tool-tip" -> itemBuilder.setHidingItemFlags(value.equalsIgnoreCase("true"));
                     case "trim-pattern" -> itemBuilder.applyTrimPattern(value);
                     case "trim-material" -> itemBuilder.applyTrimMaterial(value);
                     case "rgb" -> {
-                        final @Nullable Color color = PaperMethods.getRGB(value);
+                        @Nullable final Color color = ColorUtils.getRGB(value);
 
                         if (color != null) {
                             itemBuilder.setColor(color);
                         }
                     }
                     case "color" -> {
-                        final @Nullable Color color = PaperMethods.getColor(value);
+                        @Nullable final Color color = ColorUtils.getColor(value);
 
                         itemBuilder.setColor(color);
                     }
                     default -> {
-                        if (PaperMethods.getEnchantment(option.toLowerCase()) != null) {
+                        if (com.ryderbelserion.fusion.paper.utils.ItemUtils.getEnchantment(option.toLowerCase()) != null) {
                             final Optional<Number> amount = StringUtils.tryParseInt(value);
 
                             itemBuilder.addEnchantment(option.toLowerCase(), amount.map(Number::intValue).orElse(1), true);
@@ -423,9 +423,9 @@ public class ItemUtils {
                         }
 
                         try {
-                            DyeColor color = PaperMethods.getDyeColor(value);
+                            DyeColor color = ColorUtils.getDyeColor(value);
 
-                            PatternType patternType = PaperMethods.getPatternType(option.toLowerCase());
+                            PatternType patternType = com.ryderbelserion.fusion.paper.utils.ItemUtils.getPatternType(option.toLowerCase());
 
                             if (patternType != null) {
                                 itemBuilder.addPattern(patternType, color);

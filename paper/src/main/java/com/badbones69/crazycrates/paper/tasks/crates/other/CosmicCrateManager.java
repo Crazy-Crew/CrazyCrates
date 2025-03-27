@@ -44,14 +44,14 @@ public class CosmicCrateManager extends AbstractCrateManager {
                 .setHidingItemFlags(file.getBoolean(path + "Mystery-Crate.HideItemFlags", false))
                 .setDisplayLore(file.contains(path + "Mystery-Crate.Lore") ? file.getStringList(path + "Mystery-Crate.Lore") : Collections.singletonList("<gray>You may choose 4 crates."))
                 .setPersistentInteger(ItemKeys.cosmic_mystery_crate.getNamespacedKey(), 1)
-                .setCustomModelData(file.getInt(path + "Mystery-Crate.Custom-Model-Data", -1));
+                .setCustomModelData(file.getString(path + "Mystery-Crate.Custom-Model-Data", ""));
 
         this.pickedCrate = new LegacyItemBuilder().withType(file.getString(path + "Picked-Crate.Item", "gray_stained_glass_pane").toLowerCase())
                 .setDisplayName(file.getString(path + "Picked-Crate.Name", "<bold><white>???</white>"))
                 .setHidingItemFlags(file.getBoolean(path + "Picked-Crate.HideItemFlags", false))
                 .setDisplayLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("<gray>You have chosen #%slot%."))
                 .setPersistentInteger(ItemKeys.cosmic_picked_crate.getNamespacedKey(), 1)
-                .setCustomModelData(file.getInt(path + "Picked-Crate.Custom-Model-Data", -1));
+                .setCustomModelData(file.getString(path + "Picked-Crate.Custom-Model-Data", ""));
 
     }
 

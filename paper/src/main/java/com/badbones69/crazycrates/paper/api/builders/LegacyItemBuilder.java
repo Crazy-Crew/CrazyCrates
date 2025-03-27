@@ -1,11 +1,12 @@
 package com.badbones69.crazycrates.paper.api.builders;
 
-import com.ryderbelserion.fusion.paper.util.PaperMethods;
+import com.ryderbelserion.fusion.paper.api.builder.items.ItemBuilder;
+import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 
-public class LegacyItemBuilder extends com.ryderbelserion.fusion.paper.builder.items.ItemBuilder<LegacyItemBuilder> {
+public class LegacyItemBuilder extends ItemBuilder<LegacyItemBuilder> {
 
     public LegacyItemBuilder(final LegacyItemBuilder itemBuilder, final boolean createNewStack) {
         super(itemBuilder, createNewStack);
@@ -33,6 +34,6 @@ public class LegacyItemBuilder extends com.ryderbelserion.fusion.paper.builder.i
     public @NotNull LegacyItemBuilder fromBase64(@NotNull String base64) {
         if (base64.isEmpty()) return this;
 
-        return new LegacyItemBuilder(PaperMethods.fromBase64(base64));
+        return new LegacyItemBuilder(ItemUtils.fromBase64(base64));
     }
 }

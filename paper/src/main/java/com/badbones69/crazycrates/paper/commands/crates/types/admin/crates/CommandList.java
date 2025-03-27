@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
-import com.ryderbelserion.fusion.core.util.StringUtils;
+import com.ryderbelserion.fusion.api.utils.StringUtils;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.Location;

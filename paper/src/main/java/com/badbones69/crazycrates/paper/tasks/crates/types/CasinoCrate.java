@@ -7,7 +7,7 @@ import com.badbones69.crazycrates.paper.api.objects.Tier;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
-import com.ryderbelserion.fusion.paper.util.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;

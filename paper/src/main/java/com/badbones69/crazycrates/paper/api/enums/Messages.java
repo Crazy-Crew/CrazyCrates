@@ -4,7 +4,8 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
 import com.badbones69.crazycrates.core.enums.State;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.core.util.StringUtils;
+import com.ryderbelserion.fusion.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import org.bukkit.command.CommandSender;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.messages.CommandKeys;
@@ -194,7 +195,7 @@ public enum Messages {
         if (msg.isBlank()) return;
 
         if (sender instanceof Player player) {
-            player.sendActionBar(StringUtils.parse(msg));
+            player.sendActionBar(AdvUtils.parse(msg));
         }
     }
 
@@ -204,7 +205,7 @@ public enum Messages {
         if (msg.isBlank()) return;
 
         if (sender instanceof Player player) {
-            player.sendActionBar(StringUtils.parse(msg));
+            player.sendActionBar(AdvUtils.parse(msg));
         }
     }
 
@@ -214,7 +215,7 @@ public enum Messages {
         if (msg.isBlank()) return;
 
         if (sender instanceof Player player) {
-            player.sendActionBar(StringUtils.parse(msg));
+            player.sendActionBar(AdvUtils.parse(msg));
         }
     }
 
@@ -244,12 +245,12 @@ public enum Messages {
 
     public void migrate() {
         if (this.isList) {
-            this.messages.setProperty(this.properties, StringUtils.convert(this.messages.getProperty(this.properties), true));
+            this.messages.setProperty(this.properties, AdvUtils.convert(this.messages.getProperty(this.properties), true));
 
             return;
         }
 
-        this.messages.setProperty(this.property, StringUtils.convert(this.messages.getProperty(this.property), true));
+        this.messages.setProperty(this.property, AdvUtils.convert(this.messages.getProperty(this.property), true));
     }
 
     private @NotNull String parse(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {

@@ -1,10 +1,10 @@
 package com.badbones69.crazycrates.paper.api.enums.other.keys;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.ryderbelserion.fusion.core.api.enums.FileType;
-import com.ryderbelserion.fusion.core.api.exception.FusionException;
-import com.ryderbelserion.fusion.paper.files.CustomFile;
-import com.ryderbelserion.fusion.paper.files.FileManager;
+import com.ryderbelserion.fusion.api.enums.FileType;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
+import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.Nullable;
 import java.io.File;
@@ -26,7 +26,7 @@ public enum FileKeys {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final FileManager fileManager = this.plugin.getFileManager();
+    private final LegacyFileManager fileManager = this.plugin.getFileManager();
 
     /**
      * A constructor to build a file
@@ -54,7 +54,7 @@ public enum FileKeys {
     }
 
     public final YamlConfiguration getConfiguration() {
-        @Nullable final CustomFile customFile = this.fileManager.getFile(this.fileName, this.fileType);
+        @Nullable final LegacyCustomFile customFile = this.fileManager.getFile(this.fileName, this.fileType);
 
         if (customFile == null) {
             throw new FusionException("File configuration for " + this.fileName + " is null.");
