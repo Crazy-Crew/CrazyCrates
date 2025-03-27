@@ -89,8 +89,10 @@ Crate:
       Permission: ""
   # Item the crate is in the GUI
   Item: "gold_ingot"
-  # The custom model data of the item, -1 is disabled.
-  Custom-Model-Data: -1
+  # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+  # Set this to blank for it to do nothing.
+  # The format is namespace:id
+  Item-Model: ""
   # If the crate in the main /crates is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
@@ -113,8 +115,10 @@ Crate:
       Toggle: true
       # The name of the border item.
       Name: " "
-      # The custom model data of the item, -1 is disabled.
-      Custom-Model-Data: -1
+      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+      # Set this to blank for it to do nothing.
+      # The format is namespace:id
+      Item-Model: ""
       # The item that shows in the border. Can be glass or any other item.
       Item: "gray_stained_glass_pane"
   tier-preview:
@@ -157,8 +161,10 @@ Crate:
         - "<red>%chance%%</red>"
       # The item used for the secondary gui when you right-click for the preview.
       Item: "chest"
-      # The custom model data of the item, -1 is disabled.
-      Custom-Model-Data: -1
+      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+      # Set this to blank for it to do nothing.
+      # The format is namespace:id
+      Item-Model: ""
       # The lower the number, the less likely to win it.
       Weight: 50.0
       # The slot this item will be in the secondary gui.
@@ -172,8 +178,10 @@ Crate:
         - "<red>%chance%%</red>"
       # The item used for the secondary gui when you right-click for the preview.
       Item: "chest"
-      # The custom model data of the item, -1 is disabled.
-      Custom-Model-Data: -1
+      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+      # Set this to blank for it to do nothing.
+      # The format is namespace:id
+      Item-Model: ""
       # The lower the number, the less likely to win it.
       Weight: 35.0
       # The slot this item will be in the secondary gui.
@@ -187,8 +195,10 @@ Crate:
         - "<red>%chance%%</red>"
       # The item used for the secondary gui when you right-click for the preview.
       Item: "ender_chest"
-      # The custom model data of the item, -1 is disabled.
-      Custom-Model-Data: -1
+      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+      # Set this to blank for it to do nothing.
+      # The format is namespace:id
+      Item-Model: ""
       # The lower the number, the less likely to win it.
       Weight: 25.0
       # The slot this item will be in the secondary gui.
@@ -196,8 +206,10 @@ Crate:
   PhysicalKey:
     # Name of the Key.
     Name: "<bold><dark_blue>Casino Crate Key</bold>"
-    # The custom model data of the item, -1 is disabled.
-    Custom-Model-Data: -1
+    # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+    # Set this to blank for it to do nothing.
+    # The format is namespace:id
+    Item-Model: ""
     # Lore of the Key.
     Lore:
       - "<gray>A special Key"
@@ -232,8 +244,10 @@ Crate:
       DisplayItem: "player_head"
       # Prize display preview settings
       Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        # The format is namespace:id
+        Item-Model: ""
       # The amount to display in the gui.
       DisplayAmount: 1
       # The lower the number, the less likely to win it.
@@ -257,8 +271,10 @@ Crate:
       DisplayItem: "netherite_helmet"
       # Prize display preview settings
       Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        # The format is namespace:id
+        Item-Model: ""
       # The enchants on the item.
       DisplayEnchantments:
         - "protection:5"
@@ -318,8 +334,10 @@ Crate:
       DisplayItem: "enchanted_book"
       # Prize display preview settings
       Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        # The format is namespace:id
+        Item-Model: ""
       # The amount to display in the gui.
       DisplayAmount: 3
       # The lore of the item.
@@ -341,8 +359,10 @@ Crate:
       DisplayItem: "chainmail_leggings"
       # Prize display preview settings
       Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        # The format is namespace:id
+        Item-Model: ""
       # The enchants on the item.
       DisplayEnchantments:
         - "protection:2"
@@ -382,8 +402,10 @@ Crate:
       DisplayItem: "diamond_sword"
       # Prize display preview settings
       Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        # The format is namespace:id
+        Item-Model: ""
       # The enchants on the item.
       DisplayEnchantments:
         - "sharpness:2"

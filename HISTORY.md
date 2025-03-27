@@ -295,7 +295,10 @@ Crate:
       # The item that shows in the border. Can be glass or any other item.
       Item: "gray_stained_glass_pane"
       # The custom model data of the item, -1 is disabled.
-      Custom-Model-Data: -1 
+      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+      # Set this to blank for it to do nothing.
+      # The format is namespace:id
+      Item-Model: "" 
 ```
 
 ### Fixes:
@@ -372,7 +375,10 @@ Crate:
       # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        # The format is namespace:id
+        Item-Model: ""
         # Broadcast a message to the server
         Broadcast:
           # If the messages should be sent.
@@ -458,7 +464,10 @@ Items:
       # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        # The format is namespace:id
+        Item-Model: ""
         # The type of mob for the spawner.
         Mob-Type: creeper
       # The amount to display in the gui.

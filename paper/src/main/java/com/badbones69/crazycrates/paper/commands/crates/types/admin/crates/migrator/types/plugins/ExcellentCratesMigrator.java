@@ -8,6 +8,9 @@ import com.ryderbelserion.fusion.core.api.enums.FileType;
 import com.ryderbelserion.fusion.core.util.StringUtils;
 import com.ryderbelserion.fusion.paper.files.CustomFile;
 import com.ryderbelserion.fusion.paper.util.PaperMethods;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.CustomModelData;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import su.nightexpress.excellentcrates.CratesAPI;
 import su.nightexpress.excellentcrates.crate.impl.Crate;
 import su.nightexpress.excellentcrates.data.impl.CrateUser;
@@ -207,7 +211,8 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             set(root, "Preview.Glass.Toggle", true);
             set(root, "Preview.Glass.Name", " ");
             set(root, "Preview.Glass.Item", "gray_stained_glass_pane");
-            set(root, "Preview.Glass.Custom-Model-Data", -1);
+            set(root, "Preview.Glass.Custom-Model-Data", -1); // deprecated
+            set(root, "Preview.Glass.Item-Model", "");
 
             set(root, "StartingKeys", 0);
             set(root, "RequiredKeys", 0);
@@ -248,6 +253,18 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                 final ItemMeta itemMeta = crateItem.getItemMeta();
 
                 set(root, "Custom-Model-Data", itemMeta.hasCustomModelData() ? itemMeta.getCustomModelData() : -1);
+            }
+
+            if (crateItem.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) { // deprecated
+                @Nullable final CustomModelData custom = crateItem.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
+
+                set(root, "Custom-Model-Data", custom != null ? custom.floats().getFirst() : -1);
+            }
+
+            if (crateItem.hasData(DataComponentTypes.ITEM_MODEL)) {
+                @Nullable final Key model = crateItem.getData(DataComponentTypes.ITEM_MODEL);
+
+                set(root, "Item-Model", model != null ? model.asString() : "");
             }
 
             set(root, "Settings.Knockback", crate.isPushbackEnabled());

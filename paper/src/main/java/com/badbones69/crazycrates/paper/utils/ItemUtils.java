@@ -184,7 +184,11 @@ public class ItemUtils {
             builder.setPlayer(section.getString("Player", ""));
         }
 
-        builder.setCustomModelData(section.getInt("Custom-Model-Data", -1));
+        builder.setCustomModelData(section.getInt("Custom-Model-Data", -1)); // deprecated
+
+        @NotNull final String[] model = section.getString("Item-Model", "").split(":");
+
+        builder.setItemModel(model[0], model[1]);
         
         if (section.contains("DisplayTrim.Pattern") && builder.isArmor()) {
             builder.applyTrimPattern(section.getString("DisplayTrim.Pattern", "sentry"));

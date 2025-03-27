@@ -32,8 +32,10 @@ Crate:
       DisplayItem: "player_head"
       # Prize display preview settings
       Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        # The format is namespace:id
+        Item-Model: ""
       # The amount to display in the gui.
       DisplayAmount: 1
       # The lower the number, the less likely to win it.

@@ -21,6 +21,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.text.NumberFormat;
 import java.util.UUID;
@@ -113,10 +114,14 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                     final NumberFormat instance = NumberFormat.getNumberInstance();
 
+                    @NotNull final String[] model = section.getString("Item-Model", "").split(":");
+
                     final LegacyItemBuilder builder = new LegacyItemBuilder()
                             .withType(section.getString("Item", "chest").toLowerCase())
                             .setDisplayName(crate.getCrateName())
+                            // deprecated
                             .setCustomModelData(section.getInt("Custom-Model-Data", -1))
+                            .setItemModel(model[0], model[1])
                             .addLorePlaceholder("%keys%", instance.format(virtualKeys))
                             .addLorePlaceholder("%keys_physical%", instance.format(physicalKeys))
                             .addLorePlaceholder("%keys_total%", instance.format(totalKeys))

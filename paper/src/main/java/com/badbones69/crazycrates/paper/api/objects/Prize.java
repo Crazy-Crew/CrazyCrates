@@ -440,6 +440,10 @@ public class Prize {
 
             builder.setCustomModelData(this.section.getInt("Settings.Custom-Model-Data", -1));
 
+            @NotNull final String[] model = this.section.getString("Settings.Item-Model", "").split(":");
+
+            builder.setItemModel(model[0], model[1]);
+
             if (this.section.contains("Settings.Mob-Type")) {
                 final EntityType type = PaperMethods.getEntity(this.section.getString("Settings.Mob-Type", "cow"));
 

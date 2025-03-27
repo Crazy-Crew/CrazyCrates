@@ -95,8 +95,10 @@ Crate:
         Max-Cap: 20
   # Item the crate is in the GUI
   Item: "shulker_box"
-  # The custom model data of the item, -1 is disabled.
-  Custom-Model-Data: -1
+  # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+  # Set this to blank for it to do nothing.
+  # The format is namespace:id
+  Item-Model: ""
   # If the crate in the main /crates is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
@@ -121,8 +123,10 @@ Crate:
       Name: " "
       # The item that shows in the border. Can be glass or any other item.
       Item: "gray_stained_glass_pane"
-      # The custom model data of the item, -1 is disabled.
-      Custom-Model-Data: -1
+      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+      # Set this to blank for it to do nothing.
+      # The format is namespace:id
+      Item-Model: ""
   PhysicalKey:
     # Name of the Key.
     Name: "<bold><gradient:#084CFB:#ADF3FD>Wonder Crate Key</gradient></bold>"
@@ -131,8 +135,10 @@ Crate:
       - "<gradient:#084CFB:#ADF3FD>A fancy key to open a wonderful crate!</gradient>"
     # The item the key is.
     Item: "blue_dye"
-    # The custom model data of the item, -1 is disabled.
-    Custom-Model-Data: -1
+    # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+    # Set this to blank for it to do nothing.
+    # The format is namespace:id
+    Item-Model: ""
     # Makes the key look enchanted.
     Glowing: true
   # Settings for the holograms.
@@ -164,8 +170,10 @@ Crate:
       DisplayItem: "player_head"
       # Prize display preview settings
       Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        # The format is namespace:id
+        Item-Model: ""
       # The amount to display in the gui.
       DisplayAmount: 1
       # The chance to win i.e. 1%
@@ -189,8 +197,10 @@ Crate:
       DisplayItem: "diamond_sword"
       # Prize display preview settings
       Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        # The format is namespace:id
+        Item-Model: ""
       # The amount to display in the gui.
       DisplayAmount: 1
       # The chance to win i.e. 15%
@@ -211,8 +221,10 @@ Crate:
       DisplayItem: "diamond_helmet"
       # Prize display preview settings
       Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        # The format is namespace:id
+        Item-Model: ""
       # The amount to display in the gui.
       DisplayAmount: 1
       # The lore of the item.
@@ -233,8 +245,10 @@ Crate:
       DisplayItem: "enchanted_book"
       # Prize display preview settings
       Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        # The format is namespace:id
+        Item-Model: ""
       # The amount to display in the gui.
       DisplayAmount: 3
       # The lore of the item.
@@ -253,8 +267,10 @@ Crate:
       DisplayItem: "sunflower"
       # Prize display preview settings
       Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        # The format is namespace:id
+        Item-Model: ""
       # The amount to display in the gui.
       DisplayAmount: 5
       # The lore of the item.

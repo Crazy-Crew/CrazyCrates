@@ -1445,14 +1445,17 @@ public class CrateManager {
     // Internal methods.
     private LegacyItemBuilder getKey(@NotNull final FileConfiguration file) {
         final String name = file.getString("Crate.PhysicalKey.Name", "");
-        final int customModelData = file.getInt("Crate.PhysicalKey.Custom-Model-Data", -1);
+        final int customModelData = file.getInt("Crate.PhysicalKey.Custom-Model-Data", -1); // deprecated
         final List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
         final boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
-        final LegacyItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new LegacyItemBuilder().fromBase64(file.getString("Crate.PhysicalKey.Data", "")) : new LegacyItemBuilder().withType(file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase());
+        final LegacyItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new LegacyItemBuilder().fromBase64(file.getString("Crate.PhysicalKey.Data", "")) : new LegacyItemBuilder()
+                .withType(file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase());
 
-        return itemBuilder.setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setHidingItemFlags(hideFlags).setCustomModelData(customModelData);
+        @NotNull final String[] model = file.getString("Item-Model", "").split(":");
+
+        return itemBuilder.setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setHidingItemFlags(hideFlags).setCustomModelData(customModelData).setItemModel(model[0], model[1]);
     }
 
     // Cleans the data file.

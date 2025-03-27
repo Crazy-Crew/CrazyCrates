@@ -95,8 +95,10 @@ Crate:
         Max-Cap: 20
   # Item the crate is in the GUI
   Item: "chest"
-  # The custom model data of the item, -1 is disabled.
-  Custom-Model-Data: -1
+  # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+  # Set this to blank for it to do nothing.
+  # The format is namespace:id
+  Item-Model: ""
   # If the crate in the main /cc GUI is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
@@ -121,8 +123,10 @@ Crate:
       Name: " "
       # The item that shows in the border. Can be glass or any other item.
       Item: "gray_stained_glass_pane"
-      # The custom model data of the item, -1 is disabled.
-      Custom-Model-Data: -1
+      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+      # Set this to blank for it to do nothing.
+      # The format is namespace:id
+      Item-Model: ""
   PhysicalKey:
     # Name of the Key.
     Name: "<bold><light_purple>Advanced Crate Key</bold>"
@@ -132,8 +136,10 @@ Crate:
       - "<gray>For a special Crate."
     # The item the key is.
     Item: "red_dye"
-    # The custom model data of the item, -1 is disabled.
-    Custom-Model-Data: -1
+    # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+    # Set this to blank for it to do nothing.
+    # The format is namespace:id
+    Item-Model: ""
     # Makes the key look enchanted.
     Glowing: true
   # Settings for the holograms.
@@ -164,8 +170,10 @@ Crate:
       DisplayItem: "netherite_helmet"
       # Prize display preview settings
       Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        # The format is namespace:id
+        Item-Model: ""
       # The enchants on the item.
       DisplayEnchantments:
         - "protection:5"
@@ -221,8 +229,10 @@ Crate:
       DisplayItem: "enchanted_book"
       # Prize display preview settings
       Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        # The format is namespace:id
+        Item-Model: ""
       # The amount to display in the gui.
       DisplayAmount: 3
       # The lore of the item.

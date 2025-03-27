@@ -26,7 +26,11 @@ public class Tier {
 
         this.lore = section.getStringList("Lore"); // this returns an empty list if not found anyway.
 
-        this.item = new LegacyItemBuilder().withType(section.getString("Item", "chest").toLowerCase()).setHidingItemFlags(section.getBoolean("HideItemFlags", false)).setCustomModelData(section.getInt("Custom-Model-Data", -1));
+        @NotNull final String[] model = section.getString("Item-Model", "").split(":");
+
+        this.item = new LegacyItemBuilder().withType(section.getString("Item", "chest").toLowerCase()).setHidingItemFlags(section.getBoolean("HideItemFlags", false)).setItemModel(model[0], model[1])
+                // deprecated
+                .setCustomModelData(section.getInt("Custom-Model-Data", -1));
 
         this.weight = section.getDouble("Weight", -1);
 

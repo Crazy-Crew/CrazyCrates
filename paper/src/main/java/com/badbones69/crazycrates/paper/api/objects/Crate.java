@@ -182,9 +182,13 @@ public class Crate {
 
         @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
+        @NotNull final String[] borderItem = file.getString("Crate.Preview.Glass.Item-Model", "").split(":");
+        @NotNull final String[] previewItem = file.getString("Crate.tier-preview.glass.item-model", "").split(":");
+
         this.borderItem = new LegacyItemBuilder()
                 .withType(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane").toLowerCase())
-                .setCustomModelData(file.getInt("Crate.Preview.Glass.Custom-Model-Data", -1))
+                .setCustomModelData(file.getInt("Crate.Preview.Glass.Custom-Model-Data", -1)) // deprecated
+                .setItemModel(borderItem[0], borderItem[1])
                 .setHidingItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
                 .setDisplayName(borderName);
 
@@ -192,7 +196,8 @@ public class Crate {
 
         this.previewTierBorderItem = new LegacyItemBuilder()
                 .withType(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
-                .setCustomModelData(file.getInt("Crate.tier-preview.glass.custom-model-data", -1))
+                .setCustomModelData(file.getInt("Crate.tier-preview.glass.custom-model-data", -1)) // deprecated
+                .setItemModel(previewItem[0], previewItem[1])
                 .setHidingItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
                 .setDisplayName(previewTierBorderName);
 
