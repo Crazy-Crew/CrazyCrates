@@ -186,7 +186,7 @@ public class Crate {
         this.borderItem = new LegacyItemBuilder()
                 .withType(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane").toLowerCase())
                 .setCustomModelData(file.getString("Crate.Preview.Glass.Custom-Model-Data", ""))
-                .setItemModel(file.getString("Crate.Preview.Glass.Model.Namespace", "Crate.Preview.Glass.Model.Id"))
+                .setItemModel(file.getString("Crate.Preview.Glass.Model.Namespace", ""), file.getString("Crate.Preview.Glass.Model.Id", ""))
                 .setHidingItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
                 .setDisplayName(borderName);
 
@@ -195,7 +195,7 @@ public class Crate {
         this.previewTierBorderItem = new LegacyItemBuilder()
                 .withType(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
                 .setCustomModelData(file.getString("Crate.tier-preview.glass.custom-model-data", ""))
-                .setItemModel(file.getString("Crate.tier-preview.glass.model.namespace", "Crate.tier-preview.glass.model.id"))
+                .setItemModel(file.getString("Crate.tier-preview.glass.model.namespace", ""), file.getString("Crate.tier-preview.glass.model.id", ""))
                 .setHidingItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
                 .setDisplayName(previewTierBorderName);
 
