@@ -72,6 +72,13 @@ gui:
             - "see {player}"
         # The custom model data for the item, -1 is disabled.
         custom-model-data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        model:
+          # The namespace i.e. nexo
+          namespace: ""
+          # The id i.e. emerald_helmet
+          id: ""
         # The name of the item.
         name: "<bold><gray>» <red>Menu <gray>«</bold>"
         # The lore of the item.
@@ -83,6 +90,13 @@ gui:
         item: "feather"
         # The custom model data for the item, -1 is disabled.
         custom-model-data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        model:
+          # The namespace i.e. nexo
+          namespace: ""
+          # The id i.e. emerald_helmet
+          id: ""
         # The name of the item.
         name: "<bold><gold>Next »</bold>"
         # The lore of the item.
@@ -94,6 +108,13 @@ gui:
         item: "feather"
         # The custom model data for the item, -1 is disabled.
         custom-model-data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        model:
+          # The namespace i.e. nexo
+          namespace: ""
+          # The id i.e. emerald_helmet
+          id: ""
         # The name of the item.
         name: "<bold><gold>« Back</bold>"
         # The lore of the item.
@@ -106,6 +127,13 @@ gui:
         item: "black_stained_glass_pane"
         # The custom model data for the item, -1 is disabled.
         custom-model-data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        model:
+          # The namespace i.e. nexo
+          namespace: ""
+          # The id i.e. emerald_helmet
+          id: ""
         # The name of the item.
         name: " "
         # The lore of the item.

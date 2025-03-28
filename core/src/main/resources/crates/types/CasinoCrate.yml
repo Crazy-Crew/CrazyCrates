@@ -91,6 +91,13 @@ Crate:
   Item: "gold_ingot"
   # The custom model data of the item, -1 is disabled.
   Custom-Model-Data: -1
+  # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+  # Set this to blank for it to do nothing.
+  Model:
+    # The namespace i.e. nexo
+    Namespace: ""
+    # The id i.e. emerald_helmet
+    Id: ""
   # If the crate in the main /crates is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
@@ -115,6 +122,13 @@ Crate:
       Name: " "
       # The custom model data of the item, -1 is disabled.
       Custom-Model-Data: -1
+      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+      # Set this to blank for it to do nothing.
+      Model:
+        # The namespace i.e. nexo
+        Namespace: ""
+        # The id i.e. emerald_helmet
+        Id: ""
       # The item that shows in the border. Can be glass or any other item.
       Item: "gray_stained_glass_pane"
   tier-preview:
@@ -130,6 +144,13 @@ Crate:
       name: " "
       # The custom model data of the item, -1 is disabled.
       custom-model-data: -1
+      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+      # Set this to blank for it to do nothing.
+      model:
+        # The namespace i.e. nexo
+        namespace: ""
+        # The id i.e. emerald_helmet
+        id: ""
       # The item that shows in the border. Can be glass or any other item.
       item: "red_stained_glass_pane"
   # Tier related settings only for Casino.
@@ -159,6 +180,13 @@ Crate:
       Item: "chest"
       # The custom model data of the item, -1 is disabled.
       Custom-Model-Data: -1
+      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+      # Set this to blank for it to do nothing.
+      Model:
+        # The namespace i.e. nexo
+        Namespace: ""
+        # The id i.e. emerald_helmet
+        Id: ""
       # The lower the number, the less likely to win it.
       Weight: 50.0
       # The slot this item will be in the secondary gui.
@@ -174,6 +202,13 @@ Crate:
       Item: "chest"
       # The custom model data of the item, -1 is disabled.
       Custom-Model-Data: -1
+      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+      # Set this to blank for it to do nothing.
+      Model:
+        # The namespace i.e. nexo
+        Namespace: ""
+        # The id i.e. emerald_helmet
+        Id: ""
       # The lower the number, the less likely to win it.
       Weight: 35.0
       # The slot this item will be in the secondary gui.
@@ -189,6 +224,13 @@ Crate:
       Item: "ender_chest"
       # The custom model data of the item, -1 is disabled.
       Custom-Model-Data: -1
+      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+      # Set this to blank for it to do nothing.
+      Model:
+        # The namespace i.e. nexo
+        Namespace: ""
+        # The id i.e. emerald_helmet
+        Id: ""
       # The lower the number, the less likely to win it.
       Weight: 25.0
       # The slot this item will be in the secondary gui.
@@ -198,6 +240,13 @@ Crate:
     Name: "<bold><dark_blue>Casino Crate Key</bold>"
     # The custom model data of the item, -1 is disabled.
     Custom-Model-Data: -1
+    # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+    # Set this to blank for it to do nothing.
+    Model:
+      # The namespace i.e. nexo
+      Namespace: ""
+      # The id i.e. emerald_helmet
+      Id: ""
     # Lore of the Key.
     Lore:
       - "<gray>A special Key"
@@ -234,6 +283,13 @@ Crate:
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        Model:
+          # The namespace i.e. nexo
+          Namespace: ""
+          # The id i.e. emerald_helmet
+          Id: ""
       # The amount to display in the gui.
       DisplayAmount: 1
       # The lower the number, the less likely to win it.
@@ -259,6 +315,13 @@ Crate:
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        Model:
+          # The namespace i.e. nexo
+          Namespace: ""
+          # The id i.e. emerald_helmet
+          Id: ""
       # The enchants on the item.
       DisplayEnchantments:
         - "protection:5"
@@ -320,6 +383,13 @@ Crate:
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        Model:
+          # The namespace i.e. nexo
+          Namespace: ""
+          # The id i.e. emerald_helmet
+          Id: ""
       # The amount to display in the gui.
       DisplayAmount: 3
       # The lore of the item.
@@ -343,6 +413,13 @@ Crate:
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        Model:
+          # The namespace i.e. nexo
+          Namespace: ""
+          # The id i.e. emerald_helmet
+          Id: ""
       # The enchants on the item.
       DisplayEnchantments:
         - "protection:2"
@@ -384,6 +461,13 @@ Crate:
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        Model:
+          # The namespace i.e. nexo
+          Namespace: ""
+          # The id i.e. emerald_helmet
+          Id: ""
       # The enchants on the item.
       DisplayEnchantments:
         - "sharpness:2"

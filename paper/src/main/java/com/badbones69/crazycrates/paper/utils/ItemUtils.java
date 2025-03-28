@@ -185,6 +185,8 @@ public class ItemUtils {
         }
 
         builder.setCustomModelData(section.getString("Custom-Model-Data", ""));
+
+        builder.setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
         
         if (section.contains("DisplayTrim.Pattern") && builder.isArmor()) {
             builder.applyTrimPattern(section.getString("DisplayTrim.Pattern", "sentry"));

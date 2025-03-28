@@ -441,6 +441,8 @@ public class Prize {
 
             builder.setCustomModelData(this.section.getString("Settings.Custom-Model-Data", ""));
 
+            builder.setItemModel(this.section.getString("Settings.Model.Namespace", ""), this.section.getString("Settings.Model.Id", ""));
+
             if (this.section.contains("Settings.Mob-Type")) {
                 final EntityType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(this.section.getString("Settings.Mob-Type", "cow"));
 

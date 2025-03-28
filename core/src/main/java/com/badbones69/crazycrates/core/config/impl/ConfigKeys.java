@@ -4,9 +4,8 @@ import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
+import com.badbones69.crazycrates.core.config.beans.ModelData;
 import com.badbones69.crazycrates.core.enums.State;
-
-import java.util.Collections;
 import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newBeanProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
@@ -238,6 +237,12 @@ public class ConfigKeys implements SettingsHolder {
 
     @Comment("The custom model data for the item, -1 or blank is disabled.")
     public static final Property<String> menu_button_model_data = newProperty("gui.inventory.buttons.menu.custom-model-data", "");
+    @Comment({
+            "The item model, Mojang introduced this in 1.21.4... this replaces custom model data!",
+            "Set this to blank for it to do nothing."
+    })
+    public static final Property<ModelData> menu_button_item_model = newBeanProperty(ModelData.class, "gui.inventory.buttons.menu.model", new ModelData().init());
+
 
     @Comment("The name of the item.")
     public static final Property<String> menu_button_name = newProperty("gui.inventory.buttons.menu.name", "<bold><gray>» <red>Menu <gray>«</bold>");
@@ -253,6 +258,12 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("The custom model data for the item, -1 or blank is disabled.")
     public static final Property<String> next_button_model_data = newProperty("gui.inventory.buttons.next.custom-model-data", "-1");
 
+    @Comment({
+            "The item model, Mojang introduced this in 1.21.4... this replaces custom model data!",
+            "Set this to blank for it to do nothing."
+    })
+    public static final Property<ModelData> next_button_item_model = newBeanProperty(ModelData.class, "gui.inventory.buttons.next.model", new ModelData().init());
+
     @Comment("The name of the item.")
     public static final Property<String> next_button_name = newProperty("gui.inventory.buttons.next.name", "<bold><gold>Next »</bold>");
 
@@ -266,6 +277,12 @@ public class ConfigKeys implements SettingsHolder {
 
     @Comment("The custom model data for the item, -1 or blank is disabled.")
     public static final Property<String> back_button_model_data = newProperty("gui.inventory.buttons.back.custom-model-data", "");
+
+    @Comment({
+            "The item model, Mojang introduced this in 1.21.4... this replaces custom model data!",
+            "Set this to blank for it to do nothing."
+    })
+    public static final Property<ModelData> back_button_item_model = newBeanProperty(ModelData.class, "gui.inventory.buttons.back.model", new ModelData().init());
 
     @Comment("The name of the item.")
     public static final Property<String> back_button_name = newProperty("gui.inventory.buttons.back.name", "<bold><gold>« Back</bold>");
@@ -284,11 +301,17 @@ public class ConfigKeys implements SettingsHolder {
     @Comment("The custom model data for the item, -1 or blank is disabled.")
     public static final Property<String> filler_model_data = newProperty("gui.inventory.buttons.filler.custom-model-data", "");
 
+    @Comment({
+            "The item model, Mojang introduced this in 1.21.4... this replaces custom model data!",
+            "Set this to blank for it to do nothing."
+    })
+    public static final Property<ModelData> filler_item_model = newBeanProperty(ModelData.class, "gui.inventory.buttons.filler.model", new ModelData().init());
+
     @Comment("The name of the item.")
     public static final Property<String> filler_name = newProperty("gui.inventory.buttons.filler.name", " ");
 
     @Comment("The lore of the item.")
-    public static final Property<List<String>> filler_lore = newListProperty("gui.inventory.buttons.filler.lore", Collections.emptyList());
+    public static final Property<List<String>> filler_lore = newListProperty("gui.inventory.buttons.filler.lore", List.of());
 
     @Comment("Should the customizer should be enabled?")
     public static final Property<Boolean> gui_customizer_toggle = newProperty("gui.inventory.buttons.customizer.toggle", true);

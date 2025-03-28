@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.tasks.menus;
 
+import com.badbones69.crazycrates.core.config.beans.ModelData;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
@@ -40,11 +41,14 @@ public class CrateMainMenu extends StaticInventoryBuilder {
         if (this.config.getProperty(ConfigKeys.filler_toggle)) {
             final GuiFiller guiFiller = gui.getFiller();
 
+            final ModelData fillerModel = this.config.getProperty(ConfigKeys.filler_item_model);
+
             guiFiller.fill(new LegacyItemBuilder()
                     .withType(this.config.getProperty(ConfigKeys.filler_item))
                     .setDisplayName(this.config.getProperty(ConfigKeys.filler_name))
                     .setDisplayLore(this.config.getProperty(ConfigKeys.filler_lore))
                     .setCustomModelData(this.config.getProperty(ConfigKeys.filler_model_data))
+                    .setItemModel(fillerModel.getNamespace(), fillerModel.getId())
                     .asGuiItem());
         }
 
@@ -116,6 +120,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                             .withType(section.getString("Item", "chest").toLowerCase())
                             .setDisplayName(crate.getCrateName())
                             .setCustomModelData(section.getString("Custom-Model-Data", ""))
+                            .setItemModel(section.getString("Model.Namespace", "Model.Id"))
                             .addLorePlaceholder("%keys%", instance.format(virtualKeys))
                             .addLorePlaceholder("%keys_physical%", instance.format(physicalKeys))
                             .addLorePlaceholder("%keys_total%", instance.format(totalKeys))

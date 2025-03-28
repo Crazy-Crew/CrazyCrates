@@ -34,6 +34,13 @@ Crate:
       Settings:
         # The custom model data of the item, -1 is disabled.
         Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        Model:
+          # The namespace i.e. nexo
+          Namespace: ""
+          # The id i.e. emerald_helmet
+          Id: ""
       # The amount to display in the gui.
       DisplayAmount: 1
       # The lower the number, the less likely to win it.
@@ -90,6 +97,13 @@ Crate:
           amount: 1
           # Other settings.
           settings:
+            # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+            # Set this to blank for it to do nothing.
+            model:
+              # The namespace i.e. nexo
+              namespace: ""
+              # The id i.e. emerald_helmet
+              id: ""
             # Should the item glow?
             # glowing: false
 

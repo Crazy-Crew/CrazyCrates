@@ -207,7 +207,10 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             set(root, "Preview.Glass.Toggle", true);
             set(root, "Preview.Glass.Name", " ");
             set(root, "Preview.Glass.Item", "gray_stained_glass_pane");
-            set(root, "Preview.Glass.Custom-Model-Data", -1);
+            set(root, "Preview.Glass.Custom-Model-Data", "");
+
+            set(root, "Preview.Glass.Model.Namespace", "");
+            set(root, "Preview.Glass.Model.Id", "");
 
             set(root, "StartingKeys", 0);
             set(root, "RequiredKeys", 0);
