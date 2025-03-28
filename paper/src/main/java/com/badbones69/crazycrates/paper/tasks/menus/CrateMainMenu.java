@@ -120,7 +120,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                             .withType(section.getString("Item", "chest").toLowerCase())
                             .setDisplayName(crate.getCrateName())
                             .setCustomModelData(section.getString("Custom-Model-Data", ""))
-                            .setItemModel(section.getString("Model.Namespace", "Model.Id"))
+                            .setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""))
                             .addLorePlaceholder("%keys%", instance.format(virtualKeys))
                             .addLorePlaceholder("%keys_physical%", instance.format(physicalKeys))
                             .addLorePlaceholder("%keys_total%", instance.format(totalKeys))
