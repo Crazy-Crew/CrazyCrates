@@ -63,7 +63,7 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.api = new FusionPaper(getComponentLogger(), getDataFolder());
+        this.api = new FusionPaper(getComponentLogger(), getDataPath());
         this.api.enable(this);
 
         this.fileManager = this.api.getLegacyFileManager();
