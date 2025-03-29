@@ -27,7 +27,7 @@ public class PlayerKeys implements SettingsHolder {
     @Comment("A list of available placeholders: {player}")
     public static final Property<String> not_online = newProperty("player.target-not-online", "{prefix}<red>{player} <gray>is not online.");
 
-    public static final Property<String> same_player = newProperty("player.target-same-player", "{prefix}<red>You can''t use this command on yourself.");
+    public static final Property<String> same_player = newProperty("player.target-same-player", "{prefix}<red>You can't use this command on yourself.");
 
     public static final Property<String> no_permission = newProperty("player.no-permission", "{prefix}<red>You do not have permission to use that command/menu!");
 
