@@ -349,13 +349,14 @@ public class CrateManager {
                     "config.yml",
                     "data.yml",
                     "locations.yml",
-                    "messages.yml"
-            ).forEach(file -> FileUtils.extract(file, "examples", true));
+                    "messages.yml",
+                    "editor.yml"
+            ).forEach(file -> FileUtils.extract(file, path.resolve("examples"), true));
 
-            FileUtils.extracts("/guis/", path.resolve("examples").resolve("guis"), true);
-            FileUtils.extracts("/logs/", path.resolve("examples").resolve("logs"), true);
-            FileUtils.extracts("/crates/", path.resolve("examples").resolve("crates"), true);
-            FileUtils.extracts("/schematics/", path.resolve("examples").resolve("schematics"), true);
+            FileUtils.extract("guis", path.resolve("examples"), true);
+            FileUtils.extract("logs", path.resolve("examples"), true);
+            FileUtils.extract("crates", path.resolve("examples"), true);
+            FileUtils.extract("schematics", path.resolve("examples"), true);
         }
 
         this.giveNewPlayersKeys = false;
