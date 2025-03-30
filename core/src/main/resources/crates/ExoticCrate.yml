@@ -1,9 +1,12 @@
 # This is an example of the new crate format.
 Crate:
-  # The crate type as per usual.
+  # https://docs.crazycrew.us/docs/plugins/crazycrates/misc/crate-types
   CrateType: CSGO
-  # If the crate shows in the /crates.
-  # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
+  # The amount of keys a player obtains when they join the server for the first time.
+  StartingKeys: 5
+  # The amount of keys a player is required to have to open the crate.
+  RequiredKeys: 3
+  # If the crate shows in the /crates. QuickCrate/CrateOnTheGo/FireCracker cannot be in the gui.
   InGUI: true
   # The slot the item is in the gui.
   Slot: 11
@@ -22,6 +25,8 @@ Crate:
     Name: "<gradient:#E43A96:#FF91EA>Exotic Chest Preview"
     # Turn on and off the preview for this crate.
     Toggle: true
+    # How many lines should the preview be? You can use 1-6.
+    ChestLines: 4
   # The settings for the physical key.
   PhysicalKey:
     # Name of the Key.
@@ -35,24 +40,33 @@ Crate:
       DisplayName: "<gradient:light_purple:dark_purple>Witch's Potion"
       # The item to display in the gui.
       DisplayItem: "potion"
+      # The lore to display in the gui.
+      DisplayLore:
+        - "<light_purple>A potion created by a crazy ole witch."
+        - ""
+        - "<red>Chance: <yellow>%chance%%"
       # The configuration section for potions, minecraft: is not needed in front of the potion.
       # A list of potion effects https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/MobEffectKeys.html
       DisplayPotions:
-        poison: # potion name, must be an exact name.
-          # The length of the potion in seconds
+        # This must be the potion name typed exactly as it is, A list of potions linked above.
+        poison:
+          # The length of the potion in seconds.
           # https://minecraft.wiki/w/Calculators/Tick
           duration: 20
-          # The strength of the potion
+          # The strength of the potion.
           level: 5
       # The amount to display in the gui.
       DisplayAmount: 1
       # The lower the number, the less likely to win it.
       Weight: 1.0
-      # The new items section
+      # The new items section.
       Items:
         "1":
           # The name of the item.
           name: "<gradient:light_purple:dark_purple>Witch's Potion"
+          # The lore of the item.
+          lore:
+            - "<light_purple>A potion created by a crazy ole witch."
           # The material of the item.
           material: "potion"
 
@@ -63,13 +77,14 @@ Crate:
             # The configuration section for potions, minecraft: is not needed in front of the potion.
             # A list of potion effects https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/MobEffectKeys.html
             potions:
-              poison: # potion name, must be an exact name.
-                # The length of the potion in seconds
+              # This must be the potion name typed exactly as it is, A list of potions linked above.
+              poison:
+                # The length of the potion in seconds.
                 # https://minecraft.wiki/w/Calculators/Tick
                 duration: 20
-                # The strength of the potion
+                # The strength of the potion.
                 level: 5
-                # Cosmetic settings of the potion
+                # Cosmetic settings of the potion.
                 style:
                   # Should the icon be enabled?
                   icon: true
@@ -77,3 +92,122 @@ Crate:
                   ambient: true
                   # Should potion particles show?
                   particles: true
+    "2":
+      # The name of the item to display in the gui.
+      DisplayName: "<gold>BadBones69"
+      # The item to display in the gui.
+      DisplayItem: "player_head"
+      # The lore to display in the gui.
+      DisplayLore:
+        - "<red>The head of our lord and savior, BadBones69!"
+        - ""
+        - "<red>Chance: <yellow>%chance%%"
+      # The amount to display in the gui.
+      DisplayAmount: 1
+      # An example of a custom player head.
+      Player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
+      # The lower the number, the less likely to win it.
+      Weight: 5.0
+      # The new items section.
+      Items:
+        "1":
+          # The name of the item.
+          name: "<gold>BadBones69"
+          # The lore of the item.
+          lore:
+            - "<red>The head of our lord and savior, BadBones69!"
+          # The material of the item.
+          material: "player_head"
+
+          # The amount of the item to give.
+          amount: 1
+          # Other settings.
+          settings:
+            # An example of a custom player head.
+            player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
+    "3":
+      # The name of the item to display in the gui.
+      DisplayName: "<red>Diamond Helmet"
+      # The item to display in the gui.
+      DisplayItem: "diamond_helmet"
+      # The lore to display in the gui.
+      DisplayLore:
+        - "<red>A mediocre helmet for a mediocre person."
+        - ""
+        - "<red>Chance: <yellow>%chance%%"
+      # A list of enchantments to display.
+      DisplayEnchantments:
+        - "protection:5"
+        - "unbreaking:3"
+      # The amount to display in the gui.
+      DisplayAmount: 1
+      # The lower the number, the less likely to win it.
+      Weight: 7.5
+      # The new items section.
+      Items:
+        "1":
+          # The name of the item.
+          name: "<red>Diamond Helmet"
+          # The lore of the item.
+          lore:
+            - "<red>A mediocre helmet for a mediocre person."
+          # The material of the item.
+          material: "diamond_helmet"
+
+          # The amount of the item to give.
+          amount: 1
+          # Other settings.
+          settings:
+            # The enchantments to apply to the item.
+            enchantments:
+              protection: 5
+              unbreaking: 3
+    "4":
+      # The name of the item to display in the gui.
+      DisplayName: "<#E43A96>Ryder's Shield <gray>| <red>%pulls%<gray>/<red>%maxpulls%"
+      # The item to display in the gui.
+      DisplayItem: "shield"
+      # The lore to display in the gui.
+      DisplayLore:
+        - "<green>One shield to rule them all!"
+        - ""
+        - "<red>Chance: <yellow>%chance%%"
+      # A list of patterns: https://jd.papermc.io/paper/1.21.5/org/bukkit/block/banner/PatternType.html
+      # The patterns/colors do not need to be uppercased. They must be ordered from top->bottom
+      DisplayPatterns:
+        - "base:white"
+        - "gradient_up:red"
+        - "straight_cross:light_blue"
+        - "flower:green"
+      # A list of enchantments to display.
+      DisplayEnchantments:
+        - "unbreaking:3"
+      # The amount to display in the gui.
+      DisplayAmount: 1
+      # The lower the number, the less likely to win it.
+      Weight: 7.5
+      # The new items section.
+      Items:
+        "1":
+          # The name of the item.
+          name: "<#E43A96>Ryder's Shield"
+          # The lore of the item.
+          lore:
+            - "<green>One shield to rule them all!"
+          # The material of the item.
+          material: "shield"
+
+          # The amount of the item to give.
+          amount: 1
+          # Other settings.
+          settings:
+            # A list of patterns: https://jd.papermc.io/paper/1.21.5/org/bukkit/block/banner/PatternType.html
+            # The patterns/colors do not need to be uppercased. They must be ordered from top->bottom
+            patterns:
+              base: white
+              gradient_up: red
+              straight_cross: light_blue
+              flower: green
+            # The enchantments to apply to the item.
+            enchantments:
+              unbreaking: 3
