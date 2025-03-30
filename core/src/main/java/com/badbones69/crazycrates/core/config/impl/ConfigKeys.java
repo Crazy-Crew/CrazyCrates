@@ -118,16 +118,16 @@ public class ConfigKeys implements SettingsHolder {
     public static final Property<Boolean> update_examples_folder = newProperty("root.update-examples-folder", true);
 
     @Comment("The prefix used in commands")
-    public static final Property<String> command_prefix = newProperty("root.command_prefix", "<dark_gray>[<blue>CrazyCrates<dark_gray>]: ");
+    public static final Property<String> command_prefix = newProperty("root.command_prefix", "<dark_gray>[<gradient:blue:dark_red>CrazyCrates</gradient><dark_gray>]: ");
 
     @Comment("If /crates should open the main menu. Warning: This will remove the menu button from crate previews.")
     public static final Property<Boolean> enable_crate_menu = newProperty("gui.toggle", true);
 
     @Comment("The name of the gui.")
-    public static final Property<String> inventory_name = newProperty("gui.inventory.name", "<bold><blue>Crazy <dark_red>Crates</bold>");
+    public static final Property<String> inventory_name = newProperty("gui.inventory.name", "<bold><gradient:blue:dark_red>Crazy Crates</gradient></bold>");
 
     @Comment("The amount of rows for a gui.")
-    public static final Property<Integer> inventory_rows = newProperty("gui.inventory.rows", 5);
+    public static final Property<Integer> inventory_rows = newProperty("gui.inventory.rows", 3);
 
     @Comment({
             "This will switch how previews/opening the physical crates are handled.",
@@ -314,54 +314,8 @@ public class ConfigKeys implements SettingsHolder {
     public static final Property<List<String>> filler_lore = newListProperty("gui.inventory.buttons.filler.lore", List.of());
 
     @Comment("Should the customizer should be enabled?")
-    public static final Property<Boolean> gui_customizer_toggle = newProperty("gui.inventory.buttons.customizer.toggle", true);
+    public static final Property<Boolean> gui_customizer_toggle = newProperty("gui.inventory.buttons.customizer.toggle", false);
 
     @Comment("The items to set to the gui.")
-    public static final Property<List<String>> gui_customizer = newListProperty("gui.inventory.buttons.customizer.items", List.of(
-            "slot:0, item:red_stained_glass_pane, name: ",
-            "slot:1, item:red_stained_glass_pane, name: ",
-            "slot:2, item:red_stained_glass_pane, name: ",
-            "slot:3, item:red_stained_glass_pane, name: ",
-            "slot:4, item:red_stained_glass_pane, name: ",
-            "slot:5, item:red_stained_glass_pane, name: ",
-            "slot:6, item:red_stained_glass_pane, name: ",
-            "slot:7, item:red_stained_glass_pane, name: ",
-            "slot:8, item:red_stained_glass_pane, name: ",
-            "slot:36, item:red_stained_glass_pane, name: ",
-            "slot:37, item:red_stained_glass_pane, name: ",
-            "slot:38, item:red_stained_glass_pane, name: ",
-            "slot:39, item:red_stained_glass_pane, name: ",
-            "slot:40, item:red_stained_glass_pane, name: ",
-            "slot:41, item:red_stained_glass_pane, name: ",
-            "slot:42, item:red_stained_glass_pane, name: ",
-            "slot:43, item:red_stained_glass_pane, name: ",
-            "slot:44, item:red_stained_glass_pane, name: ",
-
-            "slot:9, item:blue_stained_glass_pane, name: ",
-            "slot:18, item:blue_stained_glass_pane, name: ",
-            "slot:27, item:blue_stained_glass_pane, name: ",
-            "slot:17, item:blue_stained_glass_pane, name: ",
-            "slot:26, item:blue_stained_glass_pane, name: ",
-            "slot:35, item:blue_stained_glass_pane, name: ",
-
-            "slot:10, item:cyan_stained_glass_pane, name: ",
-            "slot:12, item:cyan_stained_glass_pane, name: ",
-            "slot:14, item:cyan_stained_glass_pane, name: ",
-            "slot:24, item:cyan_stained_glass_pane, name: ",
-            "slot:16, item:cyan_stained_glass_pane, name: ",
-            "slot:19, item:cyan_stained_glass_pane, name: ",
-            "slot:20, item:cyan_stained_glass_pane, name: ",
-            "slot:21, item:cyan_stained_glass_pane, name: ",
-            "slot:22, item:cyan_stained_glass_pane, name: ",
-            "slot:23, item:cyan_stained_glass_pane, name: ",
-            "slot:24, item:cyan_stained_glass_pane, name: ",
-            "slot:25, item:cyan_stained_glass_pane, name: ",
-
-            "slot:28, item:cyan_stained_glass_pane, name: ",
-            "slot:30, item:cyan_stained_glass_pane, name: ",
-            "slot:31, item:cyan_stained_glass_pane, name: ",
-            "slot:32, item:cyan_stained_glass_pane, name: ",
-            "slot:33, item:cyan_stained_glass_pane, name: ",
-            "slot:34, item:cyan_stained_glass_pane, name: "
-    ));
+    public static final Property<List<String>> gui_customizer = newListProperty("gui.inventory.buttons.customizer.items", List.of());
 }

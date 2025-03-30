@@ -46,7 +46,7 @@ root:
   # This will wipe the example folder on /crazycrates reload or plugin startup. so you always have fresh examples to look at.
   update-examples-folder: true
   # The prefix used in commands
-  command_prefix: "<dark_gray>[<blue>CrazyCrates<dark_gray>]: "
+  command_prefix: "<dark_gray>[<gradient:blue:dark_red>CrazyCrates</gradient><dark_gray>]: "
 # Settings related to guis.
 gui:
   # If /crates should open the main menu. Warning: This will remove the menu button from crate previews.
@@ -54,9 +54,9 @@ gui:
   # Inventory settings like size.
   inventory:
     # The name of the gui.
-    name: "<bold><blue>Crazy <dark_red>Crates</bold>"
+    name: "<bold><gradient:blue:dark_red>Crazy Crates</gradient></bold>"
     # The amount of rows for a gui.
-    rows: 5
+    rows: 3
     # The buttons in the gui.
     buttons:
       # The main menu button.

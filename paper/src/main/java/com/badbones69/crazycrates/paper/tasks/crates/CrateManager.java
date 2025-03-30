@@ -368,7 +368,7 @@ public class CrateManager {
             this.holograms.purge(false);
         }
 
-        if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("Loading all crate information...");
+        if (MiscUtils.isLogging()) this.logger.info("Loading all crate information...");
 
         for (final String crateName : getCrateNames(true)) {
             try {
@@ -1465,7 +1465,9 @@ public class CrateManager {
 
         if (!data.contains("Players")) return;
 
-        if (MiscUtils.isLogging()) this.plugin.getComponentLogger().info("Cleaning up the data.yml file.");
+        final boolean isLogging = MiscUtils.isLogging();
+
+        if (isLogging) this.logger.info("Cleaning up the data.yml file.");
 
         final List<String> removePlayers = new ArrayList<>();
 
@@ -1497,14 +1499,14 @@ public class CrateManager {
         }
 
         if (!removePlayers.isEmpty()) {
-            if (MiscUtils.isLogging()) this.logger.info("{} player's data has been marked to be removed.", removePlayers.size());
+            if (isLogging) this.logger.info("{} player's data has been marked to be removed.", removePlayers.size());
 
             removePlayers.forEach(uuid -> data.set("Players." + uuid, null));
 
-            if (MiscUtils.isLogging()) this.logger.info("All empty player data has been removed.");
+            if (isLogging) this.logger.info("All empty player data has been removed.");
         }
 
-        if (MiscUtils.isLogging()) this.logger.info("The data.yml file has been cleaned.");
+        if (isLogging) this.logger.info("The data.yml file has been cleaned.");
 
         FileKeys.data.save();
     }
