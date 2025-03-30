@@ -1,0 +1,79 @@
+# This is an example of the new crate format.
+Crate:
+  # The crate type as per usual.
+  CrateType: CSGO
+  # If the crate shows in the /crates.
+  # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
+  InGUI: true
+  # The slot the item is in the gui.
+  Slot: 11
+  # The item the crate is in the gui.
+  Item: "diamond"
+  # The name of the item in the gui.
+  Name: "<bold><gradient:#E43A96:#FF91EA>Exotic Chest</bold>"
+  # The lore of the item in the gui.
+  Lore:
+    - "<gradient:#E43A96:#FF91EA>I am one that exudes the treasure of those forgotten."
+    - "<gradient:#E43A96:#FF91EA>Rest your head here weary traveler... bask in my riches,"
+    - "<gradient:#E43A96:#FF91EA>only then will you find the salvation you are looking for."
+  # The preview menu
+  Preview:
+    # The name of the inventory for the preview menu.
+    Name: "<gradient:#E43A96:#FF91EA>Exotic Chest Preview"
+    # Turn on and off the preview for this crate.
+    Toggle: true
+  # The settings for the physical key.
+  PhysicalKey:
+    # Name of the Key.
+    Name: "<bold><gradient:#E43A96:#FF91EA>Exotic Key</bold>"
+    # The item the key is.
+    Item: "magenta_dye"
+  # A list of prizes.
+  Prizes:
+    "1":
+      # The name of the item to display in the gui.
+      DisplayName: "<gradient:light_purple:dark_purple>Witch's Potion"
+      # The item to display in the gui.
+      DisplayItem: "potion"
+      # The configuration section for potions, minecraft: is not needed in front of the potion.
+      # A list of potion effects https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/MobEffectKeys.html
+      DisplayPotions:
+        poison: # potion name, must be an exact name.
+          # The length of the potion in seconds
+          # https://minecraft.wiki/w/Calculators/Tick
+          duration: 20
+          # The strength of the potion
+          level: 5
+      # The amount to display in the gui.
+      DisplayAmount: 1
+      # The lower the number, the less likely to win it.
+      Weight: 1.0
+      # The new items section
+      Items:
+        "1":
+          # The name of the item.
+          name: "<gradient:light_purple:dark_purple>Witch's Potion"
+          # The material of the item.
+          material: "potion"
+
+          # The amount of the item to give.
+          amount: 1
+          # Other settings.
+          settings:
+            # The configuration section for potions, minecraft: is not needed in front of the potion.
+            # A list of potion effects https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/MobEffectKeys.html
+            potions:
+              poison: # potion name, must be an exact name.
+                # The length of the potion in seconds
+                # https://minecraft.wiki/w/Calculators/Tick
+                duration: 20
+                # The strength of the potion
+                level: 5
+                # Cosmetic settings of the potion
+                style:
+                  # Should the icon be enabled?
+                  icon: true
+                  # Should it be ambient?
+                  ambient: true
+                  # Should potion particles show?
+                  particles: true
