@@ -25,6 +25,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
@@ -482,6 +483,27 @@ public class Prize {
                     String[] value = ench.split(":");
 
                     builder.addEnchantment(value[0], Integer.parseInt(value[1]), true);
+                }
+            }
+
+            if (this.section.contains("DisplayPotions")) {
+                final ConfigurationSection potions = this.section.getConfigurationSection("DisplayPotions");
+
+                if (potions != null) {
+                    for (final String potion : potions.getKeys(false)) {
+                        final PotionEffectType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getPotionEffect(potion);
+
+                        if (type != null) {
+                            final ConfigurationSection data = potions.getConfigurationSection(potion);
+
+                            if (data != null) {
+                                final int duration = data.getInt("duration", 10) * 20;
+                                final int level = data.getInt("level", 1);
+
+                                builder.addPotionEffect(type, duration, level);
+                            }
+                        }
+                    }
                 }
             }
 
