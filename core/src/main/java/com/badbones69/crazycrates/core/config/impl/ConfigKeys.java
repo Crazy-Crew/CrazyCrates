@@ -118,13 +118,13 @@ public class ConfigKeys implements SettingsHolder {
     public static final Property<Boolean> update_examples_folder = newProperty("root.update-examples-folder", true);
 
     @Comment("The prefix used in commands")
-    public static final Property<String> command_prefix = newProperty("root.command_prefix", "<dark_gray>[<gradient:blue:dark_red>CrazyCrates</gradient><dark_gray>]: ");
+    public static final Property<String> command_prefix = newProperty("root.command_prefix", " <gradient:#e91e63:blue>CrazyCrates</gradient> | ");
 
     @Comment("If /crates should open the main menu. Warning: This will remove the menu button from crate previews.")
     public static final Property<Boolean> enable_crate_menu = newProperty("gui.toggle", true);
 
     @Comment("The name of the gui.")
-    public static final Property<String> inventory_name = newProperty("gui.inventory.name", "<bold><gradient:blue:dark_red>Crazy Crates</gradient></bold>");
+    public static final Property<String> inventory_name = newProperty("gui.inventory.name", "<bold><gradient:#e91e63:blue>Crazy Crates</gradient></bold>");
 
     @Comment("The amount of rows for a gui.")
     public static final Property<Integer> inventory_rows = newProperty("gui.inventory.rows", 3);
