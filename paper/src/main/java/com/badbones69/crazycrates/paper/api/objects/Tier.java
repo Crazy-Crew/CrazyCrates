@@ -1,8 +1,11 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
+import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
+import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.ryderbelserion.fusion.api.utils.StringUtils;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +14,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.List;
 
 public class Tier {
+
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final ComponentLogger logger = this.plugin.getComponentLogger();
 
     private final LegacyItemBuilder item;
     private final String name;
@@ -62,6 +69,10 @@ public class Tier {
      * @return the total chance divided
      */
     public final double getWeight() {
+        if (this.weight == -1 && MiscUtils.isLogging()) {
+            this.logger.warn("Cannot fetch the weight as the option is not present for this tier: {}", this.name);
+        }
+
         return this.weight;
     }
 

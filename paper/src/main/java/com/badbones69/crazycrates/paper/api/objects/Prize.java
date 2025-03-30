@@ -18,6 +18,7 @@ import com.ryderbelserion.fusion.paper.api.builder.items.modern.ItemBuilder;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Color;
 import org.bukkit.Server;
@@ -38,6 +39,8 @@ import java.util.Map;
 public class Prize {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final ComponentLogger logger = this.plugin.getComponentLogger();
 
     private final SettingsManager config = ConfigManager.getConfig();
 
@@ -296,6 +299,10 @@ public class Prize {
      * @return the weight
      */
     public final double getWeight() {
+        if (this.weight == -1 && MiscUtils.isLogging()) {
+            this.logger.warn("Cannot fetch the weight as the option is not present for this prize: {} in the crate: {}", this.prizeName, this.crateName);
+        }
+
         return this.weight;
     }
     
