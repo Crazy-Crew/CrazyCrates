@@ -25,3 +25,4 @@
     Glowing: true 
 ```
 - Custom-Model-Data, or custom-model-data can accept numbers or strings due to recent changes in 1.21.4.
+- Fixed the /crates additem command

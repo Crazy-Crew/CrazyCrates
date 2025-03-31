@@ -763,11 +763,13 @@ public class Crate {
 
             section.set(path, list);
         } else {
-            final ConfigurationSection itemsSection = section.getConfigurationSection(path);
+            ConfigurationSection items = section.getConfigurationSection(path);
 
-            if (itemsSection != null) {
-                itemsSection.set(MiscUtils.randomUUID() + ".data", toBase64);
+            if (items == null) {
+                items = section.createSection(path);
             }
+
+            items.set(MiscUtils.randomUUID() + ".data", toBase64);
         }
 
         section.set(getPath(prizeName, "DisplayItem"), itemStack.getType().getKey().getKey());
