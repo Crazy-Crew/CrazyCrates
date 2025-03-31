@@ -740,8 +740,6 @@ public class Crate {
 
         final String path = getPath(prizeName, "Items");
 
-        final boolean isList = section.isList(path);
-
         final String toBase64 = ItemUtils.toBase64(itemStack);
 
         if (!section.contains(path)) {
@@ -755,6 +753,8 @@ public class Crate {
         }
 
         section.set(getPath(prizeName, "DisplayData"), toBase64);
+
+        final boolean isList = section.isList(path);
 
         if (isList) {
             final List<String> list = section.getStringList(path);
