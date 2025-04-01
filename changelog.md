@@ -1,1 +1,1 @@
-- Fixed an issue with example crate files generating on startup.
+- Actually fixed another issue with files being overwritten
