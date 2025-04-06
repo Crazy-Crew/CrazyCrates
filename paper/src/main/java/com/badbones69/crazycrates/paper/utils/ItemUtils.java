@@ -249,7 +249,13 @@ public class ItemUtils {
                 itemBuilder.withDisplayLore(item.getStringList("lore"));
             }
 
-            itemBuilder.setAmount(item.getInt("amount", 1));
+            if (item.isString("amount")) {
+                final Optional<Number> integer = StringUtils.tryParseInt(item.getString("amount"));
+
+                integer.ifPresent(number -> itemBuilder.setAmount(number.intValue()));
+            } else {
+                itemBuilder.setAmount(item.getInt("amount", 1));
+            }
 
             final ConfigurationSection enchantments = item.getConfigurationSection("enchantments");
 
