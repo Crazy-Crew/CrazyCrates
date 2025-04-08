@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.Comma
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.CommandClaim;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.CommandMigrate;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.editor.CommandEditor;
+import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.editor.CommandSet;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.paper.commands.relations.ArgumentRelations;
 import com.badbones69.crazycrates.paper.commands.crates.types.player.CommandHelp;
@@ -129,6 +130,7 @@ public class CommandManager {
                 new CommandDebug(),
                 new CommandList(),
                 new CommandEditor(),
+                new CommandSet(),
 
                 new CommandGive(),
                 new CommandOpen(),
