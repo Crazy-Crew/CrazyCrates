@@ -391,7 +391,7 @@ public class ItemUtils {
                     }
                     case "damage" -> {
                         final Optional<Number> amount = StringUtils.tryParseInt(value);
-                        itemBuilder.setDamage(amount.map(Number::intValue).orElse(1));
+                        itemBuilder.setDamage(amount.map(Number::intValue).orElse(0));
                     }
                     case "lore" -> itemBuilder.setDisplayLore(List.of(value.split(",")));
                     case "player" -> itemBuilder.setPlayer(value);
