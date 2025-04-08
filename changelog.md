@@ -1,1 +1,1 @@
-- Actually fixed another issue with files being overwritten
+- Fixed an issue with the damage data component being applied to the ItemStack
