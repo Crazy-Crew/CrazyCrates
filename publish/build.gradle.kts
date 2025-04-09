@@ -11,6 +11,8 @@ val isBeta = false
 val pluginName = rootProject.name
 val mcVersion = libs.versions.minecraft.get()
 
+project.version = rootProject.properties["version"].toString()
+
 tasks {
     modrinth {
         token.set(System.getenv("MODRINTH_TOKEN"))
@@ -19,12 +21,12 @@ tasks {
 
         versionType.set(if (isBeta) "beta" else "release")
 
-        versionName.set("$pluginName ${rootProject.version}")
-        versionNumber.set(rootProject.version as String)
+        versionName.set("$pluginName ${project.version}")
+        versionNumber.set(project.version as String)
 
         changelog.set(content)
 
-        uploadFile.set(rootProject.projectDir.resolve("jars/$pluginName-${rootProject.version}.jar"))
+        uploadFile.set(rootProject.projectDir.resolve("jars/$pluginName-${project.version}.jar"))
 
         gameVersions.set(listOf(mcVersion))
 
@@ -46,7 +48,7 @@ tasks {
 
             id.set(pluginName)
 
-            version.set(rootProject.version as String)
+            version.set(project.version as String)
 
             channel.set(if (isBeta) "Beta" else "Release")
 
@@ -54,7 +56,7 @@ tasks {
 
             platforms {
                 paper {
-                    jar.set(rootProject.projectDir.resolve("jars/$pluginName-${rootProject.version}.jar"))
+                    jar.set(rootProject.projectDir.resolve("jars/$pluginName-${project.version}.jar"))
 
                     platformVersions.set(listOf(mcVersion))
 
