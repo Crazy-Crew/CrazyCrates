@@ -1,1 +1,3 @@
 - Fixed an issue with the damage data component being applied to the ItemStack
+- Fixed an issue with migrating to the new Items section where the integer is a string
+- Added back /cc set <crate> because why not?
