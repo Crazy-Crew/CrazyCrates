@@ -671,8 +671,6 @@ public class Crate {
 
         ConfigurationSection section = getPrizeSection();
 
-        if (section == null) return;
-
         setItem(itemStack, prizeName, section, weight, "");
     }
 
@@ -689,20 +687,26 @@ public class Crate {
 
         final ConfigurationSection section = getPrizeSection();
 
-        if (section == null) return;
-
         setItem(itemStack, prizeName, section, weight, tier);
     }
 
     /**
      * @return the configuration section.
      */
-    public @Nullable final ConfigurationSection getPrizeSection() {
-        final ConfigurationSection section = this.file.getConfigurationSection("Crate");
+    public @NotNull final ConfigurationSection getPrizeSection() {
+        ConfigurationSection section = this.file.getConfigurationSection("Crate");
 
-        if (section == null) return null;
+        if (section == null) {
+            section = this.file.createSection("Crate");
+        }
 
-        return section.getConfigurationSection("Prizes");
+        ConfigurationSection prizeSection = section.getConfigurationSection("Prizes");
+
+        if (prizeSection == null) {
+            prizeSection = section.createSection("Prizes");
+        }
+
+        return prizeSection;
     }
 
     /**
