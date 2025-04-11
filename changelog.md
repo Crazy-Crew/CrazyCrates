@@ -1,3 +1,2 @@
-- Fixed an issue with the damage data component being applied to the ItemStack
-- Fixed an issue with migrating to the new Items section where the integer is a string
-- Added back /cc set <crate> because why not?
+- Fixed an issue with filtering tiered prizes by using the correct symbol!
+  - This prevented properly getting prizes, [#842](https://github.com/Crazy-Crew/CrazyCrates/pull/842)
