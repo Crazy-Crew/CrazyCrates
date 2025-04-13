@@ -165,7 +165,7 @@ public class PrizeManager {
 
             if (!builders.isEmpty()) {
                 for (final ItemBuilder builder : builders) {
-                    final ItemStack itemStack = builder.asItemStack(player, false);
+                    final ItemStack itemStack = builder.asItemStack(player);
 
                     if (!MiscUtils.isInventoryFull(player)) {
                         MiscUtils.addItem(player, itemStack);

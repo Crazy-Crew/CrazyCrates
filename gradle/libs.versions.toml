@@ -51,8 +51,8 @@ jalu = { module = "ch.jalu:configme", version.ref = "jalu" }
 
 [versions]
 # Paper API
-paper = "1.21.4-R0.1-SNAPSHOT"
-minecraft = "1.21.4"
+paper = "1.21.5-R0.1-SNAPSHOT"
+minecraft = "1.21.5"
 
 # Gradle Plugins
 shadow = "9.0.0-beta4"
@@ -80,7 +80,7 @@ itemsadder = "3.6.1"
 oraxen = "1.171.0"
 
 # Fusion API
-fusion = "0.29.16"
+fusion = "0.33.0"
 
 # Common API
 triumph-cmd = "2.0.0-ALPHA-10"

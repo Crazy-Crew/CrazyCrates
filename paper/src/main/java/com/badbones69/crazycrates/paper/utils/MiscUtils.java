@@ -41,6 +41,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -103,9 +104,9 @@ public class MiscUtils {
             final File crateLog = FileKeys.crate_log.getFile();
             final File keyLog = FileKeys.key_log.getFile();
 
-            FileUtils.zip(logsFolder, ".log", true);
-
             try {
+                FileUtils.compress(logsFolder.toPath(), Optional.empty(), Optional.empty(), true);
+
                 if (!crateLog.exists()) {
                     crateLog.createNewFile();
                 }

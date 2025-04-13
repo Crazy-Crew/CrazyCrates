@@ -63,7 +63,7 @@ public abstract class ICrateMigrator {
     public void sendMessage(List<String> files, final int success, final int failed) {
         Messages.successfully_migrated.sendMessage(this.sender, new HashMap<>() {{
             if (files.size() > 1) {
-                put("{files}", StringUtils.toString(files));
+                put("{files}", com.ryderbelserion.fusion.paper.utils.MiscUtils.toString(files));
             } else {
                 put("{files}", files.getFirst());
             }

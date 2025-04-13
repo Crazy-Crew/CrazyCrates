@@ -357,7 +357,7 @@ public class Prize {
         final String current_pulls = String.valueOf(PrizeManager.getCurrentPulls(this, crate));
         final String max_pulls = String.valueOf(getMaxPulls());
 
-        String message = StringUtils.toString(messages);
+        String message = com.ryderbelserion.fusion.paper.utils.MiscUtils.toString(messages);
 
         Map<String, String> placeholders = new HashMap<>() {{
             put("%player%", target.getName());

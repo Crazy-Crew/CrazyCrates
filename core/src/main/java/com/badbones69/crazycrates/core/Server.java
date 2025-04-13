@@ -10,6 +10,7 @@ import us.crazycrew.crazycrates.platform.IServer;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 
 public class Server implements IServer {
 
@@ -59,7 +60,7 @@ public class Server implements IServer {
 
     @Override
     public @NotNull final List<String> getCrateFiles(boolean keepExtension) {
-        return FileUtils.getNames(getCrateFolder(), ".yml", keepExtension);
+        return FileUtils.getNamesWithoutExtension(Optional.of("crates"), this.directory.toPath(), ".yml");
     }
 
     @Override

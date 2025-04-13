@@ -257,7 +257,7 @@ public enum Messages {
         String message;
 
         if (isList()) {
-            message = StringUtils.toString(getList());
+            message = com.ryderbelserion.fusion.paper.utils.MiscUtils.toString(getList());
         } else {
             message = getString();
         }

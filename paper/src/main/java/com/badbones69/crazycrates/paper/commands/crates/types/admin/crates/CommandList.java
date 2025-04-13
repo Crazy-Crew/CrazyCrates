@@ -50,7 +50,7 @@ public class CommandList extends BaseCommand {
         placeholders.put("{broken_crates}", String.valueOf(this.crateManager.getBrokeCrates().size()));
         placeholders.put("{active_locations}", String.valueOf(this.crateManager.getCrateLocations().size()));
 
-        placeholders.put("{locations}", this.crateManager.getCrateLocations().isEmpty() ? "N/A" : StringUtils.toString(crates));
+        placeholders.put("{locations}", this.crateManager.getCrateLocations().isEmpty() ? "N/A" : com.ryderbelserion.fusion.paper.utils.MiscUtils.toString(crates));
 
         // this has to use sendRichMessage as it is a list.
         Messages.crate_locations.sendRichMessage(sender, placeholders);

@@ -304,7 +304,7 @@ public class ItemUtils {
                 spawnerBuilder.withEntityType(com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(mobType)).build();
             }
 
-            itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""), false);
+            itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""));
 
             final ConfigurationSection potions = item.getConfigurationSection("settings.potions");
 
