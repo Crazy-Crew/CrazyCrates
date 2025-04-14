@@ -296,7 +296,12 @@ public class QuadCrateManager {
                 player.teleportAsync(lastLocation);
 
                 // Remove the structure blocks.
-                handler.removeStructure();
+                new FoliaScheduler(player.getLocation()) {
+                    @Override
+                    public void run() {
+                        handler.removeStructure();
+                    }
+                }.runNow();
 
                 // Restore the old blocks.
                 oldBlocks.keySet().forEach(location -> server.getRegionScheduler().run(plugin, location, schedulerTask -> oldBlocks.get(location).update(true, false)));
