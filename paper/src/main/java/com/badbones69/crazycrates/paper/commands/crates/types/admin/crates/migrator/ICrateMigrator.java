@@ -7,7 +7,7 @@ import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
 import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import org.bukkit.command.CommandSender;
@@ -63,7 +63,7 @@ public abstract class ICrateMigrator {
     public void sendMessage(List<String> files, final int success, final int failed) {
         Messages.successfully_migrated.sendMessage(this.sender, new HashMap<>() {{
             if (files.size() > 1) {
-                put("{files}", com.ryderbelserion.fusion.paper.utils.MiscUtils.toString(files));
+                put("{files}", StringUtils.toString(files));
             } else {
                 put("{files}", files.getFirst());
             }

@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
-import com.ryderbelserion.fusion.api.utils.FileUtils;
+import com.ryderbelserion.fusion.core.utils.FileUtils;
 import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -105,7 +105,7 @@ public class MiscUtils {
             final File keyLog = FileKeys.key_log.getFile();
 
             try {
-                FileUtils.compress(logsFolder.toPath(), Optional.empty(), Optional.empty(), true);
+                FileUtils.compress(logsFolder.toPath(), null, "", true);
 
                 if (!crateLog.exists()) {
                     crateLog.createNewFile();

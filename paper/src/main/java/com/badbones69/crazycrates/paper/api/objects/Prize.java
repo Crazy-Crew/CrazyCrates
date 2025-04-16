@@ -12,7 +12,7 @@ import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
-import com.ryderbelserion.fusion.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.ItemBuilder;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
@@ -357,7 +357,7 @@ public class Prize {
         final String current_pulls = String.valueOf(PrizeManager.getCurrentPulls(this, crate));
         final String max_pulls = String.valueOf(getMaxPulls());
 
-        String message = com.ryderbelserion.fusion.paper.utils.MiscUtils.toString(messages);
+        String message = StringUtils.toString(messages);
 
         Map<String, String> placeholders = new HashMap<>() {{
             put("%player%", target.getName());

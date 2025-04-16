@@ -1,8 +1,8 @@
 package com.badbones69.crazycrates.paper.api.enums.other.keys;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.ryderbelserion.fusion.api.enums.FileType;
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.managers.files.FileType;
 import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
 import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -18,7 +18,6 @@ public enum FileKeys {
 
     locations(FileType.YAML, "locations.yml"),
     data(FileType.YAML, "data.yml");
-
 
     private final FileType fileType;
     private final String fileName;
