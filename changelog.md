@@ -1,1 +1,1 @@
-- Fixed an issue on Folia [#844](https://github.com/Crazy-Crew/CrazyCrates/issues/844)
+- Fixed an issue with the FireCracker crate type
