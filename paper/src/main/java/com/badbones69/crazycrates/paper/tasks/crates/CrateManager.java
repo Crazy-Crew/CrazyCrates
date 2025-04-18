@@ -779,6 +779,7 @@ public class CrateManager {
 
         if (this.currentTasks.containsKey(uuid)) {
             this.currentTasks.get(uuid).cancel();
+            this.currentTasks.remove(uuid);
         }
     }
 
