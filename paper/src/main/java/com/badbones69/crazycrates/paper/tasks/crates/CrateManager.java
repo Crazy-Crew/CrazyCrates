@@ -105,25 +105,25 @@ public class CrateManager {
 
     private final Map<UUID, Crate> crateEditors = new HashMap<>();
 
-    public void addEditorCrate(final Player player, final Crate crate) {
+    public void addEditorCrate(@NotNull final Player player, @NotNull final Crate crate) {
         this.crateEditors.put(player.getUniqueId(), crate);
     }
 
-    public void removeEditorCrate(final Player player) {
+    public void removeEditorCrate(@NotNull final Player player) {
         this.crateEditors.remove(player.getUniqueId());
     }
 
-    public boolean hasEditorCrate(final Player player) {
+    public boolean hasEditorCrate(@NotNull final Player player) {
         return this.crateEditors.containsKey(player.getUniqueId());
     }
 
-    public @Nullable Crate getEditorCrate(final Player player) {
+    public @Nullable Crate getEditorCrate(@NotNull final Player player) {
         return this.crateEditors.getOrDefault(player.getUniqueId(), null);
     }
 
     private final Map<UUID, Map<Integer, Tier>> tiers = new WeakHashMap<>();
 
-    public void addTier(final Player player, final int slot, final Tier tier) {
+    public void addTier(@NotNull final Player player, final int slot, final Tier tier) {
         final UUID uuid = player.getUniqueId();
 
         if (this.tiers.containsKey(uuid)) {
@@ -137,11 +137,11 @@ public class CrateManager {
         }});
     }
 
-    public void removeTier(final Player player) {
+    public void removeTier(@NotNull final Player player) {
         this.tiers.remove(player.getUniqueId());
     }
 
-    public final Tier getTier(final Player player, final int slot) {
+    public final Tier getTier(@NotNull final Player player, final int slot) {
         return this.tiers.get(player.getUniqueId()).get(slot);
     }
 
@@ -520,10 +520,10 @@ public class CrateManager {
                 try {
                     final String worldName = locations.getString("Locations." + locationName + ".World");
 
-                    // If name is null, we return.
+                    // If the name is null, we return.
                     if (worldName == null) return;
 
-                    // If name is empty or blank, we return.
+                    // If the name is empty or blank, we return.
                     if (worldName.isBlank()) return;
 
                     final World world = this.server.getWorld(worldName);
@@ -605,7 +605,7 @@ public class CrateManager {
      * @param player the player that is having the crate opened for them.
      * @param crate the crate that is being used.
      * @param location the location that may be needed for some crate types.
-     * @param checkHand if it just checks the players hand or if it checks their inventory.
+     * @param checkHand if it just checks the player hand or if it checks their inventory.
      * @param eventType {@link EventType}
      */
     public void openCrate(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, @NotNull final Location location, final boolean virtualCrate, final boolean checkHand, final EventType eventType) {
@@ -618,8 +618,8 @@ public class CrateManager {
      * @param player the player that is having the crate opened for them
      * @param crate the crate that is being used
      * @param location the location that may be needed for some crate types
-     * @param checkHand if it just checks the players hand or if it checks their inventory
-     * @param isSilent true or false, this decides on sending the broadcast messages etc
+     * @param checkHand if it just checks the player hand or if it checks their inventory
+     * @param isSilent true or false, this decides on sending the broadcast messages etc.
      */
     public void openCrate(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, @NotNull final Location location, final boolean virtualCrate, final boolean checkHand, final boolean isSilent, final EventType eventType) {
         final SettingsManager config = ConfigManager.getConfig();
@@ -778,6 +778,7 @@ public class CrateManager {
 
         if (this.currentTasks.containsKey(uuid)) {
             this.currentTasks.get(uuid).cancel();
+            this.currentTasks.remove(uuid);
         }
     }
 
@@ -868,7 +869,7 @@ public class CrateManager {
      * @param task task of the crate.
      * @param delay delay before running the task.
      */
-    public void addCrateTask(Player player, TimerTask task, Long delay) {
+    public void addCrateTask(@NotNull final Player player, @NotNull final TimerTask task, final long delay) {
         this.timerTasks.put(player.getUniqueId(), task);
 
         this.plugin.getTimer().schedule(task, delay);
@@ -1040,7 +1041,7 @@ public class CrateManager {
 
     private final SettingsManager editor = ConfigManager.getEditor();
 
-    public void addCrateByLocation(final Player player, final Location location) {
+    public void addCrateByLocation(@NotNull final Player player, @NotNull final Location location) {
         if (!player.hasPermission("crazycrates.editor")) {
             removeEditorCrate(player);
 
@@ -1104,7 +1105,7 @@ public class CrateManager {
         spawnItem(location, ItemType.EMERALD.createItemStack());
     }
 
-    private void spawnItem(final Location location, final ItemStack itemStack) {
+    private void spawnItem(@NotNull final Location location, @NotNull final ItemStack itemStack) {
         final World world = location.getWorld();
 
         final ItemDisplay itemDisplay = world.spawn(location.toCenterLocation().add(0.0, 1.0, 0.0), ItemDisplay.class, entity -> entity.setItemStack(itemStack));
@@ -1600,7 +1601,7 @@ public class CrateManager {
         }
     }
 
-    public void removeCrateByLocation(final Player player, final Location location, final boolean isAlreadyChecked) {
+    public void removeCrateByLocation(@NotNull final Player player, @NotNull final Location location, final boolean isAlreadyChecked) {
         if (!player.hasPermission("crazycrates.editor")) {
             removeEditorCrate(player);
 
@@ -1630,7 +1631,7 @@ public class CrateManager {
      * @param equipmentSlot the equipment slot
      * @return true or false
      */
-    public boolean isKey(final Player player, final EquipmentSlot equipmentSlot) {
+    public boolean isKey(@NotNull final Player player, @NotNull final EquipmentSlot equipmentSlot) {
         return isKey(player.getInventory().getItem(equipmentSlot));
     }
 
@@ -1648,7 +1649,7 @@ public class CrateManager {
      * @param item {@link ItemStack}
      * @return {@link Tier}
      */
-    public final Tier getTier(final Crate crate, final ItemStack item) {
+    public final Tier getTier(@NotNull final Crate crate, @NotNull final ItemStack item) {
         final PersistentDataContainerView container = item.getPersistentDataContainer();
 
         final NamespacedKey key = ItemKeys.crate_tier.getNamespacedKey();
@@ -1660,7 +1661,7 @@ public class CrateManager {
 
     private final Map<UUID, ArrayList<Integer>> slots = new HashMap<>();
 
-    public void addSlot(final Player player, final int rawSlot) {
+    public void addSlot(@NotNull final Player player, final int rawSlot) {
         final UUID uuid = player.getUniqueId();
 
         if (this.slots.containsKey(uuid)) {
@@ -1678,15 +1679,15 @@ public class CrateManager {
         }});
     }
 
-    public final ArrayList<Integer> getSlots(final Player player) {
+    public final ArrayList<Integer> getSlots(@NotNull final Player player) {
         return this.slots.get(player.getUniqueId());
     }
 
-    public final boolean containsSlot(final Player player) {
+    public final boolean containsSlot(@NotNull final Player player) {
         return this.slots.containsKey(player.getUniqueId());
     }
 
-    public void removeSlot(final Player player) {
+    public void removeSlot(@NotNull final Player player) {
         this.slots.remove(player.getUniqueId());
     }
 }

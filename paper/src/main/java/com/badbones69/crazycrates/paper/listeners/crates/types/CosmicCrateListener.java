@@ -28,6 +28,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.CrazyCrates;
@@ -396,7 +397,7 @@ public class CosmicCrateListener implements Listener {
         }
     }
 
-    private void startRollingAnimation(final Player player, final InventoryView view, final CratePrizeMenu cosmic) {
+    private void startRollingAnimation(@NotNull final Player player, @NotNull final InventoryView view, @NotNull final CratePrizeMenu cosmic) {
         final Crate crate = cosmic.getCrate();
 
         for (int slot = 0; slot < cosmic.getSize(); slot++) {
@@ -410,7 +411,7 @@ public class CosmicCrateListener implements Listener {
         player.updateInventory();
     }
 
-    private void showRewards(final Player player, final InventoryView view, final CratePrizeMenu cosmic, final CosmicCrateManager cosmicCrateManager) {
+    private void showRewards(@NotNull final Player player, @NotNull final InventoryView view, @NotNull final CratePrizeMenu cosmic, @NotNull final CosmicCrateManager cosmicCrateManager) {
         final Crate crate = cosmic.getCrate();
 
         final String rewardsName = crate.getCrateName() + " - Prizes";

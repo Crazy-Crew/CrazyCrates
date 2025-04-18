@@ -8,6 +8,7 @@ import com.ryderbelserion.fusion.core.utils.FileUtils;
 import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.permissions.Permission;
@@ -49,6 +50,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MiscUtils {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    
+    private static final ComponentLogger logger = plugin.getComponentLogger();
 
     public static void sendCommand(@Nullable final CommandSender sender, @NotNull final String command, @NotNull final Map<String, String> placeholders) {
         if (command.isEmpty()) return;
@@ -115,12 +118,12 @@ public class MiscUtils {
                     keyLog.createNewFile();
                 }
             } catch (IOException exception) {
-                plugin.getComponentLogger().warn("Failed to create files.");
+                if (MiscUtils.isLogging()) logger.warn("Failed to create log files.");
             }
         }
     }
 
-    public static double calculateWeight(int chance, int maxRange) {
+    public static double calculateWeight(final int chance, final int maxRange) {
         return new BigDecimal((double) chance / maxRange * 100D).setScale(1, RoundingMode.HALF_UP).doubleValue();
     }
 
@@ -148,7 +151,7 @@ public class MiscUtils {
         firework.getScheduler().runDelayed(plugin, scheduledTask -> firework.detonate(), null, 3L);
     }
 
-    public static @NotNull String location(@NotNull final Location location, boolean getName) {
+    public static @NotNull String location(@NotNull final Location location, final boolean getName) {
         String name = getName ? location.getWorld().getName() : String.valueOf(location.getWorld().getUID());
 
         return name + "," + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ();
@@ -258,7 +261,7 @@ public class MiscUtils {
 
             return leftover;
         } else {
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Items cannot be null.");
+            if (MiscUtils.isLogging()) logger.warn("Items cannot be null.");
         }
 
         return null;
@@ -289,7 +292,7 @@ public class MiscUtils {
                     "An error has occurred while trying to take a key from a player.",
                     "Player: " + player.getName(),
                     "Key: " + crateName
-            ).forEach(plugin.getComponentLogger()::warn);
+            ).forEach(logger::warn);
 
             List.of(
                     "=== === === === === === Crates === === === === === ===",
@@ -303,7 +306,7 @@ public class MiscUtils {
         }
     }
 
-    public static long pickNumber(long min, long max) {
+    public static long pickNumber(final long min, long max) {
         max++;
 
         try {
@@ -346,7 +349,7 @@ public class MiscUtils {
         return new LegacyItemBuilder(panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
     }
 
-    public static void addItem(final Player player, final ItemStack... items) {
+    public static void addItem(@NotNull final Player player, @NotNull final ItemStack... items) {
         final Inventory inventory = player.getInventory();
 
         inventory.setMaxStackSize(64);
@@ -375,18 +378,18 @@ public class MiscUtils {
         return ConfigManager.getConfig().getProperty(ConfigKeys.use_different_random);
     }
 
-    public static void registerPermission(final String permission, final String description, final boolean isDefault) {
+    public static void registerPermission(@NotNull final String permission, @NotNull final String description, final boolean isDefault) {
         if (permission.isEmpty()) return;
 
         PluginManager pluginManager = plugin.getServer().getPluginManager();
 
         if (pluginManager.getPermission(permission) != null) {
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission {} is already on the server. Pick a different name", permission);
+            if (MiscUtils.isLogging()) logger.warn("Permission {} is already on the server. Pick a different name", permission);
 
             return;
         }
 
-        if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission {} is registered", permission);
+        if (MiscUtils.isLogging()) logger.warn("Permission {} is registered", permission);
 
         pluginManager.addPermission(new Permission(permission, description, isDefault ? PermissionDefault.TRUE : PermissionDefault.OP));
     }
@@ -397,12 +400,12 @@ public class MiscUtils {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
 
         if (pluginManager.getPermission(permission) == null) {
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission {} is not registered", permission);
+            if (MiscUtils.isLogging()) logger.warn("Permission {} is not registered", permission);
 
             return;
         }
 
-        if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission {} is unregistered", permission);
+        if (MiscUtils.isLogging()) logger.warn("Permission {} is unregistered", permission);
 
         pluginManager.removePermission(permission);
     }

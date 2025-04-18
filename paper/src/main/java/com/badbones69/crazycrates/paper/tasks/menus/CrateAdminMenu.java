@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemType;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +22,7 @@ import java.util.UUID;
 
 public class CrateAdminMenu extends DynamicInventoryBuilder {
 
-    public CrateAdminMenu(final Player player) {
+    public CrateAdminMenu(@NotNull final Player player) {
         super(player, "<bold><red>Admin Keys</bold>", 6);
     }
 

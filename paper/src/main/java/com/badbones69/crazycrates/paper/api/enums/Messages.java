@@ -162,7 +162,7 @@ public enum Messages {
         return parse(sender, placeholders).replaceAll("\\{prefix}", this.config.getProperty(ConfigKeys.command_prefix));
     }
 
-    public void sendMessage(final CommandSender sender, final String placeholder, final String replacement) {
+    public void sendMessage(@NotNull final CommandSender sender, @NotNull final String placeholder, @NotNull final String replacement) {
         final State state = this.config.getProperty(ConfigKeys.message_state);
 
         switch (state) {
@@ -171,7 +171,7 @@ public enum Messages {
         }
     }
 
-    public void sendMessage(final CommandSender sender, final Map<String, String> placeholders) {
+    public void sendMessage(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
         final State state = this.config.getProperty(ConfigKeys.message_state);
 
         switch (state) {
@@ -180,7 +180,7 @@ public enum Messages {
         }
     }
 
-    public void sendMessage(final CommandSender sender) {
+    public void sendMessage(@NotNull final CommandSender sender) {
         final State state = this.config.getProperty(ConfigKeys.message_state);
 
         switch (state) {
@@ -189,7 +189,7 @@ public enum Messages {
         }
     }
 
-    public void sendActionBar(final CommandSender sender, final String placeholder, final String replacement) {
+    public void sendActionBar(@NotNull final CommandSender sender, @NotNull final String placeholder, @NotNull final String replacement) {
         final String msg = getMessage(sender, placeholder, replacement);
 
         if (msg.isBlank()) return;
@@ -199,7 +199,7 @@ public enum Messages {
         }
     }
 
-    public void sendActionBar(final CommandSender sender, final Map<String, String> placeholders) {
+    public void sendActionBar(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
         final String msg = getMessage(sender, placeholders);
 
         if (msg.isBlank()) return;
@@ -209,7 +209,7 @@ public enum Messages {
         }
     }
 
-    public void sendActionBar(final CommandSender sender) {
+    public void sendActionBar(@NotNull final CommandSender sender) {
         final String msg = getMessage(sender);
 
         if (msg.isBlank()) return;
@@ -219,7 +219,7 @@ public enum Messages {
         }
     }
 
-    public void sendRichMessage(final CommandSender sender, final String placeholder, final String replacement) {
+    public void sendRichMessage(@NotNull final CommandSender sender, @NotNull final String placeholder, @NotNull final String replacement) {
         final String msg = getMessage(sender, placeholder, replacement);
 
         if (msg.isBlank()) return;
@@ -227,7 +227,7 @@ public enum Messages {
         sender.sendRichMessage(msg);
     }
 
-    public void sendRichMessage(final CommandSender sender, final Map<String, String> placeholders) {
+    public void sendRichMessage(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
         final String msg = getMessage(sender, placeholders);
 
         if (msg.isBlank()) return;
@@ -235,7 +235,7 @@ public enum Messages {
         sender.sendRichMessage(msg);
     }
 
-    public void sendRichMessage(final CommandSender sender) {
+    public void sendRichMessage(@NotNull final CommandSender sender) {
         final String msg = getMessage(sender);
 
         if (msg.isBlank()) return;

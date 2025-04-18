@@ -9,8 +9,11 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import com.ryderbelserion.fusion.core.utils.FileUtils;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -20,13 +23,15 @@ public class EventManager {
 
     private final static CrazyCrates plugin = CrazyCrates.getPlugin();
 
+    private final static ComponentLogger logger = plugin.getComponentLogger();
+
     private final static SettingsManager config = ConfigManager.getConfig();
 
-    public static void logEvent(final EventType type, final String name, final CommandSender sender, final Crate crate, final KeyType keyType, final int amount) {
+    public static void logEvent(@NotNull final EventType type, @NotNull final String name, @NotNull final CommandSender sender, @NotNull final Crate crate, @NotNull final KeyType keyType, final int amount) {
         handle(type, name, sender, crate, keyType, amount);
     }
 
-    private static void handle(final EventType type, final String name, final CommandSender sender, final Crate crate, final KeyType keyType, final int amount) {
+    private static void handle(@NotNull final EventType type, @NotNull final String name, @NotNull final CommandSender sender, @NotNull final Crate crate, @NotNull final KeyType keyType, final int amount) {
         String message = "";
         File file = null;
 
@@ -91,19 +96,19 @@ public class EventManager {
         log(message, file, type);
     }
 
-    private static void log(final String message, final File file, final EventType type) {
+    private static void log(@NotNull final String message, @Nullable final File file, @NotNull final EventType type) {
         final boolean log_to_file = config.getProperty(ConfigKeys.log_to_file);
 
         final String time = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(System.currentTimeMillis()));
 
-        if (log_to_file) {
+        if (log_to_file && file != null) {
             FileUtils.write(file, "[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(AdvUtils.parse(message)));
         }
 
         final boolean log_to_console = config.getProperty(ConfigKeys.log_to_console);
 
         if (log_to_console) {
-            plugin.getComponentLogger().info("[{} {}]: {}", time, type.getEvent(), AdvUtils.parse(message));
+            logger.info("[{} {}]: {}", time, type.getEvent(), AdvUtils.parse(message));
         }
     }
 }

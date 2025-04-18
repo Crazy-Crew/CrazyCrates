@@ -123,7 +123,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
      * @param location the location
      * @return true or false
      */
-    public boolean isFurniture(final Location location) {
+    public boolean isFurniture(@NotNull final Location location) {
         final String pluginName = this.plugin.getFusion().getItemsPlugin().toLowerCase();
 
         boolean isFurniture = false;
@@ -178,19 +178,19 @@ public class CrateInteractEvent extends Event implements Cancellable {
         }
     }
 
-    public @NotNull CrateLocation getCrateLocation() {
+    public @NotNull final CrateLocation getCrateLocation() {
         return this.crateLocation;
     }
 
-    public @NotNull Location getLocation() {
+    public @NotNull final Location getLocation() {
         return this.location;
     }
 
-    public @NotNull Player getPlayer() {
+    public @NotNull final Player getPlayer() {
         return this.player;
     }
 
-    public @NotNull Action getAction() {
+    public @NotNull final Action getAction() {
         return this.action;
     }
 
@@ -211,7 +211,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean cancel) {
+    public void setCancelled(final boolean cancel) {
         this.isCancelled = cancel;
     }
 }

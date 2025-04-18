@@ -44,7 +44,7 @@ public class KeyCheckEvent extends Event implements Cancellable {
     }
     
     @Override
-    public final boolean isCancelled() {
+    public boolean isCancelled() {
         return this.isCancelled;
     }
     

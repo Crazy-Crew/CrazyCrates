@@ -7,7 +7,7 @@ plugins {
 
 val content: String = rootProject.file("changelog.md").readText(Charsets.UTF_8)
 
-val isBeta = false
+val isBeta = System.getenv("BETA") != null
 val pluginName = rootProject.name
 val mcVersion = libs.versions.minecraft.get()
 
@@ -59,7 +59,7 @@ tasks {
                     platformVersions.set(listOf(mcVersion))
 
                     dependencies {
-                        url("PlaceholderAPI", "https://www.spigotmc.org/resources/placeholderapi.6245/") {
+                        url("PlaceholderAPI", "https://hangar.papermc.io/HelpChat/PlaceholderAPI") {
                             required = false
                         }
 
@@ -67,7 +67,7 @@ tasks {
                             required = false
                         }
 
-                        url("Oraxen", "https://www.spigotmc.org/resources/%E2%98%84%EF%B8%8F-oraxen-custom-items-blocks-emotes-furniture-resourcepack-and-gui-1-18-1-20-4.72448/") {
+                        url("Oraxen", "https://polymart.org/product/629/oraxen") {
                             required = false
                         }
 
@@ -79,11 +79,11 @@ tasks {
                             required = false
                         }
 
-                        url("DecentHolograms", "https://www.spigotmc.org/resources/decentholograms-1-8-1-20-4-papi-support-no-dependencies.96927/") {
+                        url("DecentHolograms", "https://modrinth.com/plugin/decentholograms") {
                             required = false
                         }
 
-                        url("ItemsAdder", "https://www.spigotmc.org/resources/%E2%9C%A8itemsadder%E2%AD%90emotes-mobs-items-armors-hud-gui-emojis-blocks-wings-hats-liquids.73355/") {
+                        url("ItemsAdder", "https://polymart.org/product/1851/itemsadder") {
                             required = false
                         }
                     }

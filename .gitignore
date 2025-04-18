@@ -1,6 +1,7 @@
 ### Intellij
-.kotlin
-.idea
+.kotlin/
+.idea/
+!.idea/icon.png
 
 ### Gradle
 .gradle

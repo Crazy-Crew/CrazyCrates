@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.paper.api.enums;
 
+import org.jetbrains.annotations.NotNull;
+
 public enum FillerType {
 
     FILL_TOP("top"),
@@ -10,7 +12,7 @@ public enum FillerType {
 
     private final String type;
 
-    FillerType(final String type) {
+    FillerType(@NotNull final String type) {
         this.type = type;
     }
 
@@ -18,8 +20,8 @@ public enum FillerType {
         return this.type;
     }
 
-    public static FillerType getFromName(String name) {
-        for (FillerType type : FillerType.values()) {
+    public static FillerType getFromName(@NotNull final String name) {
+        for (final FillerType type : FillerType.values()) {
             if (type.getType().equalsIgnoreCase(name)) {
                 return type;
             }

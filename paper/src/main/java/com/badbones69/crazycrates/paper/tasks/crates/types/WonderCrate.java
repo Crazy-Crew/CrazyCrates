@@ -18,6 +18,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 import java.util.ArrayList;
@@ -40,8 +41,8 @@ public class WonderCrate extends CrateBuilder {
     private final Crate crate = getCrate();
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType) {
-        // Crate event failed so we return.
+    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, @Nullable final EventType eventType) {
+        // Crate event failed, so we return.
         if (isCrateEventValid(type, checkHand, isSilent, eventType)) {
             return;
         }
@@ -51,7 +52,7 @@ public class WonderCrate extends CrateBuilder {
         final boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, checkHand);
 
         if (!keyCheck) {
-            // Remove from opening list.
+            // Remove from an opening list.
             this.crateManager.removePlayerFromOpeningList(getPlayer());
 
             return;

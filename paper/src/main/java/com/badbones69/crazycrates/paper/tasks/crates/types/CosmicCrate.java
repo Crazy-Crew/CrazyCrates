@@ -14,8 +14,8 @@ public class CosmicCrate extends CrateBuilder {
     }
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType) {
-        // Crate event failed so we return.
+    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, @NotNull final EventType eventType) {
+        // Crate event failed, so we return.
         if (isCrateEventValid(type, checkHand, isSilent, eventType)) {
             return;
         }

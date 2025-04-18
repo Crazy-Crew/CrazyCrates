@@ -27,6 +27,7 @@ import com.ryderbelserion.fusion.core.managers.files.FileType;
 import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
@@ -126,8 +127,10 @@ public class CrazyCrates extends JavaPlugin {
 
         this.crateManager.loadCustomItems();
 
+        final ComponentLogger logger = getComponentLogger();
+
         if (Plugins.placeholder_api.isEnabled()) {
-            if (MiscUtils.isLogging()) getComponentLogger().info("PlaceholderAPI support is enabled!");
+            if (MiscUtils.isLogging()) logger.info("PlaceholderAPI support is enabled!");
 
             new PlaceholderAPISupport().register();
         }
@@ -136,13 +139,13 @@ public class CrazyCrates extends JavaPlugin {
             // Print dependency garbage
             for (final Plugins value : Plugins.values()) {
                 if (value.isEnabled()) {
-                    getComponentLogger().info(AdvUtils.parse("<bold><gold>" + value.getName() + " <green>FOUND"));
+                    logger.info(AdvUtils.parse("<bold><gold>" + value.getName() + " <green>FOUND"));
                 } else {
-                    getComponentLogger().info(AdvUtils.parse("<bold><gold>" + value.getName() + " <red>NOT FOUND"));
+                    logger.info(AdvUtils.parse("<bold><gold>" + value.getName() + " <red>NOT FOUND"));
                 }
             }
 
-            getComponentLogger().info("Done ({})!", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
+            logger.info("Done ({})!", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
         }
     }
 

@@ -6,6 +6,7 @@ import com.ryderbelserion.fusion.paper.api.builder.gui.objects.GuiItem;
 import com.ryderbelserion.fusion.paper.api.builder.gui.types.PaginatedGui;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
 
@@ -14,7 +15,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
     private final PaginatedGui gui;
     private final Crate crate;
 
-    public DynamicInventoryBuilder(final Player player, final Crate crate, final String title, final int rows) {
+    public DynamicInventoryBuilder(@NotNull final Player player, @Nullable final Crate crate, @NotNull final String title, final int rows) {
         super(player);
 
         this.gui = Gui.paginated().setTitle(title).setRows(rows).disableInteractions().create();
@@ -22,7 +23,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
         this.crate = crate;
     }
 
-    public DynamicInventoryBuilder(final Player player, final String title, final int rows) {
+    public DynamicInventoryBuilder(@NotNull final Player player, @NotNull final String title, final int rows) {
         this(player, null, title, rows);
     }
 
@@ -49,7 +50,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
      *
      * @return {@link Player}
      */
-    public final Player getPlayer() {
+    public @NotNull final Player getPlayer() {
         return this.player;
     }
 
@@ -67,7 +68,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
      *
      * @return {@link PaginatedGui}
      */
-    public final PaginatedGui getGui() {
+    public @NotNull final PaginatedGui getGui() {
         return this.gui;
     }
 

@@ -13,6 +13,7 @@ import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import dev.triumphteam.cmd.core.annotations.Command;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -29,18 +30,19 @@ import java.util.Map;
 @Command(value = "crazycrates", alias = {"crates", "crate", "cc"})
 public abstract class BaseCommand {
 
-    protected @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    protected @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    protected final ComponentLogger logger = this.plugin.getComponentLogger();
 
-    protected @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+    protected final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
-    protected @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
+    protected final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    protected @NotNull final LegacyFileManager fileManager = this.plugin.getFileManager();
+    protected final CrateManager crateManager = this.plugin.getCrateManager();
 
-    protected @NotNull final SettingsManager config = ConfigManager.getConfig();
+    protected final LegacyFileManager fileManager = this.plugin.getFileManager();
 
+    protected final SettingsManager config = ConfigManager.getConfig();
 
     protected void addKey(@NotNull final CommandSender sender, @NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType type, final int amount, final boolean isSilent, final boolean isGiveAll) {
         addKey(sender, player, null, crate, type, amount, isSilent, isGiveAll);
@@ -147,7 +149,7 @@ public abstract class BaseCommand {
             final int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), fileName);
 
             if (totalKeys < 1) {
-                if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("The player {} does not have enough keys to take.", player.getName());
+                if (MiscUtils.isLogging()) this.logger.warn("The player {} does not have enough keys to take.", player.getName());
 
                 Messages.cannot_take_keys.sendMessage(sender, "{player}", player.getName());
 

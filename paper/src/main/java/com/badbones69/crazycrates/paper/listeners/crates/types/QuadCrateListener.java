@@ -3,6 +3,8 @@ package com.badbones69.crazycrates.paper.listeners.crates.types;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import io.papermc.paper.datacomponent.DataComponentType;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -37,8 +39,6 @@ import java.util.List;
 import java.util.Map;
 
 public class QuadCrateListener implements Listener {
-
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final SessionManager sessionManager = new SessionManager();
 
@@ -80,14 +80,8 @@ public class QuadCrateListener implements Listener {
             // Get the display item.
             final ItemStack display = prize.getDisplayItem(player, crate);
 
-            // Get the item meta.
-            final ItemMeta itemMeta = display.getItemMeta();
-
-            // Access the pdc and set "crazycrates-item"
-            itemMeta.getPersistentDataContainer().set(ItemKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1");
-
-            // Set the item meta.
-            display.setItemMeta(itemMeta);
+            // Set the persistent data.
+            display.editPersistentDataContainer(container -> container.set(ItemKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1"));
 
             // Convert the item stack to item builder.
             final ItemStack itemStack = ItemUtils.convertItemStack(display).asItemStack();
@@ -97,7 +91,7 @@ public class QuadCrateListener implements Listener {
 
             // Set data
             reward.setVelocity(new Vector(0, .2, 0));
-            reward.customName(itemMeta.displayName());
+            reward.customName(display.displayName());
             reward.setCustomNameVisible(true);
             reward.setCanMobPickup(false);
             reward.setCanPlayerPickup(false);
@@ -108,7 +102,7 @@ public class QuadCrateListener implements Listener {
             // Add display rewards
             session.getDisplayedRewards().add(reward);
 
-            // Check if all crates have spawned then end if so.
+            // Check if all crates have spawned, then end if so.
             if (session.allCratesOpened()) {
                 new FoliaScheduler(null, player) {
                     @Override
@@ -124,19 +118,19 @@ public class QuadCrateListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
         if (!this.sessionManager.inSession(player)) return; // if not in session, we shouldn't check anything.
 
-        Location oldLocation = event.getFrom();
-        Location newLocation = event.getTo();
+        final Location oldLocation = event.getFrom();
+        final Location newLocation = event.getTo();
 
         if (oldLocation.getBlockX() != newLocation.getBlockX() || oldLocation.getBlockZ() != newLocation.getBlockZ()) {
             player.teleportAsync(oldLocation);
             event.setCancelled(true);
         }
 
-        for (Entity en : player.getNearbyEntities(2, 2, 2)) { // Someone tries to enter the crate area
+        for (final Entity en : player.getNearbyEntities(2, 2, 2)) { // Someone tries to enter the crate area
             if (en instanceof final Player p) {
                 if (this.sessionManager.inSession(p)) {
                     Vector velocity = player.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().setY(1);
@@ -160,16 +154,16 @@ public class QuadCrateListener implements Listener {
 
     @EventHandler
     public void onCommandProcess(PlayerCommandPreprocessEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
-        QuadCrateManager session = this.sessionManager.getSession(player);
+        final QuadCrateManager session = this.sessionManager.getSession(player);
 
         if (session != null && !player.hasPermission("crazycrates.admin")) {
             event.setCancelled(true);
 
-            Map<String, String> placeholders = new HashMap<>();
+            final Map<String, String> placeholders = new HashMap<>();
 
-            Crate crate = session.getCrate();
+            final Crate crate = session.getCrate();
 
             placeholders.put("{crate}", crate.getCrateName());
             placeholders.put("{player}", player.getName());
@@ -180,16 +174,16 @@ public class QuadCrateListener implements Listener {
 
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
-        QuadCrateManager session = this.sessionManager.getSession(player);
+        final QuadCrateManager session = this.sessionManager.getSession(player);
 
         if (session != null && event.getCause() == TeleportCause.ENDER_PEARL) {
             event.setCancelled(true);
 
-            Map<String, String> placeholders = new HashMap<>();
+            final Map<String, String> placeholders = new HashMap<>();
 
-            Crate crate = session.getCrate();
+            final Crate crate = session.getCrate();
 
             placeholders.put("{crate}", crate.getCrateName());
             placeholders.put("{player}", player.getName());
@@ -200,9 +194,9 @@ public class QuadCrateListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
-        QuadCrateManager session = this.sessionManager.getSession(player);
+       final QuadCrateManager session = this.sessionManager.getSession(player);
 
         if (session != null) session.endCrate(true);
     }

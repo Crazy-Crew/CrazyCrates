@@ -6,6 +6,7 @@ import eu.decentsoftware.holograms.api.DHAPI;
 import org.bukkit.Location;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +16,7 @@ public class DecentHologramsSupport extends HologramManager {
     private final Map<String, Hologram> holograms = new HashMap<>();
 
     @Override
-    public void createHologram(final Location location, final Crate crate, final String id) {
+    public void createHologram(@NotNull final Location location, @NotNull final Crate crate, @NotNull final String id) {
         if (crate.getCrateType() == CrateType.menu) return;
 
         final CrateHologram crateHologram = crate.getHologram();
@@ -51,12 +52,12 @@ public class DecentHologramsSupport extends HologramManager {
     }
 
     @Override
-    public void removeHologram(final String id) {
+    public void removeHologram(@NotNull final String id) {
         DHAPI.removeHologram(name(id));
     }
 
     @Override
-    public boolean exists(final String id) {
+    public boolean exists(@NotNull final String id) {
         return DHAPI.getHologram(name(id)) != null;
     }
 
@@ -72,7 +73,7 @@ public class DecentHologramsSupport extends HologramManager {
     }
 
     @Override
-    public final String getName() {
+    public @NotNull final String getName() {
         return "DecentHolograms";
     }
 }

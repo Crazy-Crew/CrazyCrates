@@ -26,6 +26,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.HashMap;
@@ -91,14 +92,15 @@ public class CrateInteractListener implements Listener {
                     return;
                 }
 
-                // right click to preview
+                // right-click to preview
                 preview(player, crate, false);
             }
         }
     }
 
-    private void openCrate(Player player, CrateLocation crateLocation, Crate crate) {
+    private void openCrate(@NotNull final Player player, @NotNull final CrateLocation crateLocation, @NotNull final Crate crate) {
         final KeyCheckEvent key = new KeyCheckEvent(player, crateLocation);
+
         player.getServer().getPluginManager().callEvent(key);
 
         if (key.isCancelled()) return;
@@ -189,7 +191,7 @@ public class CrateInteractListener implements Listener {
         key.setCancelled(true);
     }
 
-    private void lackingKey(final Player player, final Crate crate, final Location location, final boolean sendMessage) {
+    private void lackingKey(@NotNull final Player player, @NotNull final Crate crate, @NotNull final Location location, final boolean sendMessage) {
         final String keyName = crate.getKeyName();
 
         final Map<String, String> placeholders = new HashMap<>() {{
@@ -210,7 +212,7 @@ public class CrateInteractListener implements Listener {
         }
     }
 
-    private void knockback(final Player player, final Location location) {
+    private void knockback(@NotNull final Player player, @NotNull final Location location) {
         final Vector vector = player.getLocation().toVector().subtract(location.toVector()).normalize().multiply(1).setY(.1);
 
         if (player.isInsideVehicle() && player.getVehicle() != null) {
@@ -222,9 +224,9 @@ public class CrateInteractListener implements Listener {
         player.setVelocity(vector);
     }
 
-    private void preview(final Player player, final Crate crate, boolean skipTypeCheck) {
+    private void preview(@NotNull final Player player, @NotNull final Crate crate, final boolean skipTypeCheck) {
         if (skipTypeCheck || crate.getCrateType() == CrateType.menu) {
-            // this is to stop players in QuadCrate to not be able to try and open a crate set to menu.
+            // this is to stop players in QuadCrate to not be able to try and open a crate set to a menu.
             if (!this.crateManager.isInOpeningList(player) && this.config.getProperty(ConfigKeys.enable_crate_menu)) {
                 new CrateMainMenu(
                         player,

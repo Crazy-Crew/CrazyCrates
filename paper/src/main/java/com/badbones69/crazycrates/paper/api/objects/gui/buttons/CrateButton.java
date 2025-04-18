@@ -13,6 +13,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.HashMap;
 import java.util.UUID;
@@ -25,11 +26,11 @@ public class CrateButton extends GuiButton {
     private final Crate crate;
     private final Prize prize;
 
-    public CrateButton(final Crate crate, final Prize prize, final ConfigurationSection section) {
+    public CrateButton(@NotNull final Crate crate, @Nullable final Prize prize, @NotNull final ConfigurationSection section) {
         super(section, new HashMap<>() {{
             put("%crate_pretty%", crate.getCrateName());
             put("%crate_raw%", crate.getFileName());
-            put("%prize%", prize.getSectionName());
+            put("%prize%", prize != null ? prize.getSectionName() : "N/A");
         }});
 
         this.crate = crate;
@@ -37,7 +38,7 @@ public class CrateButton extends GuiButton {
     }
 
     @Override
-    public final @NotNull GuiItem getGuiItem() {
+    public @NotNull final GuiItem getGuiItem() {
         final GuiItem guiItem = super.getGuiItem();
 
         final GuiAction<InventoryClickEvent> action = guiItem.getAction();
@@ -104,11 +105,11 @@ public class CrateButton extends GuiButton {
         return guiItem;
     }
 
-    public final Crate getCrate() {
+    public @NotNull final Crate getCrate() {
         return this.crate;
     }
 
-    public final Prize getPrize() {
+    public @NotNull final Prize getPrize() {
         return this.prize;
     }
 }
