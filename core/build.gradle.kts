@@ -4,7 +4,6 @@ plugins {
 
 dependencies {
     compileOnly(libs.fusion.core)
-    compileOnly(libs.fusion.api)
 
     compileOnly(libs.jetbrains)
 

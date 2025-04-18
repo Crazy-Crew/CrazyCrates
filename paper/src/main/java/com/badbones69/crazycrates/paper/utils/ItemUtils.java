@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.ItemBuilder;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.PotionBuilder;
@@ -304,7 +304,7 @@ public class ItemUtils {
                 spawnerBuilder.withEntityType(com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(mobType)).build();
             }
 
-            itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""), false);
+            itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""));
 
             final ConfigurationSection potions = item.getConfigurationSection("settings.potions");
 
