@@ -15,6 +15,7 @@ import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.ItemBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -35,11 +36,12 @@ import static java.util.regex.Matcher.quoteReplacement;
 public class PrizeManager {
     
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final ComponentLogger logger = plugin.getComponentLogger();
     private static final BukkitUserManager userManager = plugin.getUserManager();
 
     private static final SettingsManager config = ConfigManager.getConfig();
 
-    public static int getCap(final Crate crate, final Player player) {
+    public static int getCap(@NotNull final Crate crate, @NotNull final Player player) {
         final String format = "crazycrates.respin." + crate.getFileName() + ".";
         int cap = 0;
 
@@ -60,7 +62,7 @@ public class PrizeManager {
         return cap;
     }
 
-    public static boolean isCapped(final Crate crate, final Player player) {
+    public static boolean isCapped(@NotNull final Crate crate, @NotNull final Player player) {
         boolean isCapped = false;
 
         if (!crate.isCyclePermissionToggle() || crate.getCyclePermissionCap() < 1 || player.isOp()) {
@@ -124,9 +126,9 @@ public class PrizeManager {
      * @param crate the player is opening
      * @param prize the player is being given
      */
-    public static void givePrize(@NotNull final Player player, @NotNull Location location, @NotNull final Crate crate, @Nullable Prize prize) {
+    public static void givePrize(@NotNull final Player player, @NotNull final Location location, @NotNull final Crate crate, @Nullable Prize prize) {
         if (prize == null) {
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("No prize was found when giving {} a prize.", player.getName());
+            if (MiscUtils.isLogging()) logger.warn("No prize was found when giving {} a prize.", player.getName());
 
             return;
         }
@@ -152,7 +154,7 @@ public class PrizeManager {
             }
         }
 
-        for (ItemStack itemStack : prize.getEditorItems()) {
+        for (final ItemStack itemStack : prize.getEditorItems()) {
             if (!MiscUtils.isInventoryFull(player)) {
                 MiscUtils.addItem(player, itemStack);
             } else {
@@ -252,8 +254,8 @@ public class PrizeManager {
                         commandBuilder.append("1 ");
 
                         if (MiscUtils.isLogging()) {
-                            plugin.getComponentLogger().warn("The prize {} in the {} crate has caused an error when trying to run a command.", prize.getPrizeName(), prize.getCrateName());
-                            plugin.getComponentLogger().warn("Command: {}", cmd);
+                            logger.warn("The prize {} in the {} crate has caused an error when trying to run a command.", prize.getPrizeName(), prize.getCrateName());
+                            logger.warn("Command: {}", cmd);
                         }
                     }
                 } else {
@@ -281,7 +283,7 @@ public class PrizeManager {
                 .replaceAll("%pulls%", pulls));
     }
 
-    private static void sendMessage(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, String message) {
+    private static void sendMessage(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, @NotNull final String message) {
         if (message.isEmpty()) return;
 
         final String maxPulls = String.valueOf(prize.getMaxPulls());

@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class MessageManager {
 
-    protected @NotNull final BukkitCommandManager<CommandSender> commandManager = CommandManager.getCommandManager();
+    protected final BukkitCommandManager<CommandSender> commandManager = CommandManager.getCommandManager();
 
     public abstract void build();
 

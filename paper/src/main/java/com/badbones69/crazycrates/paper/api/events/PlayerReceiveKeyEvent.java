@@ -50,11 +50,11 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
         return this.offlinePlayer;
     }
 
-    public Crate getCrate() {
+    public @NotNull final Crate getCrate() {
         return this.crate;
     }
     
-    public KeyReceiveReason getReason() {
+    public @NotNull final KeyReceiveReason getReason() {
         return this.reason;
     }
     
@@ -81,7 +81,7 @@ public class PlayerReceiveKeyEvent extends Event implements Cancellable {
         GIVE_COMMAND,
         // Received a key from the /cc giveall command.
         GIVE_ALL_COMMAND,
-        // Received when player has come online after being given a key while offline.
+        // Received when a player has come online after being given a key while offline.
         OFFLINE_PLAYER,
         // Received a key as a refund from a crate that failed.
         REFUND,

@@ -55,7 +55,7 @@ public class ItemUtils {
         item.setAmount(amount - 1);
     }
 
-    public static String getEnchant(String enchant) {
+    public static String getEnchant(@NotNull final String enchant) {
         if (enchant.isEmpty()) return "";
 
         switch (enchant) {
@@ -145,7 +145,7 @@ public class ItemUtils {
         }
     }
 
-    public static String getPotion(String potion) {
+    public static String getPotion(@NotNull final String potion) {
         return potion.isEmpty() ? "" : potion.toLowerCase();
     }
 
@@ -207,7 +207,7 @@ public class ItemUtils {
         return builder;
     }
 
-    public static LegacyItemBuilder convertItemStack(Player player, ItemStack itemStack) {
+    public static LegacyItemBuilder convertItemStack(@Nullable final Player player, @NotNull final ItemStack itemStack) {
         LegacyItemBuilder itemBuilder = new LegacyItemBuilder(itemStack);
 
         if (player != null) {
@@ -217,7 +217,7 @@ public class ItemUtils {
         return itemBuilder;
     }
 
-    public static LegacyItemBuilder convertItemStack(ItemStack itemStack) {
+    public static LegacyItemBuilder convertItemStack(@NotNull final ItemStack itemStack) {
         return convertItemStack(null, itemStack);
     }
 
@@ -353,19 +353,19 @@ public class ItemUtils {
         return cache;
     }
 
-    public static List<LegacyItemBuilder> convertStringList(List<String> itemStrings) {
+    public static List<LegacyItemBuilder> convertStringList(@NotNull final List<String> itemStrings) {
         return convertStringList(itemStrings, null);
     }
 
-    public static List<LegacyItemBuilder> convertStringList(List<String> itemStrings, String section) {
+    public static List<LegacyItemBuilder> convertStringList(@NotNull final List<String> itemStrings, @Nullable final String section) {
         return itemStrings.stream().map(itemString -> convertString(itemString, section)).collect(Collectors.toList());
     }
 
-    public static LegacyItemBuilder convertString(String itemString) {
+    public static LegacyItemBuilder convertString(@NotNull final String itemString) {
         return convertString(itemString, null);
     }
 
-    public static LegacyItemBuilder convertString(String itemString, String section) {
+    public static LegacyItemBuilder convertString(@NotNull final String itemString, @Nullable final String section) {
         LegacyItemBuilder itemBuilder = new LegacyItemBuilder();
 
         try {

@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.paper.managers.events.enums;
 
+import org.jetbrains.annotations.NotNull;
+
 public enum EventType {
 
     event_key_given("event_key_given"),
@@ -19,11 +21,11 @@ public enum EventType {
 
     private final String event;
 
-    EventType(final String event) {
+    EventType(@NotNull final String event) {
         this.event = event;
     }
 
-    public final String getEvent() {
+    public @NotNull final String getEvent() {
         return this.event;
     }
 }

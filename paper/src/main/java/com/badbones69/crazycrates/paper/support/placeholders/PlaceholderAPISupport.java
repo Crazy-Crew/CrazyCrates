@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.paper.support.placeholders;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.apache.commons.lang3.StringUtils;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -18,6 +19,8 @@ import java.util.concurrent.CompletableFuture;
 public class PlaceholderAPISupport extends PlaceholderExpansion {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final ComponentLogger logger = this.plugin.getComponentLogger();
 
     private final BukkitUserManager userManager = this.plugin.getUserManager();
 
@@ -113,7 +116,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         final Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("Crate: {} is not a valid crate name.", crateName);
+            if (MiscUtils.isLogging()) this.logger.warn("Crate: {} is not a valid crate name.", crateName);
 
             return "N/A";
         }

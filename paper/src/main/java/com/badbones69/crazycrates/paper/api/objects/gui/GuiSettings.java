@@ -9,14 +9,20 @@ import com.badbones69.crazycrates.paper.api.objects.gui.buttons.CrateButton;
 import com.badbones69.crazycrates.paper.api.objects.gui.buttons.GuiButton;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class GuiSettings {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final ComponentLogger logger = this.plugin.getComponentLogger();
 
     private final String title;
     private final int rows;
@@ -31,7 +37,7 @@ public class GuiSettings {
     private final Crate crate;
     private final Prize prize;
 
-    public GuiSettings(final Crate crate, final Prize prize, final YamlConfiguration configuration) {
+    public GuiSettings(@NotNull final Crate crate, @Nullable final Prize prize, @NotNull final YamlConfiguration configuration) {
         this.title = configuration.getString("title", "<red>Do you want to re-spin?");
         this.rows = configuration.getInt("rows", 3);
         this.slot = configuration.getInt("slot", 5);
@@ -55,7 +61,7 @@ public class GuiSettings {
 
                 if (this.buttons.containsKey(slot)) {
                     if (MiscUtils.isLogging()) {
-                        this.plugin.getComponentLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
+                        this.logger.warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
                     }
 
                     return;
@@ -77,7 +83,7 @@ public class GuiSettings {
 
                 if (this.buttons.containsKey(slot)) {
                     if (MiscUtils.isLogging()) {
-                        this.plugin.getComponentLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
+                        this.logger.warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
                     }
 
                     return;
@@ -95,7 +101,7 @@ public class GuiSettings {
         return this.slot;
     }
 
-    public final String getTitle() {
+    public @NotNull final String getTitle() {
         return this.title;
     }
 
@@ -107,23 +113,23 @@ public class GuiSettings {
         return this.isFillerToggled;
     }
 
-    public final FillerType getFillerType() {
+    public @NotNull final FillerType getFillerType() {
         return this.fillerType;
     }
 
-    public final GuiItem getFillerStack() {
+    public @NotNull final GuiItem getFillerStack() {
         return this.fillerStack;
     }
 
-    public final Map<Integer, GuiButton> getButtons() {
+    public @NotNull final Map<Integer, GuiButton> getButtons() {
         return this.buttons;
     }
 
-    public final Crate getCrate() {
+    public @NotNull final Crate getCrate() {
         return this.crate;
     }
 
-    public final Prize getPrize() {
+    public @NotNull final Prize getPrize() {
         return this.prize;
     }
 }

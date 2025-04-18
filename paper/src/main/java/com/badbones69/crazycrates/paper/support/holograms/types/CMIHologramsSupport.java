@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class CMIHologramsSupport extends HologramManager {
     private final com.Zrips.CMI.Modules.Holograms.HologramManager hologramManager = CMI.getInstance().getHologramManager();
 
     @Override
-    public void createHologram(final Location location, final Crate crate, final String id) {
+    public void createHologram(@NotNull final Location location, @NotNull final Crate crate, @NotNull final String id) {
         if (crate.getCrateType() == CrateType.menu) return;
 
         final CrateHologram crateHologram = crate.getHologram();
@@ -65,7 +66,7 @@ public class CMIHologramsSupport extends HologramManager {
     }
 
     @Override
-    public void removeHologram(final String id) {
+    public void removeHologram(@NotNull final String id) {
         final CMIHologram hologram = this.hologramManager.getByName(name(id));
 
         if (hologram != null) {
@@ -74,7 +75,7 @@ public class CMIHologramsSupport extends HologramManager {
     }
 
     @Override
-    public boolean exists(final String id) {
+    public boolean exists(@NotNull final String id) {
         return this.hologramManager.getByName(name(id)) != null;
     }
 
@@ -94,7 +95,7 @@ public class CMIHologramsSupport extends HologramManager {
     }
 
     @Override
-    public final String getName() {
+    public @NotNull final String getName() {
         return "CMI";
     }
 }

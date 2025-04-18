@@ -216,9 +216,7 @@ public class Crate {
                 this.tierSum = this.tiers.stream().filter(tier -> tier.getWeight() != -1).mapToDouble(Tier::getWeight).sum();
             }
 
-            case casino -> {
-                this.tierSum = this.tiers.stream().filter(tier -> tier.getWeight() != -1).mapToDouble(Tier::getWeight).sum();
-            }
+            case casino -> this.tierSum = this.tiers.stream().filter(tier -> tier.getWeight() != -1).mapToDouble(Tier::getWeight).sum();
         }
     }
 
@@ -227,22 +225,22 @@ public class Crate {
         this.name = name;
     }
 
-    public String getAnimationName() {
+    public @NotNull String getAnimationName() {
         return this.animationName;
     }
 
-    public Color getColor() {
+    public @Nullable Color getColor() {
         return this.color;
     }
 
-    public Particle getParticle() {
+    public @Nullable Particle getParticle() {
         return this.particle;
     }
 
     /**
      * @return the key name.
      */
-    public String getKeyName() {
+    public @NotNull String getKeyName() {
         return this.keyName;
     }
 
@@ -287,18 +285,18 @@ public class Crate {
         return isBroadcastToggled();
     }
 
-    public final String getBroadcastPermission() {
+    public @NotNull final String getBroadcastPermission() {
         return this.broadcastPermission;
     }
 
-    public final List<String> getBroadcastMessages() {
+    public @NotNull final List<String> getBroadcastMessages() {
         return this.broadcastMessages;
     }
 
     /**
      * Set the preview lines for a Crate.
      *
-     * @param amount the amount of lines the preview has.
+     * @param amount the number of lines the preview has.
      */
     public void setPreviewChestLines(final int amount) {
         int finalAmount;
@@ -313,7 +311,7 @@ public class Crate {
     /**
      * Set the preview lines for a Crate.
      *
-     * @param amount the amount of lines the preview has.
+     * @param amount the number of lines the preview has.
      */
     public void setTierPreviewRows(final int amount) {
         this.previewTierCrateRows = amount;
@@ -324,16 +322,16 @@ public class Crate {
     }
 
     /**
-     * Get the amount of lines the preview will show.
+     * Get the number of lines the preview will show.
      *
-     * @return the amount of lines it is set to show.
+     * @return the number of lines it is set to show.
      */
     public final int getPreviewChestLines() {
         return this.previewChestLines;
     }
     
     /**
-     * Get the max amount of slots in the preview.
+     * Get the max number of slots in the preview.
      *
      * @return the max number of slots in the preview.
      */
@@ -499,7 +497,7 @@ public class Crate {
     /**
      * Get if the preview is toggled on.
      *
-     * @return true if preview is on and false if not.
+     * @return true if the preview is on and false if not.
      */
     public final boolean isPreviewEnabled() {
         return this.previewToggle;
@@ -533,36 +531,36 @@ public class Crate {
     }
     
     /**
-     * Gets the inventory of a preview of prizes for the crate.
+     * Gets the inventory of prizes for the crate.
      *
      * @return the preview as an Inventory object.
      */
-    public final CratePreviewMenu getPreview(final Player player) {
+    public final CratePreviewMenu getPreview(@NotNull final Player player) {
         return getPreview(player, null);
     }
     
     /**
-     * Gets the inventory of a preview of prizes for the crate.
+     * Gets the inventory of prizes for the crate.
      *
      * @return the preview as an Inventory object.
      */
-    public final CratePreviewMenu getPreview(final Player player, final @Nullable Tier tier) {
+    public final CratePreviewMenu getPreview(@NotNull final Player player, @Nullable final Tier tier) {
         return new CratePreviewMenu(player, this, tier);
     }
 
     /**
-     * Gets the inventory of a tier preview of prizes for the crate.
+     * Gets the inventory of prizes for the crate.
      *
      * @return the tier preview as an Inventory object.
      */
-    public final CrateTierMenu getTierPreview(final Player player) {
+    public final CrateTierMenu getTierPreview(@NotNull final Player player) {
         return new CrateTierMenu(player, this);
     }
     
     /**
      * @return the crate type of the crate.
      */
-    public final CrateType getCrateType() {
+    public @NotNull final CrateType getCrateType() {
         return this.crateType;
     }
     
@@ -577,29 +575,29 @@ public class Crate {
      * @param player The player getting the key.
      * @return the key as an item stack.
      */
-    public @NotNull final ItemStack getKey(Player player) {
+    public @NotNull final ItemStack getKey(@NotNull final Player player) {
         return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).asItemStack();
     }
 
     /**
-     * @param amount The amount of keys you want.
+     * @param amount The number of keys you want.
      * @return the key as an item stack.
      */
-    public @NotNull final ItemStack getKey(int amount) {
+    public @NotNull final ItemStack getKey(final int amount) {
         return this.keyBuilder.setAmount(amount).asItemStack();
     }
     
     /**
-     * @param amount The amount of keys you want.
+     * @param amount The number of keys you want.
      * @param player The player getting the key.
      * @return the key as an item stack.
      */
-    public @NotNull final ItemStack getKey(int amount, Player player) {
+    public @NotNull final ItemStack getKey(final int amount, @NotNull final Player player) {
         return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).setAmount(amount).asItemStack();
     }
 
     /**
-     * @return the crates file.
+     * @return the crates' file.
      */
     public @NotNull final YamlConfiguration getFile() {
         return this.file;
@@ -613,7 +611,7 @@ public class Crate {
     }
 
     /**
-     * Gets the total chance of the prizes weights added up
+     * Gets the total chance of the prizes' weights added up
      *
      * @return the total chance added up
      */
@@ -625,7 +623,7 @@ public class Crate {
      * @param name name of the prize you want.
      * @return the prize you asked for.
      */
-    public final @Nullable Prize getPrize(@NotNull final String name) {
+    public @Nullable final Prize getPrize(@NotNull final String name) {
         if (name.isEmpty()) return null;
 
         Prize prize = null;
@@ -641,7 +639,7 @@ public class Crate {
         return prize;
     }
     
-    public final @Nullable Prize getPrize(@NotNull final ItemStack item) {
+    public @Nullable final Prize getPrize(@NotNull final ItemStack item) {
         return getPrize(item.getPersistentDataContainer().getOrDefault(ItemKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, ""));
     }
     
@@ -808,7 +806,7 @@ public class Crate {
         saveFile();
     }
 
-    private @NotNull String getPath(final String section, final String path) {
+    private @NotNull String getPath(@NotNull final String section, @NotNull final String path) {
         if (section.isEmpty() || path.isEmpty()) return "";
 
         return section + "." + path;
@@ -916,7 +914,7 @@ public class Crate {
     /**
      * Plays a sound at different volume levels with fallbacks
      *
-     * @param type i.e. stop, cycle or click sound
+     * @param type stop, cycle or click sound
      * @param source sound category to respect client settings
      * @param fallback fallback sound in case no sound is found
      */

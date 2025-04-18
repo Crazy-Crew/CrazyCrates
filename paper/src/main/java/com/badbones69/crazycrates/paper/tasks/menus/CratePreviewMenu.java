@@ -7,13 +7,15 @@ import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiFiller;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.api.builder.gui.types.PaginatedGui;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.UUID;
 
 public class CratePreviewMenu extends DynamicInventoryBuilder {
 
     private final Tier tier;
 
-    public CratePreviewMenu(final Player player, final Crate crate, final Tier tier) {
+    public CratePreviewMenu(@NotNull final Player player, @NotNull final Crate crate, @NotNull final Tier tier) {
         super(player, crate, crate.getPreviewName(), crate.getPreviewChestLines());
 
         this.tier = tier;

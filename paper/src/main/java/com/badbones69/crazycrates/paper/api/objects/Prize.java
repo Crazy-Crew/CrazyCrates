@@ -164,14 +164,14 @@ public class Prize {
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
-    public @NotNull final ItemStack getDisplayItem(final Crate crate) {
+    public @NotNull final ItemStack getDisplayItem(@NotNull final Crate crate) {
         return getDisplayItem(null, crate);
     }
 
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
-    public @NotNull final ItemStack getDisplayItem(@Nullable final Player player, final Crate crate) {
+    public @NotNull final ItemStack getDisplayItem(@Nullable final Player player, @NotNull final Crate crate) {
         final int pulls = PrizeManager.getCurrentPulls(this, crate);
         final int maxPulls = getMaxPulls();
         final String amount = String.valueOf(pulls);
@@ -194,7 +194,7 @@ public class Prize {
                         "Deprecated usage of Lore in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
                         "Lore will be removed in the next major version of Minecraft in favor of DisplayLore",
                         "You can turn my nagging off in config.yml, verbose_logging: true -> false"
-                ).forEach(this.plugin.getComponentLogger()::warn);
+                ).forEach(this.logger::warn);
             }
 
             this.section.getStringList("Lore").forEach(line -> lore.add(player != null && isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, line) : line));
@@ -230,16 +230,6 @@ public class Prize {
         this.displayItem.addNamePlaceholder("%chance%", weight).addNamePlaceholder("%maxpulls%", String.valueOf(maxPulls)).addNamePlaceholder("%pulls%", amount);
 
         return this.displayItem.setPersistentString(ItemKeys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack();
-    }
-
-    /**
-     * Gets the rounding mode from the config
-     *
-     * @return the rounding mode
-     * @since 0.0.2
-     */
-    public final RoundingMode mode() {
-        return RoundingMode.HALF_EVEN;
     }
     
     /**
@@ -328,7 +318,7 @@ public class Prize {
     }
     
     /**
-     * @return true if they prize has blacklist permissions and false if not.
+     * @return true if the prize has blacklist permissions and false if not.
      */
     public final boolean hasPermission(@NotNull final Player player) {
         if (player.isOp()) return false;
@@ -340,7 +330,7 @@ public class Prize {
         return false;
     }
 
-    public void broadcast(final Player target, final Crate crate) {
+    public void broadcast(@NotNull final Player target, @NotNull final Crate crate) {
         if (this.broadcastToggle) {
             send(target, crate);
         } else if (crate.isBroadcastToggled()) {
@@ -348,7 +338,7 @@ public class Prize {
         }
     }
 
-    private void send(final Player target, final Crate crate) {
+    private void send(@NotNull final Player target, @NotNull final Crate crate) {
         final Server server = this.plugin.getServer();
 
         final List<String> messages = this.broadcastToggle ? this.broadcastMessages : crate.getBroadcastMessages();
@@ -409,7 +399,7 @@ public class Prize {
                             "Deprecated usage of Lore in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
                             "Lore will be removed in the next major version of Minecraft in favor of DisplayLore",
                             "You can turn my nagging off in config.yml, verbose_logging: true -> false"
-                    ).forEach(this.plugin.getComponentLogger()::warn);
+                    ).forEach(this.logger::warn);
                 }
 
                 builder.setDisplayLore(this.section.getStringList("Lore"));
@@ -429,7 +419,7 @@ public class Prize {
                             "Deprecated usage of Patterns in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Patterns to DisplayPatterns",
                             "Patterns will be removed in the next major version of Minecraft in favor of DisplayPatterns",
                             "You can turn my nagging off in config.yml, verbose_logging: true -> false"
-                    ).forEach(this.plugin.getComponentLogger()::warn);
+                    ).forEach(this.logger::warn);
                 }
 
                 for (final String pattern : this.section.getStringList("Patterns")) {
@@ -460,7 +450,7 @@ public class Prize {
             }
 
             if (this.section.contains("Settings.RGB")) {
-                final @Nullable Color color = ColorUtils.getRGB(this.section.getString("Settings.RGB", ""));
+                @Nullable final Color color = ColorUtils.getRGB(this.section.getString("Settings.RGB", ""));
 
                 if (color != null) {
                     builder.setColor(color);
@@ -486,7 +476,7 @@ public class Prize {
             }
 
             if (this.section.contains("DisplayEnchantments")) {
-                for (String ench : this.section.getStringList("DisplayEnchantments")) {
+                for (final String ench : this.section.getStringList("DisplayEnchantments")) {
                     String[] value = ench.split(":");
 
                     builder.addEnchantment(value[0], Integer.parseInt(value[1]), true);

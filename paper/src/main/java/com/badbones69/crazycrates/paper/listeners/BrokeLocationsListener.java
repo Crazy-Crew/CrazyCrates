@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.paper.api.objects.crates.BrokeLocation;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,10 +15,12 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import java.util.ArrayList;
 import java.util.List;
 
-// Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
+// The only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
 public class BrokeLocationsListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final ComponentLogger logger = this.plugin.getComponentLogger();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
     
@@ -34,7 +37,7 @@ public class BrokeLocationsListener implements Listener {
 
             if (location.getWorld() != null) {
                 if (brokeLocation.getCrate() != null) {
-                    CrateLocation crateLocation = new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location);
+                    final CrateLocation crateLocation = new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location);
 
                     this.crateManager.addLocation(crateLocation);
 
@@ -47,6 +50,7 @@ public class BrokeLocationsListener implements Listener {
                     }
 
                     fixedWorlds.add(brokeLocation);
+
                     fixedAmount++;
                 }
             }
@@ -55,9 +59,9 @@ public class BrokeLocationsListener implements Listener {
         this.crateManager.removeBrokeLocation(fixedWorlds);
 
         if (MiscUtils.isLogging()) {
-            this.plugin.getComponentLogger().warn("Fixed {} broken crate locations.", fixedAmount);
+            this.logger.warn("Fixed {} broken crate locations.", fixedAmount);
 
-            if (this.crateManager.getBrokeLocations().isEmpty()) this.plugin.getComponentLogger().warn("All broken crate locations have been fixed.");
+            if (this.crateManager.getBrokeLocations().isEmpty()) this.logger.warn("All broken crate locations have been fixed.");
         }
     }
 }

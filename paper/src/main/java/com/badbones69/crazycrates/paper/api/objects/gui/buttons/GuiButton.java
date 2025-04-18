@@ -25,7 +25,7 @@ public class GuiButton {
     private final List<String> commands;
     private final List<String> messages;
 
-    public GuiButton(final ConfigurationSection section, final Map<String, String> placeholders) {
+    public GuiButton(@NotNull final ConfigurationSection section, @NotNull final Map<String, String> placeholders) {
         this.guiItem = new LegacyItemBuilder()
                 .withType(section.getString("material", "emerald_block"))
                 .setDisplayName(section.getString("name", "No display name found."))
@@ -61,7 +61,7 @@ public class GuiButton {
         });
     }
 
-    public final ConfigurationSection getSection() {
+    public @NotNull final ConfigurationSection getSection() {
         return this.section;
     }
 }

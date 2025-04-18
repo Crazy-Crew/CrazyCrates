@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.paper.api.builders.gui;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.Gui;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class StaticInventoryBuilder extends InventoryBuilder {
@@ -19,7 +20,7 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
      * @param title {@link String}
      * @param rows {@link Integer}
      */
-    public StaticInventoryBuilder(final Player player, final Crate crate, final String title, final int rows) {
+    public StaticInventoryBuilder(@NotNull final Player player, @NotNull final Crate crate, @NotNull final String title, final int rows) {
         super(player);
 
         this.gui = Gui.gui().setTitle(parse(player, title)).setRows(rows).disableInteractions().create();
@@ -35,7 +36,7 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
      * @param title {@link String}
      * @param rows {@link Integer}
      */
-    public StaticInventoryBuilder(final Player player, final String title, final int rows) {
+    public StaticInventoryBuilder(@NotNull final Player player, @NotNull final String title, final int rows) {
         super(player);
 
         this.gui = Gui.gui().setTitle(parse(player, title)).setRows(rows).disableInteractions().create();
@@ -50,7 +51,7 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
      * @param player {@link Player}
      * @param crate {@link String}
      */
-    public StaticInventoryBuilder(final Player player, final Crate crate) {
+    public StaticInventoryBuilder(@NotNull final Player player, @NotNull final Crate crate) {
         super(player);
 
         this.gui = Gui.gui().setTitle(parse(player, crate.getPreviewName())).setRows(crate.getPreviewTierCrateRows()).disableInteractions().create();
@@ -66,7 +67,7 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
      *
      * @return {@link Player}
      */
-    public final Player getPlayer() {
+    public @NotNull final Player getPlayer() {
         return this.player;
     }
 
@@ -84,7 +85,7 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
      *
      * @return the title of the gui
      */
-    public final String getTitle() {
+    public @NotNull final String getTitle() {
         return this.gui.getTitle();
     }
 
@@ -94,7 +95,7 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
      * @param message the message to check
      * @return true or false
      */
-    public final boolean contains(final String message) {
+    public final boolean contains(@NotNull final String message) {
         return getTitle().contains(message);
     }
 
@@ -103,7 +104,7 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
      *
      * @return {@link Gui}
      */
-    public final Gui getGui() {
+    public @NotNull final Gui getGui() {
         return this.gui;
     }
 }

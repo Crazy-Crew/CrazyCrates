@@ -21,13 +21,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.text.NumberFormat;
 import java.util.UUID;
 
 public class CrateMainMenu extends StaticInventoryBuilder {
 
-    public CrateMainMenu(final Player player, final String title, final int rows) {
+    public CrateMainMenu(@NotNull final Player player, @NotNull final String title, final int rows) {
         super(player, title, rows);
     }
 
@@ -164,7 +165,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
         this.gui.open(this.player);
     }
 
-    private void openCrate(UUID uuid, Crate crate, String fileName, String fancyName) {
+    private void openCrate(@NotNull final UUID uuid, @NotNull final Crate crate, @NotNull final String fileName, @NotNull final String fancyName) {
         if (this.crateManager.isInOpeningList(this.player)) {
             Messages.already_opening_crate.sendMessage(this.player, "{crate}", fancyName);
 
@@ -213,7 +214,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
         this.crateManager.openCrate(this.player, crate, keyType, this.player.getLocation(), true, false, EventType.event_crate_opened);
     }
 
-    private void openPreview(Crate crate, String fancyName) {
+    private void openPreview(@NotNull final Crate crate, @NotNull final String fancyName) {
         if (crate.isPreviewEnabled()) {
             crate.playSound(this.player, this.player.getLocation(), "click-sound", "ui.button.click", Sound.Source.MASTER);
 

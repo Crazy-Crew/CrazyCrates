@@ -15,6 +15,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
@@ -38,8 +39,8 @@ public class WheelCrate extends CrateBuilder {
     private Map<Integer, ItemStack> rewards;
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType) {
-        // Crate event failed so we return.
+    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, @Nullable final EventType eventType) {
+        // Crate event failed, so we return.
         if (isCrateEventValid(type, checkHand, isSilent, eventType)) {
             return;
         }
@@ -49,7 +50,7 @@ public class WheelCrate extends CrateBuilder {
         boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, checkHand);
 
         if (!keyCheck) {
-            // Remove from opening list.
+            // Remove from an opening list.
             this.crateManager.removePlayerFromOpeningList(this.player);
 
             return;

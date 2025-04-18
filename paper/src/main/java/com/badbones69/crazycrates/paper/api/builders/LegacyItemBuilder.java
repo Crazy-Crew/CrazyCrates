@@ -31,7 +31,7 @@ public class LegacyItemBuilder extends ItemBuilder<LegacyItemBuilder> {
     public LegacyItemBuilder() {}
 
     @Override
-    public @NotNull LegacyItemBuilder fromBase64(@NotNull String base64) {
+    public @NotNull LegacyItemBuilder fromBase64(@NotNull final String base64) {
         if (base64.isEmpty()) return this;
 
         return new LegacyItemBuilder(ItemUtils.fromBase64(base64));

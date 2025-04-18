@@ -6,6 +6,7 @@ import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
 import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.File;
 
@@ -35,7 +36,7 @@ public enum FileKeys {
      * @param fileName the name of the file
      * @param folder the folder
      */
-    FileKeys(final FileType fileType, final String fileName, final String folder) {
+    FileKeys(@NotNull final FileType fileType, @NotNull final String fileName, @NotNull final String folder) {
         this.fileType = fileType;
         this.fileName = fileName;
         this.folder = folder;
@@ -47,16 +48,16 @@ public enum FileKeys {
      * @param fileType the file type
      * @param fileName the name of the file
      */
-    FileKeys(final FileType fileType, final String fileName) {
+    FileKeys(@NotNull final FileType fileType, @NotNull final String fileName) {
         this.fileType = fileType;
         this.fileName = fileName;
         this.folder = "";
     }
 
-    public final YamlConfiguration getConfiguration() {
+    public @NotNull final YamlConfiguration getConfiguration() {
         @Nullable final LegacyCustomFile customFile = this.fileManager.getFile(this.fileName, this.fileType);
 
-        if (customFile == null) {
+        if (customFile == null || customFile.getConfiguration() == null) {
             throw new FusionException("File configuration for " + this.fileName + " is null.");
         }
 
@@ -75,7 +76,7 @@ public enum FileKeys {
         this.fileManager.saveFile(this.fileName);
     }
 
-    public final File getFile() {
+    public @NotNull final File getFile() {
         return new File(this.folder.isEmpty() ? this.plugin.getDataFolder() : new File(this.plugin.getDataFolder(), this.folder), this.fileName);
     }
 }

@@ -20,11 +20,11 @@ public abstract class HologramManager {
 
     protected CrazyCrates plugin = CrazyCrates.getPlugin();
     
-    public abstract void createHologram(final Location location, final Crate crate, final String id);
+    public abstract void createHologram(@NotNull final Location location, @NotNull final Crate crate, @NotNull final String id);
 
-    public abstract void removeHologram(final String id);
+    public abstract void removeHologram(@NotNull final String id);
 
-    public abstract boolean exists(final String id);
+    public abstract boolean exists(@NotNull final String id);
 
     public abstract void purge(final boolean isShutdown);
 
