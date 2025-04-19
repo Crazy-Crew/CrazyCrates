@@ -127,7 +127,7 @@ public class ConfigKeys implements SettingsHolder {
     public static final Property<String> inventory_name = newProperty("gui.inventory.name", "<bold><gradient:#e91e63:blue>Crazy Crates</gradient></bold>");
 
     @Comment("The amount of rows for a gui.")
-    public static final Property<Integer> inventory_rows = newProperty("gui.inventory.rows", 3);
+    public static final Property<Integer> inventory_rows = newProperty("gui.inventory.rows", 6);
 
     @Comment({
             "This will switch how previews/opening the physical crates are handled.",
