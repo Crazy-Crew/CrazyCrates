@@ -15,6 +15,7 @@ import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.ItemBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -35,6 +36,7 @@ import static java.util.regex.Matcher.quoteReplacement;
 public class PrizeManager {
     
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final ComponentLogger logger = plugin.getComponentLogger();
     private static final BukkitUserManager userManager = plugin.getUserManager();
 
     private static final SettingsManager config = ConfigManager.getConfig();
@@ -126,7 +128,7 @@ public class PrizeManager {
      */
     public static void givePrize(@NotNull final Player player, @NotNull Location location, @NotNull final Crate crate, @Nullable Prize prize) {
         if (prize == null) {
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("No prize was found when giving {} a prize.", player.getName());
+            if (MiscUtils.isLogging()) logger.warn("No prize was found when giving {} a prize.", player.getName());
 
             return;
         }
@@ -252,8 +254,8 @@ public class PrizeManager {
                         commandBuilder.append("1 ");
 
                         if (MiscUtils.isLogging()) {
-                            plugin.getComponentLogger().warn("The prize {} in the {} crate has caused an error when trying to run a command.", prize.getPrizeName(), prize.getCrateName());
-                            plugin.getComponentLogger().warn("Command: {}", cmd);
+                            logger.warn("The prize {} in the {} crate has caused an error when trying to run a command.", prize.getPrizeName(), prize.getCrateName());
+                            logger.warn("Command: {}", cmd);
                         }
                     }
                 } else {

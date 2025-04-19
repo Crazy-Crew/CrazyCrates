@@ -111,7 +111,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             final File crateFile = new File(directory, crateName);
 
             if (crateFile.exists()) {
-                this.plugin.getComponentLogger().warn("Crate {} already exists in {}.", crateName, directory.getName());
+                this.logger.warn("Crate {} already exists in {}.", crateName, directory.getName());
 
                 failed.add("<red>⤷ " + crateName);
 
@@ -121,7 +121,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             try {
                 crateFile.createNewFile();
             } catch (IOException exception) {
-                this.plugin.getComponentLogger().warn("Failed to create crate file {} in {}.", crateName, directory.getName(), exception);
+                this.logger.warn("Failed to create crate file {} in {}.", crateName, directory.getName(), exception);
 
                 failed.add("<red>⤷ " + crateName);
             }

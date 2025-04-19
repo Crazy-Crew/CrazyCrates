@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.paper.api.objects.crates.BrokeLocation;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,6 +19,8 @@ import java.util.List;
 public class BrokeLocationsListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final ComponentLogger logger = this.plugin.getComponentLogger();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
     
@@ -55,9 +58,9 @@ public class BrokeLocationsListener implements Listener {
         this.crateManager.removeBrokeLocation(fixedWorlds);
 
         if (MiscUtils.isLogging()) {
-            this.plugin.getComponentLogger().warn("Fixed {} broken crate locations.", fixedAmount);
+            this.logger.warn("Fixed {} broken crate locations.", fixedAmount);
 
-            if (this.crateManager.getBrokeLocations().isEmpty()) this.plugin.getComponentLogger().warn("All broken crate locations have been fixed.");
+            if (this.crateManager.getBrokeLocations().isEmpty()) this.logger.warn("All broken crate locations have been fixed.");
         }
     }
 }

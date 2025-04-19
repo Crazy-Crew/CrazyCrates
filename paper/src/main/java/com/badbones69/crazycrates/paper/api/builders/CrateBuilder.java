@@ -16,6 +16,7 @@ import com.google.common.base.Preconditions;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.sound.Sound;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -34,6 +35,8 @@ import java.util.List;
 public abstract class CrateBuilder extends FoliaScheduler {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    protected final ComponentLogger logger = this.plugin.getComponentLogger();
 
     protected final CrateManager crateManager = this.plugin.getCrateManager();
 
@@ -327,18 +330,12 @@ public abstract class CrateBuilder extends FoliaScheduler {
             if (MiscUtils.isLogging()) {
                 final String fileName = crate.getFileName();
 
-                if (this.config.getProperty(ConfigKeys.use_new_permission_system)) {
-                    if (this.player.hasPermission("crazycrates.deny.open." + fileName)) {
-                        this.plugin.getComponentLogger().warn("{} could not open {} due to having the permission preventing them from opening the crate.", this.player.getName(), fileName);
-                    } else {
-                        this.plugin.getComponentLogger().warn("{} could not open {} due to no valid prizes being found which led to the event being cancelled.", this.player.getName(), fileName);
-                    }
+                final boolean hasPermission = this.config.getProperty(ConfigKeys.use_new_permission_system) && this.player.hasPermission("crazycrates.deny.open." + fileName) || this.player.hasPermission("crazycrates.open." + fileName);
+
+                if (hasPermission) {
+                    this.logger.warn("{} could not open {} due to having the permission preventing them from opening the crate.", this.player.getName(), fileName);
                 } else {
-                    if (!this.player.hasPermission("crazycrates.open." + fileName)) {
-                        this.plugin.getComponentLogger().warn("{} could not open {} due to having the permission preventing them from opening the crate.", this.player.getName(), fileName);
-                    } else {
-                        this.plugin.getComponentLogger().warn("{} could not open {} due to no valid prizes being found which led to the event being cancelled.", this.player.getName(), fileName);
-                    }
+                    this.logger.warn("{} could not open {} due to no valid prizes being found which led to the event being cancelled.", this.player.getName(), fileName);
                 }
             }
         }

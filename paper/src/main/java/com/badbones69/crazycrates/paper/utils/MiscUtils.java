@@ -8,6 +8,7 @@ import com.ryderbelserion.fusion.api.utils.FileUtils;
 import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.permissions.Permission;
@@ -48,6 +49,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MiscUtils {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private static final ComponentLogger logger = plugin.getComponentLogger();
 
     public static void sendCommand(@Nullable final CommandSender sender, @NotNull final String command, @NotNull final Map<String, String> placeholders) {
         if (command.isEmpty()) return;
@@ -114,7 +117,7 @@ public class MiscUtils {
                     keyLog.createNewFile();
                 }
             } catch (IOException exception) {
-                plugin.getComponentLogger().warn("Failed to create files.");
+                logger.warn("Failed to create log files.");
             }
         }
     }
@@ -257,7 +260,7 @@ public class MiscUtils {
 
             return leftover;
         } else {
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Items cannot be null.");
+            if (MiscUtils.isLogging()) logger.warn("Items cannot be null.");
         }
 
         return null;
@@ -288,7 +291,7 @@ public class MiscUtils {
                     "An error has occurred while trying to take a key from a player.",
                     "Player: " + player.getName(),
                     "Key: " + crateName
-            ).forEach(plugin.getComponentLogger()::warn);
+            ).forEach(logger::warn);
 
             List.of(
                     "=== === === === === === Crates === === === === === ===",
@@ -380,12 +383,12 @@ public class MiscUtils {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
 
         if (pluginManager.getPermission(permission) != null) {
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission {} is already on the server. Pick a different name", permission);
+            if (MiscUtils.isLogging()) logger.warn("Permission {} is already on the server. Pick a different name", permission);
 
             return;
         }
 
-        if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission {} is registered", permission);
+        if (MiscUtils.isLogging()) logger.warn("Permission {} is registered", permission);
 
         pluginManager.addPermission(new Permission(permission, description, isDefault ? PermissionDefault.TRUE : PermissionDefault.OP));
     }
@@ -396,15 +399,17 @@ public class MiscUtils {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
 
         if (pluginManager.getPermission(permission) == null) {
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission {} is not registered", permission);
+            if (MiscUtils.isLogging()) logger.warn("Permission {} is not registered", permission);
 
             return;
         }
 
-        if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("Permission {} is unregistered", permission);
+        if (MiscUtils.isLogging()) logger.warn("Permission {} is unregistered", permission);
 
         pluginManager.removePermission(permission);
     }
+
+    private static final PluginManager pluginManager = plugin.getServer().getPluginManager();
 
     public static void registerPermissions() {
         Arrays.stream(Permissions.values()).toList().forEach(permission -> {
@@ -415,7 +420,7 @@ public class MiscUtils {
                     permission.getChildren()
             );
 
-            plugin.getServer().getPluginManager().addPermission(newPermission);
+            pluginManager.addPermission(newPermission);
         });
     }
 
@@ -424,6 +429,6 @@ public class MiscUtils {
     }
 
     public static boolean isExcellentCratesEnabled() {
-        return plugin.getServer().getPluginManager().isPluginEnabled("ExcellentCrates");
+        return pluginManager.isPluginEnabled("ExcellentCrates");
     }
 }

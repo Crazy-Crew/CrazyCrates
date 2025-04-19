@@ -10,6 +10,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.api.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
 import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -22,6 +23,8 @@ import java.util.Locale;
 public abstract class ICrateMigrator {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    protected final ComponentLogger logger = this.plugin.getComponentLogger();
 
     protected final CrateManager crateManager = this.plugin.getCrateManager();
 

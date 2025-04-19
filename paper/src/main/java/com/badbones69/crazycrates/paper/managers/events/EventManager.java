@@ -9,6 +9,7 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.ryderbelserion.fusion.api.utils.FileUtils;
 import com.ryderbelserion.fusion.core.utils.AdvUtils;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.command.CommandSender;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -19,6 +20,8 @@ import java.util.Date;
 public class EventManager {
 
     private final static CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final static ComponentLogger logger = plugin.getComponentLogger();
 
     private final static SettingsManager config = ConfigManager.getConfig();
 
@@ -103,7 +106,7 @@ public class EventManager {
         final boolean log_to_console = config.getProperty(ConfigKeys.log_to_console);
 
         if (log_to_console) {
-            plugin.getComponentLogger().info("[{} {}]: {}", time, type.getEvent(), AdvUtils.parse(message));
+            logger.info("[{} {}]: {}", time, type.getEvent(), AdvUtils.parse(message));
         }
     }
 }

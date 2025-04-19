@@ -76,7 +76,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null || crate.getCrateType() == CrateType.menu) {
             Messages.internal_error.sendMessage(player);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null or Menu for the crate named {}", crateName);
+            if (MiscUtils.isLogging()) this.logger.error("An error has occurred: The crate type is null or Menu for the crate named {}", crateName);
 
             return;
         }
@@ -144,7 +144,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null) {
             Messages.internal_error.sendMessage(sender);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crateName);
+            if (MiscUtils.isLogging()) this.logger.error("An error has occurred: The crate type is null for the crate named {}", crateName);
 
             return;
         }
@@ -222,7 +222,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null) {
             Messages.internal_error.sendMessage(sender);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crateName);
+            if (MiscUtils.isLogging()) this.logger.error("An error has occurred: The crate type is null for the crate named {}", crateName);
 
             return;
         }
@@ -273,7 +273,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == null) {
             Messages.internal_error.sendMessage(player);
 
-            if (MiscUtils.isLogging()) this.plugin.getComponentLogger().error("An error has occurred: The crate type is null for the crate named {}", crate.getFileName());
+            if (MiscUtils.isLogging()) this.logger.error("An error has occurred: The crate type is null for the crate named {}", crate.getFileName());
 
             return;
         }

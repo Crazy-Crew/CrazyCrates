@@ -116,7 +116,7 @@ public class CasinoCrate extends CrateBuilder {
 
                 if (tier_uno == null || tier_dos == null || tier_tres == null) {
                     if (MiscUtils.isLogging()) {
-                        this.plugin.getComponentLogger().warn("One of your tiers in {} could not be found, or is empty. Search for row-1, row-2 or row-3", fileName);
+                        this.logger.warn("One of your tiers in {} could not be found, or is empty. Search for row-1, row-2 or row-3", fileName);
                     }
 
                     this.crateManager.endCrate(this.player);

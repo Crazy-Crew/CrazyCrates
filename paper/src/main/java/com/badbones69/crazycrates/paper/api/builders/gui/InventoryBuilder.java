@@ -15,6 +15,7 @@ import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.api.builder.gui.types.BaseGui;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import java.text.NumberFormat;
@@ -31,6 +32,8 @@ public abstract class InventoryBuilder {
     }
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    protected final ComponentLogger logger = this.plugin.getComponentLogger();
 
     protected final CrateManager crateManager = this.plugin.getCrateManager();
 
@@ -56,7 +59,7 @@ public abstract class InventoryBuilder {
                         return;
                     }
 
-                    if (MiscUtils.isLogging()) this.plugin.getComponentLogger().warn("The property {} is empty, so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
+                    if (MiscUtils.isLogging()) this.logger.warn("The property {} is empty, so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
 
                     return;
                 }

@@ -9,6 +9,7 @@ import com.badbones69.crazycrates.paper.api.objects.gui.buttons.CrateButton;
 import com.badbones69.crazycrates.paper.api.objects.gui.buttons.GuiButton;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.util.HashMap;
@@ -17,6 +18,8 @@ import java.util.Map;
 public class GuiSettings {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final ComponentLogger logger = this.plugin.getComponentLogger();
 
     private final String title;
     private final int rows;
@@ -55,7 +58,7 @@ public class GuiSettings {
 
                 if (this.buttons.containsKey(slot)) {
                     if (MiscUtils.isLogging()) {
-                        this.plugin.getComponentLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
+                        this.logger.warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
                     }
 
                     return;
@@ -77,7 +80,7 @@ public class GuiSettings {
 
                 if (this.buttons.containsKey(slot)) {
                     if (MiscUtils.isLogging()) {
-                        this.plugin.getComponentLogger().warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
+                        this.logger.warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
                     }
 
                     return;

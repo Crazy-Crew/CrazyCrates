@@ -11,6 +11,7 @@ import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Server;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,6 +30,8 @@ import static java.util.regex.Matcher.quoteReplacement;
 public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
     protected @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    protected @NotNull final ComponentLogger logger = this.plugin.getComponentLogger();
 
     protected @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
 
@@ -112,7 +115,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
                 return true;
             }
 
-            if (MiscUtils.isLogging()) plugin.getComponentLogger().warn("The property {} is empty so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
+            if (MiscUtils.isLogging()) logger.warn("The property {} is empty so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
 
             return true;
         }
