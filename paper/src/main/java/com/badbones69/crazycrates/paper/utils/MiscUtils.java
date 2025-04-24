@@ -116,8 +116,8 @@ public class MiscUtils {
                 if (!keyLog.exists()) {
                     keyLog.createNewFile();
                 }
-            } catch (IOException exception) {
-                if (MiscUtils.isLogging()) logger.warn("Failed to create log files.");
+            } catch (final IOException exception) {
+                if (isLogging()) logger.warn("Failed to create log files.", exception);
             }
         }
     }
@@ -380,15 +380,13 @@ public class MiscUtils {
     public static void registerPermission(@NotNull final String permission, @NotNull final String description, final boolean isDefault) {
         if (permission.isEmpty()) return;
 
-        PluginManager pluginManager = plugin.getServer().getPluginManager();
-
         if (pluginManager.getPermission(permission) != null) {
-            if (MiscUtils.isLogging()) logger.warn("Permission {} is already on the server. Pick a different name", permission);
+            if (isLogging()) logger.warn("Permission {} is already on the server. Pick a different name", permission);
 
             return;
         }
 
-        if (MiscUtils.isLogging()) logger.warn("Permission {} is registered", permission);
+        if (isLogging()) logger.warn("Permission {} is registered", permission);
 
         pluginManager.addPermission(new Permission(permission, description, isDefault ? PermissionDefault.TRUE : PermissionDefault.OP));
     }
@@ -396,15 +394,13 @@ public class MiscUtils {
     public static void unregisterPermission(final String permission) {
         if (permission.isEmpty()) return;
 
-        PluginManager pluginManager = plugin.getServer().getPluginManager();
-
         if (pluginManager.getPermission(permission) == null) {
-            if (MiscUtils.isLogging()) logger.warn("Permission {} is not registered", permission);
+            if (isLogging()) logger.warn("Permission {} is not registered", permission);
 
             return;
         }
 
-        if (MiscUtils.isLogging()) logger.warn("Permission {} is unregistered", permission);
+        if (isLogging()) logger.warn("Permission {} is unregistered", permission);
 
         pluginManager.removePermission(permission);
     }
