@@ -37,6 +37,7 @@ tasks {
 
         dependencies {
             optional.project("fancyholograms")
+            optional.project("DecentHolograms")
         }
     }
 
