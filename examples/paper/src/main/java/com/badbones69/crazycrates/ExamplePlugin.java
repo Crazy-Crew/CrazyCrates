@@ -1,11 +1,14 @@
 package com.badbones69.crazycrates;
 
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import us.crazycrew.crazycrates.api.users.UserManager;
@@ -14,22 +17,25 @@ import java.util.UUID;
 
 public class ExamplePlugin extends JavaPlugin implements Listener {
 
-    public boolean isPluginEnabled(String pluginName) {
-        return getServer().getPluginManager().isPluginEnabled(pluginName);
+    public boolean isPluginEnabled(@NotNull final String pluginName, @NotNull final PluginManager server) {
+        return server.isPluginEnabled(pluginName);
     }
 
     @Override
     public void onEnable() {
-        if (isPluginEnabled("CrazyCrates")) {
-            Plugin instance = getServer().getPluginManager().getPlugin("CrazyCrates");
+        final PluginManager server = getServer().getPluginManager();
+        final ComponentLogger logger = getComponentLogger();
+
+        if (isPluginEnabled("CrazyCrates", server)) {
+            final Plugin instance = server.getPlugin("CrazyCrates");
 
             if (instance != null) {
-                getLogger().warning("The plugin: " + instance.getName() + " is enabled.");
+                logger.warn("{} is enabled.", "The plugin: " + instance.getName());
 
-                getServer().getPluginManager().registerEvents(this, this);
+                server.registerEvents(this, this);
             }
         } else {
-            getLogger().warning("Could not find CrazyCrates!");
+            logger.warn("Could not find CrazyCrates, so the API did not load.");
         }
     }
 
