@@ -12,9 +12,9 @@ project.description = "Add crates to your Paper server with 11 different crate t
 repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 
-    maven("https://repo.triumphteam.dev/snapshots/")
+    maven("https://repo.fancyinnovations.com/releases/")
 
-    maven("https://repo.fancyplugins.de/releases/")
+    maven("https://repo.triumphteam.dev/snapshots/")
 
     maven("https://repo.nexomc.com/snapshots/")
 
