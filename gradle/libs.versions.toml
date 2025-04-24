@@ -48,10 +48,17 @@ metrics = { module = "org.bstats:bstats-bukkit", version.ref = "bStats" }
 hikari-cp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 jalu = { module = "ch.jalu:configme", version.ref = "jalu" }
 
+# Configurate API
+configurate-jackson = { module = "org.spongepowered:configurate-jackson", version.ref = "configurate" }
+configurate-yaml = { module = "org.spongepowered:configurate-yaml", version.ref = "configurate" }
+
 [versions]
 # Paper API
 paper = "1.21.5-R0.1-SNAPSHOT"
 minecraft = "1.21.5"
+
+# Configurate API
+configurate = "4.2.0"
 
 # Gradle Plugins
 shadow = "9.0.0-beta12"

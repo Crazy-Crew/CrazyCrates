@@ -2,6 +2,7 @@ rootProject.name = "CrazyCrates"
 
 listOf(
     "modules/paper" to "example-paper",
+    "modules/system" to "crates-system",
 
     "publish" to "publish",
 

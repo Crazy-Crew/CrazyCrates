@@ -1,0 +1,8 @@
+name: 'CrazyCrates'
+main: 'com.ryderbelserion.crazycrates.CrazyCrates'
+
+version: '1.0.0'
+description: 'Adds swiggity swoogity crates to your server.'
+api-version: '1.21.5'
+
+folia-supported: true
