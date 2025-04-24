@@ -5,7 +5,8 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.fusion.api.enums.FileType;
+import com.badbones69.crazycrates.paper.utils.MiscUtils;
+import com.ryderbelserion.fusion.core.managers.files.FileType;
 import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
@@ -112,7 +113,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             final File crateFile = new File(directory, crateName);
 
             if (crateFile.exists()) {
-                this.logger.warn("Crate {} already exists in {}.", crateName, directory.getName());
+                if (MiscUtils.isLogging()) this.logger.warn("Crate {} already exists in {}.", crateName, directory.getName());
 
                 failed.add("<red>⤷ " + crateName);
 
@@ -122,7 +123,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             try {
                 crateFile.createNewFile();
             } catch (IOException exception) {
-                this.logger.warn("Failed to create crate file {} in {}.", crateName, directory.getName(), exception);
+                if (MiscUtils.isLogging()) this.logger.warn("Failed to create crate file {} in {}.", crateName, directory.getName(), exception);
 
                 failed.add("<red>⤷ " + crateName);
             }

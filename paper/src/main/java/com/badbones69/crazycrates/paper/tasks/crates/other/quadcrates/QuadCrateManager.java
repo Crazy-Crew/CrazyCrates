@@ -206,7 +206,7 @@ public class QuadCrateManager {
         // Shove other players away from the player opening the crate.
         shovePlayers.forEach(entity -> entity.getLocation().toVector().subtract(this.spawnLocation.clone().toVector()).normalize().setY(1));
 
-        // Store the spawned Crates ( Chest Block ) in the ArrayList.
+        // Store the spawned Crates (Chest Block) in the ArrayList.
         addCrateLocations(2, 1, 0);
         addCrateLocations(0, 1, 2);
 
@@ -284,7 +284,7 @@ public class QuadCrateManager {
         new FoliaScheduler(Scheduler.global_scheduler) {
             @Override
             public void run() {
-                // Update spawned crate block states which removes them.
+                // Update spawned crate block states that remove them.
                 crateLocations.forEach(location -> server.getRegionScheduler().run(plugin, location, schedulerTask -> quadCrateChests.get(location).update(true, false)));
 
                 // Remove displayed rewards.

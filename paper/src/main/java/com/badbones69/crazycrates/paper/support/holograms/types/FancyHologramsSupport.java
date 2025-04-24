@@ -12,6 +12,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Server;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class FancyHologramsSupport extends HologramManager {
     private final de.oliver.fancyholograms.api.HologramManager manager = FancyHologramsPlugin.get().getHologramManager();
 
     @Override
-    public void createHologram(final Location location, final Crate crate, final String id) {
+    public void createHologram(@NotNull final Location location, @NotNull final Crate crate, @NotNull final String id) {
         if (crate.getCrateType() == CrateType.menu) return;
 
         final CrateHologram crateHologram = crate.getHologram();
@@ -75,7 +76,7 @@ public class FancyHologramsSupport extends HologramManager {
     }
 
     @Override
-    public void removeHologram(final String id) {
+    public void removeHologram(@NotNull final String id) {
         final Hologram hologram = this.manager.getHologram(name(id)).orElse(null);
 
         if (hologram == null) return;
@@ -84,7 +85,7 @@ public class FancyHologramsSupport extends HologramManager {
     }
 
     @Override
-    public boolean exists(final String id) {
+    public boolean exists(@NotNull final String id) {
         return this.manager.getHologram(name(id)).orElse(null) != null;
     }
 
@@ -106,7 +107,7 @@ public class FancyHologramsSupport extends HologramManager {
     }
 
     @Override
-    public final String getName() {
+    public @NotNull final String getName() {
         return "FancyHolograms";
     }
 }

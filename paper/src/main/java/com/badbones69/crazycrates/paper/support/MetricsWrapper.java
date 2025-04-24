@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class MetricsWrapper{
         final List<Crate> crates = new ArrayList<>(this.crateManager.getCrates());
 
         crates.forEach(crate -> {
-            CrateType type = crate.getCrateType();
+            final CrateType type = crate.getCrateType();
 
             if (type == null || type == CrateType.menu) return;
 
@@ -41,7 +42,7 @@ public class MetricsWrapper{
         });
     }
 
-    public final Metrics getMetrics() {
+    public @NotNull final Metrics getMetrics() {
         return this.metrics;
     }
 }

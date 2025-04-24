@@ -15,7 +15,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import java.util.ArrayList;
 import java.util.List;
 
-// Only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
+// The only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
 public class BrokeLocationsListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
@@ -37,7 +37,7 @@ public class BrokeLocationsListener implements Listener {
 
             if (location.getWorld() != null) {
                 if (brokeLocation.getCrate() != null) {
-                    CrateLocation crateLocation = new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location);
+                    final CrateLocation crateLocation = new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location);
 
                     this.crateManager.addLocation(crateLocation);
 
@@ -50,6 +50,7 @@ public class BrokeLocationsListener implements Listener {
                     }
 
                     fixedWorlds.add(brokeLocation);
+
                     fixedAmount++;
                 }
             }

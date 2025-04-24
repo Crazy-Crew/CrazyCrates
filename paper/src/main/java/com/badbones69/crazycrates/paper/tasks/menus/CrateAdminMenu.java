@@ -6,14 +6,15 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiFiller;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.api.builder.gui.objects.GuiFiller;
+import com.ryderbelserion.fusion.paper.api.builder.gui.objects.GuiItem;
 import com.ryderbelserion.fusion.paper.api.builder.gui.types.PaginatedGui;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemType;
+import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +22,7 @@ import java.util.UUID;
 
 public class CrateAdminMenu extends DynamicInventoryBuilder {
 
-    public CrateAdminMenu(final Player player) {
+    public CrateAdminMenu(@NotNull final Player player) {
         super(player, "<bold><red>Admin Keys</bold>", 6);
     }
 

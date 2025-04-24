@@ -1,10 +1,8 @@
 package com.badbones69.crazycrates.paper.listeners.items;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.events.CrateInteractEvent;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;

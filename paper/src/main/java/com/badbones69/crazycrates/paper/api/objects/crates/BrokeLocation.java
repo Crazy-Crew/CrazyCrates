@@ -20,7 +20,7 @@ public class BrokeLocation {
 
     /**
      * Builds a location that represents a broken crate.
-     * Usually never activates.......
+     * Usually never activates
      *
      * @param locationName the location name
      * @param crate the crate object
@@ -41,7 +41,7 @@ public class BrokeLocation {
     /**
      * @return the location name
      */
-    public final String getLocationName() {
+    public @NotNull final String getLocationName() {
         return this.locationName;
     }
 
@@ -76,7 +76,7 @@ public class BrokeLocation {
     /**
      * @return the crate plugin
      */
-    public Crate getCrate() {
+    public @Nullable final Crate getCrate() {
         return this.crate;
     }
 

@@ -372,7 +372,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
     /**
      * Plays a sound at different volume levels with fallbacks.
      *
-     * @param type i.e. stop, cycle or click sound
+     * @param type stop, cycle or click sound
      * @param source sound category to respect client settings
      * @param fallback fallback sound in case no sound is found
      */
@@ -400,8 +400,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
         final LegacyItemBuilder itemBuilder = manager.getMysteryCrate().setPlayer(this.player);
 
         for (int slot = 0; slot <= this.size; slot++) {
-            itemBuilder.addNamePlaceholder("%Slot%", String.valueOf(slot))
-                    .addLorePlaceholder("%Slot%", String.valueOf(slot));
+            itemBuilder.addNamePlaceholder("%Slot%", String.valueOf(slot)).addLorePlaceholder("%Slot%", String.valueOf(slot));
 
             itemBuilder.setAmount(slot);
 

@@ -42,8 +42,8 @@ public class QuickCrate extends CrateBuilder {
     private final Crate crate = getCrate();
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType) {
-        // Crate event failed so we return.
+    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, @NotNull final EventType eventType) {
+        // Crate event failed, so we return.
         if (isCrateEventValid(type, checkHand, isSilent, eventType)) {
             return;
         }
@@ -61,13 +61,13 @@ public class QuickCrate extends CrateBuilder {
 
             Messages.not_enough_keys.sendMessage(this.player, new HashMap<>() {{
                 put("{required_amount}", String.valueOf(crate.getRequiredKeys()));
-                put("{key_amount}", String.valueOf(crate.getRequiredKeys())); // deprecated, remove in next major version of minecraft.
+                put("{key_amount}", String.valueOf(crate.getRequiredKeys())); // deprecated, remove in the next major version of minecraft.
                 put("{amount}", String.valueOf(finalKeys));
                 put("{crate}", crate.getCrateName());
                 put("{key}", crate.getKeyName());
             }});
 
-            // Remove from opening list.
+            // Remove from an opening list.
             this.crateManager.removePlayerFromOpeningList(this.player);
 
             return;
@@ -95,7 +95,7 @@ public class QuickCrate extends CrateBuilder {
                 // Send the message about failing to take the key.
                 MiscUtils.failedToTakeKey(this.player, fileName);
 
-                // Remove from opening list.
+                // Remove from an opening list.
                 this.crateManager.removePlayerFromOpeningList(this.player);
 
                 // Remove crates in use
@@ -158,8 +158,7 @@ public class QuickCrate extends CrateBuilder {
             // Get the display item.
             ItemStack display = prize.getDisplayItem(this.player, this.crate); //todo() use display entities
 
-            // Get the item meta.
-            display.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(ItemKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1"));
+            display.editPersistentDataContainer(container -> container.set(ItemKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1"));
 
             Item reward;
 
@@ -167,10 +166,8 @@ public class QuickCrate extends CrateBuilder {
                 reward = this.player.getWorld().dropItem(this.location.clone().add(0.5, 1, 0.5), display);
             } catch (IllegalArgumentException exception) {
                 if (MiscUtils.isLogging()) {
-                    final ComponentLogger logger = this.plugin.getComponentLogger();
-
-                    logger.warn("A prize could not be given due to an invalid display item for this prize.");
-                    logger.warn("Crate: {} Prize: {}", prize.getCrateName(), prize.getPrizeName(), exception);
+                    this.logger.warn("A prize could not be given due to an invalid display item for this prize.");
+                    this.logger.warn("Crate: {} Prize: {}", prize.getCrateName(), prize.getPrizeName(), exception);
                 }
 
                 return;

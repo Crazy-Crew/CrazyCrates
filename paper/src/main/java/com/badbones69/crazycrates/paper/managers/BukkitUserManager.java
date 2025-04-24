@@ -717,7 +717,7 @@ public class BukkitUserManager extends UserManager {
         this.data.save();
     }
 
-    public String getRespinPrize(@NotNull final UUID uuid, @NotNull final String crateName) {
+    public @NotNull final String getRespinPrize(@NotNull final UUID uuid, @NotNull final String crateName) {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {

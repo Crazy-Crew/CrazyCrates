@@ -11,7 +11,7 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.api.builder.gui.objects.GuiItem;
 import com.ryderbelserion.fusion.paper.api.builder.gui.types.BaseGui;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
@@ -27,7 +27,7 @@ public abstract class InventoryBuilder {
 
     protected final Player player;
 
-    public InventoryBuilder(final Player player) {
+    public InventoryBuilder(@NotNull final Player player) {
         this.player = player;
     }
 
@@ -43,7 +43,7 @@ public abstract class InventoryBuilder {
 
     protected final SettingsManager config = ConfigManager.getConfig();
 
-    public void addMenuButton(final Player player, final Crate crate, final BaseGui gui, final int row, final int column) {
+    public void addMenuButton(@NotNull final Player player, @NotNull final Crate crate, @NotNull final BaseGui gui, final int row, final int column) {
         if (this.config.getProperty(ConfigKeys.enable_crate_menu)) {
             gui.setItem(gui.getSlotFromRowColumn(row, column), new GuiItem(this.inventoryManager.getMenuButton(player), action -> {
                 if (this.config.getProperty(ConfigKeys.menu_button_override)) {
@@ -71,16 +71,18 @@ public abstract class InventoryBuilder {
         }
     }
 
-    public final String parse(final Player player, final String title) {
+    public final String parse(@NotNull final Player player, @NotNull final String title) {
         return Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, title) : title;
     }
 
-    public final String getCrates(@NotNull String option) {
+    public final String getCrates(@NotNull final String option) {
         if (option.isEmpty()) return "";
 
         final UUID uuid = this.player.getUniqueId();
 
         final NumberFormat instance = NumberFormat.getInstance();
+
+        String clone = option;
 
         for (Crate crate : this.crateManager.getUsableCrates()) {
             final String fileName = crate.getFileName();
@@ -93,7 +95,7 @@ public abstract class InventoryBuilder {
 
             final int opened = this.userManager.getCrateOpened(uuid, fileName);
 
-            option = option.replaceAll("%" + lowerCase + "%", instance.format(virtual))
+            clone = clone.replaceAll("%" + lowerCase + "%", instance.format(virtual))
                     .replaceAll("%" + lowerCase + "_physical%", instance.format(physical))
                     .replaceAll("%" + lowerCase + "_total%", instance.format(total))
                     .replaceAll("%" + lowerCase + "_opened%", instance.format(opened))
@@ -103,6 +105,6 @@ public abstract class InventoryBuilder {
                     .replaceAll("%" + lowerCase + "_raw_opened%", String.valueOf(opened));
         }
 
-        return option;
+        return clone;
     }
 }

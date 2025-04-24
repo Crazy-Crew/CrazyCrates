@@ -42,8 +42,8 @@ public class CsgoCrate extends CrateBuilder {
     private final Crate crate = getCrate();
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType) {
-        // Crate event failed so we return.
+    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, @NotNull final EventType eventType) {
+        // Crate event failed, so we return.
         if (isCrateEventValid(type, checkHand, isSilent, eventType)) {
             return;
         }
@@ -53,7 +53,7 @@ public class CsgoCrate extends CrateBuilder {
         final boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, checkHand);
 
         if (!keyCheck) {
-            // Remove from opening list.
+            // Remove from an opening list.
             this.crateManager.removePlayerFromOpeningList(this.player);
 
             return;

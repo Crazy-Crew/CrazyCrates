@@ -111,11 +111,11 @@ public class InventoryManager {
 
     private final List<UUID> previewViewers = new ArrayList<>();
 
-    public void addPreviewViewer(final UUID uuid) {
+    public void addPreviewViewer(@NotNull final UUID uuid) {
         this.previewViewers.add(uuid);
     }
 
-    public void removePreviewViewer(final UUID uuid) {
+    public void removePreviewViewer(@NotNull final UUID uuid) {
         this.previewViewers.remove(uuid);
     }
 
@@ -123,11 +123,11 @@ public class InventoryManager {
         return Collections.unmodifiableList(this.previewViewers);
     }
 
-    public final boolean hasPreviewViewer(final UUID uuid) {
+    public final boolean hasPreviewViewer(@NotNull final UUID uuid) {
         return this.previewViewers.contains(uuid);
     }
 
-    public void openPreview(final Crate crate) {
+    public void openPreview(@NotNull final Crate crate) {
         final Iterator<UUID> viewers = getPreviewViewers().iterator();
 
         while (viewers.hasNext()) {

@@ -18,7 +18,7 @@ public class SoundEffect {
      * Builds a sound to play.
      *
      * @param section section in the crate config
-     * @param type type of sound i.e. cycle-sound or click-sound
+     * @param type type of sound, cycle-sound or click-sound
      * @param fallback the fallback sound if no sound is found
      * @param source category of sound as to respect the client side sound settings
      */

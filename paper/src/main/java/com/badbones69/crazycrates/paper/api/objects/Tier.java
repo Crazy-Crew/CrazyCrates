@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -86,7 +86,7 @@ public class Tier {
     /**
      * @return the tier item shown in the preview.
      */
-    public @NotNull final ItemStack getTierItem(final @Nullable Player target, final Crate crate) {
+    public @NotNull final ItemStack getTierItem(@Nullable final Player target, @NotNull final Crate crate) {
         if (target != null) this.item.setPlayer(target);
 
         return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).addLorePlaceholder("%chance%", StringUtils.format(crate.getTierChance(getWeight()))).setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), this.name).asItemStack();

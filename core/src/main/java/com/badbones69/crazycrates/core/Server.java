@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.core;
 
 import com.badbones69.crazycrates.core.impl.Settings;
-import com.ryderbelserion.fusion.api.utils.FileUtils;
+import com.ryderbelserion.fusion.core.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.users.UserManager;
@@ -10,6 +10,7 @@ import us.crazycrew.crazycrates.platform.IServer;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 
 public class Server implements IServer {
 
@@ -59,7 +60,7 @@ public class Server implements IServer {
 
     @Override
     public @NotNull final List<String> getCrateFiles(boolean keepExtension) {
-        return FileUtils.getNames(getCrateFolder(), ".yml", keepExtension);
+        return keepExtension ? FileUtils.getNamesByExtension("crates", this.directory.toPath(), ".yml") :FileUtils.getNamesWithoutExtension("crates", this.directory.toPath(), ".yml");
     }
 
     @Override

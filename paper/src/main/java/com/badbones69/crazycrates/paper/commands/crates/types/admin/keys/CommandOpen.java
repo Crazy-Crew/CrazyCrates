@@ -339,18 +339,16 @@ public class CommandOpen extends BaseCommand {
                             PrizeManager.givePrize(player, crate, crate.pickPrize(player, tier));
                             PrizeManager.givePrize(player, crate, crate.pickPrize(player, tier));
                         } else {
-                            final @Nullable Tier row_uno = crate.getTier(section.getString("types.row-1", ""));
-                            final @Nullable Tier row_dos = crate.getTier(section.getString("types.row-2", ""));
-                            final @Nullable Tier row_tres = crate.getTier(section.getString("types.row-3", ""));
+                            @Nullable final Tier row_uno = crate.getTier(section.getString("types.row-1", ""));
+                            @Nullable final Tier row_dos = crate.getTier(section.getString("types.row-2", ""));
+                            @Nullable final Tier row_tres = crate.getTier(section.getString("types.row-3", ""));
 
                             if (row_uno == null || row_dos == null || row_tres == null) {
-                                final Logger logger = this.plugin.getLogger();
-
                                 if (MiscUtils.isLogging()) {
                                     List.of(
                                             "One of your rows has a tier that doesn't exist supplied in " + fileName,
                                             "You can find this in your crate config, search for row-1, row-2, and row-3"
-                                    ).forEach(logger::warning);
+                                    ).forEach(this.logger::warn);
                                 }
 
                                 used--;

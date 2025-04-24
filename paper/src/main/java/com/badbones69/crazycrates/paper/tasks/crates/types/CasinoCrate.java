@@ -96,7 +96,7 @@ public class CasinoCrate extends CrateBuilder {
     }
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType) {
+    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, @NotNull final EventType eventType) {
         // Crate event failed so we return.
         if (isCrateEventValid(type, checkHand, isSilent, eventType)) {
             return;
@@ -110,14 +110,12 @@ public class CasinoCrate extends CrateBuilder {
             final boolean isRandom = section.getBoolean("toggle", false);
 
             if (!isRandom) {
-                final @Nullable Tier tier_uno = this.crate.getTier(section.getString("types.row-3", ""));
-                final @Nullable Tier tier_dos = this.crate.getTier(section.getString("types.row-2", ""));
-                final @Nullable Tier tier_tres = this.crate.getTier(section.getString("types.row-1", ""));
+                @Nullable final Tier tier_uno = this.crate.getTier(section.getString("types.row-3", ""));
+                @Nullable final Tier tier_dos = this.crate.getTier(section.getString("types.row-2", ""));
+                @Nullable final Tier tier_tres = this.crate.getTier(section.getString("types.row-1", ""));
 
                 if (tier_uno == null || tier_dos == null || tier_tres == null) {
-                    if (MiscUtils.isLogging()) {
-                        this.logger.warn("One of your tiers in {} could not be found, or is empty. Search for row-1, row-2 or row-3", fileName);
-                    }
+                    if (MiscUtils.isLogging()) this.logger.warn("One of your tiers in {} could not be found, or is empty. Search for row-1, row-2 or row-3", fileName);
 
                     this.crateManager.endCrate(this.player);
 
@@ -135,7 +133,7 @@ public class CasinoCrate extends CrateBuilder {
         final boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, checkHand);
 
         if (!keyCheck) {
-            // Remove from opening list.
+            // Remove from an opening list.
             this.crateManager.removePlayerFromOpeningList(this.player);
 
             return;
@@ -163,9 +161,9 @@ public class CasinoCrate extends CrateBuilder {
             final boolean isRandom = section.getBoolean("toggle", false);
 
             if (isRandom) {
-                List<Tier> tiers = this.crate.getTiers();
+                final List<Tier> tiers = this.crate.getTiers();
 
-                int size = tiers.size();
+                final int size = tiers.size();
 
                 final ThreadLocalRandom random = ThreadLocalRandom.current();
 
@@ -184,7 +182,7 @@ public class CasinoCrate extends CrateBuilder {
                 return;
             }
 
-            final @Nullable Tier tierUno = this.crate.getTier(section.getString("types.row-1", ""));
+            @Nullable final Tier tierUno = this.crate.getTier(section.getString("types.row-1", ""));
 
             if (tierUno != null) {
                 setItem(2, getDisplayItem(tierUno));
@@ -192,7 +190,7 @@ public class CasinoCrate extends CrateBuilder {
                 setItem(20, getDisplayItem(tierUno));
             }
 
-            final @Nullable Tier tierDos = this.crate.getTier(section.getString("types.row-2", ""));
+            @Nullable final Tier tierDos = this.crate.getTier(section.getString("types.row-2", ""));
 
             if (tierDos != null) {
                 setItem(4, getDisplayItem(tierDos));
@@ -200,7 +198,7 @@ public class CasinoCrate extends CrateBuilder {
                 setItem(22, getDisplayItem(tierDos));
             }
 
-            final @Nullable Tier tierTres = this.crate.getTier(section.getString("types.row-3", ""));
+            @Nullable final Tier tierTres = this.crate.getTier(section.getString("types.row-3", ""));
 
             if (tierTres != null) {
                 setItem(6, getDisplayItem(tierTres));

@@ -29,17 +29,17 @@ import static java.util.regex.Matcher.quoteReplacement;
 
 public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
-    protected @NotNull final CrazyCrates plugin = CrazyCrates.getPlugin();
+    protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+  
+    protected final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    protected @NotNull final ComponentLogger logger = this.plugin.getComponentLogger();
+    protected final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
-    protected @NotNull final BukkitUserManager userManager = this.plugin.getUserManager();
+    protected final CrateManager crateManager = this.plugin.getCrateManager();
 
-    protected @NotNull final InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    protected final ComponentLogger logger = this.plugin.getComponentLogger();
 
-    protected @NotNull final CrateManager crateManager = this.plugin.getCrateManager();
-
-    protected @NotNull final Server server = this.plugin.getServer();
+    protected final Server server = this.plugin.getServer();
 
     private Inventory inventory;
     private Player player;
@@ -115,7 +115,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
                 return true;
             }
 
-            if (MiscUtils.isLogging()) logger.warn("The property {} is empty so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
+            if (MiscUtils.isLogging()) this.logger.warn("The property {} is empty so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
 
             return true;
         }

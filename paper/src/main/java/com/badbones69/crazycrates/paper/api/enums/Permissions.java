@@ -137,7 +137,7 @@ public enum Permissions {
         return Collections.unmodifiableMap(this.children);
     }
 
-    public final boolean hasPermission(final Player player) {
+    public final boolean hasPermission(@NotNull final Player player) {
         return player.hasPermission(getPermission());
     }
 }

@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.api.enums.other;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import org.jetbrains.annotations.NotNull;
 
 public enum Plugins {
 
@@ -36,15 +37,15 @@ public enum Plugins {
 
     private final String name;
 
-    Plugins(String name) {
+    Plugins(@NotNull final String name) {
         this.name = name;
     }
 
-    public boolean isEnabled() {
+    public final boolean isEnabled() {
         return this.plugin.getServer().getPluginManager().isPluginEnabled(this.name);
     }
 
-    public String getName() {
+    public @NotNull final String getName() {
         return this.name;
     }
 }
