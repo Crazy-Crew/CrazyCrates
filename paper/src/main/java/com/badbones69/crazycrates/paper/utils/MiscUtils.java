@@ -42,7 +42,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -51,8 +50,6 @@ public class MiscUtils {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
     
-    private static final ComponentLogger logger = plugin.getComponentLogger();
-
     private static final ComponentLogger logger = plugin.getComponentLogger();
 
     public static void sendCommand(@Nullable final CommandSender sender, @NotNull final String command, @NotNull final Map<String, String> placeholders) {
