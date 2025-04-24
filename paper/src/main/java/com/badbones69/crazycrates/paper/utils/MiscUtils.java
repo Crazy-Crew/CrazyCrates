@@ -53,6 +53,8 @@ public class MiscUtils {
     
     private static final ComponentLogger logger = plugin.getComponentLogger();
 
+    private static final ComponentLogger logger = plugin.getComponentLogger();
+
     public static void sendCommand(@Nullable final CommandSender sender, @NotNull final String command, @NotNull final Map<String, String> placeholders) {
         if (command.isEmpty()) return;
 
@@ -410,6 +412,8 @@ public class MiscUtils {
         pluginManager.removePermission(permission);
     }
 
+    private static final PluginManager pluginManager = plugin.getServer().getPluginManager();
+
     public static void registerPermissions() {
         Arrays.stream(Permissions.values()).toList().forEach(permission -> {
             Permission newPermission = new Permission(
@@ -419,7 +423,7 @@ public class MiscUtils {
                     permission.getChildren()
             );
 
-            plugin.getServer().getPluginManager().addPermission(newPermission);
+            pluginManager.addPermission(newPermission);
         });
     }
 
@@ -428,6 +432,6 @@ public class MiscUtils {
     }
 
     public static boolean isExcellentCratesEnabled() {
-        return plugin.getServer().getPluginManager().isPluginEnabled("ExcellentCrates");
+        return pluginManager.isPluginEnabled("ExcellentCrates");
     }
 }

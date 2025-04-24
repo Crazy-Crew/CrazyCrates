@@ -1,1 +1,1 @@
-- Fixed an issue with the FireCracker crate type
+- Fixed an issue on default installations where the rows were set to 3 instead of 6 in the config.yml
