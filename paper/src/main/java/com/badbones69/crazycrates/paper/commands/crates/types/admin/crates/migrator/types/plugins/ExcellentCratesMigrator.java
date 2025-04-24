@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.plugins;
 
+import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
@@ -345,39 +346,21 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 if (prizeSection == null) return;
 
-                /*final boolean useNewItemEditor = this.config.getProperty(ConfigKeys.use_new_item_editor);
-
                 reward.getItems().forEach(key -> {
-                    if (useNewItemEditor) {
-                        final String base64 = PaperMethods.toBase64(key);
+                    final String base64 = ItemUtils.toBase64(key);
 
-                        if (prizeSection.contains("Items")) {
-                            final List<String> items = prizeSection.getStringList("Items");
+                    if (prizeSection.contains("Items")) {
+                        final List<String> items = prizeSection.getStringList("Items");
 
                         items.add("Data: " + base64);
 
-                            set(prizeSection, "Items", items);
-                        } else {
-                            set(prizeSection, "Items", new ArrayList<>() {{
-                                add("Data: " + base64);
-                            }});
-                        }
+                        set(prizeSection, "Items", items);
                     } else {
-                        final List<ItemStack> editorItems = new ArrayList<>();
-
-                        if (prizeSection.contains("Editor-Items")) {
-                            final List<?> editors = prizeSection.getList("Editor-Items");
-
-                            if (editors != null) {
-                                editors.forEach(item -> editorItems.add((ItemStack) item));
-                            }
-                        }
-
-                        editorItems.add(key);
-
-                        set(prizeSection, "Editor-Items", editorItems);
+                        set(prizeSection, "Items", new ArrayList<>() {{
+                            add("Data: " + base64);
+                        }});
                     }
-                });*/
+                });
             });
 
             this.fileManager.addFile(customFile.save());
