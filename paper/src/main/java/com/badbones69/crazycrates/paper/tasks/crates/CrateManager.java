@@ -343,19 +343,19 @@ public class CrateManager {
     public void loadCrates() {
         if (this.config.getProperty(ConfigKeys.update_examples_folder)) {
             final Path path = this.plugin.getDataFolder().toPath();
-
             List.of(
                     "config.yml",
                     "data.yml",
                     "locations.yml",
                     "messages.yml",
                     "editor.yml"
-            ).forEach(file -> FileUtils.extract(file, path.resolve("examples"), true));
+            ).forEach(file -> FileUtils.extract(file, path.resolve("examples"), true, false));
 
-            FileUtils.extract("guis", path.resolve("examples"), true);
-            FileUtils.extract("logs", path.resolve("examples"), true);
-            FileUtils.extract("crates", path.resolve("examples"), true);
-            FileUtils.extract("schematics", path.resolve("examples"), true);
+
+            FileUtils.extract("guis", path.resolve("examples"), true, true);
+            FileUtils.extract("logs", path.resolve("examples"), true, true);
+            FileUtils.extract("crates", path.resolve("examples"), true, true);
+            FileUtils.extract("schematics", path.resolve("examples"), true, true);
         }
 
         this.giveNewPlayersKeys = false;
