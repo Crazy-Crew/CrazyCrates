@@ -6,6 +6,8 @@ api-version: '${apiVersion}'
 description: '${description}'
 website: '${website}'
 
+authors: [ badbones69, ryderbelserion ]
+
 folia-supported: true
 
 dependencies:
