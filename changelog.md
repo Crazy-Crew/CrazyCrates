@@ -1,2 +1,1 @@
-- Updated to [1.21.5](https://github.com/Crazy-Crew/CrazyCrates/pull/845)
-- Added authors to paper-plugin.yml
+- Fixed [#850](https://github.com/Crazy-Crew/CrazyCrates/issues/850)

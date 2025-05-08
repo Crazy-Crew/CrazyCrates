@@ -97,7 +97,6 @@ dependencies = ["decent-holograms", "fancy-holograms", "cmi-lib", "cmi-api"]
 # Shared API
 shared = ["headdatabaseapi", "placeholderapi", "itemsadder", "oraxen", "nexo"]
 
-
 # Adventure API
 adventure = ["kyori-api", "kyori-text", "kyori-logger"]
 

@@ -92,6 +92,7 @@ misc:
   strict-advancement-dimension-check: false
   use-alternative-luck-formula: false
   use-dimension-type-for-custom-spawners: false
+  xp-orb-groups-per-area: default
 packet-limiter:
   all-packets:
     action: KICK
