@@ -1,17 +1,13 @@
-import org.gradle.accessors.dm.LibrariesForLibs
-
-// Hack which exposes `libs` to this convention plugin
-val libs = the<LibrariesForLibs>()
-
-
 plugins {
     id("root-plugin")
 }
+
+val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
 
 repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 dependencies {
-    compileOnly(libs.paper)
+    compileOnly(libs.findLibrary("paper").get())
 }
