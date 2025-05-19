@@ -1,1 +1,1 @@
-- Fixed [#850](https://github.com/Crazy-Crew/CrazyCrates/issues/850)
+- Fix issue with the inventory titles not being colored.
