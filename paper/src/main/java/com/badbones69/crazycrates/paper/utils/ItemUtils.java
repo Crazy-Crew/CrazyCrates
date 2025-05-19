@@ -250,7 +250,7 @@ public class ItemUtils {
             }
 
             if (item.isString("amount")) {
-                final Optional<Number> integer = StringUtils.tryParseInt(item.getString("amount"));
+                final Optional<Number> integer = StringUtils.tryParseInt(item.getString("amount", "1"));
 
                 integer.ifPresent(number -> itemBuilder.setAmount(number.intValue()));
             } else {
