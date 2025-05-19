@@ -328,14 +328,16 @@ public abstract class CrateBuilder extends FoliaScheduler {
 
         if (event.isCancelled()) {
             if (MiscUtils.isLogging()) {
-                final String fileName = crate.getFileName();
+                final String fileName = this.crate.getFileName();
 
-                final boolean hasPermission = this.config.getProperty(ConfigKeys.use_new_permission_system) && this.player.hasPermission("crazycrates.deny.open." + fileName) || this.player.hasPermission("crazycrates.open." + fileName);
+                final String playerName = this.player.getName();
 
-                if (hasPermission) {
-                    this.logger.warn("{} could not open {} due to having the permission preventing them from opening the crate.", this.player.getName(), fileName);
-                } else {
-                    this.logger.warn("{} could not open {} due to no valid prizes being found which led to the event being cancelled.", this.player.getName(), fileName);
+                if (this.config.getProperty(ConfigKeys.use_new_permission_system) && this.player.hasPermission("crazycrates.deny.open." + fileName)) {
+                    this.logger.warn("{} could not open {} due to having the permission preventing them from opening the crate.", playerName, fileName);
+                } else if (!this.player.hasPermission("crazycrates.open." + fileName)) {
+                    this.logger.warn("{} could not open {} due to not having the permission required to open the crate.", playerName, fileName);
+                } else if (!this.crate.canWinPrizes(this.player)) {
+                    this.logger.warn("{} could not open {} due to no valid prizes being found which led to the event being cancelled.", playerName, fileName);
                 }
             }
         }
