@@ -28,3 +28,10 @@ dependencies {
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
+
+tasks {
+    shadowJar {
+        archiveClassifier.set("")
+        archiveVersion.set("")
+    }
+}
