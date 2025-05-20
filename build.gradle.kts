@@ -1,5 +1,5 @@
 plugins {
-    id("root-plugin")
+    `config-java`
 }
 
 rootProject.group = "com.badbones69.crazycrates"
