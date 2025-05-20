@@ -1,104 +1,120 @@
+[versions]
+paperweight = "2.0.0-beta.17" # https://github.com/PaperMC/paperweight
+paper = "1.21.5-R0.1-SNAPSHOT" # https://github.com/PaperMC/Paper
+run-paper = "2.3.1" # https://github.com/jpenilla/run-task
+
+## SpongePowered
+configurate = "4.2.0" # https://github.com/SpongePowered/Configurate
+
+## JetBrains
+annotations = "24.1.0" # https://github.com/JetBrains/java-annotations
+kotlin = "2.1.20" # https://github.com/JetBrains/kotlin
+
+## Kyori
+adventure = "4.21.0" # https://github.com/KyoriPowered/adventure
+
+## GradleUp
+shadow = "9.0.0-beta13" # https://github.com/GradleUp/shadow
+
+## Minecraft
+minecraft = "1.21.5" # https://minecraft.net
+
+## Generic
+jalu = "1.4.3" # https://github.com/AuthMe/ConfigMe
+
+## Discord
+logback = "1.5.18" # https://github.com/qos-ch/logback
+jda = "5.5.1" # https://github.com/discord-jda/JDA
+
+## Plugin API
+headdatabaseapi = "1.3.1" # https://github.com/Arcaniax-Development/HeadDatabase-API
+placeholderapi = "2.11.6" # https://github.com/placeholderapi
+itemsadder = "4.0.10" # https://github.com/ItemsAdder
+oraxen = "1.190.0" # https://github.com/oraxen
+nexo = "0.5.0-dev.14" # https://github.com/Nexo-MC
+
+## Plugins
+feather = "0.3.2" # https://github.com/ryderbelserion/Feather
+minotaur = "2.8.7"
+hangar = "0.1.2"
+
 [plugins]
-paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }
+# https://github.com/ryderbelserion/Feather
+feather = { id = "com.ryderbelserion.feather.core", version.ref = "feather" }
 hangar = { id = "io.papermc.hangar-publish-plugin", version.ref = "hangar" }
-runPaper = { id = "xyz.jpenilla.run-paper", version.ref = "runPaper" }
 minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }
-shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 
 [libraries]
-# Paper API
-paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
+# https://github.com/PaperMC/paperweight
+paperweight = { module = "io.papermc.paperweight.userdev:io.papermc.paperweight.userdev.gradle.plugin", version.ref = "paperweight" }
 
-# Kyori API
+# https://github.com/SpongePowered/Configurate
+configurate-yaml = { module = "org.spongepowered:configurate-yaml", version.ref = "configurate" }
+
+# https://github.com/JetBrains/kotlin
+kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+# https://github.com/GradleUp/shadow
+shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow" }
+
+# https://github.com/JetBrains/java-annotations
+annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
+
+# https://github.com/jpenilla/run-task
+run-paper = { module = "xyz.jpenilla:run-task", version.ref = "run-paper" }
+
+# https://github.com/Arcaniax-Development/HeadDatabase-API
+headdatabaseapi = { module = "com.arcaniax:HeadDatabase-API", version.ref = "headdatabaseapi" }
+# https://github.com/placeholderapi
+placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }
+# https://github.com/ItemsAdder
+itemsadder = { module = "dev.lone:api-itemsadder", version.ref = "itemsadder" }
+# https://github.com/oraxen
+oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }
+# https://github.com/Nexo-MC
+nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }
+
+# https://github.com/qos-ch/logback
+logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+# https://github.com/discord-jda/JDA
+jda = { module = "net.dv8tion:JDA", version.ref = "jda" }
+
+# https://github.com/KyoriPowered/adventure
 kyori-legacy = { module = "net.kyori:adventure-text-serializer-legacy", version.ref = "adventure" }
 kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref = "adventure" }
 kyori-text = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 kyori-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
 
-# Libby API
-libby-paper = { module = "net.byteflux:libby-paper", version.ref = "libby-paper" }
-
-# Hologram API
-decent-holograms = { module = "com.github.decentsoftware-eu:decentholograms", version.ref = "decentholograms" }
-fancy-holograms = { module = "de.oliver:FancyHolograms", version.ref = "fancyholograms" }
-cmi-api = { module = "CMI-API:CMI-API", version.ref = "cmi-api" }
-cmi-lib = { module = "CMILib:CMILib", version.ref = "cmi-lib" }
-
-# Placeholder API
-placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }
-
-# Custom Item API
-headdatabaseapi = { module = "com.arcaniax:HeadDatabase-API", version.ref = "headdatabaseapi" }
-itemsadder = { module = "dev.lone:api-itemsadder", version.ref = "itemsadder" }
-oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }
-nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }
-
-# Plugin API
-excellentcrates = { module = "su.nightexpress.excellentcrates:ExcellentCrates", version = "5.3.1" }
-nightcore = { module = "su.nightexpress.nightcore:nightcore", version = "2.6.3" }
-
-# Fusion Core API
-fusion-paper = { module = "com.ryderbelserion.fusion:fusion-paper", version.ref = "fusion" }
-fusion-core = { module = "com.ryderbelserion.fusion:fusion-core", version.ref = "fusion" }
-
-# Common API
-triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmd" }
-jetbrains = { module = "org.jetbrains:annotations", version.ref = "jetbrains" }
-metrics = { module = "org.bstats:bstats-bukkit", version.ref = "bStats" }
-hikari-cp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
+# https://github.com/AuthMe/ConfigMe
 jalu = { module = "ch.jalu:configme", version.ref = "jalu" }
 
-[versions]
-# Paper API
-paper = "1.21.5-R0.1-SNAPSHOT"
-minecraft = "1.21.5"
-
-# Gradle Plugins
-shadow = "9.0.0-beta12"
-paperweight = "2.0.0-beta.10"
-runPaper = "2.3.1"
-minotaur = "2.8.7"
-hangar = "0.1.2"
-
-# Libby API
-libby-paper = "1.3.1"
-
-# Hologram API
-decentholograms = "2.8.8"
-fancyholograms = "2.4.1"
-cmi-api = "9.7.4.1"
-cmi-lib = "1.5.1.4"
-
-# Placeholder API
-placeholderapi = "2.11.6"
-
-# Custom Item API
-headdatabaseapi = "1.3.1"
-nexo = "0.5.0-dev.14"
-oraxen = "1.190.0"
-itemsadder = "4.0.10"
-
-# Fusion API
-fusion = "1.8.0"
-
-# Common API
-triumph-cmd = "2.0.0-ALPHA-10"
-jetbrains = "24.1.0"
-hikari = "6.2.1"
-bStats = "3.1.0"
-jalu = "1.4.2"
-
-# Kyori API
-adventure = "4.20.0"
 [bundles]
-# Hologram API
-dependencies = ["decent-holograms", "fancy-holograms", "cmi-lib", "cmi-api"]
+adventure = [
+    "kyori-legacy",
+    #"kyori-logger",
+    "kyori-text",
+    "kyori-api"
+]
 
-# Shared API
-shared = ["headdatabaseapi", "placeholderapi", "itemsadder", "oraxen", "nexo"]
+shared = [
+    "headdatabaseapi",
+    "placeholderapi",
+    "itemsadder",
+    "oraxen",
+    "nexo"
+]
 
-# Adventure API
-adventure = ["kyori-api", "kyori-text", "kyori-logger"]
+discord = [
+    "logback",
+    "jda"
+]
 
-# Crate API
-crates = ["excellentcrates", "nightcore"]
+build = [
+    "shadow",
+    "kotlin"
+]
+
+paper = [
+    "paperweight",
+    "run-paper"
+]
