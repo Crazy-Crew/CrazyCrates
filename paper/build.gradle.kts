@@ -9,8 +9,6 @@ repositories {
 
     maven("https://repo.fancyinnovations.com/releases")
 
-    maven("https://repo.triumphteam.dev/snapshots")
-
     maven("https://repo.nexomc.com/snapshots")
 
     maven("https://repo.oraxen.com/releases")
@@ -33,6 +31,10 @@ dependencies {
 }
 
 tasks {
+    build {
+        dependsOn(shadowJar)
+    }
+
     shadowJar {
         listOf(
             "com.ryderbelserion.fusion",
@@ -56,7 +58,7 @@ tasks {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
         with(copySpec {
-            from("src/main/resources/plugin.yml") {
+            from("src/main/resources/paper-plugin.yml") {
                 expand(inputs.properties)
             }
         })
