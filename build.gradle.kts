@@ -103,6 +103,45 @@ feather {
     }
 }
 
+allprojects { //todo() why? the gradle shit in buildSrc already applies this...
+    apply(plugin = "java-library")
+}
+
+tasks {
+    withType<Jar> {
+        subprojects {
+            dependsOn(project.tasks.build)
+        }
+
+        // build our manifest
+        manifest {
+            attributes["Implementation-Version"] = libs.versions.crazycrates.get()
+            attributes["Git-Commit"] = commitHash
+        }
+
+        // get subproject's built jars
+        val jars = subprojects.map { zipTree(it.tasks.jar.get().archiveFile.get().asFile) }
+
+        // merge them into main jar (except their manifests)
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+        from(jars) {
+            exclude("META-INF/MANIFEST.MF")
+        }
+
+        // put behind an action because files don't exist at configuration time
+        doFirst {
+            // merge all subproject's manifests into main manifest
+            jars.forEach { jar ->
+                jar.matching { include("META-INF/MANIFEST.MF") }
+                    .files.forEach { file ->
+                        manifest.from(file)
+                    }
+            }
+        }
+    }
+}
+
 modrinth {
     token = System.getenv("MODRINTH_TOKEN")
 
