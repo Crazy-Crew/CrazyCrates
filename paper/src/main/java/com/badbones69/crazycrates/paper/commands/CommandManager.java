@@ -64,7 +64,7 @@ public class CommandManager {
         commandManager.registerSuggestion(SuggestionKey.of("prizes"), (context) -> {
             final List<String> prizes = new ArrayList<>();
 
-            Crate crate = crateManager.getCrateFromName(context.getInput());
+            Crate crate = crateManager.getCrateFromName(context.getArguments().getFirst());
 
             if (crate != null) {
                 crate.getPrizes().forEach(prize -> prizes.add(prize.getSectionName()));
@@ -76,7 +76,7 @@ public class CommandManager {
         commandManager.registerSuggestion(SuggestionKey.of("tiers"), (context) -> {
             final List<String> tiers = new ArrayList<>();
 
-            Crate crate = crateManager.getCrateFromName(context.getInput());
+            Crate crate = crateManager.getCrateFromName(context.getArguments().getFirst());
 
             if (crate != null) {
                 crate.getTiers().forEach(tier -> tiers.add(tier.getName()));
