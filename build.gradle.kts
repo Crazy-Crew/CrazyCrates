@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.minotaur)
     alias(libs.plugins.feather)
+    alias(libs.plugins.hangar)
 
     `config-java`
 }
@@ -123,4 +124,57 @@ modrinth {
 
     autoAddDependsOn = false
     detectLoaders = false
+
+    dependencies {
+        optional.project("fancyholograms")
+        optional.project("DecentHolograms")
+    }
+}
+
+hangarPublish {
+    publications.register("plugin") {
+        apiKey.set(System.getenv("HANGAR_KEY"))
+
+        id.set(rootProject.name)
+
+        version.set("${rootProject.version}")
+
+        channel.set(if (isSnapshot) "Beta" else "Release")
+
+        changelog.set(content)
+
+        platforms {
+            paper {
+                jar.set(tasks.jar.get().archiveFile.get())
+
+                platformVersions.set(listOf(libs.versions.minecraft.get()))
+
+                dependencies {
+                    hangar("PlaceholderAPI") {
+                        required = false
+                    }
+
+                    hangar("FancyHolograms") {
+                        required = false
+                    }
+
+                    url("DecentHolograms", "https://modrinth.com/plugin/decentholograms") {
+                        required = false
+                    }
+
+                    url("ItemsAdder", "https://polymart.org/product/1851/itemsadder") {
+                        required = false
+                    }
+
+                    url("Oraxen", "https://polymart.org/product/629/oraxen") {
+                        required = false
+                    }
+
+                    url("Nexo", "https://polymart.org/resource/nexo.6901") {
+                        required = false
+                    }
+                }
+            }
+        }
+    }
 }
