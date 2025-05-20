@@ -72,7 +72,7 @@ feather {
 
             avatar(data.avatar)
 
-            content("<@&1372358375433834537>")
+            content("<@&929463441159254066>")
 
             embeds {
                 embed {
