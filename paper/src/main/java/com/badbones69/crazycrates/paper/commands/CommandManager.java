@@ -30,6 +30,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CommandManager {
@@ -45,26 +46,25 @@ public class CommandManager {
     public static void load() {
         new ArgumentRelations().build();
 
-        commandManager.registerSuggestion(SuggestionKey.of("crates"), (sender, context) -> {
+        commandManager.registerSuggestion(SuggestionKey.of("crates"), (context -> {
             final List<String> crates = new ArrayList<>(crateManager.getCrateNames());
 
             crates.add("Menu");
 
             return crates;
-        });
+        }));
 
-        commandManager.registerSuggestion(SuggestionKey.of("keys"), (sender, context) -> List.of("virtual", "v", "physical", "p"));
+        commandManager.registerStaticSuggestion(SuggestionKey.of("keys"), Arrays.asList("virtual", "v", "physical", "p"));
+        commandManager.registerStaticSuggestion(SuggestionKey.of("admin-keys"), Arrays.asList("virtual", "v", "physical", "p", "free", "f"));
 
-        commandManager.registerSuggestion(SuggestionKey.of("admin-keys"), (sender, context) -> List.of("virtual", "v", "physical", "p", "free", "f"));
+        commandManager.registerSuggestion(SuggestionKey.of("players"), (context) -> plugin.getServer().getOnlinePlayers().stream().map(Player::getName).toList());
 
-        commandManager.registerSuggestion(SuggestionKey.of("players"), (sender, context) -> plugin.getServer().getOnlinePlayers().stream().map(Player::getName).toList());
+        commandManager.registerSuggestion(SuggestionKey.of("locations"), (context) -> crateManager.getCrateLocations().stream().map(CrateLocation::getID).toList());
 
-        commandManager.registerSuggestion(SuggestionKey.of("locations"), (sender, context) -> crateManager.getCrateLocations().stream().map(CrateLocation::getID).toList());
-
-        commandManager.registerSuggestion(SuggestionKey.of("prizes"), (sender, context) -> {
+        commandManager.registerSuggestion(SuggestionKey.of("prizes"), (context) -> {
             final List<String> prizes = new ArrayList<>();
 
-            Crate crate = crateManager.getCrateFromName(context.getFirst());
+            Crate crate = crateManager.getCrateFromName(context.getInput());
 
             if (crate != null) {
                 crate.getPrizes().forEach(prize -> prizes.add(prize.getSectionName()));
@@ -73,10 +73,10 @@ public class CommandManager {
             return prizes;
         });
 
-        commandManager.registerSuggestion(SuggestionKey.of("tiers"), (sender, context) -> {
+        commandManager.registerSuggestion(SuggestionKey.of("tiers"), (context) -> {
             final List<String> tiers = new ArrayList<>();
 
-            Crate crate = crateManager.getCrateFromName(context.getFirst());
+            Crate crate = crateManager.getCrateFromName(context.getInput());
 
             if (crate != null) {
                 crate.getTiers().forEach(tier -> tiers.add(tier.getName()));
@@ -85,7 +85,7 @@ public class CommandManager {
             return tiers;
         });
 
-        commandManager.registerSuggestion(SuggestionKey.of("numbers"), (sender, context) -> {
+        commandManager.registerSuggestion(SuggestionKey.of("numbers"), (context) -> {
             final List<String> numbers = new ArrayList<>();
 
             for (int i = 1; i <= 100; i++) numbers.add(String.valueOf(i));
@@ -93,7 +93,7 @@ public class CommandManager {
             return numbers;
         });
 
-        commandManager.registerSuggestion(SuggestionKey.of("doubles"), (sender, context) -> {
+        commandManager.registerSuggestion(SuggestionKey.of("doubles"), (context) -> {
             final List<String> numbers = new ArrayList<>();
 
             int count = 0;
@@ -109,7 +109,7 @@ public class CommandManager {
             return numbers;
         });
 
-        commandManager.registerSuggestion(SuggestionKey.of("migrators"), (sender, context) -> {
+        commandManager.registerSuggestion(SuggestionKey.of("migrators"), (context) -> {
             final List<String> migrators = new ArrayList<>();
 
             for (MigrationType value : MigrationType.values()) {
