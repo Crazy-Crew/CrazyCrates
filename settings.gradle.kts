@@ -21,5 +21,6 @@ fun includeProject(name: String) {
 }
 
 listOf(
+    "core" to "core",
     "api" to "api"
 ).forEach(::includeProject)
