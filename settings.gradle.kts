@@ -1,6 +1,6 @@
 rootProject.name = "CrazyCrates"
 
-listOf(
+/*listOf(
     "modules/paper" to "example-paper",
 
     "publish" to "publish",
@@ -8,7 +8,7 @@ listOf(
     "paper" to "paper",
     "core" to "core",
     "api" to "api"
-).forEach(::includeProject)
+).forEach(::includeProject)*/
 
 fun includeProject(pair: Pair<String, String>): Unit = includeProject(pair.first, pair.second)
 
