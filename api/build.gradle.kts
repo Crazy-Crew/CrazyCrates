@@ -1,6 +1,5 @@
 plugins {
-    id("root-plugin")
-
+    `config-java`
     `maven-publish`
 }
 

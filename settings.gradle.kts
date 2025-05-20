@@ -1,15 +1,5 @@
 rootProject.name = "CrazyCrates"
 
-/*listOf(
-    "modules/paper" to "example-paper",
-
-    "publish" to "publish",
-
-    "paper" to "paper",
-    "core" to "core",
-    "api" to "api"
-).forEach(::includeProject)*/
-
 fun includeProject(pair: Pair<String, String>): Unit = includeProject(pair.first, pair.second)
 
 fun includeProject(name: String, block: ProjectDescriptor.() -> Unit) {
@@ -29,3 +19,7 @@ fun includeProject(name: String) {
         this.name = "${rootProject.name.lowercase()}-$name"
     }
 }
+
+listOf(
+    "api" to "api"
+).forEach(::includeProject)
