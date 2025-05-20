@@ -33,10 +33,20 @@ itemsadder = "4.0.10" # https://github.com/ItemsAdder
 oraxen = "1.190.0" # https://github.com/oraxen
 nexo = "0.5.0-dev.14" # https://github.com/Nexo-MC
 
+# Hologram API
+decentholograms = "2.8.8" # https://modrinth.com/plugin/decentholograms
+fancyholograms = "2.4.1" # https://modrinth.com/plugin/fancyholograms
+cmi-api = "9.7.4.1" # https://github.com/Zrips/CMI-API
+cmi-lib = "1.5.1.4" # https://www.spigotmc.org/resources/cmilib.87610/
+
 ## Gradle Plugins
 feather = "0.3.2" # https://github.com/ryderbelserion/Feather
 minotaur = "2.8.7" # https://github.com/modrinth/minotaur
 hangar = "0.1.3" # https://github.com/HangarMC/hangar-publish-plugin
+
+triumph-cmds = "2.0.0-BETA-3" # https://github.com/TriumphTeam/triumph-cmds
+
+bStats = "3.1.0" # https://github.com/Bastian/bStats
 
 fusion = "1.8.0" # https://github.com/ryderbelserion/Fusion
 
@@ -80,6 +90,20 @@ oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }
 # https://github.com/Nexo-MC
 nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }
 
+# https://modrinth.com/plugin/decentholograms
+decent-holograms = { module = "com.github.decentsoftware-eu:decentholograms", version.ref = "decentholograms" }
+# https://modrinth.com/plugin/fancyholograms
+fancy-holograms = { module = "de.oliver:FancyHolograms", version.ref = "fancyholograms" }
+# https://github.com/Zrips/CMI-API
+cmi-api = { module = "CMI-API:CMI-API", version.ref = "cmi-api" }
+# https://www.spigotmc.org/resources/cmilib.87610/
+cmi-lib = { module = "CMILib:CMILib", version.ref = "cmi-lib" }
+
+# https://modrinth.com/plugin/excellentcrates/versions
+excellentcrates = { module = "su.nightexpress.excellentcrates:ExcellentCrates", version = "5.3.1" }
+# https://modrinth.com/plugin/nightcore
+nightcore = { module = "su.nightexpress.nightcore:nightcore", version = "2.6.3" }
+
 # https://github.com/qos-ch/logback
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 # https://github.com/discord-jda/JDA
@@ -91,12 +115,18 @@ kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref =
 kyori-text = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 kyori-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
 
+# https://github.com/TriumphTeam/triumph-cmds
+triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmds" }
+
 # https://github.com/AuthMe/ConfigMe
 jalu = { module = "ch.jalu:configme", version.ref = "jalu" }
 
 # https://github.com/ryderbelserion/Fusion
 fusion-paper = { module = "com.ryderbelserion.fusion:fusion-paper", version.ref = "fusion" }
 fusion-core = { module = "com.ryderbelserion.fusion:fusion-core", version.ref = "fusion" }
+
+# https://github.com/Bastian/bStats
+metrics = { module = "org.bstats:bstats-bukkit", version.ref = "bStats" }
 
 [bundles]
 adventure = [
@@ -114,6 +144,13 @@ shared = [
     "nexo"
 ]
 
+holograms = [
+    "decent-holograms",
+    "fancy-holograms",
+    "cmi-lib",
+    "cmi-api"
+]
+
 discord = [
     "logback",
     "jda"
@@ -127,4 +164,10 @@ build = [
 paper = [
     "paperweight",
     "run-paper"
+]
+
+# Crate API
+crates = [
+    "excellentcrates",
+    "nightcore"
 ]
