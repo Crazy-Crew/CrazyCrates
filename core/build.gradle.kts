@@ -7,3 +7,9 @@ dependencies {
 
     compileOnlyApi(libs.fusion.core)
 }
+
+tasks {
+    build {
+        dependsOn(shadowJar)
+    }
+}

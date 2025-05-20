@@ -1,5 +1,6 @@
 plugins {
-    `config-java`
+    id("config-java")
+
     `maven-publish`
 }
 
@@ -21,5 +22,11 @@ publishing {
                 this.password = System.getenv("gradle_password")
             }
         }
+    }
+}
+
+tasks {
+    build {
+        dependsOn(shadowJar)
     }
 }
