@@ -13,7 +13,7 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
-import com.ryderbelserion.fusion.paper.api.builder.items.modern.ItemBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;

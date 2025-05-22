@@ -10,9 +10,9 @@ import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import com.ryderbelserion.fusion.core.utils.StringUtils;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.Gui;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiFiller;
+import com.ryderbelserion.fusion.core.utils.NumberUtils;
+import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.Gui;
+import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Server;
@@ -77,13 +77,13 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                         case "custom-model-data" -> item.setCustomModelData(value);
 
-                        case "glowing" -> item.setGlowing(StringUtils.tryParseBoolean(value).orElse(false));
+                        case "glowing" -> item.setGlowing(NumberUtils.tryParseBoolean(value).orElse(false));
 
-                        case "slot" -> slot = StringUtils.tryParseInt(value).orElse(-1).intValue();
+                        case "slot" -> slot = NumberUtils.tryParseInt(value).orElse(-1).intValue();
 
-                        case "unbreakable-item" -> item.setUnbreakable(StringUtils.tryParseBoolean(value).orElse(false));
+                        case "unbreakable-item" -> item.setUnbreakable(NumberUtils.tryParseBoolean(value).orElse(false));
 
-                        case "hide-item-flags" -> item.setHidingItemFlags(StringUtils.tryParseBoolean(value).orElse(false));
+                        case "hide-item-flags" -> item.setHidingItemFlags(NumberUtils.tryParseBoolean(value).orElse(false));
 
                         case "command" -> {
                             final Server server = this.plugin.getServer();

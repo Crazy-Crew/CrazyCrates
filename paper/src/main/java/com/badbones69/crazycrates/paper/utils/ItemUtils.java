@@ -5,12 +5,12 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.core.utils.StringUtils;
-import com.ryderbelserion.fusion.paper.api.builder.items.modern.ItemBuilder;
-import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.PatternBuilder;
-import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.PotionBuilder;
-import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.SkullBuilder;
-import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.SpawnerBuilder;
+import com.ryderbelserion.fusion.core.utils.NumberUtils;
+import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.types.PatternBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.types.PotionBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.types.SkullBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.types.SpawnerBuilder;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -250,7 +250,7 @@ public class ItemUtils {
             }
 
             if (item.isString("amount")) {
-                final Optional<Number> integer = StringUtils.tryParseInt(item.getString("amount", "1"));
+                final Optional<Number> integer = NumberUtils.tryParseInt(item.getString("amount", "1"));
 
                 integer.ifPresent(number -> itemBuilder.setAmount(number.intValue()));
             } else {
@@ -384,13 +384,13 @@ public class ItemUtils {
                             itemBuilder.setEntityType(type);
                         }
                     }
-                    case "glowing" -> itemBuilder.setGlowing(StringUtils.tryParseBoolean(value).orElse(false));
+                    case "glowing" -> itemBuilder.setGlowing(NumberUtils.tryParseBoolean(value).orElse(false));
                     case "amount" -> {
-                        final Optional<Number> amount = StringUtils.tryParseInt(value);
+                        final Optional<Number> amount = NumberUtils.tryParseInt(value);
                         itemBuilder.setAmount(amount.map(Number::intValue).orElse(1));
                     }
                     case "damage" -> {
-                        final Optional<Number> amount = StringUtils.tryParseInt(value);
+                        final Optional<Number> amount = NumberUtils.tryParseInt(value);
                         itemBuilder.setDamage(amount.map(Number::intValue).orElse(0));
                     }
                     case "lore" -> itemBuilder.setDisplayLore(List.of(value.split(",")));
@@ -415,7 +415,7 @@ public class ItemUtils {
                     }
                     default -> {
                         if (com.ryderbelserion.fusion.paper.utils.ItemUtils.getEnchantment(option.toLowerCase()) != null) {
-                            final Optional<Number> amount = StringUtils.tryParseInt(value);
+                            final Optional<Number> amount = NumberUtils.tryParseInt(value);
 
                             itemBuilder.addEnchantment(option.toLowerCase(), amount.map(Number::intValue).orElse(1), true);
 

@@ -9,7 +9,7 @@ import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.core.utils.AdvUtils;
+import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Server;

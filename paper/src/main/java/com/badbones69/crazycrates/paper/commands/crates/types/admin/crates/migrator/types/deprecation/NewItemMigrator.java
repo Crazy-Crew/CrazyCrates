@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.core.enums.Comments;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.NumberUtils;
 import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import org.bukkit.block.banner.PatternType;
@@ -159,7 +159,7 @@ public class NewItemMigrator extends ICrateMigrator {
                                             } catch (Exception ignored) {}
 
                                             if (ItemUtils.getEnchantment(placeholder) != null) {
-                                                enchantments.put(option.toLowerCase(), StringUtils.tryParseInt(value).map(Number::intValue).orElse(1));
+                                                enchantments.put(option.toLowerCase(), NumberUtils.tryParseInt(value).map(Number::intValue).orElse(1));
 
                                                 final ConfigurationSection enchantmentSection = prizeSection.createSection("Items." + uuid + ".enchantments");
 

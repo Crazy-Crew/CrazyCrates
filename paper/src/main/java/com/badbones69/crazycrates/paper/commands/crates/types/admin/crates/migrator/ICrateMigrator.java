@@ -7,7 +7,7 @@ import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.adventure.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
 import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;

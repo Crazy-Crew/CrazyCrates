@@ -8,7 +8,7 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.paper.api.builder.gui.types.PaginatedGui;
+import com.ryderbelserion.fusion.paper.api.builders.gui.types.PaginatedGui;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;

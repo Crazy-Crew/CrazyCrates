@@ -7,7 +7,7 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
-import com.ryderbelserion.fusion.core.utils.AdvUtils;
+import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
 import com.ryderbelserion.fusion.core.utils.FileUtils;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;

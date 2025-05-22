@@ -31,7 +31,8 @@ import com.badbones69.crazycrates.paper.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WonderCrate;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.core.managers.files.FileType;
+import com.ryderbelserion.fusion.core.files.FileAction;
+import com.ryderbelserion.fusion.core.files.FileType;
 import com.ryderbelserion.fusion.core.utils.FileUtils;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
@@ -344,10 +345,17 @@ public class CrateManager {
         if (this.config.getProperty(ConfigKeys.update_examples_folder)) {
             final Path path = this.plugin.getDataPath();
 
-            FileUtils.extract("guis", path.resolve("examples"), true, true);
-            FileUtils.extract("logs", path.resolve("examples"), true, true);
-            FileUtils.extract("crates", path.resolve("examples"), true, true);
-            FileUtils.extract("schematics", path.resolve("examples"), true, true);
+            final List<FileAction> actions = new ArrayList<>();
+
+            actions.add(FileAction.DELETE);
+            actions.add(FileAction.FOLDER);
+
+            FileUtils.extract("guis", path.resolve("examples"), actions);
+            FileUtils.extract("logs", path.resolve("examples"), actions);
+            FileUtils.extract("crates", path.resolve("examples"), actions);
+            FileUtils.extract("schematics", path.resolve("examples"), actions);
+
+            actions.remove(FileAction.FOLDER);
 
             List.of(
                     "config.yml",
@@ -355,7 +363,7 @@ public class CrateManager {
                     "locations.yml",
                     "messages.yml",
                     "editor.yml"
-            ).forEach(file -> FileUtils.extract(file, path.resolve("examples"), false, true));
+            ).forEach(file -> FileUtils.extract(file, path.resolve("examples"), actions));
         }
 
         this.giveNewPlayersKeys = false;

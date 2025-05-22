@@ -12,9 +12,10 @@ import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
-import com.ryderbelserion.fusion.core.utils.StringUtils;
-import com.ryderbelserion.fusion.core.utils.AdvUtils;
-import com.ryderbelserion.fusion.paper.api.builder.items.modern.ItemBuilder;
+import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
+import com.ryderbelserion.fusion.adventure.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.NumberUtils;
+import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
@@ -30,7 +31,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -224,7 +224,7 @@ public class Prize {
             this.displayItem.setPlayer(player);
         }
 
-        final String weight = StringUtils.format(crate.getChance(getWeight()));
+        final String weight = NumberUtils.format(crate.getChance(getWeight()));
 
         this.displayItem.addLorePlaceholder("%chance%", weight).addLorePlaceholder("%maxpulls%", String.valueOf(maxPulls)).addLorePlaceholder("%pulls%", amount);
         this.displayItem.addNamePlaceholder("%chance%", weight).addNamePlaceholder("%maxpulls%", String.valueOf(maxPulls)).addNamePlaceholder("%pulls%", amount);

@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.api.builders;
 
-import com.ryderbelserion.fusion.paper.api.builder.items.ItemBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.legacy.ItemBuilder;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;

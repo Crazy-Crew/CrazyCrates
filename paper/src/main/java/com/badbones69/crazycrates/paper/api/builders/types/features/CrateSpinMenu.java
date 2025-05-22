@@ -4,14 +4,13 @@ import com.badbones69.crazycrates.paper.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.Gui;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiFiller;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.Gui;
+import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
+import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
