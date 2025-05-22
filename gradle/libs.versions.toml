@@ -31,7 +31,7 @@ headdatabaseapi = "1.3.1" # https://github.com/Arcaniax-Development/HeadDatabase
 placeholderapi = "2.11.6" # https://github.com/placeholderapi
 itemsadder = "4.0.10" # https://github.com/ItemsAdder
 oraxen = "1.190.0" # https://github.com/oraxen
-nexo = "1.1.0" # https://github.com/Nexo-MC
+nexo = "1.6.0" # https://github.com/Nexo-MC
 
 # Hologram API
 decentholograms = "2.8.8" # https://modrinth.com/plugin/decentholograms
