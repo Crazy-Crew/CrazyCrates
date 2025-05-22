@@ -113,12 +113,6 @@ tasks {
             dependsOn(project.tasks.build)
         }
 
-        // build our manifest
-        manifest {
-            attributes["Implementation-Version"] = libs.versions.crazycrates.get()
-            attributes["Git-Commit"] = commitHash
-        }
-
         // get subproject's built jars
         val jars = subprojects.map { zipTree(it.tasks.jar.get().archiveFile.get().asFile) }
 
