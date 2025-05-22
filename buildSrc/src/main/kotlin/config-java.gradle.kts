@@ -34,4 +34,10 @@ tasks {
         archiveClassifier.set("")
         archiveVersion.set("")
     }
+
+    processResources {
+        filteringCharset = Charsets.UTF_8.name()
+
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
 }

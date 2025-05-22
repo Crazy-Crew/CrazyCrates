@@ -44,8 +44,6 @@ tasks {
     }
 
     processResources {
-        filteringCharset = Charsets.UTF_8.name()
-
         inputs.properties(
             "name" to rootProject.name,
             "version" to rootProject.version,
@@ -53,8 +51,6 @@ tasks {
             "minecraft" to libs.versions.minecraft.get(),
             "group" to project.group
         )
-
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
         with(copySpec {
             from("src/main/resources/paper-plugin.yml") {
