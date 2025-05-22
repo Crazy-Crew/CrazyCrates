@@ -375,14 +375,12 @@ public class Prize {
         try {
             if (this.section.contains("DisplayData")) {
                 builder = builder.fromBase64(this.section.getString("DisplayData", ""));
+            } else if (this.section.contains("DisplayItem")) {
+                builder.withType(this.section.getString("DisplayItem", "red_terracotta").toLowerCase());
             }
 
             if (this.section.contains("DisplayName")) {
                 builder.setDisplayName(this.prizeName);
-            }
-
-            if (this.section.contains("DisplayItem")) {
-                builder.withType(this.section.getString("DisplayItem", "red_terracotta").toLowerCase());
             }
 
             if (this.section.contains("DisplayAmount")) {
