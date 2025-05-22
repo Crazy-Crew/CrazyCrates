@@ -13,8 +13,9 @@ val git = feather.getGit()
 val commitHash: String? = git.getCurrentCommitHash().subSequence(0, 7).toString()
 val isSnapshot: Boolean = System.getenv("IS_SNAPSHOT") != null
 val content: String = if (isSnapshot) "[$commitHash](https://github.com/Crazy-Crew/${rootProject.name}/commit/$commitHash) ${git.getCurrentCommit()}" else rootProject.file("changelog.md").readText(Charsets.UTF_8)
+val minecraft = libs.versions.minecraft.get()
 
-rootProject.version = if (isSnapshot) "${libs.versions.minecraft.get()}-$commitHash" else libs.versions.crazycrates.get()
+rootProject.version = if (isSnapshot) "$minecraft-$commitHash" else libs.versions.crazycrates.get()
 rootProject.description = "Add crates to your server with 11 different crate types to choose from!"
 
 feather {
