@@ -1,8 +1,11 @@
-name: Release Build
+name: Snapshot Build
+env:
+  IS_SNAPSHOT: true
 on:
   workflow_dispatch:
-  release:
-    types: [ published ]
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -14,12 +17,6 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-      - name: Read Version Catalog
-        uses: SebRollen/toml-action@v1.2.0
-        id: crazycrates_version
-        with:
-          file: "gradle/libs.versions.toml"
-          field: "versions.crazycrates"
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: Make gradlew executable
@@ -30,8 +27,9 @@ jobs:
         run: ./gradlew modrinth --stacktrace
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
       - name: Notify Discord
         if: success()
-        run: ./gradlew release-build --stacktrace
+        run: ./gradlew dev-build --stacktrace
         env:
           BUILD_WEBHOOK: ${{ secrets.BUILD_WEBHOOK }}

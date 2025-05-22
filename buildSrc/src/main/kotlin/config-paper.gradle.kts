@@ -1,5 +1,7 @@
 plugins {
-    id("root-plugin")
+    id("io.papermc.paperweight.userdev")
+    id("xyz.jpenilla.run-paper")
+    id("config-java")
 }
 
 val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
@@ -9,5 +11,5 @@ repositories {
 }
 
 dependencies {
-    compileOnly(libs.findLibrary("paper").get())
+    paperweight.paperDevBundle(libs.findVersion("paper").get().toString())
 }

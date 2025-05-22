@@ -1,26 +1,19 @@
 plugins {
-    id("paper-plugin")
-
-    alias(libs.plugins.runPaper)
-    alias(libs.plugins.shadow)
+    `config-paper`
 }
 
 project.group = "${rootProject.group}.paper"
-project.version = rootProject.version
-project.description = "Add crates to your Paper server with 11 different crate types to choose from!"
 
 repositories {
-    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi")
 
-    maven("https://repo.fancyinnovations.com/releases/")
+    maven("https://repo.fancyinnovations.com/releases")
 
-    maven("https://repo.triumphteam.dev/snapshots/")
+    maven("https://repo.nexomc.com/snapshots")
 
-    maven("https://repo.nexomc.com/snapshots/")
+    maven("https://repo.oraxen.com/releases")
 
-    maven("https://repo.oraxen.com/releases/")
-
-    maven("https://maven.devs.beer/")
+    maven("https://maven.devs.beer")
 }
 
 dependencies {
@@ -32,46 +25,38 @@ dependencies {
 
     implementation(libs.metrics)
 
-    compileOnly(libs.bundles.dependencies)
+    compileOnly(libs.bundles.holograms)
     compileOnly(libs.bundles.shared)
     compileOnly(libs.bundles.crates)
 }
 
 tasks {
-    shadowJar {
-        archiveBaseName.set(rootProject.name)
-        archiveClassifier.set("")
+    build {
+        dependsOn(shadowJar)
+    }
 
+    shadowJar {
         listOf(
-            "com.ryderbelserion.fusion",
             "org.bstats"
         ).forEach {
             relocate(it, "libs.$it")
         }
     }
 
-    assemble {
-        dependsOn(shadowJar)
-
-        doLast {
-            copy {
-                from(shadowJar.get())
-                into(rootProject.projectDir.resolve("jars"))
-            }
-        }
-    }
-
     processResources {
-        inputs.properties("name" to rootProject.name)
-        inputs.properties("version" to project.version)
-        inputs.properties("group" to project.group)
-        inputs.properties("apiVersion" to libs.versions.minecraft.get())
-        inputs.properties("description" to project.description)
-        inputs.properties("website" to rootProject.properties["website"].toString())
+        inputs.properties(
+            "name" to rootProject.name,
+            "version" to rootProject.version,
+            "description" to rootProject.description,
+            "minecraft" to libs.versions.minecraft.get(),
+            "group" to project.group
+        )
 
-        filesMatching("paper-plugin.yml") {
-            expand(inputs.properties)
-        }
+        with(copySpec {
+            from("src/main/resources/paper-plugin.yml") {
+                expand(inputs.properties)
+            }
+        })
     }
 
     runPaper.folia.registerTask()
