@@ -9,7 +9,7 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import com.ryderbelserion.fusion.paper.api.builders.gui.types.PaginatedGui;
 import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
-import net.kyori.adventure.audience.Audience;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
@@ -29,6 +29,7 @@ public class InventoryManager {
 
     private final SettingsManager config = ConfigManager.getConfig();
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final Server server = this.plugin.getServer();
 
     private ItemBuilder menuButton;
     private ItemBuilder nextButton;
@@ -64,7 +65,7 @@ public class InventoryManager {
         return this.menuButton.asItemStack(player);
     }
 
-    public final ItemStack getNextButton(@Nullable final Player player, @Nullable final Tier tier, @NotNull final PaginatedGui gui) {
+    public final ItemStack getNextButton(@NotNull final Player player, @Nullable final Tier tier, @NotNull final PaginatedGui gui) {
         final ItemBuilder button = ItemBuilder.from(this.nextButton.asItemStack());
 
         button.addPlaceholder("{page}", String.valueOf(gui.getNextPageNumber()));
@@ -73,14 +74,14 @@ public class InventoryManager {
             button.setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), tier.getName());
         }
 
-        return button.asItemStack(player == null ? Audience.empty() : player);
+        return button.asItemStack(player);
     }
 
-    public final ItemStack getNextButton(@Nullable final Player player, @NotNull final PaginatedGui gui) {
+    public final ItemStack getNextButton(@NotNull final Player player, @NotNull final PaginatedGui gui) {
         return getNextButton(player, null, gui);
     }
 
-    public final ItemStack getBackButton(@Nullable final Player player, @Nullable final Tier tier, @NotNull final PaginatedGui gui) {
+    public final ItemStack getBackButton(@NotNull final Player player, @Nullable final Tier tier, @NotNull final PaginatedGui gui) {
         final ItemBuilder button = ItemBuilder.from(this.backButton.asItemStack());
 
         button.addPlaceholder("{page}", String.valueOf(gui.getPreviousPageNumber()));
@@ -89,10 +90,10 @@ public class InventoryManager {
             button.setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), tier.getName());
         }
 
-        return button.asItemStack();
+        return button.asItemStack(player);
     }
 
-    public final ItemStack getBackButton(@Nullable final Player player, @NotNull final PaginatedGui gui) {
+    public final ItemStack getBackButton(@NotNull final Player player, @NotNull final PaginatedGui gui) {
         return getBackButton(player, null, gui);
     }
 
@@ -130,7 +131,7 @@ public class InventoryManager {
         while (viewers.hasNext()) {
             final UUID uuid = viewers.next();
 
-            final Player player = this.plugin.getServer().getPlayer(uuid);
+            final Player player = this.server.getPlayer(uuid);
 
             if (player == null || !player.isOnline()) {
                 removePreviewViewer(uuid);
@@ -148,7 +149,7 @@ public class InventoryManager {
         while (viewers.hasNext()) {
             final UUID uuid = viewers.next();
 
-            final Player player = this.plugin.getServer().getPlayer(uuid);
+            final Player player = this.server.getPlayer(uuid);
 
             if (player == null || !player.isOnline()) {
                 removePreviewViewer(uuid);
