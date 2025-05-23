@@ -147,8 +147,7 @@ public class Prize {
      * @return the name of the prize.
      */
     public @NotNull final String getPrizeName() {
-        //return this.prizeName.isEmpty() ? "<lang:" + this.displayItem.getType().getItemTranslationKey() + ">" : this.prizeName;
-        return "";
+        return this.prizeName.isEmpty() ? String.format("<lang:%s>", this.displayItem.getTranslationKey()) : this.prizeName;
     }
 
     public @NotNull final String getStrippedName() {
