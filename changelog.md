@@ -1,1 +1,1 @@
-- Fixed issue with player skulls not displaying correctly.
+- Fixed a null pointer with the new Items layout.
