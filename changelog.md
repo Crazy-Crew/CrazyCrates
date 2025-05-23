@@ -1,1 +1,1 @@
-- Fix issue with the inventory titles not being colored.
+- Fixed issue with player skulls not displaying correctly.
