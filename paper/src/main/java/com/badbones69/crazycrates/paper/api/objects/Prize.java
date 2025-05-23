@@ -454,13 +454,13 @@ public class Prize {
             if (this.section.contains("Skull")) {
                 final SkullBuilder skullBuilder = builder.asSkullBuilder();
 
-                skullBuilder.withSkull(this.section.getString("Skull", ""));
+                skullBuilder.withSkull(this.section.getString("Skull", "")).build();
             }
 
             if (this.section.contains("Player")) {
                 final SkullBuilder skullBuilder = builder.asSkullBuilder();
 
-                skullBuilder.withName(this.section.getString("Player", ""));
+                skullBuilder.withName(this.section.getString("Player", "")).build();
             }
 
             if (this.section.contains("DisplayTrim.Pattern") && this.section.contains("DisplayTrim.Material")) {
