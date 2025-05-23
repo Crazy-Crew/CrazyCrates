@@ -49,7 +49,12 @@ public class CMIHologramsSupport extends HologramManager {
         }
 
         hologram.setShowRange(crateHologram.getRange());
-        hologram.setLines(lines(crateHologram));
+
+        final List<String> lines = new ArrayList<>();
+
+        crateHologram.getMessages().forEach(line -> lines.add(CMIChatColor.colorize(line)));
+
+        hologram.setLines(lines);
 
         if (crateHologram.getUpdateInterval() != -1) {
             hologram.setUpdateIntervalSec(crateHologram.getUpdateInterval());
