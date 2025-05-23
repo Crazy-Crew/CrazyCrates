@@ -23,7 +23,7 @@ fun version(): String {
         return "$minecraft-$commitHash"
     }
 
-    if (System.getenv("BUILD_NUMBER") != null) {
+    if (System.getenv("BUILD_NUMBER") != null && System.getenv("IS_PUBLISHING") == null) {
         return "$minecraft-${System.getenv("BUILD_NUMBER")}-$commitHash"
     }
 
@@ -154,7 +154,7 @@ modrinth {
 
     projectId = rootProject.name
 
-    versionName = "${rootProject.version}"
+    versionName = "${rootProject.name} ${rootProject.version}"
     versionNumber = "${rootProject.version}"
     versionType = if (isSnapshot) "beta" else "release"
 
