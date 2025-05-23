@@ -4,19 +4,15 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.ryderbelserion.fusion.core.utils.NumberUtils;
 import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.SkullBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.SpawnerBuilder;
-import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.block.banner.PatternType;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -157,68 +153,64 @@ public class ItemUtils {
         return container.get(ItemKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
     }
 
-    public static @NotNull LegacyItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final LegacyItemBuilder builder, @NotNull final Player player) {
-        return getItem(section, builder.setPlayer(player));
-    }
-
-    public static @NotNull LegacyItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final LegacyItemBuilder builder) {
+    public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder) {
         if (section.contains("Glowing")) {
-            builder.setGlowing(section.getBoolean("Glowing", false));
+            builder.setEnchantGlint(section.getBoolean("Glowing", false));
         }
-        
-        builder.setDamage(section.getInt("DisplayDamage", 0));
-        
-        builder.setDisplayLore(section.getStringList("Lore"));
 
-        builder.addPatterns(section.getStringList("Patterns"));
+        builder.setItemDamage(section.getInt("DisplayDamage", 0));
 
-        builder.setHidingItemFlags(section.getBoolean("HideItemFlags", false) || !section.getStringList("Flags").isEmpty());
+        builder.withDisplayLore(section.getStringList("Lore"));
+
+        //builder.addPatterns(section.getStringList("Patterns"));
+
+        if (section.contains("Patterns")) {
+            final PatternBuilder patternBuilder = builder.asPatternBuilder();
+
+            section.getStringList("Patterns").forEach(pattern -> {
+                final String[] sections = pattern.split(":");
+
+                patternBuilder.addPattern(sections[0].toLowerCase(), sections[1]);
+            });
+
+            patternBuilder.build();
+        }
+
+        if (section.getBoolean("HideItemFlags", false) || !section.getStringList("Flags").isEmpty()) {
+            builder.hideToolTip();
+        }
 
         builder.setUnbreakable(section.getBoolean("Unbreakable", false));
-        
+
         if (section.contains("Skull")) {
-            builder.setSkull(section.getString("Skull", ""));
+            final SkullBuilder skullBuilder = builder.asSkullBuilder();
+
+            skullBuilder.withSkull(section.getString("Skull", "")).build();
         }
-        
-        if (section.contains("Player") && builder.isPlayerHead()) {
-            builder.setPlayer(section.getString("Player", ""));
+
+        if (section.contains("Player")) {
+            final SkullBuilder skullBuilder = builder.asSkullBuilder();
+
+            skullBuilder.withSkull(section.getString("Player", "")).build();
         }
 
         builder.setCustomModelData(section.getString("Custom-Model-Data", ""));
 
         builder.setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
-        
-        if (section.contains("DisplayTrim.Pattern") && builder.isArmor()) {
-            builder.applyTrimPattern(section.getString("DisplayTrim.Pattern", "sentry"));
+
+        if (section.contains("DisplayTrim.Material") && section.contains("DisplayTrim.Pattern") && builder.isArmor()) {
+            builder.setTrim(section.getString("DisplayTrim.Pattern", "sentry"), section.getString("DisplayTrim.Material", "quartz"));
         }
-        
-        if (section.contains("DisplayTrim.Material") && builder.isArmor()) {
-            builder.applyTrimMaterial(section.getString("DisplayTrim.Material", "quartz"));
-        }
-        
+
         if (section.contains("DisplayEnchantments")) {
             for (final String ench : section.getStringList("DisplayEnchantments")) {
                 String[] value = ench.split(":");
 
-                builder.addEnchantment(value[0], Integer.parseInt(value[1]), true);
+                builder.addEnchantment(value[0], Integer.parseInt(value[1]));
             }
         }
-        
+
         return builder;
-    }
-
-    public static LegacyItemBuilder convertItemStack(@Nullable final Player player, @NotNull final ItemStack itemStack) {
-        LegacyItemBuilder itemBuilder = new LegacyItemBuilder(itemStack);
-
-        if (player != null) {
-            itemBuilder.setPlayer(player);
-        }
-
-        return itemBuilder;
-    }
-
-    public static LegacyItemBuilder convertItemStack(@NotNull final ItemStack itemStack) {
-        return convertItemStack(null, itemStack);
     }
 
     public static List<ItemBuilder> convertConfigurationSection(final ConfigurationSection section) {
@@ -304,7 +296,9 @@ public class ItemUtils {
                 spawnerBuilder.withEntityType(com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(mobType)).build();
             }
 
-            itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""));
+            if (itemBuilder.isArmor()) { //todo() move to setTrim method in fusion
+                itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""));
+            }
 
             final ConfigurationSection potions = item.getConfigurationSection("settings.potions");
 
@@ -353,92 +347,108 @@ public class ItemUtils {
         return cache;
     }
 
-    public static List<LegacyItemBuilder> convertStringList(@NotNull final List<String> itemStrings) {
+    public static List<ItemBuilder> convertStringList(@NotNull final List<String> itemStrings) {
         return convertStringList(itemStrings, null);
     }
 
-    public static List<LegacyItemBuilder> convertStringList(@NotNull final List<String> itemStrings, @Nullable final String section) {
+    public static List<ItemBuilder> convertStringList(@NotNull final List<String> itemStrings, @Nullable final String section) {
         return itemStrings.stream().map(itemString -> convertString(itemString, section)).collect(Collectors.toList());
     }
 
-    public static LegacyItemBuilder convertString(@NotNull final String itemString) {
+    public static ItemBuilder convertString(@NotNull final String itemString) {
         return convertString(itemString, null);
     }
 
-    public static LegacyItemBuilder convertString(@NotNull final String itemString, @Nullable final String section) {
-        LegacyItemBuilder itemBuilder = new LegacyItemBuilder();
+    public static ItemBuilder convertString(@NotNull final String itemString, @Nullable final String section) {
+        ItemBuilder itemBuilder = ItemBuilder.from(ItemType.STONE);
 
         try {
             for (String optionString : itemString.split(", ")) {
                 String option = optionString.split(":")[0];
+
                 String value = optionString.replace(option + ":", "").replace(option, "");
 
                 switch (option.toLowerCase()) {
-                    case "item" -> itemBuilder.withType(value.toLowerCase());
-                    case "data" -> itemBuilder = itemBuilder.fromBase64(value);
+                    case "item" -> itemBuilder.withCustomItem(value.toLowerCase());
+                    case "data" -> itemBuilder = itemBuilder.withBase64(value);
                     case "name" -> itemBuilder.setDisplayName(value);
                     case "mob" -> {
+                        final SpawnerBuilder builder = itemBuilder.asSpawnerBuilder();
+
                         final EntityType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(value);
 
                         if (type != null) {
-                            itemBuilder.setEntityType(type);
+                            builder.withEntityType(type);
                         }
                     }
-                    case "glowing" -> itemBuilder.setGlowing(NumberUtils.tryParseBoolean(value).orElse(false));
+
+                    case "glowing" -> itemBuilder.setEnchantGlint(NumberUtils.tryParseBoolean(value).orElse(false));
                     case "amount" -> {
                         final Optional<Number> amount = NumberUtils.tryParseInt(value);
                         itemBuilder.setAmount(amount.map(Number::intValue).orElse(1));
                     }
+
                     case "damage" -> {
                         final Optional<Number> amount = NumberUtils.tryParseInt(value);
-                        itemBuilder.setDamage(amount.map(Number::intValue).orElse(0));
+                        itemBuilder.setItemDamage(amount.map(Number::intValue).orElse(0));
                     }
-                    case "lore" -> itemBuilder.setDisplayLore(List.of(value.split(",")));
-                    case "player" -> itemBuilder.setPlayer(value);
-                    case "skull" -> itemBuilder.setSkull(value);
+
+                    case "lore" -> itemBuilder.withDisplayLore(List.of(value.split(",")));
+                    case "player" -> {
+                        final SkullBuilder skullBuilder = itemBuilder.asSkullBuilder();
+
+                        skullBuilder.withName(value);
+                    }
+
+                    case "skull" -> {
+                        final SkullBuilder skullBuilder = itemBuilder.asSkullBuilder();
+
+                        skullBuilder.withSkull(value);
+                    }
+
                     case "custom-model-data" -> itemBuilder.setCustomModelData(value);
                     case "unbreakable-item" -> itemBuilder.setUnbreakable(value.isEmpty() || value.equalsIgnoreCase("true"));
-                    case "hide-tool-tip" -> itemBuilder.setHidingItemFlags(value.equalsIgnoreCase("true"));
-                    case "trim-pattern" -> itemBuilder.applyTrimPattern(value);
-                    case "trim-material" -> itemBuilder.applyTrimMaterial(value);
-                    case "rgb" -> {
-                        @Nullable final Color color = ColorUtils.getRGB(value);
-
-                        if (color != null) {
-                            itemBuilder.setColor(color);
+                    case "hide-tool-tip" -> {
+                        if (value.equalsIgnoreCase("true")) {
+                            itemBuilder.hideToolTip();
                         }
                     }
-                    case "color" -> {
-                        @Nullable final Color color = ColorUtils.getColor(value);
 
-                        itemBuilder.setColor(color);
+                    case "trim" -> {
+                        if (itemBuilder.isArmor()) { // only set trims to armor, move to fusion later maybe?
+                            String[] split = value.split("!"); // trim:trim_pattern!trim_material
+
+                            String trim = split[0];
+                            String material = split[1];
+
+                            itemBuilder.setTrim(trim.toLowerCase(), material.toLowerCase());
+                        }
                     }
+
+                    case "rgb", "color" -> itemBuilder.setColor(value);
+
                     default -> {
-                        if (com.ryderbelserion.fusion.paper.utils.ItemUtils.getEnchantment(option.toLowerCase()) != null) {
-                            final Optional<Number> amount = NumberUtils.tryParseInt(value);
+                        final Enchantment enchantment = com.ryderbelserion.fusion.paper.utils.ItemUtils.getEnchantment(getEnchant(option));
 
-                            itemBuilder.addEnchantment(option.toLowerCase(), amount.map(Number::intValue).orElse(1), true);
+                        if (enchantment != null) {
+                            final Optional<Number> level = NumberUtils.tryParseInt(value);
 
-                            break;
+                            itemBuilder.addEnchantment(getEnchant(option), level.map(Number::intValue).orElse(1));
                         }
 
                         for (ItemFlag itemFlag : ItemFlag.values()) {
                             if (itemFlag.name().equalsIgnoreCase(option)) {
-                                itemBuilder.setHidingItemFlags(true);
+                                itemBuilder.hideToolTip();
 
                                 break;
                             }
                         }
 
-                        try {
-                            DyeColor color = ColorUtils.getDyeColor(value);
+                        if (itemBuilder.isBanner() || itemBuilder.isShield()) {
+                            final PatternBuilder builder = itemBuilder.asPatternBuilder();
 
-                            PatternType patternType = com.ryderbelserion.fusion.paper.utils.ItemUtils.getPatternType(option.toLowerCase());
-
-                            if (patternType != null) {
-                                itemBuilder.addPattern(patternType, color);
-                            }
-                        } catch (Exception ignored) {}
+                            builder.addPattern(value, option).build();
+                        }
                     }
                 }
             }

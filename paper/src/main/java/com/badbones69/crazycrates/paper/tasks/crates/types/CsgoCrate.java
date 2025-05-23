@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.paper.tasks.crates.types;
 
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.builders.types.features.CrateSpinMenu;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -11,6 +10,7 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
+import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
@@ -106,7 +106,7 @@ public class CsgoCrate extends CrateBuilder {
 
                         final String material = config.getProperty(ConfigKeys.crate_csgo_finished_material);
 
-                        final ItemStack itemStack = new LegacyItemBuilder().withType(material.isEmpty() ? Material.GRAY_STAINED_GLASS.getKey().getKey() : material).setDisplayName(" ").asItemStack();
+                        final ItemStack itemStack = ItemBuilder.from(material.isEmpty() ? Material.GRAY_STAINED_GLASS.getKey().getKey() : material).setDisplayName(" ").asItemStack(player);
 
                         setItem(4, itemStack);
                         setItem(22, itemStack);
@@ -157,7 +157,7 @@ public class CsgoCrate extends CrateBuilder {
         final String material = this.config.getProperty(ConfigKeys.crate_csgo_cycling_material);
 
         if (!material.isEmpty()) {
-            final ItemStack itemStack = new LegacyItemBuilder().withType(material).setDisplayName(" ").asItemStack();
+            final ItemStack itemStack = ItemBuilder.from(material).setDisplayName(" ").asItemStack(this.player);
 
             setItem(4, itemStack);
             setItem(22, itemStack);

@@ -13,6 +13,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
+import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.sound.Sound;
@@ -282,7 +283,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param lore lore of item
      */
     public void setItem(final int slot, @NotNull final ItemType itemType, @NotNull final String name, @NotNull final List<String> lore) {
-        getInventory().setItem(slot, new LegacyItemBuilder(itemType).setPlayer(getPlayer()).setDisplayName(name).setDisplayLore(lore).asItemStack());
+        getInventory().setItem(slot, ItemBuilder.from(itemType).setDisplayName(name).withDisplayLore(lore).asItemStack(getPlayer()));
     }
 
     /**
@@ -293,7 +294,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param name name of item
      */
     public void setItem(final int slot, @NotNull final ItemType itemType, @NotNull final String name) {
-        getInventory().setItem(slot, new LegacyItemBuilder(itemType).setPlayer(getPlayer()).setDisplayName(name).asItemStack());
+        getInventory().setItem(slot, ItemBuilder.from(itemType).setDisplayName(name).asItemStack(getPlayer()));
     }
 
     /**
@@ -399,10 +400,10 @@ public abstract class CrateBuilder extends FoliaScheduler {
 
     public final void populateTiers() {
         final CosmicCrateManager manager = (CosmicCrateManager) this.crate.getManager();
-        final LegacyItemBuilder itemBuilder = manager.getMysteryCrate().setPlayer(this.player);
+        final ItemBuilder itemBuilder = manager.getMysteryCrate();
 
         for (int slot = 0; slot <= this.size; slot++) {
-            itemBuilder.addNamePlaceholder("%Slot%", String.valueOf(slot)).addLorePlaceholder("%Slot%", String.valueOf(slot));
+            itemBuilder.addPlaceholder("%Slot%", String.valueOf(slot));
 
             itemBuilder.setAmount(slot);
 
@@ -411,7 +412,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
             if (tier != null) {
                 this.crateManager.addTier(this.player, slot, tier);
 
-                getInventory().setItem(getInventory().firstEmpty(), itemBuilder.asItemStack());
+                getInventory().setItem(getInventory().firstEmpty(), itemBuilder.asItemStack(this.player));
             }
         }
     }
