@@ -11,7 +11,6 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -27,7 +26,6 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.utils.MsgUtils;
 import org.jetbrains.annotations.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Random;
@@ -177,31 +175,11 @@ public class PrizeManager {
                 }
             }
         } else {
-            final boolean isPlaceholderAPIEnabled = Plugins.placeholder_api.isEnabled();
-
-            final List<LegacyItemBuilder> legacy = prize.getItemBuilders();
+            final List<ItemBuilder> legacy = prize.getItemBuilders();
 
             if (!legacy.isEmpty()) { // run this just in case people got leftover shit
-                for (final LegacyItemBuilder item : legacy) {
-                    if (isPlaceholderAPIEnabled) {
-                        final String displayName = item.getDisplayName();
-
-                        if (!displayName.isEmpty()) {
-                            item.setDisplayName(PlaceholderAPI.setPlaceholders(player, displayName));
-                        }
-
-                        final List<String> displayLore = item.getDisplayLore();
-
-                        if (!displayLore.isEmpty()) {
-                            List<String> lore = new ArrayList<>();
-
-                            displayLore.forEach(line -> lore.add(PlaceholderAPI.setPlaceholders(player, line)));
-
-                            item.setDisplayLore(lore);
-                        }
-                    }
-
-                    final ItemStack itemStack = item.setPlayer(player).asItemStack();
+                for (final ItemBuilder item : legacy) {
+                    final ItemStack itemStack = item.asItemStack(player);
 
                     if (!MiscUtils.isInventoryFull(player)) {
                         MiscUtils.addItem(player, itemStack);
