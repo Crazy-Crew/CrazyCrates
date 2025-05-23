@@ -23,7 +23,7 @@ fun version(): String {
         return "$minecraft-$commitHash"
     }
 
-    if (System.getenv("BUILD_NUMBER") != null) {
+    if (System.getenv("BUILD_NUMBER") != null && System.getenv("IS_PUBLISHING") == null) {
         return "$minecraft-${System.getenv("BUILD_NUMBER")}-$commitHash"
     }
 
