@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.paper.tasks.menus;
 
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.builders.gui.DynamicInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
@@ -9,6 +8,7 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.api.builders.gui.types.PaginatedGui;
+import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -105,15 +106,18 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
         this.gui.open(this.player, gui -> {
             final int rows = gui.getRows();
 
-            gui.setItem(rows, 5, new LegacyItemBuilder(ItemType.CHEST)
+            gui.setItem(rows, 5, ItemBuilder.from(ItemType.CHEST)
                     .setDisplayName("<red>What is this menu?")
-                    .addDisplayLore(" <gold>⤷ Right click to go back to the main menu!")
-                    .addDisplayLore("")
-                    .addDisplayLore("<light_purple>A cheat cheat menu of all your available keys.")
-                    .addDisplayLore(" <gold>⤷ Right click to get virtual keys.")
-                    .addDisplayLore(" <gold>⤷ Shift right click to get 8 virtual keys.")
-                    .addDisplayLore(" <gold>⤷ Left click to get physical keys.")
-                    .addDisplayLore(" <gold>⤷ Shift left click to get 8 physical keys.")
+                    .withDisplayLore(List.of(
+                            " <gold>⤷ Right click to go back to the main menu!",
+                            "",
+                            "<light_purple>A cheat cheat menu of all your available keys.",
+                            "",
+                            " <gold>⤷ Right click to get virtual keys.",
+                            " <gold>⤷ Shift right click to get 8 virtual keys.",
+                            " <gold>⤷ Left click to get physical keys.",
+                            " <gold>⤷ Shift left click to get 8 physical keys."
+                    ))
                     .asGuiItem(action -> {
                         if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(this.player)) {
                             Messages.no_permission.sendMessage(this.player);

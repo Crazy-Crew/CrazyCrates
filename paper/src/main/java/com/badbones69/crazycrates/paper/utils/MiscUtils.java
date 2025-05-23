@@ -1,11 +1,11 @@
 package com.badbones69.crazycrates.paper.utils;
 
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.ryderbelserion.fusion.core.files.FileAction;
 import com.ryderbelserion.fusion.core.utils.FileUtils;
+import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -330,7 +330,7 @@ public class MiscUtils {
         return useDifferentRandom() ? ThreadLocalRandom.current() : new Random();
     }
 
-    public static LegacyItemBuilder getRandomPaneColor() {
+    public static ItemBuilder getRandomPaneColor() {
         List<ItemType> panes = Arrays.asList(
                 ItemType.LIGHT_BLUE_STAINED_GLASS_PANE,
                 ItemType.MAGENTA_STAINED_GLASS_PANE,
@@ -348,7 +348,7 @@ public class MiscUtils {
                 ItemType.RED_STAINED_GLASS_PANE
         );
 
-        return new LegacyItemBuilder(panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
+        return ItemBuilder.from(panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
     }
 
     public static void addItem(@NotNull final Player player, @NotNull final ItemStack... items) {

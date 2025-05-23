@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.ryderbelserion.fusion.core.utils.NumberUtils;
 import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.PatternBuilder;
@@ -154,68 +153,64 @@ public class ItemUtils {
         return container.get(ItemKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
     }
 
-    public static @NotNull LegacyItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final LegacyItemBuilder builder, @NotNull final Player player) {
-        return getItem(section, builder.setPlayer(player));
-    }
-
-    public static @NotNull LegacyItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final LegacyItemBuilder builder) {
+    public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder) {
         if (section.contains("Glowing")) {
-            builder.setGlowing(section.getBoolean("Glowing", false));
+            builder.setEnchantGlint(section.getBoolean("Glowing", false));
         }
-        
-        builder.setDamage(section.getInt("DisplayDamage", 0));
-        
-        builder.setDisplayLore(section.getStringList("Lore"));
 
-        builder.addPatterns(section.getStringList("Patterns"));
+        builder.setItemDamage(section.getInt("DisplayDamage", 0));
 
-        builder.setHidingItemFlags(section.getBoolean("HideItemFlags", false) || !section.getStringList("Flags").isEmpty());
+        builder.withDisplayLore(section.getStringList("Lore"));
+
+        //builder.addPatterns(section.getStringList("Patterns"));
+
+        if (section.contains("Patterns")) {
+            final PatternBuilder patternBuilder = builder.asPatternBuilder();
+
+            section.getStringList("Patterns").forEach(pattern -> {
+                final String[] sections = pattern.split(":");
+
+                patternBuilder.addPattern(sections[0].toLowerCase(), sections[1]);
+            });
+
+            patternBuilder.build();
+        }
+
+        if (section.getBoolean("HideItemFlags", false) || !section.getStringList("Flags").isEmpty()) {
+            builder.hideToolTip();
+        }
 
         builder.setUnbreakable(section.getBoolean("Unbreakable", false));
-        
+
         if (section.contains("Skull")) {
-            builder.setSkull(section.getString("Skull", ""));
+            final SkullBuilder skullBuilder = builder.asSkullBuilder();
+
+            skullBuilder.withSkull(section.getString("Skull", "")).build();
         }
-        
-        if (section.contains("Player") && builder.isPlayerHead()) {
-            builder.setPlayer(section.getString("Player", ""));
+
+        if (section.contains("Player")) {
+            final SkullBuilder skullBuilder = builder.asSkullBuilder();
+
+            skullBuilder.withSkull(section.getString("Player", "")).build();
         }
 
         builder.setCustomModelData(section.getString("Custom-Model-Data", ""));
 
         builder.setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
-        
-        if (section.contains("DisplayTrim.Pattern") && builder.isArmor()) {
-            builder.applyTrimPattern(section.getString("DisplayTrim.Pattern", "sentry"));
+
+        if (section.contains("DisplayTrim.Material") && section.contains("DisplayTrim.Pattern") && builder.isArmor()) {
+            builder.setTrim(section.getString("DisplayTrim.Pattern", "sentry"), section.getString("DisplayTrim.Material", "quartz"));
         }
-        
-        if (section.contains("DisplayTrim.Material") && builder.isArmor()) {
-            builder.applyTrimMaterial(section.getString("DisplayTrim.Material", "quartz"));
-        }
-        
+
         if (section.contains("DisplayEnchantments")) {
             for (final String ench : section.getStringList("DisplayEnchantments")) {
                 String[] value = ench.split(":");
 
-                builder.addEnchantment(value[0], Integer.parseInt(value[1]), true);
+                builder.addEnchantment(value[0], Integer.parseInt(value[1]));
             }
         }
-        
+
         return builder;
-    }
-
-    public static LegacyItemBuilder convertItemStack(@Nullable final Player player, @NotNull final ItemStack itemStack) {
-        LegacyItemBuilder itemBuilder = new LegacyItemBuilder(itemStack);
-
-        if (player != null) {
-            itemBuilder.setPlayer(player);
-        }
-
-        return itemBuilder;
-    }
-
-    public static LegacyItemBuilder convertItemStack(@NotNull final ItemStack itemStack) {
-        return convertItemStack(null, itemStack);
     }
 
     public static List<ItemBuilder> convertConfigurationSection(final ConfigurationSection section) {

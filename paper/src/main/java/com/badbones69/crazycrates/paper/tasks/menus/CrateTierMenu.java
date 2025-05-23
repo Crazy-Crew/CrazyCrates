@@ -37,7 +37,7 @@ public class CrateTierMenu extends StaticInventoryBuilder {
         final boolean isPreviewBorderEnabled = this.crate.isPreviewTierBorderToggle();
 
         if (isPreviewBorderEnabled) {
-            final GuiItem guiItem = this.crate.getPreviewTierBorderItem().setPlayer(this.player).asGuiItem();
+            final GuiItem guiItem = this.crate.getPreviewTierBorderItem().asGuiItem(this.player);
 
             final GuiFiller guiFiller = this.gui.getFiller();
 
