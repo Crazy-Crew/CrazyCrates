@@ -301,7 +301,9 @@ public class ItemUtils {
                 spawnerBuilder.withEntityType(com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(mobType)).build();
             }
 
-            itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""));
+            if (itemBuilder.isArmor()) { //todo() move to setTrim method in fusion
+                itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""));
+            }
 
             final ConfigurationSection potions = item.getConfigurationSection("settings.potions");
 
@@ -418,12 +420,14 @@ public class ItemUtils {
                     }
 
                     case "trim" -> {
-                        String[] split = value.split("!"); // trim:trim_pattern!trim_material
+                        if (itemBuilder.isArmor()) { // only set trims to armor, move to fusion later maybe?
+                            String[] split = value.split("!"); // trim:trim_pattern!trim_material
 
-                        String trim = split[0];
-                        String material = split[1];
+                            String trim = split[0];
+                            String material = split[1];
 
-                        itemBuilder.setTrim(trim.toLowerCase(), material.toLowerCase());
+                            itemBuilder.setTrim(trim.toLowerCase(), material.toLowerCase());
+                        }
                     }
 
                     case "rgb", "color" -> itemBuilder.setColor(value);

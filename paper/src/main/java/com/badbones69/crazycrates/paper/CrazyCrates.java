@@ -35,8 +35,6 @@ import java.util.Locale;
 import java.util.Timer;
 import static com.badbones69.crazycrates.paper.utils.MiscUtils.registerPermissions;
 
-//todo() expose isArmor in the itembuilder
-//todo() expose getType in the itembuilder
 //todo() test if the internal papi parsing in the itembuilder works, we won't need to manually do it everywhere if it does.
 //todo() write a migrator for trim-pattern and trim-material in the old `Items` section
 //todo() test the max pulls placeholders to make sure it functions the same as before
