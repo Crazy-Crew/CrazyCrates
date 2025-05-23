@@ -885,17 +885,17 @@ public class Crate {
      * @param tier The tier to check
      * @return list of prizes
      */
-    public @NotNull final List<ItemStack> getPreviewItems(@Nullable final Player player, @Nullable final Tier tier) {
+    public @NotNull final List<ItemStack> getPreviewItems(@NotNull final Player player, @Nullable final Tier tier) {
         List<ItemStack> prizes = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
-            // if (prize.getWeight() == -1) continue;
+            if (prize.getWeight() == -1) continue;
 
             if (tier == null) {
-                prizes.add(player == null ? prize.getDisplayItem(this) : prize.getDisplayItem(player, this));
+                prizes.add(prize.getDisplayItem(player, this));
             } else {
                 if (prize.getTiers().contains(tier)) {
-                    prizes.add(player == null ? prize.getDisplayItem(this) : prize.getDisplayItem(player, this));
+                    prizes.add(prize.getDisplayItem(player, this));
                 }
             }
         }

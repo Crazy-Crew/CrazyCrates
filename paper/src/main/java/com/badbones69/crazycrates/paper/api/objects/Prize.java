@@ -9,7 +9,6 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.core.config.ConfigManager;
-import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
 import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
 import com.ryderbelserion.fusion.adventure.utils.StringUtils;
 import com.ryderbelserion.fusion.core.utils.NumberUtils;
@@ -18,7 +17,6 @@ import com.ryderbelserion.fusion.paper.api.builders.items.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.SkullBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.SpawnerBuilder;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -164,14 +162,7 @@ public class Prize {
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
-    public @NotNull final ItemStack getDisplayItem(@NotNull final Crate crate) {
-        return getDisplayItem(null, crate);
-    }
-
-    /**
-     * @return the display item that is shown for the preview and the winning prize.
-     */
-    public @NotNull final ItemStack getDisplayItem(@Nullable final Player player, @NotNull final Crate crate) {
+    public @NotNull final ItemStack getDisplayItem(@NotNull final Player player, @NotNull final Crate crate) {
         final int pulls = PrizeManager.getCurrentPulls(this, crate);
         final int maxPulls = getMaxPulls();
         final String amount = String.valueOf(pulls);
@@ -195,7 +186,7 @@ public class Prize {
         }
 
         if (maxPulls != 0 && pulls != 0 && pulls >= maxPulls) {
-            final String line = player != null ? Messages.crate_prize_max_pulls.getMessage(player) : ConfigManager.getMessages().getProperty(CrateKeys.crate_prize_max_pulls);
+            final String line = Messages.crate_prize_max_pulls.getMessage(player);
 
             if (!line.isEmpty()) {
                 lore.add(line.replaceAll("\\{maxpulls}", String.valueOf(maxPulls)).replaceAll("\\{pulls}", amount));
@@ -208,7 +199,7 @@ public class Prize {
 
         this.displayItem.addPlaceholder("%chance%", weight).addPlaceholder("%maxpulls%", String.valueOf(maxPulls)).addPlaceholder("%pulls%", amount);
 
-        return this.displayItem.setPersistentString(ItemKeys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack(player == null ? Audience.empty() : player);
+        return this.displayItem.setPersistentString(ItemKeys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack(player);
     }
     
     /**
