@@ -35,6 +35,11 @@ tasks {
         archiveVersion.set("")
     }
 
+    compileJava {
+        options.encoding = Charsets.UTF_8.name()
+        options.release.set(21)
+    }
+
     processResources {
         filteringCharset = Charsets.UTF_8.name()
 
