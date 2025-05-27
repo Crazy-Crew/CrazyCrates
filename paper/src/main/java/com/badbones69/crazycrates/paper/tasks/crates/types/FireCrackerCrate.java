@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.paper.tasks.crates.types;
 
+import com.badbones69.crazycrates.core.config.ConfigManager;
+import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.builders.types.features.CrateSpinMenu;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
@@ -99,10 +101,28 @@ public class FireCrackerCrate extends CrateBuilder {
                         }
                     }
 
+                    // Only related to the item above the crate.
+                    displayItem(prize);
+
                     PrizeManager.givePrize(player, crate, prize);
 
-                    crateManager.removePlayerFromOpeningList(player);
-                    crateManager.removeCrateInUse(player);
+                    addCrateTask(new FoliaScheduler(null, player) {
+                        @Override
+                        public void run() {
+                            crateManager.removePlayerFromOpeningList(player);
+                            crateManager.removeCrateInUse(player);
+
+                            crateManager.removeReward(player);
+
+                            final HologramManager hologramManager = crateManager.getHolograms();
+
+                            if (hologramManager != null && crate.getHologram().isEnabled()) {
+                                final CrateLocation crateLocation = crateManager.getCrateLocation(location);
+
+                                if (crateLocation != null) hologramManager.createHologram(location, crate, crateLocation.getID());
+                            }
+                        }
+                    }.runDelayed(40));
                 }
             }
         }.runAtFixedRate(0, 2));
