@@ -1575,12 +1575,7 @@ public class CrateManager {
         this.rewards.put(player.getUniqueId(), entity);
     }
 
-    public void endQuickCrate(@NotNull final Player player, @NotNull final Location location, @Nullable final Crate crate, final boolean useQuickCrateAgain) {
-        if (hasCrateTask(player)) {
-            getCrateTask(player).cancel();
-            removeCrateTask(player);
-        }
-
+    public void removeReward(@NotNull final Player player) {
         final UUID uuid = player.getUniqueId();
 
         if (this.rewards.get(uuid) != null) {
@@ -1589,6 +1584,15 @@ public class CrateManager {
             this.rewards.get(uuid).remove();
             this.rewards.remove(uuid);
         }
+    }
+
+    public void endQuickCrate(@NotNull final Player player, @NotNull final Location location, @Nullable final Crate crate, final boolean useQuickCrateAgain) {
+        if (hasCrateTask(player)) {
+            getCrateTask(player).cancel();
+            removeCrateTask(player);
+        }
+
+        removeReward(player);
 
         new FoliaScheduler(location) {
             @Override

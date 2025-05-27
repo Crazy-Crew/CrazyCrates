@@ -1,8 +1,13 @@
 package com.badbones69.crazycrates.paper.api.builders;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.paper.api.ChestManager;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
+import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
+import com.badbones69.crazycrates.paper.api.objects.Prize;
+import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
+import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
 import com.badbones69.crazycrates.paper.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
@@ -13,15 +18,19 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
+import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -152,6 +161,51 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param isSilent true or false
      */
     public abstract void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType);
+
+    public void displayItem(final Prize prize) {
+        final boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
+
+        // Only related to the item above the crate.
+        if (showQuickCrateItem) {
+            final HologramManager manager = this.crateManager.getHolograms();
+
+            if (manager != null && this.crate.getHologram().isEnabled()) {
+                CrateLocation crateLocation = this.crateManager.getCrateLocation(this.location);
+
+                if (crateLocation != null) {
+                    manager.removeHologram(crateLocation.getID());
+                }
+            }
+
+            // Get the display item.
+            ItemStack display = prize.getDisplayItem(this.player, this.crate); //todo() use display entities
+
+            display.editPersistentDataContainer(container -> container.set(ItemKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1"));
+
+            Item reward;
+
+            try {
+                reward = this.player.getWorld().dropItem(this.location.clone().add(0.5, 1, 0.5), display);
+            } catch (IllegalArgumentException exception) {
+                if (MiscUtils.isLogging()) {
+                    this.logger.warn("A prize could not be given due to an invalid display item for this prize.");
+                    this.logger.warn("Crate: {} Prize: {}", prize.getCrateName(), prize.getPrizeName(), exception);
+                }
+
+                return;
+            }
+
+            reward.setVelocity(new Vector(0, 0.2, 0));
+
+            reward.customName(AdvUtils.parse(prize.getPrizeName()));
+
+            reward.setCustomNameVisible(true);
+            reward.setCanMobPickup(false);
+            reward.setCanPlayerPickup(false);
+
+            this.crateManager.addReward(this.player, reward);
+        }
+    }
 
     /**
      * Add a new crate task.
