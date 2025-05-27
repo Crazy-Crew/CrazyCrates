@@ -4,24 +4,22 @@ import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.core.config.ConfigManager;
-import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
 import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
 import com.ryderbelserion.fusion.adventure.utils.StringUtils;
 import com.ryderbelserion.fusion.core.utils.NumberUtils;
 import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
-import com.ryderbelserion.fusion.paper.utils.ColorUtils;
-import me.clip.placeholderapi.PlaceholderAPI;
+import com.ryderbelserion.fusion.paper.api.builders.items.types.PatternBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.types.PotionBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.types.SkullBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.types.SpawnerBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Color;
 import org.bukkit.Server;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -45,7 +43,7 @@ public class Prize {
     private final SettingsManager config = ConfigManager.getConfig();
 
     private final ConfigurationSection section;
-    private final List<LegacyItemBuilder> builders;
+    private final List<ItemBuilder> builders;
     private final List<ItemBuilder> items;
     private final List<String> commands;
     private final List<String> messages;
@@ -53,7 +51,7 @@ public class Prize {
     private final String prizeName;
 
     private List<String> permissions = new ArrayList<>();
-    private LegacyItemBuilder displayItem = new LegacyItemBuilder();
+    private ItemBuilder displayItem = ItemBuilder.from(ItemType.STONE);
     private boolean firework = false;
     private String crateName = "";
     private double weight = -1;
@@ -147,7 +145,7 @@ public class Prize {
      * @return the name of the prize.
      */
     public @NotNull final String getPrizeName() {
-        return this.prizeName.isEmpty() ? "<lang:" + this.displayItem.getType().getItemTranslationKey() + ">" : this.prizeName;
+        return this.prizeName.isEmpty() ? String.format("<lang:%s>", this.displayItem.getTranslationKey()) : this.prizeName;
     }
 
     public @NotNull final String getStrippedName() {
@@ -164,28 +162,15 @@ public class Prize {
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
-    public @NotNull final ItemStack getDisplayItem(@NotNull final Crate crate) {
-        return getDisplayItem(null, crate);
-    }
-
-    /**
-     * @return the display item that is shown for the preview and the winning prize.
-     */
-    public @NotNull final ItemStack getDisplayItem(@Nullable final Player player, @NotNull final Crate crate) {
+    public @NotNull final ItemStack getDisplayItem(@NotNull final Player player, @NotNull final Crate crate) {
         final int pulls = PrizeManager.getCurrentPulls(this, crate);
         final int maxPulls = getMaxPulls();
         final String amount = String.valueOf(pulls);
 
-        List<String> lore = new ArrayList<>();
-
-        final boolean isPapiEnabled = Plugins.placeholder_api.isEnabled();
-
-        final String displayName = this.displayItem.getDisplayName();
-
-        this.displayItem.setDisplayName(player != null && isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, displayName) : displayName);
+        final List<String> lore = new ArrayList<>();
 
         if (this.section.contains("DisplayLore") && !this.section.contains("Lore")) {
-            this.section.getStringList("DisplayLore").forEach(line -> lore.add(player != null && isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, line) : line));
+            lore.addAll(this.section.getStringList("DisplayLore"));
         }
 
         if (this.section.contains("Lore")) {
@@ -197,39 +182,24 @@ public class Prize {
                 ).forEach(this.logger::warn);
             }
 
-            this.section.getStringList("Lore").forEach(line -> lore.add(player != null && isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, line) : line));
+            lore.addAll(this.section.getStringList("Lore"));
         }
 
         if (maxPulls != 0 && pulls != 0 && pulls >= maxPulls) {
-            if (player != null) {
-                final String line = Messages.crate_prize_max_pulls.getMessage(player);
+            final String line = Messages.crate_prize_max_pulls.getMessage(player);
 
-                if (!line.isEmpty()) {
-                    final String variable = line.replaceAll("\\{maxpulls}", String.valueOf(maxPulls)).replaceAll("\\{pulls}", amount);
-
-                    lore.add(isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, variable) : variable);
-                }
-            } else {
-                final String line = ConfigManager.getMessages().getProperty(CrateKeys.crate_prize_max_pulls);
-
-                if (!line.isEmpty()) {
-                    lore.add(line.replaceAll("\\{maxpulls}", String.valueOf(maxPulls)).replaceAll("\\{pulls}", amount));
-                }
+            if (!line.isEmpty()) {
+                lore.add(line.replaceAll("\\{maxpulls}", String.valueOf(maxPulls)).replaceAll("\\{pulls}", amount));
             }
         }
 
-        this.displayItem.setDisplayLore(lore);
-
-        if (player != null) {
-            this.displayItem.setPlayer(player);
-        }
+        this.displayItem.withDisplayLore(lore);
 
         final String weight = NumberUtils.format(crate.getChance(getWeight()));
 
-        this.displayItem.addLorePlaceholder("%chance%", weight).addLorePlaceholder("%maxpulls%", String.valueOf(maxPulls)).addLorePlaceholder("%pulls%", amount);
-        this.displayItem.addNamePlaceholder("%chance%", weight).addNamePlaceholder("%maxpulls%", String.valueOf(maxPulls)).addNamePlaceholder("%pulls%", amount);
+        this.displayItem.addPlaceholder("%chance%", weight).addPlaceholder("%maxpulls%", String.valueOf(maxPulls)).addPlaceholder("%pulls%", amount);
 
-        return this.displayItem.setPersistentString(ItemKeys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack();
+        return this.displayItem.setPersistentString(ItemKeys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack(player);
     }
     
     /**
@@ -256,7 +226,7 @@ public class Prize {
     /**
      * @return the ItemBuilders for all the custom items made from the Items: option.
      */
-    public @NotNull final List<LegacyItemBuilder> getItemBuilders() {
+    public @NotNull final List<ItemBuilder> getItemBuilders() {
         return this.builders;
     }
 
@@ -369,12 +339,12 @@ public class Prize {
         server.broadcast(component, permission);
     }
 
-    private @NotNull LegacyItemBuilder display() {
-        LegacyItemBuilder builder = new LegacyItemBuilder();
+    private @NotNull ItemBuilder display() {
+        ItemBuilder builder = this.displayItem;
 
         try {
             if (this.section.contains("DisplayData")) {
-                builder = builder.fromBase64(this.section.getString("DisplayData", ""));
+                builder = builder.withBase64(this.section.getString("DisplayData", ""));
             }
 
             if (this.section.contains("DisplayName")) {
@@ -382,7 +352,7 @@ public class Prize {
             }
 
             if (this.section.contains("DisplayItem")) {
-                builder.withType(this.section.getString("DisplayItem", "red_terracotta").toLowerCase());
+                builder.withCustomItem(this.section.getString("DisplayItem", "red_terracotta").toLowerCase());
             }
 
             if (this.section.contains("DisplayAmount")) {
@@ -390,7 +360,7 @@ public class Prize {
             }
 
             if (this.section.contains("DisplayLore") && !this.section.contains("Lore")) {
-                builder.setDisplayLore(this.section.getStringList("DisplayLore"));
+                builder.withDisplayLore(this.section.getStringList("DisplayLore"));
             }
 
             if (this.section.contains("Lore")) {
@@ -402,16 +372,16 @@ public class Prize {
                     ).forEach(this.logger::warn);
                 }
 
-                builder.setDisplayLore(this.section.getStringList("Lore"));
+                builder.withDisplayLore(this.section.getStringList("Lore"));
             }
 
             //builder.addLorePlaceholder("%chance%", this.getTotalChance());
 
             if (this.section.contains("Glowing")) {
-                builder.setGlowing(this.section.getBoolean("Glowing", false));
+                builder.setEnchantGlint(this.section.getBoolean("Glowing", false));
             }
 
-            builder.setDamage(this.section.getInt("DisplayDamage", 0));
+            builder.setItemDamage(this.section.getInt("DisplayDamage", 0));
 
             if (this.section.contains("Patterns")) {
                 if (MiscUtils.isLogging()) {
@@ -422,18 +392,32 @@ public class Prize {
                     ).forEach(this.logger::warn);
                 }
 
+                final PatternBuilder patternBuilder = builder.asPatternBuilder();
+
                 for (final String pattern : this.section.getStringList("Patterns")) {
-                    builder.addPattern(pattern.toLowerCase());
+                    final String[] sections = pattern.split(":");
+
+                    patternBuilder.addPattern(sections[0].toLowerCase(), sections[1]);
                 }
+
+                patternBuilder.build();
             }
 
             if (this.section.contains("DisplayPatterns")) {
+                final PatternBuilder patternBuilder = builder.asPatternBuilder();
+
                 for (final String pattern : this.section.getStringList("DisplayPatterns")) {
-                    builder.addPattern(pattern.toLowerCase());
+                    final String[] sections = pattern.split(":");
+
+                    patternBuilder.addPattern(sections[0].toLowerCase(), sections[1]);
                 }
+
+                patternBuilder.build();
             }
 
-            builder.setHidingItemFlags(this.section.getBoolean("HideItemFlags", false) || !this.section.getStringList("Flags").isEmpty());
+            if (this.section.getBoolean("HideItemFlags", false) || !this.section.getStringList("Flags").isEmpty()) {
+                builder.hideToolTip();
+            }
 
             builder.setUnbreakable(this.section.getBoolean("Unbreakable", false));
 
@@ -444,42 +428,40 @@ public class Prize {
             if (this.section.contains("Settings.Mob-Type")) {
                 final EntityType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(this.section.getString("Settings.Mob-Type", "cow"));
 
+                final SpawnerBuilder spawnerBuilder = builder.asSpawnerBuilder();
+
                 if (type != null) {
-                    builder.setEntityType(type);
+                    spawnerBuilder.withEntityType(type).build();
                 }
             }
 
             if (this.section.contains("Settings.RGB")) {
-                @Nullable final Color color = ColorUtils.getRGB(this.section.getString("Settings.RGB", ""));
-
-                if (color != null) {
-                    builder.setColor(color);
-                }
+                builder.setColor(this.section.getString("Settings.RGB", ""));
             } else if (this.section.contains("Settings.Color")) {
-                builder.setColor(ColorUtils.getColor(this.section.getString("Settings.Color", "RED")));
+                builder.setColor(this.section.getString("Settings.Color", "RED"));
             }
 
             if (this.section.contains("Skull")) {
-                builder.setSkull(section.getString("Skull", ""));
+                final SkullBuilder skullBuilder = builder.asSkullBuilder();
+
+                skullBuilder.withSkull(this.section.getString("Skull", "")).build();
             }
 
             if (this.section.contains("Player")) {
-                builder.setPlayer(this.section.getString("Player", ""));
+                final SkullBuilder skullBuilder = builder.asSkullBuilder();
+
+                skullBuilder.withName(this.section.getString("Player", "")).build();
             }
 
-            if (this.section.contains("DisplayTrim.Pattern") && builder.isArmor()) {
-                builder.applyTrimPattern(this.section.getString("DisplayTrim.Pattern", "sentry"));
-            }
-
-            if (this.section.contains("DisplayTrim.Material") && builder.isArmor()) {
-                builder.applyTrimMaterial(this.section.getString("DisplayTrim.Material", "quartz"));
+            if (this.section.contains("DisplayTrim.Pattern") && this.section.contains("DisplayTrim.Material")) {
+                builder.setTrim(this.section.getString("DisplayTrim.Pattern", "sentry"), this.section.getString("DisplayTrim.Material", "quartz"));
             }
 
             if (this.section.contains("DisplayEnchantments")) {
                 for (final String ench : this.section.getStringList("DisplayEnchantments")) {
                     String[] value = ench.split(":");
 
-                    builder.addEnchantment(value[0], Integer.parseInt(value[1]), true);
+                    builder.addEnchantment(value[0], Integer.parseInt(value[1]));
                 }
             }
 
@@ -487,6 +469,8 @@ public class Prize {
                 final ConfigurationSection potions = this.section.getConfigurationSection("DisplayPotions");
 
                 if (potions != null) {
+                    final PotionBuilder potionBuilder = builder.asPotionBuilder();
+
                     for (final String potion : potions.getKeys(false)) {
                         final PotionEffectType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getPotionEffect(potion);
 
@@ -497,16 +481,18 @@ public class Prize {
                                 final int duration = data.getInt("duration", 10) * 20;
                                 final int level = data.getInt("level", 1);
 
-                                builder.addPotionEffect(type, duration, level);
+                                potionBuilder.withPotionEffect(type, duration, level);
                             }
                         }
                     }
+
+                    potionBuilder.build();
                 }
             }
 
             return builder;
         } catch (Exception exception) {
-            return new LegacyItemBuilder(ItemType.RED_TERRACOTTA).setDisplayName("<red><bold>ERROR").setDisplayLore(new ArrayList<>() {{
+            return ItemBuilder.from(ItemType.RED_TERRACOTTA).setDisplayName("<red><bold>ERROR").withDisplayLore(new ArrayList<>() {{
                 add("<red>There was an error with one of your prizes!");
                 add("<red>The reward in question is labeled: <yellow>" + section.getName() + " <red>in crate: <yellow>" + crateName);
                 add("<red>Name of the reward is " + section.getString("DisplayName"));

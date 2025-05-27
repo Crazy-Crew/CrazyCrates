@@ -1,10 +1,8 @@
 package com.badbones69.crazycrates.paper.listeners.crates.types;
 
 import com.badbones69.crazycrates.paper.api.PrizeManager;
-import com.badbones69.crazycrates.paper.utils.ItemUtils;
+import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
-import io.papermc.paper.datacomponent.DataComponentType;
-import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -12,8 +10,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.inventory.meta.ItemMeta;
-import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.QuadCrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.SessionManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -84,7 +80,7 @@ public class QuadCrateListener implements Listener {
             display.editPersistentDataContainer(container -> container.set(ItemKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1"));
 
             // Convert the item stack to item builder.
-            final ItemStack itemStack = ItemUtils.convertItemStack(display).asItemStack();
+            final ItemStack itemStack = ItemBuilder.from(display).asItemStack(player);
 
             // Drop the item.
             final Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), itemStack);
