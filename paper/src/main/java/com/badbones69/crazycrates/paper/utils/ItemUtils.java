@@ -282,7 +282,7 @@ public class ItemUtils {
 
             final String player = item.getString("settings.player", null);
 
-            if (player != null && !player.isEmpty()) {
+            if (player != null && !player.isEmpty() && itemBuilder.isPlayerHead()) {
                 final SkullBuilder skullBuilder = itemBuilder.asSkullBuilder();
 
                 skullBuilder.withName(player).build();
