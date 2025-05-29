@@ -273,6 +273,8 @@ public class ItemUtils {
                 itemBuilder.hideToolTip();
             }
 
+            itemBuilder.hideComponents(item.getStringList("hidden-components"));
+
             itemBuilder.setUnbreakable(item.getBoolean("unbreakable-item", false));
 
             // settings
