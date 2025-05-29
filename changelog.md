@@ -16,3 +16,4 @@
           hidden-components:
             - "enchantments"
 ```
+- Fixed a potential exception if the item is not player head
