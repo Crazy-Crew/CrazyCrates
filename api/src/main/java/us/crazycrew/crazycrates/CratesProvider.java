@@ -16,6 +16,8 @@ public class CratesProvider {
     private static IServer instance;
 
     /**
+     * Gets the instance of IServer which lets you interact with our plugin.
+     *
      * @return {@link IServer}
      * @since 0.4
      */
@@ -36,6 +38,7 @@ public class CratesProvider {
      * Creates {@link IServer} instance.
      *
      * @param instance the {@link IServer} instance
+     * @since 0.4
      */
     @ApiStatus.Internal
     public static void register(@NotNull final IServer instance) {
@@ -46,6 +49,8 @@ public class CratesProvider {
 
     /**
      * Unregisters {@link IServer} instance.
+     *
+     * @since 0.4
      */
     @ApiStatus.Internal
     public static void unregister() {

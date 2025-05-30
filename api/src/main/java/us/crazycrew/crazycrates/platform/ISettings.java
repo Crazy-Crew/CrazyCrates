@@ -36,6 +36,8 @@ public interface ISettings {
     boolean isVirtualAcceptsPhysical();
 
     /**
+     * Gets a list of disabled worlds!
+     *
      * @return a list of worlds crates are disabled in
      * @since 0.5
      */

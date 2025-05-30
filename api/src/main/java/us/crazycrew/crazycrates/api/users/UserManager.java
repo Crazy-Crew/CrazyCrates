@@ -16,6 +16,14 @@ import java.util.UUID;
 public abstract class UserManager {
 
     /**
+     * The default constructor for {@link UserManager}.
+     *
+     * @author Ryder Belserion
+     * @since 0.9
+     */
+    public UserManager() {}
+
+    /**
      * Get the player.
      *
      * @param uuid the {@link UUID} of the {@link Audience}
