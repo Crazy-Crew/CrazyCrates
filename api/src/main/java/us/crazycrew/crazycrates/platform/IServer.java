@@ -3,6 +3,7 @@ package us.crazycrew.crazycrates.platform;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -22,10 +23,32 @@ public interface IServer {
     void reload();
 
     /**
+     * Gets the crates path.
+     *
+     * @return {@link Path}
+     * @since 0.9
+     */
+    @NotNull Path getCratesPath();
+
+    /**
+     * Gets the plugin's home folder
+     *
+     * @return {@link Path}
+     * @since 0.9
+     */
+    @NotNull Path getDataPath();
+
+    /**
+     * Gets the plugin's crates folder.
+     *
      * @return {@link File}
      * @since 0.5
      */
-    @NotNull File getCrateFolder();
+    @Deprecated(since = "0.9", forRemoval = true)
+    @NotNull
+    default File getCrateFolder() {
+        return getCratesPath().toFile();
+    }
 
     /**
      * Gets the plugin's data folder.
@@ -33,7 +56,11 @@ public interface IServer {
      * @return {@link File}
      * @since 0.8
      */
-    @NotNull File getDataFolder();
+    @Deprecated(since = "0.9", forRemoval = true)
+    @NotNull
+    default File getDataFolder() {
+        return getDataPath().toFile();
+    }
 
     /**
      * Gets a list of crate files with the option to keep or remove the extension.
