@@ -1,9 +1,8 @@
 plugins {
     alias(libs.plugins.fix.javadoc)
 
-    id("config-java")
-
     `maven-publish`
+    `config-java`
 }
 
 project.group = "us.crazycrew.crazycrates"
@@ -31,7 +30,7 @@ tasks {
         options.isDocFilesSubDirs = true
         options.windowTitle("$name $projectVersion API Documentation")
         options.docTitle("<h1>$name $projectVersion API</h1>")
-        options.header = """<img src="https://raw.githubusercontent.com/Crazy-Crew/Branding/refs/heads/main/crazycrates/png/64x64.png" style="height:100%;padding-bottom:30px;">"""
+        options.header = """<img src="https://raw.githubusercontent.com/Crazy-Crew/Branding/refs/heads/main/crazycrates/png/64x64.png" style="height:100%">"""
         options.bottom("Copyright © 2025 CrazyCrew")
         options.linkSource(true)
         options.addBooleanOption("html5", true)
