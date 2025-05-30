@@ -43,5 +43,22 @@ tasks {
         filteringCharset = Charsets.UTF_8.name()
 
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+        inputs.properties(
+            "name" to rootProject.name,
+            "version" to rootProject.version,
+            "description" to rootProject.description,
+            "minecraft" to libs.findVersion("minecraft").get(),
+            "website" to "https://github.com/Crazy-Crew/${rootProject.name}",
+            "id" to rootProject.name.lowercase(),
+            "group" to project.group
+        )
+
+        with(copySpec {
+            include("*paper-plugin.yml", "fabric.mod.json")
+            from("src/main/resources") {
+                expand(inputs.properties)
+            }
+        })
     }
 }

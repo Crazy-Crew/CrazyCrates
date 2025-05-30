@@ -43,22 +43,6 @@ tasks {
         }
     }
 
-    processResources {
-        inputs.properties(
-            "name" to rootProject.name,
-            "version" to rootProject.version,
-            "description" to rootProject.description,
-            "minecraft" to libs.versions.minecraft.get(),
-            "group" to project.group
-        )
-
-        with(copySpec {
-            from("src/main/resources/paper-plugin.yml") {
-                expand(inputs.properties)
-            }
-        })
-    }
-
     runPaper.folia.registerTask()
 
     runServer {
