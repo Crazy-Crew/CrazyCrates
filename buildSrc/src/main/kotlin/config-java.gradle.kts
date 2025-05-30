@@ -4,8 +4,6 @@ plugins {
     `java-library`
 }
 
-project.version = rootProject.version
-
 val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
 
 repositories {
