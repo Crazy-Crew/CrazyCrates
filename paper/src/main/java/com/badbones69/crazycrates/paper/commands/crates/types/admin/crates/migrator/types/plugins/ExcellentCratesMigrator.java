@@ -251,7 +251,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             if (crateItem.hasItemMeta()) {
                 final ItemMeta itemMeta = crateItem.getItemMeta();
 
-                set(root, "Custom-Model-Data", itemMeta.hasCustomModelData() ? itemMeta.getCustomModelData() : -1);
+                set(root, "Custom-Model-Data", itemMeta.hasCustomModelDataComponent() ? itemMeta.getCustomModelDataComponent().getFloats().getFirst() : -1);
             }
 
             set(root, "Settings.Knockback", crate.isPushbackEnabled());
