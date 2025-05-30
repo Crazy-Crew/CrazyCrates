@@ -12,6 +12,11 @@ dependencies {
     compileOnly(libs.bundles.adventure)
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
 publishing {
     repositories {
         maven {
