@@ -116,7 +116,7 @@ feather {
     }
 }
 
-allprojects { //todo() why? the gradle shit in buildSrc already applies this...
+allprojects {
     apply(plugin = "java-library")
 }
 
