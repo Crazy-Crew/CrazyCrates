@@ -1,4 +1,6 @@
 plugins {
+    alias(libs.plugins.fix.javadoc)
+
     id("config-java")
 
     `maven-publish`
@@ -6,7 +8,6 @@ plugins {
 
 project.group = "us.crazycrew.crazycrates"
 project.description = "The official API for CrazyCrates!"
-project.version = "0.8"
 
 dependencies {
     compileOnly(libs.bundles.adventure)
@@ -15,6 +16,15 @@ dependencies {
 java {
     withSourcesJar()
     withJavadocJar()
+}
+
+tasks {
+    withType<com.jeff_media.fixjavadoc.FixJavadoc> {
+        configureEach {
+            newLineOnMethodParameters.set(false)
+            keepOriginal.set(false)
+        }
+    }
 }
 
 publishing {
