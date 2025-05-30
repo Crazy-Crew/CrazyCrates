@@ -37,9 +37,3 @@ publishing {
         }
     }
 }
-
-tasks {
-    build {
-        dependsOn(shadowJar)
-    }
-}
