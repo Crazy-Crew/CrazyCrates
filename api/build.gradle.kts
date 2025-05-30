@@ -17,10 +17,18 @@ publishing {
         maven {
             url = uri("https://repo.crazycrew.us/releases/")
 
-            credentials {
-                this.username = System.getenv("gradle_username")
-                this.password = System.getenv("gradle_password")
-            }
+            credentials(PasswordCredentials::class)
+            authentication.create<BasicAuthentication>("basic")
+        }
+    }
+
+    publications {
+        create<MavenPublication>("mavenJava") {
+            groupId = "${project.group}"
+            artifactId = "api"
+            version = "0.8"
+
+            from(components["java"])
         }
     }
 }
