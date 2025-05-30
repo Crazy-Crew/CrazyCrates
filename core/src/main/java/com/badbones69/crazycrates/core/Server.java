@@ -8,25 +8,24 @@ import us.crazycrew.crazycrates.api.users.UserManager;
 import us.crazycrew.crazycrates.platform.ISettings;
 import us.crazycrew.crazycrates.platform.IServer;
 import com.badbones69.crazycrates.core.config.ConfigManager;
-import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
-import java.util.Optional;
 
 public class Server implements IServer {
 
-    private final File directory;
-    private final File crates;
+    private final Path path;
+    private final Path crates;
 
-    public Server(@NotNull final File directory) {
-        this.directory = directory;
-        this.crates = new File(this.directory, "crates");
+    public Server(@NotNull final Path path) {
+        this.path = path;
+        this.crates = this.path.resolve("crates");
     }
 
     private UserManager userManager;
     private Settings settings;
 
     public void apply() {
-        ConfigManager.load(this.directory);
+        ConfigManager.load(this.path);
 
         this.settings = new Settings();
 
@@ -49,18 +48,18 @@ public class Server implements IServer {
     }
 
     @Override
-    public @NotNull final File getCrateFolder() {
+    public @NotNull Path getCratesPath() {
         return this.crates;
     }
 
     @Override
-    public @NotNull File getDataFolder() {
-        return this.directory;
+    public @NotNull Path getDataPath() {
+        return this.path;
     }
 
     @Override
     public @NotNull final List<String> getCrateFiles(boolean keepExtension) {
-        return keepExtension ? FileUtils.getNamesByExtension("crates", this.directory.toPath(), ".yml") :FileUtils.getNamesWithoutExtension("crates", this.directory.toPath(), ".yml");
+        return keepExtension ? FileUtils.getNamesByExtension("crates", this.path, ".yml") : FileUtils.getNamesWithoutExtension("crates", this.path, ".yml");
     }
 
     @Override

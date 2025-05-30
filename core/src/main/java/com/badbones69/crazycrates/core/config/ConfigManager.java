@@ -12,7 +12,7 @@ import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
 import com.badbones69.crazycrates.core.config.impl.messages.ErrorKeys;
 import com.badbones69.crazycrates.core.config.impl.messages.MiscKeys;
 import com.badbones69.crazycrates.core.config.impl.messages.PlayerKeys;
-import java.io.File;
+import java.nio.file.Path;
 
 public class ConfigManager {
 
@@ -25,23 +25,23 @@ public class ConfigManager {
     /**
      * Loads configuration files.
      */
-    public static void load(final File dataFolder) {
+    public static void load(final Path path) {
         YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
 
         config = SettingsManagerBuilder
-                .withYamlFile(new File(dataFolder, "config.yml"), builder)
+                .withYamlFile(path.resolve("config.yml"), builder)
                 .migrationService(new ConfigMigration())
                 .configurationData(ConfigKeys.class)
                 .create();
 
         editor = SettingsManagerBuilder
-                .withYamlFile(new File(dataFolder, "editor.yml"), builder)
+                .withYamlFile(path.resolve("editor.yml"), builder)
                 .migrationService(new ConfigMigration())
                 .configurationData(EditorKeys.class)
                 .create();
 
         messages = SettingsManagerBuilder
-                .withYamlFile(new File(dataFolder, "messages.yml"), builder)
+                .withYamlFile(path.resolve("messages.yml"), builder)
                 .migrationService(new LocaleMigration())
                 .configurationData(MiscKeys.class, ErrorKeys.class, PlayerKeys.class, CrateKeys.class, CommandKeys.class)
                 .create();
