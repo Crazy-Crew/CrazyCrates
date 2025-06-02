@@ -46,7 +46,7 @@ bStats = "3.1.0" # https://github.com/Bastian/bStats
 
 fusion = "1.12.1" # https://github.com/ryderbelserion/Fusion
 
-crazycrates = "4.10.4" # https://github.com/Crazy-Crew/CrazyCrates
+crazycrates = "4.10.5" # https://github.com/Crazy-Crew/CrazyCrates
 
 ## Gradle Plugins
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
