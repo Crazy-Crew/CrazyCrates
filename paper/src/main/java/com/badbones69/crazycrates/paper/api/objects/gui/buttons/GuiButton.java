@@ -26,7 +26,7 @@ public class GuiButton {
     private final List<String> messages;
 
     public GuiButton(@NotNull final ConfigurationSection section, @NotNull final Map<String, String> placeholders) {
-        this.guiItem = new LegacyItemBuilder()
+        this.guiItem = new LegacyItemBuilder(this.plugin)
                 .withType(section.getString("material", "emerald_block"))
                 .setDisplayName(section.getString("name", "No display name found."))
                 .setDisplayLore(section.getStringList("lore"));

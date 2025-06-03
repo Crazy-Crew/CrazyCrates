@@ -65,7 +65,7 @@ public class FancyHologramsSupport extends HologramManager {
 
         final Server server = this.plugin.getServer();
 
-        new FoliaScheduler(Scheduler.async_scheduler) {
+        new FoliaScheduler(this.plugin, Scheduler.async_scheduler) {
             @Override
             public void run() {
                 server.getOnlinePlayers().forEach(hologram::updateShownStateFor);

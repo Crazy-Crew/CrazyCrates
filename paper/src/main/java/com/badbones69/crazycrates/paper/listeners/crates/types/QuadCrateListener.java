@@ -40,6 +40,8 @@ import java.util.Map;
 
 public class QuadCrateListener implements Listener {
 
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
     private final SessionManager sessionManager = new SessionManager();
 
     @EventHandler
@@ -104,7 +106,7 @@ public class QuadCrateListener implements Listener {
 
             // Check if all crates have spawned, then end if so.
             if (session.allCratesOpened()) {
-                new FoliaScheduler(null, player) {
+                new FoliaScheduler(this.plugin, null, player) {
                     @Override
                     public void run() {
                         session.endCrate(false);

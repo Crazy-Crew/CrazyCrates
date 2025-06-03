@@ -61,7 +61,7 @@ public class WarCrate extends CrateBuilder {
 
         this.player.openInventory(this.inventory);
 
-        addCrateTask(new FoliaScheduler(null, this.player) {
+        addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
             int full = 0;
             int open = 0;
 

@@ -11,7 +11,7 @@ import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
+import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.core.files.FileType;
 import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
@@ -183,7 +183,7 @@ public class Crate {
 
         @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
-        this.borderItem = new LegacyItemBuilder()
+        this.borderItem = new LegacyItemBuilder(this.plugin)
                 .withType(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane").toLowerCase())
                 .setCustomModelData(file.getString("Crate.Preview.Glass.Custom-Model-Data", ""))
                 .setItemModel(file.getString("Crate.Preview.Glass.Model.Namespace", ""), file.getString("Crate.Preview.Glass.Model.Id", ""))
@@ -192,7 +192,7 @@ public class Crate {
 
         @NotNull final String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
 
-        this.previewTierBorderItem = new LegacyItemBuilder()
+        this.previewTierBorderItem = new LegacyItemBuilder(this.plugin)
                 .withType(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
                 .setCustomModelData(file.getString("Crate.tier-preview.glass.custom-model-data", ""))
                 .setItemModel(file.getString("Crate.tier-preview.glass.model.namespace", ""), file.getString("Crate.tier-preview.glass.model.id", ""))

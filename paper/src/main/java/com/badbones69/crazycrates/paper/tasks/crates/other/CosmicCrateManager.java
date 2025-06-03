@@ -38,7 +38,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
 
         this.totalPrizes = file.getInt(path + "Total-Prize-Amount", 4);
 
-        this.mysteryCrate = new LegacyItemBuilder()
+        this.mysteryCrate = new LegacyItemBuilder(this.plugin)
                 .withType(file.getString(path + "Mystery-Crate.Item", "chest").toLowerCase())
                 .setDisplayName(file.getString(path + "Mystery-Crate.Name", "<bold><white>???</bold>"))
                 .setHidingItemFlags(file.getBoolean(path + "Mystery-Crate.HideItemFlags", false))
@@ -47,7 +47,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
                 .setCustomModelData(file.getString(path + "Mystery-Crate.Custom-Model-Data", ""))
                 .setItemModel(file.getString(path = "Mystery-Crate.Model.Namespace", ""), file.getString(path + "Mystery-Crate.Model.Id", ""));
 
-        this.pickedCrate = new LegacyItemBuilder().withType(file.getString(path + "Picked-Crate.Item", "gray_stained_glass_pane").toLowerCase())
+        this.pickedCrate = new LegacyItemBuilder(this.plugin).withType(file.getString(path + "Picked-Crate.Item", "gray_stained_glass_pane").toLowerCase())
                 .setDisplayName(file.getString(path + "Picked-Crate.Name", "<bold><white>???</white>"))
                 .setHidingItemFlags(file.getBoolean(path + "Picked-Crate.HideItemFlags", false))
                 .setDisplayLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("<gray>You have chosen #%slot%."))

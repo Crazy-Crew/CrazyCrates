@@ -10,7 +10,7 @@ import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import com.ryderbelserion.fusion.core.utils.NumberUtils;
+import com.ryderbelserion.fusion.kyori.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.Gui;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
 import net.kyori.adventure.key.Key;
@@ -44,7 +44,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
             final ModelData fillerModel = this.config.getProperty(ConfigKeys.filler_item_model);
 
-            guiFiller.fill(new LegacyItemBuilder()
+            guiFiller.fill(new LegacyItemBuilder(this.plugin)
                     .withType(this.config.getProperty(ConfigKeys.filler_item))
                     .setDisplayName(this.config.getProperty(ConfigKeys.filler_name))
                     .setDisplayLore(this.config.getProperty(ConfigKeys.filler_lore))
@@ -55,7 +55,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
         if (this.config.getProperty(ConfigKeys.gui_customizer_toggle)) {
             for (String custom : this.config.getProperty(ConfigKeys.gui_customizer)) {
-                final LegacyItemBuilder item = new LegacyItemBuilder();
+                final LegacyItemBuilder item = new LegacyItemBuilder(this.plugin);
 
                 int slot = 0;
 
@@ -77,13 +77,13 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                         case "custom-model-data" -> item.setCustomModelData(value);
 
-                        case "glowing" -> item.setGlowing(NumberUtils.tryParseBoolean(value).orElse(false));
+                        case "glowing" -> item.setGlowing(StringUtils.tryParseBoolean(value).orElse(false));
 
-                        case "slot" -> slot = NumberUtils.tryParseInt(value).orElse(-1).intValue();
+                        case "slot" -> slot = StringUtils.tryParseInt(value).orElse(-1).intValue();
 
-                        case "unbreakable-item" -> item.setUnbreakable(NumberUtils.tryParseBoolean(value).orElse(false));
+                        case "unbreakable-item" -> item.setUnbreakable(StringUtils.tryParseBoolean(value).orElse(false));
 
-                        case "hide-item-flags" -> item.setHidingItemFlags(NumberUtils.tryParseBoolean(value).orElse(false));
+                        case "hide-item-flags" -> item.setHidingItemFlags(StringUtils.tryParseBoolean(value).orElse(false));
 
                         case "command" -> {
                             final Server server = this.plugin.getServer();
@@ -117,7 +117,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                     final NumberFormat instance = NumberFormat.getNumberInstance();
 
-                    final LegacyItemBuilder builder = new LegacyItemBuilder()
+                    final LegacyItemBuilder builder = new LegacyItemBuilder(this.plugin)
                             .withType(section.getString("Item", "chest").toLowerCase())
                             .setDisplayName(crate.getCrateName())
                             .setCustomModelData(section.getString("Custom-Model-Data", ""))

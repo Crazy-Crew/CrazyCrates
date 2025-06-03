@@ -60,7 +60,7 @@ public class MiscUtils {
 
         final String result = populatePlaceholders(sender, command, placeholders);
 
-        new FoliaScheduler(Scheduler.global_scheduler) {
+        new FoliaScheduler(plugin, Scheduler.global_scheduler) {
             @Override
             public void run() {
                 server.dispatchCommand(server.getConsoleSender(), result);
@@ -348,7 +348,7 @@ public class MiscUtils {
                 ItemType.RED_STAINED_GLASS_PANE
         );
 
-        return new LegacyItemBuilder(panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
+        return new LegacyItemBuilder(plugin, panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
     }
 
     public static void addItem(@NotNull final Player player, @NotNull final ItemStack... items) {

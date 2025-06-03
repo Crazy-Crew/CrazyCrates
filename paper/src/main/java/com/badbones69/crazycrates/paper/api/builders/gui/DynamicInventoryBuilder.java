@@ -18,7 +18,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
     public DynamicInventoryBuilder(@NotNull final Player player, @Nullable final Crate crate, @NotNull final String title, final int rows) {
         super(player);
 
-        this.gui = Gui.paginated().setTitle(title).setRows(rows).disableInteractions().create();
+        this.gui = Gui.paginated(this.plugin).setTitle(title).setRows(rows).disableInteractions().create();
 
         this.crate = crate;
     }

@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.minotaur)
     alias(libs.plugins.feather)
-    alias(libs.plugins.hangar)
 
     `config-java`
 }
@@ -11,9 +10,14 @@ rootProject.group = "com.badbones69.crazycrates"
 val git = feather.getGit()
 
 val commitHash: String? = git.getCurrentCommitHash().subSequence(0, 7).toString()
-val isSnapshot: Boolean = System.getenv("IS_SNAPSHOT") != null
+val isSnapshot: Boolean = git.getCurrentBranch() == "dev"
 val content: String = if (isSnapshot) "[$commitHash](https://github.com/Crazy-Crew/${rootProject.name}/commit/$commitHash) ${git.getCurrentCommit()}" else rootProject.file("changelog.md").readText(Charsets.UTF_8)
 val minecraft = libs.versions.minecraft.get()
+
+val versions = listOf(
+    //"1.21.6",
+    minecraft
+)
 
 rootProject.version = version()
 rootProject.description = "Add crates to your server with 11 different crate types to choose from!"
@@ -23,17 +27,15 @@ fun version(): String {
         return "$minecraft-$commitHash"
     }
 
-    if (System.getenv("BUILD_NUMBER") != null && System.getenv("IS_PUBLISHING") == null) {
-        return "$minecraft-${System.getenv("BUILD_NUMBER")}-$commitHash"
-    }
-
     return libs.versions.crazycrates.get()
 }
 
 feather {
     rootDirectory = rootProject.rootDir.toPath()
 
-    val data = git.getCurrentCommitAuthorData()
+    val data = git.getGithubCommit("Crazy-Crew/${rootProject.name}")
+
+    val user = data.user
 
     discord {
         webhook {
@@ -44,9 +46,9 @@ feather {
                 post(System.getenv("BUILD_WEBHOOK"))
             }
 
-            username(data.author)
+            username(user.getName())
 
-            avatar(data.avatar)
+            avatar(user.avatar)
 
             embeds {
                 embed {
@@ -82,9 +84,9 @@ feather {
                 post(System.getenv("BUILD_WEBHOOK"))
             }
 
-            username(data.author)
+            username(user.getName())
 
-            avatar(data.avatar)
+            avatar(user.avatar)
 
             content("<@&929463441159254066>")
 
@@ -160,7 +162,7 @@ modrinth {
 
     changelog = content
 
-    gameVersions.addAll(listOf(libs.versions.minecraft.get()))
+    gameVersions.addAll(versions)
 
     uploadFile = tasks.jar.get().archiveFile.get()
 
@@ -174,53 +176,5 @@ modrinth {
     dependencies {
         optional.project("fancyholograms")
         optional.project("DecentHolograms")
-    }
-}
-
-hangarPublish {
-    publications.register("plugin") {
-        apiKey.set(System.getenv("HANGAR_KEY"))
-
-        id.set(rootProject.name)
-
-        version.set("${rootProject.version}")
-
-        channel.set(if (isSnapshot) "Beta" else "Release")
-
-        changelog.set(content)
-
-        platforms {
-            paper {
-                jar.set(tasks.jar.get().archiveFile.get())
-
-                platformVersions.set(listOf(libs.versions.minecraft.get()))
-
-                dependencies {
-                    hangar("PlaceholderAPI") {
-                        required = false
-                    }
-
-                    hangar("FancyHolograms") {
-                        required = false
-                    }
-
-                    url("DecentHolograms", "https://modrinth.com/plugin/decentholograms") {
-                        required = false
-                    }
-
-                    url("ItemsAdder", "https://polymart.org/product/1851/itemsadder") {
-                        required = false
-                    }
-
-                    url("Oraxen", "https://polymart.org/product/629/oraxen") {
-                        required = false
-                    }
-
-                    url("Nexo", "https://polymart.org/resource/nexo.6901") {
-                        required = false
-                    }
-                }
-            }
-        }
     }
 }

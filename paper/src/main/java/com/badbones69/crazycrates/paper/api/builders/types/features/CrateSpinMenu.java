@@ -59,7 +59,7 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
         this.gui.setOpenGuiAction(action -> this.userManager.addRespinPrize(uuid, fileName, this.settings.getPrize().getSectionName()));
 
         this.gui.setCloseGuiAction(action -> {
-            new FoliaScheduler(Scheduler.global_scheduler) {
+            new FoliaScheduler(this.plugin, Scheduler.global_scheduler) {
                 @Override
                 public void run() {
                     if (userManager.hasRespinPrize(uuid, fileName)) { // if they have a respin prize, add it.

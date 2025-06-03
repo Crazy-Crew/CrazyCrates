@@ -1,11 +1,9 @@
 name: Snapshot Build
-env:
-  IS_SNAPSHOT: true
 on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - dev
 
 jobs:
   build:

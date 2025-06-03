@@ -65,7 +65,7 @@ public class CsgoCrate extends CrateBuilder {
         // Open the inventory.
         this.player.openInventory(this.inventory);
 
-        addCrateTask(new FoliaScheduler(null, this.player) {
+        addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
             int time = 1;
 
             int full = 0;
@@ -106,7 +106,7 @@ public class CsgoCrate extends CrateBuilder {
 
                         final String material = config.getProperty(ConfigKeys.crate_csgo_finished_material);
 
-                        final ItemStack itemStack = new LegacyItemBuilder().withType(material.isEmpty() ? Material.GRAY_STAINED_GLASS.getKey().getKey() : material).setDisplayName(" ").asItemStack();
+                        final ItemStack itemStack = new LegacyItemBuilder(plugin).withType(material.isEmpty() ? Material.GRAY_STAINED_GLASS.getKey().getKey() : material).setDisplayName(" ").asItemStack();
 
                         setItem(4, itemStack);
                         setItem(22, itemStack);
@@ -133,7 +133,7 @@ public class CsgoCrate extends CrateBuilder {
 
                         crateManager.removePlayerFromOpeningList(player);
 
-                        new FoliaScheduler(null, player) {
+                        new FoliaScheduler(plugin, null, player) {
                             @Override
                             public void run() { //todo() use inventory holders
                                 if (player.getOpenInventory().getTopInventory().equals(inventory)) player.closeInventory();
@@ -157,7 +157,7 @@ public class CsgoCrate extends CrateBuilder {
         final String material = this.config.getProperty(ConfigKeys.crate_csgo_cycling_material);
 
         if (!material.isEmpty()) {
-            final ItemStack itemStack = new LegacyItemBuilder().withType(material).setDisplayName(" ").asItemStack();
+            final ItemStack itemStack = new LegacyItemBuilder(this.plugin).withType(material).setDisplayName(" ").asItemStack();
 
             setItem(4, itemStack);
             setItem(22, itemStack);

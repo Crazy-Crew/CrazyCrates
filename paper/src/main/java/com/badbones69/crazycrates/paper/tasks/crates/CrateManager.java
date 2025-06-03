@@ -1125,7 +1125,7 @@ public class CrateManager {
 
         final Matrix4f scale = new Matrix4f().scale(0.5f);
 
-        new FoliaScheduler(null, itemDisplay) {
+        new FoliaScheduler(this.plugin, null, itemDisplay) {
             @Override
             public void run() {
                 if (!itemDisplay.isValid()) { // cancel just in case
@@ -1141,7 +1141,7 @@ public class CrateManager {
         }.runAtFixedRate(1, 20);
 
         // remove item display after 5 seconds.
-        new FoliaScheduler(location) {
+        new FoliaScheduler(this.plugin, location) {
             @Override
             public void run() {
                 if (!itemDisplay.isValid()) { // cancel just in case
@@ -1462,7 +1462,7 @@ public class CrateManager {
         final boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
-        final LegacyItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new LegacyItemBuilder().fromBase64(file.getString("Crate.PhysicalKey.Data", "")) : new LegacyItemBuilder().withType(file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase());
+        final LegacyItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new LegacyItemBuilder(this.plugin).fromBase64(file.getString("Crate.PhysicalKey.Data", "")) : new LegacyItemBuilder(this.plugin).withType(file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase());
 
         return itemBuilder.setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setItemModel(namespace, id).setHidingItemFlags(hideFlags).setCustomModelData(customModelData);
     }
@@ -1594,7 +1594,7 @@ public class CrateManager {
 
         removeReward(player);
 
-        new FoliaScheduler(location) {
+        new FoliaScheduler(this.plugin, location) {
             @Override
             public void run() {
                 ChestManager.closeChest(location.getBlock(), false);

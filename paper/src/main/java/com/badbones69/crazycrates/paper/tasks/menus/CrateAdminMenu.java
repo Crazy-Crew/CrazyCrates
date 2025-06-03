@@ -105,7 +105,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
         this.gui.open(this.player, gui -> {
             final int rows = gui.getRows();
 
-            gui.setItem(rows, 5, new LegacyItemBuilder(ItemType.CHEST)
+            gui.setItem(rows, 5, new LegacyItemBuilder(this.plugin, ItemType.CHEST)
                     .setDisplayName("<red>What is this menu?")
                     .addDisplayLore(" <gold>⤷ Right click to go back to the main menu!")
                     .addDisplayLore("")

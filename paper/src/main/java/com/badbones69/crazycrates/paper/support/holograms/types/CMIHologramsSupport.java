@@ -57,7 +57,7 @@ public class CMIHologramsSupport extends HologramManager {
 
         this.hologramManager.addHologram(hologram);
 
-        new FoliaScheduler(location) {
+        new FoliaScheduler(this.plugin, location) {
             @Override
             public void run() {
                 location.getNearbyEntitiesByType(Player.class, crateHologram.getRange()).forEach(player -> hologramManager.handleHoloUpdates(player, hologram.getLocation()));
