@@ -1,14 +1,14 @@
 package com.badbones69.crazycrates.paper.tasks.crates.types;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
+import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -21,7 +21,7 @@ import java.util.UUID;
 
 public class WarCrate extends CrateBuilder {
 
-    private final Map<Material, String> colorCodes = new HashMap<>();
+    private final Map<String, String> colorCodes = new HashMap<>();
 
     public WarCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
         super(crate, player, size);
@@ -111,8 +111,8 @@ public class WarCrate extends CrateBuilder {
 
         if (this.colorCodes.isEmpty()) getColorCode();
 
-        final LegacyItemBuilder builder = MiscUtils.getRandomPaneColor();
-        builder.setDisplayName("<" + this.colorCodes.get(builder.getType()) + "><bold>???</bold>");
+        final ItemBuilder builder = MiscUtils.getRandomPaneColor();
+        builder.setDisplayName("<" + this.colorCodes.get(builder.asString()) + "><bold>???</bold>");
         final ItemStack item = builder.asItemStack();
 
         for (int index = 0; index < 9; index++) {
@@ -121,21 +121,21 @@ public class WarCrate extends CrateBuilder {
     }
 
     private void getColorCode() {
-        this.colorCodes.put(Material.WHITE_STAINED_GLASS_PANE, "white");
-        this.colorCodes.put(Material.ORANGE_STAINED_GLASS_PANE, "gold");
-        this.colorCodes.put(Material.MAGENTA_STAINED_GLASS_PANE, "light_purple");
-        this.colorCodes.put(Material.LIGHT_BLUE_STAINED_GLASS_PANE, "dark_aqua");
-        this.colorCodes.put(Material.YELLOW_STAINED_GLASS_PANE, "yellow");
-        this.colorCodes.put(Material.LIME_STAINED_GLASS_PANE, "green");
-        this.colorCodes.put(Material.PINK_STAINED_GLASS_PANE, "red");
-        this.colorCodes.put(Material.GRAY_STAINED_GLASS_PANE, "dark_gray");
-        this.colorCodes.put(Material.LIGHT_GRAY_STAINED_GLASS_PANE, "gray");
-        this.colorCodes.put(Material.CYAN_STAINED_GLASS_PANE, "aqua");
-        this.colorCodes.put(Material.PURPLE_STAINED_GLASS_PANE, "dark_purple");
-        this.colorCodes.put(Material.BLUE_STAINED_GLASS_PANE, "dark_blue");
-        this.colorCodes.put(Material.BROWN_STAINED_GLASS_PANE, "gold");
-        this.colorCodes.put(Material.GREEN_STAINED_GLASS_PANE, "green");
-        this.colorCodes.put(Material.RED_STAINED_GLASS_PANE, "dark_red");
-        this.colorCodes.put(Material.BLACK_STAINED_GLASS_PANE, "black");
+        this.colorCodes.put(ItemType.WHITE_STAINED_GLASS_PANE.key().asString(), "white");
+        this.colorCodes.put(ItemType.ORANGE_STAINED_GLASS_PANE.key().asString(), "gold");
+        this.colorCodes.put(ItemType.MAGENTA_STAINED_GLASS_PANE.key().asString(), "light_purple");
+        this.colorCodes.put(ItemType.LIGHT_BLUE_STAINED_GLASS_PANE.key().asString(), "dark_aqua");
+        this.colorCodes.put(ItemType.YELLOW_STAINED_GLASS_PANE.key().asString(), "yellow");
+        this.colorCodes.put(ItemType.LIME_STAINED_GLASS_PANE.key().asString(), "green");
+        this.colorCodes.put(ItemType.PINK_STAINED_GLASS_PANE.key().asString(), "red");
+        this.colorCodes.put(ItemType.GRAY_STAINED_GLASS_PANE.key().asString(), "dark_gray");
+        this.colorCodes.put(ItemType.LIGHT_GRAY_STAINED_GLASS_PANE.key().asString(), "gray");
+        this.colorCodes.put(ItemType.CYAN_STAINED_GLASS_PANE.key().asString(), "aqua");
+        this.colorCodes.put(ItemType.PURPLE_STAINED_GLASS_PANE.key().asString(), "dark_purple");
+        this.colorCodes.put(ItemType.BLUE_STAINED_GLASS_PANE.key().asString(), "dark_blue");
+        this.colorCodes.put(ItemType.BROWN_STAINED_GLASS_PANE.key().asString(), "gold");
+        this.colorCodes.put(ItemType.GREEN_STAINED_GLASS_PANE.key().asString(), "green");
+        this.colorCodes.put(ItemType.RED_STAINED_GLASS_PANE.key().asString(), "dark_red");
+        this.colorCodes.put(ItemType.BLACK_STAINED_GLASS_PANE.key().asString(), "black");
     }
 }
