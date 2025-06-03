@@ -140,61 +140,8 @@ public class QuickCrate extends CrateBuilder {
             }
         }
 
-        final boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
-
         // Only related to the item above the crate.
-        if (showQuickCrateItem) {
-            final HologramManager manager = this.crateManager.getHolograms();
-
-            if (manager != null && this.crate.getHologram().isEnabled()) {
-                CrateLocation crateLocation = this.crateManager.getCrateLocation(this.location);
-
-                if (crateLocation != null) {
-                    manager.removeHologram(crateLocation.getID());
-                }
-            }
-
-            // Get the display item.
-            ItemStack display = prize.getDisplayItem(this.player, this.crate); //todo() use display entities
-
-            display.editPersistentDataContainer(container -> container.set(ItemKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1"));
-
-            Item reward;
-
-            try {
-                reward = this.player.getWorld().dropItem(this.location.clone().add(0.5, 1, 0.5), display);
-            } catch (IllegalArgumentException exception) {
-                if (MiscUtils.isLogging()) {
-                    this.logger.warn("A prize could not be given due to an invalid display item for this prize.");
-                    this.logger.warn("Crate: {} Prize: {}", prize.getCrateName(), prize.getPrizeName(), exception);
-                }
-
-                return;
-            }
-
-            reward.setVelocity(new Vector(0, 0.2, 0));
-
-            reward.customName(AdvUtils.parse(prize.getPrizeName()));
-
-            reward.setCustomNameVisible(true);
-            reward.setCanMobPickup(false);
-            reward.setCanPlayerPickup(false);
-
-            this.crateManager.addReward(this.player, reward);
-
-            ChestManager.openChest(this.location.getBlock(), true);
-
-            PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, 0.5), this.crate, prize);
-
-            addCrateTask(new FoliaScheduler(null, this.player) {
-                @Override
-                public void run() {
-                    crateManager.endQuickCrate(player, location, crate, false);
-                }
-            }.runDelayed(5 * 20));
-
-            return;
-        }
+        displayItem(prize);
 
         ChestManager.openChest(this.location.getBlock(), true);
 

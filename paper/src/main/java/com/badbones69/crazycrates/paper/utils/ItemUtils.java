@@ -265,6 +265,8 @@ public class ItemUtils {
                 itemBuilder.hideToolTip();
             }
 
+            itemBuilder.hideComponents(item.getStringList("hidden-components"));
+
             itemBuilder.setUnbreakable(item.getBoolean("unbreakable-item", false));
 
             // settings
@@ -272,7 +274,7 @@ public class ItemUtils {
 
             final String player = item.getString("settings.player", null);
 
-            if (player != null && !player.isEmpty()) {
+            if (player != null && !player.isEmpty() && itemBuilder.isPlayerHead()) {
                 final SkullBuilder skullBuilder = itemBuilder.asSkullBuilder();
 
                 skullBuilder.withName(player).build();

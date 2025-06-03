@@ -67,12 +67,12 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.api = new FusionPaper(getLogger(), getDataPath());
+        this.api = new FusionPaper(getComponentLogger(), getDataPath());
         this.api.enable(this);
 
         this.fileManager = this.api.getLegacyFileManager();
 
-        this.instance = new Server(getDataFolder());
+        this.instance = new Server(getDataPath());
         this.instance.apply();
 
         this.fileManager.addFile("locations.yml", FileType.YAML).addFile("data.yml", FileType.YAML).addFile("respin-gui.yml", "guis", false, FileType.YAML)

@@ -4,8 +4,6 @@ plugins {
     `java-library`
 }
 
-project.version = rootProject.version
-
 val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
 
 repositories {
@@ -32,12 +30,35 @@ java {
 tasks {
     shadowJar {
         archiveClassifier.set("")
-        archiveVersion.set("")
+
+        exclude("META-INF/**")
+    }
+
+    compileJava {
+        options.encoding = Charsets.UTF_8.name()
+        options.release.set(21)
     }
 
     processResources {
         filteringCharset = Charsets.UTF_8.name()
 
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+        inputs.properties(
+            "name" to rootProject.name,
+            "version" to rootProject.version,
+            "description" to rootProject.description,
+            "minecraft" to libs.findVersion("minecraft").get(),
+            "website" to "https://github.com/Crazy-Crew/${rootProject.name}",
+            "id" to rootProject.name.lowercase(),
+            "group" to project.group
+        )
+
+        with(copySpec {
+            include("*paper-plugin.yml", "fabric.mod.json")
+            from("src/main/resources") {
+                expand(inputs.properties)
+            }
+        })
     }
 }

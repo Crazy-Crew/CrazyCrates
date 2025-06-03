@@ -1,1 +1,4 @@
-- Fixed a null pointer with the new Items layout.
+- Added the prize display when opening FireCracker crate type.
+- Added the ability to hide components on items in the new `Items` section.
+- Fixed an issue with a try catch firing when it shouldn't.
+- Fixed a deprecation warning in the ExcellentCrates migrator.
