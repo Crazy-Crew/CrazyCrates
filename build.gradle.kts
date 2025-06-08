@@ -1,11 +1,10 @@
 plugins {
     alias(libs.plugins.minotaur)
     alias(libs.plugins.feather)
+    alias(libs.plugins.hangar)
 
     `config-java`
 }
-
-rootProject.group = "com.badbones69.crazycrates"
 
 val git = feather.getGit()
 
@@ -19,8 +18,9 @@ val versions = listOf(
     minecraft
 )
 
-rootProject.version = version()
 rootProject.description = "Add crates to your server with 11 different crate types to choose from!"
+rootProject.version = version()
+rootProject.group = "com.badbones69.crazycrates"
 
 fun version(): String {
     if (isSnapshot) {
@@ -175,6 +175,54 @@ modrinth {
 
     dependencies {
         optional.project("fancyholograms")
-        optional.project("DecentHolograms")
+        optional.project("decentholograms")
+    }
+}
+
+hangarPublish {
+    publications.register("plugin") {
+        apiKey.set(System.getenv("HANGAR_KEY"))
+
+        id.set(rootProject.name)
+
+        version.set("${rootProject.version}")
+
+        channel.set(if (isSnapshot) "Beta" else "Release")
+
+        changelog.set(content)
+
+        platforms {
+            paper {
+                jar.set(tasks.jar.get().archiveFile.get())
+
+                platformVersions.set(versions)
+
+                dependencies {
+                    hangar("PlaceholderAPI") {
+                        required = false
+                    }
+
+                    hangar("FancyHolograms") {
+                        required = false
+                    }
+
+                    url("DecentHolograms", "https://modrinth.com/plugin/decentholograms") {
+                        required = false
+                    }
+
+                    url("ItemsAdder", "https://polymart.org/product/1851/itemsadder") {
+                        required = false
+                    }
+
+                    url("Oraxen", "https://polymart.org/product/629/oraxen") {
+                        required = false
+                    }
+
+                    url("Nexo", "https://polymart.org/resource/nexo.6901") {
+                        required = false
+                    }
+                }
+            }
+        }
     }
 }

@@ -55,7 +55,7 @@ run-paper = "2.3.1" # https://github.com/jpenilla/run-task
 minotaur = "2.8.7" # https://github.com/modrinth/minotaur
 feather = "0.4.0" # https://github.com/ryderbelserion/Feather
 hangar = "0.1.3" # https://github.com/HangarMC/hangar-publish-plugin
-shadow = "9.0.0-beta13" # https://github.com/GradleUp/shadow
+shadow = "9.0.0-beta15" # https://github.com/GradleUp/shadow
 
 [plugins]
 # https://github.com/ryderbelserion/Feather
