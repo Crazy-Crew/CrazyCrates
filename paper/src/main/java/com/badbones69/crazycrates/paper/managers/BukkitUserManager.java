@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
+import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
@@ -161,7 +162,12 @@ public class BukkitUserManager extends UserManager {
                     return;
                 }
 
-                player.getWorld().dropItem(player.getLocation(), crate.getKey(amount, player));
+                new FoliaScheduler(plugin, player.getLocation()) {
+                    @Override
+                    public void run() {
+                        player.getWorld().dropItem(player.getLocation(), crate.getKey(amount, player));
+                    }
+                }.runNow();
             }
 
             case virtual_key -> addVirtualKeys(player.getUniqueId(), fileName, amount);
@@ -492,7 +498,12 @@ public class BukkitUserManager extends UserManager {
                     if (crate.getCrateType() == CrateType.crate_on_the_go) {
                         // If the inventory is full, drop the items then stop.
                         if (MiscUtils.isInventoryFull(player)) {
-                            player.getWorld().dropItemNaturally(player.getLocation(), crate.getKey(amount, player));
+                            new FoliaScheduler(plugin, player.getLocation()) {
+                                @Override
+                                public void run() {
+                                    player.getWorld().dropItemNaturally(player.getLocation(), crate.getKey(amount, player));
+                                }
+                            }.runNow();
                             break;
                         }
                     }
@@ -526,7 +537,13 @@ public class BukkitUserManager extends UserManager {
                 while (keysGiven < amount) {
                     // If the inventory is full, drop the remaining keys then stop.
                     if (MiscUtils.isInventoryFull(player)) {
-                        player.getWorld().dropItemNaturally(player.getLocation(), crate.getKey(amount - keysGiven, player));
+                        final int keysToDrop = amount - keysGiven;
+                        new FoliaScheduler(plugin, player.getLocation()) {
+                            @Override
+                            public void run() {
+                                player.getWorld().dropItemNaturally(player.getLocation(), crate.getKey(keysToDrop, player));
+                            }
+                        }.runNow();
 
                         break;
                     }
