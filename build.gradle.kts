@@ -59,7 +59,11 @@ feather {
                     fields {
                         field(
                             "Version ${rootProject.version}",
-                            "Click [here](https://modrinth.com/plugin/${rootProject.name.lowercase()}/version/${rootProject.version}) to download!"
+                            listOf(
+                                "*Click below to download!*",
+                                "<:modrinth:1115307870473420800> [Modrinth](https://modrinth.com/plugin/crazycrates/version/1.21.5-b1690a9)",
+                                "<:hangar:1139326635313733652> [Hangar](https://hangar.papermc.io/CrazyCrew/CrazyCrates/versions/1.21.5-11da6e3)"
+                            ).convertList()
                         )
 
                         field(
@@ -99,7 +103,11 @@ feather {
                     fields {
                         field(
                             "Version ${rootProject.version}",
-                            "Click [here](https://modrinth.com/plugin/${rootProject.name.lowercase()}/version/${rootProject.version}) to download!"
+                            listOf(
+                                "*Click below to download!*",
+                                "<:modrinth:1115307870473420800> [Modrinth](https://modrinth.com/plugin/crazycrates/version/1.21.5-b1690a9)",
+                                "<:hangar:1139326635313733652> [Hangar](https://hangar.papermc.io/CrazyCrew/CrazyCrates/versions/1.21.5-11da6e3)"
+                            ).convertList()
                         )
 
                         field(
@@ -116,6 +124,16 @@ feather {
             }
         }
     }
+}
+
+fun List<String>.convertList(): String {
+    val builder = StringBuilder(size)
+
+    forEach {
+        builder.append(it).append("\n")
+    }
+
+    return builder.toString()
 }
 
 allprojects {
