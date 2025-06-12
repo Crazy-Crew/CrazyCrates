@@ -27,7 +27,7 @@ fun version(): String {
         return "$minecraft-$commitHash"
     }
 
-    return libs.versions.crazycrates.get()
+    return "4.10.5"
 }
 
 feather {

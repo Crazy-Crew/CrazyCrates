@@ -46,9 +46,6 @@ triumph-cmds = "2.0.0-BETA-3" # https://github.com/TriumphTeam/triumph-cmds
 bStats = "3.1.0" # https://github.com/Bastian/bStats
 fusion = "1.13.1" # https://github.com/ryderbelserion/Fusion
 
-## CrazyCrates
-crazycrates = "4.10.5" # https://github.com/Crazy-Crew/CrazyCrates
-
 ## Gradle Plugins
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
 run-paper = "2.3.1" # https://github.com/jpenilla/run-task
