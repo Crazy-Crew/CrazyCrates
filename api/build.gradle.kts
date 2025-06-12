@@ -7,7 +7,8 @@ plugins {
 
 project.group = "us.crazycrew.crazycrates"
 project.description = "The official API for CrazyCrates!"
-project.version = "0.8"
+
+val projectVersion = "0.8"
 
 dependencies {
     compileOnly(libs.bundles.adventure)
@@ -27,8 +28,8 @@ tasks {
         options.overview("src/main/javadoc/overview.html")
         options.use()
         options.isDocFilesSubDirs = true
-        options.windowTitle("$name ${project.version} API Documentation")
-        options.docTitle("<h1>$name ${project.version} API</h1>")
+        options.windowTitle("$name $projectVersion API Documentation")
+        options.docTitle("<h1>$name $projectVersion API</h1>")
         options.header = """<img src="https://raw.githubusercontent.com/Crazy-Crew/Branding/refs/heads/main/crazycrates/png/64x64.png" style="height:100%">"""
         options.bottom("Copyright © 2025 CrazyCrew")
         options.linkSource(true)
@@ -57,7 +58,7 @@ publishing {
         create<MavenPublication>("mavenJava") {
             groupId = "${project.group}"
             artifactId = "api"
-            version = "${project.version}"
+            version = projectVersion
 
             from(components["java"])
         }
