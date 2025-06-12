@@ -122,6 +122,10 @@ allprojects {
     apply(plugin = "java-library")
 }
 
+subprojects.filter { it.name != "api" }.forEach {
+    it.project.version = rootProject.version
+}
+
 tasks {
     withType<Jar> {
         subprojects {
