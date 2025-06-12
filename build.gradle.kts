@@ -193,7 +193,7 @@ hangarPublish {
 
         platforms {
             paper {
-                jar.set(tasks.jar.get().archiveFile.get())
+                jar = tasks.jar.flatMap { it.archiveFile }
 
                 platformVersions.set(versions)
 
