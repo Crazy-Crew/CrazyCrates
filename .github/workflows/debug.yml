@@ -12,12 +12,6 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-      - name: Read Version Catalog
-        uses: SebRollen/toml-action@v1.2.0
-        id: crazycrates_version
-        with:
-          file: "gradle/libs.versions.toml"
-          field: "versions.crazycrates"
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: Make gradlew executable
