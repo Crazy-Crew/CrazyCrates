@@ -61,8 +61,8 @@ feather {
                             "Version ${rootProject.version}",
                             listOf(
                                 "*Click below to download!*",
-                                "<:modrinth:1115307870473420800> [Modrinth](https://modrinth.com/plugin/crazycrates/version/1.21.5-b1690a9)",
-                                "<:hangar:1139326635313733652> [Hangar](https://hangar.papermc.io/CrazyCrew/CrazyCrates/versions/1.21.5-11da6e3)"
+                                "<:modrinth:1115307870473420800> [Modrinth](https://modrinth.com/plugin/${rootProject.name.lowercase()}/version/${rootProject.version})",
+                                "<:hangar:1139326635313733652> [Hangar](https://hangar.papermc.io/CrazyCrew/${rootProject.name.lowercase()}/versions/${rootProject.version})"
                             ).convertList()
                         )
 
@@ -105,8 +105,8 @@ feather {
                             "Version ${rootProject.version}",
                             listOf(
                                 "*Click below to download!*",
-                                "<:modrinth:1115307870473420800> [Modrinth](https://modrinth.com/plugin/crazycrates/version/1.21.5-b1690a9)",
-                                "<:hangar:1139326635313733652> [Hangar](https://hangar.papermc.io/CrazyCrew/CrazyCrates/versions/1.21.5-11da6e3)"
+                                "<:modrinth:1115307870473420800> [Modrinth](https://modrinth.com/plugin/${rootProject.name.lowercase()}/version/${rootProject.version})",
+                                "<:hangar:1139326635313733652> [Hangar](https://hangar.papermc.io/CrazyCrew/${rootProject.name.lowercase()}/versions/${rootProject.version})"
                             ).convertList()
                         )
 
