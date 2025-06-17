@@ -37,7 +37,7 @@ public class CommandDebug extends BaseCommand {
 
         final List<Prize> prizes = crate.getPrizes();
 
-        final List<Prize> items = prizes.stream().filter(Prize::isItemsNotEmpty).toList();
+        final List<Prize> items = prizes.stream().filter(Prize::isItemsEmpty).toList();
 
         if (prizes.isEmpty() || items.isEmpty()) {
             Messages.no_prizes_found.sendMessage(sender, "{crate}", crateName);

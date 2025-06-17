@@ -271,8 +271,8 @@ public class Prize {
      *
      * @return true or false
      */
-    public final boolean isItemsNotEmpty() {
-        return this.config.getProperty(ConfigKeys.use_different_items_layout) && !getItems().isEmpty() || !getItemBuilders().isEmpty();
+    public final boolean isItemsEmpty() {
+        return this.config.getProperty(ConfigKeys.use_different_items_layout) && getItems().isEmpty() || getItemBuilders().isEmpty();
     }
 
     /**
