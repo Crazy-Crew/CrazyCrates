@@ -5,5 +5,5 @@ plugins {
 dependencies {
     api(project(":crazycrates-api"))
 
-    compileOnlyApi(libs.fusion.core)
+    compileOnly(libs.fusion.core)
 }
