@@ -338,15 +338,15 @@ public class ItemUtils {
             final ConfigurationSection patterns = item.getConfigurationSection("settings.patterns");
 
             if (patterns != null) {
+                final PatternBuilder patternBuilder = itemBuilder.asPatternBuilder();
+
                 for (final String pattern : patterns.getKeys(false)) {
                     final String patternColor = patterns.getString(pattern, "white");
 
-                    final PatternBuilder patternBuilder = itemBuilder.asPatternBuilder();
-
                     patternBuilder.addPattern(pattern, patternColor);
-
-                    patternBuilder.build();
                 }
+
+                patternBuilder.build();
             }
 
             cache.add(itemBuilder);
