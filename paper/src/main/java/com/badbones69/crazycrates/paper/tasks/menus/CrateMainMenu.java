@@ -10,7 +10,7 @@ import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import com.ryderbelserion.fusion.kyori.utils.StringUtils;
+import com.ryderbelserion.fusion.core.api.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.Gui;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
 import net.kyori.adventure.key.Key;
@@ -81,9 +81,11 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                         case "slot" -> slot = StringUtils.tryParseInt(value).orElse(-1).intValue();
 
-                        case "unbreakable-item" -> item.setUnbreakable(StringUtils.tryParseBoolean(value).orElse(false));
+                        case "unbreakable-item" ->
+                                item.setUnbreakable(StringUtils.tryParseBoolean(value).orElse(false));
 
-                        case "hide-item-flags" -> item.setHidingItemFlags(StringUtils.tryParseBoolean(value).orElse(false));
+                        case "hide-item-flags" ->
+                                item.setHidingItemFlags(StringUtils.tryParseBoolean(value).orElse(false));
 
                         case "command" -> {
                             final Server server = this.plugin.getServer();

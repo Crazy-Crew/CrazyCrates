@@ -1,7 +1,5 @@
 package com.badbones69.crazycrates.paper.tasks.crates.types;
 
-import com.badbones69.crazycrates.core.config.ConfigManager;
-import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.builders.types.features.CrateSpinMenu;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;

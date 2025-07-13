@@ -5,7 +5,8 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.kyori.utils.StringUtils;
+import com.ryderbelserion.fusion.core.api.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.PotionBuilder;
@@ -13,7 +14,6 @@ import com.ryderbelserion.fusion.paper.api.builders.items.types.SkullBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.SpawnerBuilder;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import io.papermc.paper.persistence.PersistentDataContainerView;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.block.banner.PatternType;
@@ -37,7 +37,7 @@ public class ItemUtils {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private static final ComponentLogger logger = plugin.getComponentLogger();
+    private static final FusionPaper fusion = plugin.getFusion();
 
     private static final CrateManager crateManager = plugin.getCrateManager();
 
@@ -355,19 +355,11 @@ public class ItemUtils {
         return cache;
     }
 
-    public static List<LegacyItemBuilder> convertStringList(@NotNull final List<String> itemStrings) {
-        return convertStringList(itemStrings, null);
-    }
-
-    public static List<LegacyItemBuilder> convertStringList(@NotNull final List<String> itemStrings, @Nullable final String section) {
+    public static List<LegacyItemBuilder> convertStringList(@NotNull final List<String> itemStrings, @NotNull final String section) {
         return itemStrings.stream().map(itemString -> convertString(itemString, section)).collect(Collectors.toList());
     }
 
-    public static LegacyItemBuilder convertString(@NotNull final String itemString) {
-        return convertString(itemString, null);
-    }
-
-    public static LegacyItemBuilder convertString(@NotNull final String itemString, @Nullable final String section) {
+    public static LegacyItemBuilder convertString(@NotNull final String itemString, @NotNull final String section) {
         LegacyItemBuilder itemBuilder = new LegacyItemBuilder(plugin);
 
         try {
@@ -440,14 +432,14 @@ public class ItemUtils {
                             if (patternType != null) {
                                 itemBuilder.addPattern(patternType, color);
                             }
-                        } catch (Exception ignored) {}
+                        } catch (final Exception ignored) {}
                     }
                 }
             }
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             itemBuilder.withType(ItemType.RED_TERRACOTTA).setDisplayName("<red>Error found!, Prize Name: " + section);
 
-            if (MiscUtils.isLogging()) logger.warn("An error has occurred with the item builder: ", exception);
+            fusion.log("error", "An error has occurred with the prize {}, {}", section, exception.getMessage());
         }
 
         return itemBuilder;

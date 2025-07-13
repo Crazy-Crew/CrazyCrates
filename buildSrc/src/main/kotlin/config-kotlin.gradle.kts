@@ -7,9 +7,10 @@ plugins {
 val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
 
 repositories {
-    maven("https://repo.crazycrew.us/releases")
+    maven("https://repo.crazycrew.us/releases/")
 
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {

@@ -23,7 +23,7 @@ public class CommandReload extends BaseCommand {
 
         this.plugin.getInstance().reload();
 
-        this.fileManager.reloadFiles().init();
+        this.fileManager.refresh(false);
 
         MiscUtils.save();
 

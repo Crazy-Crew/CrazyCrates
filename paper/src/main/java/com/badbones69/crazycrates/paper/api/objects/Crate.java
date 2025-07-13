@@ -11,9 +11,8 @@ import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
-import com.ryderbelserion.fusion.core.files.FileType;
-import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
+import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import net.kyori.adventure.sound.Sound;
@@ -818,7 +817,7 @@ public class Crate {
     private void saveFile() {
         if (this.name.isEmpty()) return;
 
-        final LegacyCustomFile customFile = this.plugin.getFileManager().getFile(this.name, FileType.YAML);
+        final PaperCustomFile customFile = this.plugin.getFileManager().getPaperCustomFile(this.plugin.getDataPath().resolve("crates").resolve(this.name));
 
         if (customFile != null) {
             customFile.save(); // save to file

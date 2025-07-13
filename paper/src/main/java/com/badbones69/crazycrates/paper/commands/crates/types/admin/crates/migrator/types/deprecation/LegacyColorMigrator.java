@@ -4,8 +4,10 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
-import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.api.interfaces.files.ICustomFile;
+import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -61,15 +63,15 @@ public class LegacyColorMigrator extends ICrateMigrator {
             failed.add("<red>⤷ messages.yml");
         }
 
-        final Collection<LegacyCustomFile> customFiles = this.plugin.getFileManager().getFiles().values();
+        final Collection<ICustomFile<? extends ICustomFile<?>>> customFiles = this.fileManager.getCustomFiles().values();
 
-        customFiles.forEach(customFile -> {
+        customFiles.forEach(key -> {
             try {
-                if (!customFile.isDynamic()) return;
+                if (key.isStatic() || !key.isLoaded() || key.getFileType() != FileType.PAPER) return;
+
+                final PaperCustomFile customFile = (PaperCustomFile) key;
 
                 final YamlConfiguration configuration = customFile.getConfiguration();
-
-                if (configuration == null) return;
 
                 final ConfigurationSection section = configuration.getConfigurationSection("Crate");
 
@@ -208,9 +210,9 @@ public class LegacyColorMigrator extends ICrateMigrator {
                     customFile.save();
                 }
 
-                success.add("<green>⤷ " + customFile.getEffectiveName());
+                success.add("<green>⤷ " + customFile.getPrettyName());
             } catch (Exception exception) {
-                failed.add("<red>⤷ " + customFile.getEffectiveName());
+                failed.add("<red>⤷ " + key.getPrettyName());
             }
         });
 
@@ -222,7 +224,7 @@ public class LegacyColorMigrator extends ICrateMigrator {
             addAll(success);
         }}, convertedCrates, failedCrates);
 
-        this.fileManager.init();
+        this.fileManager.init(new ArrayList<>());
 
         // reload crates
         this.crateManager.loadHolograms();

@@ -11,7 +11,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
+import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

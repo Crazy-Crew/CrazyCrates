@@ -85,10 +85,11 @@ misc:
     chat-executor-max-size: -1
   client-interaction-leniency-distance: default
   compression-level: default
-  fix-entity-position-desync: true
   load-permissions-yml-before-plugins: true
   max-joins-per-tick: 5
+  prevent-negative-villager-demand: false
   region-file-cache-size: 256
+  send-full-pos-for-item-entities: false
   strict-advancement-dimension-check: false
   use-alternative-luck-formula: false
   use-dimension-type-for-custom-spawners: false
@@ -134,7 +135,6 @@ unsupported-settings:
   allow-unsafe-end-portal-teleportation: false
   compression-format: ZLIB
   perform-username-validation: true
-  simplify-remote-item-matching: false
   skip-tripwire-hook-placement-validation: false
   skip-vanilla-damage-tick-when-shield-blocked: false
   update-equipment-on-player-actions: true

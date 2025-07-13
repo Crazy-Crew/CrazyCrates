@@ -7,9 +7,9 @@ import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.kyori.utils.StringUtils;
-import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
-import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
+import com.ryderbelserion.fusion.core.api.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.files.FileManager;
+import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -32,7 +32,7 @@ public abstract class ICrateMigrator {
 
     protected final SettingsManager messages = ConfigManager.getMessages();
 
-    protected final LegacyFileManager fileManager = this.plugin.getFileManager();
+    protected final FileManager fileManager = this.plugin.getFileManager();
 
     protected final CommandSender sender;
 
@@ -78,16 +78,14 @@ public abstract class ICrateMigrator {
         }});
     }
 
-    public void migrate(final LegacyCustomFile customFile, final String crateName) {
+    public void migrate(final PaperCustomFile customFile, final String crateName) {
         final YamlConfiguration configuration = customFile.getConfiguration();
-
-        if (configuration == null) return;
 
         final ConfigurationSection crate = configuration.getConfigurationSection("Crate");
 
         if (crate == null) {
             Messages.error_migrating.sendMessage(sender, new HashMap<>() {{
-                put("{file}", crateName.isEmpty() ? customFile.getEffectiveName() : crateName);
+                put("{file}", crateName.isEmpty() ? customFile.getPrettyName() : crateName);
                 put("{type}", type.getName());
                 put("{reason}", "File could not be found in our data, likely invalid yml file that didn't load properly.");
             }});

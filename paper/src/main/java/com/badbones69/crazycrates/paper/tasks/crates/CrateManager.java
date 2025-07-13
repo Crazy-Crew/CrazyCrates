@@ -31,12 +31,11 @@ import com.badbones69.crazycrates.paper.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WonderCrate;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.core.files.FileAction;
-import com.ryderbelserion.fusion.core.files.FileType;
-import com.ryderbelserion.fusion.core.utils.FileUtils;
+import com.ryderbelserion.fusion.core.api.enums.FileAction;
+import com.ryderbelserion.fusion.core.api.utils.FileUtils;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
-import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
-import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
+import com.ryderbelserion.fusion.paper.files.FileManager;
+import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -92,7 +91,7 @@ public class CrateManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-    private final LegacyFileManager fileManager = this.plugin.getFileManager();
+    private final FileManager fileManager = this.plugin.getFileManager();
 
     private final ComponentLogger logger = this.plugin.getComponentLogger();
     private final Server server = this.plugin.getServer();
@@ -347,15 +346,15 @@ public class CrateManager {
 
             final List<FileAction> actions = new ArrayList<>();
 
-            actions.add(FileAction.DELETE);
-            actions.add(FileAction.FOLDER);
+            actions.add(FileAction.DELETE_FILE);
+            actions.add(FileAction.EXTRACT_FOLDER);
 
             FileUtils.extract("guis", path.resolve("examples"), actions);
             FileUtils.extract("logs", path.resolve("examples"), actions);
             FileUtils.extract("crates", path.resolve("examples"), actions);
             FileUtils.extract("schematics", path.resolve("examples"), actions);
 
-            actions.remove(FileAction.FOLDER);
+            actions.remove(FileAction.EXTRACT_FOLDER);
 
             List.of(
                     "config.yml",
@@ -377,15 +376,15 @@ public class CrateManager {
 
         if (MiscUtils.isLogging()) this.logger.info("Loading all crate information...");
 
+        final Path crates = this.plugin.getDataPath().resolve("crates");
+
         for (final String crateName : getCrateNames(true)) {
             try {
-                final LegacyCustomFile customFile = this.fileManager.getFile(crateName, FileType.YAML);
+                final PaperCustomFile customFile = this.fileManager.getPaperCustomFile(crates.resolve(crateName));
 
-                if (customFile == null) continue;
+                if (customFile == null || !customFile.isLoaded()) continue;
 
                 final YamlConfiguration file = customFile.getConfiguration();
-
-                if (file == null) continue;
 
                 final CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType", "CSGO"));
 
@@ -485,7 +484,7 @@ public class CrateManager {
                         file.getInt("Crate.Hologram.Update-Interval", -1),
                         file.getStringList("Crate.Hologram.Message"));
 
-                addCrate(new Crate(crateName.replaceAll(".yml", ""), previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name", "Crate.PhysicalKey.Name is missing from " + crateName + ".yml"), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, prizeCommands, holo));
+                addCrate(new Crate(crateName.replaceAll(".yml", ""), previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name", "Crate.PhysicalKey.Name is missing from " + crateName), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, prizeCommands, holo));
 
                 final PluginManager server = this.server.getPluginManager();
 

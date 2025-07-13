@@ -7,16 +7,16 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
-import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
-import com.ryderbelserion.fusion.core.utils.FileUtils;
+import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import java.io.File;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class EventManager {
@@ -33,7 +33,7 @@ public class EventManager {
 
     private static void handle(@NotNull final EventType type, @NotNull final String name, @NotNull final CommandSender sender, @NotNull final Crate crate, @NotNull final KeyType keyType, final int amount) {
         String message = "";
-        File file = null;
+        Path path = null;
 
         switch (type) {
             case event_key_given, event_key_removed, event_key_received, event_key_sent, event_key_taken, event_key_taken_multiple -> {
@@ -47,7 +47,7 @@ public class EventManager {
                     message = message + " | Amount: %amount%".replace("%amount%", String.valueOf(amount));
                 }
 
-                file = FileKeys.key_log.getFile();
+                path = FileKeys.key_log.getPath();
             }
 
             /*case event_command_sent -> {
@@ -72,7 +72,7 @@ public class EventManager {
                     message = message + " | Amount: %amount%".replace("%amount%", String.valueOf(amount));
                 }
 
-                file = FileKeys.crate_log.getFile();
+                path = FileKeys.crate_log.getPath();
             }
 
             case event_crate_force_opened -> {
@@ -89,20 +89,22 @@ public class EventManager {
                     message = message + " | Amount: %amount%".replace("%amount%", String.valueOf(amount));
                 }
 
-                file = FileKeys.crate_log.getFile();
+                path = FileKeys.crate_log.getPath();
             }
         }
 
-        log(message, file, type);
+        log(message, path, type);
     }
 
-    private static void log(@NotNull final String message, @Nullable final File file, @NotNull final EventType type) {
+    private static void log(@NotNull final String message, @NotNull final Path path, @NotNull final EventType type) {
         final boolean log_to_file = config.getProperty(ConfigKeys.log_to_file);
 
         final String time = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(System.currentTimeMillis()));
 
-        if (log_to_file && file != null) {
-            FileUtils.write(file, "[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(AdvUtils.parse(message)));
+        final LogCustomFile customFile = (LogCustomFile) plugin.getFileManager().getCustomFile(path);
+
+        if (log_to_file && customFile != null) {
+            customFile.save("[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(AdvUtils.parse(message)), new ArrayList<>());
         }
 
         final boolean log_to_console = config.getProperty(ConfigKeys.log_to_console);

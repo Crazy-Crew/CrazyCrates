@@ -4,8 +4,6 @@ import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
-import com.ryderbelserion.fusion.core.files.FileAction;
-import com.ryderbelserion.fusion.core.utils.FileUtils;
 import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -34,10 +32,10 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,7 +48,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MiscUtils {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
-    
+
+    private static final Path dataPath = plugin.getDataPath();
+
     private static final ComponentLogger logger = plugin.getComponentLogger();
 
     public static void sendCommand(@Nullable final CommandSender sender, @NotNull final String command, @NotNull final Map<String, String> placeholders) {
@@ -101,28 +101,12 @@ public class MiscUtils {
     }
 
     public static void janitor() {
-        final File logsFolder = new File(plugin.getDataFolder(), "logs");
-
-        if (logsFolder.exists() && ConfigManager.getConfig().getProperty(ConfigKeys.log_to_file)) {
-            final File crateLog = FileKeys.crate_log.getFile();
-            final File keyLog = FileKeys.key_log.getFile();
-
-            try {
-                FileUtils.compress(logsFolder.toPath(), null, "", new ArrayList<>() {{
-                    add(FileAction.DELETE);
-                }});
-
-                if (!crateLog.exists()) {
-                    crateLog.createNewFile();
-                }
-
-                if (!keyLog.exists()) {
-                    keyLog.createNewFile();
-                }
-            } catch (final IOException exception) {
-                if (isLogging()) logger.warn("Failed to create log files.", exception);
-            }
+        if  (!Files.exists(dataPath.resolve("logs")) || !ConfigManager.getConfig().getProperty(ConfigKeys.log_to_file)) {
+            return;
         }
+
+        FileKeys.crate_log.save();
+        FileKeys.key_log.save();
     }
 
     public static double calculateWeight(final int chance, final int maxRange) {
