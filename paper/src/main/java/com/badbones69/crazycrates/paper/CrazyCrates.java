@@ -84,6 +84,9 @@ public class CrazyCrates extends JavaPlugin {
         this.fileManager.addFile(path.resolve("locations.yml"), FileType.PAPER, new ArrayList<>() {{
                     add(FileAction.STATIC_FILE);
                 }}, null)
+                .addFile(path.resolve("data.yml"), FileType.PAPER, new ArrayList<>() {{
+                    add(FileAction.STATIC_FILE);
+                }}, null)
                 .addFile(logs.resolve("crates.log"), FileType.LOG, new ArrayList<>() {{
                     add(FileAction.STATIC_FILE);
                 }}, null)
