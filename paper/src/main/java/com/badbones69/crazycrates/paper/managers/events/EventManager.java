@@ -9,15 +9,18 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
 import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
+import com.ryderbelserion.fusion.paper.files.FileManager;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 
 public class EventManager {
 
@@ -96,15 +99,17 @@ public class EventManager {
         log(message, path, type);
     }
 
-    private static void log(@NotNull final String message, @NotNull final Path path, @NotNull final EventType type) {
-        final boolean log_to_file = config.getProperty(ConfigKeys.log_to_file);
+    private static final FileManager fileManager = plugin.getFileManager();
 
+    private static void log(@NotNull final String message, @Nullable final Path path, @NotNull final EventType type) {
         final String time = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(System.currentTimeMillis()));
 
-        final LogCustomFile customFile = (LogCustomFile) plugin.getFileManager().getCustomFile(path);
+        if (path != null && config.getProperty(ConfigKeys.log_to_file)) {
+            final LogCustomFile customFile = (LogCustomFile) fileManager.getCustomFile(path);
 
-        if (log_to_file && customFile != null) {
-            customFile.save("[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(AdvUtils.parse(message)), new ArrayList<>());
+            if (customFile != null) {
+                customFile.save("[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(AdvUtils.parse(message)), new ArrayList<>());
+            }
         }
 
         final boolean log_to_console = config.getProperty(ConfigKeys.log_to_console);
