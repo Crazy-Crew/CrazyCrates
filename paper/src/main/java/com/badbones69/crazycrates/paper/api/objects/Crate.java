@@ -95,6 +95,8 @@ public class Crate {
     private List<String> broadcastMessages = new ArrayList<>();
     private String broadcastPermission = "";
 
+    private boolean isTrackingOpening = true;
+
     private double sum = 0;
     private double tierSum = 0;
 
@@ -143,6 +145,8 @@ public class Crate {
         this.cyclePermissionToggle = this.file.getBoolean("Crate.Settings.Rewards.Permission.Toggle", false);
         this.cyclePersistRestart = this.file.getBoolean("Crate.Settings.Rewards.Permission.Persist", false);
         this.cyclePermissionCap = this.file.getInt("Crate.Settings.Rewards.Permission.Max-Cap", 20);
+
+        this.isTrackingOpening = this.file.getBoolean("Crate.Settings.Tracking-Crate-Opening", false);
 
         for (int node = 1; node <= this.cyclePermissionCap; node++) {
             if (this.cyclePermissionToggle) {
@@ -908,6 +912,10 @@ public class Crate {
 
     public final boolean useRequiredKeys() {
         return ConfigManager.getConfig().getProperty(ConfigKeys.crate_use_required_keys) && this.requiredKeys > 0;
+    }
+
+    public final boolean isTrackingOpening() {
+        return this.isTrackingOpening;
     }
 
     /**

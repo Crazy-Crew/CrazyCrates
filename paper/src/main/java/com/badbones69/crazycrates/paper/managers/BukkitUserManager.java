@@ -589,7 +589,7 @@ public class BukkitUserManager extends UserManager {
             return 0;
         }
 
-        return this.data.getConfiguration().getInt("Players." + uuid + ".tracking." + crateName, 0);
+        return crate.isTrackingOpening() ? this.data.getConfiguration().getInt("Players." + uuid + ".tracking." + crateName, 0) : 0;
     }
 
     @Override
@@ -601,6 +601,8 @@ public class BukkitUserManager extends UserManager {
 
             return;
         }
+
+        if (!crate.isTrackingOpening()) return;
 
         final YamlConfiguration configuration = this.data.getConfiguration();
 
@@ -636,6 +638,8 @@ public class BukkitUserManager extends UserManager {
 
             return;
         }
+
+        if (!crate.isTrackingOpening()) return;
 
         final String fileName = crate.getFileName();
 
