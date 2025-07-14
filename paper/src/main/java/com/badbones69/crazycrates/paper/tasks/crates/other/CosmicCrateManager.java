@@ -54,7 +54,6 @@ public class CosmicCrateManager extends AbstractCrateManager {
                 .setPersistentInteger(ItemKeys.cosmic_picked_crate.getNamespacedKey(), 1)
                 .setCustomModelData(file.getString(path + "Picked-Crate.Custom-Model-Data", ""))
                 .setItemModel(file.getString(path + "Picked-Crate.Model.Namespace", ""), file.getString(path + "Picked-Crate.Model.Id", ""));
-
     }
 
     /**
