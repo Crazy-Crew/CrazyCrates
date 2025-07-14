@@ -69,13 +69,12 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
-        CrateType crateType = crate.getCrateType();
+        final CrateType crateType = crate.getCrateType();
 
-        // If crate type is null, we return.
-        if (crateType == null || crate.getCrateType() == CrateType.menu) {
+        if (crateType == CrateType.menu) {
             Messages.internal_error.sendMessage(player);
 
-            if (MiscUtils.isLogging()) this.logger.error("An error has occurred: The crate type is null or Menu for the crate named {}", crateName);
+            if (MiscUtils.isLogging()) this.logger.error("An error has occurred: The crate type is Menu for the crate named {}", crateName);
 
             return;
         }
@@ -138,16 +137,6 @@ public class CommandOpen extends BaseCommand {
         }
 
         final CrateType crateType = crate.getCrateType();
-
-        // If crate type is null, we return.
-        if (crateType == null) {
-            Messages.internal_error.sendMessage(sender);
-
-            if (MiscUtils.isLogging()) this.logger.error("An error has occurred: The crate type is null for the crate named {}", crateName);
-
-            return;
-        }
-
         final String fancyName = crate.getCrateName();
         final String fileName = crate.getFileName();
 
@@ -216,16 +205,6 @@ public class CommandOpen extends BaseCommand {
         }
 
         final CrateType crateType = crate.getCrateType();
-
-        // If crate type is null, we return.
-        if (crateType == null) {
-            Messages.internal_error.sendMessage(sender);
-
-            if (MiscUtils.isLogging()) this.logger.error("An error has occurred: The crate type is null for the crate named {}", crateName);
-
-            return;
-        }
-
         final String fancyName = crate.getCrateName();
 
         // Prevent it from working with these crate types.
@@ -267,16 +246,6 @@ public class CommandOpen extends BaseCommand {
         }
 
         final CrateType crateType = crate.getCrateType();
-
-        // If crate type is null, we return.
-        if (crateType == null) {
-            Messages.internal_error.sendMessage(player);
-
-            if (MiscUtils.isLogging()) this.logger.error("An error has occurred: The crate type is null for the crate named {}", crate.getFileName());
-
-            return;
-        }
-
         final String fancyName = crate.getCrateName();
         final String fileName = crate.getFileName();
         final String keyName = crate.getKeyName();
