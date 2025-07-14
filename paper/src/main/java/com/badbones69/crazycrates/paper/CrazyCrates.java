@@ -146,15 +146,15 @@ public class CrazyCrates extends JavaPlugin {
 
         this.crateManager.loadCustomItems();
 
-        final ComponentLogger logger = getComponentLogger();
-
         if (Plugins.placeholder_api.isEnabled()) {
-            if (MiscUtils.isLogging()) logger.info("PlaceholderAPI support is enabled!");
+            if (MiscUtils.isLogging()) getComponentLogger().info("PlaceholderAPI support is enabled!");
 
             new PlaceholderAPISupport().register();
         }
 
         if (MiscUtils.isLogging()) {
+            final ComponentLogger logger = getComponentLogger();
+
             // Print dependency garbage
             for (final Plugins value : Plugins.values()) {
                 if (value.isEnabled()) {

@@ -185,11 +185,14 @@ public abstract class CrateBuilder extends FoliaScheduler {
 
             try {
                 reward = this.player.getWorld().dropItem(this.location.clone().add(0.5, 1, 0.5), display);
-            } catch (IllegalArgumentException exception) {
-                if (MiscUtils.isLogging()) {
-                    this.logger.warn("A prize could not be given due to an invalid display item for this prize.");
-                    this.logger.warn("Crate: {} Prize: {}", prize.getCrateName(), prize.getPrizeName(), exception);
-                }
+            } catch (final IllegalArgumentException exception) {
+                final String crateName = prize.getCrateName();
+                final String prizeName = prize.getPrizeName();
+
+                List.of(
+                        "A prize could not be given due to an invalid display item for this prize.",
+                        "Crate: %s Prize: %s"
+                ).forEach(line -> this.logger.warn(String.format(line, crateName, prizeName), exception));
 
                 return;
             }

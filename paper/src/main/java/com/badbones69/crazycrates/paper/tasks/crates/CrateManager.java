@@ -312,19 +312,19 @@ public class CrateManager {
             }
         }
 
-        if (this.holograms == null) {
-            if (MiscUtils.isLogging()) {
+        if (MiscUtils.isLogging()) {
+            if (this.holograms == null) {
                 List.of(
                         "There was no hologram plugin found on the server. If you are using CMI",
                         "Please make sure you enabled the hologram module in modules.yml",
                         "You can run /crazycrates reload if using CMI otherwise restart your server."
                 ).forEach(this.logger::warn);
+
+                return;
             }
 
-            return;
+            this.logger.info("{} support has been enabled.", this.holograms.getName());
         }
-
-        if (MiscUtils.isLogging()) this.logger.info("{} support has been enabled.", this.holograms.getName());
     }
 
     public List<String> getCrateNames(final boolean keepExtension) {
@@ -508,12 +508,7 @@ public class CrateManager {
 
         addCrate(new Crate("Menu"));
 
-        if (MiscUtils.isLogging()) {
-            List.of(
-                    "All crate information has been loaded.",
-                    "Loading all the physical crate locations."
-            ).forEach(this.logger::info);
-        }
+        if (MiscUtils.isLogging()) this.logger.warn("All crate information has been loaded, Loading physical crate locations!");
 
         final YamlConfiguration locations = FileKeys.locations.getConfiguration();
 
@@ -576,11 +571,13 @@ public class CrateManager {
         final String[] schems = new File(this.plugin.getDataFolder() + "/schematics/").list();
 
         if (schems != null) {
+            final boolean isLogging = MiscUtils.isLogging();
+
             for (final String schematicName : schems) {
                 if (schematicName.endsWith(".nbt")) {
                     this.crateSchematics.add(new CrateSchematic(schematicName, new File(this.plugin.getDataFolder() + "/schematics/" + schematicName)));
 
-                    if (MiscUtils.isLogging()) this.logger.info("{} was successfully found and loaded.", schematicName);
+                    if (isLogging) this.logger.info("{} was successfully found and loaded.", schematicName);
                 }
             }
         }
