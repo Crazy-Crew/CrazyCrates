@@ -430,7 +430,7 @@ public class BukkitUserManager extends UserManager {
             this.data.save();
 
             return true;
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             if (MiscUtils.isLogging()) this.logger.error("Could not take keys from offline player with uuid: {}", uuid, exception);
 
             return false;

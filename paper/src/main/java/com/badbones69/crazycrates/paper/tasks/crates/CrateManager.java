@@ -229,7 +229,7 @@ public class CrateManager {
             crate.setPrize(prizes);
 
             this.inventoryManager.openPreview(crate);
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             final String fileName = crate.getFileName(); //todo() this might be null
 
             this.brokeCrates.add(fileName);
@@ -499,7 +499,7 @@ public class CrateManager {
 
                     server.addPermission(permission);
                 }
-            } catch (Exception exception) {
+            } catch (final Exception exception) {
                 this.brokeCrates.add(crateName);
 
                 if (MiscUtils.isLogging()) this.logger.warn("There was an error while loading the {} file.", crateName, exception);

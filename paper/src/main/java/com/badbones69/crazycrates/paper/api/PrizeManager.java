@@ -250,7 +250,7 @@ public class PrizeManager {
                         long max = Long.parseLong(word.split("-")[1]);
 
                         commandBuilder.append(MiscUtils.pickNumber(min, max)).append(" ");
-                    } catch (Exception e) {
+                    } catch (final Exception exception) {
                         commandBuilder.append("1 ");
 
                         if (MiscUtils.isLogging()) {

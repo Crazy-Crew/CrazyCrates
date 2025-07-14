@@ -120,7 +120,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             try {
                 crateFile.createNewFile();
-            } catch (IOException exception) {
+            } catch (final IOException exception) {
                 if (MiscUtils.isLogging()) this.logger.warn("Failed to create crate file {} in {}.", crateName, directory.getName(), exception);
 
                 failed.add("<red>⤷ " + crateName);

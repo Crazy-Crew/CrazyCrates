@@ -49,7 +49,7 @@ public class StructureManager implements IStructureManager {
         this.structure = CompletableFuture.supplyAsync(() -> {
             try {
                 return this.plugin.getServer().getStructureManager().loadStructure(this.file);
-            } catch (IOException exception) {
+            } catch (final IOException exception) {
                 if (this.isVerbose) this.logger.error("Failed to load structure: {}!", this.file.getName(), exception);
 
                 return null;
@@ -74,7 +74,7 @@ public class StructureManager implements IStructureManager {
         // Save structure to file.
         try {
             getStructureManager().saveStructure(file, this.structure);
-        } catch (IOException exception) {
+        } catch (final IOException exception) {
             if (this.isVerbose) this.logger.error("Failed to save structure to: {}!", file.getName(), exception);
         }
     }
@@ -96,7 +96,7 @@ public class StructureManager implements IStructureManager {
 
             // Get the structure blocks.
             if (storeBlocks) getStructureBlocks(clonedLocation);
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             if (this.isVerbose) this.logger.error("Could not paste structure", exception);
         }
     }
