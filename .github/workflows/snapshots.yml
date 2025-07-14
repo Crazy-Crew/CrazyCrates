@@ -29,7 +29,7 @@ jobs:
       - name: Publish to Hangar
         run: ./gradlew publishAllPublicationsToHangar --stacktrace
         env:
-          HANGAR_KEY: ${{ secrets.HANGAR_TOKEN }}
+          HANGAR_KEY: ${{ secrets.HANGAR_KEY }}
           COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
       - name: Notify Discord
         if: success()
