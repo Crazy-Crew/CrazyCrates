@@ -296,7 +296,9 @@ public class ItemUtils {
 
             final String color = item.getString("settings.color", "");
 
-            itemBuilder.setColor(!color.isEmpty() ? color : !rgb.isEmpty() ? rgb : "");
+            final String value = !color.isEmpty() ? color : !rgb.isEmpty() ? rgb : "";
+
+            itemBuilder.setColor(value);
 
             final String mobType = item.getString("settings.mob.type", null);
 
@@ -308,31 +310,33 @@ public class ItemUtils {
 
             itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""));
 
-            final ConfigurationSection potions = item.getConfigurationSection("settings.potions");
+            if (itemBuilder.isPotion()) {
+                final ConfigurationSection potions = item.getConfigurationSection("settings.potions");
 
-            if (potions != null) {
                 final PotionBuilder potionBuilder = itemBuilder.asPotionBuilder();
 
-                for (final String potion : potions.getKeys(false)) {
-                    final PotionEffectType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getPotionEffect(potion);
+                if (potions != null) {
+                    for (final String potion : potions.getKeys(false)) {
+                        final PotionEffectType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getPotionEffect(potion);
 
-                    if (type != null) {
-                        final ConfigurationSection data = potions.getConfigurationSection(potion);
+                        if (type != null) {
+                            final ConfigurationSection data = potions.getConfigurationSection(potion);
 
-                        if (data != null) {
-                            final int duration = data.getInt("duration", 10) * 20;
-                            final int level = data.getInt("level", 1);
+                            if (data != null) {
+                                final int duration = data.getInt("duration", 10) * 20;
+                                final int level = data.getInt("level", 1);
 
-                            final boolean icon = data.getBoolean("style.icon", false);
-                            final boolean ambient = data.getBoolean("style.ambient", false);
-                            final boolean particles = data.getBoolean("style.particles", false);
+                                final boolean icon = data.getBoolean("style.icon", false);
+                                final boolean ambient = data.getBoolean("style.ambient", false);
+                                final boolean particles = data.getBoolean("style.particles", false);
 
-                            potionBuilder.withPotionEffect(type, duration, level, ambient, particles, icon);
+                                potionBuilder.withPotionEffect(type, duration, level, ambient, particles, icon);
+                            }
                         }
                     }
                 }
 
-                potionBuilder.build();
+                potionBuilder.setColor(value).build();
             }
 
             final ConfigurationSection patterns = item.getConfigurationSection("settings.patterns");
