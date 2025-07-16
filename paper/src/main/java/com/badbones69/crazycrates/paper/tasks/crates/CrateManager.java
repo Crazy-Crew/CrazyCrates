@@ -484,7 +484,7 @@ public class CrateManager {
                         file.getInt("Crate.Hologram.Update-Interval", -1),
                         file.getStringList("Crate.Hologram.Message"));
 
-                addCrate(new Crate(crateName.replaceAll(".yml", ""), previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name", "Crate.PhysicalKey.Name is missing from " + crateName), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, prizeCommands, holo));
+                addCrate(new Crate(crateName, previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name", "Crate.PhysicalKey.Name is missing from " + crateName), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, prizeCommands, holo));
 
                 final PluginManager server = this.server.getPluginManager();
 

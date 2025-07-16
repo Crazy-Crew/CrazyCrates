@@ -12,6 +12,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.paper.files.FileManager;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
@@ -34,6 +35,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +47,7 @@ public class Crate {
     private LegacyItemBuilder keyBuilder;
 
     private AbstractCrateManager manager;
+    private final String fileName;
     private final String name;
     private String keyName;
     private int maxSlots;
@@ -127,7 +130,8 @@ public class Crate {
         this.keyName = keyName;
 
         this.file = file;
-        this.name = name;
+        this.fileName = name;
+        this.name = name.replaceAll(".yml", "");
         this.tiers = tiers;
         this.maxMassOpen = maxMassOpen;
         this.requiredKeys = requiredKeys;
@@ -225,6 +229,7 @@ public class Crate {
 
     public Crate(@NotNull final String name) {
         this.crateType = CrateType.menu;
+        this.fileName = "";
         this.name = name;
     }
 
@@ -815,13 +820,17 @@ public class Crate {
         return section + "." + path;
     }
 
+    private final FileManager fileManager = this.plugin.getFileManager();
+
+    private final Path dataPath = this.plugin.getDataPath();
+
     /**
      * Saves item stacks to editor-items
      */
     private void saveFile() {
-        if (this.name.isEmpty()) return;
+        if (this.fileName.isEmpty()) return;
 
-        final PaperCustomFile customFile = this.plugin.getFileManager().getPaperCustomFile(this.plugin.getDataPath().resolve("crates").resolve(this.name));
+        final PaperCustomFile customFile = this.fileManager.getPaperCustomFile(this.dataPath.resolve("crates").resolve(this.fileName));
 
         if (customFile != null) {
             customFile.save(); // save to file
