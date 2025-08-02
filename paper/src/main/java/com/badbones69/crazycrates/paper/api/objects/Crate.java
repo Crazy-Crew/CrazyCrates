@@ -126,12 +126,12 @@ public class Crate {
                  @NotNull final List<String> prizeMessage,
                  @NotNull final List<String> prizeCommands,
                  @NotNull final CrateHologram hologram) {
-        this.keyBuilder = key.setDisplayName(keyName).setPersistentString(ItemKeys.crate_key.getNamespacedKey(), name);
+        this.name = name.replaceAll(".yml", "");
+        this.keyBuilder = key.setDisplayName(keyName).setPersistentString(ItemKeys.crate_key.getNamespacedKey(), this.name);
         this.keyName = keyName;
 
         this.file = file;
         this.fileName = name;
-        this.name = name.replaceAll(".yml", "");
         this.tiers = tiers;
         this.maxMassOpen = maxMassOpen;
         this.requiredKeys = requiredKeys;
