@@ -109,12 +109,12 @@ public class CommandGive extends BaseCommand {
             final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_ALL_COMMAND, amount);
             this.plugin.getServer().getPluginManager().callEvent(event);
 
-            if (event.isCancelled()) return;
+            if (event.isCancelled()) continue;
 
             if (crate.getCrateType() == CrateType.crate_on_the_go) {
                 MiscUtils.addItem(player, crate.getKey(amount, player));
 
-                return;
+                continue;
             }
 
             addKey(sender, player, crate, keyType, amount, isSilent, true);

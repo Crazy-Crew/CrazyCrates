@@ -138,13 +138,8 @@ public class BukkitUserManager extends UserManager {
 
         switch (keyType) {
             case physical_key -> {
-                if (!MiscUtils.isInventoryFull(player)) {
-                    MiscUtils.addItem(player, crate.getKey(amount, player));
 
-                    return;
-                }
-
-                if (config.getProperty(ConfigKeys.give_virtual_keys_when_inventory_full)) {
+                if (config.getProperty(ConfigKeys.give_virtual_keys_when_inventory_full) && MiscUtils.isInventoryFull(player)) {
                     addVirtualKeys(player.getUniqueId(), fileName, amount);
 
                     if (config.getProperty(ConfigKeys.notify_player_when_inventory_full)) {
@@ -161,7 +156,7 @@ public class BukkitUserManager extends UserManager {
                     return;
                 }
 
-                player.getWorld().dropItem(player.getLocation(), crate.getKey(amount, player));
+                MiscUtils.addItem(player, crate.getKey(amount, player));
             }
 
             case virtual_key -> addVirtualKeys(player.getUniqueId(), fileName, amount);

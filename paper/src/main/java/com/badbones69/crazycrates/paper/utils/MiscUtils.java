@@ -352,11 +352,17 @@ public class MiscUtils {
     }
 
     public static void addItem(@NotNull final Player player, @NotNull final ItemStack... items) {
-        final Inventory inventory = player.getInventory();
+        player.getScheduler().run(plugin, t -> {
+            final Inventory inventory = player.getInventory();
 
-        inventory.setMaxStackSize(64);
+            inventory.setMaxStackSize(64);
 
-        Arrays.asList(items).forEach(item -> inventory.addItem(item.clone()));
+            Arrays.asList(items).forEach(
+                item -> inventory.addItem(item.clone()).values().forEach(
+                    i -> player.getWorld().dropItem(player.getLocation(), i)
+                )
+            );
+        }, null);
     }
 
     /**
