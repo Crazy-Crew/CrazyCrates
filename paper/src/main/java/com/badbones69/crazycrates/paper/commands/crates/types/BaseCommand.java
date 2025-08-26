@@ -15,8 +15,10 @@ import com.ryderbelserion.fusion.paper.files.FileManager;
 import dev.triumphteam.cmd.core.annotations.Command;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,6 +33,10 @@ import java.util.Map;
 public abstract class BaseCommand {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    protected final Server server = this.plugin.getServer();
+
+    protected final PluginManager pluginManager = this.server.getPluginManager();
 
     protected final ComponentLogger logger = this.plugin.getComponentLogger();
 
@@ -235,7 +241,7 @@ public abstract class BaseCommand {
         if (offlinePlayer != null) {
             final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(offlinePlayer, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
 
-            this.plugin.getServer().getPluginManager().callEvent(event);
+            this.pluginManager.callEvent(event);
 
             if (event.isCancelled()) return;
 

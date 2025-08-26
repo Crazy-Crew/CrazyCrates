@@ -11,6 +11,8 @@ import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
+import org.bukkit.Server;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -36,6 +38,10 @@ import java.util.UUID;
 public class BukkitUserManager extends UserManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final Server server = this.plugin.getServer();
+
+    private final PluginManager pluginManager = this.server.getPluginManager();
 
     private final ComponentLogger logger = this.plugin.getComponentLogger();
 
@@ -438,7 +444,8 @@ public class BukkitUserManager extends UserManager {
 
                 if (configuration.contains("Offline-Players." + name + "." + fileName)) {
                     final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.OFFLINE_PLAYER, 1);
-                    this.plugin.getServer().getPluginManager().callEvent(event);
+
+                    this.pluginManager.callEvent(event);
 
                     if (!event.isCancelled()) {
                         final int keys = getVirtualKeys(player.getUniqueId(), fileName);
@@ -474,7 +481,8 @@ public class BukkitUserManager extends UserManager {
 
             if (configuration.contains("Offline-Players." + uuid + "." + fileName)) {
                 final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.OFFLINE_PLAYER, 1);
-                this.plugin.getServer().getPluginManager().callEvent(event);
+
+                this.pluginManager.callEvent(event);
 
                 if (event.isCancelled()) return;
 
@@ -513,7 +521,8 @@ public class BukkitUserManager extends UserManager {
 
             if (configuration.contains("Offline-Players." + uuid + ".Physical." + fileName)) {
                 final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.OFFLINE_PLAYER, 1);
-                this.plugin.getServer().getPluginManager().callEvent(event);
+
+                this.pluginManager.callEvent(event);
 
                 if (event.isCancelled()) return;
 

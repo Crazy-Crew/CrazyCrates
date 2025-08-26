@@ -59,7 +59,8 @@ public class CommandTransfer extends BaseCommand {
         }
 
         final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.TRANSFER, amount);
-        this.plugin.getServer().getPluginManager().callEvent(event);
+
+        this.pluginManager.callEvent(event);
 
         // If the event is cancelled, We return.
         if (event.isCancelled()) return;

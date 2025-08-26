@@ -15,12 +15,14 @@ import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
+import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionAttachmentInfo;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.utils.MsgUtils;
@@ -33,6 +35,8 @@ import static java.util.regex.Matcher.quoteReplacement;
 public class PrizeManager {
     
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final Server server = plugin.getServer();
+    private static final PluginManager pluginManager = server.getPluginManager();
     private static final ComponentLogger logger = plugin.getComponentLogger();
     private static final BukkitUserManager userManager = plugin.getUserManager();
 
@@ -130,7 +134,7 @@ public class PrizeManager {
             return;
         }
 
-        plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+        pluginManager.callEvent(new PlayerPrizeEvent(player, crate, prize));
 
         if (prize.useFireworks()) {
             MiscUtils.spawnFirework(location, null);

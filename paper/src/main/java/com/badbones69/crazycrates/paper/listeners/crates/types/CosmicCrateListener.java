@@ -51,9 +51,9 @@ public class CosmicCrateListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final Server server = plugin.getServer();
+    private final Server server = this.plugin.getServer();
 
-    private final PluginManager pluginManager = server.getPluginManager();
+    private final PluginManager pluginManager = this.server.getPluginManager();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
 

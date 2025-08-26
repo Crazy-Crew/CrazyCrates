@@ -19,12 +19,14 @@ import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
@@ -35,6 +37,10 @@ import java.util.Map;
 public class CrateInteractListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final Server server = this.plugin.getServer();
+
+    private final PluginManager pluginManager = this.server.getPluginManager();
 
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
@@ -101,7 +107,7 @@ public class CrateInteractListener implements Listener {
     private void openCrate(@NotNull final Player player, @NotNull final CrateLocation crateLocation, @NotNull final Crate crate) {
         final KeyCheckEvent key = new KeyCheckEvent(player, crateLocation);
 
-        player.getServer().getPluginManager().callEvent(key);
+        this.pluginManager.callEvent(key);
 
         if (key.isCancelled()) return;
 
