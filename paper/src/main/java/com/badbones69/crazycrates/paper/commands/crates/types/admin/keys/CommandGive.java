@@ -103,13 +103,14 @@ public class CommandGive extends BaseCommand {
 
         Messages.given_everyone_keys.sendMessage(sender, placeholders);
 
-        for (final Player player : this.plugin.getServer().getOnlinePlayers()) {
+        for (final Player player : this.server.getOnlinePlayers()) {
             if (Permissions.CRAZYCRATES_PLAYER_EXCLUDE.hasPermission(player)) continue;
 
             final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_ALL_COMMAND, amount);
-            this.plugin.getServer().getPluginManager().callEvent(event);
 
-            if (event.isCancelled()) return;
+            this.pluginManager.callEvent(event);
+
+            if (event.isCancelled()) continue;
 
             addKey(sender, player, crate, keyType, amount, isSilent, true);
         }

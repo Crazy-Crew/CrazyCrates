@@ -197,11 +197,13 @@ public abstract class BaseCommand {
         final String fileName = crate.getFileName();
 
         if (player != null) {
-            final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
+            if (!isGiveAll) { // we already call the key event when doing give all. we do not need to call it twice.
+                final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
 
-            this.plugin.getServer().getPluginManager().callEvent(event);
+                this.pluginManager.callEvent(event);
 
-            if (event.isCancelled()) return;
+                if (event.isCancelled()) return;
+            }
 
             this.userManager.addKeys(player.getUniqueId(), fileName, crate.getCrateType() == CrateType.crate_on_the_go ? KeyType.physical_key : type, amount);
 
