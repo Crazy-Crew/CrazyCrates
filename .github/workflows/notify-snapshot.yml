@@ -1,9 +1,6 @@
-name: Snapshot Build
+name: Snapshot Notify
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - dev
 
 jobs:
   build:
@@ -19,18 +16,6 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
       - name: Make gradlew executable
         run: chmod +x ./gradlew
-      - name: Build
-        run: ./gradlew build --stacktrace
-      - name: Publish to Modrinth
-        run: ./gradlew modrinth --stacktrace
-        env:
-          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-          COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
-      - name: Publish to Hangar
-        run: ./gradlew publishAllPublicationsToHangar --stacktrace
-        env:
-          HANGAR_KEY: ${{ secrets.HANGAR_KEY }}
-          COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
       - name: Notify Discord
         if: success()
         run: ./gradlew dev-build --stacktrace
