@@ -39,8 +39,6 @@ public class QuadCrateManager {
     private final CrateManager crateManager = this.plugin.getCrateManager();
     private final BukkitUserManager userManager = this.plugin.getUserManager();
 
-    private static final List<QuadCrateManager> crateSessions = new ArrayList<>();
-
     private final QuadCrateManager instance;
 
     // Get the player.
@@ -114,7 +112,7 @@ public class QuadCrateManager {
         this.particle = crate.getParticle();
         this.particleColor = crate.getColor();
 
-        crateSessions.add(this.instance);
+        this.crateManager.addQuadSession(this.instance);
     }
 
     /**
@@ -127,7 +125,7 @@ public class QuadCrateManager {
 
             this.crateManager.removePlayerFromOpeningList(player);
 
-            crateSessions.remove(this.instance);
+            this.crateManager.removeQuadSession(this.instance);
 
             return;
         }
@@ -138,7 +136,7 @@ public class QuadCrateManager {
 
             this.crateManager.removePlayerFromOpeningList(this.player);
 
-            crateSessions.remove(this.instance);
+            this.crateManager.removeQuadSession(this.instance);
 
             return;
         }
@@ -157,7 +155,7 @@ public class QuadCrateManager {
 
                 this.crateManager.removePlayerFromOpeningList(this.player);
 
-                crateSessions.remove(this.instance);
+                this.crateManager.removeQuadSession(this.instance);
 
                 return;
             } else {
@@ -169,13 +167,13 @@ public class QuadCrateManager {
 
         for (final Entity entity : player.getNearbyEntities(3, 3, 3)) {
             if (entity instanceof Player entityPlayer) {
-                for (QuadCrateManager ongoingCrate : crateSessions) {
+                for (final QuadCrateManager ongoingCrate : this.crateManager.getQuadSessions()) {
                     if (entityPlayer.getUniqueId().equals(ongoingCrate.player.getUniqueId())) {
                         Messages.too_close_to_another_player.sendMessage(this.player, "{player}", entityPlayer.getName());
 
                         this.crateManager.removePlayerFromOpeningList(this.player);
 
-                        crateSessions.remove(this.instance);
+                        this.crateManager.removeQuadSession(this.instance);
 
                         return;
                     }
@@ -188,7 +186,7 @@ public class QuadCrateManager {
         if (!this.userManager.takeKeys(this.player.getUniqueId(), this.crate.getFileName(), this.keyType, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, this.checkHand)) {
             this.crateManager.removePlayerFromOpeningList(this.player);
 
-            crateSessions.remove(this.instance);
+            this.crateManager.removeQuadSession(this.instance);
 
             return;
         }
@@ -323,7 +321,7 @@ public class QuadCrateManager {
                 crateManager.removePlayerFromOpeningList(player);
 
                 // Remove the "instance" from the crate sessions.
-                crateSessions.remove(instance);
+                crateManager.removeQuadSession(instance);
             }
         }.runDelayed(immediately ? 0 : 5);
     }
@@ -342,7 +340,7 @@ public class QuadCrateManager {
         if (removeForce) {
             this.crateManager.removePlayerFromOpeningList(this.player);
 
-            crateSessions.remove(this.instance);
+            this.crateManager.removeQuadSession(this.instance);
         }
 
         this.handler.removeStructure();
@@ -376,15 +374,6 @@ public class QuadCrateManager {
 
         location1.getWorld().spawnParticle(this.particle, location1, 0);
         location2.getWorld().spawnParticle(this.particle, location2, 0);
-    }
-
-    /**
-     * Get the crate sessions
-     *
-     * @return list of crate sessions.
-     */
-    public static List<QuadCrateManager> getCrateSessions() {
-        return crateSessions;
     }
 
     /**

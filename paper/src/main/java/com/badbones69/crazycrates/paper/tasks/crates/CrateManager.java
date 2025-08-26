@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.core.config.impl.EditorKeys;
 import com.badbones69.crazycrates.paper.listeners.items.NexoInteractListener;
 import com.badbones69.crazycrates.paper.listeners.items.OraxenInteractListener;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
+import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.QuadCrateManager;
 import com.badbones69.crazycrates.paper.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateHologram;
 import com.badbones69.crazycrates.paper.api.objects.crates.quadcrates.CrateSchematic;
@@ -96,6 +97,7 @@ public class CrateManager {
     private final ComponentLogger logger = this.plugin.getComponentLogger();
     private final Server server = this.plugin.getServer();
 
+    private final List<QuadCrateManager> quadSessions = new ArrayList<>();
     private final List<CrateLocation> crateLocations = new ArrayList<>();
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
     private final List<BrokeLocation> brokeLocations = new ArrayList<>();
@@ -119,6 +121,22 @@ public class CrateManager {
 
     public @Nullable Crate getEditorCrate(@NotNull final Player player) {
         return this.crateEditors.getOrDefault(player.getUniqueId(), null);
+    }
+
+    public void addQuadSession(@NotNull final QuadCrateManager session) {
+        this.quadSessions.add(session);
+    }
+
+    public void removeQuadSession(@NotNull final QuadCrateManager session) {
+        this.quadSessions.remove(session);
+    }
+
+    public void purgeQuadSessions() {
+        this.quadSessions.clear();
+    }
+
+    public List<QuadCrateManager> getQuadSessions() {
+        return this.quadSessions;
     }
 
     private final Map<UUID, Map<Integer, Tier>> tiers = new WeakHashMap<>();
