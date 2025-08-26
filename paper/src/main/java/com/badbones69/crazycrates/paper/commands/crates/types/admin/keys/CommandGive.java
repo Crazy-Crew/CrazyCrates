@@ -111,12 +111,6 @@ public class CommandGive extends BaseCommand {
 
             if (event.isCancelled()) return;
 
-            if (crate.getCrateType() == CrateType.crate_on_the_go) {
-                MiscUtils.addItem(player, crate.getKey(amount, player));
-
-                return;
-            }
-
             addKey(sender, player, crate, keyType, amount, isSilent, true);
         }
     }

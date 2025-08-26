@@ -3,16 +3,14 @@ package com.badbones69.crazycrates.paper.listeners.crates.types;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
-import io.papermc.paper.datacomponent.DataComponentType;
-import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.sound.Sound;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.inventory.meta.ItemMeta;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.QuadCrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.SessionManager;
@@ -41,6 +39,8 @@ import java.util.Map;
 public class QuadCrateListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final ComponentLogger logger = this.plugin.getComponentLogger();
 
     private final SessionManager sessionManager = new SessionManager();
 
@@ -88,21 +88,42 @@ public class QuadCrateListener implements Listener {
             // Convert the item stack to item builder.
             final ItemStack itemStack = ItemUtils.convertItemStack(display).asItemStack();
 
-            // Drop the item.
-            final Item reward = player.getWorld().dropItem(block.getLocation().add(.5, 1, .5), itemStack);
+            final Location location = block.getLocation();
 
-            // Set data
-            reward.setVelocity(new Vector(0, .2, 0));
-            reward.customName(display.displayName());
-            reward.setCustomNameVisible(true);
-            reward.setCanMobPickup(false);
-            reward.setCanPlayerPickup(false);
+            new FoliaScheduler(this.plugin, location) {
+                @Override
+                public void run() {
+                    Item reward;
+
+                    try {
+                        reward = player.getWorld().dropItem(location.clone().add(0.5, 1, 0.5), itemStack);
+                    } catch (final IllegalArgumentException exception) {
+                        final String crateName = prize.getCrateName();
+                        final String prizeName = prize.getPrizeName();
+
+                        List.of(
+                                "A prize could not be given due to an invalid display item for this prize.",
+                                "Crate: %s Prize: %s"
+                        ).forEach(line -> logger.warn(String.format(line, crateName, prizeName), exception));
+
+                        cancel();
+
+                        return;
+                    }
+
+                    reward.setVelocity(new Vector(0, 0.2, 0));
+                    reward.customName(itemStack.displayName());
+                    reward.setCustomNameVisible(true);
+                    reward.setCanMobPickup(false);
+                    reward.setCanPlayerPickup(false);
+
+                    // Add display rewards
+                    session.getDisplayedRewards().add(reward);
+                }
+            }.runNow();
 
             // Add open crates
             session.getCratesOpened().put(block.getLocation(), true);
-
-            // Add display rewards
-            session.getDisplayedRewards().add(reward);
 
             // Check if all crates have spawned, then end if so.
             if (session.allCratesOpened()) {

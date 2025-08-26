@@ -9,6 +9,8 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.api.builders.gui.types.PaginatedGui;
+import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -57,32 +59,56 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
             placeholders.put("{amount}", "1");
             placeholders.put("{key}", crate.getKeyName());
 
+            final Location location = this.player.getLocation();
+
             switch (click) {
                 case LEFT -> {
-                    MiscUtils.addItem(this.player, crate.getKey(this.player));
+                    if (!MiscUtils.isInventoryFull(this.player)) {
+                        new FoliaScheduler(this.plugin, location) {
+                            @Override
+                            public void run() {
+                                MiscUtils.addItem(player, crate.getKey(player));
+                            }
+                        }.runNow();
 
-                    this.player.playSound(this.player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
+                        this.player.playSound(location, Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 
-                    placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
+                        placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
 
-                    Messages.obtaining_keys.sendMessage(this.player, placeholders);
+                        Messages.obtaining_keys.sendMessage(this.player, placeholders);
+
+                        return;
+                    }
+
+                    this.player.playSound(location, Sound.ENTITY_VILLAGER_NO, 1f, 1f);
                 }
 
                 case SHIFT_LEFT -> {
-                    MiscUtils.addItem(this.player, crate.getKey(8, this.player));
+                    if (MiscUtils.isInventoryFull(this.player)) {
+                        new FoliaScheduler(this.plugin, location) {
+                            @Override
+                            public void run() {
+                                MiscUtils.addItem(player, crate.getKey(8, player));
+                            }
+                        }.runNow();
 
-                    this.player.playSound(this.player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
+                        this.player.playSound(location, Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 
-                    placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
-                    placeholders.put("{amount}", "8");
+                        placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
+                        placeholders.put("{amount}", "8");
 
-                    Messages.obtaining_keys.sendMessage(this.player, placeholders);
+                        Messages.obtaining_keys.sendMessage(this.player, placeholders);
+
+                        return;
+                    }
+
+                    this.player.playSound(location, Sound.ENTITY_VILLAGER_NO, 1f, 1f);
                 }
 
                 case RIGHT -> {
                     this.userManager.addKeys(uuid, fileName, KeyType.virtual_key, 1);
 
-                    this.player.playSound(this.player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
+                    this.player.playSound(location, Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 
                     placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
 
@@ -92,7 +118,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
                 case SHIFT_RIGHT -> {
                     this.userManager.addKeys(uuid, fileName, KeyType.virtual_key, 8);
 
-                    this.player.playSound(this.player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
+                    this.player.playSound(location, Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1f, 1f);
 
                     placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
                     placeholders.put("{amount}", "8");

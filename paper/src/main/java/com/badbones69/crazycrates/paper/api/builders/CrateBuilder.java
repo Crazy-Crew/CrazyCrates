@@ -181,31 +181,36 @@ public abstract class CrateBuilder extends FoliaScheduler {
 
             display.editPersistentDataContainer(container -> container.set(ItemKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1"));
 
-            Item reward;
+            new FoliaScheduler(this.plugin, this.location) {
+                @Override
+                public void run() {
+                    Item reward;
 
-            try {
-                reward = this.player.getWorld().dropItem(this.location.clone().add(0.5, 1, 0.5), display);
-            } catch (final IllegalArgumentException exception) {
-                final String crateName = prize.getCrateName();
-                final String prizeName = prize.getPrizeName();
+                    try {
+                        reward = player.getWorld().dropItem(location.clone().add(0.5, 1, 0.5), display);
+                    } catch (final IllegalArgumentException exception) {
+                        final String crateName = prize.getCrateName();
+                        final String prizeName = prize.getPrizeName();
 
-                List.of(
-                        "A prize could not be given due to an invalid display item for this prize.",
-                        "Crate: %s Prize: %s"
-                ).forEach(line -> this.logger.warn(String.format(line, crateName, prizeName), exception));
+                        List.of(
+                                "A prize could not be given due to an invalid display item for this prize.",
+                                "Crate: %s Prize: %s"
+                        ).forEach(line -> logger.warn(String.format(line, crateName, prizeName), exception));
 
-                return;
-            }
+                        cancel();
 
-            reward.setVelocity(new Vector(0, 0.2, 0));
+                        return;
+                    }
 
-            reward.customName(AdvUtils.parse(prize.getPrizeName()));
+                    reward.setVelocity(new Vector(0, 0.2, 0));
+                    reward.customName(display.displayName());
+                    reward.setCustomNameVisible(true);
+                    reward.setCanMobPickup(false);
+                    reward.setCanPlayerPickup(false);
 
-            reward.setCustomNameVisible(true);
-            reward.setCanMobPickup(false);
-            reward.setCanPlayerPickup(false);
-
-            this.crateManager.addReward(this.player, reward);
+                    crateManager.addReward(player, reward);
+                }
+            }.runNow();
         }
     }
 

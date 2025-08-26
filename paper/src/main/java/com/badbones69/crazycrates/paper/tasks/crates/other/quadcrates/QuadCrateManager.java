@@ -19,7 +19,6 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.SpiralManager;
 import com.badbones69.crazycrates.paper.api.ChestManager;
-import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
@@ -277,17 +276,27 @@ public class QuadCrateManager {
      * End the crate gracefully.
      */
     public void endCrate(final boolean immediately) {
-        final Server server = this.plugin.getServer();
-
         new FoliaScheduler(this.plugin, Scheduler.global_scheduler) {
             @Override
             public void run() {
                 // Update spawned crate block states that remove them.
-                crateLocations.forEach(location -> server.getRegionScheduler().run(plugin, location, schedulerTask -> quadCrateChests.get(location).update(true, false)));
+                crateLocations.forEach(location -> {
+                    new FoliaScheduler(plugin, location) {
+                        @Override
+                        public void run() {
+                            quadCrateChests.get(location).update(true, false);
+                        }
+                    }.runNow();
+                });
 
                 // Remove displayed rewards.
-                for (Entity displayedReward : displayedRewards) {
-                    displayedReward.getScheduler().run(plugin, scheduledTask -> displayedReward.remove(), null);
+                for (final Entity entity : displayedRewards) {
+                    new FoliaScheduler(plugin, null, entity) {
+                        @Override
+                        public void run() {
+                            entity.remove();
+                        }
+                    }.runNow();
                 }
 
                 // Teleport player to last location.
@@ -302,7 +311,14 @@ public class QuadCrateManager {
                 }.runNow();
 
                 // Restore the old blocks.
-                oldBlocks.keySet().forEach(location -> server.getRegionScheduler().run(plugin, location, schedulerTask -> oldBlocks.get(location).update(true, false)));
+                oldBlocks.keySet().forEach(location -> {
+                    new FoliaScheduler(plugin, location) {
+                        @Override
+                        public void run() {
+                            oldBlocks.get(location).update(true, false);
+                        }
+                    }.runNow();
+                });
 
                 final HologramManager manager = crateManager.getHolograms();
 
@@ -331,19 +347,9 @@ public class QuadCrateManager {
      *
      * @param removeForce whether to stop the crate session or not.
      */
+    @Deprecated(forRemoval = true)
     public void endCrateForce(final boolean removeForce) {
-        this.oldBlocks.keySet().forEach(location -> this.oldBlocks.get(location).update(true, false));
-        this.crateLocations.forEach(location -> this.quadCrateChests.get(location).update(true, false));
-        this.displayedRewards.forEach(Entity::remove);
-        this.player.teleportAsync(this.lastLocation);
-
-        if (removeForce) {
-            this.crateManager.removePlayerFromOpeningList(this.player);
-
-            this.crateManager.removeQuadSession(this.instance);
-        }
-
-        this.handler.removeStructure();
+        endCrate(removeForce);
     }
 
     /**

@@ -203,11 +203,7 @@ public abstract class BaseCommand {
 
             if (event.isCancelled()) return;
 
-            if (crate.getCrateType() == CrateType.crate_on_the_go) {
-                MiscUtils.addItem(player, crate.getKey(amount, player));
-            } else {
-                this.userManager.addKeys(player.getUniqueId(), fileName, type, amount);
-            }
+            this.userManager.addKeys(player.getUniqueId(), fileName, crate.getCrateType() == CrateType.crate_on_the_go ? KeyType.physical_key : type, amount);
 
             final Map<String, String> placeholders = new HashMap<>();
 

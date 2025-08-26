@@ -11,9 +11,7 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
@@ -27,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.utils.MsgUtils;
 import org.jetbrains.annotations.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Random;
@@ -154,62 +151,12 @@ public class PrizeManager {
             }
         }
 
-        for (final ItemStack itemStack : prize.getEditorItems()) {
-            if (!MiscUtils.isInventoryFull(player)) {
-                MiscUtils.addItem(player, itemStack);
-            } else {
-                player.getWorld().dropItemNaturally(player.getLocation(), itemStack.clone());
-            }
-        }
+        MiscUtils.dropItems(prize.getEditorItems(), player); // drops any leftover editor items.
 
         if (config.getProperty(ConfigKeys.use_different_items_layout)) {
-            final List<ItemBuilder> builders = prize.getItems();
-
-            if (!builders.isEmpty()) {
-                for (final ItemBuilder builder : builders) {
-                    final ItemStack itemStack = builder.asItemStack(player);
-
-                    if (!MiscUtils.isInventoryFull(player)) {
-                        MiscUtils.addItem(player, itemStack);
-                    } else {
-                        player.getWorld().dropItemNaturally(player.getLocation(), itemStack.clone());
-                    }
-                }
-            }
+            MiscUtils.dropBuilders(prize.getItems(), player);
         } else {
-            final boolean isPlaceholderAPIEnabled = Plugins.placeholder_api.isEnabled();
-
-            final List<LegacyItemBuilder> legacy = prize.getItemBuilders();
-
-            if (!legacy.isEmpty()) { // run this just in case people got leftover shit
-                for (final LegacyItemBuilder item : legacy) {
-                    if (isPlaceholderAPIEnabled) {
-                        final String displayName = item.getDisplayName();
-
-                        if (!displayName.isEmpty()) {
-                            item.setDisplayName(PlaceholderAPI.setPlaceholders(player, displayName));
-                        }
-
-                        final List<String> displayLore = item.getDisplayLore();
-
-                        if (!displayLore.isEmpty()) {
-                            List<String> lore = new ArrayList<>();
-
-                            displayLore.forEach(line -> lore.add(PlaceholderAPI.setPlaceholders(player, line)));
-
-                            item.setDisplayLore(lore);
-                        }
-                    }
-
-                    final ItemStack itemStack = item.setPlayer(player).asItemStack();
-
-                    if (!MiscUtils.isInventoryFull(player)) {
-                        MiscUtils.addItem(player, itemStack);
-                    } else {
-                        player.getWorld().dropItemNaturally(player.getLocation(), itemStack.clone());
-                    }
-                }
-            }
+            MiscUtils.dropLegacyBuilders(prize.getItemBuilders(), player);
         }
 
         for (final String command : crate.getPrizeCommands()) {
