@@ -11,6 +11,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
+import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Server;
@@ -116,7 +117,7 @@ public class CrateOpenListener implements Listener {
                         builder = line.replaceAll("%crate%", fileName).replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix)).replaceAll("%player%", playerName);
                     }
 
-                    this.server.dispatchCommand(this.server.getConsoleSender(), builder); //todo() folia support
+                    MiscUtils.sendCommand(builder);
                 });
             }
         }

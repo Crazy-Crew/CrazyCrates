@@ -81,17 +81,11 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                         case "slot" -> slot = StringUtils.tryParseInt(value).orElse(-1).intValue();
 
-                        case "unbreakable-item" ->
-                                item.setUnbreakable(StringUtils.tryParseBoolean(value).orElse(false));
+                        case "unbreakable-item" -> item.setUnbreakable(StringUtils.tryParseBoolean(value).orElse(false));
 
-                        case "hide-item-flags" ->
-                                item.setHidingItemFlags(StringUtils.tryParseBoolean(value).orElse(false));
+                        case "hide-item-flags" -> item.setHidingItemFlags(StringUtils.tryParseBoolean(value).orElse(false));
 
-                        case "command" -> {
-                            final Server server = this.plugin.getServer();
-
-                            server.dispatchCommand(server.getConsoleSender(), value); //todo() folia support, fuck off
-                        }
+                        case "command" -> MiscUtils.sendCommand(value);
                     }
                 }
 

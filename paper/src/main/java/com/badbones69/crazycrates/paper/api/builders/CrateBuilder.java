@@ -177,7 +177,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
             }
 
             // Get the display item.
-            ItemStack display = prize.getDisplayItem(this.player, this.crate); //todo() use display entities
+            final ItemStack display = prize.getDisplayItem(this.player, this.crate);
 
             display.editPersistentDataContainer(container -> container.set(ItemKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1"));
 

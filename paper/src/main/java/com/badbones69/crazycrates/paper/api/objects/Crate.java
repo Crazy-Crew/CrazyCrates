@@ -16,12 +16,13 @@ import com.ryderbelserion.fusion.paper.files.FileManager;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.ItemLore;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
@@ -722,21 +723,21 @@ public class Crate {
 
         final String tiers = getPath(prizeName, "Tiers");
 
-        if (itemStack.hasItemMeta()) { //todo() move to data components
-            final ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemStack.hasData(DataComponentTypes.CUSTOM_NAME)) {
+            final Component displayName = itemStack.getData(DataComponentTypes.CUSTOM_NAME);
 
-            if (itemMeta.hasDisplayName()) {
-                final Component displayName = itemMeta.displayName();
-
-                if (displayName != null) {
-                    section.set(getPath(prizeName, "DisplayName"), AdvUtils.fromComponent(displayName));
-                }
+            if (displayName != null) {
+                section.set(getPath(prizeName, "DisplayName"), AdvUtils.fromComponent(displayName));
             }
+        }
 
-            if (itemMeta.hasLore()) {
-                final List<Component> lore = itemMeta.lore();
+        if (itemStack.hasData(DataComponentTypes.LORE)) {
+            @Nullable final ItemLore itemLore = itemStack.getData(DataComponentTypes.LORE);
 
-                if (lore != null) {
+            if (itemLore != null) {
+                final List<Component> lore = itemLore.lines();
+
+                if (!lore.isEmpty()) {
                     section.set(getPath(prizeName, "DisplayLore"), AdvUtils.fromComponent(lore));
                 }
             }
