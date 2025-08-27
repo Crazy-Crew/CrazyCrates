@@ -65,7 +65,7 @@ public abstract class ICrateMigrator {
 
     public void sendMessage(List<String> files, final int success, final int failed) {
         Messages.successfully_migrated.sendMessage(this.sender, new HashMap<>() {{
-            put("{files}", files.size() > 1 ? StringUtils.toString(files) : files.getFirst());
+            put("{files}", files.size() > 1 ? StringUtils.toString(files) : files.isEmpty() ? "N/A" : files.getFirst());
             put("{succeeded_amount}", String.valueOf(success));
             put("{failed_amount}", String.valueOf(failed));
             put("{type}", type.getName());
