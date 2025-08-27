@@ -203,7 +203,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
                     }
 
                     reward.setVelocity(new Vector(0, 0.2, 0));
-                    reward.customName(display.displayName());
+                    reward.customName(AdvUtils.parse(prize.getPrizeName()));
                     reward.setCustomNameVisible(true);
                     reward.setCanMobPickup(false);
                     reward.setCanPlayerPickup(false);
