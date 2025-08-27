@@ -33,7 +33,7 @@ public class MojangMappedMigratorMultiple extends ICrateMigrator {
 
                 migrate(customFile, "");
 
-                success.add("<green>⤷ " + customFile.getPrettyName());
+                success.add("<green>⤷ " + customFile.getFileName());
             } catch (final Exception exception) {
                 failed.add("<red>⤷ " + key.getFileName());
             }

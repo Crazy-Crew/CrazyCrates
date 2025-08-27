@@ -99,9 +99,9 @@ public class WeightMigrator extends ICrateMigrator {
                     customFile.save();
                 }
 
-                success.add("<green>⤷ " + customFile.getPrettyName());
+                success.add("<green>⤷ " + customFile.getFileName());
             } catch (final Exception exception) {
-                failed.add("<red>⤷ " + key.getPrettyName());
+                failed.add("<red>⤷ " + key.getFileName());
             }
         });
 

@@ -82,9 +82,9 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
                     customFile.save();
                 }
 
-                success.add("<green>⤷ " + customFile.getPrettyName());
+                success.add("<green>⤷ " + customFile.getFileName());
             } catch (Exception exception) {
-                failed.add("<red>⤷ " + key.getPrettyName());
+                failed.add("<red>⤷ " + key.getFileName());
             }
         });
 

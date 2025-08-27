@@ -15,6 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,8 @@ public abstract class ICrateMigrator {
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     protected final ComponentLogger logger = this.plugin.getComponentLogger();
+
+    protected final Path dataPath = this.plugin.getDataPath();
 
     protected final CrateManager crateManager = this.plugin.getCrateManager();
 
