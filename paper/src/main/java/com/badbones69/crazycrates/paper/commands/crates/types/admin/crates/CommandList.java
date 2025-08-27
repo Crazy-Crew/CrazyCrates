@@ -23,36 +23,25 @@ public class CommandList extends BaseCommand {
         final List<String> crates = new ArrayList<>();
 
         for (final CrateLocation crateLocation : this.crateManager.getCrateLocations()) {
+            final Location location = crateLocation.getLocation();
             final Crate crate = crateLocation.getCrate();
 
-            Location location = crateLocation.getLocation();
-
-            final String world = location.getWorld().getName();
-            final int x = location.getBlockX();
-            final int y = location.getBlockY();
-            final int z = location.getBlockZ();
-
-            Map<String, String> placeholders = new HashMap<>();
-
-            placeholders.put("{crate_name}", crate.getCrateName());
-            placeholders.put("{id}", crateLocation.getID());
-            placeholders.put("{x}", String.valueOf(x));
-            placeholders.put("{y}", String.valueOf(y));
-            placeholders.put("{z}", String.valueOf(z));
-            placeholders.put("{world}", world);
-
-            crates.add(Messages.crate_locations_format.getMessage(sender, placeholders));
+            crates.add(Messages.crate_locations_format.getMessage(sender, new HashMap<>() {{
+                put("{crate_name}", crate.getCrateName());
+                put("{id}", crateLocation.getID());
+                put("{x}", String.valueOf(location.getBlockX()));
+                put("{y}", String.valueOf(location.getBlockY()));
+                put("{z}", String.valueOf(location.getBlockZ()));
+                put("{world}", location.getWorld().getName());
+            }}));
         }
 
-        final Map<String, String> placeholders = new HashMap<>();
-
-        placeholders.put("{active_crates}", String.valueOf(this.crateManager.getUsableCrates().size()));
-        placeholders.put("{broken_crates}", String.valueOf(this.crateManager.getBrokeCrates().size()));
-        placeholders.put("{active_locations}", String.valueOf(this.crateManager.getCrateLocations().size()));
-
-        placeholders.put("{locations}", this.crateManager.getCrateLocations().isEmpty() ? "N/A" : StringUtils.toString(crates));
-
         // this has to use sendRichMessage as it is a list.
-        Messages.crate_locations.sendRichMessage(sender, placeholders);
+        Messages.crate_locations.sendRichMessage(sender, new HashMap<>() {{
+            put("{active_crates}", String.valueOf(crateManager.getUsableCrates().size()));
+            put("{broken_crates}", String.valueOf(crateManager.getBrokeCrates().size()));
+            put("{active_locations}", String.valueOf(crateManager.getCrateLocations().size()));
+            put("{locations}", crateManager.getCrateLocations().isEmpty() ? "N/A" : StringUtils.toString(crates));
+        }});
     }
 }

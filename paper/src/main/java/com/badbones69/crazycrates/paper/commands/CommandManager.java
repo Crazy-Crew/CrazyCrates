@@ -25,6 +25,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.PlayerBuilder;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
+import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -36,6 +37,8 @@ import java.util.List;
 public class CommandManager {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final Server server = plugin.getServer();
+
     private static final CrateManager crateManager = plugin.getCrateManager();
 
     private static final BukkitCommandManager<CommandSender> commandManager = BukkitCommandManager.create(plugin);
@@ -57,7 +60,7 @@ public class CommandManager {
         commandManager.registerStaticSuggestion(SuggestionKey.of("keys"), Arrays.asList("virtual", "v", "physical", "p"));
         commandManager.registerStaticSuggestion(SuggestionKey.of("admin-keys"), Arrays.asList("virtual", "v", "physical", "p", "free", "f"));
 
-        commandManager.registerSuggestion(SuggestionKey.of("players"), (context) -> plugin.getServer().getOnlinePlayers().stream().map(Player::getName).toList());
+        commandManager.registerSuggestion(SuggestionKey.of("players"), (context) -> server.getOnlinePlayers().stream().map(Player::getName).toList());
 
         commandManager.registerSuggestion(SuggestionKey.of("locations"), (context) -> crateManager.getCrateLocations().stream().map(CrateLocation::getID).toList());
 

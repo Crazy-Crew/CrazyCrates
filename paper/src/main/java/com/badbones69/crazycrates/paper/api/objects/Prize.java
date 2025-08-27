@@ -322,7 +322,7 @@ public class Prize {
     public final boolean hasPermission(@NotNull final Player player) {
         if (player.isOp()) return false;
 
-        for (String permission : this.permissions) {
+        for (final String permission : this.permissions) {
             if (player.hasPermission(permission)) return true;
         }
 
@@ -346,9 +346,9 @@ public class Prize {
         final String current_pulls = String.valueOf(PrizeManager.getCurrentPulls(this, crate));
         final String max_pulls = String.valueOf(getMaxPulls());
 
-        String message = StringUtils.toString(messages);
+        final String message = StringUtils.toString(messages);
 
-        Map<String, String> placeholders = new HashMap<>() {{
+        final Map<String, String> placeholders = new HashMap<>() {{
             put("%player%", target.getName());
             put("%crate%", crate.getCrateName());
             put("%reward%", getPrizeName().replaceAll("%maxpulls%", max_pulls).replaceAll("%pulls%", current_pulls));
@@ -504,7 +504,7 @@ public class Prize {
             }
 
             return builder;
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             return new LegacyItemBuilder(this.plugin, ItemType.RED_TERRACOTTA).setDisplayName("<red><bold>ERROR").setDisplayLore(new ArrayList<>() {{
                 add("<red>There was an error with one of your prizes!");
                 add("<red>The reward in question is labeled: <yellow>" + section.getName() + " <red>in crate: <yellow>" + crateName);

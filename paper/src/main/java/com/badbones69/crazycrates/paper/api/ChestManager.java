@@ -21,6 +21,7 @@ public class ChestManager {
                 final EnderChest enderChest = (EnderChest) blockState;
 
                 if (!enderChest.isOpen()) enderChest.open();
+
                 blockState.update(forceUpdate);
             }
 
@@ -28,6 +29,7 @@ public class ChestManager {
                 final Chest chest = (Chest) blockState;
 
                 if (!chest.isOpen()) chest.open();
+
                 blockState.update(forceUpdate);
             }
         }

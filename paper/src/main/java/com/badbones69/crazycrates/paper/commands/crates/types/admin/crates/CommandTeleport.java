@@ -41,7 +41,7 @@ public class CommandTeleport extends BaseCommand {
 
         for (final String name : section.getKeys(false)) {
             if (name.equalsIgnoreCase(id)) {
-                final World world = this.plugin.getServer().getWorld(Objects.requireNonNull(this.locations.getString("Locations." + name + ".World")));
+                final World world = this.server.getWorld(Objects.requireNonNull(this.locations.getString("Locations." + name + ".World")));
 
                 final int x = this.locations.getInt("Locations." + name + ".X");
                 final int y = this.locations.getInt("Locations." + name + ".Y");

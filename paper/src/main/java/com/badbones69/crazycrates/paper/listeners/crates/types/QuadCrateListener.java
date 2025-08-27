@@ -51,7 +51,7 @@ public class QuadCrateListener implements Listener {
 
     @EventHandler
     public void onChestClick(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK) {
             final Block block = event.getClickedBlock();
@@ -150,13 +150,14 @@ public class QuadCrateListener implements Listener {
 
         if (oldLocation.getBlockX() != newLocation.getBlockX() || oldLocation.getBlockZ() != newLocation.getBlockZ()) {
             player.teleportAsync(oldLocation);
+
             event.setCancelled(true);
         }
 
-        for (final Entity en : player.getNearbyEntities(2, 2, 2)) { // Someone tries to enter the crate area
-            if (en instanceof final Player p) {
-                if (this.sessionManager.inSession(p)) {
-                    Vector velocity = player.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().setY(1);
+        for (final Entity entity : player.getNearbyEntities(2, 2, 2)) { // Someone tries to enter the crate area
+            if (entity instanceof final Player target) {
+                if (this.sessionManager.inSession(target)) {
+                    final Vector velocity = player.getLocation().toVector().subtract(target.getLocation().toVector()).normalize().setY(1);
 
                     if (player.isInsideVehicle() && player.getVehicle() != null) {
                         player.getVehicle().setVelocity(velocity);
@@ -184,14 +185,12 @@ public class QuadCrateListener implements Listener {
         if (session != null && !player.hasPermission("crazycrates.admin")) {
             event.setCancelled(true);
 
-            final Map<String, String> placeholders = new HashMap<>();
-
             final Crate crate = session.getCrate();
 
-            placeholders.put("{crate}", crate.getCrateName());
-            placeholders.put("{player}", player.getName());
-
-            Messages.no_commands_while_in_crate.sendMessage(player, placeholders);
+            Messages.no_commands_while_in_crate.sendMessage(player, new HashMap<>() {{
+                put("{crate}", crate.getCrateName());
+                put("{player}", player.getName());
+            }});
         }
     }
 
@@ -204,14 +203,12 @@ public class QuadCrateListener implements Listener {
         if (session != null && event.getCause() == TeleportCause.ENDER_PEARL) {
             event.setCancelled(true);
 
-            final Map<String, String> placeholders = new HashMap<>();
-
             final Crate crate = session.getCrate();
 
-            placeholders.put("{crate}", crate.getCrateName());
-            placeholders.put("{player}", player.getName());
-
-            Messages.no_teleporting.sendMessage(player, placeholders);
+            Messages.no_teleporting.sendMessage(player, new HashMap<>() {{
+                put("{crate}", crate.getCrateName());
+                put("{player}", player.getName());
+            }});
         }
     }
 

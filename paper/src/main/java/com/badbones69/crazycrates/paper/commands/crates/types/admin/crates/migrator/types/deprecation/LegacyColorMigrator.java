@@ -51,7 +51,7 @@ public class LegacyColorMigrator extends ICrateMigrator {
         }
 
         try {
-            for (Messages message : Messages.values()) {
+            for (final Messages message : Messages.values()) {
                 message.migrate();
             }
 
@@ -136,7 +136,7 @@ public class LegacyColorMigrator extends ICrateMigrator {
                 final ConfigurationSection tiers = section.getConfigurationSection("Tiers");
 
                 if (tiers != null) {
-                    for (String value : tiers.getKeys(false)) {
+                    for (final String value : tiers.getKeys(false)) {
                         final ConfigurationSection tierSection = tiers.getConfigurationSection(value);
 
                         if (tierSection == null) continue;
@@ -158,7 +158,7 @@ public class LegacyColorMigrator extends ICrateMigrator {
                 final ConfigurationSection prizes = section.getConfigurationSection("Prizes");
 
                 if (prizes != null) {
-                    for (String value : prizes.getKeys(false)) {
+                    for (final String value : prizes.getKeys(false)) {
                         final ConfigurationSection prizeSection = prizes.getConfigurationSection(value);
 
                         if (prizeSection == null) continue;
@@ -211,7 +211,7 @@ public class LegacyColorMigrator extends ICrateMigrator {
                 }
 
                 success.add("<green>⤷ " + customFile.getPrettyName());
-            } catch (Exception exception) {
+            } catch (final Exception exception) {
                 failed.add("<red>⤷ " + key.getPrettyName());
             }
         });

@@ -90,7 +90,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                         case "command" -> {
                             final Server server = this.plugin.getServer();
 
-                            server.dispatchCommand(server.getConsoleSender(), value);
+                            server.dispatchCommand(server.getConsoleSender(), value); //todo() folia support, fuck off
                         }
                     }
                 }

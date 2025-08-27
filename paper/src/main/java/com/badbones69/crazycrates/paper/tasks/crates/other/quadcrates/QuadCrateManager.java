@@ -7,10 +7,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.structures
 import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.CrazyCrates;
@@ -371,15 +368,18 @@ public class QuadCrateManager {
      * @param location2 the second location of the particle.
      */
     private void spawnParticles(@NotNull final Color particleColor, @NotNull final Location location1, @NotNull final Location location2) {
+        final World worldOne = location1.getWorld();
+        final World worldTwo = location2.getWorld();
+
         if (this.particle == Particle.DUST) {
-            location1.getWorld().spawnParticle(this.particle, location1, 0, new Particle.DustOptions(particleColor, 1));
-            location2.getWorld().spawnParticle(this.particle, location2, 0, new Particle.DustOptions(particleColor, 1));
+            worldOne.spawnParticle(this.particle, location1, 0, new Particle.DustOptions(particleColor, 1));
+            worldTwo.spawnParticle(this.particle, location2, 0, new Particle.DustOptions(particleColor, 1));
 
             return;
         }
 
-        location1.getWorld().spawnParticle(this.particle, location1, 0);
-        location2.getWorld().spawnParticle(this.particle, location2, 0);
+        worldOne.spawnParticle(this.particle, location1, 0);
+        worldTwo.spawnParticle(this.particle, location2, 0);
     }
 
     /**

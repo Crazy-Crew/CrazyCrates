@@ -13,6 +13,7 @@ import com.badbones69.crazycrates.paper.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,6 +25,8 @@ public class CrateOpenListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
+    private final Server server = this.plugin.getServer();
+
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
     private final BukkitUserManager userManager = this.plugin.getUserManager();
@@ -33,12 +36,14 @@ public class CrateOpenListener implements Listener {
     @EventHandler
     public void onCrateOpen(CrateOpenEvent event) {
         final Player player = event.getPlayer();
+        final String playerName = player.getName();
         final Crate crate = event.getCrate();
 
         final String fileName = crate.getFileName();
         final String fancyName = crate.getCrateName();
+        final CrateType crateType = crate.getCrateType();
 
-        if (crate.getCrateType() != CrateType.menu) {
+        if (crateType != CrateType.menu) {
             if (crate.getPrizes().isEmpty() || !crate.canWinPrizes(player)) {
                 Messages.no_prizes_found.sendMessage(player, "{crate}", fancyName);
 
@@ -77,18 +82,20 @@ public class CrateOpenListener implements Listener {
 
         this.crateManager.addPlayerToOpeningList(player, crate);
 
-        if (crate.getCrateType() != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), fileName);
+        if (crateType != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), fileName);
 
         final YamlConfiguration configuration = event.getConfiguration();
 
         final String broadcastMessage = configuration.getString("Crate.BroadCast", "");
         final boolean broadcastToggle = configuration.getBoolean("Crate.OpeningBroadCast", false);
 
-        if (broadcastToggle && crate.getCrateType() != CrateType.cosmic && !event.isSilent()) { //todo() add a permission?
+        if (broadcastToggle && crateType != CrateType.cosmic && !event.isSilent()) { //todo() add a permission?
             if (!broadcastMessage.isBlank()) {
                 final String builder = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
-                this.plugin.getServer().broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix)).replaceAll("%player%", player.getName())));
+                this.server.broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName)
+                        .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
+                        .replaceAll("%player%", playerName)));
             }
         }
 
@@ -102,16 +109,18 @@ public class CrateOpenListener implements Listener {
                     String builder;
 
                     if (Plugins.placeholder_api.isEnabled() ) {
-                        builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%crate%", fileName).replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix)).replaceAll("%player%", player.getName()));
+                        builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%crate%", fileName)
+                                .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
+                                .replaceAll("%player%", playerName));
                     } else {
-                        builder = line.replaceAll("%crate%", fileName).replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix)).replaceAll("%player%", player.getName());
+                        builder = line.replaceAll("%crate%", fileName).replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix)).replaceAll("%player%", playerName);
                     }
 
-                    this.plugin.getServer().dispatchCommand(this.plugin.getServer().getConsoleSender(), builder);
+                    this.server.dispatchCommand(this.server.getConsoleSender(), builder); //todo() folia support
                 });
             }
         }
 
-        EventManager.logEvent(event.getEventType(), player.getName(), player, crate, event.getKeyType(), 1);
+        EventManager.logEvent(event.getEventType(), playerName, player, crate, event.getKeyType(), 1);
     }
 }

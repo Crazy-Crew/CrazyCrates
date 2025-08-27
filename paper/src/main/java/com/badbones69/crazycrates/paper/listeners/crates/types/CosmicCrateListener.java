@@ -19,6 +19,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -50,6 +51,8 @@ import java.util.logging.Level;
 public class CosmicCrateListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final ComponentLogger logger = this.plugin.getComponentLogger();
 
     private final Server server = this.plugin.getServer();
 
@@ -124,7 +127,7 @@ public class CosmicCrateListener implements Listener {
 
         event.setCurrentItem(prize.getDisplayItem(player, crate));
 
-        holder.getCrate().playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.MASTER);
+        crate.playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.MASTER);
 
         this.crateManager.addSlot(player, slot);
     }
@@ -329,7 +332,9 @@ public class CosmicCrateListener implements Listener {
                 if (!broadcastMessage.isBlank()) {
                     String builder = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
-                    this.plugin.getServer().broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix)).replaceAll("%player%", player.getName())));
+                    this.server.broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName)
+                            .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
+                            .replaceAll("%player%", player.getName())));
                 }
             }
 
@@ -372,7 +377,7 @@ public class CosmicCrateListener implements Listener {
 
                                     Messages.key_refund.sendMessage(player, "{crate}", fancyName);
 
-                                    if (MiscUtils.isLogging()) plugin.getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + fileName + " crate and so they were issued a key refund.", exception);
+                                    if (MiscUtils.isLogging()) logger.error("An issue occurred when the user {} was using the {} crate and so they were issued a key refund.", player.getName(), fileName, exception);
 
                                     // Play a sound
                                     crate.playSound(player, player.getLocation(), "stop-sound", "block.anvil.place", Sound.Source.MASTER);
@@ -432,11 +437,7 @@ public class CosmicCrateListener implements Listener {
 
         view.getTopInventory().clear();
 
-        cosmicCrateManager.getPrizes(player).forEach((slot, tier) -> {
-            Inventory inventory = view.getTopInventory();
-
-            inventory.setItem(slot, tier.getTierItem(player, crate));
-        });
+        cosmicCrateManager.getPrizes(player).forEach((slot, tier) -> view.getTopInventory().setItem(slot, tier.getTierItem(player, crate)));
 
         player.updateInventory();
 
@@ -455,7 +456,7 @@ public class CosmicCrateListener implements Listener {
                         List.of(
                                 player.getName() + " spent 10 seconds staring at a gui instead of collecting their prizes",
                                 "The task has been cancelled, They have been given their prizes and the gui is closed."
-                        ).forEach(plugin.getLogger()::info);
+                        ).forEach(logger::info);
                     }
                 }
             }, 10000L);

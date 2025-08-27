@@ -103,7 +103,7 @@ public class WarCrate extends CrateBuilder {
     }
 
     private void setRandomGlass() {
-        if (this.crate.isGlassBorderToggled()) return;
+        if (this.crate.isGlassBorderToggled()) return; //todo() this toggle breaks war crate because we need the fucking glass.
 
         final Player player = getPlayer();
 

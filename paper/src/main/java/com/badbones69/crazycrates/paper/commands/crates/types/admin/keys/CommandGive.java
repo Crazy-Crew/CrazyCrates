@@ -19,7 +19,6 @@ import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.HashMap;
-import java.util.Map;
 
 public class CommandGive extends BaseCommand {
 
@@ -95,13 +94,11 @@ public class CommandGive extends BaseCommand {
 
         final KeyType keyType = getKeyType(type);
 
-        final Map<String, String> placeholders = new HashMap<>();
-
-        placeholders.put("{amount}", String.valueOf(amount));
-        placeholders.put("{keytype}", keyType.getFriendlyName());
-        placeholders.put("{key}", crate.getKeyName());
-
-        Messages.given_everyone_keys.sendMessage(sender, placeholders);
+        Messages.given_everyone_keys.sendMessage(sender, new HashMap<>() {{
+            put("{keytype}", keyType.getFriendlyName());
+            put("{amount}", String.valueOf(amount));
+            put("{key}", crate.getKeyName());
+        }});
 
         for (final Player player : this.server.getOnlinePlayers()) {
             if (Permissions.CRAZYCRATES_PLAYER_EXCLUDE.hasPermission(player)) continue;

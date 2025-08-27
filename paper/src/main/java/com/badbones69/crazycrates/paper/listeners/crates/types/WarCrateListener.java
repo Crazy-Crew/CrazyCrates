@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
@@ -25,6 +26,10 @@ public class WarCrateListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        final ItemStack item = event.getCurrentItem();
+
+        if (item == null) return;
+
         final Inventory inventory = event.getInventory();
 
         if (!(inventory.getHolder(false) instanceof CratePrizeMenu holder)) return;
@@ -33,66 +38,64 @@ public class WarCrateListener implements Listener {
 
         event.setCancelled(true);
 
-        if (this.crateManager.isPicker(player) && this.crateManager.isInOpeningList(player)) {
-            final Crate crate = this.crateManager.getOpeningCrate(player);
+        if (!this.crateManager.isPicker(player)) return;
+        if (!this.crateManager.isInOpeningList(player)) return;
 
-            if (crate.getCrateType() == CrateType.war && this.crateManager.isPicker(player)) {
-                final ItemStack item = event.getCurrentItem();
+        final Crate crate = this.crateManager.getOpeningCrate(player);
 
-                if (item != null && item.getType().toString().contains(Material.GLASS_PANE.toString())) {
-                    final int slot = event.getRawSlot();
+        if (crate.getCrateType() != CrateType.war) return;
+        if (!item.getType().toString().contains(Material.GLASS_PANE.toString())) return;
 
-                    final Prize prize = crate.pickPrize(player);
+        final int slot = event.getRawSlot();
 
-                    inventory.setItem(slot, prize.getDisplayItem(player, crate));
+        final Prize prize = crate.pickPrize(player);
 
-                    if (this.crateManager.hasCrateTask(player)) this.crateManager.endCrate(player);
+        inventory.setItem(slot, prize.getDisplayItem(player, crate));
 
-                    this.crateManager.removePicker(player);
-                    this.crateManager.addCloser(player, true);
+        if (this.crateManager.hasCrateTask(player)) this.crateManager.endCrate(player);
 
-                    PrizeManager.givePrize(player, crate, prize);
+        this.crateManager.removePicker(player);
+        this.crateManager.addCloser(player, true);
 
-                    this.crateManager.removePlayerFromOpeningList(player);
+        PrizeManager.givePrize(player, crate, prize);
 
-                    crate.playSound(player, player.getLocation(), "cycle-sound", "block.anvil.land", Sound.Source.MASTER);
+        this.crateManager.removePlayerFromOpeningList(player);
 
-                    this.crateManager.addCrateTask(player, new FoliaScheduler(this.plugin, null, player) {
-                        @Override
-                        public void run() {
-                            for (int i = 0; i < 9; i++) {
-                                if (i != slot) inventory.setItem(i, crate.pickPrize(player).getDisplayItem(player, crate));
-                            }
+        crate.playSound(player, player.getLocation(), "cycle-sound", "block.anvil.land", Sound.Source.MASTER);
 
-                            if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
-
-                            // Removing other items then the prize.
-                            crateManager.addCrateTask(player, new FoliaScheduler(plugin, null, player) {
-                                @Override
-                                public void run() {
-                                    for (int i = 0; i < 9; i++) {
-                                        if (i != slot) inventory.setItem(i, null);
-                                    }
-
-                                    if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
-
-                                    // Closing the inventory when finished.
-                                    crateManager.addCrateTask(player, new FoliaScheduler(plugin, null, player) {
-                                        @Override
-                                        public void run() {
-                                            if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
-
-                                            crateManager.removePlayerFromOpeningList(player);
-
-                                            player.closeInventory();
-                                        }
-                                    }.runDelayed(30));
-                                }
-                            }.runDelayed(30));
-                        }
-                    }.runDelayed(30));
+        this.crateManager.addCrateTask(player, new FoliaScheduler(this.plugin, null, player) {
+            @Override
+            public void run() {
+                for (int i = 0; i < 9; i++) {
+                    if (i != slot) inventory.setItem(i, crate.pickPrize(player).getDisplayItem(player, crate));
                 }
+
+                if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
+
+                // Removing other items then the prize.
+                crateManager.addCrateTask(player, new FoliaScheduler(plugin, null, player) {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < 9; i++) {
+                            if (i != slot) inventory.setItem(i, null);
+                        }
+
+                        if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
+
+                        // Closing the inventory when finished.
+                        crateManager.addCrateTask(player, new FoliaScheduler(plugin, null, player) {
+                            @Override
+                            public void run() {
+                                if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
+
+                                crateManager.removePlayerFromOpeningList(player);
+
+                                player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+                            }
+                        }.runDelayed(30));
+                    }
+                }.runDelayed(30));
             }
-        }
+        }.runDelayed(30));
     }
 }

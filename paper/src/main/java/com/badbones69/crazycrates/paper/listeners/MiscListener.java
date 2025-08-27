@@ -94,9 +94,11 @@ public class MiscListener implements Listener {
             return;
         }
 
-        if (this.crateManager.isInOpeningList(event.getPlayer())) {
+        final Player player = event.getPlayer();
+
+        if (this.crateManager.isInOpeningList(player)) {
             // DrBot Start
-            if (this.crateManager.getOpeningCrate(event.getPlayer()).getCrateType().equals(CrateType.quick_crate)) return;
+            if (this.crateManager.getOpeningCrate(player).getCrateType().equals(CrateType.quick_crate)) return;
 
             // DrBot End
             event.setCancelled(true);
@@ -157,7 +159,7 @@ public class MiscListener implements Listener {
                 boolean playSound = false;
 
                 if (holder.contains(" - Prizes")) {
-                    for (final Integer key : crateManager.getPrizes(player).keySet()) {
+                    for (final int key : crateManager.getPrizes(player).keySet()) {
                         final ItemStack item = inventory.getItem(key);
 
                         if (item != null) {

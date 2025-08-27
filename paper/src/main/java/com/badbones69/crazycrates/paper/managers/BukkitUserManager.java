@@ -12,6 +12,8 @@ import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
 import org.bukkit.Server;
+import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
@@ -51,7 +53,7 @@ public class BukkitUserManager extends UserManager {
 
     @Override
     public Player getUser(@NotNull final UUID uuid) {
-        return this.plugin.getServer().getPlayer(uuid);
+        return this.server.getPlayer(uuid);
     }
 
     @Override
@@ -112,13 +114,13 @@ public class BukkitUserManager extends UserManager {
 
         final YamlConfiguration configuration = this.data.getConfiguration();
 
-        configuration.set("Players." + player.getUniqueId() + ".Name", player.getName());
-        configuration.set("Players." + player.getUniqueId() + "." + fileName, amount);
+        configuration.set("Players." + uuid + ".Name", player.getName());
+        configuration.set("Players." + uuid + "." + fileName, amount);
 
         this.data.save();
     }
 
-    private boolean isPlayerNull(UUID uuid) {
+    private boolean isPlayerNull(@NotNull final UUID uuid) {
         return getUser(uuid) == null;
     }
 
@@ -147,17 +149,15 @@ public class BukkitUserManager extends UserManager {
         switch (keyType) {
             case physical_key -> {
                 if (config.getProperty(ConfigKeys.give_virtual_keys_when_inventory_full) && MiscUtils.isInventoryFull(player) && crate.getCrateType() != CrateType.crate_on_the_go) {
-                    addVirtualKeys(player.getUniqueId(), fileName, amount);
+                    addVirtualKeys(uuid, fileName, amount);
 
                     if (config.getProperty(ConfigKeys.notify_player_when_inventory_full)) {
-                        final Map<String, String> placeholders = new HashMap<>();
-
-                        placeholders.put("{amount}", String.valueOf(amount));
-                        placeholders.put("{player}", player.getName());
-                        placeholders.put("{keytype}", keyType.getFriendlyName());
-                        placeholders.put("{key}", crate.getKeyName());
-
-                        Messages.cannot_give_player_keys.sendMessage(player, placeholders);
+                        Messages.cannot_give_player_keys.sendMessage(player, new HashMap<>() {{
+                            put("{keytype}", keyType.getFriendlyName());
+                            put("{amount}", String.valueOf(amount));
+                            put("{player}", player.getName());
+                            put("{key}", crate.getKeyName());
+                        }});
                     }
 
                     return;
@@ -166,7 +166,7 @@ public class BukkitUserManager extends UserManager {
                 MiscUtils.dropItem(player, crate.getKey(amount, player), player.getLocation(), true);
             }
 
-            case virtual_key -> addVirtualKeys(player.getUniqueId(), fileName, amount);
+            case virtual_key -> addVirtualKeys(uuid, fileName, amount);
         }
     }
 
@@ -224,59 +224,64 @@ public class BukkitUserManager extends UserManager {
 
         final Player player = getUser(uuid);
 
+        final CrateType crateType = crate.getCrateType();
+
         switch (keyType) {
             case physical_key -> {
                 int takeAmount = amount;
 
                 final List<ItemStack> items = new ArrayList<>();
 
+                final EntityEquipment equipment = player.getEquipment();
+
                 if (checkHand) {
-                    items.add(player.getEquipment().getItemInMainHand());
-                    items.add(player.getEquipment().getItemInOffHand());
+                    items.add(equipment.getItemInMainHand());
+                    items.add(equipment.getItemInOffHand());
                 } else {
                     items.addAll(Arrays.asList(player.getInventory().getContents()));
                 }
 
                 for (final ItemStack item : items) {
-                    if (item != null) {
-                        if (ItemUtils.isSimilar(item, crate)) {
-                            final int keyAmount = item.getAmount();
-
-                            if ((takeAmount - keyAmount) >= 0) {
-                                MiscUtils.removeMultipleItemStacks(player.getInventory(), item);
-
-                                if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), fileName, amount);
-
-                                takeAmount -= keyAmount;
-                            } else {
-                                item.setAmount(keyAmount - takeAmount);
-
-                                if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), fileName, amount);
-
-                                takeAmount = 0;
-                            }
-
-                            if (takeAmount <= 0) return true;
-                        }
+                    if (item == null || !ItemUtils.isSimilar(item, crate)) {
+                        continue;
                     }
+
+                    final int keyAmount = item.getAmount();
+
+                    if ((takeAmount - keyAmount) >= 0) {
+                        MiscUtils.removeMultipleItemStacks(player.getInventory(), item);
+
+                        if (crateType == CrateType.cosmic) addOpenedCrate(uuid, fileName, amount);
+
+                        takeAmount -= keyAmount;
+                    } else {
+                        item.setAmount(keyAmount - takeAmount);
+
+                        if (crateType == CrateType.cosmic) addOpenedCrate(uuid, fileName, amount);
+
+                        takeAmount = 0;
+                    }
+
+                    if (takeAmount <= 0) return true;
                 }
 
                 // This needs to be done as player.getInventory().removeItem(ItemStack); does NOT remove from the offhand.
                 if (takeAmount > 0) {
-                    final ItemStack item = player.getEquipment().getItemInOffHand();
+                    final ItemStack item = equipment.getItemInOffHand();
 
                     if (ItemUtils.isSimilar(item, crate)) {
                         final int keyAmount = item.getAmount();
 
                         if ((takeAmount - keyAmount) >= 0) {
-                            player.getEquipment().setItemInOffHand(null);
+                            equipment.setItemInOffHand(null);
+
                             takeAmount -= keyAmount;
 
-                            if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), fileName, amount);
+                            if (crateType == CrateType.cosmic) addOpenedCrate(uuid, fileName, amount);
                         } else {
                             item.setAmount(keyAmount - takeAmount);
 
-                            if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), fileName, amount);
+                            if (crateType == CrateType.cosmic) addOpenedCrate(uuid, fileName, amount);
 
                             takeAmount = 0;
                         }
@@ -295,13 +300,9 @@ public class BukkitUserManager extends UserManager {
 
                 final int newAmount = Math.max((keys - amount), 0);
 
-                if (newAmount < 1) {
-                    configuration.set("Players." + uuid + "." + fileName, null);
-                } else {
-                    configuration.set("Players." + uuid + "." + fileName, newAmount);
-                }
+                configuration.set("Players." + uuid + "." + fileName, newAmount < 1 ? null : newAmount);
 
-                if (crate.getCrateType() == CrateType.cosmic) addOpenedCrate(player.getUniqueId(), fileName, amount);
+                if (crateType == CrateType.cosmic) addOpenedCrate(uuid, fileName, amount);
 
                 this.data.save();
 
@@ -332,21 +333,28 @@ public class BukkitUserManager extends UserManager {
 
         final List<ItemStack> items = new ArrayList<>();
 
+        final EntityEquipment equipment = player.getEquipment();
+        final PlayerInventory inventory = player.getInventory();
+
         if (checkHand) {
-            items.add(player.getEquipment().getItemInMainHand());
-            items.add(player.getEquipment().getItemInOffHand());
+            items.add(equipment.getItemInMainHand());
+            items.add(equipment.getItemInOffHand());
         } else {
-            items.addAll(Arrays.asList(player.getInventory().getContents()));
-            items.removeAll(Arrays.asList(player.getInventory().getArmorContents()));
+            items.addAll(Arrays.asList(inventory.getContents()));
+            items.removeAll(Arrays.asList(inventory.getArmorContents()));
         }
 
-        for (ItemStack item : items) {
-            if (item != null) {
-                if (ItemUtils.isSimilar(item, crate)) return true;
-            }
+        boolean isSimilar = false;
+
+        for (final ItemStack item : items) {
+            if (item == null || !ItemUtils.isSimilar(item, crate)) continue;
+
+            isSimilar = true;
+
+            break;
         }
 
-        return false;
+        return isSimilar;
     }
 
     @Override
@@ -381,7 +389,7 @@ public class BukkitUserManager extends UserManager {
             this.data.save();
 
             return true;
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             if (MiscUtils.isLogging()) this.logger.error("Could not add keys to offline player with uuid: {}", uuid, exception);
 
             return false;
@@ -435,6 +443,7 @@ public class BukkitUserManager extends UserManager {
 
     public void loadOldOfflinePlayersKeys(@NotNull final Player player, @NotNull final List<Crate> crates) {
         final String name = player.getName().toLowerCase();
+        final UUID uuid = player.getUniqueId();
 
         final YamlConfiguration configuration = this.data.getConfiguration();
 
@@ -448,10 +457,10 @@ public class BukkitUserManager extends UserManager {
                     this.pluginManager.callEvent(event);
 
                     if (!event.isCancelled()) {
-                        final int keys = getVirtualKeys(player.getUniqueId(), fileName);
+                        final int keys = getVirtualKeys(uuid, fileName);
                         final int addedKeys = configuration.getInt("Offline-Players." + name + "." + fileName);
 
-                        configuration.set("Players." + player.getUniqueId() + "." + fileName, (Math.max((keys + addedKeys), 0)));
+                        configuration.set("Players." + uuid + "." + fileName, (Math.max((keys + addedKeys), 0)));
 
                         this.data.save();
                     }
@@ -472,9 +481,9 @@ public class BukkitUserManager extends UserManager {
     public void loadOfflinePlayersKeys(@NotNull final Player player, @NotNull final List<Crate> crates) {
         final YamlConfiguration configuration = this.data.getConfiguration();
 
-        if (!configuration.contains("Offline-Players." + player.getUniqueId()) || crates.isEmpty()) return;
-
         final UUID uuid = player.getUniqueId();
+
+        if (!configuration.contains("Offline-Players." + uuid) || crates.isEmpty()) return;
 
         for (final Crate crate : crates) {
             final String fileName = crate.getFileName();
@@ -814,11 +823,7 @@ public class BukkitUserManager extends UserManager {
     private @Nullable Crate isCrateInvalid(@NotNull final String crateName) {
         if (crateName.isEmpty()) return null;
 
-        if (this.crateManager.getCrateFromName(crateName) != null) {
-            return this.crateManager.getCrateFromName(crateName);
-        }
-
-        return null;
+        return this.crateManager.getCrateFromName(crateName);
     }
 
     /**

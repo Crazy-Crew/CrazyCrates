@@ -1,6 +1,8 @@
 package com.badbones69.crazycrates.paper.api.enums.other;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import org.bukkit.Server;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 
 public enum Plugins {
@@ -35,6 +37,10 @@ public enum Plugins {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
+    private final Server server = this.plugin.getServer();
+
+    private final PluginManager pluginManager = this.server.getPluginManager();
+
     private final String name;
 
     Plugins(@NotNull final String name) {
@@ -42,7 +48,7 @@ public enum Plugins {
     }
 
     public final boolean isEnabled() {
-        return this.plugin.getServer().getPluginManager().isPluginEnabled(this.name);
+        return this.pluginManager.isPluginEnabled(this.name);
     }
 
     public @NotNull final String getName() {

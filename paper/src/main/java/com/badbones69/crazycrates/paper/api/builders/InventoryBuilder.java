@@ -1,11 +1,9 @@
 package com.badbones69.crazycrates.paper.api.builders;
 
-import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
-import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
@@ -16,8 +14,6 @@ import org.bukkit.Server;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import com.badbones69.crazycrates.core.config.ConfigManager;
-import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -25,7 +21,6 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
-import static java.util.regex.Matcher.quoteReplacement;
 
 public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
@@ -98,30 +93,6 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
     }
 
     public InventoryBuilder() {}
-
-    public boolean overrideMenu() {
-        SettingsManager config = ConfigManager.getConfig();
-
-        if (config.getProperty(ConfigKeys.menu_button_override)) {
-            List<String> commands = config.getProperty(ConfigKeys.menu_button_command_list);
-
-            if (!commands.isEmpty()) {
-                commands.forEach(value -> {
-                    final String command = value.replaceAll("%player%", quoteReplacement(this.player.getName())).replaceAll("%crate%", quoteReplacement(this.crate.getFileName()));
-
-                    MiscUtils.sendCommand(command);
-                });
-
-                return true;
-            }
-
-            if (MiscUtils.isLogging()) this.logger.warn("The property {} is empty so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
-
-            return true;
-        }
-
-        return false;
-    }
 
     public abstract InventoryBuilder build();
 

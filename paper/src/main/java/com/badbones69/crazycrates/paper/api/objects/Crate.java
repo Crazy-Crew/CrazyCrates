@@ -307,13 +307,7 @@ public class Crate {
      * @param amount the number of lines the preview has.
      */
     public void setPreviewChestLines(final int amount) {
-        int finalAmount;
-
-        if (this.borderToggle && amount < 3) {
-            finalAmount = 3;
-        } else finalAmount = Math.min(amount, 6);
-
-        this.previewChestLines = finalAmount;
+        this.previewChestLines = this.borderToggle && amount < 3 ? 3 : Math.min(amount, 6);
     }
 
     /**
@@ -374,7 +368,7 @@ public class Crate {
     public Prize pickPrize(@NotNull final Player player) {
         final List<Prize> prizes = new ArrayList<>();
 
-        for (Prize prize : getPrizes()) {
+        for (final Prize prize : getPrizes()) {
             if (validatePrize(player, prize)) continue;
 
             prizes.add(prize);
@@ -675,7 +669,7 @@ public class Crate {
     public void addEditorItem(@Nullable final ItemStack itemStack, @NotNull final String prizeName, final double weight) {
         if (itemStack == null || prizeName.isEmpty() || weight <= 0) return;
 
-        ConfigurationSection section = getPrizeSection();
+        final ConfigurationSection section = getPrizeSection();
 
         setItem(itemStack, prizeName, section, weight, "");
     }
@@ -728,7 +722,7 @@ public class Crate {
 
         final String tiers = getPath(prizeName, "Tiers");
 
-        if (itemStack.hasItemMeta()) {
+        if (itemStack.hasItemMeta()) { //todo() move to data components
             final ItemMeta itemMeta = itemStack.getItemMeta();
 
             if (itemMeta.hasDisplayName()) {
@@ -937,10 +931,10 @@ public class Crate {
     public void playSound(@NotNull final Player player, @NotNull final Location location, @NotNull final String type, @NotNull final String fallback, @NotNull final Sound.Source source) {
         if (type.isEmpty() && fallback.isEmpty()) return;
 
-        ConfigurationSection section = getFile().getConfigurationSection("Crate.sound");
+        final ConfigurationSection section = this.file.getConfigurationSection("Crate.sound");
 
         if (section != null) {
-            SoundEffect sound = new SoundEffect(
+            final SoundEffect sound = new SoundEffect(
                     section,
                     type,
                     fallback,

@@ -71,7 +71,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                     });
 
                     success.add("<green>⤷ " + name);
-                } catch (Exception exception) {
+                } catch (final Exception exception) {
                     failed.add("<red>⤷ " + name);
                 }
             }
@@ -245,7 +245,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             set(root, "Preview-Name", AdvUtils.convert(itemName.isEmpty() ? crateConfig.getString("Name", "%crate%").replace("%crate%", strippedName) : itemName + " Preview"));
 
-            if (crateItem.hasItemMeta()) {
+            if (crateItem.hasItemMeta()) { //todo() use data components, not ItemMeta
                 final ItemMeta itemMeta = crateItem.getItemMeta();
 
                 set(root, "Custom-Model-Data", itemMeta.hasCustomModelDataComponent() ? itemMeta.getCustomModelDataComponent().getFloats().getFirst() : -1);
@@ -260,6 +260,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             set(root, "Hologram.Color", "transparent");
 
             List<String> hologramText = new ArrayList<>();
+
             crate.getHologramText().forEach(line -> {
                 final String filtered = line.replace(
                         "%excellentcrates_keys_" + strippedName + "%",
@@ -329,7 +330,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 List<String> enchantments = new ArrayList<>();
 
-                for (Map.Entry<Enchantment, Integer> enchantment : itemStack.getEnchantments().entrySet()) {
+                for (final Map.Entry<Enchantment, Integer> enchantment : itemStack.getEnchantments().entrySet()) {
                     enchantments.add(enchantment.getKey().getKey().getKey() + ":" + enchantment.getValue());
                 }
 

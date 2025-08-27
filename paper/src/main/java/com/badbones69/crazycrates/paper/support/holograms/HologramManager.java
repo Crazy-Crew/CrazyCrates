@@ -19,6 +19,8 @@ import java.util.regex.Pattern;
 public abstract class HologramManager {
 
     protected CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    protected String name = this.plugin.getName().toLowerCase();
     
     public abstract void createHologram(@NotNull final Location location, @NotNull final Crate crate, @NotNull final String id);
 
@@ -31,11 +33,11 @@ public abstract class HologramManager {
     public abstract String getName();
 
     protected @NotNull final String name() {
-        return this.plugin.getName().toLowerCase() + "-" + UUID.randomUUID();
+        return this.name + "-" + UUID.randomUUID();
     }
 
     protected @NotNull final String name(final String id) {
-        return this.plugin.getName().toLowerCase() + "-" + id;
+        return this.name + "-" + id;
     }
 
     protected @NotNull final Vector getVector(@NotNull final Crate crate) {
@@ -56,11 +58,13 @@ public abstract class HologramManager {
     }
 
     protected @NotNull final List<String> lines(@NotNull final CrateHologram crateHologram) {
-        if (crateHologram.getMessages().isEmpty()) return Collections.emptyList();
+        final List<String> messages = crateHologram.getMessages();
+
+        if (messages.isEmpty()) return Collections.emptyList();
 
         final List<String> lines = new ArrayList<>();
 
-        crateHologram.getMessages().forEach(line -> lines.add(color(line)));
+        messages.forEach(line -> lines.add(color(line)));
 
         return lines;
     }

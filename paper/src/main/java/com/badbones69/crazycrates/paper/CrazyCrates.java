@@ -170,9 +170,11 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        final org.bukkit.Server server = getServer();
+
         // Cancel the tasks
-        getServer().getGlobalRegionScheduler().cancelTasks(this);
-        getServer().getAsyncScheduler().cancelTasks(this);
+        server.getGlobalRegionScheduler().cancelTasks(this);
+        server.getAsyncScheduler().cancelTasks(this);
 
         // Cancel the timer task.
         this.timer.cancel();

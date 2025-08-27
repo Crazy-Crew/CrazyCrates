@@ -5,7 +5,6 @@ import com.ryderbelserion.fusion.paper.api.builders.items.legacy.ItemBuilder;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 public class LegacyItemBuilder extends ItemBuilder<LegacyItemBuilder> {

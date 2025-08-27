@@ -65,12 +65,7 @@ public abstract class ICrateMigrator {
 
     public void sendMessage(List<String> files, final int success, final int failed) {
         Messages.successfully_migrated.sendMessage(this.sender, new HashMap<>() {{
-            if (files.size() > 1) {
-                put("{files}", StringUtils.toString(files));
-            } else {
-                put("{files}", files.getFirst());
-            }
-
+            put("{files}", files.size() > 1 ? StringUtils.toString(files) : files.getFirst());
             put("{succeeded_amount}", String.valueOf(success));
             put("{failed_amount}", String.valueOf(failed));
             put("{type}", type.getName());
@@ -100,7 +95,7 @@ public abstract class ICrateMigrator {
         final ConfigurationSection prizes = crate.getConfigurationSection("Prizes");
 
         if (prizes != null) {
-            for (String value : prizes.getKeys(false)) {
+            for (final String value : prizes.getKeys(false)) {
                 final ConfigurationSection prizeSection = prizes.getConfigurationSection(value);
 
                 if (prizeSection == null) continue;
@@ -115,7 +110,7 @@ public abstract class ICrateMigrator {
                 }
 
                 if (prizeSection.contains("DisplayEnchantments")) {
-                    List<String> enchants = new ArrayList<>() {{
+                    final List<String> enchants = new ArrayList<>() {{
                         prizeSection.getStringList("DisplayEnchantments").forEach(enchant -> add(ItemUtils.getEnchant(enchant)));
                     }};
 

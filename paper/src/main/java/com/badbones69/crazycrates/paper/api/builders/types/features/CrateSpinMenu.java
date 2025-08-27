@@ -51,7 +51,7 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
             }
         }
 
-        final UUID uuid = player.getUniqueId();
+        final UUID uuid = this.player.getUniqueId();
         final String fileName = this.crate.getFileName();
 
         this.settings.getButtons().forEach((slot, button) -> this.gui.setItem(slot, button.getGuiItem()));

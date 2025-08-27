@@ -57,7 +57,7 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
                 final ConfigurationSection prizes = section.getConfigurationSection("Prizes");
 
                 if (prizes != null) {
-                    for (String value : prizes.getKeys(false)) {
+                    for (final String value : prizes.getKeys(false)) {
                         final ConfigurationSection prizeSection = prizes.getConfigurationSection(value);
 
                         if (prizeSection == null) continue;

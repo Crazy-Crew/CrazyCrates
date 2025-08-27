@@ -35,11 +35,9 @@ public class CommandKey {
     @Command
     @Permission(value = "crazycrates.keys", def = PermissionDefault.TRUE)
     public void personal(Player player) {
-        Map<String, String> placeholders = new HashMap<>();
-
-        placeholders.put("{crates_opened}", String.valueOf(this.userManager.getTotalCratesOpened(player.getUniqueId())));
-
-        getKeys(player, player, Messages.virtual_keys_header.getMessage(player, placeholders), Messages.no_virtual_keys.getMessage(player));
+        getKeys(player, player, Messages.virtual_keys_header.getMessage(player, new HashMap<>() {{
+            put("{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(player.getUniqueId())));
+        }}), Messages.no_virtual_keys.getMessage(player));
     }
 
     @Command("view")
@@ -63,16 +61,10 @@ public class CommandKey {
             return;
         }
 
-        Map<String, String> placeholders = new HashMap<>();
-
-        placeholders.put("{player}", targetName);
-        placeholders.put("{crates_opened}", String.valueOf(this.userManager.getTotalCratesOpened(target.getUniqueId())));
-
-        String header = Messages.other_player_no_keys_header.getMessage(target, placeholders);
-
-        String content = Messages.other_player_no_keys.getMessage(target, "{player}", targetName);
-
-        getKeys(target, sender, header, content);
+        getKeys(target, sender, Messages.other_player_no_keys_header.getMessage(target, new HashMap<>() {{
+            put("{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(target.getUniqueId())));
+            put("{player}", targetName);
+        }}), Messages.other_player_no_keys.getMessage(target, "{player}", targetName));
     }
 
     /**
@@ -102,15 +94,13 @@ public class CommandKey {
             final int amount = keys.get(crate);
 
             if (amount > 0) {
-                final Map<String, String> placeholders = new HashMap<>();
-
                 hasKeys = true;
 
-                placeholders.put("{crate}", crate.getCrateName());
-                placeholders.put("{keys}", String.valueOf(amount));
-                placeholders.put("{crate_opened}", String.valueOf(this.userManager.getCrateOpened(uuid, crate.getFileName())));
-
-                message.add(Messages.per_crate.getMessage(player, placeholders));
+                message.add(Messages.per_crate.getMessage(player, new HashMap<>() {{
+                    put("{crate_opened}", String.valueOf(userManager.getCrateOpened(uuid, crate.getFileName())));
+                    put("{keys}", String.valueOf(amount));
+                    put("{crate}", crate.getCrateName());
+                }}));
             }
         }
 

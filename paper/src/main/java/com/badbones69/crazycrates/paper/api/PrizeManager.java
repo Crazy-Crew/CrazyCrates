@@ -44,13 +44,15 @@ public class PrizeManager {
 
     public static int getCap(@NotNull final Crate crate, @NotNull final Player player) {
         final String format = "crazycrates.respin." + crate.getFileName() + ".";
+        final String lowerCase = format.toLowerCase();
+
         int cap = 0;
 
         for (final PermissionAttachmentInfo permission : player.getEffectivePermissions()) {
             String node = permission.getPermission();
 
-            if (node.startsWith(format.toLowerCase())) {
-                node = node.replace(format.toLowerCase(), "");
+            if (node.startsWith(lowerCase)) {
+                node = node.replace(lowerCase, "");
 
                 int number = Integer.parseInt(node);
 
@@ -173,15 +175,18 @@ public class PrizeManager {
 
         prize.broadcast(player, crate);
 
-        if (!crate.getPrizeMessage().isEmpty() && prize.getMessages().isEmpty()) {
-            for (final String message : crate.getPrizeMessage()) {
+        final List<String> cratePrizeMessages = crate.getPrizeMessage();
+        final List<String> prizeMessages = prize.getMessages();
+
+        if (!cratePrizeMessages.isEmpty() && prizeMessages.isEmpty()) {
+            for (final String message : cratePrizeMessages) {
                 sendMessage(player, prize, crate, message);
             }
 
             return;
         }
 
-        for (final String message : prize.getMessages()) {
+        for (final String message : prizeMessages) {
             sendMessage(player, prize, crate, message);
         }
     }
@@ -272,13 +277,13 @@ public class PrizeManager {
     }
 
     public static @Nullable Tier getTier(@NotNull final Crate crate) {
-        if (crate.getTiers().isEmpty()) return null;
+        final List<Tier> tiers = crate.getTiers();
+
+        if (tiers.isEmpty()) return null;
 
         final Random random = MiscUtils.getRandom();
 
         double weight = 0.0;
-
-        final List<Tier> tiers = crate.getTiers();
 
         for (final Tier tier : tiers) {
             weight += tier.getWeight();

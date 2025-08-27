@@ -48,7 +48,7 @@ public class NewItemMigrator extends ICrateMigrator {
                 final ConfigurationSection prizes = section.getConfigurationSection("Prizes");
 
                 if (prizes != null) {
-                    for (String value : prizes.getKeys(false)) {
+                    for (final String value : prizes.getKeys(false)) {
                         final ConfigurationSection prizeSection = prizes.getConfigurationSection(value);
 
                         if (prizeSection == null) continue;
@@ -158,7 +158,7 @@ public class NewItemMigrator extends ICrateMigrator {
 
                                                     prizeSection.set("Items." + uuid + ".settings.potions", Comments.potions.getComments());
                                                 }
-                                            } catch (Exception ignored) {}
+                                            } catch (final Exception ignored) {}
 
                                             if (ItemUtils.getEnchantment(placeholder) != null) {
                                                 enchantments.put(option.toLowerCase(), StringUtils.tryParseInt(value).map(Number::intValue).orElse(1));
@@ -195,7 +195,7 @@ public class NewItemMigrator extends ICrateMigrator {
 
                                                     patterns.forEach(patternsSection::set);
                                                 }
-                                            } catch (Exception ignored) {}
+                                            } catch (final Exception ignored) {}
                                         }
                                     }
                                 }
@@ -211,7 +211,7 @@ public class NewItemMigrator extends ICrateMigrator {
                 }
 
                 success.add("<green>⤷ " + customFile.getPrettyName());
-            } catch (Exception exception) {
+            } catch (final Exception exception) {
                 failed.add("<red>⤷ " + key.getPrettyName());
             }
         });

@@ -55,7 +55,7 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
             migrate(customFile, this.crateName);
 
             success.add("<green>⤷ " + this.crateName);
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             failed.add("<red>⤷ " + this.crateName);
         }
 

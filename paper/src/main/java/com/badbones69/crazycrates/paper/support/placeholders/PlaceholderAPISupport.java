@@ -9,6 +9,7 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
@@ -19,6 +20,8 @@ import java.util.concurrent.CompletableFuture;
 public class PlaceholderAPISupport extends PlaceholderExpansion {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final Server server = this.plugin.getServer();
 
     private final ComponentLogger logger = this.plugin.getComponentLogger();
 
@@ -89,11 +92,11 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         final String value = PlaceholderAPI.setPlaceholders(human, "%" + StringUtils.substringBetween(identifier.substring(0, index), "{", "}") + "%");
 
         // Get player
-        final Player target = this.plugin.getServer().getPlayer(value);
+        final Player target = this.server.getPlayer(value);
 
         // If player is offline.
         if (target == null) {
-            final UUID offlinePlayer = CompletableFuture.supplyAsync(() -> plugin.getServer().getOfflinePlayer(value)).thenApply(OfflinePlayer::getUniqueId).join();
+            final UUID offlinePlayer = CompletableFuture.supplyAsync(() -> server.getOfflinePlayer(value)).thenApply(OfflinePlayer::getUniqueId).join();
 
             final String crateName = identifier.split("_")[2];
 
