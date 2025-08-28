@@ -9,6 +9,7 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.gui.types.PaginatedGui;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
@@ -28,6 +29,7 @@ public class InventoryManager {
 
     private final SettingsManager config = ConfigManager.getConfig();
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final Server server = this.plugin.getServer();
 
     private LegacyItemBuilder menuButton;
     private LegacyItemBuilder nextButton;
@@ -133,7 +135,7 @@ public class InventoryManager {
         while (viewers.hasNext()) {
             final UUID uuid = viewers.next();
 
-            final Player player = this.plugin.getServer().getPlayer(uuid);
+            final Player player = this.server.getPlayer(uuid);
 
             if (player == null || !player.isOnline()) {
                 removePreviewViewer(uuid);
@@ -151,7 +153,7 @@ public class InventoryManager {
         while (viewers.hasNext()) {
             final UUID uuid = viewers.next();
 
-            final Player player = this.plugin.getServer().getPlayer(uuid);
+            final Player player = this.server.getPlayer(uuid);
 
             if (player == null || !player.isOnline()) {
                 removePreviewViewer(uuid);

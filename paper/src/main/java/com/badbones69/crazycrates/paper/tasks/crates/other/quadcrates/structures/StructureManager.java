@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.block.structure.Mirror;
 import org.bukkit.block.structure.StructureRotation;
@@ -27,6 +28,7 @@ public class StructureManager implements IStructureManager {
     private final Set<Location> preStructurePasteBlocks = new HashSet<>();
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final Server server = this.plugin.getServer();
     private final ComponentLogger logger = this.plugin.getComponentLogger();
     private final boolean isVerbose = MiscUtils.isLogging();
 
@@ -48,7 +50,7 @@ public class StructureManager implements IStructureManager {
 
         this.structure = CompletableFuture.supplyAsync(() -> {
             try {
-                return this.plugin.getServer().getStructureManager().loadStructure(this.file);
+                return getStructureManager().loadStructure(this.file);
             } catch (final IOException exception) {
                 if (this.isVerbose) this.logger.error("Failed to load structure: {}!", this.file.getName(), exception);
 
@@ -59,7 +61,7 @@ public class StructureManager implements IStructureManager {
 
     @Override
     public @NotNull org.bukkit.structure.StructureManager getStructureManager() {
-        return this.plugin.getServer().getStructureManager();
+        return this.server.getStructureManager();
     }
 
     @Override

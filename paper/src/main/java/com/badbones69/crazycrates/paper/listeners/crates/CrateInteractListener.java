@@ -32,7 +32,6 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.HashMap;
-import java.util.Map;
 
 public class CrateInteractListener implements Listener {
 
