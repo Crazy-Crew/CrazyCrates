@@ -1619,7 +1619,7 @@ public class CrateManager {
             public void run() {
                 ChestManager.closeChest(location.getBlock(), false);
             }
-        }.run();
+        }.runNow();
 
         removeCrateInUse(player);
         removePlayerFromOpeningList(player);

@@ -70,7 +70,7 @@ public class FancyHologramsSupport extends HologramManager {
             public void run() {
                 server.getOnlinePlayers().forEach(hologram::updateShownStateFor);
             }
-        }.run();
+        }.runNow();
 
         this.manager.addHologram(hologram);
     }
