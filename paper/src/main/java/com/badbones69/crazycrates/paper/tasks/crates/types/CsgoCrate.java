@@ -182,7 +182,7 @@ public class CsgoCrate extends CrateBuilder {
         handleAnimation(false);
     }
 
-    private void handleAnimation(final boolean isinitial) {
+    private void handleAnimation(final boolean isInitial) {
         final List<ItemBuilder> items = this.crate.getAnimationBorderItems();
         final List<Integer> slots = getBorder();
         final boolean isEmpty = items.isEmpty();
@@ -190,23 +190,17 @@ public class CsgoCrate extends CrateBuilder {
         if (this.crate.isGlassBorderToggled()) {
             final boolean isAnimationBorderRandom = this.crate.isAnimationBorderRandom();
 
-            if (isEmpty) {
-                for (final int slot : slots) {
+            for (final int slot : slots) {
+                if (!isAnimationBorderRandom || isEmpty) {
                     setCustomGlassPane(slot);
-                }
-            } else {
-                for (final int slot : slots) {
-                    if (!isAnimationBorderRandom || items.isEmpty()) {
-                        setCustomGlassPane(slot);
 
-                        continue;
-                    }
-
-                    this.inventory.setItem(slot, items.get(ThreadLocalRandom.current().nextInt(items.size())).asItemStack(this.player));
+                    continue;
                 }
+
+                this.inventory.setItem(slot, items.get(ThreadLocalRandom.current().nextInt(items.size())).asItemStack(this.player));
             }
         } else {
-            if (isinitial) {
+            if (isInitial) {
                 for (final int slot : slots) {
                     if (isEmpty) break;
 
