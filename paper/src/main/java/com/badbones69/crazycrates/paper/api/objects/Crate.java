@@ -68,8 +68,8 @@ public class Crate {
     private ArrayList<Prize> prizes;
     private String crateName;
     private boolean giveNewPlayerKeys;
-    private int previewChestLines;
     private int newPlayerKeys;
+    private int rows;
 
     private List<Tier> tiers;
     private CrateHologram hologram;
@@ -182,8 +182,9 @@ public class Crate {
         this.newPlayerKeys = newPlayerKeys;
         this.giveNewPlayerKeys = newPlayerKeys > 0;
 
-        setPreviewChestLines(file.getInt("Crate.Preview.ChestLines", 6));
-        this.maxSlots = this.previewChestLines * 9;
+        setPreviewRows(file.contains("Crate.Preview.ChestLines") ? file.getInt("Crate.Preview.ChestLines", 6) : file.getInt("Crate.Preview.Rows", 6));
+
+        this.maxSlots = this.rows * 9;
 
         this.crateName = file.getString("Crate.Name", " ");
 
@@ -307,8 +308,8 @@ public class Crate {
      *
      * @param amount the number of lines the preview has.
      */
-    public void setPreviewChestLines(final int amount) {
-        this.previewChestLines = this.borderToggle && amount < 3 ? 3 : Math.min(amount, 6);
+    public void setPreviewRows(final int amount) {
+        this.rows = this.borderToggle && amount < 3 ? 3 : Math.min(amount, 6);
     }
 
     /**
@@ -325,12 +326,12 @@ public class Crate {
     }
 
     /**
-     * Get the number of lines the preview will show.
+     * Get the number of rows the preview will show.
      *
-     * @return the number of lines it is set to show.
+     * @return the number of rows it is set to show.
      */
-    public final int getPreviewChestLines() {
-        return this.previewChestLines;
+    public final int getPreviewRows() {
+        return this.rows;
     }
     
     /**

@@ -16,7 +16,7 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
     private final Tier tier;
 
     public CratePreviewMenu(@NotNull final Player player, @NotNull final Crate crate, @NotNull final Tier tier) {
-        super(player, crate, crate.getPreviewName(), crate.getPreviewChestLines());
+        super(player, crate, crate.getPreviewName(), crate.getPreviewRows());
 
         this.tier = tier;
     }

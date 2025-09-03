@@ -54,6 +54,13 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
                     isSave = true;
                 }
 
+                if (section.contains("Preview.ChestLines")) {
+                    set(section, "Preview.Rows", section.getInt("Preview.ChestLines"));
+                    set(section, "Preview.ChestLines", null);
+
+                    isSave = true;
+                }
+
                 final ConfigurationSection prizes = section.getConfigurationSection("Prizes");
 
                 if (prizes != null) {
