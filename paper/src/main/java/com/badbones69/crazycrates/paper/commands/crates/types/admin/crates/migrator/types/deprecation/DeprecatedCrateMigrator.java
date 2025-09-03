@@ -61,6 +61,17 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
                     isSave = true;
                 }
 
+                if (section.contains("Settings.Border.Glass-Border.Toggle")) {
+                    set(section, "Animation.Glass-Frame.Toggle", section.getBoolean("Settings.Border.Glass-Border.Toggle", true));
+                    set(section, "Animation.Glass-Frame.Random.Toggle", true);
+                    set(section, "Animation.Glass-Frame.Random.Items", section.createSection("Animation.Glass-Frame.Random.Items"));
+                    set(section, "Animation.Glass-Frame.Items", section.createSection("Animation.Glass-Frame.Items"));
+
+                    set(section, "Settings.Border.Glass-Border", null);
+
+                    isSave = true;
+                }
+
                 final ConfigurationSection prizes = section.getConfigurationSection("Prizes");
 
                 if (prizes != null) {

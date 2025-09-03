@@ -12,6 +12,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.files.FileManager;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
@@ -95,6 +96,9 @@ public class Crate {
 
     private boolean glassBorderToggle = true;
 
+    private boolean isAnimationBorderRandom = true;
+    private List<ItemBuilder> animationBorderItems = List.of();
+
     private boolean broadcastToggle = false;
     private List<String> broadcastMessages = new ArrayList<>();
     private String broadcastPermission = "";
@@ -139,7 +143,39 @@ public class Crate {
         this.prizeMessage = prizeMessage;
         this.prizeCommands = prizeCommands;
 
-        this.glassBorderToggle = this.file.getBoolean("Crate.Settings.Border.Glass-Border.Toggle", this.glassBorderToggle);
+        this.glassBorderToggle = this.file.contains("Crate.Settings.Border.Glass-Border.Toggle") ?
+                this.file.getBoolean("Crate.Settings.Border.Glass-Border.Toggle", this.glassBorderToggle) :
+                this.file.getBoolean("Crate.Animation.Glass-Frame.Toggle", this.glassBorderToggle);
+
+        final ConfigurationSection animationSection = this.file.contains("Crate.Animation") ? this.file.getConfigurationSection("Crate.Animation") : this.file.createSection("Crate.Animation");
+
+        ConfigurationSection itemsSection = null;
+
+        if (animationSection != null) {
+            this.animationName = animationSection.getString("Name", "Rolling your prize...");
+
+            final ConfigurationSection frameSection = animationSection.contains("Glass-Frame") ? animationSection.getConfigurationSection("Glass-Frame") : animationSection.createSection("Glass-Frame");
+
+            if (frameSection != null) {
+                if (this.glassBorderToggle) {
+                    final ConfigurationSection randomSection = frameSection.contains("Random") ? frameSection.getConfigurationSection("Random") : frameSection.createSection("Random");
+
+                    if (randomSection != null) {
+                        this.isAnimationBorderRandom = randomSection.getBoolean("Toggle", this.isAnimationBorderRandom);
+
+                        if (this.isAnimationBorderRandom) {
+                            itemsSection = randomSection.getConfigurationSection("Items");
+                        }
+                    }
+                } else {
+                    itemsSection = frameSection.getConfigurationSection("Items"); // if glass border is off, we grab the static items.
+                }
+            }
+        }
+
+        if (itemsSection != null) {
+            this.animationBorderItems = com.badbones69.crazycrates.paper.utils.ItemUtils.convertConfigurationSection(itemsSection);
+        }
 
         this.broadcastToggle = this.file.getBoolean("Crate.Settings.Broadcast.Toggle", false);
         this.broadcastMessages = this.file.getStringList("Crate.Settings.Broadcast.Messages");
@@ -284,6 +320,14 @@ public class Crate {
 
     public final boolean isGlassBorderToggled() {
         return this.glassBorderToggle;
+    }
+
+    public List<ItemBuilder> getAnimationBorderItems() {
+        return this.animationBorderItems;
+    }
+
+    public boolean isAnimationBorderRandom() {
+        return this.isAnimationBorderRandom;
     }
 
     public final boolean isBroadcastToggled() {

@@ -130,8 +130,6 @@ Crate:
     Name: "<green>Basic Crate Preview"
     # Turn on and off the preview for this crate.
     Toggle: true
-    # How many lines should the preview be? You can use 1-6.
-    ChestLines: 6
     # How many rows should the preview be? You can use 1-6.
     Rows: 6
     # Settings related to the glass in the preview.
@@ -154,7 +152,49 @@ Crate:
   # Settings related to animations...
   Animation:
     # This is only when an animation starts.
+    # Set this to empty if you don't want to change it.
     Name: "Rolling your prize..."
+    # The glass animation settings.
+    Glass-Frame:
+      # Should the glass animation be enabled?
+      Toggle: true
+      # If the glass animation option is set to false above, We will use static items.
+      # If this is empty, We will use nothing.
+      Items:
+        "1":
+          # The name of the item to display.
+          name: " "
+          # The lore of the item to display.
+          lore: [ ]
+          # The material to display.
+          material: "gold_ingot"
+          # The amount to display.
+          amount: 1
+      # The random settings for the glass animation.
+      Random:
+        # Should the animation be random?
+        Toggle: true
+        # A list of items to use, If the list is empty. We will use glass panes internally.
+        Items:
+          "1":
+            # The name of the item to display.
+            name: " "
+            # The lore of the item to display.
+            lore: [ ]
+            # The material to display.
+            material: "gold_ingot"
+            # The amount to display.
+            amount: 1
+          "2":
+            # The name of the item to display.
+            name: " "
+            # The lore of the item to display.
+            lore: [ ]
+            # The material to display.
+            material: "iron_ingot"
+            # The amount to display.
+            amount: 1
+  # Settings related to physical keys.
   PhysicalKey:
     # Name of the Key.
     Name: "<bold><green>Basic Crate Key</bold>"
