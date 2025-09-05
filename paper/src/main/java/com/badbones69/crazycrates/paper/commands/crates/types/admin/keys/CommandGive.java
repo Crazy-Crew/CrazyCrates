@@ -8,10 +8,7 @@ import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import com.badbones69.crazycrates.paper.api.PlayerBuilder;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
-import dev.triumphteam.cmd.core.annotations.ArgName;
-import dev.triumphteam.cmd.core.annotations.Command;
-import dev.triumphteam.cmd.core.annotations.Flag;
-import dev.triumphteam.cmd.core.annotations.Suggestion;
+import dev.triumphteam.cmd.core.annotations.*;
 import dev.triumphteam.cmd.core.argument.keyed.Flags;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -25,6 +22,7 @@ public class CommandGive extends BaseCommand {
     @Command("give")
     @Flag(flag = "s", longFlag = "silent")
     @Permission(value = "crazycrates.givekey", def = PermissionDefault.OP)
+    @Syntax("/crazycrates give <key_type> <crate_name> <amount> <player_name> [-s/--silent]")
     public void give(CommandSender sender, @ArgName("key_type") @Suggestion("keys") String type, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("amount") @Suggestion("numbers") int amount, @ArgName("player") @Suggestion("players") PlayerBuilder target, Flags flags) {
         final boolean isSilent = flags.hasFlag("s");
 
@@ -62,6 +60,7 @@ public class CommandGive extends BaseCommand {
     @Command("give-random")
     @Flag(flag = "s", longFlag = "silent")
     @Permission(value = "crazycrates.giverandomkey", def = PermissionDefault.OP)
+    @Syntax("/crazycrates give-random <key_type> <crate_name> <amount> <player_name> [-s/--silent]")
     public void random(CommandSender sender, @Suggestion("keys") String type, @Suggestion("numbers") int amount, @Suggestion("players") PlayerBuilder target, Flags flags) {
         give(sender, type, this.crateManager.getUsableCrates().get((int) MiscUtils.pickNumber(0, (this.crateManager.getUsableCrates().size() - 2))).getFileName(), amount, target, flags);
     }
@@ -69,6 +68,7 @@ public class CommandGive extends BaseCommand {
     @Command("giveall")
     @Flag(flag = "s", longFlag = "silent")
     @Permission(value = "crazycrates.giveall", def = PermissionDefault.OP)
+    @Syntax("/crazycrates giveall <key_type> <crate_name> <amount> [-s/--silent]")
     public void all(CommandSender sender, @Suggestion("keys") String type, @Suggestion("crates") String crateName, @Suggestion("numbers") int amount, Flags flags) {
         final boolean isSilent = flags.hasFlag("s");
 

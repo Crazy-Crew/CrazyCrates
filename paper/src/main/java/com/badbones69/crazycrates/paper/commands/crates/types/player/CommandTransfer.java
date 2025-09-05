@@ -10,6 +10,7 @@ import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
+import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
@@ -21,6 +22,7 @@ public class CommandTransfer extends BaseCommand {
 
     @Command("transfer")
     @Permission(value = "crazycrates.transfer", def = PermissionDefault.OP)
+    @Syntax("/crazycrates transfer <crate_name> <player_name> <amount>")
     public void transfer(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("player") @Suggestion("players") Player target, @ArgName("amount") @Suggestion("numbers") int amount) {
         if (crateName.isBlank()) {
             Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");

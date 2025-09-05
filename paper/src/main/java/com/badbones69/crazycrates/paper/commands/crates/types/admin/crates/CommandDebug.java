@@ -6,10 +6,7 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
-import dev.triumphteam.cmd.core.annotations.ArgName;
-import dev.triumphteam.cmd.core.annotations.Command;
-import dev.triumphteam.cmd.core.annotations.Optional;
-import dev.triumphteam.cmd.core.annotations.Suggestion;
+import dev.triumphteam.cmd.core.annotations.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
@@ -20,6 +17,7 @@ public class CommandDebug extends BaseCommand {
 
     @Command("debug")
     @Permission(value = "crazycrates.debug", def = PermissionDefault.OP)
+    @Syntax("/crazycrates <crate> [player_name]")
     public void debug(CommandSender sender, @ArgName("crate") @Suggestion("crates") String crateName, @Optional @Suggestion("players") Player target) {
         if (crateName == null || crateName.isBlank()) {
             Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");

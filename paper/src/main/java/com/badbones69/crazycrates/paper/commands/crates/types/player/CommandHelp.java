@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
+import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
@@ -14,6 +15,7 @@ public class CommandHelp extends BaseCommand {
 
     @Command
     @Permission("crazycrates.gui")
+    @Syntax("/crazycrates")
     public void gui(Player player) {
         if (this.config.getProperty(ConfigKeys.enable_crate_menu)) {
             new CrateMainMenu(
@@ -30,6 +32,7 @@ public class CommandHelp extends BaseCommand {
 
     @Command("help")
     @Permission(value = "crazycrates.help", def = PermissionDefault.TRUE)
+    @Syntax("/crazycrates help")
     public void help(CommandSender sender) {
         if (sender.hasPermission("crazycrates.admin")) {
             // this has to use sendRichMessage as it is a list.

@@ -7,11 +7,7 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
-import dev.triumphteam.cmd.core.annotations.ArgName;
-import dev.triumphteam.cmd.core.annotations.Command;
-import dev.triumphteam.cmd.core.annotations.Description;
-import dev.triumphteam.cmd.core.annotations.Optional;
-import dev.triumphteam.cmd.core.annotations.Suggestion;
+import dev.triumphteam.cmd.core.annotations.*;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -34,6 +30,7 @@ public class CommandKey {
 
     @Command
     @Permission(value = "crazycrates.keys", def = PermissionDefault.TRUE)
+    @Syntax("/keys")
     public void personal(Player player) {
         getKeys(player, player, Messages.virtual_keys_header.getMessage(player, new HashMap<>() {{
             put("{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(player.getUniqueId())));
@@ -42,6 +39,7 @@ public class CommandKey {
 
     @Command("view")
     @Permission("crazycrates.keys-others")
+    @Syntax("/keys view [player_name]")
     public void view(CommandSender sender, @ArgName("player") @Optional @Suggestion("players") Player target) {
         if (target == null) {
             if (sender instanceof Player player) {

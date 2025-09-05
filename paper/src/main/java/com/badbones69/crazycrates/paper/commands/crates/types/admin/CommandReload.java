@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
+import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
@@ -16,6 +17,7 @@ public class CommandReload extends BaseCommand {
 
     @Command("reload")
     @Permission(value = "crazycrates.reload", def = PermissionDefault.OP)
+    @Syntax("/crazycrates reload")
     public void reload(CommandSender sender) {
         this.plugin.getFusion().reload();
 

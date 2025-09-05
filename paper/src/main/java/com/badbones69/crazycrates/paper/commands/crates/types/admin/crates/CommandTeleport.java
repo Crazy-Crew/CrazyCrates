@@ -4,10 +4,7 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
-import dev.triumphteam.cmd.core.annotations.ArgName;
-import dev.triumphteam.cmd.core.annotations.Command;
-import dev.triumphteam.cmd.core.annotations.Optional;
-import dev.triumphteam.cmd.core.annotations.Suggestion;
+import dev.triumphteam.cmd.core.annotations.*;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -22,6 +19,7 @@ public class CommandTeleport extends BaseCommand {
 
     @Command("teleport")
     @Permission(value = "crazycrates.teleport", def = PermissionDefault.OP)
+    @Syntax("/crazycrates teleport <crate_id>")
     public void teleport(Player player, @ArgName("crate_id") @Optional @Suggestion("locations") String id) {
         if (id == null || id.isBlank()) {
             Messages.cannot_be_empty.sendMessage(player, "{value}", "crate location id");

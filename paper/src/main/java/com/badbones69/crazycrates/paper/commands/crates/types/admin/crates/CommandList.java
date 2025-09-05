@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import com.ryderbelserion.fusion.core.api.utils.StringUtils;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
+import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
@@ -19,6 +20,7 @@ public class CommandList extends BaseCommand {
 
     @Command("list")
     @Permission(value = "crazycrates.list", def = PermissionDefault.OP)
+    @Syntax("/crazycrates list")
     public void list(CommandSender sender) {
         final List<String> crates = new ArrayList<>();
 

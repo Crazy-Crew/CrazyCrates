@@ -14,6 +14,7 @@ import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migra
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Flag;
+import dev.triumphteam.cmd.core.annotations.Syntax;
 import dev.triumphteam.cmd.core.argument.keyed.Flags;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
@@ -26,6 +27,7 @@ public class CommandMigrate extends BaseCommand {
     @Flag(flag = "mt", longFlag = "migration_type", argument = String.class, suggestion = "migrators")
     @Flag(flag = "c", longFlag = "crate", argument = String.class, suggestion = "crates")
     @Flag(flag = "d", longFlag = "data")
+    @Syntax("/crazycrates migrate -mt <migration_type> [-c/--crate] <crate_name> [-d/--data]")
     public void migrate(final CommandSender sender, Flags flags) {
         final boolean hasFlag = flags.hasFlag("mt");
 

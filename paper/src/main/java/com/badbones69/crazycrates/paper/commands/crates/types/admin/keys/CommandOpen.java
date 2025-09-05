@@ -14,6 +14,7 @@ import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
+import dev.triumphteam.cmd.core.annotations.Syntax;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.command.CommandSender;
@@ -57,6 +58,7 @@ public class CommandOpen extends BaseCommand {
 
     @Command("open")
     @Permission(value = "crazycrates.open", def = PermissionDefault.OP)
+    @Syntax("/crazycrates open <crate_name> <key_type>")
     public void open(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("key_type") @Suggestion("keys") String type) {
         if (isCancelled(player, crateName)) return;
 
@@ -117,6 +119,7 @@ public class CommandOpen extends BaseCommand {
 
     @Command("open-others")
     @Permission(value = "crazycrates.open-others", def = PermissionDefault.OP)
+    @Syntax("/crazycrates open-others <crate_name> <player_name> <key_type>")
     public void others(CommandSender sender, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("player") @Suggestion("players") Player player, @ArgName("key_type") @Suggestion("keys") String type) {
         // If the command is cancelled.
         if (isCancelled(player, crateName)) return;
@@ -179,6 +182,7 @@ public class CommandOpen extends BaseCommand {
 
     @Command("forceopen")
     @Permission(value = "crazycrates.forceopen", def = PermissionDefault.OP)
+    @Syntax("/crazycrates forceopen <crate_name> <player_name>")
     public void forceopen(CommandSender sender, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("player") @Suggestion("players") Player player) {
         // If the command is cancelled.
         if (isCancelled(player, crateName)) return;
@@ -216,6 +220,7 @@ public class CommandOpen extends BaseCommand {
 
     @Command("mass-open")
     @Permission(value = "crazycrates.massopen", def = PermissionDefault.OP)
+    @Syntax("/crazycrates mass-open <crate_name> <key_type> <amount>")
     public void mass(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("key_type") @Suggestion("keys") String type, @ArgName("amount") @Suggestion("numbers") int amount) {
         // If the command is cancelled.
         if (isCancelled(player, crateName)) return;

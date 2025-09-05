@@ -9,6 +9,7 @@ import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
+import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -21,6 +22,7 @@ public class CommandSet extends BaseCommand {
 
     @Command("set")
     @Permission(value = "crazycrates.set", def = PermissionDefault.OP)
+    @Syntax("/crazycrates set <crate_name>")
     public void set(Player player, @ArgName("crate") @Suggestion("crates") String crateName) {
         if (crateName == null || crateName.isBlank()) {
             Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
