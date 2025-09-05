@@ -5,6 +5,7 @@ import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
 import com.badbones69.crazycrates.core.config.beans.ModelData;
+import com.badbones69.crazycrates.core.config.beans.inventories.ItemPlacement;
 import com.badbones69.crazycrates.core.enums.State;
 import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newBeanProperty;
@@ -252,8 +253,14 @@ public class ConfigKeys implements SettingsHolder {
             "<gray>Return to the menu."
     ));
 
+    @Comment("The placement of the menu button. -1 defaults to an internal row.")
+    public static final Property<ItemPlacement> menu_button_placement = newBeanProperty(ItemPlacement.class, "gui.inventory.buttons.menu.placement", new ItemPlacement().init(5));
+
     @Comment("The item the button should be.")
     public static final Property<String> next_button_item = newProperty("gui.inventory.buttons.next.item", "feather");
+
+    @Comment("The placement of the next button. -1 defaults to an internal row.")
+    public static final Property<ItemPlacement> next_button_placement = newBeanProperty(ItemPlacement.class, "gui.inventory.buttons.next.placement", new ItemPlacement().init(6));
 
     @Comment("The custom model data for the item, -1 or blank is disabled.")
     public static final Property<String> next_button_model_data = newProperty("gui.inventory.buttons.next.custom-model-data", "-1");
@@ -277,6 +284,9 @@ public class ConfigKeys implements SettingsHolder {
 
     @Comment("The custom model data for the item, -1 or blank is disabled.")
     public static final Property<String> back_button_model_data = newProperty("gui.inventory.buttons.back.custom-model-data", "");
+
+    @Comment("The placement of the back button. -1 defaults to an internal row.")
+    public static final Property<ItemPlacement> back_button_placement = newBeanProperty(ItemPlacement.class, "gui.inventory.buttons.back.placement", new ItemPlacement().init(4));
 
     @Comment({
             "The item model, Mojang introduced this in 1.21.4... this replaces custom model data!",

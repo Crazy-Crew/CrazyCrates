@@ -68,7 +68,7 @@ public class CrateTierMenu extends StaticInventoryBuilder {
             }));
         });
 
-        addMenuButton(this.player, this.crate, this.gui, this.gui.getRows(), 5);
+        addMenuButton(this.player, this.crate, this.gui);
 
         this.gui.setOpenGuiAction(event -> this.inventoryManager.addPreviewViewer(uuid));
 

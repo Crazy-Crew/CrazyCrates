@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.paper.api.builders.gui;
 
+import com.badbones69.crazycrates.core.config.beans.inventories.ItemPlacement;
+import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.Gui;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
@@ -72,15 +74,21 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
         return this.gui;
     }
 
-    // Adds the back button
-    public void setBackButton(final int row, final int column, final boolean isPreview) {
+    public void addBackButton(final boolean isPreview) {
+        final ItemPlacement backButtonPlacement = this.config.getProperty(ConfigKeys.back_button_placement);
+        final int column = backButtonPlacement.getColumn();
+        final int row = backButtonPlacement.getRow();
+        final int rows = this.gui.getRows();
+
+        final int safeRow = Math.min(row == -1 ? rows : row, rows);
+
         if (this.gui.getCurrentPageNumber() <= 1) {
-            setFillerItem(row, column, isPreview);
+            setFillerItem(safeRow, column, isPreview);
 
             return;
         }
 
-        this.gui.setItem(this.gui.getSlotFromRowColumn(row, column), new GuiItem(this.inventoryManager.getBackButton(this.player, this.gui), event -> {
+        this.gui.setItem(safeRow, column, new GuiItem(this.inventoryManager.getBackButton(this.player, this.gui), event -> {
             event.setCancelled(true);
 
             this.gui.previous();
@@ -88,17 +96,56 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
             final int page = this.gui.getCurrentPageNumber();
 
             if (page <= 1) {
-                setFillerItem(row, column, isPreview);
+                setFillerItem(safeRow, column, isPreview);
             } else {
-                setBackButton(row, column, isPreview);
+                addBackButton(isPreview);
             }
 
             if (page < this.gui.getMaxPages()) {
-                setNextButton(this.gui.getRows(), 6, isPreview);
+                addNextButton(isPreview);
             }
         }));
+    }
 
-        addMenuButton(this.player, this.crate, this.gui, this.gui.getRows(), 5);
+    public void addNextButton(final boolean isPreview) {
+        if (this.gui.getCurrentPageNumber() >= this.gui.getMaxPages()) {
+            return;
+        }
+
+        final ItemPlacement nextButtonPlacement = this.config.getProperty(ConfigKeys.next_button_placement);
+        final int column = nextButtonPlacement.getColumn();
+        final int row = nextButtonPlacement.getRow();
+        final int rows = this.gui.getRows();
+
+        final int safeRow = Math.min(row == -1 ? rows : row, rows);
+
+        this.gui.setItem(safeRow, column, new GuiItem(this.inventoryManager.getNextButton(this.player, this.gui), event -> {
+            event.setCancelled(true);
+
+            this.gui.next();
+
+            final int page = this.gui.getCurrentPageNumber();
+
+            if (page >= this.gui.getMaxPages()) {
+                setFillerItem(safeRow, column, isPreview);
+            } else {
+                addNextButton(isPreview);
+            }
+
+            if (page <= 1) {
+                if (this.crate != null && this.crate.isBorderToggle()) {
+                    this.gui.setItem(safeRow, column, this.crate.getBorderItem().asGuiItem());
+                } else {
+                    if (!isPreview) {
+                        this.gui.removeItem(safeRow, column);
+
+                        this.gui.setItem(safeRow, column, new GuiItem(ItemType.BLACK_STAINED_GLASS_PANE));
+                    }
+                }
+            } else {
+                addBackButton(isPreview);
+            }
+        }));
     }
 
     private void setFillerItem(int row, int column, boolean isPreview) {
@@ -111,44 +158,5 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
                 this.gui.setItem(row, column, new GuiItem(ItemType.BLACK_STAINED_GLASS_PANE));
             }
         }
-    }
-
-    // Adds the next button
-    public void setNextButton(final int row, final int column, final boolean isPreview) {
-        if (this.gui.getCurrentPageNumber() >= this.gui.getMaxPages()) {
-            return;
-        }
-
-        this.gui.setItem(this.gui.getSlotFromRowColumn(row, column), new GuiItem(this.inventoryManager.getNextButton(this.player, this.gui), event -> {
-            event.setCancelled(true);
-
-            this.gui.next();
-
-            final int page = this.gui.getCurrentPageNumber();
-
-            if (page >= this.gui.getMaxPages()) {
-                setFillerItem(row, column, isPreview);
-            } else {
-                setNextButton(row, column, isPreview);
-            }
-
-            final int rows = this.gui.getRows();
-
-            if (page <= 1) {
-                if (this.crate != null && this.crate.isBorderToggle()) {
-                    this.gui.setItem(rows, 4, this.crate.getBorderItem().asGuiItem());
-                } else {
-                    if (!isPreview) {
-                        this.gui.removeItem(rows, 4);
-
-                        this.gui.setItem(rows, 4, new GuiItem(ItemType.BLACK_STAINED_GLASS_PANE));
-                    }
-                }
-            } else {
-                setBackButton(rows, 4, isPreview);
-            }
-        }));
-
-        addMenuButton(this.player, this.crate, this.gui, this.gui.getRows(), 5);
     }
 }

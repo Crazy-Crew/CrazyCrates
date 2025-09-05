@@ -156,8 +156,8 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
                         }
                     }));
 
-            setBackButton(rows, 4, false);
-            setNextButton(rows, 6, false);
+            addBackButton(false);
+            addNextButton(false);
         });
     }
 }

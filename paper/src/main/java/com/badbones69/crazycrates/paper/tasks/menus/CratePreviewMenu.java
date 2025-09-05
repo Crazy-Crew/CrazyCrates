@@ -50,12 +50,10 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
         this.gui.setCloseGuiAction(event -> this.inventoryManager.removePreviewViewer(uuid));
 
         this.gui.open(this.player, gui -> {
-            final int rows = gui.getRows();
+            addBackButton(true);
+            addNextButton(true);
 
-            setBackButton(rows, 4, true);
-            setNextButton(rows, 6, true);
-
-            addMenuButton(this.player, crate, this.gui, rows, 5);
+            addMenuButton(this.player, crate, this.gui);
         });
     }
 }
