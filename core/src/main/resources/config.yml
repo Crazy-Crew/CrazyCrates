@@ -68,6 +68,12 @@ gui:
       menu:
         # The item the button should be.
         item: "compass"
+        # The placement of the next button.
+        placement:
+          # The row for the item. You cannot use a number greater than the available rows of the inventory, -1 uses a fallback value.
+          row: -1
+          # The column for the item. -1 uses a fallback value.
+          column: 5
         override:
           # This will disable our current functionality of our main menu button in crate previews.
           # It allows you to override and use a menu of your choice from your plugin using a command.
@@ -93,6 +99,12 @@ gui:
       next:
         # The item the button should be.
         item: "feather"
+        # The placement of the next button.
+        placement:
+          # The row for the item. You cannot use a number greater than the available rows of the inventory, -1 uses a fallback value.
+          row: -1
+          # The column for the item. -1 uses a fallback value.
+          column: 6
         # The custom model data for the item, -1 is disabled.
         custom-model-data: -1
         # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
@@ -111,6 +123,12 @@ gui:
       back:
         # The item the button should be.
         item: "feather"
+        # The placement of the next button.
+        placement:
+          # The row for the item. You cannot use a number greater than the available rows of the inventory, -1 uses a fallback value.
+          row: -1
+          # The column for the item. -1 uses a fallback value.
+          column: 4
         # The custom model data for the item, -1 is disabled.
         custom-model-data: -1
         # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
