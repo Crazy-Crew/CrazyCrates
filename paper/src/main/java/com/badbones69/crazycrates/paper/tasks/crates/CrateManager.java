@@ -1507,20 +1507,26 @@ public class CrateManager {
             if (data.contains("Players." + uuid + ".tracking")) return;
 
             boolean hasKeys = false;
-            final List<String> noKeys = new ArrayList<>();
+
+            final List<String> crates = new ArrayList<>();
 
             for (final Crate crate : getUsableCrates()) {
                 final String fileName = crate.getFileName();
 
-                if (data.getInt("Players." + uuid + "." + fileName) <= 0) {
-                    noKeys.add(fileName);
+                if (!data.contains("Players." + uuid)) continue;
+                if (!data.contains("Players." + uuid + "." + fileName)) continue;
+
+                final int keys = data.getInt("Players." + uuid + "." + fileName, 0);
+
+                if (keys <= 0) { // if keys are less than or equal to, they don't have keys.
+                    crates.add(fileName);
                 } else {
                     hasKeys = true;
                 }
             }
 
             if (hasKeys) {
-                noKeys.forEach(crate -> data.set("Players." + uuid + "." + crate, null));
+                crates.forEach(crate -> data.set("Players." + uuid + "." + crate, null));
             } else {
                 removePlayers.add(uuid);
             }

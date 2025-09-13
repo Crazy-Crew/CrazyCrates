@@ -77,25 +77,25 @@ public class CrazyCrates extends JavaPlugin {
         this.instance = new Server(path);
         this.instance.apply();
 
-        final Path logs = path.resolve("logs");
-
         this.fileManager.addFile(path.resolve("locations.yml"), FileType.PAPER, new ArrayList<>() {{
                     add(FileAction.STATIC_FILE);
                 }}, null)
                 .addFile(path.resolve("data.yml"), FileType.PAPER, new ArrayList<>() {{
                     add(FileAction.STATIC_FILE);
                 }}, null)
-                .addFile(logs.resolve("crates.log"), FileType.LOG, new ArrayList<>() {{
-                    add(FileAction.STATIC_FILE);
-                }}, null)
-                .addFile(logs.resolve("keys.log"), FileType.LOG, new ArrayList<>() {{
-                    add(FileAction.STATIC_FILE);
-                }}, null)
                 .addFile(path.resolve("guis").resolve("respin-gui.yml"), FileType.PAPER, new ArrayList<>() {{
                     add(FileAction.STATIC_FILE);
                 }}, null)
-                .addFolder(path.resolve("crates"), FileType.PAPER, new ArrayList<>(), null)
-                .addFolder(path.resolve("schematics"), FileType.NBT, new  ArrayList<>(), null);
+                .addFolder(path.resolve("crates"), FileType.PAPER, new ArrayList<>() {{
+                    add(FileAction.EXTRACT_FOLDER);
+                }}, null)
+                .addFolder(path.resolve("schematics"), FileType.NBT, new ArrayList<>() {{
+                    add(FileAction.EXTRACT_FOLDER);
+                }}, null)
+                .addFolder(path.resolve("logs"), FileType.LOG, new ArrayList<>() {{
+                    add(FileAction.EXTRACT_FOLDER);
+                    add(FileAction.STATIC_FILE);
+                }}, null);
 
         MiscUtils.janitor();
         MiscUtils.save();
