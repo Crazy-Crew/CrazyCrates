@@ -294,7 +294,7 @@ public class PrizeManager {
         for (double value = random.nextDouble() * weight; index < tiers.size() - 1; index++) {
             value -= tiers.get(index).getWeight();
 
-            if (value < 0.0) break;
+            if (value <= 0.0) break;
         }
 
         return tiers.get(index);

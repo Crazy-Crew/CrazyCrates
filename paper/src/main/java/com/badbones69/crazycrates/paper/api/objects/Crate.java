@@ -474,7 +474,7 @@ public class Crate {
         for (double value = MiscUtils.getRandom().nextDouble() * totalWeight; index < prizes.size() - 1; index++) {
             value -= prizes.get(index).getWeight();
 
-            if (value < 0.0) break;
+            if (value <= 0.0) break;
         }
 
         return prizes.get(index);
