@@ -337,8 +337,7 @@ public class Prize {
             put("%reward_stripped%", getStrippedName());
         }};
 
-        //final Component component = AdvUtils.parse(MiscUtils.populatePlaceholders(target, message, placeholders));
-        final Component component = this.fusion.parse(target, message, placeholders);
+        final Component component = this.fusion.parse(target, this.fusion.papi(target, MiscUtils.populatePlaceholders(null, message, placeholders)));
 
         if (permission.isEmpty()) {
             server.broadcast(component);
