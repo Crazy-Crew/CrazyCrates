@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.paper.listeners.crates.types;
 
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
@@ -86,7 +86,7 @@ public class QuadCrateListener implements Listener {
             display.editPersistentDataContainer(container -> container.set(ItemKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1"));
 
             // Convert the item stack to item builder.
-            final ItemStack itemStack = ItemUtils.convertItemStack(display).asItemStack();
+            final ItemStack itemStack = ItemUtils.convertItemStack(display).asItemStack(player);
 
             final Location location = block.getLocation();
 

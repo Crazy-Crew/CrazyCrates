@@ -1,12 +1,11 @@
 package com.badbones69.crazycrates.paper.utils;
 
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
-import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.scheduler.Scheduler;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.*;
@@ -82,14 +81,14 @@ public class MiscUtils {
         dropItems(items, player);
     }
 
-    public static void dropLegacyBuilders(@NotNull final List<LegacyItemBuilder> builders, @NotNull final Player player) {
+    public static void dropLegacyBuilders(@NotNull final List<ItemBuilder> builders, @NotNull final Player player) {
         if (builders.isEmpty()) return;
 
         final boolean isPlaceholderAPIEnabled = Plugins.placeholder_api.isEnabled();
 
         final List<ItemStack> items = new ArrayList<>();
 
-        for (final LegacyItemBuilder builder : builders) {
+        for (final ItemBuilder builder : builders) {
             if (isPlaceholderAPIEnabled) {
                 final String displayName = builder.getDisplayName();
 
@@ -401,7 +400,7 @@ public class MiscUtils {
         return useDifferentRandom() ? ThreadLocalRandom.current() : new Random();
     }
 
-    public static LegacyItemBuilder getRandomPaneColor() {
+    public static ItemBuilder getRandomPaneColor() {
         List<ItemType> panes = Arrays.asList(
                 ItemType.LIGHT_BLUE_STAINED_GLASS_PANE,
                 ItemType.MAGENTA_STAINED_GLASS_PANE,
@@ -419,7 +418,7 @@ public class MiscUtils {
                 ItemType.RED_STAINED_GLASS_PANE
         );
 
-        return new LegacyItemBuilder(plugin, panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
+        return new ItemBuilder(panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
     }
 
     public static void addItem(@NotNull final Player player, @NotNull final ItemStack... items) {

@@ -40,18 +40,21 @@ fabric-api = "0.124.2+1.21.5"
 fabric-loader = "0.16.14"
 fabric-loom = "1.10-SNAPSHOT"
 
-## Other
+## Triumph Team
 triumph-cmds = "2.0.0-BETA-4" # https://github.com/TriumphTeam/triumph-cmds
+triumph-gui = "4.0.0-SNAPSHOT" # https://github.com/TriumphTeam/triumph-gui
+
+## Other
 bStats = "3.1.0" # https://github.com/Bastian/bStats
-fusion = "1.22.12" # https://github.com/ryderbelserion/Fusion
+fusion = "2.9.4" # https://github.com/ryderbelserion/Fusion
 
 ## Gradle Plugins
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
 run-paper = "2.3.1" # https://github.com/jpenilla/run-task
-minotaur = "2.8.7" # https://github.com/modrinth/minotaur
+minotaur = "2.8.10" # https://github.com/modrinth/minotaur
 feather = "0.4.0" # https://github.com/ryderbelserion/Feather
 hangar = "0.1.3" # https://github.com/HangarMC/hangar-publish-plugin
-shadow = "9.0.0-beta15" # https://github.com/GradleUp/shadow
+shadow = "9.1.0" # https://github.com/GradleUp/shadow
 
 [plugins]
 # https://github.com/ryderbelserion/Feather
@@ -127,6 +130,8 @@ kyori-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
 
 # https://github.com/TriumphTeam/triumph-cmds
 triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmds" }
+# https://github.com/TriumphTeam/triumph-gui
+triumph-gui = { module = "dev.triumphteam:triumph-gui-paper", version.ref = "triumph-gui" }
 
 # https://github.com/ryderbelserion/Fusion
 fusion-paper = { module = "com.ryderbelserion.fusion:fusion-paper", version.ref = "fusion" }
@@ -171,6 +176,11 @@ build = [
 paper = [
     "paperweight",
     "run-paper"
+]
+
+triumph = [
+    "triumph-cmds"
+    #"triumph-gui"
 ]
 
 # Crate API

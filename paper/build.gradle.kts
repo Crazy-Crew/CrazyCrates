@@ -17,7 +17,7 @@ repositories {
 dependencies {
     implementation(project(":crazycrates-core"))
 
-    implementation(libs.triumph.cmds)
+    implementation(libs.bundles.triumph)
 
     implementation(libs.fusion.paper)
 
@@ -35,6 +35,8 @@ tasks {
 
     shadowJar {
         listOf(
+            "dev.triumphteam.gui",
+            "dev.triumphteam.cmd",
             "org.bstats"
         ).forEach {
             relocate(it, "libs.$it")

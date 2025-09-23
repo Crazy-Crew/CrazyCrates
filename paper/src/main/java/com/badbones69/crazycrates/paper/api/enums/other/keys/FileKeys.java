@@ -1,17 +1,15 @@
 package com.badbones69.crazycrates.paper.api.enums.other.keys;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.ryderbelserion.fusion.core.api.enums.FileAction;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
-import com.ryderbelserion.fusion.paper.files.FileManager;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.Optional;
 
 public enum FileKeys {
 
@@ -24,22 +22,22 @@ public enum FileKeys {
     data(FileType.PAPER, "data.yml");
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
-    private final FileManager fileManager = this.plugin.getFileManager();
+    private final PaperFileManager fileManager = this.plugin.getFileManager();
     private final Path path = this.plugin.getDataPath();
 
     private final FileType fileType;
-    private final Path location; // the file location
+    private final Path relativePath; // the file location
     private final Path folder; // the folder which defaults to the data path
 
     FileKeys(@NotNull final FileType fileType, @NotNull final String fileName, @NotNull final String folder) {
         this.folder = this.path.resolve(folder);
-        this.location = this.folder.resolve(fileName);
+        this.relativePath = this.folder.resolve(fileName);
         this.fileType = fileType;
     }
 
     FileKeys(@NotNull final FileType fileType, @NotNull final String fileName) {
         this.folder = this.path;
-        this.location = this.folder.resolve(fileName);
+        this.relativePath = this.folder.resolve(fileName);
         this.fileType = fileType;
     }
 
@@ -48,23 +46,23 @@ public enum FileKeys {
     }
 
     public @NotNull final PaperCustomFile getPaperCustomFile() {
-        @Nullable final PaperCustomFile customFile = this.fileManager.getPaperCustomFile(this.location);
+        @NotNull final Optional<PaperCustomFile> customFile = this.fileManager.getPaperFile(this.relativePath);
 
-        if (customFile == null) {
-            throw new FusionException("Could not find custom file for " + this.location);
+        if (customFile.isEmpty()) {
+            throw new FusionException("Could not find custom file for " + this.relativePath);
         }
 
-        return customFile;
+        return customFile.orElse(null);
     }
 
     public @NotNull final LogCustomFile getLogCustomFile() {
-        @Nullable final LogCustomFile customFile = (LogCustomFile) this.fileManager.getCustomFile(this.location);
+        @NotNull final Optional<LogCustomFile> customFile = this.fileManager.getLogFile(this.relativePath);
 
-        if (customFile == null) {
-            throw new FusionException("Could not find custom file for " + this.location);
+        if (customFile.isEmpty()) {
+            throw new FusionException("Could not find custom file for " + this.relativePath);
         }
 
-        return customFile;
+        return customFile.orElse(null);
     }
 
     public @NotNull final FileType getFileType() {
@@ -72,14 +70,10 @@ public enum FileKeys {
     }
 
     public @NotNull final Path getPath() {
-        return this.location;
-    }
-
-    public void save(@NotNull final String content, @NotNull final ArrayList<FileAction> actions) {
-        this.fileManager.saveFile(this.location, actions, content);
+        return this.relativePath;
     }
 
     public void save() {
-        this.fileManager.saveFile(this.location);
+        this.fileManager.saveFile(this.relativePath);
     }
 }

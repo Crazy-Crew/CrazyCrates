@@ -12,7 +12,6 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -94,9 +93,9 @@ public class CrateOpenListener implements Listener {
             if (!broadcastMessage.isBlank()) {
                 final String builder = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
-                this.server.broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName)
-                        .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
-                        .replaceAll("%player%", playerName)));
+                //this.server.broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName)
+                //        .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
+                //        .replaceAll("%player%", playerName))); //todo() adventure api
             }
         }
 

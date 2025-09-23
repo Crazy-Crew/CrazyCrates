@@ -11,8 +11,9 @@ import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.ryderbelserion.fusion.core.api.utils.StringUtils;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.Gui;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.Gui;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiFiller;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Server;
@@ -113,7 +114,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                     final NumberFormat instance = NumberFormat.getNumberInstance();
 
-                    final LegacyItemBuilder builder = new LegacyItemBuilder(this.plugin)
+                    final LegacyItemBuilder builder = new ItemBuilder(this.plugin)
                             .withType(section.getString("Item", "chest").toLowerCase())
                             .setDisplayName(crate.getCrateName())
                             .setCustomModelData(section.getString("Custom-Model-Data", ""))

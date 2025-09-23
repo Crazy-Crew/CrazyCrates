@@ -31,12 +31,10 @@ import com.badbones69.crazycrates.paper.tasks.crates.types.RouletteCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WonderCrate;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.core.api.enums.FileAction;
-import com.ryderbelserion.fusion.core.api.utils.FileUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
-import com.ryderbelserion.fusion.paper.files.FileManager;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
@@ -79,22 +77,14 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.TimerTask;
-import java.util.UUID;
-import java.util.WeakHashMap;
+import java.util.*;
 
 public class CrateManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
     private final Path dataPath = this.plugin.getDataPath();
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-    private final FileManager fileManager = this.plugin.getFileManager();
+    private final PaperFileManager fileManager = this.plugin.getFileManager();
     private final com.badbones69.crazycrates.core.Server instance = this.plugin.getInstance();
     private final FusionPaper fusion = this.plugin.getFusion();
 
@@ -264,7 +254,7 @@ public class CrateManager {
     public void loadCustomItems() {
         final PluginManager manager = this.server.getPluginManager();
 
-        final String pluginName = this.fusion.getItemsPlugin().toLowerCase();
+        final String pluginName = this.fusion.getCustomItemsPlugin().toLowerCase();
 
         switch (pluginName) {
             case "nexo" -> manager.registerEvents(new NexoInteractListener(), this.plugin);
@@ -365,17 +355,10 @@ public class CrateManager {
      */
     public void loadCrates() {
         if (this.config.getProperty(ConfigKeys.update_examples_folder)) {
-            final List<FileAction> actions = new ArrayList<>();
-
-            actions.add(FileAction.DELETE_FILE);
-            actions.add(FileAction.EXTRACT_FOLDER);
-
-            FileUtils.extract("guis", this.dataPath.resolve("examples"), actions);
-            FileUtils.extract("logs", this.dataPath.resolve("examples"), actions);
-            FileUtils.extract("crates", this.dataPath.resolve("examples"), actions);
-            FileUtils.extract("schematics", this.dataPath.resolve("examples"), actions);
-
-            actions.remove(FileAction.EXTRACT_FOLDER);
+            this.fileManager.extractFolder("guis", this.dataPath.resolve("examples"));
+            this.fileManager.extractFolder("logs", this.dataPath.resolve("examples"));
+            this.fileManager.extractFolder("crates", this.dataPath.resolve("examples"));
+            this.fileManager.extractFolder("schematics", this.dataPath.resolve("examples"));
 
             List.of(
                     "config.yml",
@@ -383,7 +366,7 @@ public class CrateManager {
                     "locations.yml",
                     "messages.yml",
                     "editor.yml"
-            ).forEach(file -> FileUtils.extract(file, this.dataPath.resolve("examples"), actions));
+            ).forEach(file -> this.fileManager.extractFile(this.dataPath.resolve("examples").resolve(file)));
         }
 
         this.giveNewPlayersKeys = false;
@@ -401,9 +384,13 @@ public class CrateManager {
 
         for (final String crateName : getCrateNames(true)) {
             try {
-                final PaperCustomFile customFile = this.fileManager.getPaperCustomFile(crates.resolve(crateName));
+                final Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(crates.resolve(crateName));
 
-                if (customFile == null || !customFile.isLoaded()) continue;
+                if (optional.isEmpty()) continue;
+
+                final PaperCustomFile customFile = optional.get();
+
+                if (!customFile.isLoaded()) continue;
 
                 final YamlConfiguration file = customFile.getConfiguration();
 
@@ -1472,19 +1459,33 @@ public class CrateManager {
     }
 
     // Internal methods.
-    private LegacyItemBuilder getKey(@NotNull final FileConfiguration file) {
+    private ItemBuilder getKey(@NotNull final FileConfiguration file) {
         final String name = file.getString("Crate.PhysicalKey.Name", "");
-        final String customModelData = file.getString("Crate.PhysicalKey.Custom-Model-Data", "");
-        final String namespace = file.getString("Crate.PhysicalKey.Model.Namespace", "");
-        final String id = file.getString("Crate.PhysicalKey.Model.Id", "");
         final List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
-        final boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
-        final LegacyItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new LegacyItemBuilder(this.plugin)
-                .fromBase64(file.getString("Crate.PhysicalKey.Data", "")) : new LegacyItemBuilder(this.plugin).withType(file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase());
+        final ItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new ItemBuilder(file.getString("Crate.PhysicalKey.Data", "")) : new ItemBuilder(file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase());
 
-        return itemBuilder.setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setItemModel(namespace, id).setHidingItemFlags(hideFlags).setCustomModelData(customModelData);
+        if (file.contains("Crate.PhysicalKey.Glowing")) {
+            itemBuilder.addEnchantGlint(file.getBoolean("Crate.PhysicalKey.Glowing", false));
+        }
+
+        if (file.contains("Crate.PhysicalKey.Model.Namespace") && file.contains("Crate.PhysicalKey.Model.Id")) {
+            final String namespace = file.getString("Crate.PhysicalKey.Model.Namespace", "");
+            final String id = file.getString("Crate.PhysicalKey.Model.Id", "");
+
+            itemBuilder.asCustomBuilder().setItemModel(namespace, id).build();
+        }
+
+        if (file.contains("Crate.PhysicalKey.Custom-Model-Data")) {
+            itemBuilder.asCustomBuilder().setCustomModelData(file.getString("Crate.PhysicalKey.Custom-Model-Data", "")).build();
+        }
+
+        if (hideFlags) {
+            itemBuilder.hideToolTip();
+        }
+
+        return itemBuilder.withDisplayName(name).withDisplayLore(lore);
     }
 
     // Cleans the data file.

@@ -1,11 +1,9 @@
 package com.badbones69.crazycrates.paper.api.objects.gui.buttons;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.utils.MsgUtils;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -20,16 +18,15 @@ public class GuiButton {
 
     private final Map<String, String> placeholders;
     private final ConfigurationSection section;
-    private final LegacyItemBuilder guiItem;
+    private final ItemBuilder guiItem;
 
     private final List<String> commands;
     private final List<String> messages;
 
     public GuiButton(@NotNull final ConfigurationSection section, @NotNull final Map<String, String> placeholders) {
-        this.guiItem = new LegacyItemBuilder(this.plugin)
-                .withType(section.getString("material", "emerald_block"))
-                .setDisplayName(section.getString("name", "No display name found."))
-                .setDisplayLore(section.getStringList("lore"));
+        this.guiItem = new ItemBuilder(section.getString("material", "emerald_block"))
+                .withDisplayName(section.getString("name", "No display name found."))
+                .withDisplayLore(section.getStringList("lore"));
 
         this.commands = section.getStringList("commands");
         this.messages = section.getStringList("messages");
