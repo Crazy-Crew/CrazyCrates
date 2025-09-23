@@ -36,6 +36,7 @@ public enum Permissions {
     CRAZYCRATES_SET_MENU("setmenu", "Sets the block you are looking at to open the (/crate) crate menu.", PermissionDefault.OP, new HashMap<>() {{
         put("crazycrates.set", true);
     }}),
+    CRAZYCRATES_BROADCAST("broadcast", "Allows you to receive broadcasts", PermissionDefault.TRUE),
     CRAZYCRATES_RELOAD("reload", "Reloads the entire plugin.", PermissionDefault.OP),
     CRAZYCRATES_DEBUG("debug", "Debugs the plugin.", PermissionDefault.OP),
     CRAZYCRATES_CONVERT("convert", "Converts data from other supported crate plugins into crazy crates.", PermissionDefault.OP),
@@ -73,6 +74,7 @@ public enum Permissions {
 
     CRAZYCRATES_PLAYER_ALL("players.*", "Give all player based permissions.", PermissionDefault.OP, new HashMap<>() {{
         put("crazycrates.key-others", true);
+        put("crazycrates.broadcast", true);
         put("crazycrates.gui", true);
         put("crazycrates.help", true);
     }});
