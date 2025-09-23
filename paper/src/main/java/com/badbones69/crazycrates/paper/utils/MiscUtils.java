@@ -81,39 +81,9 @@ public class MiscUtils {
         dropItems(items, player);
     }
 
-    public static void dropLegacyBuilders(@NotNull final List<ItemBuilder> builders, @NotNull final Player player) {
-        if (builders.isEmpty()) return;
-
-        final boolean isPlaceholderAPIEnabled = Plugins.placeholder_api.isEnabled();
-
-        final List<ItemStack> items = new ArrayList<>();
-
-        for (final ItemBuilder builder : builders) {
-            if (isPlaceholderAPIEnabled) {
-                final String displayName = builder.getDisplayName();
-
-                if (!displayName.isEmpty()) {
-                    builder.setDisplayName(PlaceholderAPI.setPlaceholders(player, displayName));
-                }
-
-                final List<String> displayLore = builder.getDisplayLore();
-
-                if (!displayLore.isEmpty()) {
-                    List<String> lore = new ArrayList<>();
-
-                    displayLore.forEach(line -> lore.add(PlaceholderAPI.setPlaceholders(player, line)));
-
-                    builder.setDisplayLore(lore);
-                }
-            }
-
-            items.add(builder.asItemStack());
-        }
-
-        dropItems(items, player);
-    }
-
     public static void dropItems(@NotNull final List<ItemStack> items, @NotNull final Player player) {
+        if (items.isEmpty()) return;
+
         final Location location = player.getLocation();
 
         new FoliaScheduler(plugin, location) {
@@ -127,6 +97,8 @@ public class MiscUtils {
     }
 
     public static void dropItem(@NotNull final Player player, @NotNull final ItemStack itemStack, @NotNull final Location location, final boolean execute) {
+        if (itemStack.isEmpty()) return;
+
         final boolean isInventoryEmpty = MiscUtils.isInventoryFull(player);
 
         final World world = player.getWorld();

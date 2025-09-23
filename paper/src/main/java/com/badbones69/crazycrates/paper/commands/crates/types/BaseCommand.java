@@ -11,7 +11,9 @@ import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.paper.files.FileManager;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import dev.triumphteam.cmd.core.annotations.Command;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.OfflinePlayer;
@@ -36,6 +38,10 @@ public abstract class BaseCommand {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
+    protected final FusionPaper fusion = this.plugin.getFusion();
+
+    protected final StringUtils utils = this.fusion.getStringUtils();
+
     protected final Path path = this.plugin.getDataPath();
 
     protected final Server server = this.plugin.getServer();
@@ -50,7 +56,7 @@ public abstract class BaseCommand {
 
     protected final CrateManager crateManager = this.plugin.getCrateManager();
 
-    protected final FileManager fileManager = this.plugin.getFileManager();
+    protected final PaperFileManager fileManager = this.plugin.getFileManager();
 
     protected final SettingsManager config = ConfigManager.getConfig();
 

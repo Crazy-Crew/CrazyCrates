@@ -4,9 +4,9 @@ import com.badbones69.crazycrates.core.enums.Comments;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.core.api.enums.FileType;
-import com.ryderbelserion.fusion.core.api.interfaces.files.ICustomFile;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.files.enums.FileAction;
+import com.ryderbelserion.fusion.core.files.enums.FileType;
+import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import org.bukkit.block.banner.PatternType;
@@ -26,14 +26,14 @@ public class NewItemMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Collection<ICustomFile<? extends ICustomFile<?>>> customFiles = this.fileManager.getCustomFiles().values();
+        final Collection<ICustomFile<?, ?, ?, ?>> customFiles = this.fileManager.getFiles().values();
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
 
-        customFiles.forEach(key -> {
+        customFiles.forEach(key -> { //todo() wtf? just list files in the crates folder, this is retarded lol
             try {
-                if (key.isStatic() || !key.isLoaded() || key.getFileType() != FileType.PAPER) return;
+                if (!key.hasAction(FileAction.DYNAMIC_FILE) || !key.isLoaded() || key.getFileType() != FileType.PAPER) return;
 
                 final PaperCustomFile customFile = (PaperCustomFile) key;
 
@@ -161,7 +161,7 @@ public class NewItemMigrator extends ICrateMigrator {
                                             } catch (final Exception ignored) {}
 
                                             if (ItemUtils.getEnchantment(placeholder) != null) {
-                                                enchantments.put(option.toLowerCase(), StringUtils.tryParseInt(value).map(Number::intValue).orElse(1));
+                                                enchantments.put(option.toLowerCase(), this.utils.tryParseInt(value).map(Number::intValue).orElse(1));
 
                                                 final ConfigurationSection enchantmentSection = prizeSection.createSection("Items." + uuid + ".enchantments");
 
@@ -223,8 +223,6 @@ public class NewItemMigrator extends ICrateMigrator {
             addAll(failed);
             addAll(success);
         }}, convertedCrates, failedCrates);
-
-        this.fileManager.init(new ArrayList<>());
 
         // reload crates
         this.crateManager.loadHolograms();

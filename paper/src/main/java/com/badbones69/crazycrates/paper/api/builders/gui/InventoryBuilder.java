@@ -12,6 +12,7 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.builders.gui.types.BaseGui;
@@ -36,6 +37,8 @@ public abstract class InventoryBuilder {
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     protected final FusionPaper fusion = this.plugin.getFusion();
+
+    protected final StringUtils utils = this.fusion.getStringUtils();
 
     protected final ComponentLogger logger = this.plugin.getComponentLogger();
 

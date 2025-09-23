@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
+import com.ryderbelserion.fusion.core.files.enums.FileAction;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class MojangMappedMigratorSingle extends ICrateMigrator {
 
@@ -26,9 +28,9 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
             return;
         }
 
-        final PaperCustomFile customFile = this.fileManager.getPaperCustomFile(this.dataPath.resolve("crates").resolve(this.crateName));
+        final Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(this.dataPath.resolve("crates").resolve(this.crateName));
 
-        if (customFile == null) {
+        if (optional.isEmpty()) {
             Messages.error_migrating.sendMessage(this.sender, new HashMap<>() {{
                 put("{file}", crateName);
                 put("{type}", type.getName());
@@ -38,7 +40,9 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
             return;
         }
 
-        if (customFile.isStatic()) {
+        final PaperCustomFile customFile = optional.get();
+
+        if (!customFile.hasAction(FileAction.DYNAMIC_FILE)) { //todo() check if this even is used
             Messages.error_migrating.sendMessage(this.sender, new HashMap<>() {{
                 put("{file}", crateName);
                 put("{type}", type.getName());

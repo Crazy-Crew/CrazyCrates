@@ -159,11 +159,7 @@ public class PrizeManager {
 
         MiscUtils.dropItems(prize.getEditorItems(), player); // drops any leftover editor items.
 
-        if (config.getProperty(ConfigKeys.use_different_items_layout)) {
-            MiscUtils.dropBuilders(prize.getItems(), player);
-        } else {
-            MiscUtils.dropLegacyBuilders(prize.getItemBuilders(), player);
-        }
+        MiscUtils.dropBuilders(prize.getItems(), player);
 
         for (final String command : crate.getPrizeCommands()) {
             runCommands(player, prize, crate, command);

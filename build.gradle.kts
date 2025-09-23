@@ -8,7 +8,7 @@ plugins {
 
 val git = feather.getGit()
 
-val commitHash: String? = git.getCurrentCommitHash().subSequence(0, 7).toString()
+val commitHash: String = git.getCurrentCommitHash().subSequence(0, 7).toString()
 val isSnapshot: Boolean = git.getCurrentBranch() == "dev"
 val content: String = if (isSnapshot) "[$commitHash](https://github.com/Crazy-Crew/${rootProject.name}/commit/$commitHash) ${git.getCurrentCommit()}" else rootProject.file("changelog.md").readText(Charsets.UTF_8)
 val minecraft = libs.versions.minecraft.get()

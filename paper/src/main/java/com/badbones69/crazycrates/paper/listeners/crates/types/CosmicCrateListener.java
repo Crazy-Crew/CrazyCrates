@@ -201,9 +201,7 @@ public class CosmicCrateListener implements Listener {
                 final String tierName = tier.getName();
 
                 // Get item builder.
-                LegacyItemBuilder builder = cosmicCrateManager.getPickedCrate().setPlayer(player)
-                        .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
-                        .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
+                final ItemBuilder builder = cosmicCrateManager.getPickedCrate().addPlaceholder("%Slot%", String.valueOf(pickedSlot));
 
                 // Set the amount.
                 builder.setAmount(pickedSlot);
@@ -212,7 +210,7 @@ public class CosmicCrateListener implements Listener {
                 cosmicCrateManager.setTier(builder, tierName);
 
                 // Overwrite the current item.
-                event.setCurrentItem(builder.asItemStack());
+                event.setCurrentItem(builder.asItemStack(player));
 
                 // Add the picked prize.
                 cosmicCrateManager.addPickedPrize(player, slot, tier);
@@ -224,9 +222,7 @@ public class CosmicCrateListener implements Listener {
             final Tier tier = this.crateManager.getTier(player, slot);
 
             // Get item builder.
-            LegacyItemBuilder builder = cosmicCrateManager.getMysteryCrate().setPlayer(player)
-                    .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
-                    .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
+            final ItemBuilder builder = cosmicCrateManager.getMysteryCrate().addPlaceholder("%Slot%", String.valueOf(pickedSlot));
 
             // Set the amount.
             builder.setAmount(pickedSlot);
@@ -238,7 +234,7 @@ public class CosmicCrateListener implements Listener {
             cosmicCrateManager.setTier(builder, tierName);
 
             // Overwrite the current item.
-            event.setCurrentItem(builder.asItemStack());
+            event.setCurrentItem(builder.asItemStack(player));
 
             // Remove slot if we click it.
             cosmicCrateManager.removePickedPrize(player, slot);
