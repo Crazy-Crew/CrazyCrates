@@ -76,8 +76,11 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class CrateManager {
 
@@ -340,8 +343,8 @@ public class CrateManager {
         }
     }
 
-    public List<String> getCrateNames(final boolean keepExtension) {
-        return this.instance.getCrateFiles(keepExtension);
+    public List<String> getCrateNames(final boolean removeExtension) {
+        return this.instance.getCrateFiles(removeExtension);
     }
 
     public List<String> getCrateNames() {
@@ -355,6 +358,20 @@ public class CrateManager {
      */
     public void loadCrates() {
         if (this.config.getProperty(ConfigKeys.update_examples_folder)) {
+            try (final Stream<Path> values = Files.walk(this.dataPath.resolve("examples"))) {
+                values.sorted(Comparator.reverseOrder()).forEach(path -> {
+                    try {
+                        this.fusion.log("info", "Successfully deleted path {}, re-generating the examples later.", path);
+
+                        Files.delete(path);
+                    } catch (final IOException exception) {
+                        this.fusion.log("warn", "Failed to delete {} in loop, Reason: {}", path, exception.getMessage());
+                    }
+                });
+            } catch (final Exception exception) {
+                this.fusion.log("warn", "Failed to delete {}, Reason: {}", this.dataPath.resolve("examples"), exception.getMessage());
+            }
+
             this.fileManager.extractFolder("guis", this.dataPath.resolve("examples"));
             this.fileManager.extractFolder("logs", this.dataPath.resolve("examples"));
             this.fileManager.extractFolder("crates", this.dataPath.resolve("examples"));
@@ -378,21 +395,37 @@ public class CrateManager {
             this.holograms.purge(false);
         }
 
-        if (MiscUtils.isLogging()) this.logger.info("Loading all crate information...");
+        this.fusion.log("info", "Loading all crate information...");
 
         final Path crates = this.dataPath.resolve("crates");
 
-        for (final String crateName : getCrateNames(true)) {
+        for (final String crateName : getCrateNames()) {
             try {
                 final Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(crates.resolve(crateName));
 
-                if (optional.isEmpty()) continue;
+                if (optional.isEmpty()) {
+                    this.logger.warn("The crate file named {} could not be found in the cache", crateName);
+
+                    continue;
+                }
 
                 final PaperCustomFile customFile = optional.get();
 
-                if (!customFile.isLoaded()) continue;
+                if (!customFile.isLoaded()) {
+                    this.logger.warn("Could not load crate configuration for {}", crateName);
+
+                    continue;
+                }
 
                 final YamlConfiguration file = customFile.getConfiguration();
+
+                final ConfigurationSection crateSection = file.getConfigurationSection("Crate");
+
+                if (crateSection == null) {
+                    this.logger.warn("Could not find crate configuration section for {}", crateName);
+
+                    continue;
+                }
 
                 final CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType", "CSGO"));
 
