@@ -38,47 +38,41 @@ public class InventoryManager {
     private ItemBuilder backButton;
 
     public void loadButtons() {
-        final ModelData menuModelData = this.config.getProperty(ConfigKeys.menu_button_item_model);
-
         this.menuButton = new ItemBuilder(this.config.getProperty(ConfigKeys.menu_button_item).toLowerCase())
                 .withDisplayName(this.config.getProperty(ConfigKeys.menu_button_name))
-                .withDisplayLore(this.config.getProperty(ConfigKeys.menu_button_lore));
+                .withDisplayLore(this.config.getProperty(ConfigKeys.menu_button_lore))
+                .withConsumer(consumer -> {
+                    final ModelData menuModelData = this.config.getProperty(ConfigKeys.menu_button_item_model);
 
-        final CustomBuilder menuButtonCustomBuilder = this.menuButton.asCustomBuilder();
-
-        menuButtonCustomBuilder.setCustomModelData(this.config.getProperty(ConfigKeys.menu_button_model_data));
-
-        menuButtonCustomBuilder.setItemModel(menuModelData.getNamespace(), menuModelData.getId());
-
-        menuButtonCustomBuilder.build();
-
-        final ModelData nextModelData = this.config.getProperty(ConfigKeys.next_button_item_model);
+                    consumer.asCustomBuilder()
+                            .setCustomModelData(this.config.getProperty(ConfigKeys.menu_button_model_data))
+                            .setItemModel(menuModelData.getNamespace(), menuModelData.getId())
+                            .build();
+                });
 
         this.nextButton = new ItemBuilder(this.config.getProperty(ConfigKeys.next_button_item).toLowerCase())
                 .withDisplayName(this.config.getProperty(ConfigKeys.next_button_name))
-                .withDisplayLore(this.config.getProperty(ConfigKeys.next_button_lore));
+                .withDisplayLore(this.config.getProperty(ConfigKeys.next_button_lore))
+                .withConsumer(consumer -> {
+                    final ModelData nextModelData = this.config.getProperty(ConfigKeys.next_button_item_model);
 
-        final CustomBuilder nextButtonCustomBuilder = this.nextButton.asCustomBuilder();
-
-        nextButtonCustomBuilder.setCustomModelData(this.config.getProperty(ConfigKeys.next_button_model_data));
-
-        nextButtonCustomBuilder.setItemModel(nextModelData.getNamespace(), nextModelData.getId());
-
-        nextButtonCustomBuilder.build();
-
-        final ModelData backModelData = this.config.getProperty(ConfigKeys.back_button_item_model);
+                    consumer.asCustomBuilder()
+                            .setCustomModelData(this.config.getProperty(ConfigKeys.next_button_model_data))
+                            .setItemModel(nextModelData.getNamespace(), nextModelData.getId())
+                            .build();
+                });
 
         this.backButton = new ItemBuilder(this.config.getProperty(ConfigKeys.back_button_item).toLowerCase())
                 .withDisplayName(this.config.getProperty(ConfigKeys.back_button_name))
-                .withDisplayLore(this.config.getProperty(ConfigKeys.back_button_lore));
+                .withDisplayLore(this.config.getProperty(ConfigKeys.back_button_lore))
+                .withConsumer(consumer -> {
+                    final ModelData backModelData = this.config.getProperty(ConfigKeys.back_button_item_model);
 
-        final CustomBuilder backButtonCustomBuilder = this.backButton.asCustomBuilder();
-
-        backButtonCustomBuilder.setCustomModelData(this.config.getProperty(ConfigKeys.back_button_model_data));
-
-        backButtonCustomBuilder.setItemModel(backModelData.getNamespace(), backModelData.getId());
-
-        backButtonCustomBuilder.build();
+                    consumer.asCustomBuilder()
+                            .setCustomModelData(this.config.getProperty(ConfigKeys.back_button_model_data))
+                            .setItemModel(backModelData.getNamespace(), backModelData.getId())
+                            .build();
+                });
     }
 
     public final ItemStack getMenuButton(@NotNull final Player player) {
@@ -100,7 +94,7 @@ public class InventoryManager {
     }
 
     public final ItemStack getBackButton(@Nullable final Player player, @Nullable final Tier tier, @NotNull final PaginatedGui gui) {
-        final ItemBuilder button = new ItemBuilder(this.nextButton.asItemStack(player == null ? Audience.empty() : player)).addPlaceholder("{page}", String.valueOf(gui.getPreviousPageNumber()));
+        final ItemBuilder button = new ItemBuilder(this.backButton.asItemStack(player == null ? Audience.empty() : player)).addPlaceholder("{page}", String.valueOf(gui.getPreviousPageNumber()));
 
         if (tier != null) {
             button.setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), tier.getName());

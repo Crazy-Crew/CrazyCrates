@@ -6,7 +6,6 @@ import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
-import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
@@ -40,19 +39,15 @@ public class Tier {
 
         this.lore = MiscUtils.replacePlaceholders(section.getStringList("Lore")); // this returns an empty list if not found anyway.
 
-        this.item = new ItemBuilder(section.getString("Item", "chest").toLowerCase());
+        this.item = new ItemBuilder(section.getString("Item", "chest").toLowerCase()).withConsumer(consumer -> {
+            if (section.getBoolean("HideItemFlags", false)) {
+                consumer.hideToolTip();
+            }
 
-        if (section.getBoolean("HideItemFlags", false)) {
-            this.item.hideToolTip();
-        }
-
-        final CustomBuilder customBuilder = this.item.asCustomBuilder();
-
-        customBuilder.setCustomModelData(section.getString("Custom-Model-Data", ""));
-
-        customBuilder.setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
-
-        customBuilder.build();
+            consumer.asCustomBuilder()
+                    .setCustomModelData(section.getString("Custom-Model-Data", ""))
+                    .setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", "")).build();
+        });
 
         this.weight = section.getDouble("Weight", -1);
 

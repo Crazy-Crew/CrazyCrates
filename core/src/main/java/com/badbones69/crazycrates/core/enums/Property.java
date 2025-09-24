@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
 import com.badbones69.crazycrates.core.config.impl.messages.ErrorKeys;
 import com.badbones69.crazycrates.core.config.impl.messages.MiscKeys;
 import com.badbones69.crazycrates.core.config.impl.messages.PlayerKeys;
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

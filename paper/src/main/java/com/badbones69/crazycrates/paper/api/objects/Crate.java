@@ -238,12 +238,16 @@ public class Crate {
         @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
         this.borderItem = new ItemBuilder(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane").toLowerCase())
-                .withDisplayName(borderName);
-                //.setCustomModelData(file.getString("Crate.Preview.Glass.Custom-Model-Data", ""))
-                //.setItemModel(file.getString("Crate.Preview.Glass.Model.Namespace", ""), file.getString("Crate.Preview.Glass.Model.Id", ""))
-                //.setHidingItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
-                //.setDisplayName(borderName);
                 .withDisplayName(MiscUtils.replacePlaceholders(borderName))
+                .withConsumer(consumer -> {
+                    consumer.asCustomBuilder()
+                            .setCustomModelData(file.getString("Crate.Preview.Glass.Custom-Model-Data", ""))
+                            .setItemModel(file.getString("Crate.Preview.Glass.Model.Namespace", ""), file.getString("Crate.Preview.Glass.Model.Id", "")).build();
+
+                    if (file.getBoolean("Crate.Preview.Glass.HideItemFlags", false)) {
+                        consumer.hideToolTip();
+                    }
+                });
 
         @NotNull final String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
 
