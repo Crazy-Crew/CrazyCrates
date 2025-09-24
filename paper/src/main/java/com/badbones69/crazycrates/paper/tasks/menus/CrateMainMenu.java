@@ -143,6 +143,15 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                     customBuilder.setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
 
                     customBuilder.build();
+                            .addPlaceholder("{keys}", instance.format(virtualKeys))
+                            .addPlaceholder("{keys_physical}", instance.format(physicalKeys))
+                            .addPlaceholder("{keys_total}", instance.format(totalKeys))
+                            .addPlaceholder("{crate_opened}", instance.format(openedCrates))
+                            .addPlaceholder("{keys_raw}", String.valueOf(virtualKeys))
+                            .addPlaceholder("{keys_physical_raw}", String.valueOf(physicalKeys))
+                            .addPlaceholder("{keys_total_raw}", String.valueOf(totalKeys))
+                            .addPlaceholder("{crate_opened_raw}", String.valueOf(openedCrates))
+                            .addPlaceholder("{player}", this.player.getName())
 
                     this.gui.setItem(slot, ItemUtils.getItem(section, builder).asGuiItem(this.player, event -> {
                         final String fancyName = crate.getCrateName();

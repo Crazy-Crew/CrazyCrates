@@ -188,14 +188,14 @@ public class PrizeManager {
     }
 
     private static void runCommands(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, @NotNull String command) {
-        String cmd = command;
+        String cmd = command.contains("%random%") ? command.replaceAll("%random%:", "{random}:") : command;
 
-        if (cmd.contains("%random%:")) {
+        if (command.contains("{random}:")) {
             final StringBuilder commandBuilder = new StringBuilder();
 
             for (String word : cmd.split(" ")) {
-                if (word.startsWith("%random%:")) {// /give %player% iron %random%:1-64
-                    word = word.replace("%random%:", "");
+                if (word.startsWith("{random}:")) {// /give {player} iron {random}:1-64
+                    word = word.replace("{random}:", "");
 
                     try {
                         long min = Long.parseLong(word.split("-")[0]);
@@ -223,16 +223,16 @@ public class PrizeManager {
 
         final String maxPulls = String.valueOf(prize.getMaxPulls());
         final String pulls = String.valueOf(getCurrentPulls(prize, crate));
-        final String prizeName = prize.getPrizeName().replaceAll("%maxpulls%", maxPulls).replaceAll("%pulls%", pulls);
+        final String prizeName = prize.getPrizeName().replaceAll("\\{maxpulls}", maxPulls).replaceAll("\\{pulls}", pulls);
 
         MiscUtils.sendCommand(cmd
-                .replaceAll("%player%", quoteReplacement(player.getName()))
-                .replaceAll("%reward%", quoteReplacement(prizeName))
-                .replaceAll("%reward_stripped%", quoteReplacement(prize.getStrippedName()))
-                .replaceAll("%crate_fancy%", quoteReplacement(crate.getCrateName()))
-                .replaceAll("%crate%", quoteReplacement(crate.getFileName()))
-                .replaceAll("%maxpulls%", maxPulls)
-                .replaceAll("%pulls%", pulls));
+                .replaceAll("\\{player}", quoteReplacement(player.getName()))
+                .replaceAll("\\{reward}", quoteReplacement(prizeName))
+                .replaceAll("\\{reward_stripped}", quoteReplacement(prize.getStrippedName()))
+                .replaceAll("\\{crate_fancy}", quoteReplacement(crate.getCrateName()))
+                .replaceAll("\\{crate}", quoteReplacement(crate.getFileName()))
+                .replaceAll("\\{maxpulls}", maxPulls)
+                .replaceAll("\\{pulls}", pulls));
     }
 
     private static void sendMessage(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, @NotNull final String message) {
@@ -240,15 +240,15 @@ public class PrizeManager {
 
         final String maxPulls = String.valueOf(prize.getMaxPulls());
         final String pulls = String.valueOf(getCurrentPulls(prize, crate));
-        final String prizeName = prize.getPrizeName().replaceAll("%maxpulls%", maxPulls).replaceAll("%pulls%", pulls);
+        final String prizeName = prize.getPrizeName().replaceAll("\\{maxpulls}", maxPulls).replaceAll("\\{pulls}", pulls);
 
         final String defaultMessage = message
-                .replaceAll("%player%", quoteReplacement(player.getName()))
-                .replaceAll("%reward%", quoteReplacement(prizeName))
-                .replaceAll("%reward_stripped%", quoteReplacement(prize.getStrippedName()))
-                .replaceAll("%crate%", quoteReplacement(crate.getCrateName()))
-                .replaceAll("%maxpulls%", maxPulls)
-                .replaceAll("%pulls%", pulls);
+                .replaceAll("\\{player}", quoteReplacement(player.getName()))
+                .replaceAll("\\{reward}", quoteReplacement(prizeName))
+                .replaceAll("\\{reward_stripped}", quoteReplacement(prize.getStrippedName()))
+                .replaceAll("\\{crate}", quoteReplacement(crate.getCrateName()))
+                .replaceAll("\\{maxpulls}", maxPulls)
+                .replaceAll("\\{pulls}", pulls);
 
         MsgUtils.sendMessage(player, Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
     }

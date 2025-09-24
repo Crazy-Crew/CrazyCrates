@@ -44,14 +44,14 @@ public class EventManager {
 
         switch (type) {
             case event_key_given, event_key_removed, event_key_received, event_key_sent, event_key_taken, event_key_taken_multiple -> {
-                message = "Player: %player% | Sender: %sender% | Key Name: %key_name%<reset> | Key Type: %key_type%"
-                        .replace("%key_type%", keyType.getFriendlyName())
-                        .replace("%player%", name)
-                        .replace("%sender%", sender.getName())
-                        .replace("%key_name%", crate.getKeyName());
+                message = "Player: {player} | Sender: {sender} | Key Name: {key_name}<reset> | Key Type: {key_type}"
+                        .replace("{key_type}", keyType.getFriendlyName())
+                        .replace("{player}", name)
+                        .replace("{sender}", sender.getName())
+                        .replace("{key_name}", crate.getKeyName());
 
                 if (amount >= 1) {
-                    message = message + " | Amount: %amount%".replace("%amount%", String.valueOf(amount));
+                    message = message + " | Amount: {amount}".replace("{amount}", String.valueOf(amount));
                 }
 
                 path = FileKeys.key_log.getPath();
@@ -66,34 +66,34 @@ public class EventManager {
             }*/
 
             case event_crate_opened -> {
-                message = "Player: %player% | Crate Name: %crate_name%<reset> | Force Opened: %force_opened% | Crate Type: %crate_type% | Key Name: %key_name%<reset> | Key Type: %key_type% | Key Item: %key_item%"
-                        .replace("%player%", name)
-                        .replace("%crate_name%", crate.getCrateName())
-                        .replace("%crate_type%", crate.getCrateType().getName())
-                        .replace("%key_name%", crate.getKeyName())
-                        .replace("%key_type%", keyType.getFriendlyName())
-                        .replace("%key_item%", crate.getKey().getType().getKey().getKey())
-                        .replace("%force_opened%", "no");
+                message = "Player: {player} | Crate Name: {crate_name}<reset> | Force Opened: {force_opened} | Crate Type: {crate_type} | Key Name: {key_name}<reset> | Key Type: {key_type} | Key Item: {key_item}"
+                        .replace("{player}", name)
+                        .replace("{crate_name}", crate.getCrateName())
+                        .replace("{crate_type}", crate.getCrateType().getName())
+                        .replace("{key_name}", crate.getKeyName())
+                        .replace("{key_type}", keyType.getFriendlyName())
+                        .replace("{key_item}", crate.getKey().getType().getKey().getKey())
+                        .replace("{force_opened}", "no");
 
                 if (amount >= 1) {
-                    message = message + " | Amount: %amount%".replace("%amount%", String.valueOf(amount));
+                    message = message + " | Amount: {amount}".replace("{amount}", String.valueOf(amount));
                 }
 
                 path = FileKeys.crate_log.getPath();
             }
 
             case event_crate_force_opened -> {
-                message = "Player: %player% | Crate Name: %crate_name%<reset> | Force Opened: %force_opened% | Crate Type: %crate_type% | Key Name: %key_name%<reset> | Key Type: %key_type% | Key Item: %key_item%"
-                        .replace("%player%", name)
-                        .replace("%crate_name%", crate.getCrateName())
-                        .replace("%crate_type%", crate.getCrateType().getName())
-                        .replace("%key_name%", crate.getKeyName())
-                        .replace("%key_type%", keyType.getFriendlyName())
-                        .replace("%key_item%", crate.getKey().getType().getKey().getKey())
-                        .replace("%force_opened%", "yes");
+                message = "Player: {player} | Crate Name: {crate_name}<reset> | Force Opened: {force_opened} | Crate Type: {crate_type} | Key Name: {key_name}<reset> | Key Type: {key_type} | Key Item: {key_item}"
+                        .replace("{player}", name)
+                        .replace("{crate_name}", crate.getCrateName())
+                        .replace("{crate_type}", crate.getCrateType().getName())
+                        .replace("{key_name}", crate.getKeyName())
+                        .replace("{key_type}", keyType.getFriendlyName())
+                        .replace("{key_item}", crate.getKey().getType().getKey().getKey())
+                        .replace("{force_opened}", "yes");
 
                 if (amount >= 1) {
-                    message = message + " | Amount: %amount%".replace("%amount%", String.valueOf(amount));
+                    message = message + " | Amount: {amount}".replace("{amount}", String.valueOf(amount));
                 }
 
                 path = FileKeys.crate_log.getPath();

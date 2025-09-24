@@ -36,9 +36,9 @@ public class Tier {
     public Tier(@NotNull final String tier, @NotNull final ConfigurationSection section) {
         this.name = tier;
 
-        this.coloredName = section.getString("Name", "");
+        this.coloredName = MiscUtils.replacePlaceholders(section.getString("Name", ""));
 
-        this.lore = section.getStringList("Lore"); // this returns an empty list if not found anyway.
+        this.lore = MiscUtils.replacePlaceholders(section.getStringList("Lore")); // this returns an empty list if not found anyway.
 
         this.item = new ItemBuilder(section.getString("Item", "chest").toLowerCase());
 
@@ -104,7 +104,7 @@ public class Tier {
      * @return the tier item shown in the preview.
      */
     public @NotNull final ItemStack getTierItem(@Nullable final Player target, @NotNull final Crate crate) {
-        return this.item.withDisplayName(this.coloredName).withDisplayLore(this.lore).addPlaceholder("%chance%", this.utils.format(crate.getTierChance(getWeight())))
+        return this.item.withDisplayName(this.coloredName).withDisplayLore(this.lore).addPlaceholder("{chance}", this.utils.format(crate.getTierChance(getWeight())))
                 .setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), this.name).asItemStack(target == null ? Audience.empty() : target);
     }
 }

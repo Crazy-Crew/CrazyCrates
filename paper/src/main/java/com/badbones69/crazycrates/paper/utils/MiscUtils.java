@@ -81,6 +81,37 @@ public class MiscUtils {
         dropItems(items, player);
     }
 
+    public static String replacePlaceholders(@NotNull final String value) {
+        return !value.isEmpty() ? value.replaceAll("%keys%", "{keys}").replaceAll("%keys_physical%", "{keys_physical}")
+                .replaceAll("%keys_total%", "{keys_total}")
+                .replaceAll("%crate_opened%", "{crate_opened}")
+                .replaceAll("%keys_raw%", "{keys_raw}")
+                .replaceAll("%keys_physical_raw%", "{keys_physical_raw}")
+                .replaceAll("%keys_total_raw%", "{keys_total_raw}")
+                .replaceAll("%crate_opened_raw%", "{crate_opened_raw}")
+                .replaceAll("%player%", "{player}")
+                .replaceAll("%prefix%", "{prefix}")
+                .replaceAll("%crate%", "{crate}"): "";
+    }
+
+    public static List<String> replacePlaceholders(@NotNull final List<String> values) {
+        final List<String> lore = new ArrayList<>();
+
+        if (values.isEmpty()) return lore;
+
+        for (final String value : values) {
+            if (value.isEmpty()) {
+                lore.add(value);
+
+                continue;
+            }
+
+            lore.add(replacePlaceholders(value));
+        }
+
+        return lore;
+    }
+
     public static void dropItems(@NotNull final List<ItemStack> items, @NotNull final Player player) {
         if (items.isEmpty()) return;
 

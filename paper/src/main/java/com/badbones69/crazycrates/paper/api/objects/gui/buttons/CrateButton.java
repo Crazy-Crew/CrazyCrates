@@ -28,9 +28,9 @@ public class CrateButton extends GuiButton {
 
     public CrateButton(@NotNull final Crate crate, @Nullable final Prize prize, @NotNull final ConfigurationSection section) {
         super(section, new HashMap<>() {{
-            put("%crate_pretty%", crate.getCrateName());
-            put("%crate_raw%", crate.getFileName());
-            put("%prize%", prize != null ? prize.getSectionName() : "N/A");
+            put("{crate_pretty}", crate.getCrateName());
+            put("{crate_raw}", crate.getFileName());
+            put("{prize}", prize != null ? prize.getSectionName() : "N/A");
         }});
 
         this.crate = crate;

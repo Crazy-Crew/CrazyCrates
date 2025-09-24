@@ -1459,9 +1459,10 @@ public class CrateManager {
     }
 
     // Internal methods.
-    private ItemBuilder getKey(@NotNull final FileConfiguration file) {
-        final String name = file.getString("Crate.PhysicalKey.Name", "");
-        final List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
+    private ItemBuilder getKey(@NotNull final YamlConfiguration file) {
+        final String name = MiscUtils.replacePlaceholders(file.getString("Crate.PhysicalKey.Name", ""));
+        final List<String> lore = MiscUtils.replacePlaceholders(file.getStringList("Crate.PhysicalKey.Lore"));
+
         final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
         final ItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new ItemBuilder(file.getString("Crate.PhysicalKey.Data", "")) : new ItemBuilder(file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase());

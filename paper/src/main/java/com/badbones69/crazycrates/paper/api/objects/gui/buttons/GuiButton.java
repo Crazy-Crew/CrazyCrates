@@ -27,8 +27,8 @@ public class GuiButton {
 
     public GuiButton(@NotNull final ConfigurationSection section, @NotNull final Map<String, String> placeholders) {
         this.guiItem = new ItemBuilder(section.getString("material", "emerald_block"))
-                .withDisplayName(section.getString("name", "No display name found."))
-                .withDisplayLore(section.getStringList("lore"));
+                .withDisplayName(MiscUtils.replacePlaceholders(section.getString("name", "No display name found.")))
+                .withDisplayLore(MiscUtils.replacePlaceholders(section.getStringList("lore")));
 
         this.commands = section.getStringList("commands");
         this.messages = section.getStringList("messages");

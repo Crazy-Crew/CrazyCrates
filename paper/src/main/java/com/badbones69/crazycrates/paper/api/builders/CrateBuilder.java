@@ -350,7 +350,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      */
     public void setItem(final int slot, @NotNull final ItemType itemType, @NotNull final String name, @NotNull final List<String> lore) {
         //noinspection unchecked
-        this.inventory.setItem(slot, new ItemBuilder(itemType, consumer -> consumer.withDisplayName(name).withDisplayLore(lore)).asItemStack(this.player));
+        this.inventory.setItem(slot, new ItemBuilder(itemType, consumer -> consumer.withDisplayName(MiscUtils.replacePlaceholders(name)).withDisplayLore(MiscUtils.replacePlaceholders(lore))).asItemStack(this.player));
     }
 
     /**
@@ -361,7 +361,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param name name of item
      */
     public void setItem(final int slot, @NotNull final ItemType itemType, @NotNull final String name) {
-        this.inventory.setItem(slot, new ItemBuilder(itemType, consumer -> consumer.withDisplayName(name)).asItemStack(this.player));
+        this.inventory.setItem(slot, new ItemBuilder(itemType, consumer -> consumer.withDisplayName(MiscUtils.replacePlaceholders(name))).asItemStack(this.player));
     }
 
     /**
@@ -469,7 +469,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
         final ItemBuilder itemBuilder = manager.getMysteryCrate();
 
         for (int slot = 0; slot <= this.size; slot++) {
-            itemBuilder.addPlaceholder("%Slot%", String.valueOf(slot));
+            itemBuilder.addPlaceholder("{Slot}", String.valueOf(slot)).addPlaceholder("{slot}", String.valueOf(slot));
 
             itemBuilder.setAmount(slot);
 

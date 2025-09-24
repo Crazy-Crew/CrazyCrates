@@ -87,12 +87,12 @@ public class Prize {
 
         this.alternativePrize = alternativePrize;
 
-        this.prizeName = section.getString("DisplayName", "");
+        this.prizeName = MiscUtils.replacePlaceholders(section.getString("DisplayName", ""));
         this.weight = section.getDouble("Weight", -1);
         this.firework = section.getBoolean("Firework", false);
 
-        this.messages = section.getStringList("Messages"); // this returns an empty list if not found anyway.
-        this.commands = section.getStringList("Commands"); // this returns an empty list if not found anyway.
+        this.messages = MiscUtils.replacePlaceholders(section.getStringList("Messages")); // this returns an empty list if not found anyway.
+        this.commands = MiscUtils.replacePlaceholders(section.getStringList("Commands")); // this returns an empty list if not found anyway.
 
         this.permissions = section.getStringList("BlackListed-Permissions"); // this returns an empty list if not found anyway.
 
@@ -101,7 +101,7 @@ public class Prize {
         }
 
         this.broadcastToggle = section.getBoolean("Settings.Broadcast.Toggle", false);
-        this.broadcastMessages = section.getStringList("Settings.Broadcast.Messages");
+        this.broadcastMessages = MiscUtils.replacePlaceholders(section.getStringList("Settings.Broadcast.Messages"));
         this.broadcastPermission = section.getString("Settings.Broadcast.Permission", "");
 
         if (this.broadcastToggle && !this.broadcastPermission.isEmpty()) {
@@ -173,12 +173,10 @@ public class Prize {
 
         final List<String> lore = new ArrayList<>();
 
-        //this.displayItem.setDisplayName(player != null && isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, displayName) : displayName);
-
-        this.displayItem.withDisplayName(this.section.getString("DisplayName", ""));
+        this.displayItem.withDisplayName(MiscUtils.replacePlaceholders(this.section.getString("DisplayName", "")));
 
         if (this.section.contains("DisplayLore") && !this.section.contains("Lore")) {
-            lore.addAll(this.section.getStringList("DisplayLore"));
+            lore.addAll(MiscUtils.replacePlaceholders(this.section.getStringList("DisplayLore")));
         }
 
         if (this.section.contains("Lore")) {
@@ -190,7 +188,7 @@ public class Prize {
                 ).forEach(this.logger::warn);
             }
 
-            lore.addAll(this.section.getStringList("Lore"));
+            lore.addAll(MiscUtils.replacePlaceholders(this.section.getStringList("Lore")));
         }
 
         if (maxPulls != 0 && pulls != 0 && pulls >= maxPulls) {
@@ -211,9 +209,9 @@ public class Prize {
 
         final String weight = this.utils.format(crate.getChance(getWeight()));
 
-        this.displayItem.addPlaceholder("%chance%", weight)
-                .addPlaceholder("%maxpulls%", String.valueOf(maxPulls))
-                .addPlaceholder("%pulls%", amount);
+        this.displayItem.addPlaceholder("{chance}", weight)
+                .addPlaceholder("{maxpulls}", String.valueOf(maxPulls))
+                .addPlaceholder("{pulls}", amount);
 
         return this.displayItem.setPersistentString(ItemKeys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack(player == null ? Audience.empty() : player);
     }
@@ -329,15 +327,15 @@ public class Prize {
         final String message = this.utils.toString(messages);
 
         final Map<String, String> placeholders = new HashMap<>() {{
-            put("%player%", target.getName());
-            put("%crate%", crate.getCrateName());
-            put("%reward%", getPrizeName().replaceAll("%maxpulls%", max_pulls).replaceAll("%pulls%", current_pulls));
-            put("%maxpulls%", max_pulls);
-            put("%pulls%", current_pulls);
-            put("%reward_stripped%", getStrippedName());
+            put("{player}", target.getName());
+            put("{crate}", crate.getCrateName());
+            put("{reward}", getPrizeName().replaceAll("\\{maxpulls}", max_pulls).replaceAll("\\{pulls}", current_pulls));
+            put("{maxpulls}", max_pulls);
+            put("{pulls}", current_pulls);
+            put("{reward_stripped}", getStrippedName());
         }};
 
-        final Component component = this.fusion.parse(target, this.fusion.papi(target, MiscUtils.populatePlaceholders(null, message, placeholders)));
+        final Component component = this.fusion.parse(target, message, placeholders);
 
         if (permission.isEmpty()) {
             server.broadcast(component);
@@ -369,7 +367,7 @@ public class Prize {
             }
 
             if (this.section.contains("DisplayLore") && !this.section.contains("Lore")) {
-                builder.withDisplayLore(this.section.getStringList("DisplayLore"));
+                builder.withDisplayLore(MiscUtils.replacePlaceholders(this.section.getStringList("DisplayLore")));
             }
 
             if (this.section.contains("Lore")) {
@@ -381,7 +379,7 @@ public class Prize {
                     ).forEach(this.logger::warn);
                 }
 
-                builder.withDisplayLore(this.section.getStringList("Lore"));
+                builder.withDisplayLore(MiscUtils.replacePlaceholders(this.section.getStringList("Lore")));
             }
 
             if (this.section.contains("Glowing")) {

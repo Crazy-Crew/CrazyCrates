@@ -177,7 +177,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             if (file.exists()) {
                 final YamlConfiguration menuFile = YamlConfiguration.loadConfiguration(file);
 
-                final String previewName = menuFile.getString("Crate.Name", "<bold><#9af7ff>%crate%</bold>").replace("%crate_name%", "%crate%").replace("%crate%", strippedName);
+                final String previewName = menuFile.getString("Crate.Name", "<bold><#9af7ff>{crate}</bold>").replace("%crate_name%", "{crate}").replace("{crate}", strippedName);
 
                 final List<String> previewLore = new ArrayList<>();
 
@@ -218,7 +218,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             set(root, "Max-Mass-Open", 10);
 
             set(root, "OpeningBroadCast", false);
-            set(root, "BroadCast", "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><green>%crate%.</bold>".replace("%crate%", this.utils.convertLegacy(crate.getName())));
+            set(root, "BroadCast", "{prefix}<bold><gold>{player}</bold><reset> <gray>is opening a <bold><green>{crate}.</bold>".replace("{crate}", this.utils.convertLegacy(crate.getName())));
 
             set(root, "opening-command.toggle", false);
             set(root, "opening-command.commands", List.of("put your command here."));
@@ -238,7 +238,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             set(root, "sound.stop-sound.volume", 1.0);
             set(root, "sound.stop-sound.pitch", 1.0);
 
-            set(root, "Prize-Message", List.of("<gray>You have won <red>%reward% <gray>from <red>%crate%."));
+            set(root, "Prize-Message", List.of("<gray>You have won <red>{reward} <gray>from <red>{crate}."));
 
             final ItemStack crateItem = crate.getItem();
 
@@ -246,7 +246,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             final String itemName = crateConfig.getString("Item.Name", "");
 
-            set(root, "Preview-Name", this.utils.convertLegacy(itemName.isEmpty() ? crateConfig.getString("Name", "%crate%").replace("%crate%", strippedName) : itemName + " Preview"));
+            set(root, "Preview-Name", this.utils.convertLegacy(itemName.isEmpty() ? crateConfig.getString("Name", "{crate}").replace("{crate}", strippedName) : itemName + " Preview"));
 
             if (crateItem.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
                 @Nullable final CustomModelData builder = crateItem.getData(DataComponentTypes.CUSTOM_MODEL_DATA);

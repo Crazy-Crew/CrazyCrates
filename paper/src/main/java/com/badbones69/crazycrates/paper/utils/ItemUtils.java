@@ -161,7 +161,7 @@ public class ItemUtils {
         
         builder.setItemDamage(section.getInt("DisplayDamage", -1));
         
-        builder.withDisplayLore(section.getStringList("Lore"));
+        builder.withDisplayLore(MiscUtils.replacePlaceholders(section.getStringList("Lore")));
 
         //builder.addPatterns(section.getStringList("Patterns"));
 
@@ -214,10 +214,10 @@ public class ItemUtils {
 
             itemBuilder.withBase64(item.getString("data", ""));
 
-            itemBuilder.withDisplayName(item.getString("name", ""));
+            itemBuilder.withDisplayName(MiscUtils.replacePlaceholders(item.getString("name", "")));
 
             if (item.contains("lore")) {
-                itemBuilder.withDisplayLore(item.getStringList("lore"));
+                itemBuilder.withDisplayLore(MiscUtils.replacePlaceholders(item.getStringList("lore")));
             }
 
             if (item.isString("amount")) {
@@ -351,13 +351,12 @@ public class ItemUtils {
                     switch (option.toLowerCase()) {
                         case "item" -> consumer.withCustomItem(value.toLowerCase());
                         case "data" -> consumer.withBase64(value);
-                        case "name" -> consumer.withDisplayName(value);
+                        case "name" -> consumer.withDisplayName(MiscUtils.replacePlaceholders(value));
                         case "glowing" -> consumer.addEnchantGlint(utils.tryParseBoolean(value).orElse(false));
                         case "amount" -> consumer.setAmount(utils.tryParseInt(value).map(Number::intValue).orElse(1));
                         case "damage" -> consumer.setItemDamage(utils.tryParseInt(value).map(Number::intValue).orElse(-1));
                         case "lore" -> //noinspection unchecked
-                                consumer.withDisplayLore(List.of(value.split(",")));
-
+                                consumer.withDisplayLore(MiscUtils.replacePlaceholders(List.of(value.split(","))));
                         case "player" -> {
                             if (consumer.isPlayerHead()) {
                                 consumer.asSkullBuilder().withName(value).build();

@@ -95,9 +95,7 @@ public class CrateOpenListener implements Listener {
         final boolean broadcastToggle = configuration.getBoolean("Crate.OpeningBroadCast", false);
 
         if (broadcastToggle && crateType != CrateType.cosmic && !event.isSilent() && !broadcastMessage.isBlank()) {
-            this.server.broadcast(this.fusion.parse(player, broadcastMessage.replaceAll("%crate%", "{crate}")
-                    .replaceAll("%prefix%", "{prefix}")
-                    .replaceAll("%player%", "{player}"), new HashMap<>() {{
+            this.server.broadcast(this.fusion.parse(player, MiscUtils.replacePlaceholders(broadcastMessage), new HashMap<>() {{
                 put("{prefix}", config.getProperty(ConfigKeys.command_prefix));
                 put("{player}", player.getName());
                 put("{crate}", fancyName);
@@ -114,11 +112,11 @@ public class CrateOpenListener implements Listener {
                     String builder;
 
                     if (Plugins.placeholder_api.isEnabled() ) {
-                        builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%crate%", fileName)
-                                .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
-                                .replaceAll("%player%", playerName));
+                        builder = PlaceholderAPI.setPlaceholders(player, MiscUtils.replacePlaceholders(line.replaceAll("\\{crate}", fileName)
+                                .replaceAll("\\{prefix}", this.config.getProperty(ConfigKeys.command_prefix))
+                                .replaceAll("\\{player}", playerName)));
                     } else {
-                        builder = line.replaceAll("%crate%", fileName).replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix)).replaceAll("%player%", playerName);
+                        builder = MiscUtils.replacePlaceholders(line.replaceAll("\\{crate}", fileName).replaceAll("\\{prefix}", this.config.getProperty(ConfigKeys.command_prefix)).replaceAll("\\{player}", playerName));
                     }
 
                     MiscUtils.sendCommand(builder);

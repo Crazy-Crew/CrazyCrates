@@ -139,7 +139,9 @@ public class Crate {
                  @NotNull final List<String> prizeCommands,
                  @NotNull final CrateHologram hologram) {
         this.name = name.replaceAll(".yml", "");
-        this.keyBuilder = key.withDisplayName(keyName).setPersistentString(ItemKeys.crate_key.getNamespacedKey(), this.name);
+
+        this.keyBuilder = key.withDisplayName(MiscUtils.replacePlaceholders(keyName)).setPersistentString(ItemKeys.crate_key.getNamespacedKey(), this.name);
+
         this.keyName = keyName;
 
         this.file = file;
@@ -185,7 +187,7 @@ public class Crate {
         }
 
         this.broadcastToggle = this.file.getBoolean("Crate.Settings.Broadcast.Toggle", false);
-        this.broadcastMessages = this.file.getStringList("Crate.Settings.Broadcast.Messages");
+        this.broadcastMessages = MiscUtils.replacePlaceholders(this.file.getStringList("Crate.Settings.Broadcast.Messages"));
         this.broadcastPermission = this.file.getString("Crate.Settings.Broadcast.Permission", "");
 
         this.cyclePrize = this.file.getBoolean("Crate.Settings.Rewards.Re-Roll-Spin", false);
@@ -229,9 +231,9 @@ public class Crate {
 
         this.maxSlots = this.rows * 9;
 
-        this.crateName = file.getString("Crate.Name", " ");
+        this.crateName = MiscUtils.replacePlaceholders(file.getString("Crate.Name", " "));
 
-        this.animationName = file.getString("Crate.Animation.Name", this.crateName);
+        this.animationName = MiscUtils.replacePlaceholders(file.getString("Crate.Animation.Name", this.crateName));
 
         @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
@@ -241,11 +243,12 @@ public class Crate {
                 //.setItemModel(file.getString("Crate.Preview.Glass.Model.Namespace", ""), file.getString("Crate.Preview.Glass.Model.Id", ""))
                 //.setHidingItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
                 //.setDisplayName(borderName);
+                .withDisplayName(MiscUtils.replacePlaceholders(borderName))
 
         @NotNull final String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
 
         this.previewTierBorderItem = new ItemBuilder(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
-                .withDisplayName(previewTierBorderName);
+                .withDisplayName(MiscUtils.replacePlaceholders(previewTierBorderName));
 
         this.previewTierBorderItem.asCustomBuilder().setCustomModelData(file.getString("Crate.tier-preview.glass.custom-model-data", ""))
                 .setItemModel(file.getString("Crate.tier-preview.glass.model.namespace", ""), file.getString("Crate.tier-preview.glass.model.id", "")).build();

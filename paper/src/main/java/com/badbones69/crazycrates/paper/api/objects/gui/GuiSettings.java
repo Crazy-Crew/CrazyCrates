@@ -44,7 +44,7 @@ public class GuiSettings {
         this.isFillerToggled = configuration.getBoolean("filler.toggle", false);
         this.fillerType = FillerType.getFromName(configuration.getString("filler.fill-type", "border"));
 
-        this.fillerStack = new ItemBuilder(configuration.getString("filler.toggle.material", "red_stained_glass_pane")).withDisplayName(configuration.getString("filler.toggle.name", " ")).asGuiItem();
+        this.fillerStack = new ItemBuilder(MiscUtils.replacePlaceholders(configuration.getString("filler.toggle.material", "red_stained_glass_pane"))).withDisplayName(MiscUtils.replacePlaceholders(configuration.getString("filler.toggle.name", " "))).asGuiItem();
 
         final ConfigurationSection staticButtons = configuration.getConfigurationSection("buttons.static");
 

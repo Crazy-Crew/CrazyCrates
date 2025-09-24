@@ -201,7 +201,7 @@ public class CosmicCrateListener implements Listener {
                 final String tierName = tier.getName();
 
                 // Get item builder.
-                final ItemBuilder builder = cosmicCrateManager.getPickedCrate().addPlaceholder("%Slot%", String.valueOf(pickedSlot));
+                final ItemBuilder builder = cosmicCrateManager.getPickedCrate().addPlaceholder("{Slot}", String.valueOf(pickedSlot));
 
                 // Set the amount.
                 builder.setAmount(pickedSlot);
@@ -222,7 +222,7 @@ public class CosmicCrateListener implements Listener {
             final Tier tier = this.crateManager.getTier(player, slot);
 
             // Get item builder.
-            final ItemBuilder builder = cosmicCrateManager.getMysteryCrate().addPlaceholder("%Slot%", String.valueOf(pickedSlot));
+            final ItemBuilder builder = cosmicCrateManager.getMysteryCrate().addPlaceholder("{Slot}", String.valueOf(pickedSlot));
 
             // Set the amount.
             builder.setAmount(pickedSlot);
@@ -325,9 +325,7 @@ public class CosmicCrateListener implements Listener {
             final boolean broadcastToggle = configuration.getBoolean("Crate.OpeningBroadCast", false);
 
             if (broadcastToggle && !broadcastMessage.isBlank()) {
-                this.server.broadcast(this.fusion.parse(player, broadcastMessage.replaceAll("%crate%", "{crate}")
-                        .replaceAll("%prefix%", "{prefix}")
-                        .replaceAll("%player%", "{player}"), new HashMap<>() {{
+                this.server.broadcast(this.fusion.parse(player, MiscUtils.replacePlaceholders(broadcastMessage), new HashMap<>() {{
                     put("{prefix}", config.getProperty(ConfigKeys.command_prefix));
                     put("{player}", player.getName());
                     put("{crate}", fancyName);

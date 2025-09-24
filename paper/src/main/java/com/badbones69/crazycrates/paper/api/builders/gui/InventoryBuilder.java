@@ -68,7 +68,7 @@ public abstract class InventoryBuilder {
 
                 if (!commands.isEmpty()) {
                     commands.forEach(value -> {
-                        final String command = value.replaceAll("%player%", quoteReplacement(player.getName())).replaceAll("%crate%", quoteReplacement(crate.getFileName()));
+                        final String command = MiscUtils.replacePlaceholders(value.replaceAll("\\{player}", quoteReplacement(player.getName())).replaceAll("\\{crate}", quoteReplacement(crate.getFileName())));
 
                         MiscUtils.sendCommand(command);
                     });
@@ -111,14 +111,14 @@ public abstract class InventoryBuilder {
 
             final int opened = this.userManager.getCrateOpened(uuid, fileName);
 
-            clone = clone.replaceAll("%" + lowerCase + "%", instance.format(virtual))
-                    .replaceAll("%" + lowerCase + "_physical%", instance.format(physical))
-                    .replaceAll("%" + lowerCase + "_total%", instance.format(total))
-                    .replaceAll("%" + lowerCase + "_opened%", instance.format(opened))
-                    .replaceAll("%" + lowerCase + "_raw%", String.valueOf(virtual))
-                    .replaceAll("%" + lowerCase + "_raw_physical%", String.valueOf(physical))
-                    .replaceAll("%" + lowerCase + "_raw_total%", String.valueOf(total))
-                    .replaceAll("%" + lowerCase + "_raw_opened%", String.valueOf(opened));
+            clone = MiscUtils.replacePlaceholders(clone.replaceAll("\\{" + lowerCase + "}", instance.format(virtual))
+                    .replaceAll("\\{" + lowerCase + "_physical}", instance.format(physical))
+                    .replaceAll("\\{" + lowerCase + "_total}", instance.format(total))
+                    .replaceAll("\\{" + lowerCase + "_opened}", instance.format(opened))
+                    .replaceAll("\\{" + lowerCase + "_raw}", String.valueOf(virtual))
+                    .replaceAll("\\{" + lowerCase + "_raw_physical}", String.valueOf(physical))
+                    .replaceAll("\\{" + lowerCase + "_raw_total}", String.valueOf(total))
+                    .replaceAll("\\{" + lowerCase + "_raw_opened}", String.valueOf(opened)));
         }
 
         return clone;
