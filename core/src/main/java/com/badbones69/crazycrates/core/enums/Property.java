@@ -284,7 +284,7 @@ public enum Property {
      * @param message the message to check
      * @return the finalized message to set
      */
-    private String replace(String message) {
+    private String replace(@NotNull final String message) {
         return message.replaceAll("%page%", "{page}")
                 .replaceAll("%prefix%", "{prefix}")
                 .replaceAll("%world%", "{world}")
