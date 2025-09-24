@@ -4,15 +4,14 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import com.ryderbelserion.fusion.core.files.enums.FileAction;
-import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public class LegacyColorMigrator extends ICrateMigrator {
 
@@ -62,19 +61,23 @@ public class LegacyColorMigrator extends ICrateMigrator {
             failed.add("<red>⤷ messages.yml");
         }
 
-        final Collection<ICustomFile<?, ?, ?, ?>> customFiles = this.fileManager.getFiles().values();
+        final List<Path> paths = this.fusion.getFiles(this.dataPath.resolve("crates"), ".yml");
 
-        customFiles.forEach(key -> { //todo() wtf? just list files in the crates folder, this is retarded lol
+        for (final Path path : paths) {
             try {
-                if (!key.hasAction(FileAction.DYNAMIC_FILE) || !key.isLoaded() || key.getFileType() != com.ryderbelserion.fusion.core.files.enums.FileType.PAPER) return;
+                if (!this.fileManager.hasFile(path)) continue;
 
-                final PaperCustomFile customFile = (PaperCustomFile) key;
+                final Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(path);
+
+                if (optional.isEmpty()) continue;
+
+                final PaperCustomFile customFile = optional.get();
 
                 final YamlConfiguration configuration = customFile.getConfiguration();
 
                 final ConfigurationSection section = configuration.getConfigurationSection("Crate");
 
-                if (section == null) return;
+                if (section == null) continue;
 
                 boolean isSave = false;
 
@@ -211,9 +214,9 @@ public class LegacyColorMigrator extends ICrateMigrator {
 
                 success.add("<green>⤷ " + customFile.getFileName());
             } catch (final Exception exception) {
-                failed.add("<red>⤷ " + key.getFileName());
+                failed.add("<red>⤷ " + path.getFileName().toString());
             }
-        });
+        }
 
         final int convertedCrates = success.size();
         final int failedCrates = failed.size();

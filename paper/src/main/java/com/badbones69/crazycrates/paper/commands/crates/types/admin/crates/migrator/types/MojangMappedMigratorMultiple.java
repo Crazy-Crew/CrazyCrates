@@ -2,16 +2,14 @@ package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migr
 
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.fusion.core.files.enums.FileAction;
-import com.ryderbelserion.fusion.core.files.enums.FileType;
-import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public class MojangMappedMigratorMultiple extends ICrateMigrator {
 
@@ -21,24 +19,28 @@ public class MojangMappedMigratorMultiple extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Collection<ICustomFile<?, ?, ?, ?>> customFiles = this.fileManager.getFiles().values();
+        final List<Path> paths = this.fusion.getFiles(this.dataPath.resolve("crates"), ".yml");
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
 
-        customFiles.forEach(key -> { //todo() wtf? just list files in the crates folder, this is retarded lol
+        for (final Path path : paths) {
             try {
-                if (!key.hasAction(FileAction.DYNAMIC_FILE) || !key.isLoaded() || key.getFileType() != FileType.PAPER) return;
+                if (!this.fileManager.hasFile(path)) continue;
 
-                final PaperCustomFile customFile = (PaperCustomFile) key;
+                final Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(path);
+
+                if (optional.isEmpty()) continue;
+
+                final PaperCustomFile customFile = optional.get();
 
                 migrate(customFile, "");
 
                 success.add("<green>⤷ " + customFile.getFileName());
             } catch (final Exception exception) {
-                failed.add("<red>⤷ " + key.getFileName());
+                failed.add("<red>⤷ " + path.getFileName().toString());
             }
-        });
+        }
 
         // reload crates
         this.crateManager.loadHolograms();

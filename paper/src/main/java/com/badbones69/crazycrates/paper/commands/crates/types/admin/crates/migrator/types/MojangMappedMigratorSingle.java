@@ -4,10 +4,10 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.fusion.core.files.enums.FileAction;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +42,9 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
 
         final PaperCustomFile customFile = optional.get();
 
-        if (!customFile.hasAction(FileAction.DYNAMIC_FILE)) { //todo() check if this even is used
+        final YamlConfiguration configuration = customFile.getConfiguration();
+
+        if (!configuration.contains("Crate")) {
             Messages.error_migrating.sendMessage(this.sender, new HashMap<>() {{
                 put("{file}", crateName);
                 put("{type}", type.getName());
