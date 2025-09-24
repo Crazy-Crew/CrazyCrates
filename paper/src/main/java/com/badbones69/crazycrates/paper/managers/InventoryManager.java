@@ -44,7 +44,7 @@ public class InventoryManager {
                 .withDisplayName(this.config.getProperty(ConfigKeys.menu_button_name))
                 .withDisplayLore(this.config.getProperty(ConfigKeys.menu_button_lore));
 
-        final CustomBuilder menuButtonCustomBuilder = this.backButton.asCustomBuilder();
+        final CustomBuilder menuButtonCustomBuilder = this.menuButton.asCustomBuilder();
 
         menuButtonCustomBuilder.setCustomModelData(this.config.getProperty(ConfigKeys.menu_button_model_data));
 
@@ -58,7 +58,7 @@ public class InventoryManager {
                 .withDisplayName(this.config.getProperty(ConfigKeys.next_button_name))
                 .withDisplayLore(this.config.getProperty(ConfigKeys.next_button_lore));
 
-        final CustomBuilder nextButtonCustomBuilder = this.backButton.asCustomBuilder();
+        final CustomBuilder nextButtonCustomBuilder = this.nextButton.asCustomBuilder();
 
         nextButtonCustomBuilder.setCustomModelData(this.config.getProperty(ConfigKeys.next_button_model_data));
 
