@@ -1,15 +1,14 @@
 package com.badbones69.crazycrates.paper.listeners.crates.types;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
+import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import io.papermc.paper.persistence.PersistentDataContainerView;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
@@ -46,11 +45,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class CosmicCrateListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final FusionPaper fusion = this.plugin.getFusion();
 
     private final ComponentLogger logger = this.plugin.getComponentLogger();
 
@@ -201,9 +201,7 @@ public class CosmicCrateListener implements Listener {
                 final String tierName = tier.getName();
 
                 // Get item builder.
-                LegacyItemBuilder builder = cosmicCrateManager.getPickedCrate().setPlayer(player)
-                        .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
-                        .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
+                final ItemBuilder builder = cosmicCrateManager.getPickedCrate().addPlaceholder("{Slot}", String.valueOf(pickedSlot));
 
                 // Set the amount.
                 builder.setAmount(pickedSlot);
@@ -212,7 +210,7 @@ public class CosmicCrateListener implements Listener {
                 cosmicCrateManager.setTier(builder, tierName);
 
                 // Overwrite the current item.
-                event.setCurrentItem(builder.asItemStack());
+                event.setCurrentItem(builder.asItemStack(player));
 
                 // Add the picked prize.
                 cosmicCrateManager.addPickedPrize(player, slot, tier);
@@ -224,9 +222,7 @@ public class CosmicCrateListener implements Listener {
             final Tier tier = this.crateManager.getTier(player, slot);
 
             // Get item builder.
-            LegacyItemBuilder builder = cosmicCrateManager.getMysteryCrate().setPlayer(player)
-                    .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
-                    .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
+            final ItemBuilder builder = cosmicCrateManager.getMysteryCrate().addPlaceholder("{Slot}", String.valueOf(pickedSlot));
 
             // Set the amount.
             builder.setAmount(pickedSlot);
@@ -238,7 +234,7 @@ public class CosmicCrateListener implements Listener {
             cosmicCrateManager.setTier(builder, tierName);
 
             // Overwrite the current item.
-            event.setCurrentItem(builder.asItemStack());
+            event.setCurrentItem(builder.asItemStack(player));
 
             // Remove slot if we click it.
             cosmicCrateManager.removePickedPrize(player, slot);
@@ -328,14 +324,12 @@ public class CosmicCrateListener implements Listener {
             final String broadcastMessage = configuration.getString("Crate.BroadCast", "");
             final boolean broadcastToggle = configuration.getBoolean("Crate.OpeningBroadCast", false);
 
-            if (broadcastToggle) {  //todo() add a permission?
-                if (!broadcastMessage.isBlank()) {
-                    String builder = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
-
-                    this.server.broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName)
-                            .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
-                            .replaceAll("%player%", player.getName())));
-                }
+            if (broadcastToggle && !broadcastMessage.isBlank()) {
+                this.server.broadcast(this.fusion.parse(player, MiscUtils.replacePlaceholders(broadcastMessage), new HashMap<>() {{
+                    put("{prefix}", config.getProperty(ConfigKeys.command_prefix));
+                    put("{player}", player.getName());
+                    put("{crate}", fancyName);
+                }}), Permissions.CRAZYCRATES_BROADCAST.getPermission());
             }
 
             EventManager.logEvent(EventType.event_crate_opened, player.getName(), player, crate, type, 1);

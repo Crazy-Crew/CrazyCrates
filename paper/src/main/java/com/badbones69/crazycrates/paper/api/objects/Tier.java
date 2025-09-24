@@ -2,9 +2,11 @@ package com.badbones69.crazycrates.paper.api.objects;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,9 +19,13 @@ public class Tier {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
+    private final FusionPaper fusion = this.plugin.getFusion();
+
+    private final StringUtils utils = this.fusion.getStringUtils();
+
     private final ComponentLogger logger = this.plugin.getComponentLogger();
 
-    private final LegacyItemBuilder item;
+    private final ItemBuilder item;
     private final String name;
     private final List<String> lore;
     private final String coloredName;
@@ -29,13 +35,19 @@ public class Tier {
     public Tier(@NotNull final String tier, @NotNull final ConfigurationSection section) {
         this.name = tier;
 
-        this.coloredName = section.getString("Name", "");
+        this.coloredName = MiscUtils.replacePlaceholders(section.getString("Name", ""));
 
-        this.lore = section.getStringList("Lore"); // this returns an empty list if not found anyway.
+        this.lore = MiscUtils.replacePlaceholders(section.getStringList("Lore")); // this returns an empty list if not found anyway.
 
-        this.item = new LegacyItemBuilder(this.plugin).withType(section.getString("Item", "chest").toLowerCase()).setHidingItemFlags(section.getBoolean("HideItemFlags", false))
-                .setCustomModelData(section.getString("Custom-Model-Data", ""))
-                .setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
+        this.item = new ItemBuilder(section.getString("Item", "chest").toLowerCase()).withConsumer(consumer -> {
+            if (section.getBoolean("HideItemFlags", false)) {
+                consumer.hideToolTip();
+            }
+
+            consumer.asCustomBuilder()
+                    .setCustomModelData(section.getString("Custom-Model-Data", ""))
+                    .setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", "")).build();
+        });
 
         this.weight = section.getDouble("Weight", -1);
 
@@ -59,7 +71,7 @@ public class Tier {
     /**
      * @return the colored glass pane.
      */
-    public @NotNull final LegacyItemBuilder getItem() {
+    public @NotNull final ItemBuilder getItem() {
         return this.item;
     }
 
@@ -87,9 +99,7 @@ public class Tier {
      * @return the tier item shown in the preview.
      */
     public @NotNull final ItemStack getTierItem(@Nullable final Player target, @NotNull final Crate crate) {
-        if (target != null) this.item.setPlayer(target);
-
-        return this.item.setDisplayName(this.coloredName).setDisplayLore(this.lore).addLorePlaceholder("%chance%", StringUtils.format(crate.getTierChance(getWeight())))
-                .setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), this.name).asItemStack();
+        return this.item.withDisplayName(this.coloredName).withDisplayLore(this.lore).addPlaceholder("{chance}", this.utils.format(crate.getTierChance(getWeight())))
+                .setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), this.name).asItemStack(target == null ? Audience.empty() : target);
     }
 }

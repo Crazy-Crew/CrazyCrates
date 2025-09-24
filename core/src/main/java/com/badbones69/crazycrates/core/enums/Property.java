@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
 import com.badbones69.crazycrates.core.config.impl.messages.ErrorKeys;
 import com.badbones69.crazycrates.core.config.impl.messages.MiscKeys;
 import com.badbones69.crazycrates.core.config.impl.messages.PlayerKeys;
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -283,7 +284,7 @@ public enum Property {
      * @param message the message to check
      * @return the finalized message to set
      */
-    private String replace(String message) {
+    private String replace(@NotNull final String message) {
         return message.replaceAll("%page%", "{page}")
                 .replaceAll("%prefix%", "{prefix}")
                 .replaceAll("%world%", "{world}")

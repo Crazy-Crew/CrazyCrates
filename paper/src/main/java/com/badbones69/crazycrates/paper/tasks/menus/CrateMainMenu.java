@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.tasks.menus;
 
 import com.badbones69.crazycrates.core.config.beans.ModelData;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
@@ -10,17 +9,18 @@ import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.Gui;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.Gui;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiFiller;
+import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
-import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.text.NumberFormat;
@@ -44,18 +44,24 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
             final ModelData fillerModel = this.config.getProperty(ConfigKeys.filler_item_model);
 
-            guiFiller.fill(new LegacyItemBuilder(this.plugin)
-                    .withType(this.config.getProperty(ConfigKeys.filler_item))
-                    .setDisplayName(this.config.getProperty(ConfigKeys.filler_name))
-                    .setDisplayLore(this.config.getProperty(ConfigKeys.filler_lore))
-                    .setCustomModelData(this.config.getProperty(ConfigKeys.filler_model_data))
-                    .setItemModel(fillerModel.getNamespace(), fillerModel.getId())
-                    .asGuiItem());
+            final ItemBuilder itemBuilder = new ItemBuilder(this.config.getProperty(ConfigKeys.filler_item))
+                    .withDisplayName(this.config.getProperty(ConfigKeys.filler_name))
+                    .withDisplayLore(this.config.getProperty(ConfigKeys.filler_lore));
+
+            final CustomBuilder customBuilder = itemBuilder.asCustomBuilder();
+
+            customBuilder.setCustomModelData(this.config.getProperty(ConfigKeys.filler_model_data));
+
+            customBuilder.setItemModel(fillerModel.getNamespace(), fillerModel.getId());
+
+            customBuilder.build();
+
+            guiFiller.fill(itemBuilder.asGuiItem());
         }
 
         if (this.config.getProperty(ConfigKeys.gui_customizer_toggle)) {
             for (String custom : this.config.getProperty(ConfigKeys.gui_customizer)) {
-                final LegacyItemBuilder item = new LegacyItemBuilder(this.plugin);
+                final ItemBuilder item = new ItemBuilder(ItemType.STONE);
 
                 int slot = 0;
 
@@ -64,8 +70,8 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                     String value = key.replace(option + ":", "").replace(option, "");
 
                     switch (option.toLowerCase()) {
-                        case "item" -> item.withType(value.toLowerCase());
-                        case "name" -> item.setDisplayName(getCrates(value).replace("{player}", player.getName()));
+                        case "item" -> item.withCustomItem(value.toLowerCase());
+                        case "name" -> item.withDisplayName(getCrates(value).replace("{player}", player.getName()));
 
                         case "lore" -> {
                             String[] lore = value.split(",");
@@ -75,25 +81,29 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                             }
                         }
 
-                        case "custom-model-data" -> item.setCustomModelData(value);
+                        case "custom-model-data" -> item.asCustomBuilder().setCustomModelData(value).build();
 
-                        case "glowing" -> item.setGlowing(StringUtils.tryParseBoolean(value).orElse(false));
+                        case "glowing" -> item.addEnchantGlint(this.utils.tryParseBoolean(value).orElse(false));
 
-                        case "slot" -> slot = StringUtils.tryParseInt(value).orElse(-1).intValue();
+                        case "slot" -> slot = this.utils.tryParseInt(value).orElse(-1).intValue();
 
-                        case "unbreakable-item" -> item.setUnbreakable(StringUtils.tryParseBoolean(value).orElse(false));
+                        case "unbreakable-item" -> item.setUnbreakable(this.utils.tryParseBoolean(value).orElse(false));
 
-                        case "hide-item-flags" -> item.setHidingItemFlags(StringUtils.tryParseBoolean(value).orElse(false));
+                        case "hide-item-flags" -> {
+                            if (this.utils.tryParseBoolean(value).orElse(false)) {
+                                item.hideToolTip();
+                            }
+                        }
 
                         case "command" -> MiscUtils.sendCommand(value);
                     }
                 }
 
-                this.gui.setItem(slot, item.setPlayer(this.player).asGuiItem());
+                this.gui.setItem(slot, item.asGuiItem(this.player));
             }
         }
 
-        for (Crate crate : this.crateManager.getUsableCrates()) {
+        for (final Crate crate : this.crateManager.getUsableCrates()) {
             final YamlConfiguration file = crate.getFile();
 
             final ConfigurationSection section = file.getConfigurationSection("Crate");
@@ -113,23 +123,23 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                     final NumberFormat instance = NumberFormat.getNumberInstance();
 
-                    final LegacyItemBuilder builder = new LegacyItemBuilder(this.plugin)
-                            .withType(section.getString("Item", "chest").toLowerCase())
-                            .setDisplayName(crate.getCrateName())
-                            .setCustomModelData(section.getString("Custom-Model-Data", ""))
-                            .setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""))
-                            .addLorePlaceholder("%keys%", instance.format(virtualKeys))
-                            .addLorePlaceholder("%keys_physical%", instance.format(physicalKeys))
-                            .addLorePlaceholder("%keys_total%", instance.format(totalKeys))
-                            .addLorePlaceholder("%crate_opened%", instance.format(openedCrates))
-                            .addLorePlaceholder("%keys_raw%", String.valueOf(virtualKeys))
-                            .addLorePlaceholder("%keys_physical_raw%", String.valueOf(physicalKeys))
-                            .addLorePlaceholder("%keys_total_raw%", String.valueOf(totalKeys))
-                            .addLorePlaceholder("%crate_opened_raw", String.valueOf(openedCrates))
-                            .addLorePlaceholder("%player%", this.player.getName())
-                            .setPersistentString(ItemKeys.crate_key.getNamespacedKey(), fileName);
+                    final ItemBuilder builder = new ItemBuilder(section.getString("Item", "chest").toLowerCase())
+                            .withDisplayName(crate.getCrateName())
+                            .addPlaceholder("{keys}", instance.format(virtualKeys))
+                            .addPlaceholder("{keys_physical}", instance.format(physicalKeys))
+                            .addPlaceholder("{keys_total}", instance.format(totalKeys))
+                            .addPlaceholder("{crate_opened}", instance.format(openedCrates))
+                            .addPlaceholder("{keys_raw}", String.valueOf(virtualKeys))
+                            .addPlaceholder("{keys_physical_raw}", String.valueOf(physicalKeys))
+                            .addPlaceholder("{keys_total_raw}", String.valueOf(totalKeys))
+                            .addPlaceholder("{crate_opened_raw}", String.valueOf(openedCrates))
+                            .addPlaceholder("{player}", this.player.getName())
+                            .setPersistentString(ItemKeys.crate_key.getNamespacedKey(), fileName).withConsumer(consumer -> {
+                                consumer.asCustomBuilder().setCustomModelData(section.getString("Custom-Model-Data", ""))
+                                        .setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", "")).build();
+                            });
 
-                    this.gui.setItem(slot, ItemUtils.getItem(section, builder, this.player).asGuiItem(event -> {
+                    this.gui.setItem(slot, ItemUtils.getItem(section, builder).asGuiItem(this.player, event -> {
                         final String fancyName = crate.getCrateName();
 
                         switch (event.getClick()) {

@@ -20,14 +20,14 @@ Crate:
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
-  BroadCast: "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><gradient:#E43A96:#FF91EA>Cosmic Crate.</gradient></bold>"
+  BroadCast: "{prefix}<bold><gold>{player}</bold><reset> <gray>is opening a <bold><gradient:#E43A96:#FF91EA>Cosmic Crate.</gradient></bold>"
   # This section is related to commands opening when a crate is opened.
   opening-command:
     # If the commands should be sent or not.
     toggle: false
     # The commands to run when the crate opens.
     # Supports all placeholderapi placeholders
-    # Supports %prefix which returns our prefix, %player% which uses the player name
+    # Supports %prefix which returns our prefix, {player} which uses the player name
     commands:
       - "put your command here."
   sound:
@@ -67,7 +67,7 @@ Crate:
   # A default message if the prize doesn't have any Messages
   # i.e. Messages: [] or the value isn't there.
   Prize-Message:
-    - "<gray>You have won <red>%reward% <gray>from <red>%crate%."
+    - "<gray>You have won <red>{reward} <gray>from <red>{crate}."
   # A list of commands to run by default on every prize.
   # If you do not want these commands to run, set this to []
   Prize-Commands: []
@@ -79,7 +79,7 @@ Crate:
       Toggle: false
       # The messages to broadcast.
       Messages:
-        - "<red>%player% won the prize <yellow>%reward%."
+        - "<red>{player} won the prize <yellow>{reward}."
       # If the player has this permission, they don't get the broadcast.
       Permission: ""
   # Item the crate is in the GUI
@@ -100,8 +100,8 @@ Crate:
   # The lore of the item in the GUI.
   Lore:
     - "<gray>This crate contains strange objects."
-    - "<gray>You have <gold>%keys% keys <gray>to open this crate with."
-    - "<gray>You have opened this crate: <gold>%crate_opened% times"
+    - "<gray>You have <gold>{keys} keys <gray>to open this crate with."
+    - "<gray>You have opened this crate: <gold>{crate_opened} times"
     - "<gray>(<yellow>!<gray>) Right click to view rewards."
   Preview:
     # The name of the inventory for the preview menu.
@@ -163,7 +163,7 @@ Crate:
       # The in-game lore of the tier.
       Lore:
         - "<gray>A basic tier."
-        - "<red>%chance%%</red>"
+        - "<red>{chance}%</red>"
       # The item used for the secondary gui when you right-click for the preview.
       Item: "chest"
       # The custom model data of the item, -1 is disabled.
@@ -185,7 +185,7 @@ Crate:
       # The in-game lore of the tier.
       Lore:
         - "<green>An uncommon tier."
-        - "<red>%chance%%</red>"
+        - "<red>{chance}%</red>"
       # The item used for the secondary gui when you right-click for the preview.
       Item: "chest"
       # The custom model data of the item, -1 is disabled.
@@ -207,7 +207,7 @@ Crate:
       # The in-game lore of the tier.
       Lore:
         - "<red>A rare tier."
-        - "<red>%chance%%</red>"
+        - "<red>{chance}%</red>"
       # The item used for the secondary gui when you right-click for the preview.
       Item: "ender_chest"
       # The custom model data of the item, -1 is disabled.
@@ -298,7 +298,7 @@ Crate:
       Name: "<bold><white>???</bold>"
       # The lore of the picked crate.
       Lore:
-        - "<gray>You have chosen #%slot%."
+        - "<gray>You have chosen #{slot}."
   # All the prizes that can be obtained in the Crate.
   Prizes:
     "1":
@@ -367,7 +367,7 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gray>Win a cheap helmet."
-        - "<bold><gold>Chance: <red>%chance%</bold>"
+        - "<bold><gold>Chance: <red>{chance}</bold>"
       # The tiers the prize can be won from.
       Tiers:
         - "Basic"
@@ -399,7 +399,7 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gray>Make it rain Money."
-        - "<bold><gold>Chance: <red>%chance%</bold>"
+        - "<bold><gold>Chance: <red>{chance}</bold>"
       # If the prize should spawn fireworks.
       Firework: true
       # The tiers the prize can be won from.
@@ -409,7 +409,7 @@ Crate:
         - "Rare"
       # The commands to run.
       Commands:
-        - "eco give %player% 1000"
+        - "eco give {player} 1000"
     "4":
       # The name of the item to display in the gui.
       DisplayName: "<bold><blue>Crazy <dark_red>Sword</bold>"
@@ -440,7 +440,7 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gray>Win a crazy cool sword."
-        - "<bold><gold>Chance: <red>%chance%</bold>"
+        - "<bold><gold>Chance: <red>{chance}</bold>"
       # The tiers the prize can be won from.
       Tiers:
         - "Rare"
@@ -470,7 +470,7 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gray>Make it rain a butt load of Money."
-        - "<bold><gold>Chance: <red>%chance%</bold>"
+        - "<bold><gold>Chance: <red>{chance}</bold>"
       # If the prize should spawn fireworks.
       Firework: true
       # The tiers the prize can be won from.
@@ -478,7 +478,7 @@ Crate:
         - "Rare"
       # The commands to run.
       Commands:
-        - "eco give %player% 1000000"
+        - "eco give {player} 1000000"
     "6":
       # The name of the item to display in the gui.
       DisplayName: "<bold><blue>Crazy Crate <gold>Key <gray>(x2)</bold>"
@@ -503,7 +503,7 @@ Crate:
       DisplayLore:
         - "<gray>A special Key"
         - "<gray>For a special Crate."
-        - "<bold><gold>Chance: <red>%chance%</bold>"
+        - "<bold><gold>Chance: <red>{chance}</bold>"
       # If the prize should spawn fireworks.
       Firework: true
       # If the display item should glow.
@@ -514,4 +514,4 @@ Crate:
         - "Rare"
       # The commands to run.
       Commands:
-        - "crates give physical CrateExample 2 %player%"
+        - "crates give physical CrateExample 2 {player}"

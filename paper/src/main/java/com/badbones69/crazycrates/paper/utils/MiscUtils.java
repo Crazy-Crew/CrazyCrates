@@ -1,12 +1,11 @@
 package com.badbones69.crazycrates.paper.utils;
 
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
-import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.scheduler.Scheduler;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.*;
@@ -82,39 +81,40 @@ public class MiscUtils {
         dropItems(items, player);
     }
 
-    public static void dropLegacyBuilders(@NotNull final List<LegacyItemBuilder> builders, @NotNull final Player player) {
-        if (builders.isEmpty()) return;
+    public static String replacePlaceholders(@NotNull final String value) {
+        return !value.isEmpty() ? value.replaceAll("%keys%", "{keys}").replaceAll("%keys_physical%", "{keys_physical}")
+                .replaceAll("%keys_total%", "{keys_total}")
+                .replaceAll("%crate_opened%", "{crate_opened}")
+                .replaceAll("%keys_raw%", "{keys_raw}")
+                .replaceAll("%keys_physical_raw%", "{keys_physical_raw}")
+                .replaceAll("%keys_total_raw%", "{keys_total_raw}")
+                .replaceAll("%crate_opened_raw%", "{crate_opened_raw}")
+                .replaceAll("%player%", "{player}")
+                .replaceAll("%prefix%", "{prefix}")
+                .replaceAll("%crate%", "{crate}"): "";
+    }
 
-        final boolean isPlaceholderAPIEnabled = Plugins.placeholder_api.isEnabled();
+    public static List<String> replacePlaceholders(@NotNull final List<String> values) {
+        final List<String> lore = new ArrayList<>();
 
-        final List<ItemStack> items = new ArrayList<>();
+        if (values.isEmpty()) return lore;
 
-        for (final LegacyItemBuilder builder : builders) {
-            if (isPlaceholderAPIEnabled) {
-                final String displayName = builder.getDisplayName();
+        for (final String value : values) {
+            if (value.isEmpty()) {
+                lore.add(value);
 
-                if (!displayName.isEmpty()) {
-                    builder.setDisplayName(PlaceholderAPI.setPlaceholders(player, displayName));
-                }
-
-                final List<String> displayLore = builder.getDisplayLore();
-
-                if (!displayLore.isEmpty()) {
-                    List<String> lore = new ArrayList<>();
-
-                    displayLore.forEach(line -> lore.add(PlaceholderAPI.setPlaceholders(player, line)));
-
-                    builder.setDisplayLore(lore);
-                }
+                continue;
             }
 
-            items.add(builder.asItemStack());
+            lore.add(replacePlaceholders(value));
         }
 
-        dropItems(items, player);
+        return lore;
     }
 
     public static void dropItems(@NotNull final List<ItemStack> items, @NotNull final Player player) {
+        if (items.isEmpty()) return;
+
         final Location location = player.getLocation();
 
         new FoliaScheduler(plugin, location) {
@@ -128,6 +128,8 @@ public class MiscUtils {
     }
 
     public static void dropItem(@NotNull final Player player, @NotNull final ItemStack itemStack, @NotNull final Location location, final boolean execute) {
+        if (itemStack.isEmpty()) return;
+
         final boolean isInventoryEmpty = MiscUtils.isInventoryFull(player);
 
         final World world = player.getWorld();
@@ -401,7 +403,7 @@ public class MiscUtils {
         return useDifferentRandom() ? ThreadLocalRandom.current() : new Random();
     }
 
-    public static LegacyItemBuilder getRandomPaneColor() {
+    public static ItemBuilder getRandomPaneColor() {
         List<ItemType> panes = Arrays.asList(
                 ItemType.LIGHT_BLUE_STAINED_GLASS_PANE,
                 ItemType.MAGENTA_STAINED_GLASS_PANE,
@@ -419,7 +421,7 @@ public class MiscUtils {
                 ItemType.RED_STAINED_GLASS_PANE
         );
 
-        return new LegacyItemBuilder(plugin, panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
+        return new ItemBuilder(panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
     }
 
     public static void addItem(@NotNull final Player player, @NotNull final ItemStack... items) {

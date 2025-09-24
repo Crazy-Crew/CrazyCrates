@@ -3,9 +3,10 @@ package com.badbones69.crazycrates.paper.api.enums;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
 import com.badbones69.crazycrates.core.enums.State;
+import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import org.bukkit.command.CommandSender;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.messages.CommandKeys;
@@ -134,6 +135,12 @@ public enum Messages {
 
     private final SettingsManager messages = ConfigManager.getMessages();
 
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final FusionPaper fusion = this.plugin.getFusion();
+
+    private final StringUtils utils = this.fusion.getStringUtils();
+
     private boolean isList() {
         return this.isList;
     }
@@ -195,7 +202,7 @@ public enum Messages {
         if (msg.isBlank()) return;
 
         if (sender instanceof Player player) {
-            player.sendActionBar(AdvUtils.parse(msg));
+            player.sendActionBar(this.utils.parseComponent(msg));
         }
     }
 
@@ -205,7 +212,7 @@ public enum Messages {
         if (msg.isBlank()) return;
 
         if (sender instanceof Player player) {
-            player.sendActionBar(AdvUtils.parse(msg));
+            player.sendActionBar(this.utils.parseComponent(msg));
         }
     }
 
@@ -215,7 +222,7 @@ public enum Messages {
         if (msg.isBlank()) return;
 
         if (sender instanceof Player player) {
-            player.sendActionBar(AdvUtils.parse(msg));
+            player.sendActionBar(this.utils.parseComponent(msg));
         }
     }
 
@@ -245,19 +252,19 @@ public enum Messages {
 
     public void migrate() {
         if (this.isList) {
-            this.messages.setProperty(this.properties, AdvUtils.convert(this.messages.getProperty(this.properties), true));
+            this.messages.setProperty(this.properties, this.utils.convertLegacy(this.messages.getProperty(this.properties), true));
 
             return;
         }
 
-        this.messages.setProperty(this.property, AdvUtils.convert(this.messages.getProperty(this.property), true));
+        this.messages.setProperty(this.property, this.utils.convertLegacy(this.messages.getProperty(this.property), true));
     }
 
     private @NotNull String parse(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
         String message;
 
         if (isList()) {
-            message = StringUtils.toString(getList());
+            message = this.utils.toString(getList());
         } else {
             message = getString();
         }

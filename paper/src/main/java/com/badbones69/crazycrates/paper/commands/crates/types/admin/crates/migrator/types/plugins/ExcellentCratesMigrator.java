@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import io.papermc.paper.datacomponent.DataComponentTypes;
@@ -130,7 +129,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                 failed.add("<red>⤷ " + crateName);
             }
 
-            final PaperCustomFile customFile = new PaperCustomFile(crateFile.toPath(), new ArrayList<>()).load();
+            final PaperCustomFile customFile = new PaperCustomFile(this.fileManager, crateFile.toPath(), consumer -> {}).load();
 
             final YamlConfiguration configuration = customFile.getConfiguration();
 
@@ -178,14 +177,14 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             if (file.exists()) {
                 final YamlConfiguration menuFile = YamlConfiguration.loadConfiguration(file);
 
-                final String previewName = menuFile.getString("Crate.Name", "<bold><#9af7ff>%crate%</bold>").replace("%crate_name%", "%crate%").replace("%crate%", strippedName);
+                final String previewName = menuFile.getString("Crate.Name", "<bold><#9af7ff>{crate}</bold>").replace("%crate_name%", "{crate}").replace("{crate}", strippedName);
 
                 final List<String> previewLore = new ArrayList<>();
 
                 menuFile.getStringList("Crate.Lore").forEach(line -> previewLore.add(line.replaceAll("<l", "<").replaceAll("</l", "</")));
 
-                set(root, "Name", AdvUtils.convert(previewName));
-                set(root, "Lore", AdvUtils.convert(previewLore));
+                set(root, "Name", this.utils.convertLegacy(previewName));
+                set(root, "Lore", this.utils.convertLegacy(previewLore));
 
                 final org.bukkit.configuration.ConfigurationSection section = menuFile.getConfigurationSection("Crate.Slots");
 
@@ -205,7 +204,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             set(root, "Preview.Toggle", true);
             set(root, "Preview.ChestLines", 6);
-            set(root, "Preview.Name", AdvUtils.convert(crate.getName()));
+            set(root, "Preview.Name", this.utils.convertLegacy(crate.getName()));
             set(root, "Preview.Glass.Toggle", true);
             set(root, "Preview.Glass.Name", " ");
             set(root, "Preview.Glass.Item", "gray_stained_glass_pane");
@@ -219,7 +218,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             set(root, "Max-Mass-Open", 10);
 
             set(root, "OpeningBroadCast", false);
-            set(root, "BroadCast", "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><green>%crate%.</bold>".replace("%crate%", AdvUtils.convert(crate.getName())));
+            set(root, "BroadCast", "{prefix}<bold><gold>{player}</bold><reset> <gray>is opening a <bold><green>{crate}.</bold>".replace("{crate}", this.utils.convertLegacy(crate.getName())));
 
             set(root, "opening-command.toggle", false);
             set(root, "opening-command.commands", List.of("put your command here."));
@@ -239,7 +238,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             set(root, "sound.stop-sound.volume", 1.0);
             set(root, "sound.stop-sound.pitch", 1.0);
 
-            set(root, "Prize-Message", List.of("<gray>You have won <red>%reward% <gray>from <red>%crate%."));
+            set(root, "Prize-Message", List.of("<gray>You have won <red>{reward} <gray>from <red>{crate}."));
 
             final ItemStack crateItem = crate.getItem();
 
@@ -247,7 +246,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             final String itemName = crateConfig.getString("Item.Name", "");
 
-            set(root, "Preview-Name", AdvUtils.convert(itemName.isEmpty() ? crateConfig.getString("Name", "%crate%").replace("%crate%", strippedName) : itemName + " Preview"));
+            set(root, "Preview-Name", this.utils.convertLegacy(itemName.isEmpty() ? crateConfig.getString("Name", "{crate}").replace("{crate}", strippedName) : itemName + " Preview"));
 
             if (crateItem.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
                 @Nullable final CustomModelData builder = crateItem.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
@@ -278,7 +277,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                         crate.getName()
                 );
 
-                hologramText.add(AdvUtils.convert(filtered));
+                hologramText.add(this.utils.convertLegacy(filtered));
             });
 
             set(root, "Hologram.Message", hologramText);
@@ -294,10 +293,10 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 set(root, "PhysicalKey.Data", ItemUtils.toBase64(itemStack));
 
-                set(root, "PhysicalKey.Name", AdvUtils.convert(key.getName().replace("#", "#&")));
+                set(root, "PhysicalKey.Name", this.utils.convertLegacy(key.getName().replace("#", "#&")));
                 set(root, "PhysicalKey.Item", itemStack.getType().getKey().getKey());
 
-                set(root, "PhysicalKey.Lore", AdvUtils.convert(key.getConfig().getStringList("Lore")));
+                set(root, "PhysicalKey.Lore", this.utils.convertLegacy(key.getConfig().getStringList("Lore")));
 
                 set(root, "PhysicalKey.Glowing", config.contains("Item.Enchants"));
             }
@@ -315,12 +314,12 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                         final List<Component> lore = itemLore.lines();
 
                         if (!lore.isEmpty()) {
-                            set(root, "Prizes." + id + ".DisplayLore", AdvUtils.fromComponent(lore));
+                            set(root, "Prizes." + id + ".DisplayLore", this.utils.fromComponent(lore));
                         }
                     }
                 }
 
-                set(root, "Prizes." + id + ".DisplayName", AdvUtils.convert(reward.getName().replace("#", "#&")));
+                set(root, "Prizes." + id + ".DisplayName", this.utils.convertLegacy(reward.getName().replace("#", "#&")));
 
                 set(root, "Prizes." + id + ".Commands", reward.getCommands());
 
@@ -369,7 +368,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                 });
             });
 
-            this.fileManager.addFile(customFile.save());
+            this.fileManager.addPaperFile(customFile.save());
 
             success.add("<green>⤷ " + crateName);
         }

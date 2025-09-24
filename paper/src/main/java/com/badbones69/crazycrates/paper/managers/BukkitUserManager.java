@@ -7,8 +7,8 @@ import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
 import org.bukkit.Server;
@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class BukkitUserManager extends UserManager {
@@ -833,14 +832,10 @@ public class BukkitUserManager extends UserManager {
      * @param crate the crate
      * @return the itembuilder
      */
-    public LegacyItemBuilder addPlaceholders(@NotNull final LegacyItemBuilder itemBuilder, @NotNull final Crate crate) {
+    public ItemBuilder addPlaceholders(@NotNull final ItemBuilder itemBuilder, @NotNull final UUID uuid, @NotNull final Crate crate) {
         final String fileName = crate.getFileName();
 
         if (fileName.isEmpty()) return itemBuilder;
-
-        final UUID uuid = itemBuilder.getPlayer();
-
-        if (uuid == null) return itemBuilder;
 
         final int virtualKeys = getVirtualKeys(uuid, fileName);
         final int physicalKeys = getPhysicalKeys(uuid, fileName);
@@ -851,13 +846,13 @@ public class BukkitUserManager extends UserManager {
 
         final NumberFormat instance = NumberFormat.getNumberInstance();
 
-        return itemBuilder.addNamePlaceholder("%keys%", instance.format(virtualKeys))
-                .addNamePlaceholder("%keys_physical%", instance.format(physicalKeys))
-                .addNamePlaceholder("%keys_total%", instance.format(totalKeys))
-                .addNamePlaceholder("%crate_opened%", instance.format(openedCrates))
-                .addNamePlaceholder("%keys_raw%", String.valueOf(virtualKeys))
-                .addNamePlaceholder("%keys_physical_raw%", String.valueOf(physicalKeys))
-                .addNamePlaceholder("%keys_total_raw%", String.valueOf(totalKeys))
-                .addNamePlaceholder("%crate_opened_raw", String.valueOf(openedCrates));
+        return itemBuilder.addPlaceholder("{keys}", instance.format(virtualKeys))
+                .addPlaceholder("{keys_physical}", instance.format(physicalKeys))
+                .addPlaceholder("{keys_total}", instance.format(totalKeys))
+                .addPlaceholder("{crate_opened}", instance.format(openedCrates))
+                .addPlaceholder("{keys_raw}", String.valueOf(virtualKeys))
+                .addPlaceholder("{keys_physical_raw}", String.valueOf(physicalKeys))
+                .addPlaceholder("{keys_total_raw}", String.valueOf(totalKeys))
+                .addPlaceholder("{crate_opened_raw}", String.valueOf(openedCrates));
     }
 }

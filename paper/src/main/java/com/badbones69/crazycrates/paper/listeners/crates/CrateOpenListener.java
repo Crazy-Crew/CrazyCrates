@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.paper.listeners.crates;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
@@ -12,7 +13,7 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -20,11 +21,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
+import java.util.HashMap;
 import java.util.List;
 
 public class CrateOpenListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final FusionPaper fusion = this.plugin.getFusion();
 
     private final Server server = this.plugin.getServer();
 
@@ -90,14 +94,12 @@ public class CrateOpenListener implements Listener {
         final String broadcastMessage = configuration.getString("Crate.BroadCast", "");
         final boolean broadcastToggle = configuration.getBoolean("Crate.OpeningBroadCast", false);
 
-        if (broadcastToggle && crateType != CrateType.cosmic && !event.isSilent()) { //todo() add a permission?
-            if (!broadcastMessage.isBlank()) {
-                final String builder = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
-
-                this.server.broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName)
-                        .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
-                        .replaceAll("%player%", playerName)));
-            }
+        if (broadcastToggle && crateType != CrateType.cosmic && !event.isSilent() && !broadcastMessage.isBlank()) {
+            this.server.broadcast(this.fusion.parse(player, MiscUtils.replacePlaceholders(broadcastMessage), new HashMap<>() {{
+                put("{prefix}", config.getProperty(ConfigKeys.command_prefix));
+                put("{player}", player.getName());
+                put("{crate}", fancyName);
+            }}), Permissions.CRAZYCRATES_BROADCAST.getPermission());
         }
 
         final boolean commandToggle = configuration.contains("Crate.opening-command") && configuration.getBoolean("Crate.opening-command.toggle");
@@ -110,11 +112,11 @@ public class CrateOpenListener implements Listener {
                     String builder;
 
                     if (Plugins.placeholder_api.isEnabled() ) {
-                        builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%crate%", fileName)
-                                .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
-                                .replaceAll("%player%", playerName));
+                        builder = PlaceholderAPI.setPlaceholders(player, MiscUtils.replacePlaceholders(line.replaceAll("\\{crate}", fileName)
+                                .replaceAll("\\{prefix}", this.config.getProperty(ConfigKeys.command_prefix))
+                                .replaceAll("\\{player}", playerName)));
                     } else {
-                        builder = line.replaceAll("%crate%", fileName).replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix)).replaceAll("%player%", playerName);
+                        builder = MiscUtils.replacePlaceholders(line.replaceAll("\\{crate}", fileName).replaceAll("\\{prefix}", this.config.getProperty(ConfigKeys.command_prefix)).replaceAll("\\{player}", playerName));
                     }
 
                     MiscUtils.sendCommand(builder);

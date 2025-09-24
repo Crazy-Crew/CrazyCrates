@@ -4,9 +4,9 @@ import com.badbones69.crazycrates.paper.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.Gui;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.Gui;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiFiller;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiItem;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
@@ -37,7 +37,7 @@ public class CrateTierMenu extends StaticInventoryBuilder {
         final boolean isPreviewBorderEnabled = this.crate.isPreviewTierBorderToggle();
 
         if (isPreviewBorderEnabled) {
-            final GuiItem guiItem = this.crate.getPreviewTierBorderItem().setPlayer(this.player).asGuiItem();
+            final GuiItem guiItem = this.crate.getPreviewTierBorderItem().asGuiItem(this.player);
 
             final GuiFiller guiFiller = this.gui.getFiller();
 

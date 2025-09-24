@@ -124,7 +124,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
      * @return true or false
      */
     public boolean isFurniture(@NotNull final Location location) {
-        final String pluginName = this.plugin.getFusion().getItemsPlugin().toLowerCase();
+        final String pluginName = this.plugin.getFusion().getCustomItemsPlugin().toLowerCase();
 
         boolean isFurniture = false;
 

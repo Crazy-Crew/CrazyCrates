@@ -15,7 +15,9 @@ public class MsgUtils {
 
         final boolean sendPrefix = !prefix.isEmpty() && prefixToggle;
 
-        final String msg = sendPrefix ? message.replaceAll("%prefix%", quoteReplacement(prefix)).replaceAll("%Prefix%", quoteReplacement(prefix)) : message;
+        final String msg = sendPrefix ? MiscUtils.replacePlaceholders(message
+                .replaceAll("\\{prefix}", quoteReplacement(prefix))
+                .replaceAll("\\{Prefix}", quoteReplacement(prefix))) : message;
 
         sender.sendRichMessage(msg);
     }
