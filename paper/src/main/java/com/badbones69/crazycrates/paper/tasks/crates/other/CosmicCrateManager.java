@@ -49,7 +49,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
         }
 
         this.mysteryCrate.asCustomBuilder().setCustomModelData(file.getString(path + "Mystery-Crate.Custom-Model-Data", ""))
-                .setItemModel(file.getString(path = "Mystery-Crate.Model.Namespace", ""), file.getString(path + "Mystery-Crate.Model.Id", "")).build();
+                .setItemModel(file.getString(path + "Mystery-Crate.Model.Namespace", ""), file.getString(path + "Mystery-Crate.Model.Id", "")).build();
 
         this.pickedCrate = new ItemBuilder(file.getString(path + "Picked-Crate.Item", "gray_stained_glass_pane").toLowerCase())
                 .withDisplayName(MiscUtils.replacePlaceholders(file.getString(path + "Picked-Crate.Name", "<bold><white>???</white>")))
@@ -61,7 +61,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
         }
 
         this.pickedCrate.asCustomBuilder().setCustomModelData(file.getString(path + "Picked-Crate.Custom-Model-Data", ""))
-                .setItemModel(file.getString(path = "Picked-Crate.Model.Namespace", ""), file.getString(path + "Picked-Crate.Model.Id", "")).build();
+                .setItemModel(file.getString(path + "Picked-Crate.Model.Namespace", ""), file.getString(path + "Picked-Crate.Model.Id", "")).build();
     }
 
     /**
