@@ -163,7 +163,7 @@ public class ItemUtils {
         
         builder.withDisplayLore(MiscUtils.replacePlaceholders(section.getStringList("Lore")));
 
-        //builder.addPatterns(section.getStringList("Patterns"));
+        //builder.addPatterns(section.getStringList("Patterns")); //todo() yo
 
         //builder.setHidingItemFlags(section.getBoolean("HideItemFlags", false) || !section.getStringList("Flags").isEmpty());
 
