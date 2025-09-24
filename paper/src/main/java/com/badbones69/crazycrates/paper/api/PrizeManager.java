@@ -190,7 +190,7 @@ public class PrizeManager {
     private static void runCommands(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, @NotNull String command) {
         String cmd = command.contains("%random%") ? command.replaceAll("%random%:", "{random}:") : command;
 
-        if (command.contains("{random}:")) {
+        if (cmd.contains("{random}:")) {
             final StringBuilder commandBuilder = new StringBuilder();
 
             for (String word : cmd.split(" ")) {
