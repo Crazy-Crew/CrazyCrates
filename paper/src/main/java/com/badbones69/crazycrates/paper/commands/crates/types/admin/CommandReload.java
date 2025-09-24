@@ -31,7 +31,7 @@ public class CommandReload extends BaseCommand {
                 .addPaperFile(this.path.resolve("guis").resolve("respin-gui.yml"))
                 .addPaperFolder(this.path.resolve("crates"))
 
-                .addPaperFolder(this.path.resolve("schematics")) //todo() bump fusion api to use addNbtFolder
+                .addNbtFolder(this.path.resolve("schematics"))
 
                 .addFolder(this.path.resolve("logs"), FileType.LOG);
 
