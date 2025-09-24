@@ -80,7 +80,7 @@ public class CrazyCrates extends JavaPlugin {
                 .addPaperFile(path.resolve("data.yml"))
                 .addPaperFile(path.resolve("guis").resolve("respin-gui.yml"))
                 .addPaperFolder(path.resolve("crates"))
-                .addFolder(path.resolve("schematics"), FileType.NBT, consumer -> consumer.addAction(FileAction.EXTRACT_FOLDER))
+                .addNbtFolder(path.resolve("schematics"))
                 .addFolder(path.resolve("logs"), FileType.LOG, consumer -> consumer.addAction(FileAction.EXTRACT_FOLDER));
 
         MiscUtils.janitor();
