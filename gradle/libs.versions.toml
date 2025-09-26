@@ -1,7 +1,7 @@
 [versions]
 ## Paper
-paperweight = "2.0.0-beta.17" # https://github.com/PaperMC/paperweight
-paper = "1.21.7-R0.1-SNAPSHOT" # https://github.com/PaperMC/Paper
+paperweight = "2.0.0-beta.18" # https://github.com/PaperMC/paperweight
+paper = "1.21.8-R0.1-SNAPSHOT" # https://github.com/PaperMC/Paper
 
 ## SpongePowered
 configurate = "4.2.0" # https://github.com/SpongePowered/Configurate
