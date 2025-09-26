@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.fix.javadoc)
 
-    `maven-publish`
     `config-java`
 }
 
@@ -12,11 +11,6 @@ val projectVersion = "0.8"
 
 dependencies {
     compileOnly(libs.bundles.adventure)
-}
-
-java {
-    withSourcesJar()
-    withJavadocJar()
 }
 
 tasks {
@@ -45,15 +39,6 @@ tasks {
 }
 
 publishing {
-    repositories {
-        maven {
-            url = uri("https://repo.crazycrew.us/releases/")
-
-            credentials(PasswordCredentials::class)
-            authentication.create<BasicAuthentication>("basic")
-        }
-    }
-
     publications {
         create<MavenPublication>("mavenJava") {
             groupId = "${project.group}"

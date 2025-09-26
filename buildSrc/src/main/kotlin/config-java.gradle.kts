@@ -1,6 +1,7 @@
 plugins {
     id("com.gradleup.shadow")
 
+    `maven-publish`
     `java-library`
 }
 
@@ -26,6 +27,9 @@ dependencies {
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+
+    withSourcesJar()
+    withJavadocJar()
 }
 
 tasks {
@@ -61,5 +65,16 @@ tasks {
                 expand(inputs.properties)
             }
         })
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            url = uri("https://repo.crazycrew.us/releases/")
+
+            credentials(PasswordCredentials::class)
+            authentication.create<BasicAuthentication>("basic")
+        }
     }
 }
