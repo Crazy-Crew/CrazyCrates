@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(path = ":crazycrates-api", configuration = "shadow"))
+    implementation(project(path = ":api", configuration = "shadow"))
 
     implementation(libs.triumph.cmds)
 
@@ -42,7 +42,7 @@ tasks {
     }
 
     compileJava {
-        dependsOn(":crazycrates-api:jar")
+        dependsOn(":api:jar")
     }
 
     runPaper.folia.registerTask()

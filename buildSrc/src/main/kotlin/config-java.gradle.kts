@@ -20,10 +20,6 @@ repositories {
     mavenLocal()
 }
 
-dependencies {
-    compileOnly(libs.findLibrary("annotations").get())
-}
-
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
@@ -55,7 +51,7 @@ tasks {
         )
 
         with(copySpec {
-            include("*paper-plugin.yml", "fabric.mod.json")
+            include("*paper-plugin.yml")
             from("src/main/resources") {
                 expand(inputs.properties)
             }
