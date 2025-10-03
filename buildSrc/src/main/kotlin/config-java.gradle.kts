@@ -52,10 +52,9 @@ tasks {
         inputs.properties(
             "name" to rootProject.name,
             "version" to rootProject.version,
-            "description" to rootProject.description,
+            "description" to rootProject.description.toString(),
             "minecraft" to libs.findVersion("minecraft").get(),
             "website" to "https://github.com/Crazy-Crew/${rootProject.name}",
-            "id" to rootProject.name.lowercase(),
             "group" to project.group
         )
 
