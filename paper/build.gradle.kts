@@ -1,3 +1,5 @@
+import io.papermc.paperweight.util.path
+
 plugins {
     `config-paper`
 }
@@ -15,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":crazycrates-core"))
+    implementation(project(path = ":crazycrates-core", configuration = "shadow"))
 
     implementation(libs.triumph.cmds)
 
@@ -38,7 +40,11 @@ tasks {
 
         archiveBaseName.set("${rootProject.name}-${rootProject.version}")
 
-        destinationDirectory.set(rootProject.layout.buildDirectory)
+        destinationDirectory.set(rootProject.layout.buildDirectory.dir("libs"))
+    }
+
+    compileJava {
+        dependsOn(":crazycrates-core:jar")
     }
 
     runPaper.folia.registerTask()

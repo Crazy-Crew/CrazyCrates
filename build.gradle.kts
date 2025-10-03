@@ -137,7 +137,7 @@ modrinth {
 
     gameVersions.addAll(versions)
 
-    uploadFile = tasks.jar.get().archiveFile.get()
+    uploadFile = rootProject.layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar").get()
 
     loaders.addAll(listOf("paper", "folia", "purpur"))
 
@@ -166,7 +166,7 @@ hangarPublish {
 
         platforms {
             paper {
-                jar = tasks.jar.flatMap { it.archiveFile }
+                jar = rootProject.layout.buildDirectory.file("${rootProject.name}-${rootProject.version}.jar").get()
 
                 platformVersions.set(versions)
 
