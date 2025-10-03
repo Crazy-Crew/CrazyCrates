@@ -66,14 +66,3 @@ tasks {
         })
     }
 }
-
-publishing {
-    repositories {
-        maven {
-            url = uri("https://repo.crazycrew.us/releases/")
-
-            credentials(PasswordCredentials::class)
-            authentication.create<BasicAuthentication>("basic")
-        }
-    }
-}

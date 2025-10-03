@@ -8,7 +8,7 @@ plugins {
 
 val git = feather.getGit()
 
-val commitHash: String? = git.getCurrentCommitHash().subSequence(0, 7).toString()
+val commitHash: String = git.getCurrentCommitHash().subSequence(0, 7).toString()
 val isSnapshot: Boolean = git.getCurrentBranch() == "dev"
 val content: String = if (isSnapshot) "[$commitHash](https://github.com/Crazy-Crew/${rootProject.name}/commit/$commitHash) ${git.getCurrentCommit()}" else rootProject.file("changelog.md").readText(Charsets.UTF_8)
 val minecraft = libs.versions.minecraft.get()
@@ -122,39 +122,6 @@ fun List<String>.convertList(): String {
     }
 
     return builder.toString()
-}
-
-allprojects {
-    apply(plugin = "java-library")
-}
-
-tasks {
-    withType<Jar> {
-        subprojects {
-            dependsOn(project.tasks.build)
-        }
-
-        // get subproject's built jars
-        val jars = subprojects.map { zipTree(it.tasks.jar.get().archiveFile.get().asFile) }
-
-        // merge them into main jar (except their manifests)
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
-        from(jars) {
-            exclude("META-INF/MANIFEST.MF")
-        }
-
-        // put behind an action because files don't exist at configuration time
-        doFirst {
-            // merge all subproject's manifests into main manifest
-            jars.forEach { jar ->
-                jar.matching { include("META-INF/MANIFEST.MF") }
-                    .files.forEach { file ->
-                        manifest.from(file)
-                    }
-            }
-        }
-    }
 }
 
 modrinth {
