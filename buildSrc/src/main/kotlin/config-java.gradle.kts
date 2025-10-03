@@ -1,7 +1,6 @@
 plugins {
     id("com.gradleup.shadow")
 
-    `maven-publish`
     `java-library`
 }
 
