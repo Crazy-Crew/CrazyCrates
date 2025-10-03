@@ -2,7 +2,6 @@ rootProject.name = "CrazyCrates"
 
 listOf(
     "paper" to "paper",
-    "core" to "core",
     "api" to "api"
 ).forEach(::includeProject)
 

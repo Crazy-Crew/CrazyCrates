@@ -46,7 +46,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class CosmicCrateListener implements Listener {
 

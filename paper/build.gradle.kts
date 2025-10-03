@@ -1,5 +1,3 @@
-import io.papermc.paperweight.util.path
-
 plugins {
     `config-paper`
 }
@@ -17,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(path = ":crazycrates-core", configuration = "shadow"))
+    implementation(project(path = ":crazycrates-api", configuration = "shadow"))
 
     implementation(libs.triumph.cmds)
 
@@ -44,7 +42,7 @@ tasks {
     }
 
     compileJava {
-        dependsOn(":crazycrates-core:jar")
+        dependsOn(":crazycrates-api:jar")
     }
 
     runPaper.folia.registerTask()
