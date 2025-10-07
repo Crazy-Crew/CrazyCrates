@@ -1,5 +1,7 @@
 plugins {
-    id("com.gradleup.shadow")
+    id("io.papermc.hangar-publish-plugin")
+    id("com.ryderbelserion.feather.core")
+    id("com.modrinth.minotaur")
 
     `java-library`
 }
@@ -25,12 +27,6 @@ java {
 }
 
 tasks {
-    shadowJar {
-        archiveClassifier.set("")
-
-        exclude("META-INF/**")
-    }
-
     compileJava {
         options.encoding = Charsets.UTF_8.name()
         options.release.set(21)
@@ -51,7 +47,8 @@ tasks {
         )
 
         with(copySpec {
-            include("*paper-plugin.yml")
+            include("*paper-plugin.yml", "*plugin.yml")
+
             from("src/main/resources") {
                 expand(inputs.properties)
             }

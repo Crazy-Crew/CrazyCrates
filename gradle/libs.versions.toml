@@ -3,11 +3,11 @@
 paperweight = "2.0.0-beta.19" # https://github.com/PaperMC/paperweight
 paper = "1.21.8-R0.1-SNAPSHOT" # https://github.com/PaperMC/Paper
 
+## Kyori
+adventure = "4.24.0" # https://github.com/KyoriPowered/adventure
+
 ## Minecraft
 minecraft = "1.21.8" # https://minecraft.net
-
-## CrazyCrates
-crazycrates = "4.10.5" # Plugin Version
 
 ## Plugin API
 headdatabaseapi = "1.3.1" # https://github.com/Arcaniax-Development/HeadDatabase-API
@@ -38,12 +38,6 @@ shadow = "9.2.2" # https://github.com/GradleUp/shadow
 [plugins]
 # https://github.com/mfnalex/gradle-fix-javadoc-plugin
 fix-javadoc = { id = "com.jeff-media.fix-javadoc-plugin", version.ref = "fix-javadoc" }
-# https://github.com/ryderbelserion/Feather
-feather = { id = "com.ryderbelserion.feather.core", version.ref = "feather" }
-# https://github.com/HangarMC/hangar-publish-plugin
-hangar = { id = "io.papermc.hangar-publish-plugin", version.ref = "hangar" }
-# https://github.com/modrinth/minotaur
-minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }
 
 [libraries]
 # https://minecraft.net/
@@ -51,6 +45,15 @@ minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft
 
 # https://github.com/PaperMC/paperweight
 paperweight = { module = "io.papermc.paperweight.userdev:io.papermc.paperweight.userdev.gradle.plugin", version.ref = "paperweight" }
+
+# https://github.com/ryderbelserion/Feather
+feather = { module = "com.ryderbelserion.feather.core:com.ryderbelserion.feather.core.gradle.plugin", version.ref = "feather" }
+
+# https://github.com/HangarMC/hangar-publish-plugin
+hangar = { module = "io.papermc.hangar-publish-plugin:io.papermc.hangar-publish-plugin.gradle.plugin", version.ref = "hangar" }
+
+# https://github.com/modrinth/minotaur
+minotaur = { module = "com.modrinth.minotaur:com.modrinth.minotaur.gradle.plugin", version.ref = "minotaur" }
 
 # https://github.com/GradleUp/shadow
 shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow" }
@@ -83,6 +86,12 @@ excellentcrates = { module = "su.nightexpress.excellentcrates:ExcellentCrates", 
 # https://modrinth.com/plugin/nightcore
 nightcore = { module = "su.nightexpress.nightcore:nightcore", version = "2.6.3" }
 
+# https://github.com/KyoriPowered/adventure
+kyori-legacy = { module = "net.kyori:adventure-text-serializer-legacy", version.ref = "adventure" }
+kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref = "adventure" }
+kyori-text = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
+kyori-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
+
 # https://github.com/TriumphTeam/triumph-cmds
 triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmds" }
 
@@ -93,6 +102,13 @@ fusion-paper = { module = "com.ryderbelserion.fusion:fusion-paper", version.ref 
 metrics = { module = "org.bstats:bstats-bukkit", version.ref = "bStats" }
 
 [bundles]
+adventure = [
+    "kyori-legacy",
+    #"kyori-logger",
+    "kyori-text",
+    "kyori-api"
+]
+
 shared = [
     "headdatabaseapi",
     "placeholderapi",
@@ -109,6 +125,9 @@ holograms = [
 ]
 
 build = [
+    "minotaur",
+    "feather",
+    "hangar",
     "shadow"
 ]
 

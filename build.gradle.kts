@@ -1,8 +1,6 @@
-plugins {
-    alias(libs.plugins.minotaur)
-    alias(libs.plugins.feather)
-    alias(libs.plugins.hangar)
+import io.papermc.hangarpublishplugin.model.Platforms
 
+plugins {
     `config-java`
 }
 
@@ -14,9 +12,114 @@ val content: String = if (isSnapshot) "[$commitHash](https://github.com/Crazy-Cr
 val minecraft = libs.versions.minecraft.get()
 val versions = listOf(minecraft)
 
-rootProject.description = "Add crates to your server with 11 different crate types to choose from!"
-rootProject.version = if (isSnapshot) "$minecraft-$commitHash" else libs.versions.crazycrates.get()
-rootProject.group = "com.badbones69.crazycrates"
+rootProject.description = rootProject.property("project_description").toString()
+rootProject.version = if (isSnapshot) "$minecraft-$commitHash" else rootProject.property("plugin_version").toString()
+rootProject.group = rootProject.property("project_group").toString()
+
+allprojects {
+    apply(plugin = "java-library")
+}
+
+tasks {
+    withType<Jar> {
+        subprojects {
+            dependsOn(project.tasks.build)
+        }
+
+        // get subproject's built jars
+        val jars = subprojects.map { zipTree(it.tasks.jar.get().archiveFile.get().asFile) }
+
+        // merge them into main jar (except their manifests)
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+        from(jars) {
+            exclude("META-INF/MANIFEST.MF")
+        }
+
+        // put behind an action because files don't exist at configuration time
+        doFirst {
+            // merge all subproject's manifests into main manifest
+            jars.forEach { jar ->
+                jar.matching { include("META-INF/MANIFEST.MF") }
+                    .files.forEach { file ->
+                        manifest.from(file)
+                    }
+            }
+        }
+    }
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
+
+    projectId = rootProject.name
+
+    versionName = "${rootProject.version}"
+    versionNumber = "${rootProject.version}"
+
+    syncBodyFrom = rootProject.file("description.md").readText(Charsets.UTF_8)
+
+    autoAddDependsOn = false
+    detectLoaders = false
+
+    versionType = if (isSnapshot) "beta" else "release"
+
+    changelog = content
+
+    gameVersions.addAll(versions)
+
+    uploadFile = tasks.jar.get().archiveFile.get()
+
+    loaders.addAll(listOf("paper", "folia", "purpur"))
+}
+
+hangarPublish {
+    publications.register("plugin") {
+        apiKey.set(System.getenv("HANGAR_KEY"))
+
+        id.set(rootProject.name)
+
+        version.set("${rootProject.version}")
+
+        changelog = content
+
+        channel = if (isSnapshot) "Beta" else "Release"
+
+        platforms {
+            register(Platforms.PAPER) {
+                jar = tasks.jar.flatMap { it.archiveFile }
+
+                platformVersions.set(versions)
+
+                dependencies {
+                    hangar("PlaceholderAPI") {
+                        required = false
+                    }
+
+                    hangar("FancyHolograms") {
+                        required = false
+                    }
+
+                    url("DecentHolograms", "https://modrinth.com/plugin/decentholograms") {
+                        required = false
+                    }
+
+                    url("ItemsAdder", "https://polymart.org/product/1851/itemsadder") {
+                        required = false
+                    }
+
+                    url("Oraxen", "https://polymart.org/product/629/oraxen") {
+                        required = false
+                    }
+
+                    url("Nexo", "https://polymart.org/resource/nexo.6901") {
+                        required = false
+                    }
+                }
+            }
+        }
+    }
+}
 
 feather {
     rootDirectory = rootProject.rootDir.toPath()
@@ -105,7 +208,7 @@ feather {
 
                         field(
                             ":hammer: Changelog",
-                            content
+                            "[Click](https://modrinth.com/plugin/${rootProject.name.lowercase()}/version/${rootProject.version})"
                         )
                     }
                 }
@@ -122,80 +225,4 @@ fun List<String>.convertList(): String {
     }
 
     return builder.toString()
-}
-
-modrinth {
-    token = System.getenv("MODRINTH_TOKEN")
-
-    projectId = rootProject.name
-
-    versionName = "${rootProject.version}"
-    versionNumber = "${rootProject.version}"
-    versionType = if (isSnapshot) "beta" else "release"
-
-    changelog = content
-
-    gameVersions.addAll(versions)
-
-    uploadFile = rootProject.layout.buildDirectory.file("libs/${rootProject.name}-${rootProject.version}.jar").get()
-
-    loaders.addAll(listOf("paper", "folia", "purpur"))
-
-    syncBodyFrom = rootProject.file("description.md").readText(Charsets.UTF_8)
-
-    autoAddDependsOn = false
-    detectLoaders = false
-
-    dependencies {
-        optional.project("fancyholograms")
-        optional.project("decentholograms")
-    }
-}
-
-hangarPublish {
-    publications.register("plugin") {
-        apiKey.set(System.getenv("HANGAR_KEY"))
-
-        id.set(rootProject.name)
-
-        version.set("${rootProject.version}")
-
-        channel.set(if (isSnapshot) "Beta" else "Release")
-
-        changelog.set(content)
-
-        platforms {
-            paper {
-                jar = rootProject.layout.buildDirectory.file("${rootProject.name}-${rootProject.version}.jar").get()
-
-                platformVersions.set(versions)
-
-                dependencies {
-                    hangar("PlaceholderAPI") {
-                        required = false
-                    }
-
-                    hangar("FancyHolograms") {
-                        required = false
-                    }
-
-                    url("DecentHolograms", "https://modrinth.com/plugin/decentholograms") {
-                        required = false
-                    }
-
-                    url("ItemsAdder", "https://polymart.org/product/1851/itemsadder") {
-                        required = false
-                    }
-
-                    url("Oraxen", "https://polymart.org/product/629/oraxen") {
-                        required = false
-                    }
-
-                    url("Nexo", "https://polymart.org/resource/nexo.6901") {
-                        required = false
-                    }
-                }
-            }
-        }
-    }
 }

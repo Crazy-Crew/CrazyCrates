@@ -1,7 +1,7 @@
 plugins {
     id("io.papermc.paperweight.userdev")
     id("xyz.jpenilla.run-paper")
-    id("config-java")
+    id("config-shadow")
 }
 
 val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
