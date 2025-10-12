@@ -507,10 +507,12 @@ public class CrateManager {
 
                 addCrate(new Crate(crateName, previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name", "Crate.PhysicalKey.Name is missing from " + crateName), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, prizeCommands, holo));
 
+                final String strippedName = crateName.replace(".yml", "");
+
                 final boolean isNewSystemEnabled = this.config.getProperty(ConfigKeys.use_new_permission_system);
 
-                final String node = isNewSystemEnabled ? "crazycrates.deny.open." + crateName : "crazycrates.open." + crateName;
-                final String description = isNewSystemEnabled ? "Prevents you from opening " + crateName : "Allows you to open " + crateName;
+                final String node = isNewSystemEnabled ? "crazycrates.deny.open." + strippedName : "crazycrates.open." + strippedName;
+                final String description = isNewSystemEnabled ? "Prevents you from opening " + strippedName : "Allows you to open " + strippedName;
                 final PermissionDefault permissionDefault = isNewSystemEnabled ? PermissionDefault.FALSE : PermissionDefault.TRUE;
 
                 if (this.pluginManager.getPermission(node) == null) {

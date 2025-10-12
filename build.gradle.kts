@@ -1,6 +1,10 @@
 import io.papermc.hangarpublishplugin.model.Platforms
 
 plugins {
+    alias(libs.plugins.minotaur)
+    alias(libs.plugins.feather)
+    alias(libs.plugins.hangar)
+
     `config-java`
 }
 

@@ -1,8 +1,4 @@
 plugins {
-    id("io.papermc.hangar-publish-plugin")
-    id("com.ryderbelserion.feather.core")
-    id("com.modrinth.minotaur")
-
     `java-library`
 }
 
