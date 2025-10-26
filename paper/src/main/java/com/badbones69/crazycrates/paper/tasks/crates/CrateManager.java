@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.tasks.crates;
 
 import ch.jalu.configme.SettingsManager;
-import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.core.config.impl.EditorKeys;
@@ -16,7 +15,6 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.objects.crates.BrokeLocation;
 import com.badbones69.crazycrates.paper.api.ChestManager;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.badbones69.crazycrates.paper.support.holograms.types.CMIHologramsSupport;
 import com.badbones69.crazycrates.paper.support.holograms.types.DecentHologramsSupport;
 import com.badbones69.crazycrates.paper.support.holograms.types.FancyHologramsSupport;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
@@ -307,9 +305,12 @@ public class CrateManager {
             }
 
             case "cmi" -> {
-                if (!Plugins.cmi.isEnabled() && !CMIModule.holograms.isEnabled()) return;
+                this.fusion.log("warn", "<red>CMI Support is currently not available. It'll likely come back eventually.");
+                this.fusion.log("warn", "<red>You will have to use another holograms plugin like FancyHolograms.");
 
-                this.holograms = new CMIHologramsSupport();
+                //if (!Plugins.cmi.isEnabled() && !CMIModule.holograms.isEnabled()) return;
+
+                //this.holograms = new CMIHologramsSupport();
             }
 
             case "none" -> {}
@@ -329,9 +330,9 @@ public class CrateManager {
                     break;
                 }
 
-                if (Plugins.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
+                /*if (Plugins.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
                     this.holograms = new CMIHologramsSupport();
-                }
+                }*/
             }
         }
 
