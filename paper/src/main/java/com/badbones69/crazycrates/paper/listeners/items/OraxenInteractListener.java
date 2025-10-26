@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.paper.api.events.CrateInteractEvent;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import io.th0rgal.oraxen.api.events.furniture.OraxenFurnitureBreakEvent;
 import io.th0rgal.oraxen.api.events.furniture.OraxenFurnitureInteractEvent;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
