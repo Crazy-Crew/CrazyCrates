@@ -31,8 +31,13 @@ jobs:
         env:
           HANGAR_KEY: ${{ secrets.HANGAR_KEY }}
           COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
-      - name: Notify Discord
+      - name: Build Success
         if: success()
         run: ./gradlew dev-build --stacktrace
         env:
           CC_WEBHOOK: ${{ secrets.CC_WEBHOOK }}
+      - name: Build Failure
+        if: failure()
+        run: ./gradlew failed-build --stacktrace
+        env:
+         CC_WEBHOOK: ${{ secrets.CC_WEBHOOK }}

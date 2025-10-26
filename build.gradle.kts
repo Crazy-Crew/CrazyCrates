@@ -14,7 +14,10 @@ val commitHash: String = git.getCurrentCommitHash().subSequence(0, 7).toString()
 val isSnapshot: Boolean = git.getCurrentBranch() == "dev"
 val content: String = if (isSnapshot) "[$commitHash](https://github.com/Crazy-Crew/${rootProject.name}/commit/$commitHash) ${git.getCurrentCommit()}" else rootProject.file("changelog.md").readText(Charsets.UTF_8)
 val minecraft = libs.versions.minecraft.get()
-val versions = listOf(minecraft)
+val versions = listOf(
+    "1.21.10",
+    minecraft
+)
 
 rootProject.description = rootProject.property("project_description").toString()
 rootProject.version = if (isSnapshot) "$minecraft-$commitHash" else rootProject.property("plugin_version").toString()
@@ -58,7 +61,7 @@ modrinth {
 
     projectId = rootProject.name
 
-    versionName = "${rootProject.version}"
+    versionName = "${rootProject.name} - ${rootProject.version}"
     versionNumber = "${rootProject.version}"
 
     syncBodyFrom = rootProject.file("description.md").readText(Charsets.UTF_8)
@@ -213,6 +216,45 @@ feather {
                         field(
                             ":hammer: Changelog",
                             "[Click](https://modrinth.com/plugin/${rootProject.name.lowercase()}/version/${rootProject.version})"
+                        )
+                    }
+                }
+            }
+        }
+
+        webhook {
+            group(rootProject.name.lowercase())
+            task("failed-build")
+
+            if (System.getenv("CC_WEBHOOK") != null) {
+                post(System.getenv("CC_WEBHOOK"))
+
+                username("Ryder Belserion")
+
+                avatar("https://github.com/ryderbelserion.png")
+            }
+
+            if (System.getenv("BUILD_WEBHOOK") != null) {
+                post(System.getenv("BUILD_WEBHOOK"))
+
+                username(user.getName())
+
+                avatar(user.avatar)
+            }
+
+            embeds {
+                embed {
+                    color("#FF000D")
+
+                    title("Oh no! It failed!")
+
+                    thumbnail("https://raw.githubusercontent.com/ryderbelserion/Branding/refs/heads/main/booze.jpg")
+
+                    fields {
+                        field(
+                            "The build versioned ${rootProject.version} for project ${rootProject.name} failed.",
+                            "The developer is likely already aware, he is just getting drunk.",
+                            inline = true
                         )
                     }
                 }
