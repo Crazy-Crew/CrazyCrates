@@ -12,6 +12,7 @@ import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
+import com.ryderbelserion.fusion.core.api.utils.StringUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
@@ -252,7 +253,9 @@ public class PrizeManager {
                 .replaceAll("%reward_stripped%", quoteReplacement(prize.getStrippedName()))
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateName()))
                 .replaceAll("%maxpulls%", maxPulls)
-                .replaceAll("%pulls%", pulls);
+                .replaceAll("%pulls%", pulls)
+                .replaceAll("%chance%", StringUtils.format(crate.getChance(prize.getWeight())))
+                .replaceAll("%weight%", String.valueOf(prize.getWeight()));
 
         MsgUtils.sendMessage(player, Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
     }
