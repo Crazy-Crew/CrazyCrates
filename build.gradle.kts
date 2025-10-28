@@ -61,7 +61,12 @@ modrinth {
 
     projectId = rootProject.name
 
-    versionName = "${rootProject.name} - ${rootProject.version}"
+    versionName = if (isSnapshot) {
+        "${rootProject.version}"
+    } else {
+        "${rootProject.name} ${rootProject.version}"
+    }
+
     versionNumber = "${rootProject.version}"
 
     syncBodyFrom = rootProject.file("description.md").readText(Charsets.UTF_8)
