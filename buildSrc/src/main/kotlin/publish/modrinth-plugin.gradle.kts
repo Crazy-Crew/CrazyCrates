@@ -9,7 +9,7 @@ modrinth {
 
     projectId = "${rootProject.property("project_id")}"
 
-    versionName = "${rootProject.name} ${rootProject.version}"
+    versionName = rootProject.ext.get("version_name").toString()
     versionNumber = "${rootProject.version}"
     versionType = rootProject.ext.get("release_type").toString()
 
@@ -27,11 +27,8 @@ modrinth {
     detectLoaders = false
 
     dependencies {
-        required.project("Pl3xMap")
-
-        optional.project("ClaimChunk")
-        optional.project("WorldGuard")
-        optional.project("EssentialsX")
-        optional.project("GriefPrevention")
+        optional.project("DecentHolograms")
+        optional.project("FancyHolograms")
+        optional.project("PlaceholderAPI")
     }
 }

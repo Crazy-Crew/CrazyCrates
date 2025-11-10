@@ -35,6 +35,10 @@ hangarPublish {
                         required = false
                     }
 
+                    url("CMI", "https://www.spigotmc.org/resources/cmi-300-commands-insane-kits-portals-essentials-economy-mysql-sqlite-much-more.3742/") {
+                        required = false
+                    }
+
                     url("DecentHolograms", "https://modrinth.com/plugin/decentholograms") {
                         required = false
                     }

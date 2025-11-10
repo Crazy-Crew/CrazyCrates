@@ -12,6 +12,8 @@ If you do not use a personal fork, We have to manually merge your pull request w
 * Java 21 ( Adoptium or Corretto is recommended )
 
 ### Pull Requests must be labeled properly according to if it's a bug fix, a new feature or enhancements to the code base.
+**(Please also read [versioning.md](./versioning.md) which contains more insight on things)**
+
 * `git checkout -b fix/your_fix`
 * `git checkout -b feature/your_feature`
 * `git checkout -b quality/your_enhancement`

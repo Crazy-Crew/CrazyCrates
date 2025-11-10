@@ -33,7 +33,7 @@ jobs:
           COMMIT_MESSAGE: ${{ join(github.event.commits.*.message, '<br>') }}
       - name: Build Success
         if: success()
-        run: ./gradlew dev-build --stacktrace
+        run: ./gradlew release-build --stacktrace
         env:
           BUILD_WEBHOOK: ${{ secrets.CC_WEBHOOK }}
       - name: Build Failure
