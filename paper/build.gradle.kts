@@ -1,5 +1,5 @@
 plugins {
-    `config-paper`
+    `paper-plugin`
 }
 
 project.group = "${rootProject.group}.paper"

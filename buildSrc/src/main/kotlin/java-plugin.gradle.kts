@@ -1,4 +1,6 @@
 plugins {
+    id("com.ryderbelserion.feather.core")
+
     `java-library`
 }
 

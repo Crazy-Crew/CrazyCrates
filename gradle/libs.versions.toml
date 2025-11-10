@@ -52,6 +52,15 @@ minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft
 # https://github.com/PaperMC/paperweight
 paperweight = { module = "io.papermc.paperweight.userdev:io.papermc.paperweight.userdev.gradle.plugin", version.ref = "paperweight" }
 
+# https://github.com/ryderbelserion/Feather
+feather = { module = "com.ryderbelserion.feather.core:com.ryderbelserion.feather.core.gradle.plugin", version.ref = "feather" }
+
+# https://github.com/HangarMC/hangar-publish-plugin
+hangar = { module = "io.papermc.hangar-publish-plugin:io.papermc.hangar-publish-plugin.gradle.plugin", version.ref = "hangar" }
+
+# https://github.com/modrinth/minotaur
+minotaur = { module = "com.modrinth.minotaur:com.modrinth.minotaur.gradle.plugin", version.ref = "minotaur" }
+
 # https://github.com/GradleUp/shadow
 shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow" }
 
@@ -122,6 +131,9 @@ holograms = [
 ]
 
 build = [
+    "minotaur",
+    "feather",
+    "hangar",
     "shadow"
 ]
 

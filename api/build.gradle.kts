@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.fix.javadoc)
 
     `maven-publish`
-    `config-java`
+    `java-plugin`
 }
 
 project.group = "us.crazycrew.crazycrates"

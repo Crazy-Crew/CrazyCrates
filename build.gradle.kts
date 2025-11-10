@@ -1,27 +1,11 @@
-import io.papermc.hangarpublishplugin.model.Platforms
-
 plugins {
-    alias(libs.plugins.minotaur)
-    alias(libs.plugins.feather)
-    alias(libs.plugins.hangar)
+    id("modrinth-plugin")
+    id("hangar-plugin")
 
-    `config-java`
+    `java-plugin`
 }
 
 val git = feather.getGit()
-
-val commitHash: String = git.getCurrentCommitHash().subSequence(0, 7).toString()
-val isSnapshot: Boolean = git.getCurrentBranch() == "dev"
-val content: String = if (isSnapshot) "[$commitHash](https://github.com/Crazy-Crew/${rootProject.name}/commit/$commitHash) ${git.getCurrentCommit()}" else rootProject.file("changelog.md").readText(Charsets.UTF_8)
-val minecraft = libs.versions.minecraft.get()
-val versions = listOf(
-    "1.21.10",
-    minecraft
-)
-
-rootProject.description = rootProject.property("project_description").toString()
-rootProject.version = if (isSnapshot) "$minecraft-$commitHash" else rootProject.property("plugin_version").toString()
-rootProject.group = rootProject.property("project_group").toString()
 
 allprojects {
     apply(plugin = "java-library")
@@ -56,83 +40,6 @@ tasks {
     }
 }
 
-modrinth {
-    token = System.getenv("MODRINTH_TOKEN")
-
-    projectId = rootProject.name
-
-    versionName = if (isSnapshot) {
-        "${rootProject.version}"
-    } else {
-        "${rootProject.name} ${rootProject.version}"
-    }
-
-    versionNumber = "${rootProject.version}"
-
-    syncBodyFrom = rootProject.file("description.md").readText(Charsets.UTF_8)
-
-    autoAddDependsOn = false
-    detectLoaders = false
-
-    versionType = if (isSnapshot) "beta" else "release"
-
-    changelog = content
-
-    gameVersions.addAll(versions)
-
-    uploadFile = tasks.jar.get().archiveFile.get()
-
-    loaders.addAll(listOf("paper", "folia", "purpur"))
-}
-
-hangarPublish {
-    publications.register("plugin") {
-        apiKey.set(System.getenv("HANGAR_KEY"))
-
-        id.set(rootProject.name)
-
-        version.set("${rootProject.version}")
-
-        changelog = content
-
-        channel = if (isSnapshot) "Beta" else "Release"
-
-        platforms {
-            register(Platforms.PAPER) {
-                jar = tasks.jar.flatMap { it.archiveFile }
-
-                platformVersions.set(versions)
-
-                dependencies {
-                    hangar("PlaceholderAPI") {
-                        required = false
-                    }
-
-                    hangar("FancyHolograms") {
-                        required = false
-                    }
-
-                    url("DecentHolograms", "https://modrinth.com/plugin/decentholograms") {
-                        required = false
-                    }
-
-                    url("ItemsAdder", "https://polymart.org/product/1851/itemsadder") {
-                        required = false
-                    }
-
-                    url("Oraxen", "https://polymart.org/product/629/oraxen") {
-                        required = false
-                    }
-
-                    url("Nexo", "https://polymart.org/resource/nexo.6901") {
-                        required = false
-                    }
-                }
-            }
-        }
-    }
-}
-
 feather {
     rootDirectory = rootProject.rootDir.toPath()
 
@@ -155,7 +62,7 @@ feather {
 
             embeds {
                 embed {
-                    color("#ffa347")
+                    color(rootProject.property("dev_color").toString())
 
                     title("A new dev version of ${rootProject.name} is ready!")
 
@@ -176,7 +83,7 @@ feather {
 
                         field(
                             ":hammer: Changelog",
-                            content
+                            rootProject.ext.get("mc_changelog").toString()
                         )
                     }
                 }
@@ -195,11 +102,11 @@ feather {
 
             avatar(user.avatar)
 
-            content("<@&929463441159254066>")
+            content("<@&${rootProject.property("discord_role_id").toString()}>")
 
             embeds {
                 embed {
-                    color("#1bd96a")
+                    color(rootProject.property("release_color").toString())
 
                     title("A new release version of ${rootProject.name} is ready!")
 
@@ -220,7 +127,10 @@ feather {
 
                         field(
                             ":hammer: Changelog",
-                            "[Click](https://modrinth.com/plugin/${rootProject.name.lowercase()}/version/${rootProject.version})"
+                            listOf(
+                                "<:modrinth:1115307870473420800> [Modrinth](https://modrinth.com/plugin/${rootProject.name.lowercase()}/version/${rootProject.version})",
+                                "<:hangar:1139326635313733652> [Hangar](https://hangar.papermc.io/CrazyCrew/${rootProject.name.lowercase()}/versions/${rootProject.version})"
+                            ).convertList()
                         )
                     }
                 }
@@ -233,23 +143,19 @@ feather {
 
             if (System.getenv("CC_WEBHOOK") != null) {
                 post(System.getenv("CC_WEBHOOK"))
-
-                username("Ryder Belserion")
-
-                avatar("https://github.com/ryderbelserion.png")
             }
 
             if (System.getenv("BUILD_WEBHOOK") != null) {
                 post(System.getenv("BUILD_WEBHOOK"))
-
-                username(user.getName())
-
-                avatar(user.avatar)
             }
+
+            username("Ryder Belserion")
+
+            avatar("https://github.com/ryderbelserion.png")
 
             embeds {
                 embed {
-                    color("#FF000D")
+                    color(rootProject.property("failed_color").toString())
 
                     title("Oh no! It failed!")
 

@@ -1,7 +1,6 @@
 plugins {
     id("com.gradleup.shadow")
-
-    id("config-java")
+    id("java-plugin")
 }
 
 tasks {
