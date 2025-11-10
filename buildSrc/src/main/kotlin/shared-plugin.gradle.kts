@@ -12,7 +12,7 @@ val isSnapshot: Boolean = git.getCurrentBranch() == rootProject.property("dev_br
 val isAlpha: Boolean = git.getCurrentBranch() == rootProject.property("alpha_branch").toString()
 
 val commitHash: String = git.getCurrentCommitHash().subSequence(0, 7).toString()
-val content: String = if (isSnapshot) "[$commitHash](https://github.com/ryderbelserion/${rootProject.name}/commit/$commitHash) ${git.getCurrentCommit()}" else rootProject.file("changelog.md").readText(Charsets.UTF_8)
+val content: String = if (isSnapshot) "[$commitHash](https://github.com/${rootProject.property("repository_owner")}/${rootProject.name}/commit/$commitHash) ${git.getCurrentCommit()}" else rootProject.file("changelog.md").readText(Charsets.UTF_8)
 
 val minecraft = libs.findVersion("minecraft")
 val versions = listOf(minecraft)

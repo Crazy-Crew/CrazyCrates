@@ -40,7 +40,7 @@ tasks {
             "version" to rootProject.version,
             "description" to rootProject.description.toString(),
             "minecraft" to libs.findVersion("minecraft").get(),
-            "website" to "https://github.com/Crazy-Crew/${rootProject.name}",
+            "website" to "https://github.com/${rootProject.property("repository_owner")}/${rootProject.name}",
             "group" to project.group
         )
 
