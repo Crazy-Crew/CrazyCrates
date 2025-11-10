@@ -13,6 +13,7 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.ryderbelserion.fusion.core.api.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.Gui;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
+import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,9 +21,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class CrateMainMenu extends StaticInventoryBuilder {
@@ -84,11 +88,27 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                         case "hide-item-flags" -> item.setHidingItemFlags(StringUtils.tryParseBoolean(value).orElse(false));
 
-                        case "command" -> MiscUtils.sendCommand(value);
+                        case "command" -> item.setPersistentString(ItemKeys.crate_command.getNamespacedKey(), value);
                     }
                 }
 
-                this.gui.setItem(slot, item.setPlayer(this.player).asGuiItem());
+                this.gui.setItem(slot, item.setPlayer(this.player).asGuiItem(action -> {
+                    final ItemStack itemStack = action.getCurrentItem();
+
+                    if (itemStack == null || itemStack.isEmpty()) return;
+
+                    final PersistentDataContainerView container = itemStack.getPersistentDataContainer();
+
+                    if (!container.has(ItemKeys.crate_command.getNamespacedKey())) return;
+
+                    final String command = container.get(ItemKeys.crate_command.getNamespacedKey(), PersistentDataType.STRING);
+
+                    if (command == null) return;
+
+                    MiscUtils.sendCommand(player, command, new HashMap<>() {{
+                        put("{player}", player.getName());
+                    }});
+                }));
             }
         }
 
