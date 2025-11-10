@@ -35,9 +35,9 @@ jobs:
         if: success()
         run: ./gradlew dev-build --stacktrace
         env:
-          CC_WEBHOOK: ${{ secrets.CC_WEBHOOK }}
+          BUILD_WEBHOOK: ${{ secrets.CC_WEBHOOK }}
       - name: Build Failure
         if: failure()
         run: ./gradlew failed-build --stacktrace
         env:
-         CC_WEBHOOK: ${{ secrets.CC_WEBHOOK }}
+         BUILD_WEBHOOK: ${{ secrets.CC_WEBHOOK }}

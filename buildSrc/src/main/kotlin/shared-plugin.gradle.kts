@@ -8,19 +8,17 @@ val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("lib
 
 val git = feather.getGit()
 
-val isSnapshot: Boolean = git.getCurrentBranch() == rootProject.property("dev_branch").toString()
+val isBeta: Boolean = git.getCurrentBranch() == rootProject.property("beta_branch").toString()
 val isAlpha: Boolean = git.getCurrentBranch() == rootProject.property("alpha_branch").toString()
 
 val commitHash: String = git.getCurrentCommitHash().subSequence(0, 7).toString()
-val content: String = if (isSnapshot) "[$commitHash](https://github.com/${rootProject.property("repository_owner")}/${rootProject.name}/commit/$commitHash) ${git.getCurrentCommit()}" else rootProject.file("changelog.md").readText(Charsets.UTF_8)
+val content: String = if (isBeta) "[$commitHash](https://github.com/${rootProject.property("repository_owner")}/${rootProject.name}/commit/$commitHash) ${git.getCurrentCommit()}" else rootProject.file("changelog.md").readText(Charsets.UTF_8)
 
 val minecraft = libs.findVersion("minecraft")
-val versions = listOf(minecraft)
 
 rootProject.ext {
-    set("project_version", if (isSnapshot) "$minecraft-$commitHash" else if (isAlpha) "${rootProject.property("plugin_version")}-SNAPSHOT" else rootProject.property("plugin_version").toString())
-    set("release_type", if (isSnapshot) "beta" else if (isAlpha) "alpha" else "release")
-    set("mc_versions", minecraft)
+    set("project_version", if (isBeta) "$minecraft-$commitHash" else if (isAlpha) "${rootProject.property("plugin_version")}-SNAPSHOT" else rootProject.property("plugin_version").toString())
+    set("release_type", if (isBeta) "beta" else if (isAlpha) "alpha" else "release")
     set("mc_changelog", content)
 }
 
