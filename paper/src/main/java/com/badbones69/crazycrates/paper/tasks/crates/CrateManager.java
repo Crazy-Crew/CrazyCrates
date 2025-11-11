@@ -1,12 +1,14 @@
 package com.badbones69.crazycrates.paper.tasks.crates;
 
 import ch.jalu.configme.SettingsManager;
+import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.core.config.impl.EditorKeys;
 import com.badbones69.crazycrates.paper.listeners.items.NexoInteractListener;
 import com.badbones69.crazycrates.paper.listeners.items.OraxenInteractListener;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
+import com.badbones69.crazycrates.paper.support.holograms.types.CMIHologramsSupport;
 import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.QuadCrateManager;
 import com.badbones69.crazycrates.paper.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateHologram;
@@ -297,13 +299,9 @@ public class CrateManager {
             }
 
             case "cmi" -> {
-                this.fusion.log("warn", "<red>CMI Support is currently not available. It'll likely come back eventually.");
-                this.fusion.log("warn", "<red>You will have to use another holograms plugin like FancyHolograms.");
-                this.fusion.log("warn", "<red>https://github.com/Zrips/CMI/issues/9919");
+                if (!Plugins.cmi.isEnabled() && !CMIModule.holograms.isEnabled()) return;
 
-                //if (!Plugins.cmi.isEnabled() && !CMIModule.holograms.isEnabled()) return;
-
-                //this.holograms = new CMIHologramsSupport();
+                this.holograms = new CMIHologramsSupport();
             }
 
             case "none" -> {}
@@ -323,9 +321,11 @@ public class CrateManager {
                     break;
                 }
 
-                /*if (Plugins.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
-                    this.holograms = new CMIHologramsSupport();
-                }*/
+                if (this.holograms == null && Plugins.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
+                    this.fusion.log("warn", "<red>CMI Support is currently not automatically available.");
+                    this.fusion.log("warn", "<red>Try manually setting hologram-plugin to <yellow>CMI</yellow> <red>after downgrading to 9.8.2.0");
+                    this.fusion.log("warn", "<red>https://github.com/Zrips/CMI/issues/9919");
+                }
             }
         }
 
