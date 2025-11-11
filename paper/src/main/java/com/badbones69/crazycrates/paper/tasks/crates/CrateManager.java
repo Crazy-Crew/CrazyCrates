@@ -77,15 +77,7 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.TimerTask;
-import java.util.UUID;
-import java.util.WeakHashMap;
+import java.util.*;
 
 public class CrateManager {
 
@@ -1279,6 +1271,22 @@ public class CrateManager {
         }
 
         return crate;
+    }
+
+    public @NotNull final Optional<Crate> getCrateByName(@NotNull final String name) {
+        if (name.isEmpty()) return Optional.empty();
+
+        Crate crate = null;
+
+        for (final Crate key : this.crates) {
+            if (key.getFileName().equalsIgnoreCase(name)) {
+                crate = key;
+
+                break;
+            }
+        }
+
+        return Optional.ofNullable(crate);
     }
 
     /**
