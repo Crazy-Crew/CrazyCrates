@@ -38,17 +38,8 @@ shadow = "9.2.2" # https://github.com/GradleUp/shadow
 [plugins]
 # https://github.com/mfnalex/gradle-fix-javadoc-plugin
 fix-javadoc = { id = "com.jeff-media.fix-javadoc-plugin", version.ref = "fix-javadoc" }
-# https://github.com/ryderbelserion/Feather
-feather = { id = "com.ryderbelserion.feather.core", version.ref = "feather" }
-# https://github.com/HangarMC/hangar-publish-plugin
-hangar = { id = "io.papermc.hangar-publish-plugin", version.ref = "hangar" }
-# https://github.com/modrinth/minotaur
-minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }
 
 [libraries]
-# https://minecraft.net/
-minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft" }
-
 # https://github.com/PaperMC/paperweight
 paperweight = { module = "io.papermc.paperweight.userdev:io.papermc.paperweight.userdev.gradle.plugin", version.ref = "paperweight" }
 
