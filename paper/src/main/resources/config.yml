@@ -61,7 +61,7 @@ gui:
     # The name of the gui.
     name: "<bold><gradient:#e91e63:blue>Crazy Crates</gradient></bold>"
     # The amount of rows for a gui.
-    rows: 3
+    rows: 5
     # The buttons in the gui.
     buttons:
       # The main menu button.
