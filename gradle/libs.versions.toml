@@ -19,8 +19,8 @@ nexo = "1.6.0" # https://github.com/Nexo-MC
 ## Hologram API
 decentholograms = "2.8.8" # https://modrinth.com/plugin/decentholograms
 fancyholograms = "2.4.1" # https://modrinth.com/plugin/fancyholograms
-cmi-api = "9.7.4.1" # https://github.com/Zrips/CMI-API
-cmi-lib = "1.5.1.4" # https://www.spigotmc.org/resources/cmilib.87610/
+cmi-api = "9.7.14.3" # https://github.com/Zrips/CMI-API
+cmi-lib = "1.5.7.0" # https://www.spigotmc.org/resources/cmilib.87610/
 
 ## Other
 triumph-cmds = "2.0.0-BETA-4" # https://github.com/TriumphTeam/triumph-cmds
@@ -74,9 +74,9 @@ decent-holograms = { module = "com.github.decentsoftware-eu:decentholograms", ve
 # https://modrinth.com/plugin/fancyholograms
 fancy-holograms = { module = "de.oliver:FancyHolograms", version.ref = "fancyholograms" }
 # https://github.com/Zrips/CMI-API
-cmi-api = { module = "CMI-API:CMI-API", version.ref = "cmi-api" }
+cmi-api = { module = "com.github.Zrips:CMI-API", version.ref = "cmi-api" }
 # https://www.spigotmc.org/resources/cmilib.87610/
-cmi-lib = { module = "CMILib:CMILib", version.ref = "cmi-lib" }
+cmi-lib = { module = "com.github.Zrips:CMILib", version.ref = "cmi-lib" }
 
 # https://modrinth.com/plugin/excellentcrates/versions
 excellentcrates = { module = "su.nightexpress.excellentcrates:ExcellentCrates", version = "5.3.1" }
@@ -117,8 +117,8 @@ shared = [
 holograms = [
     "decent-holograms",
     "fancy-holograms",
-    "cmi-lib",
-    "cmi-api"
+    "cmi-api",
+    "cmi-lib"
 ]
 
 build = [

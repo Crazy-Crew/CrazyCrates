@@ -299,6 +299,7 @@ public class CrateManager {
             case "cmi" -> {
                 this.fusion.log("warn", "<red>CMI Support is currently not available. It'll likely come back eventually.");
                 this.fusion.log("warn", "<red>You will have to use another holograms plugin like FancyHolograms.");
+                this.fusion.log("warn", "<red>https://github.com/Zrips/CMI/issues/9919");
 
                 //if (!Plugins.cmi.isEnabled() && !CMIModule.holograms.isEnabled()) return;
 
