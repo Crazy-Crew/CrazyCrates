@@ -7,7 +7,6 @@ import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
@@ -29,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -823,40 +821,5 @@ public class BukkitUserManager extends UserManager {
         if (crateName.isEmpty()) return null;
 
         return this.crateManager.getCrateFromName(crateName);
-    }
-
-    /**
-     * Adds internal placeholders to the itembuilder.
-     *
-     * @param itemBuilder the itembuilder
-     * @param crate the crate
-     * @return the itembuilder
-     */
-    public LegacyItemBuilder addPlaceholders(@NotNull final LegacyItemBuilder itemBuilder, @NotNull final Crate crate) {
-        final String fileName = crate.getFileName();
-
-        if (fileName.isEmpty()) return itemBuilder;
-
-        final UUID uuid = itemBuilder.getPlayer();
-
-        if (uuid == null) return itemBuilder;
-
-        final int virtualKeys = getVirtualKeys(uuid, fileName);
-        final int physicalKeys = getPhysicalKeys(uuid, fileName);
-
-        final int totalKeys = virtualKeys + physicalKeys;
-
-        final int openedCrates = getCrateOpened(uuid, fileName);
-
-        final NumberFormat instance = NumberFormat.getNumberInstance();
-
-        return itemBuilder.addNamePlaceholder("%keys%", instance.format(virtualKeys))
-                .addNamePlaceholder("%keys_physical%", instance.format(physicalKeys))
-                .addNamePlaceholder("%keys_total%", instance.format(totalKeys))
-                .addNamePlaceholder("%crate_opened%", instance.format(openedCrates))
-                .addNamePlaceholder("%keys_raw%", String.valueOf(virtualKeys))
-                .addNamePlaceholder("%keys_physical_raw%", String.valueOf(physicalKeys))
-                .addNamePlaceholder("%keys_total_raw%", String.valueOf(totalKeys))
-                .addNamePlaceholder("%crate_opened_raw", String.valueOf(openedCrates));
     }
 }

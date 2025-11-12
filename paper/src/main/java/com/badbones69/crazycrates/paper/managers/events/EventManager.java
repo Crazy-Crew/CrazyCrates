@@ -39,7 +39,7 @@ public class EventManager {
 
         switch (type) {
             case event_key_given, event_key_removed, event_key_received, event_key_sent, event_key_taken, event_key_taken_multiple -> {
-                message = "Player: %player% | Sender: %sender% | Key Name: %key_name%<reset> | Key Type: %key_type%"
+                message = "Player: %player% | Sender: %sender% | Key Name: %key_name%<reset> | Key Type: %key_type%" //todo() update
                         .replace("%key_type%", keyType.getFriendlyName())
                         .replace("%player%", name)
                         .replace("%sender%", sender.getName())

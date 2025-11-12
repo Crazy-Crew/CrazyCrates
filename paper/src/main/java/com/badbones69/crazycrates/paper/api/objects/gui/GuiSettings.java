@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.api.objects.gui;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.enums.FillerType;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
@@ -9,6 +8,7 @@ import com.badbones69.crazycrates.paper.api.objects.gui.buttons.CrateButton;
 import com.badbones69.crazycrates.paper.api.objects.gui.buttons.GuiButton;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -44,8 +44,7 @@ public class GuiSettings {
         this.isFillerToggled = configuration.getBoolean("filler.toggle", false);
         this.fillerType = FillerType.getFromName(configuration.getString("filler.fill-type", "border"));
 
-        this.fillerStack = new LegacyItemBuilder(this.plugin)
-                .withType(configuration.getString("filler.toggle.material", "red_stained_glass_pane"))
+        this.fillerStack = ItemBuilder.from(configuration.getString("filler.toggle.material", "red_stained_glass_pane"))
                 .setDisplayName(configuration.getString("filler.toggle.name", " ")).asGuiItem();
 
         final ConfigurationSection staticButtons = configuration.getConfigurationSection("buttons.static");

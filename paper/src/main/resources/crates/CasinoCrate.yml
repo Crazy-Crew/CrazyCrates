@@ -20,14 +20,14 @@ Crate:
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
-  BroadCast: "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><dark_blue>Casino Crate.</bold>"
+  BroadCast: "{prefix}<bold><gold>{player}</bold><reset> <gray>is opening a <bold><dark_blue>Casino Crate.</bold>"
   # This section is related to commands opening when a crate is opened.
   opening-command:
     # If the commands should be sent or not.
     toggle: false
     # The commands to run when the crate opens.
     # Supports all placeholderapi placeholders
-    # Supports %prefix which returns our prefix, %player% which uses the player name
+    # Supports {prefix} which returns our prefix, {player} which uses the player name
     commands:
       - "put your command here."
   sound:
@@ -67,7 +67,7 @@ Crate:
   # A default message if the prize doesn't have any Messages
   # i.e. Messages: [] or the value isn't there.
   Prize-Message:
-    - "<gray>You have won <red>%reward% <gray>from <red>%crate%."
+    - "<gray>You have won <red>{reward} <gray>from <red>{crate}."
   # A list of commands to run by default on every prize.
   # If you do not want these commands to run, set this to []
   Prize-Commands: []
@@ -84,7 +84,7 @@ Crate:
       Toggle: false
       # The messages to broadcast.
       Messages:
-        - "<red>%player% won the prize <yellow>%reward%."
+        - "<red>{player} won the prize <yellow>{reward}."
       # If the player has this permission, they don't get the broadcast.
       Permission: ""
   # Item the crate is in the GUI
@@ -105,8 +105,8 @@ Crate:
   # The lore of the item in the GUI.
   Lore:
     - "<gray>This crate contains strange objects."
-    - "<gray>You have <gold>%keys% keys <gray>to open this crate with."
-    - "<gray>You have opened this crate: <gold>%crate_opened% times"
+    - "<gray>You have <gold>{keys} keys <gray>to open this crate with."
+    - "<gray>You have opened this crate: <gold>{crate_opened} times"
     - "<gray>(<yellow>!<gray>) Right click to view rewards."
   Preview:
     # The name of the inventory for the preview menu.
@@ -176,7 +176,7 @@ Crate:
       # The in-game lore of the tier.
       Lore:
         - "<gray>A basic tier."
-        - "<red>%chance%%</red>"
+        - "<red>{chance}%</red>"
       # The item used for the secondary gui when you right-click for the preview.
       Item: "chest"
       # The custom model data of the item, -1 is disabled.
@@ -198,7 +198,7 @@ Crate:
       # The in-game lore of the tier.
       Lore:
         - "<green>An uncommon tier."
-        - "<red>%chance%%</red>"
+        - "<red>{chance}%</red>"
       # The item used for the secondary gui when you right-click for the preview.
       Item: "chest"
       # The custom model data of the item, -1 is disabled.
@@ -220,7 +220,7 @@ Crate:
       # The in-game lore of the tier.
       Lore:
         - "<red>A rare tier."
-        - "<red>%chance%%</red>"
+        - "<red>{chance}%</red>"
       # The item used for the secondary gui when you right-click for the preview.
       Item: "ender_chest"
       # The custom model data of the item, -1 is disabled.
@@ -349,7 +349,7 @@ Crate:
       Commands:
         # This adds the blacklist permission to the player when they win the prize,
         # After this, they will no longer be able to use this prize.
-        - "lp user %player% permission set crazycrates.blacklist.warlord"
+        - "lp user {player} permission set crazycrates.blacklist.warlord"
       # The list of items to give.
       Items:
         - "Item:netherite_helmet, Amount:1, Damage:25, Trim-Pattern:sentry, Trim-Material:redstone, Name:<bold><dark_red>Warlord's Helmet</bold>, protection:5, unbreaking:3"
@@ -368,7 +368,7 @@ Crate:
           - "<reset> <dark_gray>[<blue>CrazyCrates<dark_gray>]: <gray>You have already won that prize, so enjoy some gold nuggets."
         # A list of commands to run.
         Commands:
-          - "give %player% gold_nugget 16"
+          - "give {player} gold_nugget 16"
         # Alternatively, instead of commands. You can have an Items section which functions the same as the Items section above.
         Items:
           - "Item:gold_nugget, Amount:16"
@@ -446,13 +446,13 @@ Crate:
       # The lore of the item.
       DisplayLore:
         - "<gray>Win a fancy pair of pants."
-        - "<bold><gold>Chance: <red>%chance%</bold>"
+        - "<bold><gold>Chance: <red>{chance}</bold>"
       # The items to win.
       Items:
         - "Item:chainmail_leggings, Amount:1, Damage:75, Trim-Pattern:sentry, Trim-Material:lapis, Name:<bold><green>Fancy Pants</bold>, protection:2"
       # The messages to send.
       Messages:
-        - "<gray>You just won a <reset>%reward%."
+        - "<gray>You just won a <reset>{reward}."
     "5":
       # The name of the item to display in the gui.
       DisplayName: "<bold><blue>Classic Sword</bold>"
@@ -496,4 +496,4 @@ Crate:
         - "Item:diamond_sword, Amount:1, Damage:7, Name:<bold><blue>Classic Sword</bold>, sharpness:2, fire_aspect:1"
       # The messages to send.
       Messages:
-        - "<gray>You just won <reset>%reward%."
+        - "<gray>You just won <reset>{reward}."

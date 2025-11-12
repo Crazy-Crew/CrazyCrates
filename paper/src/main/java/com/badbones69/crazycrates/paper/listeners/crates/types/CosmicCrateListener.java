@@ -3,10 +3,10 @@ package com.badbones69.crazycrates.paper.listeners.crates.types;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -200,9 +200,7 @@ public class CosmicCrateListener implements Listener {
                 final String tierName = tier.getName();
 
                 // Get item builder.
-                LegacyItemBuilder builder = cosmicCrateManager.getPickedCrate().setPlayer(player)
-                        .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
-                        .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
+                final ItemBuilder builder = cosmicCrateManager.getPickedCrate().addPlaceholder("{slot}", String.valueOf(pickedSlot));
 
                 // Set the amount.
                 builder.setAmount(pickedSlot);
@@ -211,7 +209,7 @@ public class CosmicCrateListener implements Listener {
                 cosmicCrateManager.setTier(builder, tierName);
 
                 // Overwrite the current item.
-                event.setCurrentItem(builder.asItemStack());
+                event.setCurrentItem(builder.asItemStack(player));
 
                 // Add the picked prize.
                 cosmicCrateManager.addPickedPrize(player, slot, tier);
@@ -223,9 +221,7 @@ public class CosmicCrateListener implements Listener {
             final Tier tier = this.crateManager.getTier(player, slot);
 
             // Get item builder.
-            LegacyItemBuilder builder = cosmicCrateManager.getMysteryCrate().setPlayer(player)
-                    .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
-                    .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
+            final ItemBuilder builder = cosmicCrateManager.getMysteryCrate().addPlaceholder("{slot}", String.valueOf(pickedSlot));
 
             // Set the amount.
             builder.setAmount(pickedSlot);
@@ -331,7 +327,7 @@ public class CosmicCrateListener implements Listener {
                 if (!broadcastMessage.isBlank()) {
                     String builder = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
-                    this.server.broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName)
+                    this.server.broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName) //todo() update
                             .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
                             .replaceAll("%player%", player.getName())));
                 }

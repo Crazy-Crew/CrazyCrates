@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.utils;
 
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
@@ -51,6 +50,57 @@ public class MiscUtils {
 
     private static final ComponentLogger logger = plugin.getComponentLogger();
 
+    private static String replace(@NotNull final String message, @NotNull final String crateName) {
+        String safeMessage = message;
+
+        if (!crateName.isEmpty()) {
+            safeMessage = safeMessage.replaceAll("%<crate>%".replace("<crate>", crateName), "{%s}".formatted(crateName))
+                    .replaceAll("%<crate>_raw_physical%".replace("<crate>", crateName), "{%s_raw_physical}".formatted(crateName))
+                    .replaceAll("%<crate>_physical%".replace("<crate>", crateName), "{%s_physical}".formatted(crateName))
+
+                    .replaceAll("%<crate>_raw_opened%".replace("<crate>", crateName), "{%s_raw_opened}".formatted(crateName))
+                    .replaceAll("%<crate>_opened%".replace("<crate>", crateName), "{%s_opened}".formatted(crateName))
+
+                    .replaceAll("%<crate>_total%".replace("<crate>", crateName), "{%s_total}".formatted(crateName))
+
+                    .replaceAll("%<crate>_raw_total%".replace("<crate>", crateName), "{%s_raw_total}".formatted(crateName))
+                    .replaceAll("%<crate>_raw%".replace("<crate>", crateName), "{%s_raw}".formatted(crateName));
+        }
+
+        return safeMessage.replaceAll("%page%", "{page}")
+                .replaceAll("%prefix%", "{prefix}")
+                .replaceAll("%Prefix%", "{prefix}")
+
+                .replaceAll("%key-amount%", "{key_amount}")
+                .replaceAll("%keytype%", "{keytype}")
+                .replaceAll("%keys%", "{keys}")
+                .replaceAll("%key%", "{key}")
+
+                .replaceAll("%maxpulls%", "{maxpulls}")
+                .replaceAll("%pulls%", "{pulls}")
+
+                .replaceAll("%crates_opened%", "{crates_opened}")
+                .replaceAll("%crate_fancy%", "{crate_fancy}")
+                .replaceAll("%cratetype%", "{cratetype}")
+                .replaceAll("%crate%", "{crate}")
+                .replaceAll("%id%", "{id}")
+
+                .replaceAll("%slot%", "{slot}")
+                .replaceAll("%Slot%", "{slot}")
+
+                .replaceAll("%reward_stripped%", "{reward_stripped}")
+                .replaceAll("%reward%", "{reward}")
+                .replaceAll("%chance%", "{chance}")
+                .replaceAll("%weight%", "{weight}")
+                .replaceAll("%prize%", "{prize}")
+
+                .replaceAll("%player%", "{player}")
+                .replaceAll("%number%", "{number}")
+                .replaceAll("%amount%", "{amount}")
+                .replaceAll("%world%", "{world}")
+                .replaceAll("%usage%", "{usage}");
+    }
+
     public static void sendCommand(@Nullable final CommandSender sender, @NotNull final String command, @NotNull final Map<String, String> placeholders) {
         if (command.isEmpty()) return;
 
@@ -77,38 +127,6 @@ public class MiscUtils {
 
         for (final ItemBuilder builder : builders) {
             items.add(builder.asItemStack(player));
-        }
-
-        dropItems(items, player);
-    }
-
-    public static void dropLegacyBuilders(@NotNull final List<LegacyItemBuilder> builders, @NotNull final Player player) {
-        if (builders.isEmpty()) return;
-
-        final boolean isPlaceholderAPIEnabled = Plugins.placeholder_api.isEnabled();
-
-        final List<ItemStack> items = new ArrayList<>();
-
-        for (final LegacyItemBuilder builder : builders) {
-            if (isPlaceholderAPIEnabled) {
-                final String displayName = builder.getDisplayName();
-
-                if (!displayName.isEmpty()) {
-                    builder.setDisplayName(PlaceholderAPI.setPlaceholders(player, displayName));
-                }
-
-                final List<String> displayLore = builder.getDisplayLore();
-
-                if (!displayLore.isEmpty()) {
-                    List<String> lore = new ArrayList<>();
-
-                    displayLore.forEach(line -> lore.add(PlaceholderAPI.setPlaceholders(player, line)));
-
-                    builder.setDisplayLore(lore);
-                }
-            }
-
-            items.add(builder.asItemStack());
         }
 
         dropItems(items, player);
@@ -401,7 +419,7 @@ public class MiscUtils {
         return useDifferentRandom() ? ThreadLocalRandom.current() : new Random();
     }
 
-    public static LegacyItemBuilder getRandomPaneColor() {
+    public static ItemBuilder getRandomPaneColor() {
         List<ItemType> panes = Arrays.asList(
                 ItemType.LIGHT_BLUE_STAINED_GLASS_PANE,
                 ItemType.MAGENTA_STAINED_GLASS_PANE,
@@ -419,7 +437,7 @@ public class MiscUtils {
                 ItemType.RED_STAINED_GLASS_PANE
         );
 
-        return new LegacyItemBuilder(plugin, panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
+        return ItemBuilder.from(panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
     }
 
     public static void addItem(@NotNull final Player player, @NotNull final ItemStack... items) {

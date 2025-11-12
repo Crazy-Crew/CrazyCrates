@@ -94,7 +94,7 @@ public class CrateOpenListener implements Listener {
             if (!broadcastMessage.isBlank()) {
                 final String builder = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
-                this.server.broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName)
+                this.server.broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName) //todo() update
                         .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
                         .replaceAll("%player%", playerName)));
             }
@@ -110,7 +110,7 @@ public class CrateOpenListener implements Listener {
                     String builder;
 
                     if (Plugins.placeholder_api.isEnabled() ) {
-                        builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%crate%", fileName)
+                        builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%crate%", fileName) //todo() update
                                 .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
                                 .replaceAll("%player%", playerName));
                     } else {

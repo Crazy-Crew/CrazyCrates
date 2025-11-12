@@ -20,14 +20,14 @@ Crate:
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
-  BroadCast: "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><light_purple>Advanced Crate.</bold>"
+  BroadCast: "{prefix}<bold><gold>{player}</bold><reset> <gray>is opening a <bold><light_purple>Advanced Crate.</bold>"
   # This section is related to commands opening when a crate is opened.
   opening-command:
     # If the commands should be sent or not.
     toggle: false
     # The commands to run when the crate opens.
     # Supports all placeholderapi placeholders
-    # Supports %prefix which returns our prefix, %player% which uses the player name
+    # Supports {prefix} which returns our prefix, {player} which uses the player name
     commands:
       - "put your command here."
   sound:
@@ -67,7 +67,7 @@ Crate:
   # A default message if the prize doesn't have any Messages
   # i.e. Messages: [] or the value isn't there.
   Prize-Message:
-    - "<gray>You have won <red>%reward% <gray>from <red>%crate%."
+    - "<gray>You have won <red>{reward} <gray>from <red>{crate}."
   # A list of commands to run by default on every prize.
   # If you do not want these commands to run, set this to []
   Prize-Commands: []
@@ -79,7 +79,7 @@ Crate:
       Toggle: false
       # The messages to broadcast.
       Messages:
-        - "<red>%player% won the prize <yellow>%reward%."
+        - "<red>{player} won the prize <yellow>{reward}."
       # If the player has this permission, they don't get the broadcast.
       Permission: ""
     # Settings related to rewards.
@@ -111,8 +111,8 @@ Crate:
   # The lore of the item in the GUI.
   Lore:
     - "<gray>This crate contains strange objects."
-    - "<gray>You have <gold>%keys% keys <gray>to open this crate with."
-    - "<gray>You have opened this crate: <gold>%crate_opened% times"
+    - "<gray>You have <gold>{keys} keys <gray>to open this crate with."
+    - "<gray>You have opened this crate: <gold>{crate_opened} times"
     - "<gray>(<yellow>!<gray>) Right click to view rewards."
   Preview:
     # The name of the inventory for the preview menu.
@@ -217,7 +217,7 @@ Crate:
       Commands:
         # This adds the blacklist permission to the player when they win the prize,
         # After this, they will no longer be able to use this prize.
-        - "lp user %player% permission set crazycrates.blacklist.warlord"
+        - "lp user {player} permission set crazycrates.blacklist.warlord"
       # The list of items to give.
       Items:
         - "Item:netherite_helmet, Amount:1, Damage:25, Trim-Pattern:sentry, Trim-Material:redstone, Name:<bold><dark_red>Warlord's Helmet</bold>, protection:5, unbreaking:3"
@@ -236,7 +236,7 @@ Crate:
           - "<reset> <dark_gray>[<blue>CrazyCrates<dark_gray>]: <gray>You have already won that prize, so enjoy some gold nuggets."
         # A list of commands to run.
         Commands:
-          - "give %player% gold_nugget 16"
+          - "give {player} gold_nugget 16"
         # Alternatively, instead of commands. You can have an Items section which functions the same as the Items section above.
         Items:
           - "Item:gold_nugget, Amount:16"

@@ -86,7 +86,7 @@ public class QuadCrateListener implements Listener {
             display.editPersistentDataContainer(container -> container.set(ItemKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1"));
 
             // Convert the item stack to item builder.
-            final ItemStack itemStack = ItemUtils.convertItemStack(display).asItemStack();
+            final ItemStack itemStack = display.clone();
 
             final Location location = block.getLocation();
 

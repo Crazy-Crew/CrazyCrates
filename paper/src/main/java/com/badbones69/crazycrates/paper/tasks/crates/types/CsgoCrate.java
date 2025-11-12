@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.paper.tasks.crates.types;
 
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.builders.types.features.CrateSpinMenu;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -14,7 +13,6 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -105,7 +103,7 @@ public class CsgoCrate extends CrateBuilder {
 
                         final String material = config.getProperty(ConfigKeys.crate_csgo_finished_material);
 
-                        final ItemStack itemStack = new LegacyItemBuilder(plugin).withType(material.isEmpty() ? Material.GRAY_STAINED_GLASS.getKey().getKey() : material).setDisplayName(" ").asItemStack();
+                        final ItemStack itemStack = ItemBuilder.from(material.isEmpty() ? "gray_stained_glass" : material).setDisplayName(" ").asItemStack();
 
                         setItem(4, itemStack);
                         setItem(22, itemStack);
@@ -154,7 +152,7 @@ public class CsgoCrate extends CrateBuilder {
         final String material = this.config.getProperty(ConfigKeys.crate_csgo_cycling_material);
 
         if (!material.isEmpty()) {
-            final ItemStack itemStack = new LegacyItemBuilder(this.plugin).withType(material).setDisplayName(" ").asItemStack();
+            final ItemStack itemStack = ItemBuilder.from(material).setDisplayName(" ").asItemStack();
 
             setItem(4, itemStack);
             setItem(22, itemStack);

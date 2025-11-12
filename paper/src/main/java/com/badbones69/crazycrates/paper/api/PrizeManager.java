@@ -160,11 +160,7 @@ public class PrizeManager {
 
         MiscUtils.dropItems(prize.getEditorItems(), player); // drops any leftover editor items.
 
-        if (config.getProperty(ConfigKeys.use_different_items_layout)) {
-            MiscUtils.dropBuilders(prize.getItems(), player);
-        } else {
-            MiscUtils.dropLegacyBuilders(prize.getItemBuilders(), player);
-        }
+        MiscUtils.dropBuilders(prize.getItems(), player);
 
         for (final String command : crate.getPrizeCommands()) {
             runCommands(player, prize, crate, command);
@@ -195,12 +191,12 @@ public class PrizeManager {
     private static void runCommands(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, @NotNull String command) {
         String cmd = command;
 
-        if (cmd.contains("%random%:")) {
+        if (cmd.contains("{random}:")) {
             final StringBuilder commandBuilder = new StringBuilder();
 
             for (String word : cmd.split(" ")) {
-                if (word.startsWith("%random%:")) {// /give %player% iron %random%:1-64
-                    word = word.replace("%random%:", "");
+                if (word.startsWith("{random}:")) {// /give %player% iron %random%:1-64
+                    word = word.replace("{random}:", "");
 
                     try {
                         long min = Long.parseLong(word.split("-")[0]);
@@ -226,7 +222,7 @@ public class PrizeManager {
 
         if (Plugins.placeholder_api.isEnabled() ) cmd = PlaceholderAPI.setPlaceholders(player, cmd);
 
-        final String maxPulls = String.valueOf(prize.getMaxPulls());
+        final String maxPulls = String.valueOf(prize.getMaxPulls()); //todo() update
         final String pulls = String.valueOf(getCurrentPulls(prize, crate));
         final String prizeName = prize.getPrizeName().replaceAll("%maxpulls%", maxPulls).replaceAll("%pulls%", pulls);
 
@@ -247,7 +243,7 @@ public class PrizeManager {
         final String pulls = String.valueOf(getCurrentPulls(prize, crate));
         final String prizeName = prize.getPrizeName().replaceAll("%maxpulls%", maxPulls).replaceAll("%pulls%", pulls);
 
-        final String defaultMessage = message
+        final String defaultMessage = message //todo() update
                 .replaceAll("%player%", quoteReplacement(player.getName()))
                 .replaceAll("%reward%", quoteReplacement(prizeName))
                 .replaceAll("%reward_stripped%", quoteReplacement(prize.getStrippedName()))

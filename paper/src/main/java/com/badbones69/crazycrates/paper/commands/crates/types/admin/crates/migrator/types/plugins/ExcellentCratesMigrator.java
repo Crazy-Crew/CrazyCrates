@@ -178,6 +178,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             if (file.exists()) {
                 final YamlConfiguration menuFile = YamlConfiguration.loadConfiguration(file);
 
+                //todo() update
                 final String previewName = menuFile.getString("Crate.Name", "<bold><#9af7ff>%crate%</bold>").replace("%crate_name%", "%crate%").replace("%crate%", strippedName);
 
                 final List<String> previewLore = new ArrayList<>();
