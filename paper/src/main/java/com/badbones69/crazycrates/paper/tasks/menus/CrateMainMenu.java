@@ -6,13 +6,14 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
+import com.badbones69.crazycrates.paper.utils.CommandUtils;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.Gui;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.Gui;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiFiller;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
@@ -48,10 +49,10 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
             final ModelData fillerModel = this.config.getProperty(ConfigKeys.filler_item_model);
 
-            final ItemBuilder itemBuilder = ItemBuilder.from(this.config.getProperty(ConfigKeys.filler_item)).setDisplayName(this.config.getProperty(ConfigKeys.filler_name))
-                    .withDisplayLore(this.config.getProperty(ConfigKeys.filler_lore))
-                    .setCustomModelData(this.config.getProperty(ConfigKeys.filler_model_data))
-                    .setItemModel(fillerModel.getNamespace(), fillerModel.getId());
+            final ItemBuilder itemBuilder = ItemBuilder.from(this.config.getProperty(ConfigKeys.filler_item)).withDisplayName(this.config.getProperty(ConfigKeys.filler_name))
+                    .withDisplayLore(this.config.getProperty(ConfigKeys.filler_lore));
+                    //.setCustomModelData(this.config.getProperty(ConfigKeys.filler_model_data))
+                    //.setItemModel(fillerModel.getNamespace(), fillerModel.getId());
 
             guiFiller.fill(itemBuilder.asGuiItem(this.player));
         }
@@ -60,7 +61,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
         if (this.config.getProperty(ConfigKeys.gui_customizer_toggle)) {
             for (String custom : this.config.getProperty(ConfigKeys.gui_customizer)) {
-                final ItemBuilder itemBuilder = ItemBuilder.from(ItemType.STONE);
+                final ItemBuilder itemBuilder = ItemBuilder.from(ItemType.STONE, 1);
 
                 itemBuilder.setPlaceholders(placeholders);
 
@@ -74,7 +75,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                         case "item" -> {
                             itemBuilder.withCustomItem(value.toLowerCase());
                         }
-                        case "name" -> itemBuilder.setDisplayName(value);
+                        case "name" -> itemBuilder.withDisplayName(value);
 
                         case "lore" -> {
                             String[] lore = value.split(",");
@@ -84,10 +85,10 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                             }
                         }
 
-                        case "custom-model-data" -> itemBuilder.setCustomModelData(value);
+                        case "custom-model-data" -> itemBuilder.asCustomBuilder().setCustomModelData(value).build();
 
                         case "glowing" -> {
-                            itemBuilder.setEnchantGlint(StringUtils.tryParseBoolean(value).orElse(false));
+                            //itemBuilder.setEnchantGlint(StringUtils.tryParseBoolean(value).orElse(false));
                         }
 
                         case "slot" -> slot = StringUtils.tryParseInt(value).orElse(-1).intValue();
@@ -117,7 +118,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                     if (command == null) return;
 
-                    MiscUtils.sendCommand(player, command, new HashMap<>() {{
+                    CommandUtils.executeCommand(player, command, new HashMap<>() {{
                         put("{player}", player.getName());
                     }});
                 }));
@@ -141,9 +142,9 @@ public class CrateMainMenu extends StaticInventoryBuilder {
             final int slot = display.getInt("Slot");
 
             final ItemBuilder itemBuilder = ItemBuilder.from(display.getString("Item", "chest").toLowerCase())
-                    .setDisplayName(crate.getCrateName())
-                    .setCustomModelData(display.getString("Custom-Model-Data", ""))
-                    .setItemModel(display.getString("Model.Namespace", ""), display.getString("Model.Id", ""))
+                    .withDisplayName(crate.getCrateName())
+                    //.setCustomModelData(display.getString("Custom-Model-Data", ""))
+                    //.setItemModel(display.getString("Model.Namespace", ""), display.getString("Model.Id", ""))
                     .setPersistentString(ItemKeys.crate_key.getNamespacedKey(), fileName);
 
             this.gui.setItem(slot, ItemUtils.getItem(display, itemBuilder).asGuiItem(this.player, event -> {

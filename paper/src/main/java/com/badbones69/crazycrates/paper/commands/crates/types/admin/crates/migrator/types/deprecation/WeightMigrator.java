@@ -3,8 +3,6 @@ package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migr
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.fusion.core.api.enums.FileType;
-import com.ryderbelserion.fusion.core.api.interfaces.files.ICustomFile;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -22,7 +20,7 @@ public class WeightMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Collection<ICustomFile<? extends ICustomFile<?>>> customFiles = this.fileManager.getCustomFiles().values();
+        /*final Collection<ICustomFile<? extends ICustomFile<?>>> customFiles = this.fileManager.getCustomFiles().values();
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
@@ -117,7 +115,7 @@ public class WeightMigrator extends ICrateMigrator {
 
         // reload crates
         this.crateManager.loadHolograms();
-        this.crateManager.loadCrates();
+        this.crateManager.loadCrates();*/
     }
 
     @Override

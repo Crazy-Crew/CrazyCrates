@@ -10,11 +10,11 @@ import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Server;
@@ -39,6 +39,8 @@ public class Prize {
 
     private final SettingsManager config = ConfigManager.getConfig();
 
+    private final FusionPaper fusion = this.plugin.getFusion();
+
     private final ConfigurationSection section;
     private final List<ItemBuilder> items;
     private final List<String> commands;
@@ -47,7 +49,7 @@ public class Prize {
     private final String prizeName;
 
     private List<String> permissions = new ArrayList<>();
-    private ItemBuilder displayItem = ItemBuilder.from(ItemType.STONE);
+    private ItemBuilder displayItem = ItemBuilder.from(ItemType.STONE, 1);
     private boolean firework = false;
     private String crateName = "";
     private double weight = -1;
@@ -141,7 +143,7 @@ public class Prize {
     }
 
     public @NotNull final String getStrippedName() {
-        return PlainTextComponentSerializer.plainText().serialize(AdvUtils.parse(getPrizeName()));
+        return PlainTextComponentSerializer.plainText().serialize(this.fusion.parse(getPrizeName()));
     }
 
     /**
@@ -185,7 +187,7 @@ public class Prize {
         }
 
         if (maxPulls != 0 && pulls != 0 && pulls >= maxPulls) {
-            final String line = player != null ? Messages.crate_prize_max_pulls.getMessage(player) : ConfigManager.getMessages().getProperty(CrateKeys.crate_prize_max_pulls);
+            final String line = player != null ? Messages.crate_prize_max_pulls.getString(player) : ConfigManager.getMessages().getProperty(CrateKeys.crate_prize_max_pulls);
 
             if (!line.isEmpty()) {
                 lore.add(line);
@@ -309,7 +311,7 @@ public class Prize {
         final String current_pulls = String.valueOf(PrizeManager.getCurrentPulls(this, crate));
         final String max_pulls = String.valueOf(getMaxPulls());
 
-        final String message = StringUtils.toString(messages);
+        //final String message = StringUtils.toString(messages);
 
         final Map<String, String> placeholders = new HashMap<>() {{ //todo() update
             put("%player%", target.getName());
@@ -320,15 +322,15 @@ public class Prize {
             put("%reward_stripped%", getStrippedName());
         }};
 
-        final Component component = AdvUtils.parse(MiscUtils.populatePlaceholders(target, message, placeholders));
+        //final Component component = AdvUtils.parse(MiscUtils.populatePlaceholders(target, message, placeholders));
 
         if (permission.isEmpty()) {
-            server.broadcast(component);
+            //server.broadcast(component);
 
             return;
         }
 
-        server.broadcast(component, permission);
+        //server.broadcast(component, permission);
     }
 
     private void display() {
@@ -338,7 +340,7 @@ public class Prize {
             }
 
             if (this.section.contains("DisplayName")) {
-                this.displayItem.setDisplayName(this.prizeName);
+                this.displayItem.withDisplayName(this.prizeName);
             }
 
             if (this.section.contains("DisplayItem")) {
@@ -368,7 +370,13 @@ public class Prize {
             //this.displayItem.addPlaceholder("%chance%", this.getTotalChance());
 
             if (this.section.contains("Glowing")) {
-                this.displayItem.setEnchantGlint(this.section.getBoolean("Glowing", false));
+                final String value = this.section.getString("Glowing", "");
+
+                switch (value) {
+                    case "true", "add_glow" -> this.displayItem.addEnchantGlint();
+                    case "false", "remove_glow" -> this.displayItem.removeEnchantGlint();
+                    case "" -> {}
+                }
             }
 
             this.displayItem.setItemDamage(this.section.getInt("DisplayDamage", 0));
@@ -397,9 +405,13 @@ public class Prize {
 
             this.displayItem.setUnbreakable(this.section.getBoolean("Unbreakable", false));
 
-            this.displayItem.setCustomModelData(this.section.getString("Settings.Custom-Model-Data", ""));
+            final CustomBuilder customBuilder = this.displayItem.asCustomBuilder();
 
-            this.displayItem.setItemModel(this.section.getString("Settings.Model.Namespace", ""), this.section.getString("Settings.Model.Id", ""));
+            customBuilder.setCustomModelData(this.section.getString("Settings.Custom-Model-Data", ""));
+
+            customBuilder.setItemModel(this.section.getString("Settings.Model.Namespace", ""), this.section.getString("Settings.Model.Id", ""));
+
+            customBuilder.build();
 
             if (this.section.contains("Settings.Mob-Type")) {
                 final EntityType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(this.section.getString("Settings.Mob-Type", "cow"));
@@ -463,7 +475,7 @@ public class Prize {
             }
 
         } catch (final Exception exception) {
-            this.displayItem = ItemBuilder.from(ItemType.RED_TERRACOTTA).setDisplayName("<red><bold>ERROR").withDisplayLore(new ArrayList<>() {{
+            this.displayItem = ItemBuilder.from(ItemType.RED_TERRACOTTA, 1).withDisplayName("<red><bold>ERROR").withDisplayLore(new ArrayList<>() {{
                 add("<red>There was an error with one of your prizes!");
                 add("<red>The reward in question is labeled: <yellow>" + section.getName() + " <red>in crate: <yellow>" + crateName);
                 add("<red>Name of the reward is " + section.getString("DisplayName"));

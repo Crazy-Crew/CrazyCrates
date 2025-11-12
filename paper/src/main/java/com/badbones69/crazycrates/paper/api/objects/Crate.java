@@ -10,10 +10,9 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
-import com.ryderbelserion.fusion.paper.files.FileManager;
-import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
+import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import io.papermc.paper.datacomponent.DataComponentTypes;
@@ -133,7 +132,7 @@ public class Crate {
                  @NotNull final List<String> prizeCommands,
                  @NotNull final CrateHologram hologram) {
         this.name = name.replaceAll(".yml", "");
-        this.keyBuilder = key.setDisplayName(keyName).setPersistentString(ItemKeys.crate_key.getNamespacedKey(), this.name);
+        this.keyBuilder = key.withDisplayName(keyName).setPersistentString(ItemKeys.crate_key.getNamespacedKey(), this.name);
         this.keyName = keyName;
 
         this.file = file;
@@ -230,18 +229,18 @@ public class Crate {
         @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
         this.borderItem = ItemBuilder.from(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane").toLowerCase())
-                .setCustomModelData(file.getString("Crate.Preview.Glass.Custom-Model-Data", ""))
-                .setItemModel(file.getString("Crate.Preview.Glass.Model.Namespace", ""), file.getString("Crate.Preview.Glass.Model.Id", ""))
+                //.setCustomModelData(file.getString("Crate.Preview.Glass.Custom-Model-Data", ""))
+                //.setItemModel(file.getString("Crate.Preview.Glass.Model.Namespace", ""), file.getString("Crate.Preview.Glass.Model.Id", ""))
                 //.setHidingItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
-                .setDisplayName(borderName);
+                .withDisplayName(borderName);
 
         @NotNull final String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
 
         this.previewTierBorderItem = ItemBuilder.from(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
-                .setCustomModelData(file.getString("Crate.tier-preview.glass.custom-model-data", ""))
-                .setItemModel(file.getString("Crate.tier-preview.glass.model.namespace", ""), file.getString("Crate.tier-preview.glass.model.id", ""))
+                //.setCustomModelData(file.getString("Crate.tier-preview.glass.custom-model-data", ""))
+                //.setItemModel(file.getString("Crate.tier-preview.glass.model.namespace", ""), file.getString("Crate.tier-preview.glass.model.id", ""))
                 //.setHidingItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
-                .setDisplayName(previewTierBorderName);
+                .withDisplayName(previewTierBorderName);
 
         setTierPreviewRows(file.getInt("Crate.tier-preview.rows", 5));
 
@@ -807,7 +806,7 @@ public class Crate {
             final Component displayName = itemStack.getData(DataComponentTypes.CUSTOM_NAME);
 
             if (displayName != null) {
-                section.set(getPath(prizeName, "DisplayName"), AdvUtils.fromComponent(displayName));
+                //section.set(getPath(prizeName, "DisplayName"), AdvUtils.fromComponent(displayName));
             }
         }
 
@@ -818,7 +817,7 @@ public class Crate {
                 final List<Component> lore = itemLore.lines();
 
                 if (!lore.isEmpty()) {
-                    section.set(getPath(prizeName, "DisplayLore"), AdvUtils.fromComponent(lore));
+                    //section.set(getPath(prizeName, "DisplayLore"), AdvUtils.fromComponent(lore));
                 }
             }
         }
@@ -895,7 +894,7 @@ public class Crate {
         return section + "." + path;
     }
 
-    private final FileManager fileManager = this.plugin.getFileManager();
+    private final PaperFileManager fileManager = this.plugin.getFileManager();
 
     private final Path dataPath = this.plugin.getDataPath();
 
@@ -905,11 +904,7 @@ public class Crate {
     private void saveFile() {
         if (this.fileName.isEmpty()) return;
 
-        final PaperCustomFile customFile = this.fileManager.getPaperCustomFile(this.dataPath.resolve("crates").resolve(this.fileName));
-
-        if (customFile != null) {
-            customFile.save(); // save to file
-        }
+        this.fileManager.getPaperFile(this.dataPath.resolve("crates").resolve(this.fileName)).ifPresent(ICustomFile::save);
 
         this.crateManager.reloadCrate(this.crateManager.getCrateFromName(this.name));
     }

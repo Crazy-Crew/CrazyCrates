@@ -2,10 +2,11 @@ package com.badbones69.crazycrates.paper.api.objects.gui.buttons;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
+import com.badbones69.crazycrates.paper.utils.CommandUtils;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.utils.MsgUtils;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiItem;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -27,7 +28,7 @@ public class GuiButton {
 
     public GuiButton(@NotNull final ConfigurationSection section, @NotNull final Map<String, String> placeholders) {
         this.guiItem = ItemBuilder.from(section.getString("material", "emerald_block"))
-                .setDisplayName(section.getString("name", "No display name found."))
+                .withDisplayName(section.getString("name", "No display name found."))
                 .withDisplayLore(section.getStringList("lore"));
 
         this.commands = section.getStringList("commands");
@@ -42,7 +43,7 @@ public class GuiButton {
 
             player.closeInventory(InventoryCloseEvent.Reason.OPEN_NEW);
 
-            this.commands.forEach(command -> MiscUtils.sendCommand(command, this.placeholders));
+            this.commands.forEach(command -> CommandUtils.executeCommand(player, command, this.placeholders));
             this.messages.forEach(message -> MsgUtils.sendMessage(player, MiscUtils.populatePlaceholders(player, message, this.placeholders), false));
 
             final ConfigurationSection sound = this.section.getConfigurationSection("sound");

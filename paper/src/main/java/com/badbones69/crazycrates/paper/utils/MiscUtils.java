@@ -3,9 +3,9 @@ package com.badbones69.crazycrates.paper.utils;
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
-import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.scheduler.Scheduler;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.*;
@@ -437,7 +437,7 @@ public class MiscUtils {
                 ItemType.RED_STAINED_GLASS_PANE
         );
 
-        return ItemBuilder.from(panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
+        return ItemBuilder.from(panes.get(ThreadLocalRandom.current().nextInt(panes.size())), 1);
     }
 
     public static void addItem(@NotNull final Player player, @NotNull final ItemStack... items) {

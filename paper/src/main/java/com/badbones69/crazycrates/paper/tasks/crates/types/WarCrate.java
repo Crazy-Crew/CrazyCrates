@@ -2,8 +2,8 @@ package com.badbones69.crazycrates.paper.tasks.crates.types;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;

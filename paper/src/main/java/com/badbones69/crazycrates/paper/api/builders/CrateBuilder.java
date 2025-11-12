@@ -17,9 +17,8 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -204,7 +203,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
                     }
 
                     reward.setVelocity(new Vector(0, 0.2, 0));
-                    reward.customName(AdvUtils.parse(prize.getPrizeName()));
+                    //reward.customName(AdvUtils.parse(prize.getPrizeName()));
                     reward.setCustomNameVisible(true);
                     reward.setCanMobPickup(false);
                     reward.setCanPlayerPickup(false);
@@ -344,7 +343,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param lore lore of item
      */
     public void setItem(final int slot, @NotNull final ItemType itemType, @NotNull final String name, @NotNull final List<String> lore) {
-        this.inventory.setItem(slot, ItemBuilder.from(itemType).setDisplayName(name).withDisplayLore(lore).asItemStack(this.player));
+        this.inventory.setItem(slot, ItemBuilder.from(itemType, 1).withDisplayName(name).withDisplayLore(lore).asItemStack(this.player));
     }
 
     /**
@@ -355,7 +354,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param name name of item
      */
     public void setItem(final int slot, @NotNull final ItemType itemType, @NotNull final String name) {
-        this.inventory.setItem(slot, ItemBuilder.from(itemType).setDisplayName(name).asItemStack(this.player));
+        this.inventory.setItem(slot, ItemBuilder.from(itemType, 1).withDisplayName(name).asItemStack(this.player));
     }
 
     /**
@@ -371,7 +370,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @return the itemstack
      */
     public @NotNull final ItemStack getRandomGlassPane() {
-        return MiscUtils.getRandomPaneColor().setDisplayName(" ").asItemStack();
+        return MiscUtils.getRandomPaneColor().withDisplayName(" ").asItemStack();
     }
 
     protected final SettingsManager config = ConfigManager.getConfig();

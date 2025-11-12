@@ -7,8 +7,8 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
-import com.ryderbelserion.fusion.paper.api.builders.gui.types.PaginatedGui;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.gui.types.PaginatedGui;
 import net.kyori.adventure.audience.Audience;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -40,26 +40,29 @@ public class InventoryManager {
         final ModelData menuModelData = this.config.getProperty(ConfigKeys.menu_button_item_model);
 
         this.menuButton = ItemBuilder.from(this.config.getProperty(ConfigKeys.menu_button_item).toLowerCase())
-                .setDisplayName(this.config.getProperty(ConfigKeys.menu_button_name))
-                .withDisplayLore(this.config.getProperty(ConfigKeys.menu_button_lore))
-                .setCustomModelData(this.config.getProperty(ConfigKeys.menu_button_model_data))
-                .setItemModel(menuModelData.getNamespace(), menuModelData.getId());
+                .withDisplayName(this.config.getProperty(ConfigKeys.menu_button_name))
+                .withDisplayLore(this.config.getProperty(ConfigKeys.menu_button_lore));
+
+        this.menuButton.asCustomBuilder().setCustomModelData(this.config.getProperty(ConfigKeys.menu_button_model_data))
+                .setItemModel(menuModelData.getNamespace(), menuModelData.getId()).build();
 
         final ModelData nextModelData = this.config.getProperty(ConfigKeys.next_button_item_model);
 
         this.nextButton = ItemBuilder.from(this.config.getProperty(ConfigKeys.next_button_item).toLowerCase())
-                .setDisplayName(this.config.getProperty(ConfigKeys.next_button_name))
-                .withDisplayLore(this.config.getProperty(ConfigKeys.next_button_lore))
-                .setCustomModelData(this.config.getProperty(ConfigKeys.next_button_model_data))
-                .setItemModel(nextModelData.getNamespace(), nextModelData.getId());
+                .withDisplayName(this.config.getProperty(ConfigKeys.next_button_name))
+                .withDisplayLore(this.config.getProperty(ConfigKeys.next_button_lore));
+
+        this.nextButton.asCustomBuilder().setCustomModelData(this.config.getProperty(ConfigKeys.next_button_model_data))
+                .setItemModel(nextModelData.getNamespace(), nextModelData.getId()).build();
 
         final ModelData backModelData = this.config.getProperty(ConfigKeys.back_button_item_model);
 
         this.backButton = ItemBuilder.from(this.config.getProperty(ConfigKeys.back_button_item).toLowerCase())
-                .setDisplayName(this.config.getProperty(ConfigKeys.back_button_name))
-                .withDisplayLore(this.config.getProperty(ConfigKeys.back_button_lore))
-                .setCustomModelData(this.config.getProperty(ConfigKeys.back_button_model_data))
-                .setItemModel(backModelData.getNamespace(), backModelData.getId());
+                .withDisplayName(this.config.getProperty(ConfigKeys.back_button_name))
+                .withDisplayLore(this.config.getProperty(ConfigKeys.back_button_lore));
+
+        this.backButton.asCustomBuilder().setCustomModelData(this.config.getProperty(ConfigKeys.back_button_model_data))
+                .setItemModel(backModelData.getNamespace(), backModelData.getId()).build();
     }
 
     public final ItemStack getMenuButton(@NotNull final Player player) {
@@ -75,7 +78,7 @@ public class InventoryManager {
             button.setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), tier.getName());
         }
 
-        return button.asItemStack(player == null ? Audience.empty() : player);
+        return button.asItemStack(player);
     }
 
     public final ItemStack getNextButton(@Nullable final Player player, @NotNull final PaginatedGui gui) {
@@ -91,7 +94,7 @@ public class InventoryManager {
             button.setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), tier.getName());
         }
 
-        return button.asItemStack(player == null ? Audience.empty() : player);
+        return button.asItemStack(player);
     }
 
     public final ItemStack getBackButton(@Nullable final Player player, @NotNull final PaginatedGui gui) {

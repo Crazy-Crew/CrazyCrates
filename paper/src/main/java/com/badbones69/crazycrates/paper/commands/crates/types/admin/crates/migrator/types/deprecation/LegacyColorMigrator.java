@@ -4,9 +4,6 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import com.ryderbelserion.fusion.core.api.enums.FileType;
-import com.ryderbelserion.fusion.core.api.interfaces.files.ICustomFile;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,7 +20,7 @@ public class LegacyColorMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        final List<String> failed = new ArrayList<>();
+        /*final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
 
         try {
@@ -228,7 +225,7 @@ public class LegacyColorMigrator extends ICrateMigrator {
 
         // reload crates
         this.crateManager.loadHolograms();
-        this.crateManager.loadCrates();
+        this.crateManager.loadCrates();*/
     }
 
     @Override

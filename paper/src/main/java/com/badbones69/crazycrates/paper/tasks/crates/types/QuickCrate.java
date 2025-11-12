@@ -9,7 +9,7 @@ import com.badbones69.crazycrates.paper.api.ChestManager;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

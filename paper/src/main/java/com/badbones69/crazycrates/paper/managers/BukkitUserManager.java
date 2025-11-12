@@ -7,7 +7,7 @@ import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
 import org.bukkit.Server;

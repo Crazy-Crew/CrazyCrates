@@ -206,10 +206,12 @@ public class CrateInteractListener implements Listener {
                 player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
-            if (sendMessage) Messages.no_keys.sendMessage(player, new HashMap<>() {{
-                put("{crate}", crate.getCrateName());
-                put("{key}", keyName);
-            }});
+            if (sendMessage) {
+                Messages.no_keys.sendMessage(player, new HashMap<>() {{
+                    put("{crate}", crate.getCrateName());
+                    put("{key}", keyName);
+                }});
+            }
         }
     }
 

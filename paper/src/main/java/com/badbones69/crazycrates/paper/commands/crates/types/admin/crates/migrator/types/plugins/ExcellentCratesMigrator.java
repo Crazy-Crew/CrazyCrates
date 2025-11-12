@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import io.papermc.paper.datacomponent.DataComponentTypes;
@@ -48,7 +47,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        final List<String> failed = new ArrayList<>();
+        /*final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
 
         if (this.ignoreCrates) {
@@ -385,7 +384,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
         sendMessage(new ArrayList<>(failedCrates + convertedCrates) {{
             addAll(failed);
             addAll(success);
-        }}, convertedCrates, failedCrates);
+        }}, convertedCrates, failedCrates);*/
     }
 
     @Override

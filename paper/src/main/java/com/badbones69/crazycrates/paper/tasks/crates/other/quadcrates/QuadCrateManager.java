@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.structures.StructureManager;
 import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.*;
 import com.badbones69.crazycrates.core.config.ConfigManager;

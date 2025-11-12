@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.paper.api;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.core.config.ConfigManager;
-import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
@@ -12,7 +11,7 @@ import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;

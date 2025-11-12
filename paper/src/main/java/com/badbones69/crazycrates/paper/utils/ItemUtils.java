@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.core.api.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.SkullBuilder;

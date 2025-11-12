@@ -32,9 +32,9 @@ public class CommandKey {
     @Permission(value = "crazycrates.keys", def = PermissionDefault.TRUE)
     @Syntax("/keys")
     public void personal(Player player) {
-        getKeys(player, player, Messages.virtual_keys_header.getMessage(player, new HashMap<>() {{
+        getKeys(player, player, Messages.virtual_keys_header.getString(player, new HashMap<>() {{
             put("{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(player.getUniqueId())));
-        }}), Messages.no_virtual_keys.getMessage(player));
+        }}), Messages.no_virtual_keys.getString(player));
     }
 
     @Command("view")
@@ -59,10 +59,12 @@ public class CommandKey {
             return;
         }
 
-        getKeys(target, sender, Messages.other_player_no_keys_header.getMessage(target, new HashMap<>() {{
+        getKeys(target, sender, Messages.other_player_no_keys_header.getString(target, new HashMap<>() {{
             put("{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(target.getUniqueId())));
             put("{player}", targetName);
-        }}), Messages.other_player_no_keys.getMessage(target, "{player}", targetName));
+        }}), Messages.other_player_no_keys.getString(target, new HashMap<>() {{
+            put("{player}", targetName);
+        }}));
     }
 
     /**
@@ -94,28 +96,12 @@ public class CommandKey {
             if (amount > 0) {
                 hasKeys = true;
 
-                message.add(Messages.per_crate.getMessage(player, new HashMap<>() {{
+                message.add(Messages.per_crate.getString(player, new HashMap<>() {{
                     put("{crate_opened}", String.valueOf(userManager.getCrateOpened(uuid, crate.getFileName())));
                     put("{keys}", String.valueOf(amount));
                     put("{crate}", crate.getCrateName());
                 }}));
             }
-        }
-
-        if (Plugins.placeholder_api.isEnabled() ) {
-            if (sender instanceof Player person) {
-                if (hasKeys) {
-                    message.forEach(line -> person.sendRichMessage(PlaceholderAPI.setPlaceholders(person, line)));
-
-                    return;
-                }
-
-                sender.sendRichMessage(PlaceholderAPI.setPlaceholders(person, content));
-
-                return;
-            }
-
-            return;
         }
 
         if (hasKeys) {

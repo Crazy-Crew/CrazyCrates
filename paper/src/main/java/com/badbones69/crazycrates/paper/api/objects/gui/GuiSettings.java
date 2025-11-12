@@ -7,8 +7,8 @@ import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.gui.buttons.CrateButton;
 import com.badbones69.crazycrates.paper.api.objects.gui.buttons.GuiButton;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiItem;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -45,7 +45,7 @@ public class GuiSettings {
         this.fillerType = FillerType.getFromName(configuration.getString("filler.fill-type", "border"));
 
         this.fillerStack = ItemBuilder.from(configuration.getString("filler.toggle.material", "red_stained_glass_pane"))
-                .setDisplayName(configuration.getString("filler.toggle.name", " ")).asGuiItem();
+                .withDisplayName(configuration.getString("filler.toggle.name", " ")).asGuiItem();
 
         final ConfigurationSection staticButtons = configuration.getConfigurationSection("buttons.static");
 

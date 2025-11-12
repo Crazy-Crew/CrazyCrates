@@ -3,9 +3,8 @@ package com.badbones69.crazycrates.paper.api.objects;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
-import net.kyori.adventure.audience.Audience;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -36,9 +35,9 @@ public class Tier {
 
         //.setHidingItemFlags(section.getBoolean("HideItemFlags", false))
 
-        this.item = ItemBuilder.from(section.getString("Item", "chest").toLowerCase())
-                .setCustomModelData(section.getString("Custom-Model-Data", ""))
-                .setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
+        this.item = ItemBuilder.from(section.getString("Item", "chest").toLowerCase());
+                //.setCustomModelData(section.getString("Custom-Model-Data", ""))
+                //.setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
 
         this.weight = section.getDouble("Weight", -1);
 
@@ -90,7 +89,7 @@ public class Tier {
      * @return the tier item shown in the preview.
      */
     public @NotNull final ItemStack getTierItem(@Nullable final Player target, @NotNull final Crate crate) {
-        return this.item.setDisplayName(this.coloredName).withDisplayLore(this.lore).addPlaceholder("{chance}", StringUtils.format(crate.getTierChance(getWeight())))
-                .setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), this.name).asItemStack(target == null ? Audience.empty() : target);
+        return this.item.withDisplayName(this.coloredName).withDisplayLore(this.lore).addPlaceholder("{chance}", StringUtils.format(crate.getTierChance(getWeight())))
+                .setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), this.name).asItemStack(target);
     }
 }

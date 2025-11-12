@@ -1,20 +1,9 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.deprecation;
 
-import com.badbones69.crazycrates.core.enums.Comments;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.core.api.enums.FileType;
-import com.ryderbelserion.fusion.core.api.interfaces.files.ICustomFile;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
-import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
-import com.ryderbelserion.fusion.paper.utils.ItemUtils;
-import org.bukkit.block.banner.PatternType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.potion.PotionEffectType;
 import java.io.File;
 import java.util.*;
 
@@ -26,7 +15,7 @@ public class NewItemMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Collection<ICustomFile<? extends ICustomFile<?>>> customFiles = this.fileManager.getCustomFiles().values();
+        /*final Collection<ICustomFile<? extends ICustomFile<?>>> customFiles = this.fileManager.getCustomFiles().values();
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
@@ -228,7 +217,7 @@ public class NewItemMigrator extends ICrateMigrator {
 
         // reload crates
         this.crateManager.loadHolograms();
-        this.crateManager.loadCrates();
+        this.crateManager.loadCrates();*/
     }
 
     @Override

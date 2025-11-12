@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.paper.tasks.crates.other;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

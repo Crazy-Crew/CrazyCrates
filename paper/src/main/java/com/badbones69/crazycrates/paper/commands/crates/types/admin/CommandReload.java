@@ -5,8 +5,6 @@ import com.badbones69.crazycrates.paper.support.MetricsWrapper;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import com.ryderbelserion.fusion.core.api.enums.FileAction;
-import com.ryderbelserion.fusion.core.api.enums.FileType;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Syntax;
@@ -28,7 +26,7 @@ public class CommandReload extends BaseCommand {
 
         this.plugin.getInstance().reload();
 
-        this.fileManager.refresh(false).addFile(this.path.resolve("locations.yml"), FileType.PAPER, new ArrayList<>() {{
+        /*this.fileManager.refresh(false).addFile(this.path.resolve("locations.yml"), FileType.PAPER, new ArrayList<>() {{
                     add(FileAction.STATIC_FILE);
                     add(FileAction.RELOAD_FILE);
                 }}, null)
@@ -50,7 +48,7 @@ public class CommandReload extends BaseCommand {
                 }}, null)
                 .addFolder(this.path.resolve("schematics"), FileType.NBT, new ArrayList<>() {{
                     add(FileAction.EXTRACT_FOLDER);
-                }}, null);
+                }}, null);*/
 
         MiscUtils.save();
 

@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.paper.listeners.crates.types;
 
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;

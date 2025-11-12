@@ -9,7 +9,7 @@ import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

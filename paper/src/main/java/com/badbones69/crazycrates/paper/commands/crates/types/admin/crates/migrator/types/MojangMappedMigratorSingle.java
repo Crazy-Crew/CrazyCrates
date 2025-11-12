@@ -20,7 +20,7 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
 
     @Override
     public void run() {
-        if (this.crateName == null || this.crateName.isEmpty() || this.crateName.isBlank()) {
+        /*if (this.crateName == null || this.crateName.isEmpty() || this.crateName.isBlank()) {
             Messages.cannot_be_empty.sendMessage(this.sender, "{value}", "crate name");
 
             return;
@@ -69,7 +69,7 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
         sendMessage(new ArrayList<>(failedCrates + convertedCrates) {{
             addAll(failed);
             addAll(success);
-        }}, convertedCrates, failedCrates);
+        }}, convertedCrates, failedCrates);*/
     }
 
     @Override
