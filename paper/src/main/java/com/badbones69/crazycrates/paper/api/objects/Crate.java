@@ -230,7 +230,6 @@ public class Crate {
         @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
         this.borderItem = ItemBuilder.from(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane").toLowerCase())
-                //.setHidingItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
                 .withDisplayName(borderName).withConsumer(consumer -> {
                     final CustomBuilder customBuilder = consumer.asCustomBuilder();
 
@@ -244,7 +243,6 @@ public class Crate {
         @NotNull final String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
 
         this.previewTierBorderItem = ItemBuilder.from(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
-                //.setHidingItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
                 .withDisplayName(previewTierBorderName).withConsumer(consumer -> {
                     final CustomBuilder customBuilder = consumer.asCustomBuilder();
 

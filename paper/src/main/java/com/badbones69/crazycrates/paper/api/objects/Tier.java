@@ -33,8 +33,6 @@ public class Tier {
 
         this.lore = section.getStringList("Lore"); // this returns an empty list if not found anyway.
 
-        //.setHidingItemFlags(section.getBoolean("HideItemFlags", false))
-
         this.item = ItemBuilder.from(section.getString("Item", "chest").toLowerCase())
                 .withConsumer(consumer -> {
                     final CustomBuilder customBuilder = consumer.asCustomBuilder();

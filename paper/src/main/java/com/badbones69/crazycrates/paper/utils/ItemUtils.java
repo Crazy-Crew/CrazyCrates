@@ -164,8 +164,6 @@ public class ItemUtils {
 
         //builder.addPatterns(section.getStringList("Patterns"));
 
-        //builder.setHidingItemFlags(section.getBoolean("HideItemFlags", false) || !section.getStringList("Flags").isEmpty());
-
         builder.setUnbreakable(section.getBoolean("Unbreakable", false));
         
         if (section.contains("Skull")) {

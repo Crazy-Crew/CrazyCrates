@@ -1501,7 +1501,6 @@ public class CrateManager {
         final String id = file.getString("Crate.PhysicalKey.Model.Id", "");
         final List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
         final boolean isGlowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
-        final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
         final ItemBuilder itemBuilder = ItemBuilder.from(file.getString("Crate.PhysicalKey.Data", file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase()));
 

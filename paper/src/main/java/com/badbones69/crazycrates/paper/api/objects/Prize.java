@@ -403,8 +403,6 @@ public class Prize {
                 }
             }
 
-            //this.displayItem.setHidingItemFlags(this.section.getBoolean("HideItemFlags", false) || !this.section.getStringList("Flags").isEmpty()); //todo() update this
-
             this.displayItem.setUnbreakable(this.section.getBoolean("Unbreakable", false));
 
             final CustomBuilder customBuilder = this.displayItem.asCustomBuilder();
