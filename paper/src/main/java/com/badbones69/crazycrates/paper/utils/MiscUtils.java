@@ -1,12 +1,9 @@
 package com.badbones69.crazycrates.paper.utils;
 
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
 import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
-import com.ryderbelserion.fusion.paper.scheduler.Scheduler;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -101,25 +98,6 @@ public class MiscUtils {
                 .replaceAll("%usage%", "{usage}");
     }
 
-    public static void sendCommand(@Nullable final CommandSender sender, @NotNull final String command, @NotNull final Map<String, String> placeholders) {
-        if (command.isEmpty()) return;
-
-        final Server server = plugin.getServer();
-
-        final String result = populatePlaceholders(sender, command, placeholders);
-
-        new FoliaScheduler(plugin, Scheduler.global_scheduler) {
-            @Override
-            public void run() {
-                server.dispatchCommand(server.getConsoleSender(), result);
-            }
-        }.runNow();
-    }
-
-    public static void sendCommand(@NotNull final String command, @NotNull final Map<String, String> placeholders) {
-        sendCommand(null, command, placeholders);
-    }
-
     public static void dropBuilders(@NotNull final List<ItemBuilder> builders, @NotNull final Player player) {
         if (builders.isEmpty()) return;
 
@@ -170,34 +148,6 @@ public class MiscUtils {
         } else {
             world.dropItemNaturally(location, itemStack.clone());
         }
-    }
-
-    public static void sendCommand(@NotNull final String command) {
-        sendCommand(command, new HashMap<>());
-    }
-
-    public static String populatePlaceholders(@Nullable final CommandSender sender, @NotNull String line, @NotNull final Map<String, String> placeholders) {
-        if (sender != null && Plugins.placeholder_api.isEnabled()) {
-            if (sender instanceof Player player) {
-                line = PlaceholderAPI.setPlaceholders(player, line);
-            }
-        }
-
-        if (!placeholders.isEmpty()) {
-            for (final Map.Entry<String, String> placeholder : placeholders.entrySet()) {
-
-                if (placeholder != null) {
-                    final String key = placeholder.getKey();
-                    final String value = placeholder.getValue();
-
-                    if (key != null && value != null) {
-                        line = line.replace(key, value).replace(key.toLowerCase(), value);
-                    }
-                }
-            }
-        }
-
-        return line;
     }
 
     public static void janitor() {

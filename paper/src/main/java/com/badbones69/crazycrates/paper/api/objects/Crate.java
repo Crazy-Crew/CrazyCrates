@@ -640,6 +640,14 @@ public class Crate {
                 .addPlaceholder("{keys}", instance.format(virtualKeys))
                 .addPlaceholder("{crate_opened_raw}", String.valueOf(openedCrates))
                 .addPlaceholder("{crate_opened}", instance.format(openedCrates))
+
+                .addPlaceholder("%keys_physical_raw%", String.valueOf(physicalKeys))
+                .addPlaceholder("%keys_physical%", instance.format(physicalKeys))
+                .addPlaceholder("%keys_total_raw%", String.valueOf(totalKeys))
+                .addPlaceholder("%keys_total%", instance.format(totalKeys))
+                .addPlaceholder("%keys%", instance.format(virtualKeys))
+                .addPlaceholder("%crate_opened_raw%", String.valueOf(openedCrates))
+                .addPlaceholder("%crate_opened%", instance.format(openedCrates))
                 .asItemStack(player);
     }
 
@@ -675,6 +683,14 @@ public class Crate {
                 .addPlaceholder("{keys}", instance.format(virtualKeys))
                 .addPlaceholder("{crate_opened_raw}", String.valueOf(openedCrates))
                 .addPlaceholder("{crate_opened}", instance.format(openedCrates))
+
+                .addPlaceholder("%keys_physical_raw%", String.valueOf(physicalKeys))
+                .addPlaceholder("%keys_physical%", instance.format(physicalKeys))
+                .addPlaceholder("%keys_total_raw%", String.valueOf(totalKeys))
+                .addPlaceholder("%keys_total%", instance.format(totalKeys))
+                .addPlaceholder("%keys%", instance.format(virtualKeys))
+                .addPlaceholder("%crate_opened_raw%", String.valueOf(openedCrates))
+                .addPlaceholder("%crate_opened%", instance.format(openedCrates))
                 .asItemStack(player);
     }
 

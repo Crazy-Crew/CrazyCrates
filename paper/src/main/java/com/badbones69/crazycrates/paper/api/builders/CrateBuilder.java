@@ -17,6 +17,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
 import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
@@ -43,6 +44,8 @@ import java.util.List;
 public abstract class CrateBuilder extends FoliaScheduler {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    protected final FusionPaper fusion = this.plugin.getFusion();
 
     protected final ComponentLogger logger = this.plugin.getComponentLogger();
 
@@ -203,7 +206,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
                     }
 
                     reward.setVelocity(new Vector(0, 0.2, 0));
-                    //reward.customName(AdvUtils.parse(prize.getPrizeName()));
+                    reward.customName(fusion.parse(player, prize.getPrizeName()));
                     reward.setCustomNameVisible(true);
                     reward.setCanMobPickup(false);
                     reward.setCanPlayerPickup(false);

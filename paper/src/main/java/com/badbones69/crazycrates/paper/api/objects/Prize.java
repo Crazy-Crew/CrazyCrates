@@ -14,7 +14,6 @@ import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Server;
@@ -198,9 +197,14 @@ public class Prize {
 
         final String weight = StringUtils.format(crate.getChance(getWeight()));
 
-        this.displayItem.addPlaceholder("{chance}", weight).addPlaceholder("{maxpulls}", String.valueOf(maxPulls)).addPlaceholder("{pulls}", amount);
+        this.displayItem.addPlaceholder("{chance}", weight)
+                .addPlaceholder("{maxpulls}", String.valueOf(maxPulls))
+                .addPlaceholder("{pulls}", amount)
+                .addPlaceholder("%chance%", weight)
+                .addPlaceholder("%maxpulls%", String.valueOf(maxPulls))
+                .addPlaceholder("%pulls%", amount);
 
-        return this.displayItem.setPersistentString(ItemKeys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack(player == null ? Audience.empty() : player);
+        return this.displayItem.setPersistentString(ItemKeys.crate_prize.getNamespacedKey(), this.sectionName).asItemStack(player);
     }
     
     /**
@@ -311,7 +315,7 @@ public class Prize {
         final String current_pulls = String.valueOf(PrizeManager.getCurrentPulls(this, crate));
         final String max_pulls = String.valueOf(getMaxPulls());
 
-        //final String message = StringUtils.toString(messages);
+        final String message = StringUtils.toString(messages);
 
         final Map<String, String> placeholders = new HashMap<>() {{ //todo() update
             put("%player%", target.getName());
@@ -320,17 +324,22 @@ public class Prize {
             put("%maxpulls%", max_pulls);
             put("%pulls%", current_pulls);
             put("%reward_stripped%", getStrippedName());
+
+            put("{player}", target.getName());
+            put("{crate}", crate.getCrateName());
+            put("{reward}", getPrizeName().replaceAll("\\{maxpulls}", max_pulls).replaceAll("\\{pulls}", current_pulls));
+            put("{maxpulls}", max_pulls);
+            put("{pulls}", current_pulls);
+            put("{reward_stripped}", getStrippedName());
         }};
 
-        //final Component component = AdvUtils.parse(MiscUtils.populatePlaceholders(target, message, placeholders));
-
         if (permission.isEmpty()) {
-            //server.broadcast(component);
+            server.broadcast(this.fusion.parse(target, message, placeholders));
 
             return;
         }
 
-        //server.broadcast(component, permission);
+        server.broadcast(this.fusion.parse(target, message, placeholders), permission);
     }
 
     private void display() {

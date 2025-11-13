@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.paper;
 import com.badbones69.crazycrates.core.Server;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.core.constants.PluginSupport;
 import com.badbones69.crazycrates.paper.listeners.crates.CrateInteractListener;
 import com.badbones69.crazycrates.paper.listeners.items.PaperInteractListener;
 import com.badbones69.crazycrates.paper.support.MetricsWrapper;
@@ -22,7 +23,9 @@ import com.badbones69.crazycrates.paper.support.placeholders.PlaceholderAPISuppo
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
+import com.ryderbelserion.fusion.kyori.mods.ModManager;
 import com.ryderbelserion.fusion.kyori.mods.ModSupport;
+import com.ryderbelserion.fusion.kyori.mods.objects.Mod;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import org.bukkit.plugin.PluginManager;
@@ -64,6 +67,10 @@ public class CrazyCrates extends JavaPlugin {
     public void onEnable() {
         this.fusion = new FusionPaper(this);
         this.fusion.init();
+
+        final ModManager modManager = this.fusion.getModManager();
+
+        PluginSupport.dependencies.forEach(dependency -> modManager.addMod(dependency, new Mod()));
 
         this.fileManager = this.fusion.getFileManager();
 

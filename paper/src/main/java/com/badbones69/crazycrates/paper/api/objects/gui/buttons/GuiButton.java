@@ -3,8 +3,8 @@ package com.badbones69.crazycrates.paper.api.objects.gui.buttons;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.paper.utils.CommandUtils;
-import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.utils.MsgUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
 import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiItem;
 import net.kyori.adventure.sound.Sound;
@@ -18,6 +18,8 @@ import java.util.Map;
 public class GuiButton {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    protected final FusionPaper fusion = this.plugin.getFusion();
 
     private final Map<String, String> placeholders;
     private final ConfigurationSection section;
@@ -44,7 +46,7 @@ public class GuiButton {
             player.closeInventory(InventoryCloseEvent.Reason.OPEN_NEW);
 
             this.commands.forEach(command -> CommandUtils.executeCommand(player, command, this.placeholders));
-            this.messages.forEach(message -> MsgUtils.sendMessage(player, MiscUtils.populatePlaceholders(player, message, this.placeholders), false));
+            this.messages.forEach(message -> MsgUtils.message(player, message, this.placeholders, false));
 
             final ConfigurationSection sound = this.section.getConfigurationSection("sound");
 

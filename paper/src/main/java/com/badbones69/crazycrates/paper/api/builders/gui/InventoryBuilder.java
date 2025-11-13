@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.paper.api.builders.gui;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.core.config.beans.inventories.ItemPlacement;
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
@@ -11,11 +10,10 @@ import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.menus.CrateMainMenu;
-import com.badbones69.crazycrates.paper.utils.MiscUtils;
+import com.badbones69.crazycrates.paper.utils.CommandUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.builders.gui.types.BaseGui;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
@@ -25,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import static java.util.regex.Matcher.quoteReplacement;
 
 public abstract class InventoryBuilder {
 
@@ -65,17 +62,21 @@ public abstract class InventoryBuilder {
             if (this.config.getProperty(ConfigKeys.menu_button_override)) {
                 final List<String> commands = this.config.getProperty(ConfigKeys.menu_button_command_list);
 
-                if (!commands.isEmpty()) {
-                    commands.forEach(value -> {
-                        final String command = value.replaceAll("%player%", quoteReplacement(player.getName())).replaceAll("%crate%", quoteReplacement(crate.getFileName())); //todo() update
+                final Map<String, String> placeholders = new HashMap<>() {{
+                    put("%player%", player.getName());
+                    put("%crate%", crate.getFileName());
 
-                        MiscUtils.sendCommand(command);
-                    });
+                    put("{player}", player.getName());
+                    put("{crate}", crate.getFileName());
+                }};
+
+                if (!commands.isEmpty()) {
+                    commands.forEach(value -> CommandUtils.executeCommand(player, value, placeholders));
 
                     return;
                 }
 
-                if (MiscUtils.isLogging()) this.logger.warn("The property {} is empty, so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
+                this.fusion.log("warn", "The property {} is empty, so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
 
                 return;
             }
@@ -84,10 +85,6 @@ public abstract class InventoryBuilder {
 
             new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_rows)).open();
         }));
-    }
-
-    public final String parse(@NotNull final Player player, @NotNull final String title) {
-        return Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, title) : title;
     }
 
     public final Map<String, String> getPlaceholders() {
@@ -116,9 +113,21 @@ public abstract class InventoryBuilder {
 
             placeholders.put("{%s_opened}".formatted(lowerCase), instance.format(opened));
             placeholders.put("{%s_total}".formatted(lowerCase), instance.format(total));
+
+            placeholders.put("%{}%".replace("{}", lowerCase), instance.format(virtual));
+            placeholders.put("%{}_raw_physical%".replace("{}", lowerCase), String.valueOf(physical));
+            placeholders.put("%{}_physical%".replace("{}", lowerCase), instance.format(physical));
+
+            placeholders.put("%{}_raw_opened%".replace("{}", lowerCase), String.valueOf(opened));
+            placeholders.put("%{}_raw_total%".replace("{}", lowerCase), String.valueOf(total));
+            placeholders.put("%{}_raw%".replace("{}", lowerCase), String.valueOf(virtual));
+
+            placeholders.put("%{}_opened%".replace("{}", lowerCase), instance.format(opened));
+            placeholders.put("%{}_total%".replace("{}", lowerCase), instance.format(total));
         }
 
         placeholders.put("{player}", player.getName());
+        placeholders.put("%player%", player.getName());
 
         return placeholders;
     }

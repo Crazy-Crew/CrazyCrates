@@ -199,8 +199,13 @@ public class CosmicCrateListener implements Listener {
                 // Gets the tier name.
                 final String tierName = tier.getName();
 
+                final String number = String.valueOf(pickedSlot);
+
                 // Get item builder.
-                final ItemBuilder builder = cosmicCrateManager.getPickedCrate().addPlaceholder("{slot}", String.valueOf(pickedSlot));
+                final ItemBuilder builder = cosmicCrateManager.getPickedCrate()
+                        .addPlaceholder("{slot}", number)
+                        .addPlaceholder("%slot%", number)
+                        .addPlaceholder("%Slot%", number);
 
                 // Set the amount.
                 builder.setAmount(pickedSlot);
@@ -220,8 +225,13 @@ public class CosmicCrateListener implements Listener {
         } else if (container.has(ItemKeys.cosmic_picked_crate.getNamespacedKey())) {
             final Tier tier = this.crateManager.getTier(player, slot);
 
+            final String number = String.valueOf(pickedSlot);
+
             // Get item builder.
-            final ItemBuilder builder = cosmicCrateManager.getMysteryCrate().addPlaceholder("{slot}", String.valueOf(pickedSlot));
+            final ItemBuilder builder = cosmicCrateManager.getMysteryCrate()
+                    .addPlaceholder("{slot}", number)
+                    .addPlaceholder("%slot%", number)
+                    .addPlaceholder("%Slot%", number);
 
             // Set the amount.
             builder.setAmount(pickedSlot);
@@ -258,7 +268,8 @@ public class CosmicCrateListener implements Listener {
 
             // If they don't have enough keys.
             if (value) {
-                Map<String, String> placeholders = new HashMap<>();
+                final Map<String, String> placeholders = new HashMap<>();
+
                 placeholders.put("{crate}", fancyName);
                 placeholders.put("{key}", crate.getKeyName());
 

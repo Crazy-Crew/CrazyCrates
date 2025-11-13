@@ -39,7 +39,7 @@ public class EventManager {
 
         switch (type) {
             case event_key_given, event_key_removed, event_key_received, event_key_sent, event_key_taken, event_key_taken_multiple -> {
-                message = "Player: %player% | Sender: %sender% | Key Name: %key_name%<reset> | Key Type: %key_type%" //todo() update
+                message = "Player: %player% | Sender: %sender% | Key Name: %key_name%<reset> | Key Type: %key_type%"
                         .replace("%key_type%", keyType.getFriendlyName())
                         .replace("%player%", name)
                         .replace("%sender%", sender.getName())
@@ -104,9 +104,7 @@ public class EventManager {
         final String time = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(System.currentTimeMillis()));
 
         if (path != null && config.getProperty(ConfigKeys.log_to_file)) {
-            fileManager.getLogFile(path).ifPresent(file -> {
-                file.save("[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(fusion.parse(message)));
-            });
+            fileManager.getLogFile(path).ifPresent(file -> file.save("[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(fusion.parse(message))));
         }
 
         final boolean log_to_console = config.getProperty(ConfigKeys.log_to_console);

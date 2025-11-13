@@ -2,8 +2,8 @@ package com.badbones69.crazycrates.paper.tasks.crates;
 
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
+import com.badbones69.crazycrates.core.constants.PluginSupport;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.core.config.impl.EditorKeys;
 import com.badbones69.crazycrates.paper.listeners.items.NexoInteractListener;
 import com.badbones69.crazycrates.paper.listeners.items.OraxenInteractListener;
@@ -31,12 +31,12 @@ import com.badbones69.crazycrates.paper.tasks.crates.types.RouletteCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WonderCrate;
-import com.ryderbelserion.fusion.core.api.enums.FileAction;
-import com.ryderbelserion.fusion.core.api.utils.FileUtils;
+import com.ryderbelserion.fusion.kyori.mods.ModSupport;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
-import com.ryderbelserion.fusion.paper.files.FileManager;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
@@ -86,7 +86,7 @@ public class CrateManager {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
     private final Path dataPath = this.plugin.getDataPath();
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-    private final FileManager fileManager = this.plugin.getFileManager();
+    private final PaperFileManager fileManager = this.plugin.getFileManager();
     private final com.badbones69.crazycrates.core.Server instance = this.plugin.getInstance();
     private final FusionPaper fusion = this.plugin.getFusion();
 
@@ -259,16 +259,24 @@ public class CrateManager {
         final String pluginName = this.fusion.getItemsPlugin().toLowerCase();
 
         switch (pluginName) {
-            case "nexo" -> manager.registerEvents(new NexoInteractListener(), this.plugin);
+            case "nexo" -> {
+                if (this.fusion.isModReady(ModSupport.nexo)) {
+                    manager.registerEvents(new NexoInteractListener(), this.plugin);
+                }
+            }
 
-            case "oraxen" -> manager.registerEvents(new OraxenInteractListener(), this.plugin);
+            case "oraxen" -> {
+                if (this.fusion.isModReady(ModSupport.oraxen)) {
+                    manager.registerEvents(new OraxenInteractListener(), this.plugin);
+                }
+            }
 
             default -> {
-                if (Plugins.nexo.isEnabled()) {
+                if (this.fusion.isModReady(ModSupport.nexo)) {
                     manager.registerEvents(new NexoInteractListener(), this.plugin);
                 }
 
-                if (Plugins.oraxen.isEnabled()) {
+                if (this.fusion.isModReady(ModSupport.oraxen)) {
                     manager.registerEvents(new OraxenInteractListener(), this.plugin);
                 }
             }
@@ -283,7 +291,7 @@ public class CrateManager {
 
         switch (pluginName) {
             case "decentholograms" -> {
-                if (!Plugins.decent_holograms.isEnabled()) return;
+                if (!this.fusion.isModReady(PluginSupport.decent_holograms)) return;
 
                 if (this.holograms != null && this.holograms.getName().equalsIgnoreCase("DecentHolograms")) { // we don't need to do anything.
                     return;
@@ -293,13 +301,13 @@ public class CrateManager {
             }
 
             case "fancyholograms" -> {
-                if (!Plugins.fancy_holograms.isEnabled()) return;
+                if (!this.fusion.isModReady(PluginSupport.fancy_holograms)) return;
 
                 this.holograms = new FancyHologramsSupport();
             }
 
             case "cmi" -> {
-                if (!Plugins.cmi.isEnabled() && !CMIModule.holograms.isEnabled()) return;
+                if (!this.fusion.isModReady(PluginSupport.cmi) && !CMIModule.holograms.isEnabled()) return;
 
                 this.holograms = new CMIHologramsSupport();
             }
@@ -307,7 +315,7 @@ public class CrateManager {
             case "none" -> {}
 
             default -> {
-                if (Plugins.decent_holograms.isEnabled()) {
+                if (this.fusion.isModReady(PluginSupport.fancy_holograms)) {
                     if (this.holograms == null) {
                         this.holograms = new DecentHologramsSupport();
                     }
@@ -315,13 +323,13 @@ public class CrateManager {
                     break;
                 }
 
-                if (Plugins.fancy_holograms.isEnabled()) {
+                if (this.fusion.isModReady(PluginSupport.decent_holograms)) {
                     this.holograms = new FancyHologramsSupport();
 
                     break;
                 }
 
-                if (this.holograms == null && Plugins.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
+                if (this.holograms == null && this.fusion.isModReady(PluginSupport.cmi) && CMIModule.holograms.isEnabled()) {
                     this.fusion.log("warn", "<red>CMI Support is currently not automatically available.");
                     this.fusion.log("warn", "<red>Try manually setting hologram-plugin to <yellow>CMI</yellow> <red>after downgrading to 9.8.2.0");
                     this.fusion.log("warn", "<red>https://github.com/Zrips/CMI/issues/9919");
@@ -359,7 +367,7 @@ public class CrateManager {
      */
     public void loadCrates() {
         if (this.config.getProperty(ConfigKeys.update_examples_folder)) {
-            final List<FileAction> actions = new ArrayList<>();
+            /*final List<FileAction> actions = new ArrayList<>();
 
             actions.add(FileAction.DELETE_FILE);
             actions.add(FileAction.EXTRACT_FOLDER);
@@ -377,7 +385,7 @@ public class CrateManager {
                     "locations.yml",
                     "messages.yml",
                     "editor.yml"
-            ).forEach(file -> FileUtils.extract(file, this.dataPath.resolve("examples"), actions));
+            ).forEach(file -> FileUtils.extract(file, this.dataPath.resolve("examples"), actions));*/
         }
 
         this.giveNewPlayersKeys = false;
@@ -395,9 +403,13 @@ public class CrateManager {
 
         for (final String crateName : getCrateNames(true)) {
             try {
-                final PaperCustomFile customFile = this.fileManager.getPaperCustomFile(crates.resolve(crateName));
+                final @NotNull Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(crates.resolve(crateName));
 
-                if (customFile == null || !customFile.isLoaded()) continue;
+                if (optional.isEmpty()) continue;
+
+                final PaperCustomFile customFile = optional.get();
+
+                if (!customFile.isLoaded()) continue;
 
                 final YamlConfiguration file = customFile.getConfiguration();
 
@@ -1490,12 +1502,27 @@ public class CrateManager {
         final String namespace = file.getString("Crate.PhysicalKey.Model.Namespace", "");
         final String id = file.getString("Crate.PhysicalKey.Model.Id", "");
         final List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
-        final boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
+        final String glowing = file.getString("Crate.PhysicalKey.Glowing", "true");
         final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
         final ItemBuilder itemBuilder = ItemBuilder.from(file.getString("Crate.PhysicalKey.Data", file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase()));
 
-        return itemBuilder.setDisplayName(name).withDisplayLore(lore).setEnchantGlint(glowing).setItemModel(namespace, id)/*.setHidingItemFlags(hideFlags)*/.setCustomModelData(customModelData);
+        switch (glowing) {
+            case "true", "add_glow" -> itemBuilder.addEnchantGlint();
+            case "false", "remove_glow" -> itemBuilder.removeEnchantGlint();
+
+            case "" -> {}
+        }
+
+        final CustomBuilder customBuilder = itemBuilder.asCustomBuilder();
+
+        customBuilder.setCustomModelData(customModelData);
+
+        customBuilder.setItemModel(namespace, id);
+
+        customBuilder.build();
+
+        return itemBuilder.withDisplayName(name).withDisplayLore(lore)/*.setHidingItemFlags(hideFlags)*/;
     }
 
     // Cleans the data file.

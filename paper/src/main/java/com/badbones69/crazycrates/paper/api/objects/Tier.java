@@ -89,7 +89,9 @@ public class Tier {
      * @return the tier item shown in the preview.
      */
     public @NotNull final ItemStack getTierItem(@Nullable final Player target, @NotNull final Crate crate) {
-        return this.item.withDisplayName(this.coloredName).withDisplayLore(this.lore).addPlaceholder("{chance}", StringUtils.format(crate.getTierChance(getWeight())))
+        final String weight = StringUtils.format(crate.getTierChance(getWeight()));
+
+        return this.item.withDisplayName(this.coloredName).withDisplayLore(this.lore).addPlaceholder("{chance}", weight).addPlaceholder("%chance%", weight)
                 .setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), this.name).asItemStack(target);
     }
 }
