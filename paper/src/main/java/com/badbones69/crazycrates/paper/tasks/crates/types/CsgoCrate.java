@@ -103,7 +103,7 @@ public class CsgoCrate extends CrateBuilder {
 
                         final String material = config.getProperty(ConfigKeys.crate_csgo_finished_material);
 
-                        final ItemStack itemStack = ItemBuilder.from(material.isEmpty() ? "gray_stained_glass" : material).setDisplayName(" ").asItemStack();
+                        final ItemStack itemStack = ItemBuilder.from(material.isEmpty() ? "gray_stained_glass" : material).withDisplayName(" ").asItemStack();
 
                         setItem(4, itemStack);
                         setItem(22, itemStack);
@@ -152,7 +152,7 @@ public class CsgoCrate extends CrateBuilder {
         final String material = this.config.getProperty(ConfigKeys.crate_csgo_cycling_material);
 
         if (!material.isEmpty()) {
-            final ItemStack itemStack = ItemBuilder.from(material).setDisplayName(" ").asItemStack();
+            final ItemStack itemStack = ItemBuilder.from(material).withDisplayName(" ").asItemStack();
 
             setItem(4, itemStack);
             setItem(22, itemStack);

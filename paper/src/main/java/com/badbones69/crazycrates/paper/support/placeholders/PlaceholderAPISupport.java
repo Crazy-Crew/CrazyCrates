@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.paper.support.placeholders;
 
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.api.builders.PlayerBuilder;
+import com.ryderbelserion.fusion.paper.builders.PlayerBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -103,7 +103,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         UUID id;
 
         if (!parsedPlayer.equalsIgnoreCase(player.getName())) {
-            final PlayerBuilder builder = new PlayerBuilder(this.server, parsedPlayer);
+            final PlayerBuilder builder = new PlayerBuilder(this.plugin, parsedPlayer);
 
             final Player target = builder.getPlayer();
 

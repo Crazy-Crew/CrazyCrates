@@ -1,11 +1,12 @@
 package com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates;
 
+import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.structures.StructureManager;
-import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
 import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.scheduler.Scheduler;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.*;
 import com.badbones69.crazycrates.core.config.ConfigManager;
@@ -31,6 +32,8 @@ import java.util.HashMap;
 public class QuadCrateManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final SettingsManager config = ConfigManager.getConfig();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
     private final BukkitUserManager userManager = this.plugin.getUserManager();
@@ -266,7 +269,7 @@ public class QuadCrateManager {
 
                 crate.playSound(player, player.getLocation(), "stop-sound", "entity.player.levelup", Sound.Source.MASTER);
             }
-        }.runDelayed(ConfigManager.getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20));
+        }.runDelayed(this.config.getProperty(ConfigKeys.quad_crate_timer) * 20));
     }
 
     /**

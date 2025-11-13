@@ -4,13 +4,13 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
-import com.ryderbelserion.fusion.paper.api.builders.items.types.PatternBuilder;
-import com.ryderbelserion.fusion.paper.api.builders.items.types.PotionBuilder;
-import com.ryderbelserion.fusion.paper.api.builders.items.types.SkullBuilder;
-import com.ryderbelserion.fusion.paper.api.builders.items.types.SpawnerBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.PatternBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.PotionBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.SkullBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.SpawnerBuilder;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -154,8 +154,8 @@ public class ItemUtils {
     }
 
     public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder) {
-        if (section.contains("Glowing")) {
-            builder.setEnchantGlint(section.getBoolean("Glowing", false));
+        if (section.getBoolean("Glowing", false)) {
+            builder.addEnchantGlint();
         }
         
         builder.setItemDamage(section.getInt("DisplayDamage", 0));
@@ -176,9 +176,9 @@ public class ItemUtils {
             builder.asSkullBuilder().withName(section.getString("Player", "")).build();
         }
 
-        builder.setCustomModelData(section.getString("Custom-Model-Data", ""));
+        //builder.setCustomModelData(section.getString("Custom-Model-Data", ""));
 
-        builder.setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
+        //builder.setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
 
         builder.setTrim(section.getString("DisplayTrim.Pattern", ""), section.getString("DisplayTrim.Material", ""));
         
@@ -212,13 +212,13 @@ public class ItemUtils {
             if (item.contains("data")) {
                 final String base64 = item.getString("data", null);
 
-                if (base64 != null && !base64.isEmpty()) { //todo() move this if check to fusion's itembuilder as we should not set a name if it's empty to ensure Minecraft can do it's thing.
+                if (base64 != null && !base64.isEmpty()) {
                     itemBuilder.withBase64(base64);
                 }
             }
 
-            if (item.contains("name")) { //todo() move this if check to fusion's itembuilder as we should not set a name if it's empty to ensure Minecraft can do it's thing.
-                itemBuilder.setDisplayName(item.getString("name", ""));
+            if (item.contains("name")) {
+                itemBuilder.withDisplayName(item.getString("name", ""));
             }
 
             if (item.contains("lore")) {
@@ -243,7 +243,7 @@ public class ItemUtils {
                 }
             }
 
-            itemBuilder.setCustomModelData(item.getString("custom-model-data", ""));
+            itemBuilder.asCustomBuilder().setCustomModelData(item.getString("custom-model-data", "")).build();
 
             if (item.getBoolean("hide-tool-tip", false)) {
                 itemBuilder.hideToolTip();
@@ -253,8 +253,9 @@ public class ItemUtils {
 
             itemBuilder.setUnbreakable(item.getBoolean("unbreakable-item", false));
 
-            // settings
-            itemBuilder.setEnchantGlint(item.getBoolean("settings.glowing", false));
+            if (item.getBoolean("settings.glowing", false)) {
+                itemBuilder.addEnchantGlint();
+            }
 
             final String player = item.getString("settings.player", null);
 
@@ -340,7 +341,7 @@ public class ItemUtils {
     }
 
     public static ItemBuilder convertString(@NotNull final String itemString, @NotNull final String section) {
-        ItemBuilder itemBuilder = ItemBuilder.from(ItemType.STONE);
+        ItemBuilder itemBuilder = ItemBuilder.from(ItemType.STONE, 1);
 
         try {
             for (String optionString : itemString.split(", ")) {
@@ -350,7 +351,7 @@ public class ItemUtils {
                 switch (option.toLowerCase()) {
                     case "item" -> itemBuilder.withCustomItem(value.toLowerCase());
                     case "data" -> itemBuilder.withBase64(value);
-                    case "name" -> itemBuilder.setDisplayName(value);
+                    case "name" -> itemBuilder.withDisplayName(value);
                     case "mob" -> {
                         final EntityType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(value);
 
@@ -360,7 +361,7 @@ public class ItemUtils {
                     }
                     case "glowing" -> {
                         if (StringUtils.tryParseBoolean(value).orElse(false)) {
-                            itemBuilder.setEnchantGlint(true);
+                            itemBuilder.addEnchantGlint();
                         }
                     }
                     case "amount" -> {
@@ -374,7 +375,7 @@ public class ItemUtils {
                     case "lore" -> itemBuilder.withDisplayLore(List.of(value.split(",")));
                     case "player" -> itemBuilder.asSkullBuilder().withName(value).build();
                     case "skull" -> itemBuilder.withSkull(value);
-                    case "custom-model-data" -> itemBuilder.setCustomModelData(value);
+                    case "custom-model-data" -> itemBuilder.asCustomBuilder().setCustomModelData(value).build();
                     case "unbreakable-item" -> itemBuilder.setUnbreakable(value.isEmpty() || value.equalsIgnoreCase("true"));
                     case "hide-tool-tip" -> {
                         if (value.equalsIgnoreCase("true")) {
@@ -418,7 +419,7 @@ public class ItemUtils {
                 }
             }
         } catch (final Exception exception) {
-            itemBuilder.withType(ItemType.RED_TERRACOTTA).setDisplayName("<red>Error found!, Prize Name: " + section);
+            itemBuilder.withType(ItemType.RED_TERRACOTTA).withDisplayName("<red>Error found!, Prize Name: " + section);
 
             fusion.log("error", "An error has occurred with the prize {}, {}", section, exception.getMessage());
         }

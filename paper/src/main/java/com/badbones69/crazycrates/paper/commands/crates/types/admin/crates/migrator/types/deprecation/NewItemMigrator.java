@@ -1,10 +1,22 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.deprecation;
 
+import com.badbones69.crazycrates.core.enums.Comments;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
+import com.badbones69.crazycrates.paper.utils.MiscUtils;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
+import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
+import com.ryderbelserion.fusion.paper.utils.ItemUtils;
+import org.bukkit.block.banner.PatternType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.potion.PotionEffectType;
 import java.io.File;
+import java.nio.file.Path;
 import java.util.*;
 
 public class NewItemMigrator extends ICrateMigrator {
@@ -15,18 +27,22 @@ public class NewItemMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        /*final Collection<ICustomFile<? extends ICustomFile<?>>> customFiles = this.fileManager.getCustomFiles().values();
+        final Map<Path, ICustomFile<?, ?, ?, ?>> customFiles = this.fileManager.getFiles();
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
 
-        customFiles.forEach(key -> {
+        for (final ICustomFile<?, ?, ?, ?> customFile : customFiles.values()) {
+            final FileType fileType = customFile.getFileType();
+
+            if (fileType != FileType.PAPER_YAML) continue;
+
+            if (!customFile.isLoaded()) continue;
+
             try {
-                if (key.isStatic() || !key.isLoaded() || key.getFileType() != FileType.PAPER) return;
+                final PaperCustomFile paper = (PaperCustomFile) customFiles;
 
-                final PaperCustomFile customFile = (PaperCustomFile) key;
-
-                final YamlConfiguration configuration = customFile.getConfiguration();
+                final YamlConfiguration configuration = paper.getConfiguration();
 
                 final ConfigurationSection section = configuration.getConfigurationSection("Crate");
 
@@ -197,13 +213,15 @@ public class NewItemMigrator extends ICrateMigrator {
 
                 if (isSave) {
                     customFile.save();
+
+                    customFile.load();
                 }
 
                 success.add("<green>⤷ " + customFile.getFileName());
             } catch (final Exception exception) {
-                failed.add("<red>⤷ " + key.getFileName());
+                failed.add("<red>⤷ " + customFile.getFileName());
             }
-        });
+        }
 
         final int convertedCrates = success.size();
         final int failedCrates = failed.size();
@@ -213,11 +231,9 @@ public class NewItemMigrator extends ICrateMigrator {
             addAll(success);
         }}, convertedCrates, failedCrates);
 
-        this.fileManager.init(new ArrayList<>());
-
         // reload crates
         this.crateManager.loadHolograms();
-        this.crateManager.loadCrates();*/
+        this.crateManager.loadCrates();
     }
 
     @Override

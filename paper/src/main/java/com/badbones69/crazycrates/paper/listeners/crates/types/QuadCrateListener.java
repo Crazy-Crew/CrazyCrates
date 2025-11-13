@@ -1,10 +1,9 @@
 package com.badbones69.crazycrates.paper.listeners.crates.types;
 
 import com.badbones69.crazycrates.paper.api.PrizeManager;
-import com.badbones69.crazycrates.paper.utils.ItemUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -34,13 +33,12 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class QuadCrateListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
+    private final FusionPaper fusion = this.plugin.getFusion();
 
     private final SessionManager sessionManager = new SessionManager();
 
@@ -101,10 +99,7 @@ public class QuadCrateListener implements Listener {
                         final String crateName = prize.getCrateName();
                         final String prizeName = prize.getPrizeName();
 
-                        List.of(
-                                "A prize could not be given due to an invalid display item for this prize.",
-                                "Crate: %s Prize: %s"
-                        ).forEach(line -> logger.warn(String.format(line, crateName, prizeName), exception));
+                        fusion.log("warn", "A prize could not be given, due to an invalid display item for the prize, Crate: {}, Prize: {}, Exception: {}", crateName, prizeName, exception);
 
                         cancel();
 

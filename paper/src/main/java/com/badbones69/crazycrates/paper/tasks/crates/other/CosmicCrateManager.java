@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -39,20 +40,32 @@ public class CosmicCrateManager extends AbstractCrateManager {
         this.totalPrizes = file.getInt(path + "Total-Prize-Amount", 4);
 
         this.mysteryCrate = ItemBuilder.from(file.getString(path + "Mystery-Crate.Item", "chest").toLowerCase())
-                .setDisplayName(file.getString(path + "Mystery-Crate.Name", "<bold><white>???</bold>"))
+                .withDisplayName(file.getString(path + "Mystery-Crate.Name", "<bold><white>???</bold>"))
                 //.setHidingItemFlags(file.getBoolean(path + "Mystery-Crate.HideItemFlags", false))
                 .withDisplayLore(file.contains(path + "Mystery-Crate.Lore") ? file.getStringList(path + "Mystery-Crate.Lore") : Collections.singletonList("<gray>You may choose 4 crates."))
                 .setPersistentInteger(ItemKeys.cosmic_mystery_crate.getNamespacedKey(), 1)
-                .setCustomModelData(file.getString(path + "Mystery-Crate.Custom-Model-Data", ""))
-                .setItemModel(file.getString(path + "Mystery-Crate.Model.Namespace", ""), file.getString(path + "Mystery-Crate.Model.Id", ""));
+                .withConsumer(consumer -> {
+                    final CustomBuilder customBuilder = consumer.asCustomBuilder();
+
+                    customBuilder.setCustomModelData(file.getString(path + "Mystery-Crate.Custom-Model-Data", ""));
+                    customBuilder.setItemModel(file.getString(path + "Mystery-Crate.Model.Namespace", ""), file.getString(path + "Mystery-Crate.Model.Id", ""));
+
+                    customBuilder.build();
+                });
 
         this.pickedCrate = ItemBuilder.from(file.getString(path + "Picked-Crate.Item", "gray_stained_glass_pane").toLowerCase())
-                .setDisplayName(file.getString(path + "Picked-Crate.Name", "<bold><white>???</white>"))
+                .withDisplayName(file.getString(path + "Picked-Crate.Name", "<bold><white>???</white>"))
                 //.setHidingItemFlags(file.getBoolean(path + "Picked-Crate.HideItemFlags", false))
                 .withDisplayLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("<gray>You have chosen #{slot}."))
                 .setPersistentInteger(ItemKeys.cosmic_picked_crate.getNamespacedKey(), 1)
-                .setCustomModelData(file.getString(path + "Picked-Crate.Custom-Model-Data", ""))
-                .setItemModel(file.getString(path + "Picked-Crate.Model.Namespace", ""), file.getString(path + "Picked-Crate.Model.Id", ""));
+                .withConsumer(consumer -> {
+                    final CustomBuilder customBuilder = consumer.asCustomBuilder();
+
+                    customBuilder.setCustomModelData(file.getString(path + "Picked-Crate.Custom-Model-Data", ""));
+                    customBuilder.setItemModel(file.getString(path + "Picked-Crate.Model.Namespace", ""), file.getString(path + "Picked-Crate.Model.Id", ""));
+
+                    customBuilder.build();
+                });
     }
 
     /**

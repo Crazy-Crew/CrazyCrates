@@ -17,7 +17,6 @@ import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -40,7 +39,6 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -50,8 +48,6 @@ public class CosmicCrateListener implements Listener {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final FusionPaper fusion = this.plugin.getFusion();
-
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
 
     private final Server server = this.plugin.getServer();
 
@@ -385,7 +381,7 @@ public class CosmicCrateListener implements Listener {
 
                                     Messages.key_refund.sendMessage(player, "{crate}", fancyName);
 
-                                    if (MiscUtils.isLogging()) logger.error("An issue occurred when the user {} was using the {} crate and so they were issued a key refund.", player.getName(), fileName, exception);
+                                    fusion.log("error", "An issue occurred when the user {} was using the {} crate and so they were issued a key refund.", player.getName(), fileName, exception);
 
                                     // Play a sound
                                     crate.playSound(player, player.getLocation(), "stop-sound", "block.anvil.place", Sound.Source.MASTER);
@@ -449,7 +445,7 @@ public class CosmicCrateListener implements Listener {
 
         player.updateInventory();
 
-        if (ConfigManager.getConfig().getProperty(ConfigKeys.cosmic_crate_timeout)) {
+        if (config.getProperty(ConfigKeys.cosmic_crate_timeout)) {
             this.crateManager.addCrateTask(player, new TimerTask() {
                 @Override
                 public void run() {
@@ -460,12 +456,7 @@ public class CosmicCrateListener implements Listener {
                         }
                     }.runNow();
 
-                    if (MiscUtils.isLogging()) {
-                        List.of(
-                                player.getName() + " spent 10 seconds staring at a gui instead of collecting their prizes",
-                                "The task has been cancelled, They have been given their prizes and the gui is closed."
-                        ).forEach(logger::info);
-                    }
+                    fusion.log("warn", "{} spent too long looking at the gui, instead of collecting their prizes. The task is cancelled, andd they now have their prizes.");
                 }
             }, 10000L);
         }

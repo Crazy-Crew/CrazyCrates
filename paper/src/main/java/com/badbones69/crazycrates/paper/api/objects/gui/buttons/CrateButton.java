@@ -31,6 +31,11 @@ public class CrateButton extends GuiButton {
             put("%crate_pretty%", crate.getCrateName());
             put("%crate_raw%", crate.getFileName());
             put("%prize%", prize != null ? prize.getSectionName() : "N/A");
+
+            put("{crate_pretty}", crate.getCrateName());
+            put("{crate_raw}", crate.getFileName());
+
+            put("{prize}", prize != null ? prize.getSectionName() : "N/A");
         }});
 
         this.crate = crate;

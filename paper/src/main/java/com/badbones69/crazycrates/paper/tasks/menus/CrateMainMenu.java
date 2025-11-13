@@ -14,6 +14,7 @@ import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.builders.gui.interfaces.Gui;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
 import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiFiller;
+import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
@@ -50,9 +51,16 @@ public class CrateMainMenu extends StaticInventoryBuilder {
             final ModelData fillerModel = this.config.getProperty(ConfigKeys.filler_item_model);
 
             final ItemBuilder itemBuilder = ItemBuilder.from(this.config.getProperty(ConfigKeys.filler_item)).withDisplayName(this.config.getProperty(ConfigKeys.filler_name))
-                    .withDisplayLore(this.config.getProperty(ConfigKeys.filler_lore));
-                    //.setCustomModelData(this.config.getProperty(ConfigKeys.filler_model_data))
-                    //.setItemModel(fillerModel.getNamespace(), fillerModel.getId());
+                    .withDisplayLore(this.config.getProperty(ConfigKeys.filler_lore))
+                    .withConsumer(consumer -> {
+                        final CustomBuilder customBuilder = consumer.asCustomBuilder();
+
+                        customBuilder.setCustomModelData(this.config.getProperty(ConfigKeys.filler_model_data));
+
+                        customBuilder.setItemModel(fillerModel.getNamespace(), fillerModel.getId());
+
+                        customBuilder.build();
+                    });
 
             guiFiller.fill(itemBuilder.asGuiItem(this.player));
         }
@@ -143,9 +151,16 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
             final ItemBuilder itemBuilder = ItemBuilder.from(display.getString("Item", "chest").toLowerCase())
                     .withDisplayName(crate.getCrateName())
-                    //.setCustomModelData(display.getString("Custom-Model-Data", ""))
-                    //.setItemModel(display.getString("Model.Namespace", ""), display.getString("Model.Id", ""))
-                    .setPersistentString(ItemKeys.crate_key.getNamespacedKey(), fileName);
+                    .setPersistentString(ItemKeys.crate_key.getNamespacedKey(), fileName)
+                    .withConsumer(consumer -> {
+                        final CustomBuilder customBuilder = consumer.asCustomBuilder();
+
+                        customBuilder.setCustomModelData(display.getString("Custom-Model-Data", ""));
+
+                        customBuilder.setItemModel(display.getString("Model.Namespace", ""), display.getString("Model.Id", ""));
+
+                        customBuilder.build();
+                    });
 
             this.gui.setItem(slot, ItemUtils.getItem(display, itemBuilder).asGuiItem(this.player, event -> {
                 final String fancyName = crate.getCrateName();

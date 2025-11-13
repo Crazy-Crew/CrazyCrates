@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migra
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -24,6 +25,8 @@ import java.util.Locale;
 public abstract class ICrateMigrator {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    protected final FusionPaper fusion = this.plugin.getFusion();
 
     protected final ComponentLogger logger = this.plugin.getComponentLogger();
 

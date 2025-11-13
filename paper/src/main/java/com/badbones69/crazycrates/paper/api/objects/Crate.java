@@ -12,6 +12,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
@@ -229,18 +230,30 @@ public class Crate {
         @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
         this.borderItem = ItemBuilder.from(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane").toLowerCase())
-                //.setCustomModelData(file.getString("Crate.Preview.Glass.Custom-Model-Data", ""))
-                //.setItemModel(file.getString("Crate.Preview.Glass.Model.Namespace", ""), file.getString("Crate.Preview.Glass.Model.Id", ""))
                 //.setHidingItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
-                .withDisplayName(borderName);
+                .withDisplayName(borderName).withConsumer(consumer -> {
+                    final CustomBuilder customBuilder = consumer.asCustomBuilder();
+
+                    customBuilder.setCustomModelData(file.getString("Crate.Preview.Glass.Custom-Model-Data", ""));
+
+                    customBuilder.setItemModel(file.getString("Crate.Preview.Glass.Model.Namespace", ""), file.getString("Crate.Preview.Glass.Model.Id", ""));
+
+                    customBuilder.build();
+                });
 
         @NotNull final String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
 
         this.previewTierBorderItem = ItemBuilder.from(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
-                //.setCustomModelData(file.getString("Crate.tier-preview.glass.custom-model-data", ""))
-                //.setItemModel(file.getString("Crate.tier-preview.glass.model.namespace", ""), file.getString("Crate.tier-preview.glass.model.id", ""))
                 //.setHidingItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
-                .withDisplayName(previewTierBorderName);
+                .withDisplayName(previewTierBorderName).withConsumer(consumer -> {
+                    final CustomBuilder customBuilder = consumer.asCustomBuilder();
+
+                    customBuilder.setCustomModelData(file.getString("Crate.tier-preview.glass.custom-model-data", ""));
+
+                    customBuilder.setItemModel(file.getString("Crate.tier-preview.glass.model.namespace", ""), file.getString("Crate.tier-preview.glass.model.id", ""));
+
+                    customBuilder.build();
+                });
 
         setTierPreviewRows(file.getInt("Crate.tier-preview.rows", 5));
 
@@ -983,8 +996,6 @@ public class Crate {
         List<ItemStack> prizes = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
-            // if (prize.getWeight() == -1) continue;
-
             if (tier == null) {
                 prizes.add(player == null ? prize.getDisplayItem(this) : prize.getDisplayItem(player, this));
             } else {

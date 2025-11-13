@@ -6,7 +6,6 @@ import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
 import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -113,7 +112,7 @@ public class WarCrate extends CrateBuilder {
 
         final ItemBuilder builder = MiscUtils.getRandomPaneColor();
         
-        builder.setDisplayName("<" + this.colorCodes.get(builder.getKey()) + "><bold>???</bold>");
+        builder.withDisplayName("<" + this.colorCodes.get(builder.getKey()) + "><bold>???</bold>");
         
         final ItemStack item = builder.asItemStack();
 

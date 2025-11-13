@@ -9,13 +9,15 @@ import com.ryderbelserion.fusion.paper.builders.gui.types.PaginatedGui;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.UUID;
 
 public class CratePreviewMenu extends DynamicInventoryBuilder {
 
-    private final Tier tier;
+    private @Nullable final Tier tier;
 
-    public CratePreviewMenu(@NotNull final Player player, @NotNull final Crate crate, @NotNull final Tier tier) {
+    public CratePreviewMenu(@NotNull final Player player, @NotNull final Crate crate, @Nullable final Tier tier) {
         super(player, crate, crate.getPreviewName(), crate.getPreviewRows());
 
         this.tier = tier;

@@ -115,7 +115,7 @@ public class CasinoCrate extends CrateBuilder {
                 @Nullable final Tier tier_tres = this.crate.getTier(section.getString("types.row-1", ""));
 
                 if (tier_uno == null || tier_dos == null || tier_tres == null) {
-                    if (MiscUtils.isLogging()) this.logger.warn("One of your tiers in {} could not be found, or is empty. Search for row-1, row-2 or row-3", fileName);
+                    this.fusion.log("warn", "One of your tiers in {} could not be found, or is empty. Search for row-1, row-2 or row-3", fileName);
 
                     this.crateManager.endCrate(this.player);
 

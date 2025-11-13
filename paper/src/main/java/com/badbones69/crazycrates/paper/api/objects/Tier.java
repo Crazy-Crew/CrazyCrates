@@ -2,10 +2,10 @@ package com.badbones69.crazycrates.paper.api.objects;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
-import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +17,7 @@ public class Tier {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
+    private final FusionPaper fusion = this.plugin.getFusion();
 
     private final ItemBuilder item;
     private final String name;
@@ -35,9 +35,16 @@ public class Tier {
 
         //.setHidingItemFlags(section.getBoolean("HideItemFlags", false))
 
-        this.item = ItemBuilder.from(section.getString("Item", "chest").toLowerCase());
-                //.setCustomModelData(section.getString("Custom-Model-Data", ""))
-                //.setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
+        this.item = ItemBuilder.from(section.getString("Item", "chest").toLowerCase())
+                .withConsumer(consumer -> {
+                    final CustomBuilder customBuilder = consumer.asCustomBuilder();
+
+                    customBuilder.setCustomModelData(section.getString("Custom-Model-Data", ""));
+
+                    customBuilder.setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
+
+                    customBuilder.build();
+                });
 
         this.weight = section.getDouble("Weight", -1);
 
@@ -71,8 +78,8 @@ public class Tier {
      * @return the total chance divided
      */
     public final double getWeight() {
-        if (this.weight == -1 && MiscUtils.isLogging()) {
-            this.logger.warn("Cannot fetch the weight as the option is not present for this tier: {}", this.name);
+        if (this.weight == -1) {
+            this.fusion.log("warn", "Cannot fetch the weight as the option is not present for this tier: {}", this.name);
         }
 
         return this.weight;

@@ -249,7 +249,7 @@ public class CrateManager {
 
             this.brokeCrates.add(fileName);
 
-            if (MiscUtils.isLogging()) this.logger.warn("There was an error while loading the {} file.", fileName, exception);
+            this.fusion.log("warn", "There was an error while loading the {} file.", fileName, exception);
         }
     }
 
@@ -397,7 +397,7 @@ public class CrateManager {
             this.holograms.purge(false);
         }
 
-        if (MiscUtils.isLogging()) this.logger.info("Loading all crate information...");
+        this.fusion.log("warn", "Loading all crate information...");
 
         final Path crates = this.dataPath.resolve("crates");
 
@@ -442,7 +442,7 @@ public class CrateManager {
                 if (isTiersEmpty && tiers.isEmpty()) {
                     this.brokeCrates.add(crateName);
 
-                    if (MiscUtils.isLogging()) this.logger.warn("No tiers were found for {}.yml file.", crateName);
+                    this.fusion.log("warn", "No tiers were found for {}.yml file.", crateName);
 
                     continue;
                 }
@@ -529,13 +529,13 @@ public class CrateManager {
             } catch (final Exception exception) {
                 this.brokeCrates.add(crateName);
 
-                if (MiscUtils.isLogging()) this.logger.warn("There was an error while loading the {} file.", crateName, exception);
+                this.fusion.log("warn", "There was an error while loading the {} file.", crateName, exception);
             }
         }
 
         addCrate(new Crate("Menu"));
 
-        if (MiscUtils.isLogging()) this.logger.warn("All crate information has been loaded, Loading physical crate locations!");
+        this.fusion.log("warn", "All crate information has been loaded, Loading physical crate locations!");
 
         final YamlConfiguration locations = FileKeys.locations.getConfiguration();
 
@@ -601,18 +601,16 @@ public class CrateManager {
         final String[] schems = new File(this.plugin.getDataFolder() + "/schematics/").list();
 
         if (schems != null) {
-            final boolean isLogging = MiscUtils.isLogging();
-
             for (final String schematicName : schems) {
                 if (schematicName.endsWith(".nbt")) {
                     this.crateSchematics.add(new CrateSchematic(schematicName, new File(this.plugin.getDataFolder() + "/schematics/" + schematicName)));
 
-                    if (isLogging) this.logger.info("{} was successfully found and loaded.", schematicName);
+                    this.fusion.log("warn", "{} was successfully found and loaded.", schematicName);
                 }
             }
         }
 
-        if (MiscUtils.isLogging()) this.logger.info("All schematics were found and loaded.");
+        this.fusion.log("warn", "All schematics were found and loaded.");
 
         cleanDataFile();
 
@@ -1502,16 +1500,13 @@ public class CrateManager {
         final String namespace = file.getString("Crate.PhysicalKey.Model.Namespace", "");
         final String id = file.getString("Crate.PhysicalKey.Model.Id", "");
         final List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
-        final String glowing = file.getString("Crate.PhysicalKey.Glowing", "true");
+        final boolean isGlowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
         final ItemBuilder itemBuilder = ItemBuilder.from(file.getString("Crate.PhysicalKey.Data", file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase()));
 
-        switch (glowing) {
-            case "true", "add_glow" -> itemBuilder.addEnchantGlint();
-            case "false", "remove_glow" -> itemBuilder.removeEnchantGlint();
-
-            case "" -> {}
+        if (isGlowing) {
+            itemBuilder.addEnchantGlint();
         }
 
         final CustomBuilder customBuilder = itemBuilder.asCustomBuilder();
@@ -1571,14 +1566,14 @@ public class CrateManager {
         }
 
         if (!removePlayers.isEmpty()) {
-            if (isLogging) this.logger.info("{} player's data has been marked to be removed.", removePlayers.size());
+            this.fusion.log("warn", "{} player's data has been marked to be removed.", removePlayers.size());
 
             removePlayers.forEach(uuid -> data.set("Players." + uuid, null));
 
-            if (isLogging) this.logger.info("All empty player data has been removed.");
+            this.fusion.log("warn", "All empty player data has been removed.");
         }
 
-        if (isLogging) this.logger.info("The data.yml file has been cleaned.");
+        this.fusion.log("warn", "The data.yml file has been cleaned.");
 
         FileKeys.data.save();
     }

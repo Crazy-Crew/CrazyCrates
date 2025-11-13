@@ -23,6 +23,7 @@ import com.badbones69.crazycrates.paper.support.placeholders.PlaceholderAPISuppo
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
+import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.kyori.mods.ModManager;
 import com.ryderbelserion.fusion.kyori.mods.ModSupport;
 import com.ryderbelserion.fusion.kyori.mods.objects.Mod;
@@ -79,25 +80,14 @@ public class CrazyCrates extends JavaPlugin {
         this.instance = new Server(path);
         this.instance.apply();
 
-        /*this.fileManager.addFile(path.resolve("locations.yml"), FileType.PAPER, new ArrayList<>() {{
-                    add(FileAction.STATIC_FILE);
-                }}, null)
-                .addFile(path.resolve("data.yml"), FileType.PAPER, new ArrayList<>() {{
-                    add(FileAction.STATIC_FILE);
-                }}, null)
-                .addFile(path.resolve("guis").resolve("respin-gui.yml"), FileType.PAPER, new ArrayList<>() {{
-                    add(FileAction.STATIC_FILE);
-                }}, null)
-                .addFolder(path.resolve("crates"), FileType.PAPER, new ArrayList<>() {{
-                    add(FileAction.EXTRACT_FOLDER);
-                }}, null)
-                .addFolder(path.resolve("schematics"), FileType.NBT, new ArrayList<>() {{
-                    add(FileAction.EXTRACT_FOLDER);
-                }}, null)
-                .addFolder(path.resolve("logs"), FileType.LOG, new ArrayList<>() {{
-                    add(FileAction.EXTRACT_FOLDER);
-                    add(FileAction.STATIC_FILE);
-                }}, null);*/
+        this.fileManager.extractFolder("guis", path);
+
+        this.fileManager.addFile(path.resolve("locations.yml"), FileType.PAPER_YAML)
+                .addFile(path.resolve("data.yml"), FileType.PAPER_YAML)
+                .addFile(path.resolve("guis").resolve("respin-gui.yml"), FileType.PAPER_YAML)
+                .addFolder(path.resolve("crates"), FileType.PAPER_YAML)
+                .addFolder(path.resolve("schematics"), FileType.NBT)
+                .addFolder(path.resolve("logs"), FileType.LOG);
 
         MiscUtils.janitor();
         MiscUtils.save();
@@ -120,7 +110,7 @@ public class CrazyCrates extends JavaPlugin {
         this.crateManager.loadCrates();
 
         if (ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics)) {
-            this.metrics = new MetricsWrapper(4514);
+            this.metrics = new MetricsWrapper(this, 4514);
             this.metrics.start();
         }
 

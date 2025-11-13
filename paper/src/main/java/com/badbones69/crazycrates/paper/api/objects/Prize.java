@@ -13,6 +13,7 @@ import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -257,8 +258,8 @@ public class Prize {
      * @return the weight
      */
     public final double getWeight() {
-        if (this.weight == -1 && MiscUtils.isLogging()) {
-            this.logger.warn("Cannot fetch the weight as the option is not present for this prize: {} in the crate: {}", this.prizeName, this.crateName);
+        if (this.weight == -1) {
+            this.fusion.log("warn", "Cannot fetch the weight as the option is not present for this prize: {} in the crate: {}", this.prizeName, this.crateName);
         }
 
         return this.weight;
@@ -317,7 +318,7 @@ public class Prize {
 
         final String message = StringUtils.toString(messages);
 
-        final Map<String, String> placeholders = new HashMap<>() {{ //todo() update
+        final Map<String, String> placeholders = new HashMap<>() {{
             put("%player%", target.getName());
             put("%crate%", crate.getCrateName());
             put("%reward%", getPrizeName().replaceAll("%maxpulls%", max_pulls).replaceAll("%pulls%", current_pulls));
@@ -376,16 +377,8 @@ public class Prize {
                 this.displayItem.withDisplayLore(this.section.getStringList("Lore"));
             }
 
-            //this.displayItem.addPlaceholder("%chance%", this.getTotalChance());
-
-            if (this.section.contains("Glowing")) {
-                final String value = this.section.getString("Glowing", "");
-
-                switch (value) {
-                    case "true", "add_glow" -> this.displayItem.addEnchantGlint();
-                    case "false", "remove_glow" -> this.displayItem.removeEnchantGlint();
-                    case "" -> {}
-                }
+            if (this.section.getBoolean("Glowing", false)) {
+                this.displayItem.addEnchantGlint();
             }
 
             this.displayItem.setItemDamage(this.section.getInt("DisplayDamage", 0));
@@ -425,9 +418,7 @@ public class Prize {
             if (this.section.contains("Settings.Mob-Type")) {
                 final EntityType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(this.section.getString("Settings.Mob-Type", "cow"));
 
-                if (type != null) { //todo() update this
-                    //this.displayItem.setEntityType(type);
-                }
+                this.displayItem.asSpawnerBuilder().withEntityType(type);
             }
 
             if (this.section.contains("Settings.RGB")) {
@@ -464,6 +455,8 @@ public class Prize {
                 final ConfigurationSection potions = this.section.getConfigurationSection("DisplayPotions");
 
                 if (potions != null) {
+                    final PotionBuilder potionBuilder = this.displayItem.asPotionBuilder();
+
                     for (final String potion : potions.getKeys(false)) {
                         final PotionEffectType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getPotionEffect(potion);
 
@@ -474,15 +467,14 @@ public class Prize {
                                 final int duration = data.getInt("duration", 10) * 20;
                                 final int level = data.getInt("level", 1);
 
-                                this.displayItem.asPotionBuilder().withPotionEffect(type, duration, level);
+                                potionBuilder.withPotionEffect(type, duration, level);
                             }
                         }
                     }
 
-                    this.displayItem.build();
+                    potionBuilder.build();
                 }
             }
-
         } catch (final Exception exception) {
             this.displayItem = ItemBuilder.from(ItemType.RED_TERRACOTTA, 1).withDisplayName("<red><bold>ERROR").withDisplayLore(new ArrayList<>() {{
                 add("<red>There was an error with one of your prizes!");
