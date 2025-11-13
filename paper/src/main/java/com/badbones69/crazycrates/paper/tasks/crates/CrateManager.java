@@ -78,6 +78,8 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -245,7 +247,7 @@ public class CrateManager {
 
             this.inventoryManager.openPreview(crate);
         } catch (final Exception exception) {
-            final String fileName = crate.getFileName(); //todo() this might be null
+            final String fileName = crate.getFileName();
 
             this.brokeCrates.add(fileName);
 
@@ -367,17 +369,22 @@ public class CrateManager {
      */
     public void loadCrates() {
         if (this.config.getProperty(ConfigKeys.update_examples_folder)) {
-            /*final List<FileAction> actions = new ArrayList<>();
+            final Path examples = this.dataPath.resolve("examples");
 
-            actions.add(FileAction.DELETE_FILE);
-            actions.add(FileAction.EXTRACT_FOLDER);
+            if (Files.exists(examples)) {
+                try {
+                    Files.delete(examples);
 
-            FileUtils.extract("guis", this.dataPath.resolve("examples"), actions);
-            FileUtils.extract("logs", this.dataPath.resolve("examples"), actions);
-            FileUtils.extract("crates", this.dataPath.resolve("examples"), actions);
-            FileUtils.extract("schematics", this.dataPath.resolve("examples"), actions);
+                    Files.createDirectory(examples);
+                } catch (final IOException exception) {
+                    this.fusion.log("warn", "Failed to delete and then create the examples directory!", exception);
+                }
+            }
 
-            actions.remove(FileAction.EXTRACT_FOLDER);
+            this.fileManager.extractFolder("guis", examples);
+            this.fileManager.extractFolder("logs", examples);
+            this.fileManager.extractFolder("crates", examples);
+            this.fileManager.extractFolder("schematics", examples);
 
             List.of(
                     "config.yml",
@@ -385,7 +392,7 @@ public class CrateManager {
                     "locations.yml",
                     "messages.yml",
                     "editor.yml"
-            ).forEach(file -> FileUtils.extract(file, this.dataPath.resolve("examples"), actions));*/
+            ).forEach(file -> this.fileManager.extractFile(file, examples));
         }
 
         this.giveNewPlayersKeys = false;
