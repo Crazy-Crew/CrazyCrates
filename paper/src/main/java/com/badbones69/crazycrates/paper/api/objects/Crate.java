@@ -144,6 +144,8 @@ public class Crate {
         this.prizeMessage = prizeMessage;
         this.prizeCommands = prizeCommands;
 
+        this.crateName = file.getString("Crate.Preview.Display.Name", " ");
+
         this.glassBorderToggle = this.file.contains("Crate.Settings.Border.Glass-Border.Toggle") ?
                 this.file.getBoolean("Crate.Settings.Border.Glass-Border.Toggle", this.glassBorderToggle) :
                 this.file.getBoolean("Crate.Animation.Glass-Frame.Toggle", this.glassBorderToggle);
@@ -222,8 +224,6 @@ public class Crate {
         setPreviewRows(file.contains("Crate.Preview.ChestLines") ? file.getInt("Crate.Preview.ChestLines", 6) : file.getInt("Crate.Preview.Rows", 6));
 
         this.maxSlots = this.rows * 9;
-
-        this.crateName = file.getString("Crate.Name", " ");
 
         this.animationName = file.getString("Crate.Animation.Name", this.crateName);
 

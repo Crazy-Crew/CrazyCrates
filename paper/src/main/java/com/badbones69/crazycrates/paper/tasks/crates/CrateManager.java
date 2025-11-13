@@ -1500,13 +1500,10 @@ public class CrateManager {
         final String namespace = file.getString("Crate.PhysicalKey.Model.Namespace", "");
         final String id = file.getString("Crate.PhysicalKey.Model.Id", "");
         final List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
-        final boolean isGlowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
 
         final ItemBuilder itemBuilder = ItemBuilder.from(file.getString("Crate.PhysicalKey.Data", file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase()));
 
-        if (isGlowing) {
-            itemBuilder.addEnchantGlint();
-        }
+        ItemUtils.updateEnchantGlintState(itemBuilder, file.getString("Crate.PhysicalKey.Glowing", "add_glow"));
 
         final CustomBuilder customBuilder = itemBuilder.asCustomBuilder();
 

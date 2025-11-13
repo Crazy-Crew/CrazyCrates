@@ -12,11 +12,6 @@ Crate:
   RequiredKeys: 20
   # Max amount of crates that can be opened at once using /crates mass-open
   Max-Mass-Open: 10
-  # If the crate shows in /crates.
-  # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
-  InGUI: true
-  # Slot the item is in the GUI.
-  Slot: 15
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
@@ -87,27 +82,6 @@ Crate:
         - "<red>{player} won the prize <yellow>{reward}."
       # If the player has this permission, they don't get the broadcast.
       Permission: ""
-  # Item the crate is in the GUI
-  Item: "gold_ingot"
-  # The custom model data of the item, -1 is disabled.
-  Custom-Model-Data: -1
-  # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
-  # Set this to blank for it to do nothing.
-  Model:
-    # The namespace i.e. nexo
-    Namespace: ""
-    # The id i.e. emerald_helmet
-    Id: ""
-  # If the crate in the main /crates is glowing or not.
-  Glowing: false
-  # Name of the item in the GUI.
-  Name: "<bold><dark_blue>Casino Crate</bold>"
-  # The lore of the item in the GUI.
-  Lore:
-    - "<gray>This crate contains strange objects."
-    - "<gray>You have <gold>{keys} keys <gray>to open this crate with."
-    - "<gray>You have opened this crate: <gold>{crate_opened} times"
-    - "<gray>(<yellow>!<gray>) Right click to view rewards."
   Preview:
     # The name of the inventory for the preview menu.
     Name: "<dark_blue>Casino Crate Preview"
@@ -132,6 +106,33 @@ Crate:
         Id: ""
       # The item that shows in the border. Can be glass or any other item.
       Item: "gray_stained_glass_pane"
+    # Settings related to the item in /crates
+    Display:
+      # If the crate shows in the /crates.
+      # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
+      Toggle: true
+      # Item the crate is in the GUI
+      Item: "gold_ingot"
+      # Name of the item in the GUI.
+      Name: "<bold><dark_blue>Casino Crate</bold>"
+      # The lore of the item in the GUI.
+      Lore:
+        - "<gray>This crate contains strange objects."
+        - "<gray>You have <gold>{keys} keys <gray>to open this crate with."
+        - "<gray>You have opened this crate: <gold>{crate_opened} times"
+        - "<gray>(<yellow>!<gray>) Right click to view rewards."
+      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+      # Set this to blank for it to do nothing.
+      Model:
+        # The namespace i.e. nexo
+        Namespace: ""
+        # The id i.e. emerald_helmet
+        Id: ""
+      # Available Types: add_glow, remove_glow, or none.
+      # None, or blank value means no state will be applied.
+      Glowing: "add_glow"
+      # Slot the item is in the GUI.
+      Slot: 15
   tier-preview:
     # Turn on and off the preview for this crate.
     toggle: true
@@ -254,8 +255,9 @@ Crate:
       - "<gray>For a special Crate."
     # The item the key is.
     Item: "cyan_dye"
-    # Makes the key look enchanted.
-    Glowing: true
+    # Available Types: add_glow, remove_glow, or none.
+    # None, or blank value means no state will be applied.
+    Glowing: "add_glow"
   # Settings for the holograms.
   Hologram:
     # Toggle on and off the holograms for the crates.

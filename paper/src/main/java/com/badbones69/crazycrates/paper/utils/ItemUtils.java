@@ -51,6 +51,28 @@ public class ItemUtils {
         item.setAmount(amount - 1);
     }
 
+    public static void updateEnchantGlintState(@NotNull final ItemBuilder itemBuilder, @NotNull final String state) {
+        final Optional<Boolean> legacy = StringUtils.tryParseBoolean(state);
+
+        if (legacy.isPresent()) {
+            final boolean isGlowing = legacy.get();
+
+            if (isGlowing) {
+                itemBuilder.addEnchantGlint();
+            } else {
+                itemBuilder.removeEnchantGlint();
+            }
+
+            return;
+        }
+
+        switch (state) {
+            case "add_glow" -> itemBuilder.addEnchantGlint();
+            case "remove_glow" -> itemBuilder.removeEnchantGlint();
+            case "none", "" -> {}
+        }
+    }
+
     public static String getEnchant(@NotNull final String enchant) {
         if (enchant.isEmpty()) return "";
 
@@ -154,9 +176,7 @@ public class ItemUtils {
     }
 
     public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder) {
-        if (section.getBoolean("Glowing", false)) {
-            builder.addEnchantGlint();
-        }
+        ItemUtils.updateEnchantGlintState(builder, section.getString("Glowing", "add_glow"));
         
         builder.setItemDamage(section.getInt("DisplayDamage", 0));
         
@@ -251,9 +271,7 @@ public class ItemUtils {
 
             itemBuilder.setUnbreakable(item.getBoolean("unbreakable-item", false));
 
-            if (item.getBoolean("settings.glowing", false)) {
-                itemBuilder.addEnchantGlint();
-            }
+            ItemUtils.updateEnchantGlintState(itemBuilder, item.getString("settings.glowing", "none"));
 
             final String player = item.getString("settings.player", null);
 
@@ -357,11 +375,7 @@ public class ItemUtils {
                             itemBuilder.asSpawnerBuilder().withEntityType(type).build();
                         }
                     }
-                    case "glowing" -> {
-                        if (StringUtils.tryParseBoolean(value).orElse(false)) {
-                            itemBuilder.addEnchantGlint();
-                        }
-                    }
+                    case "glowing" -> ItemUtils.updateEnchantGlintState(itemBuilder, value);
                     case "amount" -> {
                         final Optional<Number> amount = StringUtils.tryParseInt(value);
                         itemBuilder.setAmount(amount.map(Number::intValue).orElse(1));

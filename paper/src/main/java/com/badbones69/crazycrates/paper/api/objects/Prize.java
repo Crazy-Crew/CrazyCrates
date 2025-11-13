@@ -377,9 +377,7 @@ public class Prize {
                 this.displayItem.withDisplayLore(this.section.getStringList("Lore"));
             }
 
-            if (this.section.getBoolean("Glowing", false)) {
-                this.displayItem.addEnchantGlint();
-            }
+            ItemUtils.updateEnchantGlintState(this.displayItem, this.section.getString("Glowing", "add_glow"));
 
             this.displayItem.setItemDamage(this.section.getInt("DisplayDamage", 0));
 

@@ -20,7 +20,8 @@ public enum Comments {
             "The damage to apply to the item."
     )),
     glowing(List.of(
-            "Should the item glow?"
+            "Available Types: add_glow, remove_glow, or none.",
+            "None, or blank value means no state will be applied."
     )),
     amount(List.of(
             "The amount of the item to give."

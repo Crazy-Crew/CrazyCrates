@@ -12,11 +12,6 @@ Crate:
   RequiredKeys: 5
   # Max amount of crates that can be opened at once using /crates mass-open
   Max-Mass-Open: 10
-  # If the crate shows in the /crates.
-  # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
-  InGUI: true
-  # Slot the item is in the GUI.
-  Slot: 33
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
@@ -93,27 +88,6 @@ Crate:
         # i.e. crazycrates.respin.crate_name.1-20
         # It will simply register multiple permissions, so it shows up in things like LuckPerms.
         Max-Cap: 20
-  # Item the crate is in the GUI
-  Item: "shulker_box"
-  # The custom model data of the item, -1 is disabled.
-  Custom-Model-Data: -1
-  # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
-  # Set this to blank for it to do nothing.
-  Model:
-    # The namespace i.e. nexo
-    Namespace: ""
-    # The id i.e. emerald_helmet
-    Id: ""
-  # If the crate in the main /crates is glowing or not.
-  Glowing: false
-  # Name of the item in the GUI.
-  Name: "<bold><gradient:#084CFB:#ADF3FD>Wonder Crate</gradient></bold>"
-  # The lore of the item in the GUI.
-  Lore:
-    - "<gray>This crate contains strange objects."
-    - "<gray>You have <gold>{keys} keys <gray>to open this crate with."
-    - "<gray>You have opened this crate: <gold>{crate_opened} times"
-    - "<gray>(<yellow>!<gray>) Right click to view rewards."
   Preview:
     # The name of the inventory for the preview menu.
     Name: "<gradient:#084CFB:#ADF3FD>Wonder Crate Preview</gradient>"
@@ -138,6 +112,33 @@ Crate:
         Namespace: ""
         # The id i.e. emerald_helmet
         Id: ""
+    # Settings related to the item in /crates
+    Display:
+      # If the crate shows in the /crates.
+      # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
+      Toggle: true
+      # Item the crate is in the GUI
+      Item: "shulker_box"
+      # Name of the item in the GUI.
+      Name: "<bold><gradient:#084CFB:#ADF3FD>Wonder Crate</gradient></bold>"
+      # The lore of the item in the GUI.
+      Lore:
+        - "<gray>This crate contains strange objects."
+        - "<gray>You have <gold>{keys} keys <gray>to open this crate with."
+        - "<gray>You have opened this crate: <gold>{crate_opened} times"
+        - "<gray>(<yellow>!<gray>) Right click to view rewards."
+      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+      # Set this to blank for it to do nothing.
+      Model:
+        # The namespace i.e. nexo
+        Namespace: ""
+        # The id i.e. emerald_helmet
+        Id: ""
+      # Available Types: add_glow, remove_glow, or none.
+      # None, or blank value means no state will be applied.
+      Glowing: "add_glow"
+      # Slot the item is in the GUI.
+      Slot: 33
   PhysicalKey:
     # Name of the Key.
     Name: "<bold><gradient:#084CFB:#ADF3FD>Wonder Crate Key</gradient></bold>"
@@ -155,8 +156,9 @@ Crate:
       Namespace: ""
       # The id i.e. emerald_helmet
       Id: ""
-    # Makes the key look enchanted.
-    Glowing: true
+    # Available Types: add_glow, remove_glow, or none.
+    # None, or blank value means no state will be applied.
+    Glowing: "add_glow"
   # Settings for the holograms.
   Hologram:
     # Toggle on and off the holograms for the crates.

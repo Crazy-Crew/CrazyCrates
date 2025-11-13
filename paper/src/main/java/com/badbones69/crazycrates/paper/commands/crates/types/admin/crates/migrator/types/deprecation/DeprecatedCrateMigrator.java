@@ -49,6 +49,87 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
                     isSave = true;
                 }
 
+                final ConfigurationSection displaySection = section.contains("Preview.Display") ? section.getConfigurationSection("Preview.Display") : section.createSection("Preview.Display");
+
+                if (displaySection != null) {
+                    if (section.contains("Glowing") && section.isBoolean("Glowing")) {
+                        final boolean isGlowing  = section.getBoolean("Glowing", false);
+
+                        if (isGlowing) {
+                            set(displaySection, "Glowing", "add_glow");
+                        } else {
+                            set(displaySection, "Glowing", "remove_glow");
+                        }
+
+                        set(section, "Glowing", null);
+
+                        isSave = true;
+                    }
+
+                    if (section.contains("Item")) {
+                        set(displaySection, "Item", section.getString("Item", "chest"));
+                        set(section, "Item", null);
+
+                        isSave = true;
+                    }
+
+                    if (section.contains("Custom-Model-Data")) {
+                        set(displaySection, "Custom-Model-Data", section.getInt("Custom-Model-Data", -1));
+                        set(section, "Custom-Model-Data", null);
+
+                        isSave = true;
+                    }
+
+                    if (section.contains("Model.Namespace") && section.contains("Model.Id")) {
+                        set(displaySection, "Model.Namespace", section.getString("Model.Namespace", ""));
+                        set(displaySection, "Model.Id", section.getString("Model.Id", ""));
+
+                        set(section, "Model", null);
+
+                        isSave = true;
+                    }
+
+                    if (section.contains("Slot")) {
+                        set(displaySection, "Slot", section.getInt("Slot", -1));
+                        set(section, "Slot", null);
+
+                        isSave = true;
+                    }
+
+                    if (section.contains("Name")) {
+                        set(displaySection, "Name", section.getString("Name", " "));
+                        set(section, "Name", null);
+
+                        isSave = true;
+                    }
+
+                    if (section.contains("Lore")) {
+                        set(displaySection, "Lore", section.getStringList("Lore"));
+                        set(section, "Lore", null);
+
+                        isSave = true;
+                    }
+
+                    if (section.contains("InGUI")) {
+                        set(displaySection, "Toggle", section.getBoolean("InGUI", false));
+                        set(section, "InGUI", null);
+
+                        isSave = true;
+                    }
+                }
+
+                if (section.contains("PhysicalKey.Glowing") && section.isBoolean("PhysicalKey.Glowing")) {
+                    final boolean isGlowing  = section.getBoolean("PhysicalKey.Glowing", false);
+
+                    if (isGlowing) {
+                        set(section, "PhysicalKey.Glowing", "add_glow");
+                    } else {
+                        set(section, "PhysicalKey.Glowing", "remove_glow");
+                    }
+
+                    isSave = true;
+                }
+
                 if (section.contains("Preview-Name")) {
                     set(section, "Preview.Name", section.getString("Preview-Name", " "));
                     set(section, "Preview-Name", null);
@@ -92,6 +173,18 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
                         if (prizeSection.contains("Patterns")) {
                             set(prizeSection, "DisplayPatterns", prizeSection.getStringList("Patterns"));
                             set(prizeSection, "Patterns", null);
+
+                            isSave = true;
+                        }
+
+                        if (prizeSection.contains("Glowing") && prizeSection.isBoolean("Glowing")) {
+                            final boolean isGlowing  = section.getBoolean("Glowing", false);
+
+                            if (isGlowing) {
+                                set(section, "Glowing", "add_glow");
+                            } else {
+                                set(section, "Glowing", "remove_glow");
+                            }
 
                             isSave = true;
                         }
