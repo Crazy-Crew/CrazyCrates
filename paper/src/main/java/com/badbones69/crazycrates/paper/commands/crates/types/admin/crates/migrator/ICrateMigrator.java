@@ -65,8 +65,8 @@ public abstract class ICrateMigrator {
 
     public abstract <T> void set(ConfigurationSection section, String path, T value);
 
-    public File getCratesDirectory() {
-        return null;
+    public Path getCratesDirectory() {
+        return this.dataPath.resolve("crates");
     }
 
     public void sendMessage(List<String> files, final int success, final int failed) {

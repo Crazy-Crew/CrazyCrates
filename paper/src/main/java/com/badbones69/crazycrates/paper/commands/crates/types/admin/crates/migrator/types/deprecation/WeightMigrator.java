@@ -7,10 +7,10 @@ import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public class WeightMigrator extends ICrateMigrator {
 
@@ -20,22 +20,26 @@ public class WeightMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        /*final Collection<ICustomFile<? extends ICustomFile<?>>> customFiles = this.fileManager.getCustomFiles().values();
-
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
 
-        customFiles.forEach(key -> {
+        final List<Path> paths = this.fusion.getFiles(getCratesDirectory(), ".yml");
+
+        for (final Path path : paths) {
+            final Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(path);
+
+            if (optional.isEmpty()) continue;
+
+            final PaperCustomFile customFile = optional.get();
+
+            if (!customFile.isLoaded()) continue;
+
             try {
-                if (key.isStatic() || !key.isLoaded() || key.getFileType() != FileType.PAPER) return;
-
-                final PaperCustomFile customFile = (PaperCustomFile) key;
-
                 final YamlConfiguration configuration = customFile.getConfiguration();
 
                 final ConfigurationSection section = configuration.getConfigurationSection("Crate");
 
-                if (section == null) return;
+                if (section == null) continue;
 
                 boolean isSave = false;
 
@@ -92,16 +96,16 @@ public class WeightMigrator extends ICrateMigrator {
                         prizeSection.set("Weight", MiscUtils.calculateWeight(chance, maxRange));
                     }
                 }
-
                 if (isSave) {
                     customFile.save();
+                    customFile.load();
                 }
 
                 success.add("<green>⤷ " + customFile.getFileName());
             } catch (final Exception exception) {
-                failed.add("<red>⤷ " + key.getFileName());
+                failed.add("<red>⤷ " + customFile.getFileName());
             }
-        });
+        }
 
         final int convertedCrates = success.size();
         final int failedCrates = failed.size();
@@ -111,20 +115,13 @@ public class WeightMigrator extends ICrateMigrator {
             addAll(success);
         }}, convertedCrates, failedCrates);
 
-        this.fileManager.init(new ArrayList<>());
-
         // reload crates
         this.crateManager.loadHolograms();
-        this.crateManager.loadCrates();*/
+        this.crateManager.loadCrates();
     }
 
     @Override
     public <T> void set(final ConfigurationSection section, final String path, T value) {
         section.set(path, value);
-    }
-
-    @Override
-    public final File getCratesDirectory() {
-        return new File(this.plugin.getDataFolder(), "crates");
     }
 }

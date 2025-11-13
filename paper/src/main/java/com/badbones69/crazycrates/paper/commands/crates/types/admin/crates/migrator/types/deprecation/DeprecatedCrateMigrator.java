@@ -2,17 +2,14 @@ package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migr
 
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 public class DeprecatedCrateMigrator extends ICrateMigrator {
 
@@ -22,27 +19,27 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Map<Path, ICustomFile<?, ?, ?, ?>> customFiles = this.fileManager.getFiles();
-
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
 
-        for (final ICustomFile<?, ?, ?, ?> customFile : customFiles.values()) {
-            final FileType fileType = customFile.getFileType();
+        final List<Path> paths = this.fusion.getFiles(getCratesDirectory(), ".yml");
 
-            if (fileType != FileType.PAPER_YAML) continue;
+        for (final Path path : paths) {
+            final Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(path);
+
+            if (optional.isEmpty()) continue;
+
+            final PaperCustomFile customFile = optional.get();
 
             if (!customFile.isLoaded()) continue;
 
+            final YamlConfiguration configuration = customFile.getConfiguration();
+
+            final ConfigurationSection section = configuration.getConfigurationSection("Crate");
+
+            if (section == null) continue;
+
             try {
-                final PaperCustomFile paper = (PaperCustomFile) customFiles;
-
-                final YamlConfiguration configuration = paper.getConfiguration();
-
-                final ConfigurationSection section = configuration.getConfigurationSection("Crate");
-
-                if (section == null) return;
-
                 boolean isSave = false;
 
                 if (section.contains("CrateName")) {
@@ -103,7 +100,6 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
 
                 if (isSave) {
                     customFile.save();
-
                     customFile.load();
                 }
 
@@ -129,10 +125,5 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
     @Override
     public <T> void set(final ConfigurationSection section, final String path, T value) {
         section.set(path, value);
-    }
-
-    @Override
-    public final File getCratesDirectory() {
-        return new File(this.plugin.getDataFolder(), "crates");
     }
 }

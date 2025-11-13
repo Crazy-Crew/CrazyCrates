@@ -5,8 +5,6 @@ import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migra
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
-import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,7 +12,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 public class LegacyColorMigrator extends ICrateMigrator {
 
@@ -64,24 +62,24 @@ public class LegacyColorMigrator extends ICrateMigrator {
             failed.add("<red>⤷ messages.yml");
         }
 
-        final Map<Path, ICustomFile<?, ?, ?, ?>> customFiles = this.fileManager.getFiles();
+        final List<Path> paths = this.fusion.getFiles(getCratesDirectory(), ".yml");
 
-        for (final ICustomFile<?, ?, ?, ?> customFile : customFiles.values()) {
-            final FileType fileType = customFile.getFileType();
+        for (final Path path : paths) {
+            final Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(path);
 
-            if (fileType != FileType.PAPER_YAML) continue;
+            if (optional.isEmpty()) continue;
+
+            final PaperCustomFile customFile = optional.get();
 
             if (!customFile.isLoaded()) continue;
 
+            final YamlConfiguration configuration = customFile.getConfiguration();
+
+            final ConfigurationSection section = configuration.getConfigurationSection("Crate");
+
+            if (section == null) continue;
+
             try {
-                final PaperCustomFile paper = (PaperCustomFile) customFiles;
-
-                final YamlConfiguration configuration = paper.getConfiguration();
-
-                final ConfigurationSection section = configuration.getConfigurationSection("Crate");
-
-                if (section == null) return;
-
                 boolean isSave = false;
 
                 if (section.contains("CrateName")) {
