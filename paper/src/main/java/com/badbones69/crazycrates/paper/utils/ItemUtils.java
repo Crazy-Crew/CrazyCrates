@@ -11,6 +11,7 @@ import com.ryderbelserion.fusion.paper.builders.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.SkullBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.SpawnerBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -182,7 +183,19 @@ public class ItemUtils {
         
         builder.withDisplayLore(section.getStringList("Lore"));
 
-        //builder.addPatterns(section.getStringList("Patterns"));
+        if (section.contains("Patterns")) {
+            final PatternBuilder patternBuilder = builder.asPatternBuilder();
+
+            for (final String key : section.getStringList("Patterns")) {
+                final String[] split = key.split(":");
+                final String type = split[0];
+                final String color = split[1];
+
+                patternBuilder.addPattern(type, color);
+            }
+
+            patternBuilder.build();
+        }
 
         builder.setUnbreakable(section.getBoolean("Unbreakable", false));
         
@@ -194,9 +207,13 @@ public class ItemUtils {
             builder.asSkullBuilder().withName(section.getString("Player", "")).build();
         }
 
-        //builder.setCustomModelData(section.getString("Custom-Model-Data", ""));
+        final CustomBuilder customBuilder = builder.asCustomBuilder();
 
-        //builder.setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
+        customBuilder.setCustomModelData(section.getString("Custom-Model-Data", ""));
+
+        customBuilder.setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
+
+        customBuilder.build();
 
         builder.setTrim(section.getString("DisplayTrim.Pattern", ""), section.getString("DisplayTrim.Material", ""));
         

@@ -13,6 +13,7 @@ import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -390,15 +391,31 @@ public class Prize {
                     ).forEach(this.logger::warn);
                 }
 
+                final PatternBuilder patternBuilder = this.displayItem.asPatternBuilder();
+
                 for (final String pattern : this.section.getStringList("Patterns")) {
-                    //this.displayItem.addPattern(pattern.toLowerCase()); //todo() update this
+                    final String[] split = pattern.split(":");
+                    final String type = split[0];
+                    final String color = split[1];
+
+                    patternBuilder.addPattern(type, color);
                 }
+
+                patternBuilder.build();
             }
 
             if (this.section.contains("DisplayPatterns")) {
+                final PatternBuilder patternBuilder = this.displayItem.asPatternBuilder();
+
                 for (final String pattern : this.section.getStringList("DisplayPatterns")) {
-                    //this.displayItem.addPattern(pattern.toLowerCase()); //todo() update this
+                    final String[] split = pattern.split(":");
+                    final String type = split[0];
+                    final String color = split[1];
+
+                    patternBuilder.addPattern(type, color);
                 }
+
+                patternBuilder.build();
             }
 
             this.displayItem.setUnbreakable(this.section.getBoolean("Unbreakable", false));
@@ -431,13 +448,7 @@ public class Prize {
                 this.displayItem.asSkullBuilder().withName(this.section.getString("Player", "")).build();
             }
 
-            /*if (this.section.contains("DisplayTrim.Pattern") && builder.isArmor()) { //todo() update this
-                this.displayItem.applyTrimPattern(this.section.getString("DisplayTrim.Pattern", "sentry"));
-            }
-
-            if (this.section.contains("DisplayTrim.Material") && builder.isArmor()) {
-                this.displayItem.applyTrimMaterial(this.section.getString("DisplayTrim.Material", "quartz"));
-            }*/
+            this.displayItem.setTrim(this.section.getString("DisplayTrim.Pattern", ""), this.section.getString("DisplayTrim.Material", ""));
 
             if (this.section.contains("DisplayEnchantments")) {
                 for (final String ench : this.section.getStringList("DisplayEnchantments")) {
