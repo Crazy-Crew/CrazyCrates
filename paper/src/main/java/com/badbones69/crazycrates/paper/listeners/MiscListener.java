@@ -7,7 +7,6 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.paper.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
@@ -166,13 +165,7 @@ public class MiscListener implements Listener {
                             final Tier tier = this.crateManager.getTier(crate, item);
 
                             if (tier != null) {
-                                Prize prize = crate.pickPrize(player, tier);
-
-                                for (int stop = 0; prize == null && stop <= 2000; stop++) { //todo() wtf?
-                                    prize = crate.pickPrize(player, tier);
-                                }
-
-                                PrizeManager.givePrize(player, crate, prize);
+                                PrizeManager.givePrize(player, crate, crate.pickPrize(player, tier));
 
                                 playSound = true;
                             }

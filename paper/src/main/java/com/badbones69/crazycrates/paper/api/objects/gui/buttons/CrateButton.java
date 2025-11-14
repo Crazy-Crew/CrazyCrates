@@ -27,7 +27,7 @@ public class CrateButton extends GuiButton {
     private final Prize prize;
 
     public CrateButton(@NotNull final Crate crate, @Nullable final Prize prize, @NotNull final ConfigurationSection section) {
-        super(section, new HashMap<>() {{ //todo() update
+        super(section, new HashMap<>() {{
             put("%crate_pretty%", crate.getCrateName());
             put("%crate_raw%", crate.getFileName());
             put("%prize%", prize != null ? prize.getSectionName() : "N/A");
