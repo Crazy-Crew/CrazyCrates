@@ -144,7 +144,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                             .addLorePlaceholder("%keys_raw%", String.valueOf(virtualKeys))
                             .addLorePlaceholder("%keys_physical_raw%", String.valueOf(physicalKeys))
                             .addLorePlaceholder("%keys_total_raw%", String.valueOf(totalKeys))
-                            .addLorePlaceholder("%crate_opened_raw", String.valueOf(openedCrates))
+                            .addLorePlaceholder("%crate_opened_raw%", String.valueOf(openedCrates))
                             .addLorePlaceholder("%player%", this.player.getName())
                             .setPersistentString(ItemKeys.crate_key.getNamespacedKey(), fileName);
 
