@@ -243,6 +243,7 @@ Crate:
       DisplayAmount: 1
       # The chance to win i.e. 15%
       Weight: 15.0
+      # The list of items to win.
       Items:
         1:
           # The material of the item.
