@@ -162,8 +162,11 @@ public class NewItemMigrator extends ICrateMigrator {
                                                 }
                                             } catch (final Exception ignored) {}
 
-                                            if (ItemUtils.getEnchantment(placeholder) != null) {
-                                                enchantments.put(option.toLowerCase(), StringUtils.tryParseInt(value).map(Number::intValue).orElse(1));
+                                            final String[] splitter = split.split(":");
+                                            final String enchantment = splitter[0];
+
+                                            if (ItemUtils.getEnchantment(enchantment) != null) {
+                                                enchantments.put(enchantment.toLowerCase(), StringUtils.tryParseInt(splitter[1]).map(Number::intValue).orElse(1));
 
                                                 final ConfigurationSection enchantmentSection = prizeSection.createSection("Items." + uuid + ".enchantments");
 
@@ -172,17 +175,6 @@ public class NewItemMigrator extends ICrateMigrator {
                                                 enchantments.forEach(enchantmentSection::set);
 
                                                 break;
-                                            }
-
-                                            if (!prizeSection.contains("Items." + uuid + ".hide-tool-tip")) {
-                                                for (ItemFlag itemFlag : ItemFlag.values()) {
-                                                    if (itemFlag.name().equalsIgnoreCase(option)) {
-                                                        prizeSection.set("Items." + uuid + ".hide-tool-tip", true);
-                                                        prizeSection.setComments("Items." + uuid + ".hide-tool-tip", Comments.hide_tool_tip.getComments());
-
-                                                        break;
-                                                    }
-                                                }
                                             }
 
                                             try {
