@@ -11,7 +11,6 @@ import org.bukkit.block.banner.PatternType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.potion.PotionEffectType;
 import java.nio.file.Path;
 import java.util.*;

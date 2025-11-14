@@ -510,6 +510,7 @@ Crate:
           # The id i.e. emerald_helmet
           Id: ""
         # The rgb used for the potion.
+        # RGB = performance
         RGB: '229,164,229'
         # Color: RED
       # The amount to display in the gui.
@@ -524,4 +525,21 @@ Crate:
           # Generic settings.
           settings:
             # The rgb of the item.
+            # RGB = performance
             rgb: 229,164,229
+            # The potion settings.
+            potions:
+              # The name of the potion.
+              strength:
+                # The length of the potion.
+                duration: 60
+                # The level of the potion.
+                level: 3
+                # The style settings of the potion.
+                style:
+                  # Should the icon show?
+                  icon: false
+                  # Should there be ambient effects?
+                  ambient: false
+                  # Should particles be shown?
+                  particles: true
