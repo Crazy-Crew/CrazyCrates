@@ -80,10 +80,6 @@ public class NewItemMigrator extends ICrateMigrator {
                                             prizeSection.set("Items." + uuid + ".name", type);
                                             prizeSection.setComments("Items." + uuid + ".name", Comments.name.getComments());
                                         }
-                                        case "mob" -> {
-                                            prizeSection.set("Items." + uuid + ".settings.mob.type", type);
-                                            prizeSection.setComments("Items." + uuid + ".settings.mob.type", Comments.mob_type.getComments());
-                                        }
                                         case "glowing" -> {
                                             prizeSection.set("Items." + uuid + ".settings.glowing", type);
                                             prizeSection.setComments("Items." + uuid + ".settings.glowing", Comments.glowing.getComments());

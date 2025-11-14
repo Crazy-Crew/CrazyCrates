@@ -301,14 +301,6 @@ public class ItemUtils {
 
             itemBuilder.setColor(value);
 
-            final String mobType = item.getString("settings.mob.type", null);
-
-            if (mobType != null && !mobType.isEmpty()) {
-                final SpawnerBuilder spawnerBuilder = itemBuilder.asSpawnerBuilder();
-
-                spawnerBuilder.withEntityType(com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(mobType)).build();
-            }
-
             itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""));
 
             if (itemBuilder.isPotion()) {

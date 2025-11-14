@@ -22,7 +22,6 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Color;
 import org.bukkit.Server;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
@@ -31,7 +30,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -443,14 +441,6 @@ public class Prize {
             builder.setCustomModelData(this.section.getString("Settings.Custom-Model-Data", ""));
 
             builder.setItemModel(this.section.getString("Settings.Model.Namespace", ""), this.section.getString("Settings.Model.Id", ""));
-
-            if (this.section.contains("Settings.Mob-Type")) {
-                final EntityType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(this.section.getString("Settings.Mob-Type", "cow"));
-
-                if (type != null) {
-                    builder.setEntityType(type);
-                }
-            }
 
             if (this.section.contains("Settings.RGB")) {
                 @Nullable final Color color = ColorUtils.getRGB(this.section.getString("Settings.RGB", ""));
