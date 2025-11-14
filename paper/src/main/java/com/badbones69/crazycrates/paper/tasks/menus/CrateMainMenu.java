@@ -28,6 +28,7 @@ import org.bukkit.inventory.ItemType;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -147,9 +148,37 @@ public class CrateMainMenu extends StaticInventoryBuilder {
             final String fileName = crate.getFileName();
             final int slot = display.getInt("Slot");
 
+            final int virtualKeys = this.userManager.getVirtualKeys(uuid, fileName);
+            final int physicalKeys = this.userManager.getPhysicalKeys(uuid, fileName);
+
+            final int totalKeys = virtualKeys + physicalKeys;
+
+            final int openedCrates = this.userManager.getCrateOpened(uuid, fileName);
+
+            final NumberFormat instance = NumberFormat.getNumberInstance();
+
             final ItemBuilder itemBuilder = ItemBuilder.from(display.getString("Item", "chest").toLowerCase())
                     .withDisplayName(crate.getCrateName())
                     .setPersistentString(ItemKeys.crate_key.getNamespacedKey(), fileName)
+                    .addPlaceholder("%keys%", instance.format(virtualKeys))
+                    .addPlaceholder("%keys_physical%", instance.format(physicalKeys))
+                    .addPlaceholder("%keys_total%", instance.format(totalKeys))
+                    .addPlaceholder("%crate_opened%", instance.format(openedCrates))
+                    .addPlaceholder("%keys_raw%", String.valueOf(virtualKeys))
+                    .addPlaceholder("%keys_physical_raw%", String.valueOf(physicalKeys))
+                    .addPlaceholder("%keys_total_raw%", String.valueOf(totalKeys))
+                    .addPlaceholder("%crate_opened_raw%", String.valueOf(openedCrates))
+                    .addPlaceholder("%player%", this.player.getName())
+
+                    .addPlaceholder("{keys}", instance.format(virtualKeys))
+                    .addPlaceholder("{keys_physical}", instance.format(physicalKeys))
+                    .addPlaceholder("{keys_total}", instance.format(totalKeys))
+                    .addPlaceholder("{crate_opened}", instance.format(openedCrates))
+                    .addPlaceholder("{keys_raw}", String.valueOf(virtualKeys))
+                    .addPlaceholder("{keys_physical_raw}", String.valueOf(physicalKeys))
+                    .addPlaceholder("{keys_total_raw}", String.valueOf(totalKeys))
+                    .addPlaceholder("{crate_opened_raw}", String.valueOf(openedCrates))
+                    .addPlaceholder("{player}", this.player.getName())
                     .withConsumer(consumer -> {
                         final CustomBuilder customBuilder = consumer.asCustomBuilder();
 

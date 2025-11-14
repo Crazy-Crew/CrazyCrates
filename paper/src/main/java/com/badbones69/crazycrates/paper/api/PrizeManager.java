@@ -219,7 +219,13 @@ public class PrizeManager {
 
         final String maxPulls = String.valueOf(prize.getMaxPulls());
         final String pulls = String.valueOf(getCurrentPulls(prize, crate));
-        final String prizeName = prize.getPrizeName().replaceAll("%maxpulls%", maxPulls).replaceAll("%pulls%", pulls);
+        final String prizeName = fusion.replacePlaceholder(prize.getPrizeName(), new HashMap<>() {{
+            put("%maxpulls%", maxPulls);
+            put("%pulls%", pulls);
+
+            put("{maxpulls}", maxPulls);
+            put("{pulls}", pulls);
+        }});
 
         player.sendMessage(fusion.parse(player, message, new HashMap<>() {{
             put("%player%", player.getName());

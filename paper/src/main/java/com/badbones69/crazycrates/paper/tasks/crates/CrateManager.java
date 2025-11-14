@@ -359,7 +359,7 @@ public class CrateManager {
     }
 
     public List<String> getCrateNames() {
-        return this.instance.getCrateFiles(false);
+        return this.instance.getCrateFiles(true);
     }
 
     private final SettingsManager config = ConfigManager.getConfig();

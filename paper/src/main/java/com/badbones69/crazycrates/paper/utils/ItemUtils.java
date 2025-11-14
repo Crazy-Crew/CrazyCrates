@@ -434,7 +434,7 @@ public class ItemUtils {
                         if (itemBuilder.isBanner() || itemBuilder.isShield()) {
                             final PatternBuilder builder = itemBuilder.asPatternBuilder();
 
-                            builder.addPattern(value, option).build();
+                            builder.addPattern(option, value).build();
                         }
                     }
                 }

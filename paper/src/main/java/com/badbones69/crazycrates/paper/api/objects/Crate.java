@@ -10,6 +10,7 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
@@ -833,7 +834,7 @@ public class Crate {
             final Component displayName = itemStack.getData(DataComponentTypes.CUSTOM_NAME);
 
             if (displayName != null) {
-                //section.set(getPath(prizeName, "DisplayName"), AdvUtils.fromComponent(displayName));
+                section.set(getPath(prizeName, "DisplayName"), StringUtils.fromComponent(displayName));
             }
         }
 
@@ -844,7 +845,7 @@ public class Crate {
                 final List<Component> lore = itemLore.lines();
 
                 if (!lore.isEmpty()) {
-                    //section.set(getPath(prizeName, "DisplayLore"), AdvUtils.fromComponent(lore));
+                    section.set(getPath(prizeName, "DisplayLore"), StringUtils.fromComponent(lore));
                 }
             }
         }
@@ -991,14 +992,14 @@ public class Crate {
      * @return list of prizes
      */
     public @NotNull final List<ItemStack> getPreviewItems(@Nullable final Player player, @Nullable final Tier tier) {
-        List<ItemStack> prizes = new ArrayList<>();
+        final List<ItemStack> prizes = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
             if (tier == null) {
-                prizes.add(player == null ? prize.getDisplayItem(this) : prize.getDisplayItem(player, this));
+                prizes.add(prize.getDisplayItem(player, this));
             } else {
                 if (prize.getTiers().contains(tier)) {
-                    prizes.add(player == null ? prize.getDisplayItem(this) : prize.getDisplayItem(player, this));
+                    prizes.add(prize.getDisplayItem(player, this));
                 }
             }
         }
