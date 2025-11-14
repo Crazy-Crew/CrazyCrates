@@ -231,6 +231,9 @@ Crate:
       DisplayAmount: 1
       # The chance to win i.e. 15%
       Weight: 15.0
+      # The list of items to win.
+      Items:
+        - "Item:diamond_sword, Name:<red>Diamond Sword, sharpness:5, looting:3"
     "3":
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Helmet"
