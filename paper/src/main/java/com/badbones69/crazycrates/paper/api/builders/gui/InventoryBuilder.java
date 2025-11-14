@@ -14,6 +14,7 @@ import com.badbones69.crazycrates.paper.utils.CommandUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.builders.gui.types.BaseGui;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
@@ -24,11 +25,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public abstract class InventoryBuilder {
+public abstract class InventoryBuilder extends FoliaScheduler {
 
     protected final Player player;
 
     public InventoryBuilder(@NotNull final Player player) {
+        super(CrazyCrates.getPlugin(), null, player);
+
         this.player = player;
     }
 

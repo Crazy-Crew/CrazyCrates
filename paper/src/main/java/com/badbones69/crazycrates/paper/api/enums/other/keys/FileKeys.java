@@ -46,20 +46,20 @@ public enum FileKeys {
     }
 
     public @NotNull final PaperCustomFile getPaperCustomFile() {
-        @NotNull final Optional<PaperCustomFile> customFile = this.fileManager.getPaperFile(this.path);
+        @NotNull final Optional<PaperCustomFile> customFile = this.fileManager.getPaperFile(this.location);
 
         if (customFile.isEmpty()) {
-            throw new FusionException("Could not find custom file for " + this.path);
+            throw new FusionException("Could not find custom file for " + this.location);
         }
 
         return customFile.get();
     }
 
     public @NotNull final LogCustomFile getLogCustomFile() {
-        @NotNull final Optional<LogCustomFile> customFile = this.fileManager.getLogFile(this.path);
+        @NotNull final Optional<LogCustomFile> customFile = this.fileManager.getLogFile(this.location);
 
         if (customFile.isEmpty()) {
-            throw new FusionException("Could not find custom file for " + this.path);
+            throw new FusionException("Could not find custom file for " + this.location);
         }
 
         return customFile.get();

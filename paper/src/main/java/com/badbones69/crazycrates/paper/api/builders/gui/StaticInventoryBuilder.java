@@ -111,7 +111,7 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
      *
      * @return the title of the gui
      */
-    public @NotNull final String getTitle() {
+    public @NotNull String getTitle() {
         return this.gui.getTitle();
     }
 

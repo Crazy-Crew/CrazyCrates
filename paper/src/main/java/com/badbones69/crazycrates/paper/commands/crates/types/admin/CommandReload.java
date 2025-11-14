@@ -29,10 +29,10 @@ public class CommandReload extends BaseCommand {
 
         this.fileManager.extractFolder("guis", this.path);
 
-        this.fileManager.addFile(this.path.resolve("locations.yml"), FileType.PAPER_YAML, consumer -> consumer.addAction(FileAction.RELOAD_FILE))
-                .addFile(this.path.resolve("data.yml"), FileType.PAPER_YAML, consumer -> consumer.addAction(FileAction.RELOAD_FILE))
-                .addFile(this.path.resolve("guis").resolve("respin-gui.yml"), FileType.PAPER_YAML, consumer -> consumer.addAction(FileAction.RELOAD_FILE))
-                .addFolder(this.path.resolve("crates"), FileType.PAPER_YAML, consumer -> consumer.addAction(FileAction.RELOAD_FILE))
+        this.fileManager.addPaperFile(this.path.resolve("locations.yml"), consumer -> consumer.addAction(FileAction.RELOAD_FILE))
+                .addPaperFile(this.path.resolve("data.yml"), consumer -> consumer.addAction(FileAction.RELOAD_FILE))
+                .addPaperFile(this.path.resolve("guis").resolve("respin-gui.yml"), consumer -> consumer.addAction(FileAction.RELOAD_FILE))
+                .addPaperFolder(this.path.resolve("crates"), consumer -> consumer.addAction(FileAction.RELOAD_FILE))
                 .addFolder(this.path.resolve("schematics"), FileType.NBT, consumer -> consumer.addAction(FileAction.RELOAD_FILE))
                 .addFolder(this.path.resolve("logs"), FileType.LOG, consumer -> consumer.addAction(FileAction.RELOAD_FILE));
 

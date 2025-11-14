@@ -64,8 +64,8 @@ public class Server implements IServer {
     }
 
     @Override
-    public @NotNull final List<String> getCrateFiles(boolean keepExtension) {
-        return this.fileManager.getFileNames("crates", this.path, ".yml", keepExtension);
+    public @NotNull final List<String> getCrateFiles(final boolean removeExtension) {
+        return this.fileManager.getFileNames("crates", this.path, ".yml", removeExtension);
     }
 
     @Override

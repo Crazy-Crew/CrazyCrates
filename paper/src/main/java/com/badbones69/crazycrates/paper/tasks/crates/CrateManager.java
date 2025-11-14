@@ -354,8 +354,8 @@ public class CrateManager {
         }
     }
 
-    public List<String> getCrateNames(final boolean keepExtension) {
-        return this.instance.getCrateFiles(keepExtension);
+    public List<String> getCrateNames(final boolean removeExtension) {
+        return this.instance.getCrateFiles(removeExtension);
     }
 
     public List<String> getCrateNames() {
@@ -373,7 +373,7 @@ public class CrateManager {
 
             if (Files.exists(examples)) {
                 try {
-                    Files.delete(examples);
+                    this.fusion.deleteDirectory(examples);
 
                     Files.createDirectory(examples);
                 } catch (final IOException exception) {
@@ -392,7 +392,7 @@ public class CrateManager {
                     "locations.yml",
                     "messages.yml",
                     "editor.yml"
-            ).forEach(file -> this.fileManager.extractFile(file, examples));
+            ).forEach(file -> this.fileManager.extractFile(file, examples.resolve(file)));
         }
 
         this.giveNewPlayersKeys = false;
@@ -408,7 +408,7 @@ public class CrateManager {
 
         final Path crates = this.dataPath.resolve("crates");
 
-        for (final String crateName : getCrateNames(true)) {
+        for (final String crateName : getCrateNames(false)) {
             try {
                 final @NotNull Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(crates.resolve(crateName));
 

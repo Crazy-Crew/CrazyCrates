@@ -158,7 +158,7 @@ public enum Messages {
 
 
     public String getString(@NotNull final Audience sender, @NotNull final Map<String, String> placeholders) {
-        placeholders.putIfAbsent("prefix", this.config.getProperty(ConfigKeys.command_prefix));
+        placeholders.putIfAbsent("{prefix}", this.config.getProperty(ConfigKeys.command_prefix));
 
         return asString(sender, placeholders);
     }
@@ -168,7 +168,7 @@ public enum Messages {
     }
 
     public Component getMessage(@NotNull final Audience sender, @NotNull final Map<String, String> placeholders) {
-        placeholders.putIfAbsent("prefix", this.config.getProperty(ConfigKeys.command_prefix));
+        placeholders.putIfAbsent("{prefix}", this.config.getProperty(ConfigKeys.command_prefix));
 
         return asComponent(sender, placeholders);
     }

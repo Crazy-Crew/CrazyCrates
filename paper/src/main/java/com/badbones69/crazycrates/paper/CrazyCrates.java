@@ -71,7 +71,7 @@ public class CrazyCrates extends JavaPlugin {
 
         final ModManager modManager = this.fusion.getModManager();
 
-        PluginSupport.dependencies.forEach(dependency -> modManager.addMod(dependency, new Mod()));
+        PluginSupport.dependencies.forEach(dependency -> modManager.addMod(dependency, new Mod(this.fusion)));
 
         this.fileManager = this.fusion.getFileManager();
 
@@ -82,10 +82,10 @@ public class CrazyCrates extends JavaPlugin {
 
         this.fileManager.extractFolder("guis", path);
 
-        this.fileManager.addFile(path.resolve("locations.yml"), FileType.PAPER_YAML)
-                .addFile(path.resolve("data.yml"), FileType.PAPER_YAML)
-                .addFile(path.resolve("guis").resolve("respin-gui.yml"), FileType.PAPER_YAML)
-                .addFolder(path.resolve("crates"), FileType.PAPER_YAML)
+        this.fileManager.addPaperFile(path.resolve("locations.yml"))
+                .addPaperFile(path.resolve("data.yml"))
+                .addPaperFile(path.resolve("guis").resolve("respin-gui.yml"))
+                .addPaperFolder(path.resolve("crates"))
                 .addFolder(path.resolve("schematics"), FileType.NBT)
                 .addFolder(path.resolve("logs"), FileType.LOG);
 
