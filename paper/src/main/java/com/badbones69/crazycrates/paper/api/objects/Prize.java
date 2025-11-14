@@ -19,7 +19,6 @@ import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Server;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
@@ -427,12 +426,6 @@ public class Prize {
             customBuilder.setItemModel(this.section.getString("Settings.Model.Namespace", ""), this.section.getString("Settings.Model.Id", ""));
 
             customBuilder.build();
-
-            if (this.section.contains("Settings.Mob-Type")) {
-                final EntityType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(this.section.getString("Settings.Mob-Type", "cow"));
-
-                this.displayItem.asSpawnerBuilder().withEntityType(type);
-            }
 
             if (this.section.contains("Settings.RGB")) {
                 this.displayItem.setColor(this.section.getString("Settings.RGB", ""));
