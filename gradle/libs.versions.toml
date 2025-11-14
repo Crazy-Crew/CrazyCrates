@@ -25,7 +25,7 @@ cmi-lib = "1.5.7.0" # https://www.spigotmc.org/resources/cmilib.87610/
 ## Other
 triumph-cmds = "2.0.0-BETA-4" # https://github.com/TriumphTeam/triumph-cmds
 bStats = "3.1.0" # https://github.com/Bastian/bStats
-fusion = "3.2.10" # https://github.com/ryderbelserion/Fusion
+fusion = "3.2.11" # https://github.com/ryderbelserion/Fusion
 
 ## Gradle Plugins
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin

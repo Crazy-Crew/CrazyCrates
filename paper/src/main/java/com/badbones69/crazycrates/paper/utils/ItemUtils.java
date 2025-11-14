@@ -10,13 +10,10 @@ import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.SkullBuilder;
-import com.ryderbelserion.fusion.paper.builders.types.SpawnerBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.PlayerInventory;
@@ -310,14 +307,6 @@ public class ItemUtils {
 
             itemBuilder.setColor(value);
 
-            final String mobType = item.getString("settings.mob.type", null);
-
-            if (mobType != null && !mobType.isEmpty()) {
-                final SpawnerBuilder spawnerBuilder = itemBuilder.asSpawnerBuilder();
-
-                spawnerBuilder.withEntityType(com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(mobType)).build();
-            }
-
             itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""));
 
             if (itemBuilder.isPotion()) {
@@ -385,13 +374,6 @@ public class ItemUtils {
                     case "item" -> itemBuilder.withCustomItem(value.toLowerCase());
                     case "data" -> itemBuilder.withBase64(value);
                     case "name" -> itemBuilder.withDisplayName(value);
-                    case "mob" -> {
-                        final EntityType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(value);
-
-                        if (type != null) {
-                            itemBuilder.asSpawnerBuilder().withEntityType(type).build();
-                        }
-                    }
                     case "glowing" -> ItemUtils.updateEnchantGlintState(itemBuilder, value);
                     case "amount" -> {
                         final Optional<Number> amount = StringUtils.tryParseInt(value);
