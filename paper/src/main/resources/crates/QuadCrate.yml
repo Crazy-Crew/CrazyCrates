@@ -209,8 +209,18 @@ Crate:
       Player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
       # Only uncomment this if using HeadDatabase by Arcaniax
       # Skull: "7129"
+      # The list of items to win.
       Items:
-        - "Item:player_head, Player:1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Name:<gold>BadBones69"
+        1:
+          # The material of the item.
+          material: "player_head"
+          # The name of the item.
+          name: "<gold>BadBones69"
+          # Generic settings.
+          settings:
+            # The player name/texture to display.
+            # https://minecraft-heads.com/
+            player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
     "2":
       # The name of the item to display in the gui.
       DisplayName: "<bold><green>Fancy Pants</bold>"
@@ -248,9 +258,30 @@ Crate:
         - "<bold><gold>Chance: <red>4%</bold>"
       # The lower the number, the less likely to win it.
       Weight: 40.0
-      # The items to win.
+      # The list of items to win.
       Items:
-        - "Item:chainmail_leggings, Amount:1, Damage:75, Trim-Pattern:sentry, Trim-Material:lapis, Name:<bold><green>Fancy Pants</bold>, protection:2"
+        1:
+          # The material of the item.
+          material: "chainmail_leggings"
+          # The name of the item.
+          name: "<bold><green>Fancy Pants</bold>"
+          # The amount of the item to give.
+          amount: 1
+          # Generic settings.
+          settings:
+            # The damage to apply to the item.
+            damage: 75
+            # The trim settings
+            trim:
+              # The trim pattern of the armor.
+              pattern: "sentry"
+              # The trim material of the armor.
+              material: "lapis"
+          # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
+          # A list of enchantments https://jd.papermc.io/paper/1.21.10/io/papermc/paper/registry/keys/EnchantmentKeys.html
+          # enchantment: amount
+          enchantments:
+            protection: 2
       # The messages to send.
       Messages:
         - "<gray>You just won a <reset>{reward}."
@@ -286,9 +317,25 @@ Crate:
         - "<bold><gold>Chance: <red>3.5%</bold>"
       # The lower the number, the less likely to win it.
       Weight: 35.0
-      # The items to win.
+      # The list of items to win.
       Items:
-        - "Item:diamond_sword, Amount:1, Damage:7, Name:<bold><blue>Classic Sword</bold>, sharpness:2, fire_aspect:1"
+        1:
+          # The material of the item.
+          material: "diamond_sword"
+          # The name of the item.
+          name: "<bold><blue>Classic Sword</bold>"
+          # The amount of the item to give.
+          amount: 1
+          # Generic settings.
+          settings:
+            # The damage to apply to the item.
+            damage: 7
+          # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
+          # A list of enchantments https://jd.papermc.io/paper/1.21.10/io/papermc/paper/registry/keys/EnchantmentKeys.html
+          # enchantment: amount
+          enchantments:
+            sharpness: 2
+            fire_aspect: 1
       # The messages to send.
       Messages:
         - "<gray>You just won <reset>{reward}."

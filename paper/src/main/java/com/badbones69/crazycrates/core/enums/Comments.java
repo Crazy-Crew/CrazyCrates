@@ -68,7 +68,7 @@ public enum Comments {
     )),
     enchantments(List.of(
             "The configuration section for enchantments, minecraft: is not needed in front of the enchantment.",
-            "A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html",
+            "A list of enchantments https://jd.papermc.io/paper/1.21.10/io/papermc/paper/registry/keys/EnchantmentKeys.html",
             "enchantment: amount"
     )),
     potions(List.of(

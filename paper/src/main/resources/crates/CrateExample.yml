@@ -266,8 +266,18 @@ Crate:
       Player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
       # Only uncomment this if using HeadDatabase by Arcaniax
       # Skull: "7129"
+      # The list of items to win.
       Items:
-        - "Item:player_head, Player:1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Name:<gold>BadBones69"
+        1:
+          # The material of the item.
+          material: "player_head"
+          # The name of the item.
+          name: "<gold>BadBones69"
+          # Generic settings.
+          settings:
+            # The player name/texture to display.
+            # https://minecraft-heads.com/
+            player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
     "2":
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Sword"
@@ -294,7 +304,17 @@ Crate:
       Weight: 15.0
       # The list of items to win.
       Items:
-        - "Item:diamond_sword, Name:<red>Diamond Sword, sharpness:5, looting:3"
+        1:
+          # The material of the item.
+          material: "diamond_sword"
+          # The name of the item.
+          name: "<red>Diamond Sword"
+          # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
+          # A list of enchantments https://jd.papermc.io/paper/1.21.10/io/papermc/paper/registry/keys/EnchantmentKeys.html
+          # enchantment: amount
+          enchantments:
+            looting: 3
+            sharpness: 5
     "3":
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Helmet"
@@ -329,7 +349,25 @@ Crate:
       Weight: 15.0
       # The list of items to win.
       Items:
-        - "Item:diamond_helmet, Name:<red>Diamond Helmet, protection:5, unbreaking:3, Trim-Material:quartz, Trim-Pattern:sentry"
+        1:
+          # The material of the item.
+          material: "diamond_helmet"
+          # The name of the item.
+          name: "<red>Diamond Helmet"
+          # Generic settings.
+          settings:
+            # The trim settings
+            trim:
+              # The trim pattern of the armor.
+              pattern: "sentry"
+              # The trim material of the armor.
+              material: "quartz"
+          # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
+          # A list of enchantments https://jd.papermc.io/paper/1.21.10/io/papermc/paper/registry/keys/EnchantmentKeys.html
+          # enchantment: amount
+          enchantments:
+            unbreaking: 3
+            protection: 5
     "4":
       # The enchants to be stored on the book.
       DisplayEnchantments:
@@ -358,7 +396,15 @@ Crate:
       Weight: 25.0
       # The list of items to win.
       Items:
-        - "Item:enchanted_book, protection:5, unbreaking:3"
+        1:
+          # The material of the item.
+          material: "enchanted_book"
+          # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
+          # A list of enchantments https://jd.papermc.io/paper/1.21.10/io/papermc/paper/registry/keys/EnchantmentKeys.html
+          # enchantment: amount
+          enchantments:
+            unbreaking: 3
+            protection: 5
     "5":
       # The display name of the item.
       DisplayName: "<yellow>$1,000"
@@ -434,33 +480,20 @@ Crate:
       Weight: 15.0
       # The list of items to win.
       Items:
-        - "Item:shield, base:white, gradient_up:light_gray, straight_cross:light_blue, flower:light_blue"
+        1:
+          # The material of the item.
+          material: "shield"
+          # Generic settings.
+          settings:
+            # The configuration section for patterns, minecraft: is not needed in front of the pattern.
+            # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/BannerPatternKeys.html
+            # pattern: color
+            patterns:
+              straight_cross: light_blue
+              gradient_up: light_gray
+              base: white
+              flower: light_blue
     "7":
-      # The name of the item to display in the gui.
-      DisplayName: "<green>Creeper Spawner"
-      # The spawner to display in the gui.
-      DisplayItem: "spawner"
-      # Prize display preview settings
-      Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
-        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
-        # Set this to blank for it to do nothing.
-        Model:
-          # The namespace i.e. nexo
-          Namespace: ""
-          # The id i.e. emerald_helmet
-          Id: ""
-        # The type of mob for the spawner.
-        Mob-Type: creeper
-      # The amount to display in the gui.
-      DisplayAmount: 1
-      # The lower the number, the less likely to win it.
-      Weight: 23.5
-      # The list of items to win.
-      Items:
-        - "Item:spawner, Mob:creeper"
-    "8":
       # The name of the item to display in the gui.
       DisplayName: "<red>Red Potion"
       # The item to display in the gui.
@@ -485,4 +518,10 @@ Crate:
       Weight: 15.0
       # The list of items to win.
       Items:
-        - "Item:potion, RGB:229,164,229" # Color:RED
+        1:
+          # The material of the item.
+          material: potion
+          # Generic settings.
+          settings:
+            # The rgb of the item.
+            rgb: 229,164,229
