@@ -431,14 +431,6 @@ public class ItemUtils {
                             itemBuilder.addEnchantment(getEnchant(option), level.map(Number::intValue).orElse(1));
                         }
 
-                        for (ItemFlag itemFlag : ItemFlag.values()) {
-                            if (itemFlag.name().equalsIgnoreCase(option)) {
-                                itemBuilder.hideToolTip();
-
-                                break;
-                            }
-                        }
-
                         if (itemBuilder.isBanner() || itemBuilder.isShield()) {
                             final PatternBuilder builder = itemBuilder.asPatternBuilder();
 
