@@ -321,14 +321,20 @@ public class Prize {
         final Map<String, String> placeholders = new HashMap<>() {{
             put("%player%", target.getName());
             put("%crate%", crate.getCrateName());
-            put("%reward%", getPrizeName().replaceAll("%maxpulls%", max_pulls).replaceAll("%pulls%", current_pulls));
+            put("%reward%", fusion.replacePlaceholder(getPrizeName(), new HashMap<>() {{
+                put("%maxpulls%", max_pulls);
+                put("%pulls%", current_pulls);
+            }}));
             put("%maxpulls%", max_pulls);
             put("%pulls%", current_pulls);
             put("%reward_stripped%", getStrippedName());
 
             put("{player}", target.getName());
             put("{crate}", crate.getCrateName());
-            put("{reward}", getPrizeName().replaceAll("\\{maxpulls}", max_pulls).replaceAll("\\{pulls}", current_pulls));
+            put("{reward}", fusion.replacePlaceholder(getPrizeName(), new HashMap<>() {{
+                put("{maxpulls}", max_pulls);
+                put("{pulls}", current_pulls);
+            }}));
             put("{maxpulls}", max_pulls);
             put("{pulls}", current_pulls);
             put("{reward_stripped}", getStrippedName());

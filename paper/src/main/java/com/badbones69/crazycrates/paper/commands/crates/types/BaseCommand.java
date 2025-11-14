@@ -165,7 +165,7 @@ public abstract class BaseCommand {
             final int totalKeys = this.userManager.getTotalKeys(uuid, fileName);
 
             if (totalKeys < 1) {
-                if (MiscUtils.isLogging()) this.logger.warn("The player {} does not have enough keys to take.", name);
+                this.fusion.log("warn", "The player {} does not have enough keys to take.", name);
 
                 Messages.cannot_take_keys.sendMessage(sender, "{player}", name);
 

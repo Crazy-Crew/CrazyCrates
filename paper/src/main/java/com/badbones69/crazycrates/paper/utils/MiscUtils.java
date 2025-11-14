@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.paper.utils;
 
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
 import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -43,60 +44,11 @@ public class MiscUtils {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
+    private static final FusionPaper fusion = plugin.getFusion();
+
     private static final Path dataPath = plugin.getDataPath();
 
     private static final ComponentLogger logger = plugin.getComponentLogger();
-
-    private static String replace(@NotNull final String message, @NotNull final String crateName) {
-        String safeMessage = message;
-
-        if (!crateName.isEmpty()) {
-            safeMessage = safeMessage.replaceAll("%<crate>%".replace("<crate>", crateName), "{%s}".formatted(crateName))
-                    .replaceAll("%<crate>_raw_physical%".replace("<crate>", crateName), "{%s_raw_physical}".formatted(crateName))
-                    .replaceAll("%<crate>_physical%".replace("<crate>", crateName), "{%s_physical}".formatted(crateName))
-
-                    .replaceAll("%<crate>_raw_opened%".replace("<crate>", crateName), "{%s_raw_opened}".formatted(crateName))
-                    .replaceAll("%<crate>_opened%".replace("<crate>", crateName), "{%s_opened}".formatted(crateName))
-
-                    .replaceAll("%<crate>_total%".replace("<crate>", crateName), "{%s_total}".formatted(crateName))
-
-                    .replaceAll("%<crate>_raw_total%".replace("<crate>", crateName), "{%s_raw_total}".formatted(crateName))
-                    .replaceAll("%<crate>_raw%".replace("<crate>", crateName), "{%s_raw}".formatted(crateName));
-        }
-
-        return safeMessage.replaceAll("%page%", "{page}")
-                .replaceAll("%prefix%", "{prefix}")
-                .replaceAll("%Prefix%", "{prefix}")
-
-                .replaceAll("%key-amount%", "{key_amount}")
-                .replaceAll("%keytype%", "{keytype}")
-                .replaceAll("%keys%", "{keys}")
-                .replaceAll("%key%", "{key}")
-
-                .replaceAll("%maxpulls%", "{maxpulls}")
-                .replaceAll("%pulls%", "{pulls}")
-
-                .replaceAll("%crates_opened%", "{crates_opened}")
-                .replaceAll("%crate_fancy%", "{crate_fancy}")
-                .replaceAll("%cratetype%", "{cratetype}")
-                .replaceAll("%crate%", "{crate}")
-                .replaceAll("%id%", "{id}")
-
-                .replaceAll("%slot%", "{slot}")
-                .replaceAll("%Slot%", "{slot}")
-
-                .replaceAll("%reward_stripped%", "{reward_stripped}")
-                .replaceAll("%reward%", "{reward}")
-                .replaceAll("%chance%", "{chance}")
-                .replaceAll("%weight%", "{weight}")
-                .replaceAll("%prize%", "{prize}")
-
-                .replaceAll("%player%", "{player}")
-                .replaceAll("%number%", "{number}")
-                .replaceAll("%amount%", "{amount}")
-                .replaceAll("%world%", "{world}")
-                .replaceAll("%usage%", "{usage}");
-    }
 
     public static void dropBuilders(@NotNull final List<ItemBuilder> builders, @NotNull final Player player) {
         if (builders.isEmpty()) return;
@@ -302,7 +254,7 @@ public class MiscUtils {
 
             return leftover;
         } else {
-            if (MiscUtils.isLogging()) logger.warn("Items cannot be null.");
+            fusion.log("warn", "Items cannot be null.");
         }
 
         return null;

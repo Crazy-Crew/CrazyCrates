@@ -40,7 +40,9 @@ public class MsgUtils {
         String safeLine = value;
 
         if (safeLine.contains("%random%")) {
-            safeLine = safeLine.replaceAll("%random%", "{random}");
+            safeLine = fusion.replacePlaceholder(safeLine, new HashMap<>() {{
+                put("%random%", "{random}");
+            }});
         }
 
         if (safeLine.contains("{random}")) {

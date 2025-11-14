@@ -6,10 +6,9 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.gui.buttons.CrateButton;
 import com.badbones69.crazycrates.paper.api.objects.gui.buttons.GuiButton;
-import com.badbones69.crazycrates.paper.utils.MiscUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
 import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiItem;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +20,7 @@ public class GuiSettings {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
+    private final FusionPaper fusion = this.plugin.getFusion();
 
     private final String title;
     private final int rows;
@@ -58,9 +57,7 @@ public class GuiSettings {
                 final int slot = button.getInt("slot");
 
                 if (this.buttons.containsKey(slot)) {
-                    if (MiscUtils.isLogging()) {
-                        this.logger.warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
-                    }
+                    this.fusion.log("warn", "Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
 
                     return;
                 }
@@ -80,9 +77,7 @@ public class GuiSettings {
                 final int slot = button.getInt("slot");
 
                 if (this.buttons.containsKey(slot)) {
-                    if (MiscUtils.isLogging()) {
-                        this.logger.warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
-                    }
+                    this.fusion.log("warn", "Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
 
                     return;
                 }
