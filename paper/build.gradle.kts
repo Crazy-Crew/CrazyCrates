@@ -15,8 +15,6 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":api"))
-
     implementation(libs.triumph.cmds)
 
     implementation(libs.fusion.paper)
@@ -26,6 +24,8 @@ dependencies {
     compileOnly(libs.bundles.holograms)
     compileOnly(libs.bundles.shared)
     compileOnly(libs.bundles.crates)
+
+    api(project(":core"))
 }
 
 tasks {

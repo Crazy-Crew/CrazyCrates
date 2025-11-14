@@ -16,6 +16,8 @@ itemsadder = "4.0.10" # https://github.com/ItemsAdder
 oraxen = "1.194.1" # https://github.com/oraxen
 nexo = "1.6.0" # https://github.com/Nexo-MC
 
+hikari = "4.0.3"
+
 ## Hologram API
 decentholograms = "2.8.8" # https://modrinth.com/plugin/decentholograms
 fancyholograms = "2.4.1" # https://modrinth.com/plugin/fancyholograms
@@ -57,6 +59,8 @@ shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "s
 
 # https://github.com/jpenilla/run-task
 run-paper = { module = "xyz.jpenilla:run-task", version.ref = "run-paper" }
+
+hikari-cp = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 
 # https://github.com/Arcaniax-Development/HeadDatabase-API
 headdatabaseapi = { module = "com.arcaniax:HeadDatabase-API", version.ref = "headdatabaseapi" }

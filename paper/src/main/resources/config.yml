@@ -21,6 +21,14 @@ root:
   # false -> uses the old editor
   #
   use-new-editor: false
+  # Configuration options related to the plugin database!
+  database:
+    # The type of database which we store data in!
+    #
+    # Available Types:
+    #   ⤷ SQLITE
+    #   ⤷ YAML (DEFAULT)
+    type: "YAML"
   # A recent change to permissions related to opening crates was made
   # The way I assumed wildcard permissions worked isn't how they worked
   # The superperms system for wildcards is stupid... but I digress
