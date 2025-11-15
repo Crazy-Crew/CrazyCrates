@@ -148,7 +148,7 @@ public enum Messages {
         return getMessage(sender, new HashMap<>());
     }
 
-    public String getMessage(@NotNull final CommandSender sender, @NotNull final String placeholder, @NotNull final String replacement) {
+    public Component getMessage(@NotNull final Audience sender, @NotNull final String placeholder, @NotNull final String replacement) {
         final Map<String, String> placeholders = new HashMap<>();
 
         placeholders.put(placeholder, replacement);
@@ -156,11 +156,20 @@ public enum Messages {
         return getMessage(sender, placeholders);
     }
 
+    public String getString(@NotNull final Audience sender, @NotNull final String placeholder, @NotNull final String replacement) {
+        final Map<String, String> placeholders = new HashMap<>();
+
+        placeholders.put(placeholder, replacement);
+
+        return getString(sender, placeholders);
+    }
 
     public String getString(@NotNull final Audience sender, @NotNull final Map<String, String> placeholders) {
-        placeholders.putIfAbsent("{prefix}", this.config.getProperty(ConfigKeys.command_prefix));
+        final Map<String, String> map = new HashMap<>(placeholders);
 
-        return asString(sender, placeholders);
+        map.putIfAbsent("{prefix}", this.config.getProperty(ConfigKeys.command_prefix));
+
+        return asString(sender, map);
     }
 
     public String getString(@NotNull final Audience sender) {
@@ -168,9 +177,11 @@ public enum Messages {
     }
 
     public Component getMessage(@NotNull final Audience sender, @NotNull final Map<String, String> placeholders) {
-        placeholders.putIfAbsent("{prefix}", this.config.getProperty(ConfigKeys.command_prefix));
+        final Map<String, String> map = new HashMap<>(placeholders);
 
-        return asComponent(sender, placeholders);
+        map.putIfAbsent("{prefix}", this.config.getProperty(ConfigKeys.command_prefix));
+
+        return asComponent(sender, map);
     }
 
     public void sendMessage(@NotNull final Audience sender, @NotNull final String placeholder, @NotNull final String replacement) {

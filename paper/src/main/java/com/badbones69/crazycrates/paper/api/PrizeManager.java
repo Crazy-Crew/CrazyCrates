@@ -195,29 +195,23 @@ public class PrizeManager {
         final String chance = StringUtils.format(crate.getChance(prize.getWeight()));
         final String weight = String.valueOf(prize.getWeight());
 
-        final Map<String, String> placeholders = new HashMap<>() {{
-            put("%player%", playerName);
+        final Map<String, String> placeholders = new HashMap<>();
 
-            put("%crate_fancy%", fancyName);
-            put("%crate%", crateName);
+        placeholders.put("%player%", playerName);
+        placeholders.put("%crate_fancy%", fancyName);
+        placeholders.put("%crate%", crateName);
+        placeholders.put("%maxpulls%", maxPulls);
+        placeholders.put("%pulls%", pulls);
+        placeholders.put("%chance%", chance);
+        placeholders.put("%weight%", weight);
 
-            put("%maxpulls%", maxPulls);
-            put("%pulls%", pulls);
-
-            put("%chance%", chance);
-            put("%weight%", weight);
-
-            put("{player}", playerName);
-
-            put("{crate_fancy}", fancyName);
-            put("{crate}", crateName);
-
-            put("{maxpulls}", maxPulls);
-            put("{pulls}", pulls);
-
-            put("{chance}", chance);
-            put("{weight}", weight);
-        }};
+        placeholders.put("{player}", playerName);
+        placeholders.put("{crate_fancy}", fancyName);
+        placeholders.put("{crate}", crateName);
+        placeholders.put("{maxpulls}", maxPulls);
+        placeholders.put("{pulls}", pulls);
+        placeholders.put("{chance}", chance);
+        placeholders.put("{weight}", weight);
 
         final String prizeName = fusion.replacePlaceholder(prize.getPrizeName(), placeholders);
 
@@ -244,29 +238,23 @@ public class PrizeManager {
         final String chance = StringUtils.format(crate.getChance(prize.getWeight()));
         final String weight = String.valueOf(prize.getWeight());
 
-        final Map<String, String> placeholders = new HashMap<>() {{
-            put("%player%", playerName);
+        final Map<String, String> placeholders = new HashMap<>();
 
-            put("%crate_fancy%", fancyName);
-            put("%crate%", crateName);
+        placeholders.put("%player%", playerName);
+        placeholders.put("%crate_fancy%", fancyName);
+        placeholders.put("%crate%", crateName);
+        placeholders.put("%maxpulls%", maxPulls);
+        placeholders.put("%pulls%", pulls);
+        placeholders.put("%chance%", chance);
+        placeholders.put("%weight%", weight);
 
-            put("%maxpulls%", maxPulls);
-            put("%pulls%", pulls);
-
-            put("%chance%", chance);
-            put("%weight%", weight);
-
-            put("{player}", playerName);
-
-            put("{crate_fancy}", fancyName);
-            put("{crate}", crateName);
-
-            put("{maxpulls}", maxPulls);
-            put("{pulls}", pulls);
-
-            put("{chance}", chance);
-            put("{weight}", weight);
-        }};
+        placeholders.put("{player}", playerName);
+        placeholders.put("{crate_fancy}", fancyName);
+        placeholders.put("{crate}", crateName);
+        placeholders.put("{maxpulls}", maxPulls);
+        placeholders.put("{pulls}", pulls);
+        placeholders.put("{chance}", chance);
+        placeholders.put("{weight}", weight);
 
         final String prizeName = fusion.replacePlaceholder(prize.getPrizeName(), placeholders);
 

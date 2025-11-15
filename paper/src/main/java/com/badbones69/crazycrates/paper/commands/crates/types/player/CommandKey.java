@@ -30,11 +30,11 @@ public class CommandKey {
     @Permission(value = "crazycrates.keys", def = PermissionDefault.TRUE)
     @Syntax("/keys")
     public void personal(Player player) {
-        getKeys(player, player, Messages.virtual_keys_header.getMessage(
+        getKeys(player, player, Messages.virtual_keys_header.getString(
                 player,
                 "{crates_opened}",
                 String.valueOf(userManager.getTotalCratesOpened(player.getUniqueId()))
-        ), Messages.no_virtual_key.getMessage(player));
+        ), Messages.no_virtual_key.getString(player));
     }
 
     @Command("view")
@@ -59,10 +59,10 @@ public class CommandKey {
             return;
         }
 
-        getKeys(target, sender, Messages.other_player_no_keys_header.getMessage(target, Map.of(
+        getKeys(target, sender, Messages.other_player_no_keys_header.getString(target, Map.of(
                 "{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(target.getUniqueId())),
                 "{player}", targetName
-        )), Messages.other_player_no_keys.getMessage(target, "{player}", targetName));
+        )), Messages.other_player_no_keys.getString(target, "{player}", targetName));
     }
 
     /**
@@ -94,7 +94,7 @@ public class CommandKey {
             if (amount > 0) {
                 hasKeys = true;
 
-                message.add(Messages.per_crate.getMessage(player, Map.of(
+                message.add(Messages.per_crate.getString(player, Map.of(
                         "{crate_opened}", String.valueOf(userManager.getCrateOpened(uuid, crate.getFileName())),
                         "{keys}", String.valueOf(amount),
                         "{crate}", crate.getCrateName()

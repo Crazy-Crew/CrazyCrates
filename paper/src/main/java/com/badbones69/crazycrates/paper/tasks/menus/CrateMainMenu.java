@@ -124,7 +124,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                     if (command == null) return;
 
-                    MiscUtils.sendCommand(player, command, Map.of("{player}", player.getName()));
+                    CommandUtils.executeCommand(this.player, command, Map.of("{player}", this.player.getName()));
                 }));
             }
         }

@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class MojangMappedMigratorSingle extends ICrateMigrator {
 
@@ -28,7 +29,7 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
 
         @NotNull final Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(this.dataPath.resolve("crates").resolve(this.crateName));
 
-        if (customFile == null) {
+        if (optional.isEmpty()) {
             Messages.error_migrating.sendMessage(this.sender, Map.of(
                     "{file}", crateName,
                     "{type}", type.getName(),
@@ -38,7 +39,9 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
             return;
         }
 
-        if (customFile.isStatic()) {
+        final PaperCustomFile customFile = optional.get();
+
+        if (!customFile.isLoaded()) {
             Messages.error_migrating.sendMessage(this.sender, Map.of(
                     "{file}", crateName,
                     "{type}", type.getName(),

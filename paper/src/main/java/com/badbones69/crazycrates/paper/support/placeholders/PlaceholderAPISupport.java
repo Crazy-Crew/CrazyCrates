@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.paper.support.placeholders;
 
-import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.PlayerBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -8,7 +7,6 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
@@ -21,8 +19,6 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final FusionPaper fusion = this.plugin.getFusion();
-
-    private final Server server = this.plugin.getServer();
 
     private final BukkitUserManager userManager = this.plugin.getUserManager();
 
@@ -96,7 +92,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
             return "N/A";
         }
 
-        final PlayerBuilder builder = new PlayerBuilder(this.server, playerName);
+        final PlayerBuilder builder = new PlayerBuilder(this.plugin, playerName);
 
         final Player target = builder.getPlayer();
 
@@ -118,7 +114,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
         final String crateName = keys[2];
 
-        final String parsed = MiscUtils.populatePlaceholders(null, identifier, Map.of("{player_name}", playerName));
+        final String parsed = this.fusion.replacePlaceholder(identifier, Map.of("{player_name}", playerName));
 
         if (parsed.equalsIgnoreCase("%s_%s_opened_raw".formatted(playerName, crateName))) {
             values.add(String.valueOf(this.userManager.getCrateOpened(id, crateName)));

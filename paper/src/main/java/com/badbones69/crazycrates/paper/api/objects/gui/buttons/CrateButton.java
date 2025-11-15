@@ -27,20 +27,15 @@ public class CrateButton extends GuiButton {
     private final Prize prize;
 
     public CrateButton(@NotNull final Crate crate, @Nullable final Prize prize, @NotNull final ConfigurationSection section) {
-        super(section, new HashMap<>() {{
-            put("%crate_pretty%", crate.getCrateName());
-            put("%crate_raw%", crate.getFileName());
-            put("%prize%", prize != null ? prize.getSectionName() : "N/A");
-
-            put("{crate_pretty}", crate.getCrateName());
-            put("{crate_raw}", crate.getFileName());
-
-            put("{prize}", prize != null ? prize.getSectionName() : "N/A");
-        }});
         super(section, Map.of(
                 "%crate_pretty%", crate.getCrateName(),
                 "%crate_raw%", crate.getFileName(),
-                "%prize%", prize != null ? prize.getSectionName() : "N/A"
+                "%prize%", prize != null ? prize.getSectionName() : "N/A",
+
+                "{crate_pretty}", crate.getCrateName(),
+                "{crate_raw}", crate.getFileName(),
+
+                "{prize}", prize != null ? prize.getSectionName() : "N/A"
         ));
 
         this.crate = crate;
@@ -96,8 +91,8 @@ public class CrateButton extends GuiButton {
                         final int cap = PrizeManager.getCap(crate, player);
 
                         Messages.crate_prize_max_respins.sendMessage(player, Map.of("{status}", cap >= 1 ?
-                                Messages.crate_prize_max_respins_left.getMessage(player, Map.of("{respins_total}", String.valueOf(cap), "{respins_left}", "0")) :
-                                Messages.crate_prize_max_respins_none.getMessage(player)));
+                                Messages.crate_prize_max_respins_left.getString(player, Map.of("{respins_total}", String.valueOf(cap), "{respins_left}", "0")) :
+                                Messages.crate_prize_max_respins_none.getString(player)));
 
                         return;
                     }

@@ -317,35 +317,32 @@ public class Prize {
 
         final String message = StringUtils.toString(messages);
 
-        final Map<String, String> placeholders = new HashMap<>() {{
-            put("%player%", target.getName());
-            put("%crate%", crate.getCrateName());
-            put("%reward%", fusion.replacePlaceholder(getPrizeName(), new HashMap<>() {{
-                put("%maxpulls%", max_pulls);
-                put("%pulls%", current_pulls);
-            }}));
-            put("%maxpulls%", max_pulls);
-            put("%pulls%", current_pulls);
-            put("%reward_stripped%", getStrippedName());
-        final Map<String, String> placeholders = Map.of(
-            "%player%", target.getName(),
-            "%crate%", crate.getCrateName(),
-            "%reward%", getPrizeName().replaceAll("%maxpulls%", max_pulls).replaceAll("%pulls%", current_pulls),
-            "%maxpulls%", max_pulls,
-            "%pulls%", current_pulls,
-            "%reward_stripped%", getStrippedName()
-        );
+        final String name = target.getName();
+        final String crateName = crate.getCrateName();
+        final String strippedName = getStrippedName();
+        final String prizeName = this.fusion.replacePlaceholder(getPrizeName(), Map.of(
+                "%maxpulls%", max_pulls,
+                "%pulls%", current_pulls,
 
-            put("{player}", target.getName());
-            put("{crate}", crate.getCrateName());
-            put("{reward}", fusion.replacePlaceholder(getPrizeName(), new HashMap<>() {{
-                put("{maxpulls}", max_pulls);
-                put("{pulls}", current_pulls);
-            }}));
-            put("{maxpulls}", max_pulls);
-            put("{pulls}", current_pulls);
-            put("{reward_stripped}", getStrippedName());
-        }};
+                "{maxpulls}", max_pulls,
+                "{pulls}", current_pulls
+        ));
+
+        final Map<String, String> placeholders = Map.ofEntries(
+                Map.entry("%player%", name),
+                Map.entry("%crate%", crateName),
+                Map.entry("%reward%", prizeName),
+                Map.entry("%maxpulls%", max_pulls),
+                Map.entry("%pulls%", current_pulls),
+                Map.entry("%reward_stripped%", strippedName),
+
+                Map.entry("{player}", name),
+                Map.entry("{crate}", crateName),
+                Map.entry("{reward}", prizeName),
+                Map.entry("{maxpulls}", max_pulls),
+                Map.entry("{pulls}", current_pulls),
+                Map.entry("{reward_stripped}", strippedName)
+        );
 
         if (permission.isEmpty()) {
             server.broadcast(this.fusion.parse(target, message, placeholders));
@@ -489,7 +486,7 @@ public class Prize {
                 }
             }
         } catch (final Exception exception) {
-            return new LegacyItemBuilder(this.plugin, ItemType.RED_TERRACOTTA).setDisplayName("<red><bold>ERROR").setDisplayLore(List.of(
+            this.displayItem = ItemBuilder.from(ItemType.RED_TERRACOTTA).withDisplayName("<red><bold>ERROR").withDisplayLore(List.of(
                 "<red>There was an error with one of your prizes!",
                 "<red>The reward in question is labeled: <yellow>" + section.getName() + " <red>in crate: <yellow>" + crateName,
                 "<red>Name of the reward is " + section.getString("DisplayName"),

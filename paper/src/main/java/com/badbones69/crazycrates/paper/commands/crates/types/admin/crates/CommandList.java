@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CommandList extends BaseCommand {
 
@@ -26,7 +27,7 @@ public class CommandList extends BaseCommand {
             final Location location = crateLocation.getLocation();
             final Crate crate = crateLocation.getCrate();
 
-            crates.add(Messages.crate_locations_format.getMessage(sender, Map.of(
+            crates.add(Messages.crate_locations_format.getString(sender, Map.of(
                     "{crate_name}", crate.getCrateName(),
                     "{id}", crateLocation.getID(),
                     "{x}", String.valueOf(location.getBlockX()),

@@ -32,6 +32,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import java.util.List;
+import java.util.Map;
 
 public class QuadCrateListener implements Listener {
 
