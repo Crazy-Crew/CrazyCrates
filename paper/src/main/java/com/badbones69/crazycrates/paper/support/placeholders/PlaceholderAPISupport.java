@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.paper.support.placeholders;
 
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.api.builders.PlayerBuilder;
+import com.ryderbelserion.fusion.paper.builders.PlayerBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;

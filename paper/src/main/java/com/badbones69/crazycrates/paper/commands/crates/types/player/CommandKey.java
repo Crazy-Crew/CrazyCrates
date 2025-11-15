@@ -2,13 +2,11 @@ package com.badbones69.crazycrates.paper.commands.crates.types.player;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.*;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
@@ -102,22 +100,6 @@ public class CommandKey {
                         "{crate}", crate.getCrateName()
                 )));
             }
-        }
-
-        if (Plugins.placeholder_api.isEnabled() ) {
-            if (sender instanceof Player person) {
-                if (hasKeys) {
-                    message.forEach(line -> person.sendRichMessage(PlaceholderAPI.setPlaceholders(person, line)));
-
-                    return;
-                }
-
-                sender.sendRichMessage(PlaceholderAPI.setPlaceholders(person, content));
-
-                return;
-            }
-
-            return;
         }
 
         if (hasKeys) {

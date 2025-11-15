@@ -81,7 +81,7 @@ public class CommandMigrate extends BaseCommand {
 
             case CRATES_DEPRECATED_ALL -> new DeprecatedCrateMigrator(sender).run();
 
-            case SPECIALIZED_CRATES -> sender.sendRichMessage(Messages.migration_not_available.getMessage(sender));
+            case SPECIALIZED_CRATES -> Messages.migration_not_available.sendMessage(sender);
 
             case EXCELLENT_CRATES -> {
                 if (!MiscUtils.isExcellentCratesEnabled()) {

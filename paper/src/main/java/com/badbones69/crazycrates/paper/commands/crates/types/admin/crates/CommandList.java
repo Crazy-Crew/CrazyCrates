@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Syntax;
@@ -13,7 +13,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class CommandList extends BaseCommand {
 

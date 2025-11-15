@@ -7,7 +7,7 @@ import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migra
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import java.io.File;
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +26,7 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
             return;
         }
 
-        final PaperCustomFile customFile = this.fileManager.getPaperCustomFile(this.dataPath.resolve("crates").resolve(this.crateName));
+        @NotNull final Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(this.dataPath.resolve("crates").resolve(this.crateName));
 
         if (customFile == null) {
             Messages.error_migrating.sendMessage(this.sender, Map.of(
@@ -77,10 +77,5 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
     @Override
     public <T> void set(final ConfigurationSection section, final String path, T value) {
         section.set(path, value);
-    }
-
-    @Override
-    public final File getCratesDirectory() {
-        return new File(this.plugin.getDataFolder(), "crates");
     }
 }

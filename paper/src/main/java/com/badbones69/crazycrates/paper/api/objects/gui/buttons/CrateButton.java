@@ -7,8 +7,8 @@ import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiAction;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiAction;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiItem;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -27,6 +27,16 @@ public class CrateButton extends GuiButton {
     private final Prize prize;
 
     public CrateButton(@NotNull final Crate crate, @Nullable final Prize prize, @NotNull final ConfigurationSection section) {
+        super(section, new HashMap<>() {{
+            put("%crate_pretty%", crate.getCrateName());
+            put("%crate_raw%", crate.getFileName());
+            put("%prize%", prize != null ? prize.getSectionName() : "N/A");
+
+            put("{crate_pretty}", crate.getCrateName());
+            put("{crate_raw}", crate.getFileName());
+
+            put("{prize}", prize != null ? prize.getSectionName() : "N/A");
+        }});
         super(section, Map.of(
                 "%crate_pretty%", crate.getCrateName(),
                 "%crate_raw%", crate.getFileName(),

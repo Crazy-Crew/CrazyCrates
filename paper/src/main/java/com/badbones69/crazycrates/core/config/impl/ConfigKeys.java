@@ -74,7 +74,7 @@ public class ConfigKeys implements SettingsHolder {
             "",
             "Take a backup before you run the migration as there may be bugs."
     })
-    public static final Property<Boolean> use_different_items_layout = newProperty("root.use-different-items-layout", false);
+    public static final Property<Boolean> use_different_items_layout = newProperty("root.use-different-items-layout", true);
 
     @Comment("Sends anonymous statistics to https://bstats.org/plugin/bukkit/CrazyCrates/4514")
     public static final Property<Boolean> toggle_metrics = newProperty("root.toggle-metrics", true);
