@@ -12,7 +12,7 @@ import dev.triumphteam.cmd.core.argument.keyed.Flags;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import java.util.HashMap;
+import java.util.Map;
 
 public class CommandEditor extends BaseCommand {
 
@@ -31,10 +31,10 @@ public class CommandEditor extends BaseCommand {
         }
 
         if (!flags.hasFlag("c")) {
-            Messages.lacking_flag.sendMessage(player, new HashMap<>() {{
-                put("{flag}", "-c");
-                put("{usage}", "/crazycrates editor -c <crate_name>");
-            }});
+            Messages.lacking_flag.sendMessage(player,            Map.of(
+                    "{flag}", "-c",
+                    "{usage}", "/crazycrates editor -c <crate_name>"
+            ));
 
             return;
         }

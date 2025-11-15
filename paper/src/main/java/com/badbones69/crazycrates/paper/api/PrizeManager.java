@@ -110,9 +110,10 @@ public class PrizeManager {
         if (prize != null) {
             givePrize(player, player.getLocation().clone().add(0, 1, 0), crate, prize);
         } else {
-            Messages.prize_error.sendMessage(player, new HashMap<>() {{
-                put("{crate}", crate.getCrateName());
-            }});
+            Messages.prize_error.sendMessage(player, Map.of(
+                    "{crate}", crate.getCrateName(),
+                    "{player}", player.getName()
+            ));
         }
     }
 

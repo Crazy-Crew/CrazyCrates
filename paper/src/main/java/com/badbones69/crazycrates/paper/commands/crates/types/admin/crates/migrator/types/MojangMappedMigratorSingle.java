@@ -9,9 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 public class MojangMappedMigratorSingle extends ICrateMigrator {
 
@@ -29,24 +28,22 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
 
         @NotNull final Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(this.dataPath.resolve("crates").resolve(this.crateName));
 
-        if (optional.isEmpty()) {
-            Messages.error_migrating.sendMessage(this.sender, new HashMap<>() {{
-                put("{file}", crateName);
-                put("{type}", type.getName());
-                put("{reason}", "File was not loaded properly.");
-            }});
+        if (customFile == null) {
+            Messages.error_migrating.sendMessage(this.sender, Map.of(
+                    "{file}", crateName,
+                    "{type}", type.getName(),
+                    "{reason}", "File was not loaded properly."
+            ));
 
             return;
         }
 
-        final PaperCustomFile customFile = optional.get();
-
-        if (!customFile.isLoaded()) {
-            Messages.error_migrating.sendMessage(this.sender, new HashMap<>() {{
-                put("{file}", crateName);
-                put("{type}", type.getName());
-                put("{reason}", "File requested is not loaded.");
-            }});
+        if (customFile.isStatic()) {
+            Messages.error_migrating.sendMessage(this.sender, Map.of(
+                    "{file}", crateName,
+                    "{type}", type.getName(),
+                    "{reason}", "File requested is not a crate config file."
+            ));
 
             return;
         }
@@ -69,10 +66,12 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
         final int convertedCrates = success.size();
         final int failedCrates = failed.size();
 
-        sendMessage(new ArrayList<>(failedCrates + convertedCrates) {{
-            addAll(failed);
-            addAll(success);
-        }}, convertedCrates, failedCrates);
+        final List<String> files = new ArrayList<>(failedCrates + convertedCrates);
+
+        files.addAll(failed);
+        files.addAll(success);
+
+        sendMessage(files, convertedCrates, failedCrates);
     }
 
     @Override

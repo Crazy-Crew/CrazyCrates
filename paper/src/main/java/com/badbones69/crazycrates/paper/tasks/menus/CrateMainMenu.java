@@ -29,7 +29,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.text.NumberFormat;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -125,9 +124,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                     if (command == null) return;
 
-                    CommandUtils.executeCommand(player, command, new HashMap<>() {{
-                        put("{player}", player.getName());
-                    }});
+                    MiscUtils.sendCommand(player, command, Map.of("{player}", player.getName()));
                 }));
             }
         }

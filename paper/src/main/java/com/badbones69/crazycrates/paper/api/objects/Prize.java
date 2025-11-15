@@ -27,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -328,6 +327,14 @@ public class Prize {
             put("%maxpulls%", max_pulls);
             put("%pulls%", current_pulls);
             put("%reward_stripped%", getStrippedName());
+        final Map<String, String> placeholders = Map.of(
+            "%player%", target.getName(),
+            "%crate%", crate.getCrateName(),
+            "%reward%", getPrizeName().replaceAll("%maxpulls%", max_pulls).replaceAll("%pulls%", current_pulls),
+            "%maxpulls%", max_pulls,
+            "%pulls%", current_pulls,
+            "%reward_stripped%", getStrippedName()
+        );
 
             put("{player}", target.getName());
             put("{crate}", crate.getCrateName());
@@ -482,12 +489,12 @@ public class Prize {
                 }
             }
         } catch (final Exception exception) {
-            this.displayItem = ItemBuilder.from(ItemType.RED_TERRACOTTA, 1).withDisplayName("<red><bold>ERROR").withDisplayLore(new ArrayList<>() {{
-                add("<red>There was an error with one of your prizes!");
-                add("<red>The reward in question is labeled: <yellow>" + section.getName() + " <red>in crate: <yellow>" + crateName);
-                add("<red>Name of the reward is " + section.getString("DisplayName"));
-                add("<red>If you are confused, Stop by our discord for support!");
-            }});
+            return new LegacyItemBuilder(this.plugin, ItemType.RED_TERRACOTTA).setDisplayName("<red><bold>ERROR").setDisplayLore(List.of(
+                "<red>There was an error with one of your prizes!",
+                "<red>The reward in question is labeled: <yellow>" + section.getName() + " <red>in crate: <yellow>" + crateName,
+                "<red>Name of the reward is " + section.getString("DisplayName"),
+                "<red>If you are confused, Stop by our discord for support!"
+            ));
         }
     }
 

@@ -907,9 +907,7 @@ public class Crate {
 
                 section.set(tiers, list);
             } else {
-                section.set(tiers, new ArrayList<>() {{
-                    add(tier);
-                }});
+                section.set(tiers, List.of(tier));
             }
         }
 

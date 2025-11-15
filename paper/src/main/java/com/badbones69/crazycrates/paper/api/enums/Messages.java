@@ -148,10 +148,10 @@ public enum Messages {
         return getMessage(sender, new HashMap<>());
     }
 
-    public Component getMessage(@NotNull final Audience sender, @NotNull final String placeholder, @NotNull final String replacement) {
-        Map<String, String> placeholders = new HashMap<>() {{
-            put(placeholder, replacement);
-        }};
+    public String getMessage(@NotNull final CommandSender sender, @NotNull final String placeholder, @NotNull final String replacement) {
+        final Map<String, String> placeholders = new HashMap<>();
+
+        placeholders.put(placeholder, replacement);
 
         return getMessage(sender, placeholders);
     }
