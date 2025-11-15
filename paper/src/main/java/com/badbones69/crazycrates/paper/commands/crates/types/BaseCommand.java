@@ -27,7 +27,6 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -177,12 +176,12 @@ public abstract class BaseCommand {
 
             final int finalAmount = amount;
 
-            Messages.take_player_keys.sendMessage(sender, new HashMap<>() {{
-                put("{keytype}", type.getFriendlyName());
-                put("{amount}", String.valueOf(finalAmount));
-                put("{player}", name);
-                put("{key}", crate.getKeyName());
-            }});
+            Messages.take_player_keys.sendMessage(sender, Map.of(
+                "{keytype}", type.getFriendlyName(),
+                "{amount}", String.valueOf(finalAmount),
+                "{player}", name,
+                "{key}", crate.getKeyName()
+            ));
 
             EventManager.logEvent(EventType.event_key_removed, name, sender, crate, type, amount);
 
@@ -192,18 +191,16 @@ public abstract class BaseCommand {
         if (offlinePlayer != null) {
             final String name = offlinePlayer.getName();
 
-            final int finalAmount = amount;
-
-            Messages.take_offline_player_keys.sendMessage(sender, new HashMap<>() {{
-                put("{amount}", String.valueOf(finalAmount));
-                put("{keytype}", type.getFriendlyName());
-                put("{key}", crate.getKeyName());
-                put("{player}", name);
-            }});
+            Messages.take_offline_player_keys.sendMessage(sender, Map.of(
+                "{amount}", String.valueOf(amount),
+                "{keytype}", type.getFriendlyName(),
+                "{key}", crate.getKeyName(),
+                "{player}", name == null ? "N/A" : name)
+            );
 
             this.userManager.takeOfflineKeys(offlinePlayer.getUniqueId(), fileName, type, amount);
 
-            EventManager.logEvent(EventType.event_key_removed, name, sender, crate, type, amount);
+            EventManager.logEvent(EventType.event_key_removed, name == null ? "N/A" : name, sender, crate, type, amount);
         }
     }
 
@@ -225,12 +222,12 @@ public abstract class BaseCommand {
 
             this.userManager.addKeys(uuid, fileName, crate.getCrateType() == CrateType.crate_on_the_go ? KeyType.physical_key : type, amount);
 
-            final Map<String, String> placeholders = new HashMap<>() {{
-                put("{keytype}", type.getFriendlyName());
-                put("{amount}", String.valueOf(amount));
-                put("{player}", name);
-                put("{key}", crate.getKeyName());
-            }};
+            final Map<String, String> placeholders = Map.of(
+                "{keytype}", type.getFriendlyName(),
+                "{amount}", String.valueOf(amount),
+                "{player}", name,
+                "{key}", crate.getKeyName()
+            );
 
             boolean fullMessage = this.config.getProperty(ConfigKeys.notify_player_when_inventory_full);
             boolean inventoryCheck = this.config.getProperty(ConfigKeys.give_virtual_keys_when_inventory_full);
@@ -260,16 +257,16 @@ public abstract class BaseCommand {
             } else {
                 final String name = offlinePlayer.getName();
 
-                final Map<String, String> placeholders = new HashMap<>() {{
-                    put("{keytype}", type.getFriendlyName());
-                    put("{amount}", String.valueOf(amount));
-                    put("{key}", crate.getKeyName());
-                    put("{player}", name);
-                }};
+                final Map<String, String> placeholders = Map.of(
+                    "{keytype}", type.getFriendlyName(),
+                    "{amount}", String.valueOf(amount),
+                    "{key}", crate.getKeyName(),
+                    "{player}", name == null ? "N/A" : name
+                );
 
                 Messages.given_offline_player_keys.sendMessage(sender, placeholders);
 
-                EventManager.logEvent(EventType.event_key_given, name, sender, crate, type, amount);
+                EventManager.logEvent(EventType.event_key_given, name == null ? "N/A" : name, sender, crate, type, amount);
             }
         }
     }

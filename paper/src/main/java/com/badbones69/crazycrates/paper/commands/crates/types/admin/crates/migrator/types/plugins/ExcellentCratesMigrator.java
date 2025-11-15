@@ -30,7 +30,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -80,12 +79,12 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                 }
             }
 
-            Messages.successfully_migrated_users.sendMessage(this.sender, new HashMap<>() {{
-                put("{succeeded_amount}", String.valueOf(success.size()));
-                put("{failed_amount}", String.valueOf(failed.size()));
-                put("{type}", type.getName());
-                put("{time}", time());
-            }});
+            Messages.successfully_migrated_users.sendMessage(this.sender, Map.of(
+                    "{succeeded_amount}", String.valueOf(success.size()),
+                    "{failed_amount}", String.valueOf(failed.size()),
+                    "{type}", type.getName(),
+                    "{time}", time()
+            ));
 
             return;
         }
@@ -362,9 +361,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                         set(prizeSection, "Items", items);
                     } else {
-                        set(prizeSection, "Items", new ArrayList<>() {{
-                            add("Data: " + base64);
-                        }});
+                        set(prizeSection, "Items", List.of("Data: " + base64));
                     }
                 });
             });
@@ -381,10 +378,12 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
         final int convertedCrates = success.size();
         final int failedCrates = failed.size();
 
-        sendMessage(new ArrayList<>(failedCrates + convertedCrates) {{
-            addAll(failed);
-            addAll(success);
-        }}, convertedCrates, failedCrates);
+        final List<String> files = new ArrayList<>(failedCrates + convertedCrates);
+
+        files.addAll(failed);
+        files.addAll(success);
+
+        sendMessage(files, convertedCrates, failedCrates);
     }
 
     @Override

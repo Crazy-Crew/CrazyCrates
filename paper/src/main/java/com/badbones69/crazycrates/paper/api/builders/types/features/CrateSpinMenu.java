@@ -11,8 +11,8 @@ import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class CrateSpinMenu extends StaticInventoryBuilder {
@@ -63,11 +63,11 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
                 @Override
                 public void run() {
                     if (userManager.hasRespinPrize(uuid, fileName)) { // if they have a respin prize, add it.
-                        Messages.crate_prize_respin_not_claimed.sendMessage(player, new HashMap<>() {{
-                            put("{crate_pretty}", crate.getCrateName());
-                            put("{crate}", fileName);
-                            put("{prize}", userManager.getRespinPrize(uuid, fileName));
-                        }});
+                        Messages.crate_prize_respin_not_claimed.sendMessage(player, Map.of(
+                                "{crate_pretty}", crate.getCrateName(),
+                                "{crate}", fileName,
+                                "{prize}", userManager.getRespinPrize(uuid, fileName)
+                        ));
                     }
                 }
             }.runDelayed(20);

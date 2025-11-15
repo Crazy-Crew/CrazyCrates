@@ -31,7 +31,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import java.util.HashMap;
+import java.util.Map;
 
 public class CrateInteractListener implements Listener {
 
@@ -125,13 +125,13 @@ public class CrateInteractListener implements Listener {
         final String fancyName = crate.getCrateName();
 
         if (requiredKeys > 0 && totalKeys < requiredKeys) {
-            Messages.not_enough_keys.sendMessage(player, new HashMap<>() {{
-                put("{required_amount}", String.valueOf(requiredKeys));
-                put("{key_amount}", String.valueOf(requiredKeys)); // deprecated, remove in next major version of minecraft.
-                put("{amount}", String.valueOf(totalKeys));
-                put("{key}", crate.getKeyName());
-                put("{crate}", fancyName);
-            }});
+            Messages.not_enough_keys.sendMessage(player, Map.of(
+                "{required_amount}", String.valueOf(requiredKeys),
+                "{key_amount}", String.valueOf(requiredKeys), // deprecated, remove in next major version of minecraft.
+                "{amount}", String.valueOf(totalKeys),
+                "{key}", crate.getKeyName(),
+                "{crate}", fancyName
+            ));
 
             lackingKey(player, crate, location, false);
 
@@ -206,10 +206,10 @@ public class CrateInteractListener implements Listener {
                 player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
-            if (sendMessage) Messages.no_keys.sendMessage(player, new HashMap<>() {{
-                put("{crate}", crate.getCrateName());
-                put("{key}", keyName);
-            }});
+            if (sendMessage) Messages.no_keys.sendMessage(player, Map.of(
+                "{crate}", crate.getCrateName(),
+                "{key}", keyName
+            ));
         }
     }
 

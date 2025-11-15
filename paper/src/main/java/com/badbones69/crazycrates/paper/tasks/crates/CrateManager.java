@@ -147,9 +147,11 @@ public class CrateManager {
             return;
         }
 
-        this.tiers.put(uuid, new WeakHashMap<>() {{
-            put(slot, tier);
-        }});
+        final Map<Integer, Tier> map = new HashMap<>();
+
+        map.put(slot, tier);
+
+        this.tiers.put(uuid, map);
     }
 
     public void removeTier(@NotNull final Player player) {
@@ -733,10 +735,10 @@ public class CrateManager {
 
     private boolean isVirtualCrate(@NotNull final Player player, @NotNull final Crate crate, final boolean virtualCrate, @NotNull final String fancyName) {
         if (virtualCrate) {
-            Messages.cant_be_a_virtual_crate.sendMessage(player, new HashMap<>() {{
-                put("{cratetype}", crate.getCrateType().getName());
-                put("{crate}", fancyName);
-            }});
+            Messages.cant_be_a_virtual_crate.sendMessage(player, Map.of(
+                    "{cratetype}", crate.getCrateType().getName(),
+                    "{crate}", fancyName
+            ));
 
             removePlayerFromOpeningList(player);
 
@@ -1097,22 +1099,22 @@ public class CrateManager {
 
                 addCrateLocation(location, crate); // add new location
 
-                Messages.physical_crate_overridden.sendMessage(player, new HashMap<>() {{
-                    put("{id}", crateLocation.getID());
-                    put("{crate}", crate.getCrateName());
-                }});
+                Messages.physical_crate_overridden.sendMessage(player, Map.of(
+                        "{id}", crateLocation.getID(),
+                        "{crate}", crate.getCrateName()
+                ));
 
                 spawnItem(location, ItemType.EMERALD.createItemStack());
 
                 return;
             }
 
-            Messages.physical_crate_already_exists.sendMessage(player, new HashMap<>() {{
-                final CrateLocation crateLocation = getCrateLocation(location);
+            final CrateLocation crateLocation = getCrateLocation(location);
 
-                put("{id}", crateLocation != null ? crateLocation.getID() : "N/A");
-                put("{crate}", crateLocation != null ? crateLocation.getCrate().getCrateName() : "N/A");
-            }});
+            Messages.physical_crate_already_exists.sendMessage(player, Map.of(
+                "{id}", crateLocation != null ? crateLocation.getID() : "N/A",
+                "{crate}", crateLocation != null ? crateLocation.getCrate().getCrateName() : "N/A"
+            ));
 
             spawnItem(location, ItemType.REDSTONE.createItemStack());
 
@@ -1709,13 +1711,13 @@ public class CrateManager {
         return crate.getTier(container.get(key, PersistentDataType.STRING));
     }
 
-    private final Map<UUID, ArrayList<Integer>> slots = new HashMap<>();
+    private final Map<UUID, List<Integer>> slots = new HashMap<>();
 
     public void addSlot(@NotNull final Player player, final int rawSlot) {
         final UUID uuid = player.getUniqueId();
 
         if (this.slots.containsKey(uuid)) {
-            final ArrayList<Integer> slots = this.slots.get(uuid);
+            final List<Integer> slots = this.slots.get(uuid);
 
             slots.add(rawSlot);
 
@@ -1724,12 +1726,14 @@ public class CrateManager {
             return;
         }
 
-        this.slots.put(uuid, new ArrayList<>() {{
-            add(rawSlot);
-        }});
+        final List<Integer> slots = new ArrayList<>();
+
+        slots.add(rawSlot);
+
+        this.slots.put(uuid, slots);
     }
 
-    public final ArrayList<Integer> getSlots(@NotNull final Player player) {
+    public final List<Integer> getSlots(@NotNull final Player player) {
         return this.slots.get(player.getUniqueId());
     }
 

@@ -32,7 +32,6 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -187,10 +186,10 @@ public class QuadCrateListener implements Listener {
 
             final Crate crate = session.getCrate();
 
-            Messages.no_commands_while_in_crate.sendMessage(player, new HashMap<>() {{
-                put("{crate}", crate.getCrateName());
-                put("{player}", player.getName());
-            }});
+            Messages.no_commands_while_in_crate.sendMessage(player, Map.of(
+                    "{crate}", crate.getCrateName(),
+                    "{player}", player.getName()
+            ));
         }
     }
 
@@ -205,10 +204,10 @@ public class QuadCrateListener implements Listener {
 
             final Crate crate = session.getCrate();
 
-            Messages.no_teleporting.sendMessage(player, new HashMap<>() {{
-                put("{crate}", crate.getCrateName());
-                put("{player}", player.getName());
-            }});
+            Messages.no_teleporting.sendMessage(player, Map.of(
+                    "{crate}", crate.getCrateName(),
+                    "{player}", player.getName()
+            ));
         }
     }
 

@@ -54,9 +54,7 @@ public class NewItemMigrator extends ICrateMigrator {
                         if (prizeSection == null) continue;
 
                         if (prizeSection.isList("Items")) {
-                            final List<String> items = new ArrayList<>() {{
-                                addAll(prizeSection.getStringList("Items"));
-                            }};
+                            final List<String> items = prizeSection.getStringList("Items");
 
                             prizeSection.set("Items", null);
 
@@ -219,10 +217,12 @@ public class NewItemMigrator extends ICrateMigrator {
         final int convertedCrates = success.size();
         final int failedCrates = failed.size();
 
-        sendMessage(new ArrayList<>(failedCrates + convertedCrates) {{
-            addAll(failed);
-            addAll(success);
-        }}, convertedCrates, failedCrates);
+        final List<String> files = new ArrayList<>(failedCrates + convertedCrates);
+
+        files.addAll(failed);
+        files.addAll(success);
+
+        sendMessage(files, convertedCrates, failedCrates);
 
         this.fileManager.init(new ArrayList<>());
 

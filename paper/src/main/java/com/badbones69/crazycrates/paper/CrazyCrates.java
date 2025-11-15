@@ -77,25 +77,25 @@ public class CrazyCrates extends JavaPlugin {
         this.instance = new Server(path);
         this.instance.apply();
 
-        this.fileManager.addFile(path.resolve("locations.yml"), FileType.PAPER, new ArrayList<>() {{
-                    add(FileAction.STATIC_FILE);
-                }}, null)
-                .addFile(path.resolve("data.yml"), FileType.PAPER, new ArrayList<>() {{
-                    add(FileAction.STATIC_FILE);
-                }}, null)
-                .addFile(path.resolve("guis").resolve("respin-gui.yml"), FileType.PAPER, new ArrayList<>() {{
-                    add(FileAction.STATIC_FILE);
-                }}, null)
-                .addFolder(path.resolve("crates"), FileType.PAPER, new ArrayList<>() {{
-                    add(FileAction.EXTRACT_FOLDER);
-                }}, null)
-                .addFolder(path.resolve("schematics"), FileType.NBT, new ArrayList<>() {{
-                    add(FileAction.EXTRACT_FOLDER);
-                }}, null)
-                .addFolder(path.resolve("logs"), FileType.LOG, new ArrayList<>() {{
-                    add(FileAction.EXTRACT_FOLDER);
-                    add(FileAction.STATIC_FILE);
-                }}, null);
+        this.fileManager.refresh(false).addFile(path.resolve("locations.yml"), FileType.PAPER, List.of(
+                        FileAction.STATIC_FILE
+                ), null)
+                .addFile(path.resolve("data.yml"), FileType.PAPER, List.of(
+                        FileAction.STATIC_FILE
+                ), null)
+                .addFile(path.resolve("guis").resolve("respin-gui.yml"), FileType.PAPER, List.of(
+                        FileAction.STATIC_FILE
+                ), null)
+                .addFolder(path.resolve("logs"), FileType.LOG, List.of(
+                        FileAction.EXTRACT_FOLDER,
+                        FileAction.STATIC_FILE
+                ), null)
+                .addFolder(path.resolve("crates"), FileType.PAPER, List.of(
+                        FileAction.EXTRACT_FOLDER
+                ), null)
+                .addFolder(path.resolve("schematics"), FileType.NBT, List.of(
+                        FileAction.EXTRACT_FOLDER
+                ), null);
 
         MiscUtils.janitor();
         MiscUtils.save();

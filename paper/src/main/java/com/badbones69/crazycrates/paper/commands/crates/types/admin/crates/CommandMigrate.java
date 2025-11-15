@@ -18,7 +18,7 @@ import dev.triumphteam.cmd.core.annotations.Syntax;
 import dev.triumphteam.cmd.core.argument.keyed.Flags;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
-import java.util.HashMap;
+import java.util.Map;
 
 public class CommandMigrate extends BaseCommand {
 
@@ -32,10 +32,10 @@ public class CommandMigrate extends BaseCommand {
         final boolean hasFlag = flags.hasFlag("mt");
 
         if (!hasFlag) {
-            Messages.lacking_flag.sendMessage(sender, new HashMap<>() {{
-                put("{flag}", "-mt");
-                put("{usage}", "/crazycrates migrate -mt <migration_type>");
-            }});
+            Messages.lacking_flag.sendMessage(sender, Map.of(
+                    "{flag}", "-mt",
+                    "{usage}", "/crazycrates migrate -mt <migration_type>"
+            ));
 
             return;
         }
@@ -54,10 +54,10 @@ public class CommandMigrate extends BaseCommand {
                 final boolean hasCrateFlag = flags.hasFlag("c");
 
                 if (!hasCrateFlag) {
-                    Messages.lacking_flag.sendMessage(sender, new HashMap<>() {{
-                        put("{flag}", "-c");
-                        put("{usage}", "/crazycrates migrate -mt <migration_type> -c <crate>");
-                    }});
+                    Messages.lacking_flag.sendMessage(sender, Map.of(
+                            "{flag}", "-mt",
+                            "{usage}", "/crazycrates migrate -mt <migration_type> -c <crate>"
+                    ));
 
                     return;
                 }

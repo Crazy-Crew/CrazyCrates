@@ -118,11 +118,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
         final String crateName = keys[2];
 
-        final Map<String, String> placeholders = new HashMap<>() {{
-            put("{player_name}", playerName);
-        }};
-
-        final String parsed = MiscUtils.populatePlaceholders(null, identifier, placeholders);
+        final String parsed = MiscUtils.populatePlaceholders(null, identifier, Map.of("{player_name}", playerName));
 
         if (parsed.equalsIgnoreCase("%s_%s_opened_raw".formatted(playerName, crateName))) {
             values.add(String.valueOf(this.userManager.getCrateOpened(id, crateName)));

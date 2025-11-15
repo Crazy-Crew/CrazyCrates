@@ -16,10 +16,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public abstract class ICrateMigrator {
 
@@ -67,13 +64,13 @@ public abstract class ICrateMigrator {
     }
 
     public void sendMessage(List<String> files, final int success, final int failed) {
-        Messages.successfully_migrated.sendMessage(this.sender, new HashMap<>() {{
-            put("{files}", files.size() > 1 ? StringUtils.toString(files) : files.isEmpty() ? "N/A" : files.getFirst());
-            put("{succeeded_amount}", String.valueOf(success));
-            put("{failed_amount}", String.valueOf(failed));
-            put("{type}", type.getName());
-            put("{time}", time());
-        }});
+        Messages.successfully_migrated.sendMessage(this.sender, Map.of(
+                "{files}", files.size() > 1 ? StringUtils.toString(files) : files.isEmpty() ? "N/A" : files.getFirst(),
+                "{succeeded_amount}", String.valueOf(success),
+                "{failed_amount}", String.valueOf(failed),
+                "{type}", type.getName(),
+                "{time}", time()
+        ));
     }
 
     public void migrate(final PaperCustomFile customFile, final String crateName) {
@@ -82,11 +79,11 @@ public abstract class ICrateMigrator {
         final ConfigurationSection crate = configuration.getConfigurationSection("Crate");
 
         if (crate == null) {
-            Messages.error_migrating.sendMessage(sender, new HashMap<>() {{
-                put("{file}", crateName.isEmpty() ? customFile.getPrettyName() : crateName);
-                put("{type}", type.getName());
-                put("{reason}", "File could not be found in our data, likely invalid yml file that didn't load properly.");
-            }});
+            Messages.error_migrating.sendMessage(sender,             Map.of(
+                    "{file}", crateName.isEmpty() ? customFile.getPrettyName() : crateName,
+                    "{type}", type.getName(),
+                    "{reason}", "File could not be found in our data, likely invalid yml file that didn't load properly."
+            ));
 
             return;
         }
@@ -113,9 +110,9 @@ public abstract class ICrateMigrator {
                 }
 
                 if (prizeSection.contains("DisplayEnchantments")) {
-                    final List<String> enchants = new ArrayList<>() {{
-                        prizeSection.getStringList("DisplayEnchantments").forEach(enchant -> add(ItemUtils.getEnchant(enchant)));
-                    }};
+                    final List<String> enchants = new ArrayList<>();
+
+                    prizeSection.getStringList("DisplayEnchantments").forEach(enchant -> enchants.add(ItemUtils.getEnchant(enchant)));
 
                     set(prizeSection, "DisplayEnchantments", enchants);
                 }

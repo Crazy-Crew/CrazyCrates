@@ -14,7 +14,7 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.Nullable;
-import java.util.ArrayList;
+import java.util.List;
 
 public class CommandReload extends BaseCommand {
 
@@ -28,29 +28,29 @@ public class CommandReload extends BaseCommand {
 
         this.plugin.getInstance().reload();
 
-        this.fileManager.refresh(false).addFile(this.path.resolve("locations.yml"), FileType.PAPER, new ArrayList<>() {{
-                    add(FileAction.STATIC_FILE);
-                    add(FileAction.RELOAD_FILE);
-                }}, null)
-                .addFile(this.path.resolve("data.yml"), FileType.PAPER, new ArrayList<>() {{
-                    add(FileAction.STATIC_FILE);
-                    add(FileAction.RELOAD_FILE);
-                }}, null)
-                .addFile(this.path.resolve("guis").resolve("respin-gui.yml"), FileType.PAPER, new ArrayList<>() {{
-                    add(FileAction.STATIC_FILE);
-                    add(FileAction.RELOAD_FILE);
-                }}, null)
-                .addFolder(this.path.resolve("logs"), FileType.LOG, new ArrayList<>() {{
-                    add(FileAction.EXTRACT_FOLDER);
-                    add(FileAction.STATIC_FILE);
-                    add(FileAction.RELOAD_FILE);
-                }}, null)
-                .addFolder(this.path.resolve("crates"), FileType.PAPER, new ArrayList<>() {{
-                    add(FileAction.EXTRACT_FOLDER);
-                }}, null)
-                .addFolder(this.path.resolve("schematics"), FileType.NBT, new ArrayList<>() {{
-                    add(FileAction.EXTRACT_FOLDER);
-                }}, null);
+        this.fileManager.refresh(false).addFile(this.path.resolve("locations.yml"), FileType.PAPER, List.of(
+                    FileAction.STATIC_FILE,
+                    FileAction.RELOAD_FILE
+                ), null)
+                .addFile(this.path.resolve("data.yml"), FileType.PAPER, List.of(
+                        FileAction.STATIC_FILE,
+                        FileAction.RELOAD_FILE
+                ), null)
+                .addFile(this.path.resolve("guis").resolve("respin-gui.yml"), FileType.PAPER, List.of(
+                        FileAction.STATIC_FILE,
+                        FileAction.RELOAD_FILE
+                ), null)
+                .addFolder(this.path.resolve("logs"), FileType.LOG, List.of(
+                    FileAction.EXTRACT_FOLDER,
+                    FileAction.STATIC_FILE,
+                    FileAction.RELOAD_FILE
+                ), null)
+                .addFolder(this.path.resolve("crates"), FileType.PAPER, List.of(
+                        FileAction.EXTRACT_FOLDER
+                ), null)
+                .addFolder(this.path.resolve("schematics"), FileType.NBT, List.of(
+                        FileAction.EXTRACT_FOLDER
+                ), null);
 
         MiscUtils.save();
 

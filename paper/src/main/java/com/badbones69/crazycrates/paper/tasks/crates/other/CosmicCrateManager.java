@@ -130,9 +130,11 @@ public class CosmicCrateManager extends AbstractCrateManager {
             return;
         }
 
-        this.prizes.put(uuid, new HashMap<>() {{
-            put(slot, tier);
-        }});
+        final Map<Integer, Tier> map = new HashMap<>();
+
+        map.put(slot, tier);
+
+        this.prizes.put(uuid, map);
     }
 
     /**

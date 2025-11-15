@@ -30,11 +30,7 @@ import us.crazycrew.crazycrates.api.users.UserManager;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class BukkitUserManager extends UserManager {
 
@@ -151,12 +147,12 @@ public class BukkitUserManager extends UserManager {
                     addVirtualKeys(uuid, fileName, amount);
 
                     if (config.getProperty(ConfigKeys.notify_player_when_inventory_full)) {
-                        Messages.cannot_give_player_keys.sendMessage(player, new HashMap<>() {{
-                            put("{keytype}", keyType.getFriendlyName());
-                            put("{amount}", String.valueOf(amount));
-                            put("{player}", player.getName());
-                            put("{key}", crate.getKeyName());
-                        }});
+                        Messages.cannot_give_player_keys.sendMessage(player, Map.of(
+                                "{keytype}", keyType.getFriendlyName(),
+                                "{amount}", String.valueOf(amount),
+                                "{player}", player.getName(),
+                                "{key}", crate.getKeyName()
+                        ));
                     }
 
                     return;

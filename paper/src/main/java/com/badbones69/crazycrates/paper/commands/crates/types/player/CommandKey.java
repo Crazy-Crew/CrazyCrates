@@ -32,9 +32,11 @@ public class CommandKey {
     @Permission(value = "crazycrates.keys", def = PermissionDefault.TRUE)
     @Syntax("/keys")
     public void personal(Player player) {
-        getKeys(player, player, Messages.virtual_keys_header.getMessage(player, new HashMap<>() {{
-            put("{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(player.getUniqueId())));
-        }}), Messages.no_virtual_keys.getMessage(player));
+        getKeys(player, player, Messages.virtual_keys_header.getMessage(
+                player,
+                "{crates_opened}",
+                String.valueOf(userManager.getTotalCratesOpened(player.getUniqueId()))
+        ), Messages.no_virtual_key.getMessage(player));
     }
 
     @Command("view")
@@ -59,10 +61,10 @@ public class CommandKey {
             return;
         }
 
-        getKeys(target, sender, Messages.other_player_no_keys_header.getMessage(target, new HashMap<>() {{
-            put("{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(target.getUniqueId())));
-            put("{player}", targetName);
-        }}), Messages.other_player_no_keys.getMessage(target, "{player}", targetName));
+        getKeys(target, sender, Messages.other_player_no_keys_header.getMessage(target, Map.of(
+                "{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(target.getUniqueId())),
+                "{player}", targetName
+        )), Messages.other_player_no_keys.getMessage(target, "{player}", targetName));
     }
 
     /**
@@ -94,11 +96,11 @@ public class CommandKey {
             if (amount > 0) {
                 hasKeys = true;
 
-                message.add(Messages.per_crate.getMessage(player, new HashMap<>() {{
-                    put("{crate_opened}", String.valueOf(userManager.getCrateOpened(uuid, crate.getFileName())));
-                    put("{keys}", String.valueOf(amount));
-                    put("{crate}", crate.getCrateName());
-                }}));
+                message.add(Messages.per_crate.getMessage(player, Map.of(
+                        "{crate_opened}", String.valueOf(userManager.getCrateOpened(uuid, crate.getFileName())),
+                        "{keys}", String.valueOf(amount),
+                        "{crate}", crate.getCrateName()
+                )));
             }
         }
 

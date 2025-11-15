@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class CommandTransfer extends BaseCommand {
@@ -71,12 +71,12 @@ public class CommandTransfer extends BaseCommand {
 
         final String playerName = player.getName();
 
-        Messages.transfer_sent_keys.sendMessage(player, new HashMap<>() {{
-            put("{keytype}", KeyType.virtual_key.getFriendlyName());
-            put("{amount}", String.valueOf(amount));
-            put("{player}", playerName);
-            put("{crate}", fancyName);
-        }});
+        Messages.transfer_sent_keys.sendMessage(player, Map.of(
+            "{keytype}", KeyType.virtual_key.getFriendlyName(),
+            "{amount}", String.valueOf(amount),
+            "{player}", playerName,
+            "{crate}", fancyName
+        ));
 
         Messages.transfer_received_keys.sendMessage(target, "{player}", playerName);
 

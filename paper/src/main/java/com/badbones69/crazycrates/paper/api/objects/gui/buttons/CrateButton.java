@@ -15,7 +15,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class CrateButton extends GuiButton {
@@ -27,11 +27,11 @@ public class CrateButton extends GuiButton {
     private final Prize prize;
 
     public CrateButton(@NotNull final Crate crate, @Nullable final Prize prize, @NotNull final ConfigurationSection section) {
-        super(section, new HashMap<>() {{
-            put("%crate_pretty%", crate.getCrateName());
-            put("%crate_raw%", crate.getFileName());
-            put("%prize%", prize != null ? prize.getSectionName() : "N/A");
-        }});
+        super(section, Map.of(
+                "%crate_pretty%", crate.getCrateName(),
+                "%crate_raw%", crate.getFileName(),
+                "%prize%", prize != null ? prize.getSectionName() : "N/A"
+        ));
 
         this.crate = crate;
         this.prize = prize;
@@ -85,12 +85,9 @@ public class CrateButton extends GuiButton {
 
                         final int cap = PrizeManager.getCap(crate, player);
 
-                        Messages.crate_prize_max_respins.sendMessage(player, new HashMap<>() {{
-                            put("{status}", cap >= 1 ? Messages.crate_prize_max_respins_left.getMessage(player, new HashMap<>() {{
-                                put("{respins_total}", String.valueOf(cap));
-                                put("{respins_left}", "0");
-                            }}) : Messages.crate_prize_max_respins_none.getMessage(player));
-                        }});
+                        Messages.crate_prize_max_respins.sendMessage(player, Map.of("{status}", cap >= 1 ?
+                                Messages.crate_prize_max_respins_left.getMessage(player, Map.of("{respins_total}", String.valueOf(cap), "{respins_left}", "0")) :
+                                Messages.crate_prize_max_respins_none.getMessage(player)));
 
                         return;
                     }

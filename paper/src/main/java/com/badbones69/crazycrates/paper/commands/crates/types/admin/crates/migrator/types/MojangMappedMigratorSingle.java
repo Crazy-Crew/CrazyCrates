@@ -9,8 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MojangMappedMigratorSingle extends ICrateMigrator {
 
@@ -29,21 +29,21 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
         final PaperCustomFile customFile = this.fileManager.getPaperCustomFile(this.dataPath.resolve("crates").resolve(this.crateName));
 
         if (customFile == null) {
-            Messages.error_migrating.sendMessage(this.sender, new HashMap<>() {{
-                put("{file}", crateName);
-                put("{type}", type.getName());
-                put("{reason}", "File was not loaded properly.");
-            }});
+            Messages.error_migrating.sendMessage(this.sender, Map.of(
+                    "{file}", crateName,
+                    "{type}", type.getName(),
+                    "{reason}", "File was not loaded properly."
+            ));
 
             return;
         }
 
         if (customFile.isStatic()) {
-            Messages.error_migrating.sendMessage(this.sender, new HashMap<>() {{
-                put("{file}", crateName);
-                put("{type}", type.getName());
-                put("{reason}", "File requested is not a crate config file.");
-            }});
+            Messages.error_migrating.sendMessage(this.sender, Map.of(
+                    "{file}", crateName,
+                    "{type}", type.getName(),
+                    "{reason}", "File requested is not a crate config file."
+            ));
 
             return;
         }
@@ -66,10 +66,12 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
         final int convertedCrates = success.size();
         final int failedCrates = failed.size();
 
-        sendMessage(new ArrayList<>(failedCrates + convertedCrates) {{
-            addAll(failed);
-            addAll(success);
-        }}, convertedCrates, failedCrates);
+        final List<String> files = new ArrayList<>(failedCrates + convertedCrates);
+
+        files.addAll(failed);
+        files.addAll(success);
+
+        sendMessage(files, convertedCrates, failedCrates);
     }
 
     @Override

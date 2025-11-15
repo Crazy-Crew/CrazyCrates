@@ -29,7 +29,7 @@ import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.utils.MsgUtils;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import static java.util.regex.Matcher.quoteReplacement;
 
@@ -116,9 +116,10 @@ public class PrizeManager {
         if (prize != null) {
             givePrize(player, player.getLocation().clone().add(0, 1, 0), crate, prize);
         } else {
-            Messages.prize_error.sendMessage(player, new HashMap<>() {{
-                put("{crate}", crate.getCrateName());
-            }});
+            Messages.prize_error.sendMessage(player, Map.of(
+                    "{crate}", crate.getCrateName(),
+                    "{player}", player.getName()
+            ));
         }
     }
 
