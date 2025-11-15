@@ -159,7 +159,11 @@ public enum Messages {
     }
 
     public String getMessage(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
-        return parse(sender, placeholders).replaceAll("\\{prefix}", this.config.getProperty(ConfigKeys.command_prefix));
+        final Map<String, String> map = new HashMap<>(placeholders);
+
+        map.putIfAbsent("{prefix}", this.config.getProperty(ConfigKeys.command_prefix));
+
+        return parse(sender, map);
     }
 
     public void sendMessage(@NotNull final CommandSender sender, @NotNull final String placeholder, @NotNull final String replacement) {
