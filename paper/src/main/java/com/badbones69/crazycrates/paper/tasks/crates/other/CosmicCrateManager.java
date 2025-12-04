@@ -38,23 +38,22 @@ public class CosmicCrateManager extends AbstractCrateManager {
 
         this.totalPrizes = file.getInt(path + "Total-Prize-Amount", 4);
 
-        this.mysteryCrate = new LegacyItemBuilder()
+        this.mysteryCrate = new LegacyItemBuilder(this.plugin)
                 .withType(file.getString(path + "Mystery-Crate.Item", "chest").toLowerCase())
                 .setDisplayName(file.getString(path + "Mystery-Crate.Name", "<bold><white>???</bold>"))
                 .setHidingItemFlags(file.getBoolean(path + "Mystery-Crate.HideItemFlags", false))
                 .setDisplayLore(file.contains(path + "Mystery-Crate.Lore") ? file.getStringList(path + "Mystery-Crate.Lore") : Collections.singletonList("<gray>You may choose 4 crates."))
                 .setPersistentInteger(ItemKeys.cosmic_mystery_crate.getNamespacedKey(), 1)
                 .setCustomModelData(file.getString(path + "Mystery-Crate.Custom-Model-Data", ""))
-                .setItemModel(file.getString(path = "Mystery-Crate.Model.Namespace", ""), file.getString(path + "Mystery-Crate.Model.Id", ""));
+                .setItemModel(file.getString(path + "Mystery-Crate.Model.Namespace", ""), file.getString(path + "Mystery-Crate.Model.Id", ""));
 
-        this.pickedCrate = new LegacyItemBuilder().withType(file.getString(path + "Picked-Crate.Item", "gray_stained_glass_pane").toLowerCase())
+        this.pickedCrate = new LegacyItemBuilder(this.plugin).withType(file.getString(path + "Picked-Crate.Item", "gray_stained_glass_pane").toLowerCase())
                 .setDisplayName(file.getString(path + "Picked-Crate.Name", "<bold><white>???</white>"))
                 .setHidingItemFlags(file.getBoolean(path + "Picked-Crate.HideItemFlags", false))
                 .setDisplayLore(file.contains(path + "Picked-Crate.Lore") ? file.getStringList(path + "Picked-Crate.Lore") : Collections.singletonList("<gray>You have chosen #%slot%."))
                 .setPersistentInteger(ItemKeys.cosmic_picked_crate.getNamespacedKey(), 1)
                 .setCustomModelData(file.getString(path + "Picked-Crate.Custom-Model-Data", ""))
                 .setItemModel(file.getString(path + "Picked-Crate.Model.Namespace", ""), file.getString(path + "Picked-Crate.Model.Id", ""));
-
     }
 
     /**
@@ -131,9 +130,11 @@ public class CosmicCrateManager extends AbstractCrateManager {
             return;
         }
 
-        this.prizes.put(uuid, new HashMap<>() {{
-            put(slot, tier);
-        }});
+        final Map<Integer, Tier> map = new HashMap<>();
+
+        map.put(slot, tier);
+
+        this.prizes.put(uuid, map);
     }
 
     /**

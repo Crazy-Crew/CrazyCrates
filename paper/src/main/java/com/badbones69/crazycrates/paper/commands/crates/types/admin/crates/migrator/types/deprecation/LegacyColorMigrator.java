@@ -4,8 +4,10 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
-import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.api.interfaces.files.ICustomFile;
+import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -49,7 +51,7 @@ public class LegacyColorMigrator extends ICrateMigrator {
         }
 
         try {
-            for (Messages message : Messages.values()) {
+            for (final Messages message : Messages.values()) {
                 message.migrate();
             }
 
@@ -61,15 +63,15 @@ public class LegacyColorMigrator extends ICrateMigrator {
             failed.add("<red>⤷ messages.yml");
         }
 
-        final Collection<LegacyCustomFile> customFiles = this.plugin.getFileManager().getFiles().values();
+        final Collection<ICustomFile<? extends ICustomFile<?>>> customFiles = this.fileManager.getCustomFiles().values();
 
-        customFiles.forEach(customFile -> {
+        customFiles.forEach(key -> {
             try {
-                if (!customFile.isDynamic()) return;
+                if (key.isStatic() || !key.isLoaded() || key.getFileType() != FileType.PAPER) return;
+
+                final PaperCustomFile customFile = (PaperCustomFile) key;
 
                 final YamlConfiguration configuration = customFile.getConfiguration();
-
-                if (configuration == null) return;
 
                 final ConfigurationSection section = configuration.getConfigurationSection("Crate");
 
@@ -134,7 +136,7 @@ public class LegacyColorMigrator extends ICrateMigrator {
                 final ConfigurationSection tiers = section.getConfigurationSection("Tiers");
 
                 if (tiers != null) {
-                    for (String value : tiers.getKeys(false)) {
+                    for (final String value : tiers.getKeys(false)) {
                         final ConfigurationSection tierSection = tiers.getConfigurationSection(value);
 
                         if (tierSection == null) continue;
@@ -156,7 +158,7 @@ public class LegacyColorMigrator extends ICrateMigrator {
                 final ConfigurationSection prizes = section.getConfigurationSection("Prizes");
 
                 if (prizes != null) {
-                    for (String value : prizes.getKeys(false)) {
+                    for (final String value : prizes.getKeys(false)) {
                         final ConfigurationSection prizeSection = prizes.getConfigurationSection(value);
 
                         if (prizeSection == null) continue;
@@ -208,21 +210,23 @@ public class LegacyColorMigrator extends ICrateMigrator {
                     customFile.save();
                 }
 
-                success.add("<green>⤷ " + customFile.getEffectiveName());
-            } catch (Exception exception) {
-                failed.add("<red>⤷ " + customFile.getEffectiveName());
+                success.add("<green>⤷ " + customFile.getFileName());
+            } catch (final Exception exception) {
+                failed.add("<red>⤷ " + key.getFileName());
             }
         });
 
         final int convertedCrates = success.size();
         final int failedCrates = failed.size();
 
-        sendMessage(new ArrayList<>(failedCrates + convertedCrates) {{
-            addAll(failed);
-            addAll(success);
-        }}, convertedCrates, failedCrates);
+        final List<String> files = new ArrayList<>(failedCrates + convertedCrates);
 
-        this.fileManager.init();
+        files.addAll(failed);
+        files.addAll(success);
+
+        sendMessage(files, convertedCrates, failedCrates);
+
+        this.fileManager.init(new ArrayList<>());
 
         // reload crates
         this.crateManager.loadHolograms();

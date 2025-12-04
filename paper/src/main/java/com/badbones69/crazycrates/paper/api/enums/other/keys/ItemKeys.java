@@ -17,7 +17,8 @@ public enum ItemKeys {
     next_button("next_button", PersistentDataType.STRING),
     crate_prize("crate_prize", PersistentDataType.STRING),
     crate_tier("crate_tier", PersistentDataType.STRING),
-    crate_key("crate_key", PersistentDataType.STRING);
+    crate_key("crate_key", PersistentDataType.STRING),
+    crate_command("crate_command", PersistentDataType.STRING);
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 

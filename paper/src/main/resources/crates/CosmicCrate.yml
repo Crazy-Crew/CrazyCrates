@@ -4,23 +4,23 @@ Crate:
   # Make sure to check out the wiki for anything not explained here.
   # https://docs.crazycrew.us/docs/category/crazycrates
 
-  # See CosmicCrate.yml to see how the Cosmic CrateType works.
-  CrateType: Casino
+  # See CasinoCrate.yml to see how the Cosmic/Casino CrateType works.
+  CrateType: Cosmic
   # Starting amount of keys when the player 1st joins.
   StartingKeys: 0
   # The amount of keys required to use the crate.
-  RequiredKeys: 20
+  RequiredKeys: 4
   # Max amount of crates that can be opened at once using /crates mass-open
   Max-Mass-Open: 10
-  # If the crate shows in /crates.
+  # If the crate shows in the /crates.
   # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
   InGUI: true
   # Slot the item is in the GUI.
-  Slot: 15
+  Slot: 29
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
-  BroadCast: "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><dark_blue>Casino Crate.</bold>"
+  BroadCast: "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><gradient:#E43A96:#FF91EA>Cosmic Crate.</gradient></bold>"
   # This section is related to commands opening when a crate is opened.
   opening-command:
     # If the commands should be sent or not.
@@ -73,11 +73,6 @@ Crate:
   Prize-Commands: []
   # Global Settings
   Settings:
-    # Handles settings related to the border
-    Border:
-      # Settings related to the glass border
-      Glass-Border:
-        Toggle: true # Should the glass border be enabled?
     # Broadcast a message to the server
     Broadcast:
       # If the messages should be sent.
@@ -88,7 +83,7 @@ Crate:
       # If the player has this permission, they don't get the broadcast.
       Permission: ""
   # Item the crate is in the GUI
-  Item: "gold_ingot"
+  Item: "ender_chest"
   # The custom model data of the item, -1 is disabled.
   Custom-Model-Data: -1
   # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
@@ -101,7 +96,7 @@ Crate:
   # If the crate in the main /crates is glowing or not.
   Glowing: false
   # Name of the item in the GUI.
-  Name: "<bold><dark_blue>Casino Crate</bold>"
+  Name: "<bold><gradient:#E43A96:#FF91EA>Cosmic Crate</gradient></bold>"
   # The lore of the item in the GUI.
   Lore:
     - "<gray>This crate contains strange objects."
@@ -110,11 +105,12 @@ Crate:
     - "<gray>(<yellow>!<gray>) Right click to view rewards."
   Preview:
     # The name of the inventory for the preview menu.
-    Name: "<dark_blue>Casino Crate Preview"
+    Name: "<gradient:#E43A96:#FF91EA>Cosmic Crate Preview</gradient>"
     # Turn on and off the preview for this crate.
     Toggle: true
-    # How many lines should the preview be? You can use 1-6.
-    ChestLines: 6
+    # How many rows should the preview be? You can use 1-6.
+    Rows: 6
+    # Settings related to the glass in the preview.
     Glass:
       # Turn the glass border in the preview on and off.
       Toggle: true
@@ -136,7 +132,6 @@ Crate:
     toggle: true
     # How many lines the Tier Preview should have. Including Header and Bottom (Between 3 and 6)
     rows: 5
-    # The glass border
     glass:
       # Turn the glass border in the preview on and off.
       toggle: true
@@ -144,13 +139,6 @@ Crate:
       name: " "
       # The custom model data of the item, -1 is disabled.
       custom-model-data: -1
-      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
-      # Set this to blank for it to do nothing.
-      model:
-        # The namespace i.e. nexo
-        namespace: ""
-        # The id i.e. emerald_helmet
-        id: ""
       # The item that shows in the border. Can be glass or any other item.
       item: "red_stained_glass_pane"
   # Tier related settings only for Casino.
@@ -237,7 +225,7 @@ Crate:
       Slot: 24
   PhysicalKey:
     # Name of the Key.
-    Name: "<bold><dark_blue>Casino Crate Key</bold>"
+    Name: "<bold><gradient:#E43A96:#FF91EA>Cosmic Crate Key</gradient></bold>"
     # The custom model data of the item, -1 is disabled.
     Custom-Model-Data: -1
     # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
@@ -249,10 +237,9 @@ Crate:
       Id: ""
     # Lore of the Key.
     Lore:
-      - "<gray>A special Key"
-      - "<gray>For a special Crate."
+      - "<gradient:#E43A96:#FF91EA>A fancy key to open a cosmical crate!</gradient>"
     # The item the key is.
-    Item: "cyan_dye"
+    Item: "purple_dye"
     # Makes the key look enchanted.
     Glowing: true
   # Settings for the holograms.
@@ -271,7 +258,47 @@ Crate:
     # The message that will be displayed above the crate.
     # Note: MiniMessage or Color Codes being supported is depending on the 'holograms' plugin.
     Message:
-      - "<bold><dark_blue>Casino Crate</bold>"
+      - "<bold><light_purple>Cosmic Crate</bold>"
+  # The crate type specific settings.
+  Crate-Type-Settings:
+    # The total amount of prizes to pick.
+    Total-Prize-Amount: 4
+    # The mystery crate customization.
+    Mystery-Crate:
+      # The item of the mystery crate.
+      Item: "chest"
+      # The custom model data of the item, -1 is disabled.
+      Custom-Model-Data: -1
+      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+      # Set this to blank for it to do nothing.
+      Model:
+        # The namespace i.e. nexo
+        Namespace: ""
+        # The id i.e. emerald_helmet
+        Id: ""
+      # The name of the mystery crate.
+      Name: "<bold><white>???</bold>"
+      # The lore of the mystery crate.
+      Lore:
+        - "<gray>You may choose 4 crates."
+    # The picked crate customization.
+    Picked-Crate:
+      # The item of the picked crate.
+      Item: "glass_pane"
+      # The custom model data of the item, -1 is disabled.
+      Custom-Model-Data: -1
+      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+      # Set this to blank for it to do nothing.
+      Model:
+        # The namespace i.e. nexo
+        Namespace: ""
+        # The id i.e. emerald_helmet
+        Id: ""
+      # The name of the picked crate.
+      Name: "<bold><white>???</bold>"
+      # The lore of the picked crate.
+      Lore:
+        - "<gray>You have chosen #%slot%."
   # All the prizes that can be obtained in the Crate.
   Prizes:
     "1":
@@ -307,10 +334,8 @@ Crate:
       Items:
         - "Item:player_head, Player:1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Name:<gold>BadBones69"
     "2":
-      # The name of the item to display in the gui.
-      DisplayName: "<bold><dark_red>Warlord's Set</bold>"
-      # The item to display in the gui.
-      DisplayItem: "netherite_helmet"
+      DisplayName: "<bold><blue>Cheap Helmet</bold>"
+      DisplayItem: "golden_helmet"
       # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
@@ -322,63 +347,40 @@ Crate:
           Namespace: ""
           # The id i.e. emerald_helmet
           Id: ""
-      # The enchants on the item.
       DisplayEnchantments:
-        - "protection:5"
-        - "unbreaking:3"
+        - "protection:1"
+        - "aqua_affinity:1"
+      # Only works on items with durability. This will make the item appear more damaged.
+      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 5.
+      # It cannot be 0.
+      DisplayDamage: 5
       # https://docs.crazycrew.us/docs/plugins/crazycrates/guides/prizes/items/armor-trim
       DisplayTrim:
         # The list of materials to use can be found on the link above
-        Material: "redstone"
+        Material: "diamond"
         # The list of patterns to use can be found on the link above
         Pattern: "sentry"
       # The amount to display in the gui.
       DisplayAmount: 1
+      # The lower the number, the less likely to win it.
+      Weight: 60.0
       # The lore of the item.
       DisplayLore:
-        - "<gray>Win the warlord's set."
-        - "<bold><gold>Chance: <red>40%</bold>"
-      # The lower the number, the less likely to win it.
-      Weight: 40.0
-      # Tiers are available in Cosmic and Casino crate types.
-      # The Tiers the rewards can be found in.
+        - "<gray>Win a cheap helmet."
+        - "<bold><gold>Chance: <red>%chance%</bold>"
+      # The tiers the prize can be won from.
       Tiers:
+        - "Basic"
         - "UnCommon"
-      # A list of commands to run when they roll this prize.
-      Commands:
-        # This adds the blacklist permission to the player when they win the prize,
-        # After this, they will no longer be able to use this prize.
-        - "lp user %player% permission set crazycrates.blacklist.warlord"
-      # The list of items to give.
+        - "Rare"
+      # The items to win.
       Items:
-        - "Item:netherite_helmet, Amount:1, Damage:25, Trim-Pattern:sentry, Trim-Material:redstone, Name:<bold><dark_red>Warlord's Helmet</bold>, protection:5, unbreaking:3"
-        - "Item:netherite_chestplate, Amount:1, Damage:25, Trim-Pattern:sentry, Trim-Material:redstone, Name:<bold><dark_red>Warlord's Chestplate</bold>, protection:5, unbreaking:3"
-        - "Item:netherite_leggings, Amount:1, Damage:25, Trim-Pattern:sentry, Trim-Material:redstone, Name:<bold><dark_red>Warlord's Leggings</bold>, protection:5, unbreaking:3"
-        - "Item:netherite_boots, Amount:1, Damage:25, Trim-Pattern:sentry, Trim-Material:redstone, Name:<bold><dark_red>Warlord's Boots</bold>, protection:5, unbreaking:3"
-      # A list of permissions, If a player has any of these permissions. they cannot win this prize again!
-      BlackListed-Permissions:
-        - "crazycrates.blacklist.warlord"
-      # The alternative prize.
-      Alternative-Prize:
-        # if it should be enabled.
-        Toggle: true
-        # The message to send.
-        Messages:
-          - "<reset> <dark_gray>[<blue>CrazyCrates<dark_gray>]: <gray>You have already won that prize, so enjoy some gold nuggets."
-        # A list of commands to run.
-        Commands:
-          - "give %player% gold_nugget 16"
-        # Alternatively, instead of commands. You can have an Items section which functions the same as the Items section above.
-        Items:
-          - "Item:gold_nugget, Amount:16"
+        - "Item:golden_helmet, Amount:1, Damage:5, Trim-Pattern:sentry, Trim-Material:diamond, Name:<bold><blue>Cheap Helmet</bold>, protection:1, aqua_affinity:1"
     "3":
-      # The enchants to be stored on the book.
-      DisplayEnchantments:
-        - "protection:5"
-        - "unbreaking:3"
+      # The name of the item to display in the gui.
+      DisplayName: "<bold><yellow>$1,000</bold>"
       # The item to display in the gui.
-      # The enchanted book will function with the enchants properly in an anvil.
-      DisplayItem: "enchanted_book"
+      DisplayItem: "sunflower"
       # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
@@ -391,24 +393,28 @@ Crate:
           # The id i.e. emerald_helmet
           Id: ""
       # The amount to display in the gui.
-      DisplayAmount: 3
+      DisplayAmount: 1
+      # The lower the number, the less likely to win it.
+      Weight: 20.0
       # The lore of the item.
       DisplayLore:
-        - "<gradient:#8fcfa0:#32a852>A gradient lore!"
-      # The lower the number, the less likely to win it.
-      Weight: 25.0
-      # Tiers are available in Cosmic and Casino crate types.
-      # The Tiers the rewards can be found in.
+        - "<gray>Make it rain Money."
+        - "<bold><gold>Chance: <red>%chance%</bold>"
+      # If the prize should spawn fireworks.
+      Firework: true
+      # The tiers the prize can be won from.
       Tiers:
+        - "Basic"
+        - "UnCommon"
         - "Rare"
-      # The list of items to win.
-      Items:
-        - "Item:enchanted_book, protection:5, unbreaking:3"
+      # The commands to run.
+      Commands:
+        - "eco give %player% 1000"
     "4":
       # The name of the item to display in the gui.
-      DisplayName: "<bold><green>Fancy Pants</bold>"
+      DisplayName: "<bold><blue>Crazy <dark_red>Sword</bold>"
       # The item to display in the gui.
-      DisplayItem: "chainmail_leggings"
+      DisplayItem: "golden_sword"
       # Prize display preview settings
       Settings:
         # The custom model data of the item, -1 is disabled.
@@ -422,77 +428,90 @@ Crate:
           Id: ""
       # The enchants on the item.
       DisplayEnchantments:
-        - "protection:2"
-      # Only works on items with durability. This will make the item appear more damaged.
-      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 75.
-      # It cannot be 0.
-      DisplayDamage: 75
-      # https://docs.crazycrew.us/docs/plugins/crazycrates/guides/prizes/items/armor-trim
-      DisplayTrim:
-        # The list of materials to use can be found on the link above
-        Material: "lapis"
-        # The list of patterns to use can be found on the link above
-        Pattern: "sentry"
-      # The amount to display in the gui.
-      DisplayAmount: 1
-      # The lower the number, the less likely to win it.
-      Weight: 40.0
-      # Tiers are available in Cosmic and Casino crate types.
-      # The Tiers the rewards can be found in.
-      Tiers:
-        - "Basic"
-        - "UnCommon"
-      # The lore of the item.
-      DisplayLore:
-        - "<gray>Win a fancy pair of pants."
-        - "<bold><gold>Chance: <red>%chance%</bold>"
-      # The items to win.
-      Items:
-        - "Item:chainmail_leggings, Amount:1, Damage:75, Trim-Pattern:sentry, Trim-Material:lapis, Name:<bold><green>Fancy Pants</bold>, protection:2"
-      # The messages to send.
-      Messages:
-        - "<gray>You just won a <reset>%reward%."
-    "5":
-      # The name of the item to display in the gui.
-      DisplayName: "<bold><blue>Classic Sword</bold>"
-      # The item to display in the gui.
-      DisplayItem: "diamond_sword"
-      # Prize display preview settings
-      Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
-        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
-        # Set this to blank for it to do nothing.
-        Model:
-          # The namespace i.e. nexo
-          Namespace: ""
-          # The id i.e. emerald_helmet
-          Id: ""
-      # The enchants on the item.
-      DisplayEnchantments:
-        - "sharpness:2"
+        - "sharpness:5"
         - "fire_aspect:1"
       # Only works on items with durability. This will make the item appear more damaged.
-      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 7.
-      # It cannot be 0.
-      DisplayDamage: 7
+      # It does not set the durability but subtracts this number from the durability is 100, It subtracts 12.
+      DisplayDamage: 12
       # The amount to display in the gui.
       DisplayAmount: 1
+      # The lower the number, the less likely to win it.
+      Weight: 10.0
       # The lore of the item.
       DisplayLore:
-        - "<gray>Win a old classic sword."
-        - "<bold><gold>Chance: <red>3.5%</bold>"
-      # The lower the number, the less likely to win it.
-      Weight: 35.0
-      # Tiers are available in Cosmic and Casino crate types.
-      # The Tiers the rewards can be found in.
+        - "<gray>Win a crazy cool sword."
+        - "<bold><gold>Chance: <red>%chance%</bold>"
+      # The tiers the prize can be won from.
       Tiers:
-        - "Basic"
-        - "UnCommon"
         - "Rare"
       # The items to win.
       Items:
-        - "Item:diamond_sword, Amount:1, Damage:7, Name:<bold><blue>Classic Sword</bold>, sharpness:2, fire_aspect:1"
-      # The messages to send.
-      Messages:
-        - "<gray>You just won <reset>%reward%."
+        - "Item:golden_sword, Amount:1, Damage:12, Name:<bold><blue>Crazy <dark_red>Sword</bold>, sharpness:5, fire_aspect:1"
+    "5":
+      # The name of the item to display in the gui.
+      DisplayName: "<bold><yellow>$1,000,000</bold>"
+      # The item to display in the gui.
+      DisplayItem: "sunflower"
+      # Prize display preview settings
+      Settings:
+        # The custom model data of the item, -1 is disabled.
+        Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        Model:
+          # The namespace i.e. nexo
+          Namespace: ""
+          # The id i.e. emerald_helmet
+          Id: ""
+      # The amount to display in the gui.
+      DisplayAmount: 1
+      # The lower the number, the less likely to win it.
+      Weight: 20.0
+      # The lore of the item.
+      DisplayLore:
+        - "<gray>Make it rain a butt load of Money."
+        - "<bold><gold>Chance: <red>%chance%</bold>"
+      # If the prize should spawn fireworks.
+      Firework: true
+      # The tiers the prize can be won from.
+      Tiers:
+        - "Rare"
+      # The commands to run.
+      Commands:
+        - "eco give %player% 1000000"
+    "6":
+      # The name of the item to display in the gui.
+      DisplayName: "<bold><blue>Crazy Crate <gold>Key <gray>(x2)</bold>"
+      # The item to display in the gui.
+      DisplayItem: "lime_dye"
+      # Prize display preview settings
+      Settings:
+        # The custom model data of the item, -1 is disabled.
+        Custom-Model-Data: -1
+        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+        # Set this to blank for it to do nothing.
+        Model:
+          # The namespace i.e. nexo
+          Namespace: ""
+          # The id i.e. emerald_helmet
+          Id: ""
+      # The amount to display in the gui.
+      DisplayAmount: 2
+      # The lower the number, the less likely to win it.
+      Weight: 10.0
+      # The lore of the item.
+      DisplayLore:
+        - "<gray>A special Key"
+        - "<gray>For a special Crate."
+        - "<bold><gold>Chance: <red>%chance%</bold>"
+      # If the prize should spawn fireworks.
+      Firework: true
+      # If the display item should glow.
+      Glowing: true
+      # The tiers the prize can be won from.
+      Tiers:
+        - "UnCommon"
+        - "Rare"
+      # The commands to run.
+      Commands:
+        - "crates give physical CrateExample 2 %player%"

@@ -11,31 +11,33 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
+import com.ryderbelserion.fusion.core.api.utils.StringUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
+import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionAttachmentInfo;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.utils.MsgUtils;
 import org.jetbrains.annotations.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import static java.util.regex.Matcher.quoteReplacement;
 
 public class PrizeManager {
     
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final Server server = plugin.getServer();
+    private static final PluginManager pluginManager = server.getPluginManager();
     private static final ComponentLogger logger = plugin.getComponentLogger();
     private static final BukkitUserManager userManager = plugin.getUserManager();
 
@@ -43,13 +45,15 @@ public class PrizeManager {
 
     public static int getCap(@NotNull final Crate crate, @NotNull final Player player) {
         final String format = "crazycrates.respin." + crate.getFileName() + ".";
+        final String lowerCase = format.toLowerCase();
+
         int cap = 0;
 
         for (final PermissionAttachmentInfo permission : player.getEffectivePermissions()) {
             String node = permission.getPermission();
 
-            if (node.startsWith(format.toLowerCase())) {
-                node = node.replace(format.toLowerCase(), "");
+            if (node.startsWith(lowerCase)) {
+                node = node.replace(lowerCase, "");
 
                 int number = Integer.parseInt(node);
 
@@ -112,9 +116,10 @@ public class PrizeManager {
         if (prize != null) {
             givePrize(player, player.getLocation().clone().add(0, 1, 0), crate, prize);
         } else {
-            Messages.prize_error.sendMessage(player, new HashMap<>() {{
-                put("{crate}", crate.getCrateName());
-            }});
+            Messages.prize_error.sendMessage(player, Map.of(
+                    "{crate}", crate.getCrateName(),
+                    "{player}", player.getName()
+            ));
         }
     }
 
@@ -133,7 +138,7 @@ public class PrizeManager {
             return;
         }
 
-        plugin.getServer().getPluginManager().callEvent(new PlayerPrizeEvent(player, crate, prize));
+        pluginManager.callEvent(new PlayerPrizeEvent(player, crate, prize));
 
         if (prize.useFireworks()) {
             MiscUtils.spawnFirework(location, null);
@@ -154,62 +159,12 @@ public class PrizeManager {
             }
         }
 
-        for (final ItemStack itemStack : prize.getEditorItems()) {
-            if (!MiscUtils.isInventoryFull(player)) {
-                MiscUtils.addItem(player, itemStack);
-            } else {
-                player.getWorld().dropItemNaturally(player.getLocation(), itemStack.clone());
-            }
-        }
+        MiscUtils.dropItems(prize.getEditorItems(), player); // drops any leftover editor items.
 
         if (config.getProperty(ConfigKeys.use_different_items_layout)) {
-            final List<ItemBuilder> builders = prize.getItems();
-
-            if (!builders.isEmpty()) {
-                for (final ItemBuilder builder : builders) {
-                    final ItemStack itemStack = builder.asItemStack(player);
-
-                    if (!MiscUtils.isInventoryFull(player)) {
-                        MiscUtils.addItem(player, itemStack);
-                    } else {
-                        player.getWorld().dropItemNaturally(player.getLocation(), itemStack.clone());
-                    }
-                }
-            }
+            MiscUtils.dropBuilders(prize.getItems(), player);
         } else {
-            final boolean isPlaceholderAPIEnabled = Plugins.placeholder_api.isEnabled();
-
-            final List<LegacyItemBuilder> legacy = prize.getItemBuilders();
-
-            if (!legacy.isEmpty()) { // run this just in case people got leftover shit
-                for (final LegacyItemBuilder item : legacy) {
-                    if (isPlaceholderAPIEnabled) {
-                        final String displayName = item.getDisplayName();
-
-                        if (!displayName.isEmpty()) {
-                            item.setDisplayName(PlaceholderAPI.setPlaceholders(player, displayName));
-                        }
-
-                        final List<String> displayLore = item.getDisplayLore();
-
-                        if (!displayLore.isEmpty()) {
-                            List<String> lore = new ArrayList<>();
-
-                            displayLore.forEach(line -> lore.add(PlaceholderAPI.setPlaceholders(player, line)));
-
-                            item.setDisplayLore(lore);
-                        }
-                    }
-
-                    final ItemStack itemStack = item.setPlayer(player).asItemStack();
-
-                    if (!MiscUtils.isInventoryFull(player)) {
-                        MiscUtils.addItem(player, itemStack);
-                    } else {
-                        player.getWorld().dropItemNaturally(player.getLocation(), itemStack.clone());
-                    }
-                }
-            }
+            MiscUtils.dropLegacyBuilders(prize.getItemBuilders(), player);
         }
 
         for (final String command : crate.getPrizeCommands()) {
@@ -222,15 +177,18 @@ public class PrizeManager {
 
         prize.broadcast(player, crate);
 
-        if (!crate.getPrizeMessage().isEmpty() && prize.getMessages().isEmpty()) {
-            for (final String message : crate.getPrizeMessage()) {
+        final List<String> cratePrizeMessages = crate.getPrizeMessage();
+        final List<String> prizeMessages = prize.getMessages();
+
+        if (!cratePrizeMessages.isEmpty() && prizeMessages.isEmpty()) {
+            for (final String message : cratePrizeMessages) {
                 sendMessage(player, prize, crate, message);
             }
 
             return;
         }
 
-        for (final String message : prize.getMessages()) {
+        for (final String message : prizeMessages) {
             sendMessage(player, prize, crate, message);
         }
     }
@@ -250,7 +208,7 @@ public class PrizeManager {
                         long max = Long.parseLong(word.split("-")[1]);
 
                         commandBuilder.append(MiscUtils.pickNumber(min, max)).append(" ");
-                    } catch (Exception e) {
+                    } catch (final Exception exception) {
                         commandBuilder.append("1 ");
 
                         if (MiscUtils.isLogging()) {
@@ -296,7 +254,9 @@ public class PrizeManager {
                 .replaceAll("%reward_stripped%", quoteReplacement(prize.getStrippedName()))
                 .replaceAll("%crate%", quoteReplacement(crate.getCrateName()))
                 .replaceAll("%maxpulls%", maxPulls)
-                .replaceAll("%pulls%", pulls);
+                .replaceAll("%pulls%", pulls)
+                .replaceAll("%chance%", StringUtils.format(crate.getChance(prize.getWeight())))
+                .replaceAll("%weight%", String.valueOf(prize.getWeight()));
 
         MsgUtils.sendMessage(player, Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
     }
@@ -321,13 +281,13 @@ public class PrizeManager {
     }
 
     public static @Nullable Tier getTier(@NotNull final Crate crate) {
-        if (crate.getTiers().isEmpty()) return null;
+        final List<Tier> tiers = crate.getTiers();
+
+        if (tiers.isEmpty()) return null;
 
         final Random random = MiscUtils.getRandom();
 
         double weight = 0.0;
-
-        final List<Tier> tiers = crate.getTiers();
 
         for (final Tier tier : tiers) {
             weight += tier.getWeight();
@@ -338,7 +298,7 @@ public class PrizeManager {
         for (double value = random.nextDouble() * weight; index < tiers.size() - 1; index++) {
             value -= tiers.get(index).getWeight();
 
-            if (value < 0.0) break;
+            if (value <= 0.0) break;
         }
 
         return tiers.get(index);

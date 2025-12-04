@@ -4,8 +4,8 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.properties.Property;
 import com.badbones69.crazycrates.core.enums.State;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
-import com.ryderbelserion.fusion.adventure.utils.StringUtils;
+import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.core.api.utils.StringUtils;
 import org.bukkit.command.CommandSender;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.messages.CommandKeys;
@@ -151,15 +151,19 @@ public enum Messages {
     }
 
     public String getMessage(@NotNull final CommandSender sender, @NotNull final String placeholder, @NotNull final String replacement) {
-        Map<String, String> placeholders = new HashMap<>() {{
-            put(placeholder, replacement);
-        }};
+        final Map<String, String> placeholders = new HashMap<>();
+
+        placeholders.put(placeholder, replacement);
 
         return getMessage(sender, placeholders);
     }
 
     public String getMessage(@NotNull final CommandSender sender, @NotNull final Map<String, String> placeholders) {
-        return parse(sender, placeholders).replaceAll("\\{prefix}", this.config.getProperty(ConfigKeys.command_prefix));
+        final Map<String, String> map = new HashMap<>(placeholders);
+
+        map.putIfAbsent("{prefix}", this.config.getProperty(ConfigKeys.command_prefix));
+
+        return parse(sender, map);
     }
 
     public void sendMessage(@NotNull final CommandSender sender, @NotNull final String placeholder, @NotNull final String replacement) {

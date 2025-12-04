@@ -4,8 +4,10 @@ import com.badbones69.crazycrates.core.enums.Comments;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.core.utils.NumberUtils;
-import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.api.interfaces.files.ICustomFile;
+import com.ryderbelserion.fusion.core.api.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.command.CommandSender;
@@ -24,18 +26,18 @@ public class NewItemMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Collection<LegacyCustomFile> customFiles = this.plugin.getFileManager().getFiles().values();
+        final Collection<ICustomFile<? extends ICustomFile<?>>> customFiles = this.fileManager.getCustomFiles().values();
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
 
-        customFiles.forEach(customFile -> {
+        customFiles.forEach(key -> {
             try {
-                if (!customFile.isDynamic()) return;
+                if (key.isStatic() || !key.isLoaded() || key.getFileType() != FileType.PAPER) return;
+
+                final PaperCustomFile customFile = (PaperCustomFile) key;
 
                 final YamlConfiguration configuration = customFile.getConfiguration();
-
-                if (configuration == null) return;
 
                 final ConfigurationSection section = configuration.getConfigurationSection("Crate");
 
@@ -46,15 +48,13 @@ public class NewItemMigrator extends ICrateMigrator {
                 final ConfigurationSection prizes = section.getConfigurationSection("Prizes");
 
                 if (prizes != null) {
-                    for (String value : prizes.getKeys(false)) {
+                    for (final String value : prizes.getKeys(false)) {
                         final ConfigurationSection prizeSection = prizes.getConfigurationSection(value);
 
                         if (prizeSection == null) continue;
 
                         if (prizeSection.isList("Items")) {
-                            final List<String> items = new ArrayList<>() {{
-                                addAll(prizeSection.getStringList("Items"));
-                            }};
+                            final List<String> items = prizeSection.getStringList("Items");
 
                             prizeSection.set("Items", null);
 
@@ -63,9 +63,9 @@ public class NewItemMigrator extends ICrateMigrator {
                                 final Map<String, Integer> enchantments = new HashMap<>();
                                 final String uuid = MiscUtils.randomUUID();
 
-                                for (final String key : item.split(", ")) {
-                                    final String option = key.split(":")[0];
-                                    final String type = key.replace(option + ":", "").replace(option, "");
+                                for (final String split : item.split(", ")) {
+                                    final String option = split.split(":")[0];
+                                    final String type = split.replace(option + ":", "").replace(option, "");
 
                                     switch (option.toLowerCase()) {
                                         case "item" -> {
@@ -156,10 +156,10 @@ public class NewItemMigrator extends ICrateMigrator {
 
                                                     prizeSection.set("Items." + uuid + ".settings.potions", Comments.potions.getComments());
                                                 }
-                                            } catch (Exception ignored) {}
+                                            } catch (final Exception ignored) {}
 
                                             if (ItemUtils.getEnchantment(placeholder) != null) {
-                                                enchantments.put(option.toLowerCase(), NumberUtils.tryParseInt(value).map(Number::intValue).orElse(1));
+                                                enchantments.put(option.toLowerCase(), StringUtils.tryParseInt(value).map(Number::intValue).orElse(1));
 
                                                 final ConfigurationSection enchantmentSection = prizeSection.createSection("Items." + uuid + ".enchantments");
 
@@ -193,7 +193,7 @@ public class NewItemMigrator extends ICrateMigrator {
 
                                                     patterns.forEach(patternsSection::set);
                                                 }
-                                            } catch (Exception ignored) {}
+                                            } catch (final Exception ignored) {}
                                         }
                                     }
                                 }
@@ -208,21 +208,23 @@ public class NewItemMigrator extends ICrateMigrator {
                     customFile.save();
                 }
 
-                success.add("<green>⤷ " + customFile.getEffectiveName());
-            } catch (Exception exception) {
-                failed.add("<red>⤷ " + customFile.getEffectiveName());
+                success.add("<green>⤷ " + customFile.getFileName());
+            } catch (final Exception exception) {
+                failed.add("<red>⤷ " + key.getFileName());
             }
         });
 
         final int convertedCrates = success.size();
         final int failedCrates = failed.size();
 
-        sendMessage(new ArrayList<>(failedCrates + convertedCrates) {{
-            addAll(failed);
-            addAll(success);
-        }}, convertedCrates, failedCrates);
+        final List<String> files = new ArrayList<>(failedCrates + convertedCrates);
 
-        this.fileManager.init();
+        files.addAll(failed);
+        files.addAll(success);
+
+        sendMessage(files, convertedCrates, failedCrates);
+
+        this.fileManager.init(new ArrayList<>());
 
         // reload crates
         this.crateManager.loadHolograms();

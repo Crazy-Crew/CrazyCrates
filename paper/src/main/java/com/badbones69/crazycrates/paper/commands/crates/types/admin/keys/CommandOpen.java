@@ -14,6 +14,7 @@ import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
+import dev.triumphteam.cmd.core.annotations.Syntax;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.command.CommandSender;
@@ -24,11 +25,10 @@ import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.logging.Logger;
 
 public class CommandOpen extends BaseCommand {
 
@@ -57,11 +57,12 @@ public class CommandOpen extends BaseCommand {
 
     @Command("open")
     @Permission(value = "crazycrates.open", def = PermissionDefault.OP)
+    @Syntax("/crazycrates open <crate_name> <key_type>")
     public void open(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("key_type") @Suggestion("keys") String type) {
         if (isCancelled(player, crateName)) return;
 
         // Get the crate.
-        Crate crate = getCrate(player, crateName, false);
+        final Crate crate = getCrate(player, crateName, false);
 
         // If crate is null, return.
         if (crate == null) {
@@ -70,13 +71,12 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
-        CrateType crateType = crate.getCrateType();
+        final CrateType crateType = crate.getCrateType();
 
-        // If crate type is null, we return.
-        if (crateType == null || crate.getCrateType() == CrateType.menu) {
+        if (crateType == CrateType.menu) {
             Messages.internal_error.sendMessage(player);
 
-            if (MiscUtils.isLogging()) this.logger.error("An error has occurred: The crate type is null or Menu for the crate named {}", crateName);
+            if (MiscUtils.isLogging()) this.logger.error("An error has occurred: The crate type is Menu for the crate named {}", crateName);
 
             return;
         }
@@ -86,34 +86,25 @@ public class CommandOpen extends BaseCommand {
 
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
-            final Map<String, String> placeholders = new HashMap<>();
-
-            placeholders.put("{cratetype}", crateType.getName());
-            placeholders.put("{crate}", fancyName);
-
-            Messages.cant_be_a_virtual_crate.sendMessage(player, placeholders);
+            Messages.cant_be_a_virtual_crate.sendMessage(player, Map.of(
+                    "{cratetype}", crateType.getName(),
+                    "{crate}", fancyName
+            ));
 
             return;
         }
 
-        KeyType keyType = getKeyType(type);
+        final KeyType keyType = getKeyType(type);
 
-        boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), fileName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1;
+        final boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), fileName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1;
 
         // If no key, run this.
         if (!hasKey) {
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f);
-
-                player.playSound(sound);
+                player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
-            Map<String, String> placeholders = new HashMap<>();
-
-            placeholders.put("{crate}", fancyName);
-            placeholders.put("{key}", crate.getKeyName());
-
-            Messages.no_keys.sendMessage(player, placeholders);
+            Messages.no_keys.sendMessage(player, Map.of("{key}", crate.getKeyName(), "{crate}", fancyName));
 
             return;
         }
@@ -124,12 +115,13 @@ public class CommandOpen extends BaseCommand {
 
     @Command("open-others")
     @Permission(value = "crazycrates.open-others", def = PermissionDefault.OP)
+    @Syntax("/crazycrates open-others <crate_name> <player_name> <key_type>")
     public void others(CommandSender sender, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("player") @Suggestion("players") Player player, @ArgName("key_type") @Suggestion("keys") String type) {
         // If the command is cancelled.
         if (isCancelled(player, crateName)) return;
 
         // Get the crate.
-        Crate crate = getCrate(player, crateName, false);
+        final Crate crate = getCrate(player, crateName, false);
 
         // If crate is null, return.
         if (crate == null) {
@@ -139,32 +131,17 @@ public class CommandOpen extends BaseCommand {
         }
 
         final CrateType crateType = crate.getCrateType();
-
-        // If crate type is null, we return.
-        if (crateType == null) {
-            Messages.internal_error.sendMessage(sender);
-
-            if (MiscUtils.isLogging()) this.logger.error("An error has occurred: The crate type is null for the crate named {}", crateName);
-
-            return;
-        }
-
         final String fancyName = crate.getCrateName();
         final String fileName = crate.getFileName();
 
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
-            final Map<String, String> placeholders = new HashMap<>();
-
-            placeholders.put("{cratetype}", crateType.getName());
-            placeholders.put("{crate}", fancyName);
-
-            Messages.cant_be_a_virtual_crate.sendMessage(sender, placeholders);
+            Messages.cant_be_a_virtual_crate.sendMessage(sender, Map.of("{cratetype}", crateType.getName(), "{crate}", fancyName));
 
             return;
         }
 
-        KeyType keyType = getKeyType(type);
+        final KeyType keyType = getKeyType(type);
 
         if (sender == player) {
             open(player, crateName, type);
@@ -172,36 +149,27 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
-        boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), fileName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1;
+        final boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), fileName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1;
 
         if (!hasKey) {
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                Sound sound = Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f);
-
-                player.playSound(sound);
+                player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
-            Messages.no_keys.sendMessage(sender, new HashMap<>() {{
-                put("{crate}", fancyName);
-                put("{key}", crate.getKeyName());
-            }});
+            Messages.no_keys.sendMessage(sender, Map.of("{key}", crate.getKeyName(), "{crate}", fancyName));
 
             return;
         }
 
         this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false, EventType.event_crate_opened);
 
-        final Map<String, String> placeholders = new HashMap<>();
-
-        placeholders.put("{crate}", fancyName);
-        placeholders.put("{player}", player.getName());
-
-        Messages.opened_a_crate.sendMessage(sender, placeholders);
+        Messages.opened_a_crate.sendMessage(sender, Map.of("{player}", player.getName(), "{crate}", fancyName));
     }
 
 
     @Command("forceopen")
     @Permission(value = "crazycrates.forceopen", def = PermissionDefault.OP)
+    @Syntax("/crazycrates forceopen <crate_name> <player_name>")
     public void forceopen(CommandSender sender, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("player") @Suggestion("players") Player player) {
         // If the command is cancelled.
         if (isCancelled(player, crateName)) return;
@@ -217,42 +185,23 @@ public class CommandOpen extends BaseCommand {
         }
 
         final CrateType crateType = crate.getCrateType();
-
-        // If crate type is null, we return.
-        if (crateType == null) {
-            Messages.internal_error.sendMessage(sender);
-
-            if (MiscUtils.isLogging()) this.logger.error("An error has occurred: The crate type is null for the crate named {}", crateName);
-
-            return;
-        }
-
         final String fancyName = crate.getCrateName();
 
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
-            final Map<String, String> placeholders = new HashMap<>();
-
-            placeholders.put("{cratetype}", crateType.getName());
-            placeholders.put("{crate}", fancyName);
-
-            Messages.cant_be_a_virtual_crate.sendMessage(sender, placeholders);
+            Messages.cant_be_a_virtual_crate.sendMessage(sender, Map.of("{cratetype}", crateType.getName(), "{crate}", fancyName));
 
             return;
         }
 
         this.crateManager.openCrate(player, crate, KeyType.free_key, player.getLocation(), true, false, EventType.event_crate_force_opened);
 
-        Map<String, String> placeholders = new HashMap<>();
-
-        placeholders.put("{crate}", fancyName);
-        placeholders.put("{player}", player.getName());
-
-        Messages.opened_a_crate.sendMessage(sender, placeholders);
+        Messages.opened_a_crate.sendMessage(sender, Map.of("{player}", player.getName(), "{crate}", fancyName));
     }
 
     @Command("mass-open")
     @Permission(value = "crazycrates.massopen", def = PermissionDefault.OP)
+    @Syntax("/crazycrates mass-open <crate_name> <key_type> <amount>")
     public void mass(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("key_type") @Suggestion("keys") String type, @ArgName("amount") @Suggestion("numbers") int amount) {
         // If the command is cancelled.
         if (isCancelled(player, crateName)) return;
@@ -268,16 +217,6 @@ public class CommandOpen extends BaseCommand {
         }
 
         final CrateType crateType = crate.getCrateType();
-
-        // If crate type is null, we return.
-        if (crateType == null) {
-            Messages.internal_error.sendMessage(player);
-
-            if (MiscUtils.isLogging()) this.logger.error("An error has occurred: The crate type is null for the crate named {}", crate.getFileName());
-
-            return;
-        }
-
         final String fancyName = crate.getCrateName();
         final String fileName = crate.getFileName();
         final String keyName = crate.getKeyName();
@@ -288,10 +227,7 @@ public class CommandOpen extends BaseCommand {
         int used = 0;
 
         if (keys == 0) {
-            Messages.no_keys.sendMessage(player, new HashMap<>() {{
-                put("{crate}", fancyName);
-                put("{key}", keyName);
-            }});
+            Messages.no_keys.sendMessage(player, Map.of("{crate}", fancyName, "{key}", keyName));
 
             return;
         }
@@ -299,15 +235,13 @@ public class CommandOpen extends BaseCommand {
         final int requiredKeys = crate.getRequiredKeys();
 
         if (crate.useRequiredKeys() && keys < requiredKeys) {
-            final int finalKeys = keys;
-            
-            Messages.not_enough_keys.sendMessage(player, new HashMap<>() {{
-                put("{required_amount}", String.valueOf(requiredKeys));
-                put("{key_amount}", String.valueOf(requiredKeys)); // deprecated, remove in next major version of minecraft.
-                put("{amount}", String.valueOf(finalKeys));
-                put("{crate}", fancyName);
-                put("{key}", keyName);
-            }});
+            Messages.not_enough_keys.sendMessage(player, Map.of(
+                    "{required_amount}", String.valueOf(requiredKeys),
+                    "{key_amount}", String.valueOf(requiredKeys),
+                    "{amount}", String.valueOf(keys),
+                    "{crate}", fancyName,
+                    "{key}", keyName
+            ));
 
             return;
         }
@@ -316,7 +250,9 @@ public class CommandOpen extends BaseCommand {
 
         for (;keys > 0; keys--) {
             if (MiscUtils.isInventoryFull(player)) break;
+
             if (used >= amount) break;
+
             if (used >= crate.getMaxMassOpen()) break;
 
             switch (crateType) {
@@ -405,13 +341,16 @@ public class CommandOpen extends BaseCommand {
             used++;
         }
 
-        //if (crateType != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), fileName, used); //todo() hmm?, since we account for cosmic crate, it should be fine to let it count as opened?
-        this.userManager.addOpenedCrate(player.getUniqueId(), fileName, used);
+        final UUID uuid = player.getUniqueId();
 
-        EventManager.logEvent(EventType.event_crate_opened, player.getName(), player, crate, keyType, used);
-        EventManager.logEvent(EventType.event_key_taken, player.getName(), player, crate, keyType, used);
+        this.userManager.addOpenedCrate(uuid, fileName, used);
 
-        if (!this.userManager.takeKeys(player.getUniqueId(), fileName, keyType, used, false)) {
+        final String name = player.getName();
+
+        EventManager.logEvent(EventType.event_crate_opened, name, player, crate, keyType, used);
+        EventManager.logEvent(EventType.event_key_taken, name, player, crate, keyType, used);
+
+        if (!this.userManager.takeKeys(uuid, fileName, keyType, used, false)) {
             this.crateManager.removeCrateInUse(player);
             this.crateManager.removePlayerFromOpeningList(player);
 

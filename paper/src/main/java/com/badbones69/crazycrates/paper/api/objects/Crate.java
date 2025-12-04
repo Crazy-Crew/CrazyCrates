@@ -11,17 +11,19 @@ import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
-import com.ryderbelserion.fusion.core.files.FileType;
-import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
+import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
+import com.ryderbelserion.fusion.paper.files.FileManager;
+import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.ItemLore;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
@@ -35,6 +37,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +49,7 @@ public class Crate {
     private LegacyItemBuilder keyBuilder;
 
     private AbstractCrateManager manager;
+    private final String fileName;
     private final String name;
     private String keyName;
     private int maxSlots;
@@ -65,8 +69,8 @@ public class Crate {
     private ArrayList<Prize> prizes;
     private String crateName;
     private boolean giveNewPlayerKeys;
-    private int previewChestLines;
     private int newPlayerKeys;
+    private int rows;
 
     private List<Tier> tiers;
     private CrateHologram hologram;
@@ -92,9 +96,14 @@ public class Crate {
 
     private boolean glassBorderToggle = true;
 
+    private boolean isAnimationBorderRandom = true;
+    private List<ItemBuilder> animationBorderItems = List.of();
+
     private boolean broadcastToggle = false;
     private List<String> broadcastMessages = new ArrayList<>();
     private String broadcastPermission = "";
+
+    private boolean isTrackingOpening = true;
 
     private double sum = 0;
     private double tierSum = 0;
@@ -122,18 +131,51 @@ public class Crate {
                  @NotNull final List<String> prizeMessage,
                  @NotNull final List<String> prizeCommands,
                  @NotNull final CrateHologram hologram) {
-        this.keyBuilder = key.setDisplayName(keyName).setPersistentString(ItemKeys.crate_key.getNamespacedKey(), name);
+        this.name = name.replaceAll(".yml", "");
+        this.keyBuilder = key.setDisplayName(keyName).setPersistentString(ItemKeys.crate_key.getNamespacedKey(), this.name);
         this.keyName = keyName;
 
         this.file = file;
-        this.name = name;
+        this.fileName = name;
         this.tiers = tiers;
         this.maxMassOpen = maxMassOpen;
         this.requiredKeys = requiredKeys;
         this.prizeMessage = prizeMessage;
         this.prizeCommands = prizeCommands;
 
-        this.glassBorderToggle = this.file.getBoolean("Crate.Settings.Border.Glass-Border.Toggle", this.glassBorderToggle);
+        this.glassBorderToggle = this.file.contains("Crate.Settings.Border.Glass-Border.Toggle") ?
+                this.file.getBoolean("Crate.Settings.Border.Glass-Border.Toggle", this.glassBorderToggle) :
+                this.file.getBoolean("Crate.Animation.Glass-Frame.Toggle", this.glassBorderToggle);
+
+        final ConfigurationSection animationSection = this.file.contains("Crate.Animation") ? this.file.getConfigurationSection("Crate.Animation") : this.file.createSection("Crate.Animation");
+
+        ConfigurationSection itemsSection = null;
+
+        if (animationSection != null) {
+            this.animationName = animationSection.getString("Name", "Rolling your prize...");
+
+            final ConfigurationSection frameSection = animationSection.contains("Glass-Frame") ? animationSection.getConfigurationSection("Glass-Frame") : animationSection.createSection("Glass-Frame");
+
+            if (frameSection != null) {
+                if (this.glassBorderToggle) {
+                    final ConfigurationSection randomSection = frameSection.contains("Random") ? frameSection.getConfigurationSection("Random") : frameSection.createSection("Random");
+
+                    if (randomSection != null) {
+                        this.isAnimationBorderRandom = randomSection.getBoolean("Toggle", this.isAnimationBorderRandom);
+
+                        if (this.isAnimationBorderRandom) {
+                            itemsSection = randomSection.getConfigurationSection("Items");
+                        }
+                    }
+                } else {
+                    itemsSection = frameSection.getConfigurationSection("Items"); // if glass border is off, we grab the static items.
+                }
+            }
+        }
+
+        if (itemsSection != null) {
+            this.animationBorderItems = com.badbones69.crazycrates.paper.utils.ItemUtils.convertConfigurationSection(itemsSection);
+        }
 
         this.broadcastToggle = this.file.getBoolean("Crate.Settings.Broadcast.Toggle", false);
         this.broadcastMessages = this.file.getStringList("Crate.Settings.Broadcast.Messages");
@@ -144,6 +186,8 @@ public class Crate {
         this.cyclePermissionToggle = this.file.getBoolean("Crate.Settings.Rewards.Permission.Toggle", false);
         this.cyclePersistRestart = this.file.getBoolean("Crate.Settings.Rewards.Permission.Persist", false);
         this.cyclePermissionCap = this.file.getInt("Crate.Settings.Rewards.Permission.Max-Cap", 20);
+
+        this.isTrackingOpening = this.file.getBoolean("Crate.Settings.Tracking-Crate-Opening", false);
 
         for (int node = 1; node <= this.cyclePermissionCap; node++) {
             if (this.cyclePermissionToggle) {
@@ -174,8 +218,9 @@ public class Crate {
         this.newPlayerKeys = newPlayerKeys;
         this.giveNewPlayerKeys = newPlayerKeys > 0;
 
-        setPreviewChestLines(file.getInt("Crate.Preview.ChestLines", 6));
-        this.maxSlots = this.previewChestLines * 9;
+        setPreviewRows(file.contains("Crate.Preview.ChestLines") ? file.getInt("Crate.Preview.ChestLines", 6) : file.getInt("Crate.Preview.Rows", 6));
+
+        this.maxSlots = this.rows * 9;
 
         this.crateName = file.getString("Crate.Name", " ");
 
@@ -183,7 +228,7 @@ public class Crate {
 
         @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
-        this.borderItem = new LegacyItemBuilder()
+        this.borderItem = new LegacyItemBuilder(this.plugin)
                 .withType(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane").toLowerCase())
                 .setCustomModelData(file.getString("Crate.Preview.Glass.Custom-Model-Data", ""))
                 .setItemModel(file.getString("Crate.Preview.Glass.Model.Namespace", ""), file.getString("Crate.Preview.Glass.Model.Id", ""))
@@ -192,7 +237,7 @@ public class Crate {
 
         @NotNull final String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
 
-        this.previewTierBorderItem = new LegacyItemBuilder()
+        this.previewTierBorderItem = new LegacyItemBuilder(this.plugin)
                 .withType(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
                 .setCustomModelData(file.getString("Crate.tier-preview.glass.custom-model-data", ""))
                 .setItemModel(file.getString("Crate.tier-preview.glass.model.namespace", ""), file.getString("Crate.tier-preview.glass.model.id", ""))
@@ -222,6 +267,7 @@ public class Crate {
 
     public Crate(@NotNull final String name) {
         this.crateType = CrateType.menu;
+        this.fileName = "";
         this.name = name;
     }
 
@@ -276,6 +322,14 @@ public class Crate {
         return this.glassBorderToggle;
     }
 
+    public List<ItemBuilder> getAnimationBorderItems() {
+        return this.animationBorderItems;
+    }
+
+    public boolean isAnimationBorderRandom() {
+        return this.isAnimationBorderRandom;
+    }
+
     public final boolean isBroadcastToggled() {
         return this.broadcastToggle;
     }
@@ -298,14 +352,8 @@ public class Crate {
      *
      * @param amount the number of lines the preview has.
      */
-    public void setPreviewChestLines(final int amount) {
-        int finalAmount;
-
-        if (this.borderToggle && amount < 3) {
-            finalAmount = 3;
-        } else finalAmount = Math.min(amount, 6);
-
-        this.previewChestLines = finalAmount;
+    public void setPreviewRows(final int amount) {
+        this.rows = this.borderToggle && amount < 3 ? 3 : Math.min(amount, 6);
     }
 
     /**
@@ -322,12 +370,12 @@ public class Crate {
     }
 
     /**
-     * Get the number of lines the preview will show.
+     * Get the number of rows the preview will show.
      *
-     * @return the number of lines it is set to show.
+     * @return the number of rows it is set to show.
      */
-    public final int getPreviewChestLines() {
-        return this.previewChestLines;
+    public final int getPreviewRows() {
+        return this.rows;
     }
     
     /**
@@ -366,7 +414,7 @@ public class Crate {
     public Prize pickPrize(@NotNull final Player player) {
         final List<Prize> prizes = new ArrayList<>();
 
-        for (Prize prize : getPrizes()) {
+        for (final Prize prize : getPrizes()) {
             if (validatePrize(player, prize)) continue;
 
             prizes.add(prize);
@@ -426,7 +474,7 @@ public class Crate {
         for (double value = MiscUtils.getRandom().nextDouble() * totalWeight; index < prizes.size() - 1; index++) {
             value -= prizes.get(index).getWeight();
 
-            if (value < 0.0) break;
+            if (value <= 0.0) break;
         }
 
         return prizes.get(index);
@@ -667,7 +715,7 @@ public class Crate {
     public void addEditorItem(@Nullable final ItemStack itemStack, @NotNull final String prizeName, final double weight) {
         if (itemStack == null || prizeName.isEmpty() || weight <= 0) return;
 
-        ConfigurationSection section = getPrizeSection();
+        final ConfigurationSection section = getPrizeSection();
 
         setItem(itemStack, prizeName, section, weight, "");
     }
@@ -720,21 +768,21 @@ public class Crate {
 
         final String tiers = getPath(prizeName, "Tiers");
 
-        if (itemStack.hasItemMeta()) {
-            final ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemStack.hasData(DataComponentTypes.CUSTOM_NAME)) {
+            final Component displayName = itemStack.getData(DataComponentTypes.CUSTOM_NAME);
 
-            if (itemMeta.hasDisplayName()) {
-                final Component displayName = itemMeta.displayName();
-
-                if (displayName != null) {
-                    section.set(getPath(prizeName, "DisplayName"), AdvUtils.fromComponent(displayName));
-                }
+            if (displayName != null) {
+                section.set(getPath(prizeName, "DisplayName"), AdvUtils.fromComponent(displayName));
             }
+        }
 
-            if (itemMeta.hasLore()) {
-                final List<Component> lore = itemMeta.lore();
+        if (itemStack.hasData(DataComponentTypes.LORE)) {
+            @Nullable final ItemLore itemLore = itemStack.getData(DataComponentTypes.LORE);
 
-                if (lore != null) {
+            if (itemLore != null) {
+                final List<Component> lore = itemLore.lines();
+
+                if (!lore.isEmpty()) {
                     section.set(getPath(prizeName, "DisplayLore"), AdvUtils.fromComponent(lore));
                 }
             }
@@ -797,9 +845,7 @@ public class Crate {
 
                 section.set(tiers, list);
             } else {
-                section.set(tiers, new ArrayList<>() {{
-                    add(tier);
-                }});
+                section.set(tiers, List.of(tier));
             }
         }
 
@@ -812,13 +858,17 @@ public class Crate {
         return section + "." + path;
     }
 
+    private final FileManager fileManager = this.plugin.getFileManager();
+
+    private final Path dataPath = this.plugin.getDataPath();
+
     /**
      * Saves item stacks to editor-items
      */
     private void saveFile() {
-        if (this.name.isEmpty()) return;
+        if (this.fileName.isEmpty()) return;
 
-        final LegacyCustomFile customFile = this.plugin.getFileManager().getFile(this.name, FileType.YAML);
+        final PaperCustomFile customFile = this.fileManager.getPaperCustomFile(this.dataPath.resolve("crates").resolve(this.fileName));
 
         if (customFile != null) {
             customFile.save(); // save to file
@@ -911,6 +961,10 @@ public class Crate {
         return ConfigManager.getConfig().getProperty(ConfigKeys.crate_use_required_keys) && this.requiredKeys > 0;
     }
 
+    public final boolean isTrackingOpening() {
+        return this.isTrackingOpening;
+    }
+
     /**
      * Plays a sound at different volume levels with fallbacks
      *
@@ -921,10 +975,10 @@ public class Crate {
     public void playSound(@NotNull final Player player, @NotNull final Location location, @NotNull final String type, @NotNull final String fallback, @NotNull final Sound.Source source) {
         if (type.isEmpty() && fallback.isEmpty()) return;
 
-        ConfigurationSection section = getFile().getConfigurationSection("Crate.sound");
+        final ConfigurationSection section = this.file.getConfigurationSection("Crate.sound");
 
         if (section != null) {
-            SoundEffect sound = new SoundEffect(
+            final SoundEffect sound = new SoundEffect(
                     section,
                     type,
                     fallback,

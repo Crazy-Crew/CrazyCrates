@@ -70,7 +70,7 @@ public class WonderCrate extends CrateBuilder {
 
         this.player.openInventory(this.inventory);
 
-        addCrateTask(new FoliaScheduler(null, this.player) {
+        addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
             int time = 0;
             int full = 0;
 
@@ -90,7 +90,7 @@ public class WonderCrate extends CrateBuilder {
                     other.add(this.slot1);
                     other.add(this.slot2);
 
-                    final ItemStack material = new LegacyItemBuilder(crate.isGlassBorderToggled() ? ItemType.BLACK_STAINED_GLASS_PANE : ItemType.AIR).setDisplayName(" ").asItemStack();
+                    final ItemStack material = new LegacyItemBuilder(plugin, crate.isGlassBorderToggled() ? ItemType.BLACK_STAINED_GLASS_PANE : ItemType.AIR).setDisplayName(" ").asItemStack();
 
                     setItem(this.slot1, material);
                     setItem(this.slot2, material);

@@ -4,12 +4,12 @@ import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
-import com.ryderbelserion.fusion.core.files.FileAction;
-import com.ryderbelserion.fusion.core.utils.FileUtils;
+import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.permissions.Permission;
@@ -18,10 +18,6 @@ import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
-import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -34,10 +30,10 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,7 +46,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MiscUtils {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
-    
+
+    private static final Path dataPath = plugin.getDataPath();
+
     private static final ComponentLogger logger = plugin.getComponentLogger();
 
     public static void sendCommand(@Nullable final CommandSender sender, @NotNull final String command, @NotNull final Map<String, String> placeholders) {
@@ -60,7 +58,7 @@ public class MiscUtils {
 
         final String result = populatePlaceholders(sender, command, placeholders);
 
-        new FoliaScheduler(Scheduler.global_scheduler) {
+        new FoliaScheduler(plugin, Scheduler.global_scheduler) {
             @Override
             public void run() {
                 server.dispatchCommand(server.getConsoleSender(), result);
@@ -70,6 +68,90 @@ public class MiscUtils {
 
     public static void sendCommand(@NotNull final String command, @NotNull final Map<String, String> placeholders) {
         sendCommand(null, command, placeholders);
+    }
+
+    public static void dropBuilders(@NotNull final List<ItemBuilder> builders, @NotNull final Player player) {
+        if (builders.isEmpty()) return;
+
+        final List<ItemStack> items = new ArrayList<>();
+
+        for (final ItemBuilder builder : builders) {
+            items.add(builder.asItemStack(player));
+        }
+
+        dropItems(items, player);
+    }
+
+    public static void dropLegacyBuilders(@NotNull final List<LegacyItemBuilder> builders, @NotNull final Player player) {
+        if (builders.isEmpty()) return;
+
+        final boolean isPlaceholderAPIEnabled = Plugins.placeholder_api.isEnabled();
+
+        final List<ItemStack> items = new ArrayList<>();
+
+        for (final LegacyItemBuilder builder : builders) {
+            if (isPlaceholderAPIEnabled) {
+                final String displayName = builder.getDisplayName();
+
+                if (!displayName.isEmpty()) {
+                    builder.setDisplayName(PlaceholderAPI.setPlaceholders(player, displayName));
+                }
+
+                final List<String> displayLore = builder.getDisplayLore();
+
+                if (!displayLore.isEmpty()) {
+                    List<String> lore = new ArrayList<>();
+
+                    displayLore.forEach(line -> lore.add(PlaceholderAPI.setPlaceholders(player, line)));
+
+                    builder.setDisplayLore(lore);
+                }
+            }
+
+            items.add(builder.asItemStack());
+        }
+
+        dropItems(items, player);
+    }
+
+    public static void dropItems(@NotNull final List<ItemStack> items, @NotNull final Player player) {
+        final Location location = player.getLocation();
+
+        new FoliaScheduler(plugin, location) {
+            @Override
+            public void run() {
+                for (final ItemStack item : items) {
+                    dropItem(player, item, location, false);
+                }
+            }
+        }.runNow();
+    }
+
+    public static void dropItem(@NotNull final Player player, @NotNull final ItemStack itemStack, @NotNull final Location location, final boolean execute) {
+        final boolean isInventoryEmpty = MiscUtils.isInventoryFull(player);
+
+        final World world = player.getWorld();
+
+        if (execute) {
+            new FoliaScheduler(plugin, location) {
+                @Override
+                public void run() {
+                    if (!isInventoryEmpty) {
+                        addItem(player, itemStack);
+                    } else {
+                        world.dropItemNaturally(location, itemStack.clone());
+                    }
+                }
+            }.runNow();
+
+            return;
+        }
+
+        if (!isInventoryEmpty) {
+            addItem(player, itemStack);
+        } else {
+            world.dropItemNaturally(location, itemStack.clone());
+        }
     }
 
     public static void sendCommand(@NotNull final String command) {
@@ -101,28 +183,12 @@ public class MiscUtils {
     }
 
     public static void janitor() {
-        final File logsFolder = new File(plugin.getDataFolder(), "logs");
-
-        if (logsFolder.exists() && ConfigManager.getConfig().getProperty(ConfigKeys.log_to_file)) {
-            final File crateLog = FileKeys.crate_log.getFile();
-            final File keyLog = FileKeys.key_log.getFile();
-
-            try {
-                FileUtils.compress(logsFolder.toPath(), null, "", new ArrayList<>() {{
-                    add(FileAction.DELETE);
-                }});
-
-                if (!crateLog.exists()) {
-                    crateLog.createNewFile();
-                }
-
-                if (!keyLog.exists()) {
-                    keyLog.createNewFile();
-                }
-            } catch (final IOException exception) {
-                if (isLogging()) logger.warn("Failed to create log files.", exception);
-            }
+        if  (!Files.exists(dataPath.resolve("logs")) || !ConfigManager.getConfig().getProperty(ConfigKeys.log_to_file)) {
+            return;
         }
+
+        FileKeys.crate_log.save();
+        FileKeys.key_log.save();
     }
 
     public static double calculateWeight(final int chance, final int maxRange) {
@@ -150,7 +216,12 @@ public class MiscUtils {
 
         fireworkData.set(ItemKeys.no_firework_damage.getNamespacedKey(), PersistentDataType.BOOLEAN, true);
 
-        firework.getScheduler().runDelayed(plugin, scheduledTask -> firework.detonate(), null, 3L);
+        new FoliaScheduler(plugin, null, firework) {
+            @Override
+            public void run() {
+                firework.detonate();
+            }
+        }.runDelayed(3L);
     }
 
     public static @NotNull String location(@NotNull final Location location, final boolean getName) {
@@ -348,7 +419,7 @@ public class MiscUtils {
                 ItemType.RED_STAINED_GLASS_PANE
         );
 
-        return new LegacyItemBuilder(panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
+        return new LegacyItemBuilder(plugin, panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
     }
 
     public static void addItem(@NotNull final Player player, @NotNull final ItemStack... items) {

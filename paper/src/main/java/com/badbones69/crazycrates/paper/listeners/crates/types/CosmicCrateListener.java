@@ -6,7 +6,8 @@ import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
-import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
+import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
@@ -18,7 +19,9 @@ import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Material;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,6 +31,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -42,11 +46,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class CosmicCrateListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final ComponentLogger logger = this.plugin.getComponentLogger();
+
+    private final Server server = this.plugin.getServer();
+
+    private final PluginManager pluginManager = this.server.getPluginManager();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
@@ -117,7 +126,7 @@ public class CosmicCrateListener implements Listener {
 
         event.setCurrentItem(prize.getDisplayItem(player, crate));
 
-        holder.getCrate().playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.MASTER);
+        crate.playSound(player, player.getLocation(), "click-sound","ui.button.click", Sound.Source.MASTER);
 
         this.crateManager.addSlot(player, slot);
     }
@@ -322,7 +331,9 @@ public class CosmicCrateListener implements Listener {
                 if (!broadcastMessage.isBlank()) {
                     String builder = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
 
-                    this.plugin.getServer().broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName).replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix)).replaceAll("%player%", player.getName())));
+                    this.server.broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName)
+                            .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
+                            .replaceAll("%player%", player.getName())));
                 }
             }
 
@@ -335,39 +346,43 @@ public class CosmicCrateListener implements Listener {
                 public void run() {
                     try {
                         startRollingAnimation(player, view, holder);
-                    } catch (Exception exception) {
-                        player.getScheduler().run(plugin, scheduledTask -> {
-                            PlayerReceiveKeyEvent keyEvent = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.REFUND, 1);
-                            plugin.getServer().getPluginManager().callEvent(keyEvent);
+                    } catch (final Exception exception) {
+                        new FoliaScheduler(plugin, null, player) {
+                            @Override
+                            public void run() {
+                                PlayerReceiveKeyEvent keyEvent = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.REFUND, 1);
 
-                            // Check if event is cancelled.
-                            if (!event.isCancelled()) {
-                                // Add the keys
-                                userManager.addKeys(uuid, fileName, type, 1);
+                                pluginManager.callEvent(keyEvent);
 
-                                // Remove opening stuff.
-                                crateManager.removePlayerFromOpeningList(player);
-                                crateManager.removePlayerKeyType(player);
+                                // Check if event is cancelled.
+                                if (!event.isCancelled()) {
+                                    // Add the keys
+                                    userManager.addKeys(uuid, fileName, type, 1);
 
-                                crateManager.removeTier(player);
+                                    // Remove opening stuff.
+                                    crateManager.removePlayerFromOpeningList(player);
+                                    crateManager.removePlayerKeyType(player);
 
-                                // Cancel crate task.
-                                crateManager.removeCrateTask(player);
+                                    crateManager.removeTier(player);
 
-                                // Remove hand checks.
-                                crateManager.removeHands(player);
+                                    // Cancel crate task.
+                                    crateManager.removeCrateTask(player);
 
-                                // Remove the player from the hashmap.
-                                cosmicCrateManager.removePickedPlayer(player);
+                                    // Remove hand checks.
+                                    crateManager.removeHands(player);
 
-                                Messages.key_refund.sendMessage(player, "{crate}", fancyName);
+                                    // Remove the player from the hashmap.
+                                    cosmicCrateManager.removePickedPlayer(player);
 
-                                if (MiscUtils.isLogging()) plugin.getLogger().log(Level.SEVERE, "An issue occurred when the user " + player.getName() + " was using the " + fileName + " crate and so they were issued a key refund.", exception);
+                                    Messages.key_refund.sendMessage(player, "{crate}", fancyName);
 
-                                // Play a sound
-                                crate.playSound(player, player.getLocation(), "stop-sound", "block.anvil.place", Sound.Source.MASTER);
+                                    if (MiscUtils.isLogging()) logger.error("An issue occurred when the user {} was using the {} crate and so they were issued a key refund.", player.getName(), fileName, exception);
+
+                                    // Play a sound
+                                    crate.playSound(player, player.getLocation(), "stop-sound", "block.anvil.place", Sound.Source.MASTER);
+                                }
                             }
-                        }, null);
+                        }.runNow();
 
                         // Cancel the task.
                         cancel();
@@ -421,11 +436,7 @@ public class CosmicCrateListener implements Listener {
 
         view.getTopInventory().clear();
 
-        cosmicCrateManager.getPrizes(player).forEach((slot, tier) -> {
-            Inventory inventory = view.getTopInventory();
-
-            inventory.setItem(slot, tier.getTierItem(player, crate));
-        });
+        cosmicCrateManager.getPrizes(player).forEach((slot, tier) -> view.getTopInventory().setItem(slot, tier.getTierItem(player, crate)));
 
         player.updateInventory();
 
@@ -433,13 +444,18 @@ public class CosmicCrateListener implements Listener {
             this.crateManager.addCrateTask(player, new TimerTask() {
                 @Override
                 public void run() {
-                    player.getScheduler().run(plugin, scheduledTask -> player.closeInventory(InventoryCloseEvent.Reason.UNLOADED), null);
+                    new FoliaScheduler(plugin, null, player) {
+                        @Override
+                        public void run() {
+                            player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
+                        }
+                    }.runNow();
 
                     if (MiscUtils.isLogging()) {
                         List.of(
                                 player.getName() + " spent 10 seconds staring at a gui instead of collecting their prizes",
                                 "The task has been cancelled, They have been given their prizes and the gui is closed."
-                        ).forEach(plugin.getLogger()::info);
+                        ).forEach(logger::info);
                     }
                 }
             }, 10000L);

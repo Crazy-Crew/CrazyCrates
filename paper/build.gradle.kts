@@ -1,21 +1,21 @@
 plugins {
-    `config-paper`
+    `paper-plugin`
 }
 
 project.group = "${rootProject.group}.paper"
 
 repositories {
-    maven("https://repo.extendedclip.com/content/repositories/placeholderapi")
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 
-    maven("https://repo.fancyinnovations.com/releases")
+    maven("https://repo.fancyinnovations.com/releases/")
 
-    maven("https://repo.nexomc.com/releases")
+    maven("https://repo.nexomc.com/releases/")
 
-    maven("https://repo.oraxen.com/releases")
+    maven("https://repo.oraxen.com/releases/")
 }
 
 dependencies {
-    implementation(project(":crazycrates-core"))
+    implementation(project(":api"))
 
     implementation(libs.triumph.cmds)
 
@@ -45,6 +45,7 @@ tasks {
 
     runServer {
         jvmArgs("-Dnet.kyori.ansi.colorLevel=truecolor")
+        jvmArgs("-Dcom.mojang.eula.agree=true")
 
         defaultCharacterEncoding = Charsets.UTF_8.name()
 

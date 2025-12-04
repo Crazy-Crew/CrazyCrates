@@ -34,11 +34,9 @@ public class MetricsWrapper{
         crates.forEach(crate -> {
             final CrateType type = crate.getCrateType();
 
-            if (type == null || type == CrateType.menu) return;
+            if (type == CrateType.menu) return;
 
-            SimplePie chart = new SimplePie("crate_types", type::getName);
-
-            this.metrics.addCustomChart(chart);
+            this.metrics.addCustomChart(new SimplePie("crate_types", type::getName));
         });
     }
 

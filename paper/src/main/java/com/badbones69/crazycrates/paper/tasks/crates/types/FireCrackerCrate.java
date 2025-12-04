@@ -1,7 +1,5 @@
 package com.badbones69.crazycrates.paper.tasks.crates.types;
 
-import com.badbones69.crazycrates.core.config.ConfigManager;
-import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.builders.types.features.CrateSpinMenu;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
@@ -67,7 +65,7 @@ public class FireCrackerCrate extends CrateBuilder {
 
         final List<Color> colors = Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.AQUA, Color.MAROON, Color.PURPLE);
 
-        addCrateTask(new FoliaScheduler(null, this.player) {
+        addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
             final int random = ThreadLocalRandom.current().nextInt(colors.size());
             final Location clonedLocation = location.clone().add(0.5, 25, 0.5);
 
@@ -106,7 +104,7 @@ public class FireCrackerCrate extends CrateBuilder {
 
                     PrizeManager.givePrize(player, crate, prize);
 
-                    addCrateTask(new FoliaScheduler(null, player) {
+                    addCrateTask(new FoliaScheduler(plugin, null, player) {
                         @Override
                         public void run() {
                             crateManager.removePlayerFromOpeningList(player);

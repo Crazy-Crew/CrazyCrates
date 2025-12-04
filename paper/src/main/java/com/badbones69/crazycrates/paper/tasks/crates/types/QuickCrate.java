@@ -7,26 +7,16 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.ChestManager;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
-import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
-import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
-import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import org.bukkit.Location;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.core.config.ConfigManager;
-import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class QuickCrate extends CrateBuilder {
@@ -56,15 +46,13 @@ public class QuickCrate extends CrateBuilder {
         };
 
         if (this.crate.useRequiredKeys() && keys < this.crate.getRequiredKeys()) {
-            final int finalKeys = keys;
-
-            Messages.not_enough_keys.sendMessage(this.player, new HashMap<>() {{
-                put("{required_amount}", String.valueOf(crate.getRequiredKeys()));
-                put("{key_amount}", String.valueOf(crate.getRequiredKeys())); // deprecated, remove in the next major version of minecraft.
-                put("{amount}", String.valueOf(finalKeys));
-                put("{crate}", crate.getCrateName());
-                put("{key}", crate.getKeyName());
-            }});
+            Messages.not_enough_keys.sendMessage(this.player, Map.of(
+                    "{required_amount}", String.valueOf(crate.getRequiredKeys()),
+                    "{key_amount}", String.valueOf(crate.getRequiredKeys()),
+                    "{amount}", String.valueOf(keys),
+                    "{crate}", crate.getCrateName(),
+                    "{key}", crate.getKeyName()
+            ));
 
             // Remove from an opening list.
             this.crateManager.removePlayerFromOpeningList(this.player);
@@ -147,7 +135,7 @@ public class QuickCrate extends CrateBuilder {
 
         PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, 0.5), this.crate, prize);
 
-        addCrateTask(new FoliaScheduler(null, this.player) {
+        addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
             @Override
             public void run() {
                 crateManager.endQuickCrate(player, location, crate, false);

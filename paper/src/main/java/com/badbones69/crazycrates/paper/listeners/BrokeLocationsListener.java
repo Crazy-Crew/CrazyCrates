@@ -8,6 +8,7 @@ import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
@@ -34,26 +35,27 @@ public class BrokeLocationsListener implements Listener {
 
         for (final BrokeLocation brokeLocation : this.crateManager.getBrokeLocations()) {
             final Location location = brokeLocation.getLocation();
+            final World world = location.getWorld();
 
-            if (location.getWorld() != null) {
-                if (brokeLocation.getCrate() != null) {
-                    final CrateLocation crateLocation = new CrateLocation(brokeLocation.getLocationName(), brokeLocation.getCrate(), location);
+            if (world == null) continue;
 
-                    this.crateManager.addLocation(crateLocation);
+            final Crate crate = brokeLocation.getCrate();
 
-                    final HologramManager manager = this.crateManager.getHolograms();
+            if (crate == null) continue;
 
-                    final Crate crate = crateLocation.getCrate();
+            final CrateLocation crateLocation = new CrateLocation(brokeLocation.getLocationName(), crate, location);
 
-                    if (manager != null && crate.getHologram().isEnabled()) {
-                        manager.createHologram(location, crate, crateLocation.getID());
-                    }
+            this.crateManager.addLocation(crateLocation);
 
-                    fixedWorlds.add(brokeLocation);
+            final HologramManager manager = this.crateManager.getHolograms();
 
-                    fixedAmount++;
-                }
+            if (manager != null && crate.getHologram().isEnabled()) {
+                manager.createHologram(location, crate, crateLocation.getID());
             }
+
+            fixedWorlds.add(brokeLocation);
+
+            fixedAmount++;
         }
 
         this.crateManager.removeBrokeLocation(fixedWorlds);

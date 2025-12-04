@@ -79,7 +79,7 @@ public class CasinoCrate extends CrateBuilder {
 
                 this.crateManager.removePlayerFromOpeningList(this.player);
 
-                new FoliaScheduler(null, this.player) {
+                new FoliaScheduler(this.plugin, null, this.player) {
                     @Override
                     public void run() { //todo() use inventory holders
                         if (player.getOpenInventory().getTopInventory().equals(inventory)) player.closeInventory();

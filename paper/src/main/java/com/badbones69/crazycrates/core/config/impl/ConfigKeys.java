@@ -5,6 +5,7 @@ import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
 import com.badbones69.crazycrates.core.config.beans.ModelData;
+import com.badbones69.crazycrates.core.config.beans.inventories.ItemPlacement;
 import com.badbones69.crazycrates.core.enums.State;
 import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newBeanProperty;
@@ -127,7 +128,7 @@ public class ConfigKeys implements SettingsHolder {
     public static final Property<String> inventory_name = newProperty("gui.inventory.name", "<bold><gradient:#e91e63:blue>Crazy Crates</gradient></bold>");
 
     @Comment("The amount of rows for a gui.")
-    public static final Property<Integer> inventory_rows = newProperty("gui.inventory.rows", 6);
+    public static final Property<Integer> inventory_rows = newProperty("gui.inventory.rows", 5);
 
     @Comment({
             "This will switch how previews/opening the physical crates are handled.",
@@ -252,8 +253,14 @@ public class ConfigKeys implements SettingsHolder {
             "<gray>Return to the menu."
     ));
 
+    @Comment("The placement of the menu button. -1 defaults to an internal row.")
+    public static final Property<ItemPlacement> menu_button_placement = newBeanProperty(ItemPlacement.class, "gui.inventory.buttons.menu.placement", new ItemPlacement().init(5));
+
     @Comment("The item the button should be.")
     public static final Property<String> next_button_item = newProperty("gui.inventory.buttons.next.item", "feather");
+
+    @Comment("The placement of the next button. -1 defaults to an internal row.")
+    public static final Property<ItemPlacement> next_button_placement = newBeanProperty(ItemPlacement.class, "gui.inventory.buttons.next.placement", new ItemPlacement().init(6));
 
     @Comment("The custom model data for the item, -1 or blank is disabled.")
     public static final Property<String> next_button_model_data = newProperty("gui.inventory.buttons.next.custom-model-data", "-1");
@@ -277,6 +284,9 @@ public class ConfigKeys implements SettingsHolder {
 
     @Comment("The custom model data for the item, -1 or blank is disabled.")
     public static final Property<String> back_button_model_data = newProperty("gui.inventory.buttons.back.custom-model-data", "");
+
+    @Comment("The placement of the back button. -1 defaults to an internal row.")
+    public static final Property<ItemPlacement> back_button_placement = newBeanProperty(ItemPlacement.class, "gui.inventory.buttons.back.placement", new ItemPlacement().init(4));
 
     @Comment({
             "The item model, Mojang introduced this in 1.21.4... this replaces custom model data!",
@@ -314,8 +324,51 @@ public class ConfigKeys implements SettingsHolder {
     public static final Property<List<String>> filler_lore = newListProperty("gui.inventory.buttons.filler.lore", List.of());
 
     @Comment("Should the customizer should be enabled?")
-    public static final Property<Boolean> gui_customizer_toggle = newProperty("gui.inventory.buttons.customizer.toggle", false);
+    public static final Property<Boolean> gui_customizer_toggle = newProperty("gui.inventory.buttons.customizer.toggle", true);
 
     @Comment("The items to set to the gui.")
-    public static final Property<List<String>> gui_customizer = newListProperty("gui.inventory.buttons.customizer.items", List.of());
+    public static final Property<List<String>> gui_customizer = newListProperty("gui.inventory.buttons.customizer.items", List.of(
+            "slot:0, item:red_stained_glass_pane, name: ",
+                    "slot:1, item:red_stained_glass_pane, name: ",
+                    "slot:2, item:red_stained_glass_pane, name: ",
+                    "slot:3, item:red_stained_glass_pane, name: ",
+                    "slot:4, item:red_stained_glass_pane, name: ",
+                    "slot:5, item:red_stained_glass_pane, name: ",
+                    "slot:6, item:red_stained_glass_pane, name: ",
+                    "slot:7, item:red_stained_glass_pane, name: ",
+                    "slot:8, item:red_stained_glass_pane, name: ",
+                    "slot:36, item:red_stained_glass_pane, name: ",
+                    "slot:37, item:red_stained_glass_pane, name: ",
+                    "slot:38, item:red_stained_glass_pane, name: ",
+                    "slot:39, item:red_stained_glass_pane, name: ",
+                    "slot:40, item:red_stained_glass_pane, name: ",
+                    "slot:41, item:red_stained_glass_pane, name: ",
+                    "slot:42, item:red_stained_glass_pane, name: ",
+                    "slot:43, item:red_stained_glass_pane, name: ",
+                    "slot:44, item:red_stained_glass_pane, name: ",
+                    "slot:9, item:blue_stained_glass_pane, name: ",
+                    "slot:18, item:blue_stained_glass_pane, name: ",
+                    "slot:27, item:blue_stained_glass_pane, name: ",
+                    "slot:17, item:blue_stained_glass_pane, name: ",
+                    "slot:26, item:blue_stained_glass_pane, name: ",
+                    "slot:35, item:blue_stained_glass_pane, name: ",
+                    "slot:10, item:cyan_stained_glass_pane, name: ",
+                    "slot:12, item:cyan_stained_glass_pane, name: ",
+                    "slot:14, item:cyan_stained_glass_pane, name: ",
+                    "slot:24, item:cyan_stained_glass_pane, name: ",
+                    "slot:16, item:cyan_stained_glass_pane, name: ",
+                    "slot:19, item:cyan_stained_glass_pane, name: ",
+                    "slot:20, item:cyan_stained_glass_pane, name: ",
+                    "slot:21, item:cyan_stained_glass_pane, name: ",
+                    "slot:22, item:cyan_stained_glass_pane, name: ",
+                    "slot:23, item:cyan_stained_glass_pane, name: ",
+                    "slot:24, item:cyan_stained_glass_pane, name: ",
+                    "slot:25, item:cyan_stained_glass_pane, name: ",
+                    "slot:28, item:cyan_stained_glass_pane, name: ",
+                    "slot:30, item:cyan_stained_glass_pane, name: ",
+                    "slot:31, item:cyan_stained_glass_pane, name: ",
+                    "slot:32, item:cyan_stained_glass_pane, name: ",
+                    "slot:33, item:cyan_stained_glass_pane, name: ",
+                    "slot:34, item:cyan_stained_glass_pane, name: "
+    ));
 }

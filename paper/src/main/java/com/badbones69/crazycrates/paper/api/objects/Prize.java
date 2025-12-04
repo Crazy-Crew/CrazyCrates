@@ -12,9 +12,8 @@ import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
-import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
-import com.ryderbelserion.fusion.adventure.utils.StringUtils;
-import com.ryderbelserion.fusion.core.utils.NumberUtils;
+import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.core.api.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -32,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +51,7 @@ public class Prize {
     private final String prizeName;
 
     private List<String> permissions = new ArrayList<>();
-    private LegacyItemBuilder displayItem = new LegacyItemBuilder();
+    private LegacyItemBuilder displayItem = new LegacyItemBuilder(this.plugin);
     private boolean firework = false;
     private String crateName = "";
     private double weight = -1;
@@ -224,7 +222,7 @@ public class Prize {
             this.displayItem.setPlayer(player);
         }
 
-        final String weight = NumberUtils.format(crate.getChance(getWeight()));
+        final String weight = StringUtils.format(crate.getChance(getWeight()));
 
         this.displayItem.addLorePlaceholder("%chance%", weight).addLorePlaceholder("%maxpulls%", String.valueOf(maxPulls)).addLorePlaceholder("%pulls%", amount);
         this.displayItem.addNamePlaceholder("%chance%", weight).addNamePlaceholder("%maxpulls%", String.valueOf(maxPulls)).addNamePlaceholder("%pulls%", amount);
@@ -272,8 +270,8 @@ public class Prize {
      *
      * @return true or false
      */
-    public final boolean isItemsNotEmpty() {
-        return this.config.getProperty(ConfigKeys.use_different_items_layout) && !getItems().isEmpty() || !getItemBuilders().isEmpty();
+    public final boolean isItemsEmpty() {
+        return this.config.getProperty(ConfigKeys.use_different_items_layout) && getItems().isEmpty() || getItemBuilders().isEmpty();
     }
 
     /**
@@ -323,7 +321,7 @@ public class Prize {
     public final boolean hasPermission(@NotNull final Player player) {
         if (player.isOp()) return false;
 
-        for (String permission : this.permissions) {
+        for (final String permission : this.permissions) {
             if (player.hasPermission(permission)) return true;
         }
 
@@ -347,16 +345,16 @@ public class Prize {
         final String current_pulls = String.valueOf(PrizeManager.getCurrentPulls(this, crate));
         final String max_pulls = String.valueOf(getMaxPulls());
 
-        String message = StringUtils.toString(messages);
+        final String message = StringUtils.toString(messages);
 
-        Map<String, String> placeholders = new HashMap<>() {{
-            put("%player%", target.getName());
-            put("%crate%", crate.getCrateName());
-            put("%reward%", getPrizeName().replaceAll("%maxpulls%", max_pulls).replaceAll("%pulls%", current_pulls));
-            put("%maxpulls%", max_pulls);
-            put("%pulls%", current_pulls);
-            put("%reward_stripped%", getStrippedName());
-        }};
+        final Map<String, String> placeholders = Map.of(
+            "%player%", target.getName(),
+            "%crate%", crate.getCrateName(),
+            "%reward%", getPrizeName().replaceAll("%maxpulls%", max_pulls).replaceAll("%pulls%", current_pulls),
+            "%maxpulls%", max_pulls,
+            "%pulls%", current_pulls,
+            "%reward_stripped%", getStrippedName()
+        );
 
         final Component component = AdvUtils.parse(MiscUtils.populatePlaceholders(target, message, placeholders));
 
@@ -370,7 +368,7 @@ public class Prize {
     }
 
     private @NotNull LegacyItemBuilder display() {
-        LegacyItemBuilder builder = new LegacyItemBuilder();
+        LegacyItemBuilder builder = new LegacyItemBuilder(this.plugin);
 
         try {
             if (this.section.contains("DisplayData")) {
@@ -505,13 +503,13 @@ public class Prize {
             }
 
             return builder;
-        } catch (Exception exception) {
-            return new LegacyItemBuilder(ItemType.RED_TERRACOTTA).setDisplayName("<red><bold>ERROR").setDisplayLore(new ArrayList<>() {{
-                add("<red>There was an error with one of your prizes!");
-                add("<red>The reward in question is labeled: <yellow>" + section.getName() + " <red>in crate: <yellow>" + crateName);
-                add("<red>Name of the reward is " + section.getString("DisplayName"));
-                add("<red>If you are confused, Stop by our discord for support!");
-            }});
+        } catch (final Exception exception) {
+            return new LegacyItemBuilder(this.plugin, ItemType.RED_TERRACOTTA).setDisplayName("<red><bold>ERROR").setDisplayLore(List.of(
+                "<red>There was an error with one of your prizes!",
+                "<red>The reward in question is labeled: <yellow>" + section.getName() + " <red>in crate: <yellow>" + crateName,
+                "<red>Name of the reward is " + section.getString("DisplayName"),
+                "<red>If you are confused, Stop by our discord for support!"
+            ));
         }
     }
 

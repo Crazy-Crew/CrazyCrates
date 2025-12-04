@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.paper.support.holograms.types;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateHologram;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import eu.decentsoftware.holograms.api.DHAPI;
+import eu.decentsoftware.holograms.api.utils.color.IridiumColorAPI;
 import org.bukkit.Location;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
@@ -32,15 +33,7 @@ public class DecentHologramsSupport extends HologramManager {
 
         final Hologram hologram = DHAPI.createHologram(name(id), location.clone().add(getVector(crate)));
 
-        crateHologram.getMessages().forEach(line -> {
-            if (line != null) {
-                String coloredLine = color(line);
-
-                if (coloredLine != null) {
-                    DHAPI.addHologramLine(hologram, coloredLine);
-                }
-            }
-        });
+        crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, IridiumColorAPI.process(line)));
 
         hologram.setDisplayRange(crateHologram.getRange());
 

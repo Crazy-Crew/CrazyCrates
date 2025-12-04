@@ -1,5 +1,5 @@
 plugins {
-    id("com.gradleup.shadow")
+    id("com.ryderbelserion.feather.core")
 
     `java-library`
 }
@@ -7,20 +7,17 @@ plugins {
 val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
 
 repositories {
-    maven("https://repo.codemc.io/repository/maven-public")
+    maven("https://repo.codemc.io/repository/maven-public/")
 
-    maven("https://repo.triumphteam.dev/snapshots")
+    maven("https://repo.triumphteam.dev/snapshots/")
 
-    maven("https://repo.crazycrew.us/libraries")
-    maven("https://repo.crazycrew.us/releases")
+    maven("https://repo.crazycrew.us/libraries/")
+    maven("https://repo.crazycrew.us/releases/")
 
-    maven("https://jitpack.io")
+    maven("https://jitpack.io/")
 
     mavenCentral()
-}
-
-dependencies {
-    compileOnly(libs.findLibrary("annotations").get())
+    mavenLocal()
 }
 
 java {
@@ -28,12 +25,6 @@ java {
 }
 
 tasks {
-    shadowJar {
-        archiveClassifier.set("")
-
-        exclude("META-INF/**")
-    }
-
     compileJava {
         options.encoding = Charsets.UTF_8.name()
         options.release.set(21)
@@ -47,15 +38,15 @@ tasks {
         inputs.properties(
             "name" to rootProject.name,
             "version" to rootProject.version,
-            "description" to rootProject.description,
+            "description" to rootProject.description.toString(),
             "minecraft" to libs.findVersion("minecraft").get(),
-            "website" to "https://github.com/Crazy-Crew/${rootProject.name}",
-            "id" to rootProject.name.lowercase(),
+            "website" to "https://github.com/${rootProject.property("repository_owner")}/${rootProject.name}",
             "group" to project.group
         )
 
         with(copySpec {
-            include("*paper-plugin.yml", "fabric.mod.json")
+            include("*paper-plugin.yml", "*plugin.yml")
+
             from("src/main/resources") {
                 expand(inputs.properties)
             }

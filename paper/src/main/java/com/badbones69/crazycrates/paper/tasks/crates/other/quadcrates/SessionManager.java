@@ -1,11 +1,18 @@
 package com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates;
 
+import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import java.util.List;
 import java.util.UUID;
 
 public class SessionManager {
+
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final CrateManager crateManager = this.plugin.getCrateManager();
 
     /**
      * Check if player is in session.
@@ -14,12 +21,14 @@ public class SessionManager {
      * @return true or false.
      */
     public final boolean inSession(@NotNull final Player player) {
-        if (QuadCrateManager.getCrateSessions().isEmpty()) return false;
+        final List<QuadCrateManager> sessions = this.crateManager.getQuadSessions();
+
+        if (sessions.isEmpty()) return false;
 
         final UUID uuid = player.getUniqueId();
 
-        for (QuadCrateManager quadCrateManager : QuadCrateManager.getCrateSessions()) {
-            if (quadCrateManager.getPlayer().getUniqueId().equals(uuid)) return true;
+        for (final QuadCrateManager session : sessions) {
+            if (session.getPlayer().getUniqueId().equals(uuid)) return true;
         }
 
         return false;
@@ -34,20 +43,33 @@ public class SessionManager {
     public @Nullable final QuadCrateManager getSession(@NotNull final Player player) {
         final UUID uuid = player.getUniqueId();
 
-        for (QuadCrateManager quadCrateManager : QuadCrateManager.getCrateSessions()) {
-            if (quadCrateManager.getPlayer().getUniqueId().equals(uuid)) return quadCrateManager;
+        final List<QuadCrateManager> sessions = this.crateManager.getQuadSessions();
+
+        QuadCrateManager instance = null;
+
+        if (sessions.isEmpty()) return instance;
+
+        for (final QuadCrateManager session : sessions) {
+            if (session.getPlayer().getUniqueId().equals(uuid)) {
+                instance = session;
+
+                break;
+            }
         }
 
-        return null;
+        return instance;
     }
 
     /**
      * End all crates.
      */
-    public static void endCrates() {
-        if (!QuadCrateManager.getCrateSessions().isEmpty()) {
-            QuadCrateManager.getCrateSessions().forEach(session -> session.endCrate(true));
-            QuadCrateManager.getCrateSessions().clear();
-        }
+    public void endCrates() {
+        final List<QuadCrateManager> sessions = this.crateManager.getQuadSessions();
+
+        if (sessions.isEmpty()) return;
+
+        sessions.forEach(session -> session.endCrate(true));
+
+        this.crateManager.purgeQuadSessions();
     }
 }

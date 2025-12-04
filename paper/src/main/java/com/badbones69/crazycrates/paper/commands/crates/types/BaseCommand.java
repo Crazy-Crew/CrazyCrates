@@ -11,12 +11,14 @@ import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
+import com.ryderbelserion.fusion.paper.files.FileManager;
 import dev.triumphteam.cmd.core.annotations.Command;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,13 +26,20 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import java.util.HashMap;
+import java.nio.file.Path;
 import java.util.Map;
+import java.util.UUID;
 
 @Command(value = "crazycrates", alias = {"crates", "crate", "cc"})
 public abstract class BaseCommand {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    protected final Path path = this.plugin.getDataPath();
+
+    protected final Server server = this.plugin.getServer();
+
+    protected final PluginManager pluginManager = this.server.getPluginManager();
 
     protected final ComponentLogger logger = this.plugin.getComponentLogger();
 
@@ -40,7 +49,7 @@ public abstract class BaseCommand {
 
     protected final CrateManager crateManager = this.plugin.getCrateManager();
 
-    protected final LegacyFileManager fileManager = this.plugin.getFileManager();
+    protected final FileManager fileManager = this.plugin.getFileManager();
 
     protected final SettingsManager config = ConfigManager.getConfig();
 
@@ -109,7 +118,7 @@ public abstract class BaseCommand {
     protected @NotNull final KeyType getKeyType(@NotNull final String type) {
         if (type.isEmpty()) return KeyType.virtual_key;
 
-        KeyType keyType = KeyType.getFromName(type);
+        final KeyType keyType = KeyType.getFromName(type);
 
         if (keyType == null || keyType == KeyType.free_key) {
             return KeyType.virtual_key;
@@ -146,86 +155,88 @@ public abstract class BaseCommand {
         final String fileName = crate.getFileName();
 
         if (player != null) {
-            final int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), fileName);
+            final UUID uuid = player.getUniqueId();
+            final String name = player.getName();
+
+            final int totalKeys = this.userManager.getTotalKeys(uuid, fileName);
 
             if (totalKeys < 1) {
-                if (MiscUtils.isLogging()) this.logger.warn("The player {} does not have enough keys to take.", player.getName());
+                if (MiscUtils.isLogging()) this.logger.warn("The player {} does not have enough keys to take.", name);
 
-                Messages.cannot_take_keys.sendMessage(sender, "{player}", player.getName());
+                Messages.cannot_take_keys.sendMessage(sender, "{player}", name);
 
                 return;
             }
 
             if (totalKeys < amount) {
-                amount = type == KeyType.physical_key ? this.userManager.getPhysicalKeys(player.getUniqueId(), fileName) : this.userManager.getVirtualKeys(player.getUniqueId(), fileName);
+                amount = type == KeyType.physical_key ? this.userManager.getPhysicalKeys(uuid, fileName) : this.userManager.getVirtualKeys(uuid, fileName);
             }
 
-            this.userManager.takeKeys(player.getUniqueId(), fileName, type, amount, false);
+            this.userManager.takeKeys(uuid, fileName, type, amount, false);
 
-            final Map<String, String> placeholders = new HashMap<>();
+            final int finalAmount = amount;
 
-            placeholders.put("{amount}", String.valueOf(amount));
-            placeholders.put("{keytype}", type.getFriendlyName());
-            placeholders.put("{player}", player.getName());
-            placeholders.put("{key}", crate.getKeyName());
+            Messages.take_player_keys.sendMessage(sender, Map.of(
+                "{keytype}", type.getFriendlyName(),
+                "{amount}", String.valueOf(finalAmount),
+                "{player}", name,
+                "{key}", crate.getKeyName()
+            ));
 
-            Messages.take_player_keys.sendMessage(sender, placeholders);
-
-            EventManager.logEvent(EventType.event_key_removed, player.getName(), sender, crate, type, amount);
+            EventManager.logEvent(EventType.event_key_removed, name, sender, crate, type, amount);
 
             return;
         }
 
         if (offlinePlayer != null) {
-            final Map<String, String> placeholders = new HashMap<>();
+            final String name = offlinePlayer.getName();
 
-            placeholders.put("{amount}", String.valueOf(amount));
-            placeholders.put("{keytype}", type.getFriendlyName());
-            placeholders.put("{player}", offlinePlayer.getName());
-            placeholders.put("{key}", crate.getKeyName());
-
-            Messages.take_offline_player_keys.sendMessage(sender, placeholders);
+            Messages.take_offline_player_keys.sendMessage(sender, Map.of(
+                "{amount}", String.valueOf(amount),
+                "{keytype}", type.getFriendlyName(),
+                "{key}", crate.getKeyName(),
+                "{player}", name == null ? "N/A" : name)
+            );
 
             this.userManager.takeOfflineKeys(offlinePlayer.getUniqueId(), fileName, type, amount);
 
-            EventManager.logEvent(EventType.event_key_removed, offlinePlayer.getName(), sender, crate, type, amount);
+            EventManager.logEvent(EventType.event_key_removed, name == null ? "N/A" : name, sender, crate, type, amount);
         }
     }
 
     @ApiStatus.Internal
-    private void addKey(@NotNull final CommandSender sender, @Nullable Player player, @Nullable OfflinePlayer offlinePlayer, Crate crate, KeyType type, int amount, boolean isSilent, boolean isGiveAll) {
+    private void addKey(@NotNull final CommandSender sender, @Nullable final Player player, @Nullable final OfflinePlayer offlinePlayer, @NotNull final Crate crate, @NotNull final KeyType type, final int amount, final boolean isSilent, final boolean isGiveAll) {
         final String fileName = crate.getFileName();
 
         if (player != null) {
-            final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
+            if (!isGiveAll) { // we already call the key event when doing give all. we do not need to call it twice.
+                final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
 
-            this.plugin.getServer().getPluginManager().callEvent(event);
+                this.pluginManager.callEvent(event);
 
-            if (event.isCancelled()) return;
-
-            if (crate.getCrateType() == CrateType.crate_on_the_go) {
-                MiscUtils.addItem(player, crate.getKey(amount, player));
-            } else {
-                this.userManager.addKeys(player.getUniqueId(), fileName, type, amount);
+                if (event.isCancelled()) return;
             }
 
-            final Map<String, String> placeholders = new HashMap<>();
+            final UUID uuid = player.getUniqueId();
+            final String name = player.getName();
 
-            placeholders.put("{amount}", String.valueOf(amount));
-            placeholders.put("{player}", player.getName());
-            placeholders.put("{keytype}", type.getFriendlyName());
-            placeholders.put("{key}", crate.getKeyName());
+            this.userManager.addKeys(uuid, fileName, crate.getCrateType() == CrateType.crate_on_the_go ? KeyType.physical_key : type, amount);
+
+            final Map<String, String> placeholders = Map.of(
+                "{keytype}", type.getFriendlyName(),
+                "{amount}", String.valueOf(amount),
+                "{player}", name,
+                "{key}", crate.getKeyName()
+            );
 
             boolean fullMessage = this.config.getProperty(ConfigKeys.notify_player_when_inventory_full);
             boolean inventoryCheck = this.config.getProperty(ConfigKeys.give_virtual_keys_when_inventory_full);
 
-            EventManager.logEvent(EventType.event_key_given, player.getName(), sender, crate, type, amount);
+            EventManager.logEvent(EventType.event_key_given, name, sender, crate, type, amount);
 
             if (!isGiveAll) Messages.gave_a_player_keys.sendMessage(sender, placeholders);
 
-            if (isSilent) {
-                return;
-            }
+            if (isSilent) return;
 
             if (!inventoryCheck || !fullMessage && !MiscUtils.isInventoryFull(player) && player.isOnline()) {
                 Messages.obtaining_keys.sendMessage(player, placeholders);
@@ -237,23 +248,25 @@ public abstract class BaseCommand {
         if (offlinePlayer != null) {
             final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(offlinePlayer, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
 
-            this.plugin.getServer().getPluginManager().callEvent(event);
+            this.pluginManager.callEvent(event);
 
             if (event.isCancelled()) return;
 
             if (!this.userManager.addOfflineKeys(offlinePlayer.getUniqueId(), fileName, type, amount)) {
                 Messages.internal_error.sendMessage(sender);
             } else {
-                Map<String, String> placeholders = new HashMap<>();
+                final String name = offlinePlayer.getName();
 
-                placeholders.put("{amount}", String.valueOf(amount));
-                placeholders.put("{keytype}", type.getFriendlyName());
-                placeholders.put("{player}", offlinePlayer.getName());
-                placeholders.put("{key}", crate.getKeyName());
+                final Map<String, String> placeholders = Map.of(
+                    "{keytype}", type.getFriendlyName(),
+                    "{amount}", String.valueOf(amount),
+                    "{key}", crate.getKeyName(),
+                    "{player}", name == null ? "N/A" : name
+                );
 
                 Messages.given_offline_player_keys.sendMessage(sender, placeholders);
 
-                EventManager.logEvent(EventType.event_key_given, offlinePlayer.getName(), sender, crate, type, amount);
+                EventManager.logEvent(EventType.event_key_given, name == null ? "N/A" : name, sender, crate, type, amount);
             }
         }
     }

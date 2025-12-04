@@ -5,7 +5,8 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.core.utils.NumberUtils;
+import com.ryderbelserion.fusion.core.api.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.PotionBuilder;
@@ -13,7 +14,6 @@ import com.ryderbelserion.fusion.paper.api.builders.items.types.SkullBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.SpawnerBuilder;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import io.papermc.paper.persistence.PersistentDataContainerView;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.block.banner.PatternType;
@@ -37,7 +37,7 @@ public class ItemUtils {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private static final ComponentLogger logger = plugin.getComponentLogger();
+    private static final FusionPaper fusion = plugin.getFusion();
 
     private static final CrateManager crateManager = plugin.getCrateManager();
 
@@ -208,7 +208,7 @@ public class ItemUtils {
     }
 
     public static LegacyItemBuilder convertItemStack(@Nullable final Player player, @NotNull final ItemStack itemStack) {
-        LegacyItemBuilder itemBuilder = new LegacyItemBuilder(itemStack);
+        LegacyItemBuilder itemBuilder = new LegacyItemBuilder(plugin, itemStack);
 
         if (player != null) {
             itemBuilder.setPlayer(player);
@@ -250,7 +250,7 @@ public class ItemUtils {
             }
 
             if (item.isString("amount")) {
-                final Optional<Number> integer = NumberUtils.tryParseInt(item.getString("amount", "1"));
+                final Optional<Number> integer = StringUtils.tryParseInt(item.getString("amount", "1"));
 
                 integer.ifPresent(number -> itemBuilder.setAmount(number.intValue()));
             } else {
@@ -296,7 +296,9 @@ public class ItemUtils {
 
             final String color = item.getString("settings.color", "");
 
-            itemBuilder.setColor(!color.isEmpty() ? color : !rgb.isEmpty() ? rgb : "");
+            final String value = !color.isEmpty() ? color : !rgb.isEmpty() ? rgb : "";
+
+            itemBuilder.setColor(value);
 
             final String mobType = item.getString("settings.mob.type", null);
 
@@ -308,45 +310,47 @@ public class ItemUtils {
 
             itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""));
 
-            final ConfigurationSection potions = item.getConfigurationSection("settings.potions");
+            if (itemBuilder.isPotion()) {
+                final ConfigurationSection potions = item.getConfigurationSection("settings.potions");
 
-            if (potions != null) {
                 final PotionBuilder potionBuilder = itemBuilder.asPotionBuilder();
 
-                for (final String potion : potions.getKeys(false)) {
-                    final PotionEffectType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getPotionEffect(potion);
+                if (potions != null) {
+                    for (final String potion : potions.getKeys(false)) {
+                        final PotionEffectType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getPotionEffect(potion);
 
-                    if (type != null) {
-                        final ConfigurationSection data = potions.getConfigurationSection(potion);
+                        if (type != null) {
+                            final ConfigurationSection data = potions.getConfigurationSection(potion);
 
-                        if (data != null) {
-                            final int duration = data.getInt("duration", 10) * 20;
-                            final int level = data.getInt("level", 1);
+                            if (data != null) {
+                                final int duration = data.getInt("duration", 10) * 20;
+                                final int level = data.getInt("level", 1);
 
-                            final boolean icon = data.getBoolean("style.icon", false);
-                            final boolean ambient = data.getBoolean("style.ambient", false);
-                            final boolean particles = data.getBoolean("style.particles", false);
+                                final boolean icon = data.getBoolean("style.icon", false);
+                                final boolean ambient = data.getBoolean("style.ambient", false);
+                                final boolean particles = data.getBoolean("style.particles", false);
 
-                            potionBuilder.withPotionEffect(type, duration, level, ambient, particles, icon);
+                                potionBuilder.withPotionEffect(type, duration, level, ambient, particles, icon);
+                            }
                         }
                     }
                 }
 
-                potionBuilder.build();
+                potionBuilder.setColor(value).build();
             }
 
             final ConfigurationSection patterns = item.getConfigurationSection("settings.patterns");
 
             if (patterns != null) {
+                final PatternBuilder patternBuilder = itemBuilder.asPatternBuilder();
+
                 for (final String pattern : patterns.getKeys(false)) {
                     final String patternColor = patterns.getString(pattern, "white");
 
-                    final PatternBuilder patternBuilder = itemBuilder.asPatternBuilder();
-
                     patternBuilder.addPattern(pattern, patternColor);
-
-                    patternBuilder.build();
                 }
+
+                patternBuilder.build();
             }
 
             cache.add(itemBuilder);
@@ -355,20 +359,12 @@ public class ItemUtils {
         return cache;
     }
 
-    public static List<LegacyItemBuilder> convertStringList(@NotNull final List<String> itemStrings) {
-        return convertStringList(itemStrings, null);
-    }
-
-    public static List<LegacyItemBuilder> convertStringList(@NotNull final List<String> itemStrings, @Nullable final String section) {
+    public static List<LegacyItemBuilder> convertStringList(@NotNull final List<String> itemStrings, @NotNull final String section) {
         return itemStrings.stream().map(itemString -> convertString(itemString, section)).collect(Collectors.toList());
     }
 
-    public static LegacyItemBuilder convertString(@NotNull final String itemString) {
-        return convertString(itemString, null);
-    }
-
-    public static LegacyItemBuilder convertString(@NotNull final String itemString, @Nullable final String section) {
-        LegacyItemBuilder itemBuilder = new LegacyItemBuilder();
+    public static LegacyItemBuilder convertString(@NotNull final String itemString, @NotNull final String section) {
+        LegacyItemBuilder itemBuilder = new LegacyItemBuilder(plugin);
 
         try {
             for (String optionString : itemString.split(", ")) {
@@ -386,13 +382,13 @@ public class ItemUtils {
                             itemBuilder.setEntityType(type);
                         }
                     }
-                    case "glowing" -> itemBuilder.setGlowing(NumberUtils.tryParseBoolean(value).orElse(false));
+                    case "glowing" -> itemBuilder.setGlowing(StringUtils.tryParseBoolean(value).orElse(false));
                     case "amount" -> {
-                        final Optional<Number> amount = NumberUtils.tryParseInt(value);
+                        final Optional<Number> amount = StringUtils.tryParseInt(value);
                         itemBuilder.setAmount(amount.map(Number::intValue).orElse(1));
                     }
                     case "damage" -> {
-                        final Optional<Number> amount = NumberUtils.tryParseInt(value);
+                        final Optional<Number> amount = StringUtils.tryParseInt(value);
                         itemBuilder.setDamage(amount.map(Number::intValue).orElse(0));
                     }
                     case "lore" -> itemBuilder.setDisplayLore(List.of(value.split(",")));
@@ -417,7 +413,7 @@ public class ItemUtils {
                     }
                     default -> {
                         if (com.ryderbelserion.fusion.paper.utils.ItemUtils.getEnchantment(option.toLowerCase()) != null) {
-                            final Optional<Number> amount = NumberUtils.tryParseInt(value);
+                            final Optional<Number> amount = StringUtils.tryParseInt(value);
 
                             itemBuilder.addEnchantment(option.toLowerCase(), amount.map(Number::intValue).orElse(1), true);
 
@@ -440,14 +436,14 @@ public class ItemUtils {
                             if (patternType != null) {
                                 itemBuilder.addPattern(patternType, color);
                             }
-                        } catch (Exception ignored) {}
+                        } catch (final Exception ignored) {}
                     }
                 }
             }
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             itemBuilder.withType(ItemType.RED_TERRACOTTA).setDisplayName("<red>Error found!, Prize Name: " + section);
 
-            if (MiscUtils.isLogging()) logger.warn("An error has occurred with the item builder: ", exception);
+            fusion.log("error", "An error has occurred with the prize {}, {}", section, exception.getMessage());
         }
 
         return itemBuilder;

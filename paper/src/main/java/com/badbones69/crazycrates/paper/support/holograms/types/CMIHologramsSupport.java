@@ -49,7 +49,12 @@ public class CMIHologramsSupport extends HologramManager {
         }
 
         hologram.setShowRange(crateHologram.getRange());
-        hologram.setLines(lines(crateHologram));
+
+        final List<String> lines = new ArrayList<>();
+
+        crateHologram.getMessages().forEach(line -> lines.add(CMIChatColor.colorize(line)));
+
+        hologram.setLines(lines);
 
         if (crateHologram.getUpdateInterval() != -1) {
             hologram.setUpdateIntervalSec(crateHologram.getUpdateInterval());
@@ -57,7 +62,7 @@ public class CMIHologramsSupport extends HologramManager {
 
         this.hologramManager.addHologram(hologram);
 
-        new FoliaScheduler(location) {
+        new FoliaScheduler(this.plugin, location) {
             @Override
             public void run() {
                 location.getNearbyEntitiesByType(Player.class, crateHologram.getRange()).forEach(player -> hologramManager.handleHoloUpdates(player, hologram.getLocation()));
@@ -83,13 +88,13 @@ public class CMIHologramsSupport extends HologramManager {
     public void purge(final boolean isShutdown) {
         final String name = this.plugin.getName().toLowerCase();
 
-        final List<String> holograms = new ArrayList<>() {{
-            hologramManager.getHolograms().forEach((id, hologram) -> {
-                if (id.startsWith(name + "-")) {
-                    add(id.replace(name + "-", ""));
-                }
-            });
-        }};
+        final List<String> holograms = new ArrayList<>();
+
+        hologramManager.getHolograms().forEach((id, hologram) -> {
+            if (id.startsWith(name + "-")) {
+                holograms.add(id.replace(name + "-", ""));
+            }
+        });
 
         holograms.forEach(this::removeHologram);
     }

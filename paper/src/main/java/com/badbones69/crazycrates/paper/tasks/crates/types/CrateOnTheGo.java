@@ -54,7 +54,7 @@ public class CrateOnTheGo extends CrateBuilder {
             this.userManager.removeRespinPrize(this.uuid, fileName);
 
             if (!crate.isCyclePersistRestart()) {
-                userManager.removeRespinCrate(uuid, fileName, userManager.getCrateRespin(uuid, fileName));
+                this.userManager.removeRespinCrate(this.uuid, fileName, userManager.getCrateRespin(this.uuid, fileName));
             }
         }
 

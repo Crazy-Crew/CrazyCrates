@@ -7,11 +7,7 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
-import dev.triumphteam.cmd.core.annotations.ArgName;
-import dev.triumphteam.cmd.core.annotations.Command;
-import dev.triumphteam.cmd.core.annotations.Description;
-import dev.triumphteam.cmd.core.annotations.Optional;
-import dev.triumphteam.cmd.core.annotations.Suggestion;
+import dev.triumphteam.cmd.core.annotations.*;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -34,16 +30,18 @@ public class CommandKey {
 
     @Command
     @Permission(value = "crazycrates.keys", def = PermissionDefault.TRUE)
+    @Syntax("/keys")
     public void personal(Player player) {
-        Map<String, String> placeholders = new HashMap<>();
-
-        placeholders.put("{crates_opened}", String.valueOf(this.userManager.getTotalCratesOpened(player.getUniqueId())));
-
-        getKeys(player, player, Messages.virtual_keys_header.getMessage(player, placeholders), Messages.no_virtual_keys.getMessage(player));
+        getKeys(player, player, Messages.virtual_keys_header.getMessage(
+                player,
+                "{crates_opened}",
+                String.valueOf(userManager.getTotalCratesOpened(player.getUniqueId()))
+        ), Messages.no_virtual_key.getMessage(player));
     }
 
     @Command("view")
     @Permission("crazycrates.keys-others")
+    @Syntax("/keys view [player_name]")
     public void view(CommandSender sender, @ArgName("player") @Optional @Suggestion("players") Player target) {
         if (target == null) {
             if (sender instanceof Player player) {
@@ -63,16 +61,10 @@ public class CommandKey {
             return;
         }
 
-        Map<String, String> placeholders = new HashMap<>();
-
-        placeholders.put("{player}", targetName);
-        placeholders.put("{crates_opened}", String.valueOf(this.userManager.getTotalCratesOpened(target.getUniqueId())));
-
-        String header = Messages.other_player_no_keys_header.getMessage(target, placeholders);
-
-        String content = Messages.other_player_no_keys.getMessage(target, "{player}", targetName);
-
-        getKeys(target, sender, header, content);
+        getKeys(target, sender, Messages.other_player_no_keys_header.getMessage(target, Map.of(
+                "{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(target.getUniqueId())),
+                "{player}", targetName
+        )), Messages.other_player_no_keys.getMessage(target, "{player}", targetName));
     }
 
     /**
@@ -102,15 +94,13 @@ public class CommandKey {
             final int amount = keys.get(crate);
 
             if (amount > 0) {
-                final Map<String, String> placeholders = new HashMap<>();
-
                 hasKeys = true;
 
-                placeholders.put("{crate}", crate.getCrateName());
-                placeholders.put("{keys}", String.valueOf(amount));
-                placeholders.put("{crate_opened}", String.valueOf(this.userManager.getCrateOpened(uuid, crate.getFileName())));
-
-                message.add(Messages.per_crate.getMessage(player, placeholders));
+                message.add(Messages.per_crate.getMessage(player, Map.of(
+                        "{crate_opened}", String.valueOf(userManager.getCrateOpened(uuid, crate.getFileName())),
+                        "{keys}", String.valueOf(amount),
+                        "{crate}", crate.getCrateName()
+                )));
             }
         }
 

@@ -5,18 +5,21 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
-import com.ryderbelserion.fusion.core.files.FileType;
-import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
+import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.CustomModelData;
+import io.papermc.paper.datacomponent.item.ItemLore;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 import su.nightexpress.excellentcrates.CratesAPI;
 import su.nightexpress.excellentcrates.crate.impl.Crate;
 import su.nightexpress.excellentcrates.data.impl.CrateUser;
@@ -27,7 +30,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -72,17 +74,17 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                     });
 
                     success.add("<green>⤷ " + name);
-                } catch (Exception exception) {
+                } catch (final Exception exception) {
                     failed.add("<red>⤷ " + name);
                 }
             }
 
-            Messages.successfully_migrated_users.sendMessage(this.sender, new HashMap<>() {{
-                put("{succeeded_amount}", String.valueOf(success.size()));
-                put("{failed_amount}", String.valueOf(failed.size()));
-                put("{type}", type.getName());
-                put("{time}", time());
-            }});
+            Messages.successfully_migrated_users.sendMessage(this.sender, Map.of(
+                    "{succeeded_amount}", String.valueOf(success.size()),
+                    "{failed_amount}", String.valueOf(failed.size()),
+                    "{type}", type.getName(),
+                    "{time}", time()
+            ));
 
             return;
         }
@@ -121,17 +123,15 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             try {
                 crateFile.createNewFile();
-            } catch (IOException exception) {
+            } catch (final IOException exception) {
                 if (MiscUtils.isLogging()) this.logger.warn("Failed to create crate file {} in {}.", crateName, directory.getName(), exception);
 
                 failed.add("<red>⤷ " + crateName);
             }
 
-            final LegacyCustomFile customFile = new LegacyCustomFile(FileType.YAML, crateFile, true).load();
+            final PaperCustomFile customFile = new PaperCustomFile(crateFile.toPath(), new ArrayList<>()).load();
 
             final YamlConfiguration configuration = customFile.getConfiguration();
-
-            if (configuration == null) return;
 
             set(configuration, "Crate.CrateType", "CSGO");
 
@@ -248,10 +248,14 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             set(root, "Preview-Name", AdvUtils.convert(itemName.isEmpty() ? crateConfig.getString("Name", "%crate%").replace("%crate%", strippedName) : itemName + " Preview"));
 
-            if (crateItem.hasItemMeta()) {
-                final ItemMeta itemMeta = crateItem.getItemMeta();
+            if (crateItem.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
+                @Nullable final CustomModelData builder = crateItem.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
 
-                set(root, "Custom-Model-Data", itemMeta.hasCustomModelDataComponent() ? itemMeta.getCustomModelDataComponent().getFloats().getFirst() : -1);
+                if (builder != null) {
+                    @Unmodifiable final List<Float> floats = builder.floats();
+
+                    set(root, "Custom-Model-Data", !floats.isEmpty() ? floats.getFirst() : -1);
+                }
             }
 
             set(root, "Settings.Knockback", crate.isPushbackEnabled());
@@ -263,6 +267,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             set(root, "Hologram.Color", "transparent");
 
             List<String> hologramText = new ArrayList<>();
+
             crate.getHologramText().forEach(line -> {
                 final String filtered = line.replace(
                         "%excellentcrates_keys_" + strippedName + "%",
@@ -302,13 +307,13 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 final ItemStack itemStack = reward.getPreview();
 
-                if (itemStack.hasItemMeta()) {
-                    final ItemMeta itemMeta = itemStack.getItemMeta();
+                if (itemStack.hasData(DataComponentTypes.LORE)) {
+                    @Nullable final ItemLore itemLore = itemStack.getData(DataComponentTypes.LORE);
 
-                    if (itemMeta.hasLore()) {
-                        final List<Component> lore = itemMeta.lore();
+                    if (itemLore != null) {
+                        final List<Component> lore = itemLore.lines();
 
-                        if (lore != null) {
+                        if (!lore.isEmpty()) {
                             set(root, "Prizes." + id + ".DisplayLore", AdvUtils.fromComponent(lore));
                         }
                     }
@@ -332,7 +337,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 List<String> enchantments = new ArrayList<>();
 
-                for (Map.Entry<Enchantment, Integer> enchantment : itemStack.getEnchantments().entrySet()) {
+                for (final Map.Entry<Enchantment, Integer> enchantment : itemStack.getEnchantments().entrySet()) {
                     enchantments.add(enchantment.getKey().getKey().getKey() + ":" + enchantment.getValue());
                 }
 
@@ -356,9 +361,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                         set(prizeSection, "Items", items);
                     } else {
-                        set(prizeSection, "Items", new ArrayList<>() {{
-                            add("Data: " + base64);
-                        }});
+                        set(prizeSection, "Items", List.of("Data: " + base64));
                     }
                 });
             });
@@ -375,10 +378,12 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
         final int convertedCrates = success.size();
         final int failedCrates = failed.size();
 
-        sendMessage(new ArrayList<>(failedCrates + convertedCrates) {{
-            addAll(failed);
-            addAll(success);
-        }}, convertedCrates, failedCrates);
+        final List<String> files = new ArrayList<>(failedCrates + convertedCrates);
+
+        files.addAll(failed);
+        files.addAll(success);
+
+        sendMessage(files, convertedCrates, failedCrates);
     }
 
     @Override

@@ -65,12 +65,12 @@ public class FancyHologramsSupport extends HologramManager {
 
         final Server server = this.plugin.getServer();
 
-        new FoliaScheduler(Scheduler.async_scheduler) {
+        new FoliaScheduler(this.plugin, Scheduler.async_scheduler) {
             @Override
             public void run() {
                 server.getOnlinePlayers().forEach(hologram::updateShownStateFor);
             }
-        }.run();
+        }.runNow();
 
         this.manager.addHologram(hologram);
     }
@@ -93,15 +93,15 @@ public class FancyHologramsSupport extends HologramManager {
     public void purge(final boolean isShutdown) {
         final String name = this.plugin.getName().toLowerCase();
 
-        final List<String> holograms = new ArrayList<>() {{
-            manager.getHolograms().forEach(hologram -> {
-                final String id = hologram.getName();
+        final List<String> holograms = new ArrayList<>();
 
-                if (id.startsWith(name + "-")) {
-                    add(id.replace(name + "-", ""));
-                }
-            });
-        }};
+        manager.getHolograms().forEach(hologram -> {
+            final String id = hologram.getName();
+
+            if (id.startsWith(name + "-")) {
+                holograms.add(id.replace(name + "-", ""));
+            }
+        });
 
         holograms.forEach(this::removeHologram);
     }

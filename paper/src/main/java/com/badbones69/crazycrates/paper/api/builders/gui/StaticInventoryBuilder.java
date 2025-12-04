@@ -23,7 +23,7 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
     public StaticInventoryBuilder(@NotNull final Player player, @NotNull final Crate crate, @NotNull final String title, final int rows) {
         super(player);
 
-        this.gui = Gui.gui().setTitle(parse(player, title)).setRows(rows).disableInteractions().create();
+        this.gui = Gui.gui(this.plugin).setTitle(parse(player, title)).setRows(rows).disableInteractions().create();
 
         this.player = player;
         this.crate = crate;
@@ -39,7 +39,7 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
     public StaticInventoryBuilder(@NotNull final Player player, @NotNull final String title, final int rows) {
         super(player);
 
-        this.gui = Gui.gui().setTitle(parse(player, title)).setRows(rows).disableInteractions().create();
+        this.gui = Gui.gui(this.plugin).setTitle(parse(player, title)).setRows(rows).disableInteractions().create();
 
         this.player = player;
         this.crate = null;
@@ -54,7 +54,7 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
     public StaticInventoryBuilder(@NotNull final Player player, @NotNull final Crate crate) {
         super(player);
 
-        this.gui = Gui.gui().setTitle(parse(player, crate.getPreviewName())).setRows(crate.getPreviewTierCrateRows()).disableInteractions().create();
+        this.gui = Gui.gui(this.plugin).setTitle(parse(player, crate.getPreviewName())).setRows(crate.getPreviewTierCrateRows()).disableInteractions().create();
 
         this.player = player;
         this.crate = crate;

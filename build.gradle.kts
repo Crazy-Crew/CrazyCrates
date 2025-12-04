@@ -1,120 +1,14 @@
+import utils.convertList
+import utils.updateMarkdown
+
 plugins {
-    alias(libs.plugins.minotaur)
-    alias(libs.plugins.feather)
-    alias(libs.plugins.hangar)
+    id("modrinth-plugin")
+    id("hangar-plugin")
 
-    `config-java`
+    `java-plugin`
 }
-
-rootProject.group = "com.badbones69.crazycrates"
 
 val git = feather.getGit()
-
-val commitHash: String? = git.getCurrentCommitHash().subSequence(0, 7).toString()
-val isSnapshot: Boolean = System.getenv("IS_SNAPSHOT") != null
-val content: String = if (isSnapshot) "[$commitHash](https://github.com/Crazy-Crew/${rootProject.name}/commit/$commitHash) ${git.getCurrentCommit()}" else rootProject.file("changelog.md").readText(Charsets.UTF_8)
-val minecraft = libs.versions.minecraft.get()
-
-rootProject.version = version()
-rootProject.description = "Add crates to your server with 11 different crate types to choose from!"
-
-fun version(): String {
-    if (isSnapshot) {
-        return "$minecraft-$commitHash"
-    }
-
-    if (System.getenv("BUILD_NUMBER") != null && System.getenv("IS_PUBLISHING") == null) {
-        return "$minecraft-${System.getenv("BUILD_NUMBER")}-$commitHash"
-    }
-
-    return libs.versions.crazycrates.get()
-}
-
-feather {
-    rootDirectory = rootProject.rootDir.toPath()
-
-    val data = git.getCurrentCommitAuthorData()
-
-    discord {
-        webhook {
-            group(rootProject.name.lowercase())
-            task("dev-build")
-
-            if (System.getenv("BUILD_WEBHOOK") != null) {
-                post(System.getenv("BUILD_WEBHOOK"))
-            }
-
-            username(data.author)
-
-            avatar(data.avatar)
-
-            embeds {
-                embed {
-                    color("#ffa347")
-
-                    title("A new dev version of ${rootProject.name} is ready!")
-
-                    fields {
-                        field(
-                            "Version ${rootProject.version}",
-                            "Click [here](https://modrinth.com/plugin/${rootProject.name.lowercase()}/version/${rootProject.version}) to download!"
-                        )
-
-                        field(
-                            ":bug: Report Bugs",
-                            "https://github.com/Crazy-Crew/${rootProject.name}/issues"
-                        )
-
-                        field(
-                            ":hammer: Changelog",
-                            content
-                        )
-                    }
-                }
-            }
-        }
-
-        webhook {
-            group(rootProject.name.lowercase())
-            task("release-build")
-
-            if (System.getenv("BUILD_WEBHOOK") != null) {
-                post(System.getenv("BUILD_WEBHOOK"))
-            }
-
-            username(data.author)
-
-            avatar(data.avatar)
-
-            content("<@&929463441159254066>")
-
-            embeds {
-                embed {
-                    color("#1bd96a")
-
-                    title("A new release version of ${rootProject.name} is ready!")
-
-                    fields {
-                        field(
-                            "Version ${rootProject.version}",
-                            "Click [here](https://modrinth.com/plugin/${rootProject.name.lowercase()}/version/${rootProject.version}) to download!"
-                        )
-
-                        field(
-                            ":bug: Report Bugs",
-                            "https://github.com/Crazy-Crew/${rootProject.name}/issues"
-                        )
-
-                        field(
-                            ":hammer: Changelog",
-                            content
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
 
 allprojects {
     apply(plugin = "java-library")
@@ -149,75 +43,97 @@ tasks {
     }
 }
 
-modrinth {
-    token = System.getenv("MODRINTH_TOKEN")
+val releaseType = rootProject.ext.get("release_type").toString()
+val color = rootProject.property("${releaseType.lowercase()}_color").toString()
+val isRelease = releaseType.equals("release", true)
+val isAlpha = releaseType.equals("alpha", true)
 
-    projectId = rootProject.name
+feather {
+    rootDirectory = rootProject.rootDir.toPath()
 
-    versionName = "${rootProject.name} ${rootProject.version}"
-    versionNumber = "${rootProject.version}"
-    versionType = if (isSnapshot) "beta" else "release"
+    val data = git.getGithubCommit("${rootProject.property("repository_owner")}/${rootProject.name}")
 
-    changelog = content
+    val user = data.user
 
-    gameVersions.addAll(listOf(libs.versions.minecraft.get()))
+    discord {
+        webhook {
+            group(rootProject.name.lowercase())
+            task("release-build")
 
-    uploadFile = tasks.jar.get().archiveFile.get()
+            if (System.getenv("BUILD_WEBHOOK") != null) {
+                post(System.getenv("BUILD_WEBHOOK"))
+            }
 
-    loaders.addAll(listOf("paper", "folia", "purpur"))
+            if (isRelease) {
+                username(user.getName())
 
-    syncBodyFrom = rootProject.file("description.md").readText(Charsets.UTF_8)
+                avatar(user.avatar)
+            } else {
+                username(rootProject.property("author_name").toString())
 
-    autoAddDependsOn = false
-    detectLoaders = false
+                avatar(rootProject.property("author_avatar").toString())
+            }
 
-    dependencies {
-        optional.project("fancyholograms")
-        optional.project("DecentHolograms")
-    }
-}
+            embeds {
+                embed {
+                    color(color)
 
-hangarPublish {
-    publications.register("plugin") {
-        apiKey.set(System.getenv("HANGAR_KEY"))
+                    title("A new $releaseType version of ${rootProject.name} is ready!")
 
-        id.set(rootProject.name)
-
-        version.set("${rootProject.version}")
-
-        channel.set(if (isSnapshot) "Beta" else "Release")
-
-        changelog.set(content)
-
-        platforms {
-            paper {
-                jar.set(tasks.jar.get().archiveFile.get())
-
-                platformVersions.set(listOf(libs.versions.minecraft.get()))
-
-                dependencies {
-                    hangar("PlaceholderAPI") {
-                        required = false
+                    if (isRelease) {
+                        content("<@&${rootProject.property("discord_role_id").toString()}>")
                     }
 
-                    hangar("FancyHolograms") {
-                        required = false
-                    }
+                    fields {
+                        field(
+                            "Version ${rootProject.version}",
+                            listOf(
+                                "*Click below to download!*",
+                                "<:modrinth:1115307870473420800> [Modrinth](https://modrinth.com/plugin/${rootProject.name.lowercase()}/version/${rootProject.version})",
+                                "<:hangar:1139326635313733652> [Hangar](https://hangar.papermc.io/${rootProject.property("repository_owner").toString().replace("-", "")}/${rootProject.name.lowercase()}/versions/${rootProject.version})"
+                            ).convertList()
+                        )
 
-                    url("DecentHolograms", "https://modrinth.com/plugin/decentholograms") {
-                        required = false
-                    }
+                        field(
+                            ":bug: Report Bugs",
+                            "https://github.com/${rootProject.property("repository_owner")}/${rootProject.name}/issues"
+                        )
 
-                    url("ItemsAdder", "https://polymart.org/product/1851/itemsadder") {
-                        required = false
+                        field(
+                            ":hammer: Changelog",
+                            rootProject.ext.get("mc_changelog").toString().updateMarkdown()
+                        )
                     }
+                }
+            }
+        }
 
-                    url("Oraxen", "https://polymart.org/product/629/oraxen") {
-                        required = false
-                    }
+        webhook {
+            group(rootProject.name.lowercase())
+            task("failed-build")
 
-                    url("Nexo", "https://polymart.org/resource/nexo.6901") {
-                        required = false
+            if (System.getenv("BUILD_WEBHOOK") != null) {
+                post(System.getenv("BUILD_WEBHOOK"))
+            }
+
+            username(rootProject.property("mascot_name").toString())
+
+            avatar(rootProject.property("mascot_avatar").toString())
+
+            embeds {
+                embed {
+                    color(rootProject.property("failed_color").toString())
+
+                    title("Oh no! It failed!")
+
+                    thumbnail("https://raw.githubusercontent.com/ryderbelserion/Branding/refs/heads/main/booze.jpg")
+
+                    fields {
+                        field(
+                            "The build versioned ${rootProject.version} for project ${rootProject.name} failed.",
+                            "The developer is likely already aware, he is just getting drunk.",
+                            inline = true
+                        )
                     }
                 }
             }

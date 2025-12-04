@@ -4,14 +4,13 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.fusion.core.files.FileType;
-import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
+import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MojangMappedMigratorSingle extends ICrateMigrator {
 
@@ -27,24 +26,24 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
             return;
         }
 
-        final LegacyCustomFile customFile = this.plugin.getFileManager().getFile(this.crateName, FileType.YAML);
+        final PaperCustomFile customFile = this.fileManager.getPaperCustomFile(this.dataPath.resolve("crates").resolve(this.crateName));
 
         if (customFile == null) {
-            Messages.error_migrating.sendMessage(this.sender, new HashMap<>() {{
-                put("{file}", crateName);
-                put("{type}", type.getName());
-                put("{reason}", "File was not loaded properly.");
-            }});
+            Messages.error_migrating.sendMessage(this.sender, Map.of(
+                    "{file}", crateName,
+                    "{type}", type.getName(),
+                    "{reason}", "File was not loaded properly."
+            ));
 
             return;
         }
 
-        if (!customFile.isDynamic()) {
-            Messages.error_migrating.sendMessage(this.sender, new HashMap<>() {{
-                put("{file}", crateName);
-                put("{type}", type.getName());
-                put("{reason}", "File requested is not a crate config file.");
-            }});
+        if (customFile.isStatic()) {
+            Messages.error_migrating.sendMessage(this.sender, Map.of(
+                    "{file}", crateName,
+                    "{type}", type.getName(),
+                    "{reason}", "File requested is not a crate config file."
+            ));
 
             return;
         }
@@ -56,7 +55,7 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
             migrate(customFile, this.crateName);
 
             success.add("<green>⤷ " + this.crateName);
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             failed.add("<red>⤷ " + this.crateName);
         }
 
@@ -67,10 +66,12 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
         final int convertedCrates = success.size();
         final int failedCrates = failed.size();
 
-        sendMessage(new ArrayList<>(failedCrates + convertedCrates) {{
-            addAll(failed);
-            addAll(success);
-        }}, convertedCrates, failedCrates);
+        final List<String> files = new ArrayList<>(failedCrates + convertedCrates);
+
+        files.addAll(failed);
+        files.addAll(success);
+
+        sendMessage(files, convertedCrates, failedCrates);
     }
 
     @Override

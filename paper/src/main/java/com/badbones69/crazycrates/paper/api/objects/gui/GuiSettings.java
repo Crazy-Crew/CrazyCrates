@@ -44,7 +44,7 @@ public class GuiSettings {
         this.isFillerToggled = configuration.getBoolean("filler.toggle", false);
         this.fillerType = FillerType.getFromName(configuration.getString("filler.fill-type", "border"));
 
-        this.fillerStack = new LegacyItemBuilder()
+        this.fillerStack = new LegacyItemBuilder(this.plugin)
                 .withType(configuration.getString("filler.toggle.material", "red_stained_glass_pane"))
                 .setDisplayName(configuration.getString("filler.toggle.name", " ")).asGuiItem();
 

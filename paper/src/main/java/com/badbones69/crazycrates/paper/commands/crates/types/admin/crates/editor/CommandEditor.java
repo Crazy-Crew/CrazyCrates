@@ -7,11 +7,12 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Flag;
+import dev.triumphteam.cmd.core.annotations.Syntax;
 import dev.triumphteam.cmd.core.argument.keyed.Flags;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import java.util.HashMap;
+import java.util.Map;
 
 public class CommandEditor extends BaseCommand {
 
@@ -19,6 +20,7 @@ public class CommandEditor extends BaseCommand {
     @Flag(flag = "c", longFlag = "crate", argument = String.class, suggestion = "crates")
     @Flag(flag = "e", longFlag = "exit")
     @Permission(value = "crazycrates.editor", def = PermissionDefault.OP)
+    @Syntax("/crazycrates editor [-c/--crate] [-e/--exit]")
     public void editor(final Player player, final Flags flags) {
         if (flags.hasFlag("e")) {
             this.crateManager.removeEditorCrate(player);
@@ -29,10 +31,10 @@ public class CommandEditor extends BaseCommand {
         }
 
         if (!flags.hasFlag("c")) {
-            Messages.lacking_flag.sendMessage(player, new HashMap<>() {{
-                put("{flag}", "-c");
-                put("{usage}", "/crazycrates editor -c <crate_name>");
-            }});
+            Messages.lacking_flag.sendMessage(player,            Map.of(
+                    "{flag}", "-c",
+                    "{usage}", "/crazycrates editor -c <crate_name>"
+            ));
 
             return;
         }

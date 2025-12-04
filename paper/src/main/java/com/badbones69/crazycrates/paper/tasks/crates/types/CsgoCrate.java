@@ -11,6 +11,7 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
+import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Material;
@@ -21,10 +22,8 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class CsgoCrate extends CrateBuilder {
 
@@ -65,7 +64,7 @@ public class CsgoCrate extends CrateBuilder {
         // Open the inventory.
         this.player.openInventory(this.inventory);
 
-        addCrateTask(new FoliaScheduler(null, this.player) {
+        addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
             int time = 1;
 
             int full = 0;
@@ -106,7 +105,7 @@ public class CsgoCrate extends CrateBuilder {
 
                         final String material = config.getProperty(ConfigKeys.crate_csgo_finished_material);
 
-                        final ItemStack itemStack = new LegacyItemBuilder().withType(material.isEmpty() ? Material.GRAY_STAINED_GLASS.getKey().getKey() : material).setDisplayName(" ").asItemStack();
+                        final ItemStack itemStack = new LegacyItemBuilder(plugin).withType(material.isEmpty() ? Material.GRAY_STAINED_GLASS.getKey().getKey() : material).setDisplayName(" ").asItemStack();
 
                         setItem(4, itemStack);
                         setItem(22, itemStack);
@@ -133,7 +132,7 @@ public class CsgoCrate extends CrateBuilder {
 
                         crateManager.removePlayerFromOpeningList(player);
 
-                        new FoliaScheduler(null, player) {
+                        new FoliaScheduler(plugin, null, player) {
                             @Override
                             public void run() { //todo() use inventory holders
                                 if (player.getOpenInventory().getTopInventory().equals(inventory)) player.closeInventory();
@@ -150,14 +149,12 @@ public class CsgoCrate extends CrateBuilder {
     }
 
     private void populate() {
-        if (this.crate.isGlassBorderToggled()) {
-            getBorder().forEach(this::setCustomGlassPane);
-        }
+        handleAnimation(true);
 
         final String material = this.config.getProperty(ConfigKeys.crate_csgo_cycling_material);
 
         if (!material.isEmpty()) {
-            final ItemStack itemStack = new LegacyItemBuilder().withType(material).setDisplayName(" ").asItemStack();
+            final ItemStack itemStack = new LegacyItemBuilder(this.plugin).withType(material).setDisplayName(" ").asItemStack();
 
             setItem(4, itemStack);
             setItem(22, itemStack);
@@ -182,8 +179,34 @@ public class CsgoCrate extends CrateBuilder {
             setItem(i + 10, items.get(i));
         }
 
+        handleAnimation(false);
+    }
+
+    private void handleAnimation(final boolean isInitial) {
+        final List<ItemBuilder> items = this.crate.getAnimationBorderItems();
+        final List<Integer> slots = getBorder();
+        final boolean isEmpty = items.isEmpty();
+
         if (this.crate.isGlassBorderToggled()) {
-            getBorder().forEach(this::setCustomGlassPane);
+            final boolean isAnimationBorderRandom = this.crate.isAnimationBorderRandom();
+
+            for (final int slot : slots) {
+                if (!isAnimationBorderRandom || isEmpty) {
+                    setCustomGlassPane(slot);
+
+                    continue;
+                }
+
+                this.inventory.setItem(slot, items.get(ThreadLocalRandom.current().nextInt(items.size())).asItemStack(this.player));
+            }
+        } else {
+            if (isInitial) {
+                for (final int slot : slots) {
+                    if (isEmpty) break;
+
+                    this.inventory.setItem(slot, items.get(ThreadLocalRandom.current().nextInt(items.size())).asItemStack(this.player));
+                }
+            }
         }
     }
 

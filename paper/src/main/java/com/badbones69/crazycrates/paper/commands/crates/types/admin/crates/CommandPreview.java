@@ -7,6 +7,7 @@ import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
+import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
@@ -16,12 +17,14 @@ public class CommandPreview extends BaseCommand {
 
     @Command("preview")
     @Permission(value = "crazycrates.preview", def = PermissionDefault.OP)
+    @Syntax("/crazycrates preview <crate_name>")
     public void preview(Player player, @ArgName("crate") @Suggestion("crates") String crateName) {
         others(player, crateName, player);
     }
 
     @Command("preview-others")
     @Permission(value = "crazycrates.preview.others", def = PermissionDefault.OP)
+    @Syntax("/crazycrates preview <crate_name> <player_name>")
     public void others(CommandSender sender, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("player") @Suggestion("players") Player player) {
         if (crateName == null || crateName.isBlank()) {
             Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");

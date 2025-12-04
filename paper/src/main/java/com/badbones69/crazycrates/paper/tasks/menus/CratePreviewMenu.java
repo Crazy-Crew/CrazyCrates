@@ -7,6 +7,7 @@ import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.api.builders.gui.types.PaginatedGui;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
     private final Tier tier;
 
     public CratePreviewMenu(@NotNull final Player player, @NotNull final Crate crate, @NotNull final Tier tier) {
-        super(player, crate, crate.getPreviewName(), crate.getPreviewChestLines());
+        super(player, crate, crate.getPreviewName(), crate.getPreviewRows());
 
         this.tier = tier;
     }
@@ -29,13 +30,15 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
 
         if (crate == null) return;
 
-        if (crate.isBorderToggle()) {
-            final GuiFiller guiFiller = this.gui.getFiller();
+        final GuiFiller guiFiller = this.gui.getFiller();
 
+        if (crate.isBorderToggle()) {
             final GuiItem guiItem = new GuiItem(crate.getBorderItem().asItemStack());
 
             guiFiller.fillTop(guiItem);
             guiFiller.fillBottom(guiItem);
+        } else {
+            guiFiller.fillBottom(new GuiItem(ItemType.AIR.createItemStack()));
         }
 
         final UUID uuid = this.player.getUniqueId();
@@ -47,12 +50,10 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
         this.gui.setCloseGuiAction(event -> this.inventoryManager.removePreviewViewer(uuid));
 
         this.gui.open(this.player, gui -> {
-            final int rows = gui.getRows();
+            addBackButton(true);
+            addNextButton(true);
 
-            setBackButton(rows, 4, true);
-            setNextButton(rows, 6, true);
-
-            addMenuButton(this.player, crate, this.gui, rows, 5);
+            addMenuButton(this.player, crate, this.gui);
         });
     }
 }

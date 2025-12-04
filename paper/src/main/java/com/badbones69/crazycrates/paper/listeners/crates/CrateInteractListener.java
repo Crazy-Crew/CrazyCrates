@@ -19,22 +19,27 @@ import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.Location;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import java.util.HashMap;
 import java.util.Map;
 
 public class CrateInteractListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final Server server = this.plugin.getServer();
+
+    private final PluginManager pluginManager = this.server.getPluginManager();
 
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
@@ -101,7 +106,7 @@ public class CrateInteractListener implements Listener {
     private void openCrate(@NotNull final Player player, @NotNull final CrateLocation crateLocation, @NotNull final Crate crate) {
         final KeyCheckEvent key = new KeyCheckEvent(player, crateLocation);
 
-        player.getServer().getPluginManager().callEvent(key);
+        this.pluginManager.callEvent(key);
 
         if (key.isCancelled()) return;
 
@@ -120,15 +125,13 @@ public class CrateInteractListener implements Listener {
         final String fancyName = crate.getCrateName();
 
         if (requiredKeys > 0 && totalKeys < requiredKeys) {
-            final Map<String, String> placeholders = new HashMap<>();
-
-            placeholders.put("{required_amount}", String.valueOf(requiredKeys));
-            placeholders.put("{key_amount}", String.valueOf(requiredKeys)); // deprecated, remove in next major version of minecraft.
-            placeholders.put("{amount}", String.valueOf(totalKeys));
-            placeholders.put("{crate}", fancyName);
-            placeholders.put("{key}", crate.getKeyName());
-
-            Messages.not_enough_keys.sendMessage(player, placeholders);
+            Messages.not_enough_keys.sendMessage(player, Map.of(
+                "{required_amount}", String.valueOf(requiredKeys),
+                "{key_amount}", String.valueOf(requiredKeys), // deprecated, remove in next major version of minecraft.
+                "{amount}", String.valueOf(totalKeys),
+                "{key}", crate.getKeyName(),
+                "{crate}", fancyName
+            ));
 
             lackingKey(player, crate, location, false);
 
@@ -194,21 +197,19 @@ public class CrateInteractListener implements Listener {
     private void lackingKey(@NotNull final Player player, @NotNull final Crate crate, @NotNull final Location location, final boolean sendMessage) {
         final String keyName = crate.getKeyName();
 
-        final Map<String, String> placeholders = new HashMap<>() {{
-            put("{crate}", crate.getCrateName());
-            put("{key}", keyName);
-        }};
-
         if (crate.getCrateType() != CrateType.crate_on_the_go) {
-            if (this.config.getProperty(ConfigKeys.knock_back)) knockback(player, location);
-
-            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                net.kyori.adventure.sound.Sound sound = net.kyori.adventure.sound.Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f);
-
-                player.playSound(sound);
+            if (this.config.getProperty(ConfigKeys.knock_back)) {
+                knockback(player, location);
             }
 
-            if (sendMessage) Messages.no_keys.sendMessage(player, placeholders);
+            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
+                player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
+            }
+
+            if (sendMessage) Messages.no_keys.sendMessage(player, Map.of(
+                "{crate}", crate.getCrateName(),
+                "{key}", keyName
+            ));
         }
     }
 

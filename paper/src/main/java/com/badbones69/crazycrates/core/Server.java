@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.core;
 
 import com.badbones69.crazycrates.core.impl.Settings;
-import com.ryderbelserion.fusion.core.utils.FileUtils;
+import com.ryderbelserion.fusion.core.api.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.users.UserManager;

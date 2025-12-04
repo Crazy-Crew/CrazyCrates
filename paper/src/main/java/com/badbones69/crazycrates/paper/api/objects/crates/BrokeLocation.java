@@ -3,12 +3,15 @@ package com.badbones69.crazycrates.paper.api.objects.crates;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import org.bukkit.Location;
+import org.bukkit.Server;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BrokeLocation {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final Server server = this.plugin.getServer();
 
     /**
      * Empty values that get instantiated below.
@@ -86,6 +89,6 @@ public class BrokeLocation {
      * @return the location of the broken crate
      */
     public @NotNull final Location getLocation() {
-        return new Location(this.plugin.getServer().getWorld(this.world), this.x, this.y, this.z);
+        return new Location(this.server.getWorld(this.world), this.x, this.y, this.z);
     }
 }

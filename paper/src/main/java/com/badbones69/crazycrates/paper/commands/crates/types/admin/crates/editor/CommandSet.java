@@ -9,18 +9,19 @@ import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
+import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import java.util.HashMap;
 import java.util.Map;
 
 public class CommandSet extends BaseCommand {
 
     @Command("set")
     @Permission(value = "crazycrates.set", def = PermissionDefault.OP)
+    @Syntax("/crazycrates set <crate_name>")
     public void set(Player player, @ArgName("crate") @Suggestion("crates") String crateName) {
         if (crateName == null || crateName.isBlank()) {
             Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
@@ -53,23 +54,21 @@ public class CommandSet extends BaseCommand {
         final Location location = block.getLocation();
 
         if (this.crateManager.isCrateLocation(location)) {
-            Messages.physical_crate_already_exists.sendMessage(player, new HashMap<>() {{
-                final CrateLocation crateLocation = crateManager.getCrateLocation(location);
+            final CrateLocation crateLocation = crateManager.getCrateLocation(location);
 
-                put("{id}", crateLocation != null ? crateLocation.getID() : "N/A");
-                put("{crate}", crateLocation != null ? crateLocation.getCrate().getCrateName() : "N/A");
-            }});
+            Messages.physical_crate_already_exists.sendMessage(player, Map.of(
+                    "{id}", crateLocation != null ? crateLocation.getID() : "N/A",
+                    "{crate}", crateLocation != null ? crateLocation.getCrate().getCrateName() : "N/A"
+            ));
 
             return;
         }
 
         this.crateManager.addCrateLocation(location, crate);
 
-        final Map<String, String> placeholders = new HashMap<>();
-
-        placeholders.put("{crate}", crate.getCrateName());
-
         // this has to use sendRichMessage as it is a list.
-        Messages.created_physical_crate.sendRichMessage(player, placeholders);
+        Messages.created_physical_crate.sendRichMessage(player, Map.of(
+                "{crate}", crate.getCrateName()
+        ));
     }
 }

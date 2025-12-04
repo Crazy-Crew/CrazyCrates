@@ -1,81 +1,85 @@
 package com.badbones69.crazycrates.paper.api.enums.other.keys;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.ryderbelserion.fusion.core.api.enums.FileAction;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.files.FileType;
-import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
-import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
+import com.ryderbelserion.fusion.paper.files.FileManager;
+import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.io.File;
+import java.nio.file.Path;
+import java.util.ArrayList;
 
 public enum FileKeys {
 
-    respin_gui(FileType.YAML, "respin-gui.yml", "guis"),
+    respin_gui(FileType.PAPER, "respin-gui.yml", "guis"),
 
-    crate_log(FileType.NONE, "crates.log", "logs"),
-    key_log(FileType.NONE, "keys.log", "logs"),
+    crate_log(FileType.LOG, "crates.log", "logs"),
+    key_log(FileType.LOG, "keys.log", "logs"),
 
-    locations(FileType.YAML, "locations.yml"),
-    data(FileType.YAML, "data.yml");
-
-    private final FileType fileType;
-    private final String fileName;
-    private final String folder;
+    locations(FileType.PAPER, "locations.yml"),
+    data(FileType.PAPER, "data.yml");
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final FileManager fileManager = this.plugin.getFileManager();
+    private final Path path = this.plugin.getDataPath();
 
-    private final LegacyFileManager fileManager = this.plugin.getFileManager();
+    private final FileType fileType;
+    private final Path location; // the file location
+    private final Path folder; // the folder which defaults to the data path
 
-    /**
-     * A constructor to build a file
-     *
-     * @param fileType the file type
-     * @param fileName the name of the file
-     * @param folder the folder
-     */
     FileKeys(@NotNull final FileType fileType, @NotNull final String fileName, @NotNull final String folder) {
+        this.folder = this.path.resolve(folder);
+        this.location = this.folder.resolve(fileName);
         this.fileType = fileType;
-        this.fileName = fileName;
-        this.folder = folder;
     }
 
-    /**
-     * A constructor to build a file
-     *
-     * @param fileType the file type
-     * @param fileName the name of the file
-     */
     FileKeys(@NotNull final FileType fileType, @NotNull final String fileName) {
+        this.folder = this.path;
+        this.location = this.folder.resolve(fileName);
         this.fileType = fileType;
-        this.fileName = fileName;
-        this.folder = "";
     }
 
     public @NotNull final YamlConfiguration getConfiguration() {
-        @Nullable final LegacyCustomFile customFile = this.fileManager.getFile(this.fileName, this.fileType);
-
-        if (customFile == null || customFile.getConfiguration() == null) {
-            throw new FusionException("File configuration for " + this.fileName + " is null.");
-        }
-
-        return customFile.getConfiguration();
+        return getPaperCustomFile().getConfiguration();
     }
 
-    public FileType getFileType() {
+    public @NotNull final PaperCustomFile getPaperCustomFile() {
+        @Nullable final PaperCustomFile customFile = this.fileManager.getPaperCustomFile(this.location);
+
+        if (customFile == null) {
+            throw new FusionException("Could not find custom file for " + this.location);
+        }
+
+        return customFile;
+    }
+
+    public @NotNull final LogCustomFile getLogCustomFile() {
+        @Nullable final LogCustomFile customFile = (LogCustomFile) this.fileManager.getCustomFile(this.location);
+
+        if (customFile == null) {
+            throw new FusionException("Could not find custom file for " + this.location);
+        }
+
+        return customFile;
+    }
+
+    public @NotNull final FileType getFileType() {
         return this.fileType;
     }
 
-    public void reload() {
-        this.fileManager.addFile(this.fileName);
+    public @NotNull final Path getPath() {
+        return this.location;
+    }
+
+    public void save(@NotNull final String content, @NotNull final ArrayList<FileAction> actions) {
+        this.fileManager.saveFile(this.location, actions, content);
     }
 
     public void save() {
-        this.fileManager.saveFile(this.fileName);
-    }
-
-    public @NotNull final File getFile() {
-        return new File(this.folder.isEmpty() ? this.plugin.getDataFolder() : new File(this.plugin.getDataFolder(), this.folder), this.fileName);
+        this.fileManager.saveFile(this.location);
     }
 }

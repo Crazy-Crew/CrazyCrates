@@ -78,7 +78,7 @@ public class WheelCrate extends CrateBuilder {
 
         final Material material = Material.LIME_STAINED_GLASS_PANE;
 
-        addCrateTask(new FoliaScheduler(null, this.player) {
+        addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
             final List<Integer> slots = getBorder();
 
             int uh = 0;

@@ -23,13 +23,16 @@ import com.badbones69.crazycrates.paper.support.placeholders.PlaceholderAPISuppo
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
-import com.ryderbelserion.fusion.core.files.FileType;
+import com.ryderbelserion.fusion.core.api.enums.FileAction;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
+import com.ryderbelserion.fusion.paper.files.FileManager;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -54,29 +57,45 @@ public class CrazyCrates extends JavaPlugin {
     private BukkitUserManager userManager;
     private CrateManager crateManager;
 
-    private FusionPaper api;
+    private FusionPaper fusion;
 
     private Server instance;
 
     private MetricsWrapper metrics;
 
-    private LegacyFileManager fileManager;
+    private FileManager fileManager;
 
     @Override
     public void onEnable() {
-        this.api = new FusionPaper(getComponentLogger(), getDataPath());
-        this.api.enable(this);
+        this.fusion = new FusionPaper(getComponentLogger(), getDataPath());
+        this.fusion.enable(this);
 
-        this.fileManager = this.api.getLegacyFileManager();
+        this.fileManager = this.fusion.getFileManager();
 
-        this.instance = new Server(getDataPath());
+        final Path path = getDataPath();
+
+        this.instance = new Server(path);
         this.instance.apply();
 
-        this.fileManager.addFile("locations.yml", FileType.YAML).addFile("data.yml", FileType.YAML).addFile("respin-gui.yml", "guis", false, FileType.YAML)
-                .addFile("crates.log", "logs", false, FileType.NONE)
-                .addFile("keys.log", "logs", false, FileType.NONE)
-                .addFolder("crates", FileType.YAML)
-                .addFolder("schematics", FileType.NONE);
+        this.fileManager.refresh(false).addFile(path.resolve("locations.yml"), FileType.PAPER, List.of(
+                        FileAction.STATIC_FILE
+                ), null)
+                .addFile(path.resolve("data.yml"), FileType.PAPER, List.of(
+                        FileAction.STATIC_FILE
+                ), null)
+                .addFile(path.resolve("guis").resolve("respin-gui.yml"), FileType.PAPER, List.of(
+                        FileAction.STATIC_FILE
+                ), null)
+                .addFolder(path.resolve("logs"), FileType.LOG, List.of(
+                        FileAction.EXTRACT_FOLDER,
+                        FileAction.STATIC_FILE
+                ), null)
+                .addFolder(path.resolve("crates"), FileType.PAPER, List.of(
+                        FileAction.EXTRACT_FOLDER
+                ), null)
+                .addFolder(path.resolve("schematics"), FileType.NBT, List.of(
+                        FileAction.EXTRACT_FOLDER
+                ), null);
 
         MiscUtils.janitor();
         MiscUtils.save();
@@ -127,15 +146,15 @@ public class CrazyCrates extends JavaPlugin {
 
         this.crateManager.loadCustomItems();
 
-        final ComponentLogger logger = getComponentLogger();
-
         if (Plugins.placeholder_api.isEnabled()) {
-            if (MiscUtils.isLogging()) logger.info("PlaceholderAPI support is enabled!");
+            if (MiscUtils.isLogging()) getComponentLogger().info("PlaceholderAPI support is enabled!");
 
             new PlaceholderAPISupport().register();
         }
 
         if (MiscUtils.isLogging()) {
+            final ComponentLogger logger = getComponentLogger();
+
             // Print dependency garbage
             for (final Plugins value : Plugins.values()) {
                 if (value.isEnabled()) {
@@ -151,9 +170,11 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        final org.bukkit.Server server = getServer();
+
         // Cancel the tasks
-        getServer().getGlobalRegionScheduler().cancelTasks(this);
-        getServer().getAsyncScheduler().cancelTasks(this);
+        server.getGlobalRegionScheduler().cancelTasks(this);
+        server.getAsyncScheduler().cancelTasks(this);
 
         // Cancel the timer task.
         this.timer.cancel();
@@ -173,6 +194,10 @@ public class CrazyCrates extends JavaPlugin {
             this.instance.disable();
         }
 
+        if (this.fusion != null) {
+            this.fusion.disable();
+        }
+
         MiscUtils.janitor();
     }
 
@@ -188,23 +213,23 @@ public class CrazyCrates extends JavaPlugin {
         return this.crateManager;
     }
 
-    public final Server getInstance() {
-        return this.instance;
+    public final FileManager getFileManager() {
+        return this.fileManager;
     }
 
     public final MetricsWrapper getMetrics() {
         return this.metrics;
     }
 
-    public final LegacyFileManager getFileManager() {
-        return this.fileManager;
+    public final FusionPaper getFusion() {
+        return this.fusion;
+    }
+
+    public final Server getInstance() {
+        return this.instance;
     }
 
     public final Timer getTimer() {
         return this.timer;
-    }
-
-    public final FusionPaper getFusion() {
-        return this.api;
     }
 }
