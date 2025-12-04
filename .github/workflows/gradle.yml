@@ -4,5 +4,36 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    uses: Crazy-Crew/.github/.github/workflows/gradle.yml@main
+  gradle:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Update Gradle Wrapper
+        uses: gradle-update/update-gradle-wrapper-action@v2
+        with:
+          commit-message-template: '[ci-skip] chore: Update Gradle Wrapper from %sourceVersion% to %targetVersion%'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+#jobs:
+#  build:
+#    uses: Crazy-Crew/.github/.github/workflows/gradle.yml@main
