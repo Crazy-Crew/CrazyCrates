@@ -9,3 +9,4 @@ on:
 jobs:
   build:
     uses: Crazy-Crew/.github/.github/workflows/gradle.yml@main
+    secrets: inherit
