@@ -36,3 +36,5 @@
 - Fixed an issue with potion color not applying with the new items section.
 - Fixed an issue with the shield banners using the new item format.
 - Fixed crates debug command.
+
+As always, Report 🐛 to https://github.com/Crazy-Crew/CrazyCrates/issues
