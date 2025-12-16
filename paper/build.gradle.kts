@@ -35,6 +35,7 @@ tasks {
 
     shadowJar {
         listOf(
+            "com.ryderbelserion.fusion",
             "org.bstats"
         ).forEach {
             relocate(it, "libs.$it")
