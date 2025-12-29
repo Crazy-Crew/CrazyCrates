@@ -18,6 +18,7 @@ import com.badbones69.crazycrates.paper.listeners.crates.types.MobileCrateListen
 import com.badbones69.crazycrates.paper.listeners.crates.types.QuadCrateListener;
 import com.badbones69.crazycrates.paper.listeners.crates.types.WarCrateListener;
 import com.badbones69.crazycrates.paper.listeners.other.EntityDamageListener;
+import com.badbones69.crazycrates.paper.tasks.crates.effects.VaultEffect;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
 import com.badbones69.crazycrates.paper.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
@@ -141,7 +142,10 @@ public class CrazyCrates extends JavaPlugin {
                 new CrateControlListener(),
                 new CrateOpenListener(),
 
-                new PaperInteractListener()
+                new PaperInteractListener(),
+
+                // Vault block item display effect
+                new VaultEffect()
         ).forEach(listener -> manager.registerEvents(listener, this));
 
         this.crateManager.loadCustomItems();
