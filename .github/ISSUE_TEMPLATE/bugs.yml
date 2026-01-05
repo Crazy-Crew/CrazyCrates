@@ -36,14 +36,7 @@ body:
       label: Server Version
       description: What server version are you on?
       options:
-        - "1.20.1"
-        - "1.20.2"
-        - "1.20.4"
-        - "1.20.6"
-        - "1.21"
-        - "1.21.1"
-        - "1.21.3"
-        - "1.21.4"
+        - "1.21.11"
     validations:
       required: true
   - type: dropdown
