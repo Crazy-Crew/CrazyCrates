@@ -196,6 +196,8 @@ public class CommandOpen extends BaseCommand {
 
         this.crateManager.openCrate(player, crate, KeyType.free_key, player.getLocation(), true, false, EventType.event_crate_force_opened);
 
+        this.userManager.addOpenedCrate(player.getUniqueId(), crate.getFileName());
+
         Messages.opened_a_crate.sendMessage(sender, Map.of("{player}", player.getName(), "{crate}", fancyName));
     }
 
