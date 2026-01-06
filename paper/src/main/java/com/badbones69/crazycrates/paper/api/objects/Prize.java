@@ -222,7 +222,7 @@ public class Prize {
             this.displayItem.setPlayer(player);
         }
 
-        final String weight = StringUtils.format(crate.getChance(getWeight()));
+        final String weight = tiers.isEmpty() ? StringUtils.format(crate.getChance(getWeight())) : StringUtils.format(crate.getTierChance(getWeight()));
 
         this.displayItem.addLorePlaceholder("%chance%", weight).addLorePlaceholder("%maxpulls%", String.valueOf(maxPulls)).addLorePlaceholder("%pulls%", amount);
         this.displayItem.addNamePlaceholder("%chance%", weight).addNamePlaceholder("%maxpulls%", String.valueOf(maxPulls)).addNamePlaceholder("%pulls%", amount);
