@@ -8,8 +8,8 @@ import us.crazycrew.crazycrates.platform.IServer;
  * A class used to initialize the api so other plugins can use it.
  *
  * @author Ryder Belserion
- * @version 0.7
- * @since 0.4
+ * @version 0.7.0
+ * @since 0.4.0
  */
 public class CratesProvider {
 
@@ -19,7 +19,7 @@ public class CratesProvider {
      * Gets the instance of IServer which lets you interact with our plugin.
      *
      * @return {@link IServer}
-     * @since 0.4
+     * @since 0.4.0
      */
     public static IServer get() {
         if (instance == null) {
@@ -38,7 +38,7 @@ public class CratesProvider {
      * Creates {@link IServer} instance.
      *
      * @param instance the {@link IServer} instance
-     * @since 0.4
+     * @since 0.4.0
      */
     @ApiStatus.Internal
     public static void register(@NotNull final IServer instance) {
@@ -50,7 +50,7 @@ public class CratesProvider {
     /**
      * Unregisters {@link IServer} instance.
      *
-     * @since 0.4
+     * @since 0.4.0
      */
     @ApiStatus.Internal
     public static void unregister() {
