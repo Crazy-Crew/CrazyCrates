@@ -153,6 +153,7 @@ public class ItemUtils {
         return crateManager.isKeyFromCrate(itemStack, crate);
     }
 
+    @Deprecated(forRemoval = true)
     public static String getKey(@NotNull final PersistentDataContainerView container) {
         return container.get(ItemKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
     }

@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.listeners.crates.CrateInteractListener;
 import com.badbones69.crazycrates.paper.listeners.items.PaperInteractListener;
+import com.badbones69.crazycrates.paper.managers.BukkitKeyManager;
 import com.badbones69.crazycrates.paper.support.MetricsWrapper;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.CommandManager;
@@ -55,6 +56,7 @@ public class CrazyCrates extends JavaPlugin {
 
     private InventoryManager inventoryManager;
     private BukkitUserManager userManager;
+    private BukkitKeyManager keyManager;
     private CrateManager crateManager;
 
     private FusionPaper fusion;
@@ -102,8 +104,11 @@ public class CrazyCrates extends JavaPlugin {
 
         registerPermissions();
 
+        this.keyManager = new BukkitKeyManager();
+
         this.inventoryManager = new InventoryManager();
         this.crateManager = new CrateManager();
+
         this.userManager = new BukkitUserManager();
 
         this.instance.setUserManager(this.userManager);
@@ -207,6 +212,10 @@ public class CrazyCrates extends JavaPlugin {
 
     public final BukkitUserManager getUserManager() {
         return this.userManager;
+    }
+
+    public final BukkitKeyManager getKeyManager() {
+        return this.keyManager;
     }
 
     public final CrateManager getCrateManager() {

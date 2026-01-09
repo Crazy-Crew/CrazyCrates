@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.core.config.impl.EditorKeys;
 import com.badbones69.crazycrates.paper.listeners.items.NexoInteractListener;
 import com.badbones69.crazycrates.paper.listeners.items.OraxenInteractListener;
+import com.badbones69.crazycrates.paper.managers.BukkitKeyManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.support.holograms.types.CMIHologramsSupport;
 import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.QuadCrateManager;
@@ -84,6 +85,7 @@ import java.util.*;
 public class CrateManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final BukkitKeyManager keyManager = this.plugin.getKeyManager();
     private final Path dataPath = this.plugin.getDataPath();
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
     private final FileManager fileManager = this.plugin.getFileManager();
@@ -1326,7 +1328,7 @@ public class CrateManager {
      * @return a crate if is a key from a crate otherwise null if it is not.
      */
     public @Nullable final Crate getCrateFromKey(@NotNull final ItemStack item) {
-        return getCrateFromName(ItemUtils.getKey(item.getPersistentDataContainer()));
+        return getCrateFromName(this.keyManager.getKey(item));
     }
 
     /**
@@ -1425,11 +1427,11 @@ public class CrateManager {
         if (crate.getCrateType() == CrateType.menu) return false;
         if (item.getType() == Material.AIR) return false;
 
-        final PersistentDataContainerView container = item.getPersistentDataContainer();
+        final String key = this.keyManager.getKey(item);
 
-        if (!container.has(ItemKeys.crate_key.getNamespacedKey())) return false;
+        if (key.isEmpty()) return false;
 
-        return crate.getFileName().equals(ItemUtils.getKey(container));
+        return crate.getFileName().equals(key);
     }
 
     /**
