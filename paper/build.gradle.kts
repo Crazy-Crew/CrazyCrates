@@ -5,8 +5,6 @@ plugins {
 project.group = "${rootProject.group}.paper"
 
 repositories {
-    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-
     maven("https://repo.fancyinnovations.com/releases/")
 
     maven("https://repo.nexomc.com/releases/")
@@ -35,6 +33,7 @@ tasks {
 
     shadowJar {
         listOf(
+            "com.ryderbelserion.fusion",
             "org.bstats"
         ).forEach {
             relocate(it, "libs.$it")

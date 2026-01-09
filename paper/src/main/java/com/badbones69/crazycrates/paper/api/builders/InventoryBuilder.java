@@ -25,7 +25,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     protected final FusionPaper fusion = this.plugin.getFusion();
-  
+
     protected final BukkitUserManager userManager = this.plugin.getUserManager();
 
     protected final InventoryManager inventoryManager = this.plugin.getInventoryManager();

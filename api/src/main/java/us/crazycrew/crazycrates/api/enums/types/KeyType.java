@@ -4,8 +4,8 @@ package us.crazycrew.crazycrates.api.enums.types;
  * An enum class that contains all our current key types.
  *
  * @author Ryder Belserion
- * @version 0.7
- * @since 0.1
+ * @version 0.7.0
+ * @since 0.1.0
  */
 public enum KeyType {
 
@@ -29,7 +29,7 @@ public enum KeyType {
      * A constructor to build a {@link KeyType} reference.
      *
      * @param name name of the {@link KeyType}
-     * @since 0.1
+     * @since 0.1.0
      */
     KeyType(String name, String friendlyName) {
         this.friendlyName = friendlyName;
@@ -41,7 +41,7 @@ public enum KeyType {
      *
      * @param type the name of the {@link KeyType}
      * @return the {@link KeyType}
-     * @since 0.1
+     * @since 0.1.0
      */
     public static KeyType getFromName(String type) {
         if (type.isEmpty()) return KeyType.virtual_key;
@@ -61,7 +61,7 @@ public enum KeyType {
      * Get a message friendly version of the {@link KeyType}.
      *
      * @return the name of the {@link KeyType}
-     * @since 0.1
+     * @since 0.1.0
      */
     public String getFriendlyName() {
         return this.friendlyName;
@@ -71,7 +71,7 @@ public enum KeyType {
      * Get the name of the {@link KeyType}.
      *
      * @return the name of the {@link KeyType}
-     * @since 0.1
+     * @since 0.1.0
      */
     public String getName() {
         return this.name;

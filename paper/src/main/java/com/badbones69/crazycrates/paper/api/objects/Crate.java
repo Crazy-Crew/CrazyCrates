@@ -834,7 +834,7 @@ public class Crate {
             final Component displayName = itemStack.getData(DataComponentTypes.CUSTOM_NAME);
 
             if (displayName != null) {
-                section.set(getPath(prizeName, "DisplayName"), StringUtils.fromComponent(displayName));
+                section.set(getPath(prizeName, "DisplayName"), AdvUtils.fromComponent(displayName));
             }
         }
 
@@ -845,7 +845,7 @@ public class Crate {
                 final List<Component> lore = itemLore.lines();
 
                 if (!lore.isEmpty()) {
-                    section.set(getPath(prizeName, "DisplayLore"), StringUtils.fromComponent(lore));
+                    section.set(getPath(prizeName, "DisplayLore"), AdvUtils.fromComponent(lore));
                 }
             }
         }

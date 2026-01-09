@@ -169,13 +169,14 @@ public class ItemUtils {
         return crateManager.isKeyFromCrate(itemStack, crate);
     }
 
+    @Deprecated(forRemoval = true)
     public static String getKey(@NotNull final PersistentDataContainerView container) {
         return container.get(ItemKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
     }
 
     public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder) {
         ItemUtils.updateEnchantGlintState(builder, section.getString("Glowing", "add_glow"));
-        
+
         builder.setItemDamage(section.getInt("DisplayDamage", 0));
         
         builder.withDisplayLore(section.getStringList("Lore"));
@@ -405,7 +406,8 @@ public class ItemUtils {
                     case "rgb", "color" -> itemBuilder.setColor(value);
 
                     default -> {
-                        final Enchantment enchantment = com.ryderbelserion.fusion.paper.utils.ItemUtils.getEnchantment(getEnchant(option));
+                        if (com.ryderbelserion.fusion.paper.utils.ItemUtils.getEnchantment(option.toLowerCase()) != null) {
+                            final Optional<Number> amount = NumberUtils.tryParseInt(value);
 
                         if (enchantment != null) {
                             final Optional<Number> level = StringUtils.tryParseInt(value);

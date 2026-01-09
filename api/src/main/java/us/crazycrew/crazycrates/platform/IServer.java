@@ -1,6 +1,7 @@
 package us.crazycrew.crazycrates.platform;
 
 import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.api.KeyManager;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import java.io.File;
 import java.nio.file.Path;
@@ -10,15 +11,15 @@ import java.util.List;
  * A class containing available methods to use.
  *
  * @author Ryder Belserion
- * @version 0.7
- * @since 0.5
+ * @version 0.7.0
+ * @since 0.5.0
  */
 public interface IServer {
 
     /**
      * Reloads the plugin
      *
-     * @since 0.5
+     * @since 0.5.0
      */
     void reload();
 
@@ -26,7 +27,7 @@ public interface IServer {
      * Gets the crates path.
      *
      * @return {@link Path}
-     * @since 0.9
+     * @since 0.9.0
      */
     @NotNull Path getCratesPath();
 
@@ -34,7 +35,7 @@ public interface IServer {
      * Gets the plugin's home folder
      *
      * @return {@link Path}
-     * @since 0.9
+     * @since 0.9.0
      */
     @NotNull Path getDataPath();
 
@@ -42,9 +43,10 @@ public interface IServer {
      * Gets the plugin's crates folder.
      *
      * @return {@link File}
-     * @since 0.5
+     * @since 0.5.0
+     * @see #getCratesPath()
      */
-    @Deprecated(since = "0.9", forRemoval = true)
+    @Deprecated(since = "0.9.0", forRemoval = true)
     @NotNull
     default File getCrateFolder() {
         return getCratesPath().toFile();
@@ -54,9 +56,10 @@ public interface IServer {
      * Gets the plugin's data folder.
      *
      * @return {@link File}
-     * @since 0.8
+     * @since 0.8.0
+     * @see #getDataPath()
      */
-    @Deprecated(since = "0.9", forRemoval = true)
+    @Deprecated(since = "0.9.0", forRemoval = true)
     @NotNull
     default File getDataFolder() {
         return getDataPath().toFile();
@@ -67,7 +70,7 @@ public interface IServer {
      *
      * @param removeExtension true means remove it, false means keep it
      * @return {@link List<String>}
-     * @since 0.9
+     * @since 0.9.0
      */
     List<String> getCrateFiles(final boolean removeExtension);
 
@@ -75,7 +78,7 @@ public interface IServer {
      * Gets a list of crate files without the extension.
      *
      * @return {@link List<String>}
-     * @since 0.5
+     * @since 0.5.0
      */
     List<String> getCrateFiles();
 
@@ -84,15 +87,23 @@ public interface IServer {
      * Ability to set keys, get keys, getting total keys or checking total crates opened or individual crates opened.
      *
      * @return {@link UserManager}
-     * @since 0.5
+     * @since 0.5.0
      */
     @NotNull UserManager getUserManager();
+
+    /**
+     * A getter for the KeyManager, It handles checking physical keys, and anything else we might need soon.
+     *
+     * @return {@link KeyManager}
+     * @since 0.9.0
+     */
+    @NotNull KeyManager getKeyManager();
 
     /**
      * Gets available config options in a friendly way.
      *
      * @return {@link ISettings}
-     * @since 0.5
+     * @since 0.5.0
      */
     @NotNull ISettings getSettings();
 

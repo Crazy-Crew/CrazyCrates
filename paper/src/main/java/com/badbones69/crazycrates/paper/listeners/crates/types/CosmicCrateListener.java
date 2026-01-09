@@ -17,6 +17,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -445,6 +446,19 @@ public class CosmicCrateListener implements Listener {
             this.crateManager.addCrateTask(player, new TimerTask() {
                 @Override
                 public void run() {
+                    new FoliaScheduler(plugin, null, player) {
+                        @Override
+                        public void run() {
+                            player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
+                        }
+                    }.runNow();
+
+                    if (MiscUtils.isLogging()) {
+                        List.of(
+                                player.getName() + " spent 10 seconds staring at a gui instead of collecting their prizes",
+                                "The task has been cancelled, They have been given their prizes and the gui is closed."
+                        ).forEach(logger::info);
+                    }
                     new FoliaScheduler(plugin, null, player) {
                         @Override
                         public void run() {
