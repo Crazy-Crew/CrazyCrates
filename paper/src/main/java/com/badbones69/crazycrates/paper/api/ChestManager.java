@@ -1,11 +1,7 @@
 package com.badbones69.crazycrates.paper.api;
 
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
-import org.bukkit.block.EnderChest;
+import org.bukkit.block.*;
 import org.bukkit.block.data.Directional;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,19 +14,19 @@ public class ChestManager {
 
         switch (block.getType()) {
             case ENDER_CHEST -> {
-                final EnderChest enderChest = (EnderChest) blockState;
+                if (blockState instanceof EnderChest enderChest) {
+                    if (!enderChest.isOpen()) enderChest.open();
 
-                if (!enderChest.isOpen()) enderChest.open();
-
-                blockState.update(forceUpdate);
+                    blockState.update(forceUpdate);
+                }
             }
 
             case CHEST, TRAPPED_CHEST -> {
-                final Chest chest = (Chest) blockState;
+                if (blockState instanceof Chest chest) {
+                    if (!chest.isOpen()) chest.open();
 
-                if (!chest.isOpen()) chest.open();
-
-                blockState.update(forceUpdate);
+                    blockState.update(forceUpdate);
+                }
             }
         }
     }
@@ -42,22 +38,22 @@ public class ChestManager {
 
         switch (block.getType()) {
             case ENDER_CHEST -> {
-                final EnderChest enderChest = (EnderChest) blockState;
+                if (blockState instanceof EnderChest enderChest) {
+                    if (enderChest.isOpen()) {
+                        enderChest.close();
 
-                if (enderChest.isOpen()) {
-                    enderChest.close();
-
-                    blockState.update(forceUpdate);
+                        blockState.update(forceUpdate);
+                    }
                 }
             }
 
             case CHEST, TRAPPED_CHEST -> {
-                final Chest chest = (Chest) blockState;
+                if (blockState instanceof Chest chest) {
+                    if (chest.isOpen()) {
+                        chest.close();
 
-                if (chest.isOpen()) {
-                    chest.close();
-
-                    blockState.update(forceUpdate);
+                        blockState.update(forceUpdate);
+                    }
                 }
             }
         }
@@ -94,15 +90,15 @@ public class ChestManager {
 
         switch (block.getType()) {
             case ENDER_CHEST -> {
-                final EnderChest enderChest = (EnderChest) blockState;
-
-                isOpen = enderChest.isOpen();
+                if (blockState instanceof EnderChest enderChest) {
+                    isOpen = enderChest.isOpen();
+                }
             }
 
             case CHEST, TRAPPED_CHEST -> {
-                final Chest chest = (Chest) blockState;
-
-                isOpen = chest.isOpen();
+                if (blockState instanceof Chest chest) {
+                    isOpen = chest.isOpen();
+                }
             }
         }
 

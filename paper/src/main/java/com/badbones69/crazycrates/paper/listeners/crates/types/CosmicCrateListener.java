@@ -1,15 +1,13 @@
 package com.badbones69.crazycrates.paper.listeners.crates.types;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import io.papermc.paper.persistence.PersistentDataContainerView;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
@@ -42,7 +40,6 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -51,7 +48,7 @@ public class CosmicCrateListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
+    private final FusionPaper fusion = this.plugin.getFusion();
 
     private final Server server = this.plugin.getServer();
 
@@ -114,11 +111,7 @@ public class CosmicCrateListener implements Listener {
         // If tier is null, return
         if (tier == null) return;
 
-        Prize prize = crate.pickPrize(player, tier);
-
-        for (int stop = 0; prize == null && stop <= 2000; stop++) { //todo() wtf?
-            prize = crate.pickPrize(player, tier);
-        }
+        final Prize prize = crate.pickPrize(player, tier);
 
         if (prize == null) return;
 
@@ -199,10 +192,13 @@ public class CosmicCrateListener implements Listener {
                 // Gets the tier name.
                 final String tierName = tier.getName();
 
+                final String number = String.valueOf(pickedSlot);
+
                 // Get item builder.
-                LegacyItemBuilder builder = cosmicCrateManager.getPickedCrate().setPlayer(player)
-                        .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
-                        .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
+                final ItemBuilder builder = cosmicCrateManager.getPickedCrate()
+                        .addPlaceholder("{slot}", number)
+                        .addPlaceholder("%slot%", number)
+                        .addPlaceholder("%Slot%", number);
 
                 // Set the amount.
                 builder.setAmount(pickedSlot);
@@ -211,7 +207,7 @@ public class CosmicCrateListener implements Listener {
                 cosmicCrateManager.setTier(builder, tierName);
 
                 // Overwrite the current item.
-                event.setCurrentItem(builder.asItemStack());
+                event.setCurrentItem(builder.asItemStack(player));
 
                 // Add the picked prize.
                 cosmicCrateManager.addPickedPrize(player, slot, tier);
@@ -222,10 +218,13 @@ public class CosmicCrateListener implements Listener {
         } else if (container.has(ItemKeys.cosmic_picked_crate.getNamespacedKey())) {
             final Tier tier = this.crateManager.getTier(player, slot);
 
+            final String number = String.valueOf(pickedSlot);
+
             // Get item builder.
-            LegacyItemBuilder builder = cosmicCrateManager.getMysteryCrate().setPlayer(player)
-                    .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
-                    .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
+            final ItemBuilder builder = cosmicCrateManager.getMysteryCrate()
+                    .addPlaceholder("{slot}", number)
+                    .addPlaceholder("%slot%", number)
+                    .addPlaceholder("%Slot%", number);
 
             // Set the amount.
             builder.setAmount(pickedSlot);
@@ -262,7 +261,8 @@ public class CosmicCrateListener implements Listener {
 
             // If they don't have enough keys.
             if (value) {
-                Map<String, String> placeholders = new HashMap<>();
+                final Map<String, String> placeholders = new HashMap<>();
+
                 placeholders.put("{crate}", fancyName);
                 placeholders.put("{key}", crate.getKeyName());
 
@@ -327,14 +327,16 @@ public class CosmicCrateListener implements Listener {
             final String broadcastMessage = configuration.getString("Crate.BroadCast", "");
             final boolean broadcastToggle = configuration.getBoolean("Crate.OpeningBroadCast", false);
 
-            if (broadcastToggle) {  //todo() add a permission?
-                if (!broadcastMessage.isBlank()) {
-                    String builder = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
+            if (broadcastToggle && !broadcastMessage.isBlank()) {
+                this.server.broadcast(this.fusion.parse(player, broadcastMessage, new HashMap<>() {{
+                    put("{prefix}", config.getProperty(ConfigKeys.command_prefix));
+                    put("{player}", player.getName());
+                    put("{crate}", fancyName);
 
-                    this.server.broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName)
-                            .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
-                            .replaceAll("%player%", player.getName())));
-                }
+                    put("%prefix%", config.getProperty(ConfigKeys.command_prefix));
+                    put("%player%", player.getName());
+                    put("%crate%", fancyName);
+                }}));
             }
 
             EventManager.logEvent(EventType.event_crate_opened, player.getName(), player, crate, type, 1);
@@ -376,7 +378,7 @@ public class CosmicCrateListener implements Listener {
 
                                     Messages.key_refund.sendMessage(player, "{crate}", fancyName);
 
-                                    if (MiscUtils.isLogging()) logger.error("An issue occurred when the user {} was using the {} crate and so they were issued a key refund.", player.getName(), fileName, exception);
+                                    fusion.log("error", "An issue occurred when the user {} was using the {} crate and so they were issued a key refund.", player.getName(), fileName, exception);
 
                                     // Play a sound
                                     crate.playSound(player, player.getLocation(), "stop-sound", "block.anvil.place", Sound.Source.MASTER);
@@ -440,7 +442,7 @@ public class CosmicCrateListener implements Listener {
 
         player.updateInventory();
 
-        if (ConfigManager.getConfig().getProperty(ConfigKeys.cosmic_crate_timeout)) {
+        if (config.getProperty(ConfigKeys.cosmic_crate_timeout)) {
             this.crateManager.addCrateTask(player, new TimerTask() {
                 @Override
                 public void run() {
@@ -457,6 +459,14 @@ public class CosmicCrateListener implements Listener {
                                 "The task has been cancelled, They have been given their prizes and the gui is closed."
                         ).forEach(logger::info);
                     }
+                    new FoliaScheduler(plugin, null, player) {
+                        @Override
+                        public void run() {
+                            player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
+                        }
+                    }.runNow();
+
+                    fusion.log("warn", "{} spent too long looking at the gui, instead of collecting their prizes. The task is cancelled, andd they now have their prizes.");
                 }
             }, 10000L);
         }

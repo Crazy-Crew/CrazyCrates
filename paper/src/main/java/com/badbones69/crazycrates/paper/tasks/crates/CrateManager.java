@@ -2,8 +2,8 @@ package com.badbones69.crazycrates.paper.tasks.crates;
 
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
+import com.badbones69.crazycrates.core.constants.PluginSupport;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.core.config.impl.EditorKeys;
 import com.badbones69.crazycrates.paper.listeners.items.NexoInteractListener;
 import com.badbones69.crazycrates.paper.listeners.items.OraxenInteractListener;
@@ -32,12 +32,12 @@ import com.badbones69.crazycrates.paper.tasks.crates.types.RouletteCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WonderCrate;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.core.api.enums.FileAction;
-import com.ryderbelserion.fusion.core.api.utils.FileUtils;
+import com.ryderbelserion.fusion.kyori.mods.ModSupport;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
-import com.ryderbelserion.fusion.paper.files.FileManager;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
@@ -79,6 +79,8 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -88,7 +90,7 @@ public class CrateManager {
     private final BukkitKeyManager keyManager = this.plugin.getKeyManager();
     private final Path dataPath = this.plugin.getDataPath();
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-    private final FileManager fileManager = this.plugin.getFileManager();
+    private final PaperFileManager fileManager = this.plugin.getFileManager();
     private final com.badbones69.crazycrates.core.Server instance = this.plugin.getInstance();
     private final FusionPaper fusion = this.plugin.getFusion();
 
@@ -253,7 +255,7 @@ public class CrateManager {
 
             this.brokeCrates.add(fileName);
 
-            if (MiscUtils.isLogging()) this.logger.warn("There was an error while loading the {} file.", fileName, exception);
+            this.fusion.log("warn", "There was an error while loading the {} file.", fileName, exception);
         }
     }
 
@@ -263,16 +265,24 @@ public class CrateManager {
         final String pluginName = this.fusion.getItemsPlugin().toLowerCase();
 
         switch (pluginName) {
-            case "nexo" -> manager.registerEvents(new NexoInteractListener(), this.plugin);
+            case "nexo" -> {
+                if (this.fusion.isModReady(ModSupport.nexo)) {
+                    manager.registerEvents(new NexoInteractListener(), this.plugin);
+                }
+            }
 
-            case "oraxen" -> manager.registerEvents(new OraxenInteractListener(), this.plugin);
+            case "oraxen" -> {
+                if (this.fusion.isModReady(ModSupport.oraxen)) {
+                    manager.registerEvents(new OraxenInteractListener(), this.plugin);
+                }
+            }
 
             default -> {
-                if (Plugins.nexo.isEnabled()) {
+                if (this.fusion.isModReady(ModSupport.nexo)) {
                     manager.registerEvents(new NexoInteractListener(), this.plugin);
                 }
 
-                if (Plugins.oraxen.isEnabled()) {
+                if (this.fusion.isModReady(ModSupport.oraxen)) {
                     manager.registerEvents(new OraxenInteractListener(), this.plugin);
                 }
             }
@@ -287,7 +297,7 @@ public class CrateManager {
 
         switch (pluginName) {
             case "decentholograms" -> {
-                if (!Plugins.decent_holograms.isEnabled()) return;
+                if (!this.fusion.isModReady(PluginSupport.decent_holograms)) return;
 
                 if (this.holograms != null && this.holograms.getName().equalsIgnoreCase("DecentHolograms")) { // we don't need to do anything.
                     return;
@@ -297,13 +307,13 @@ public class CrateManager {
             }
 
             case "fancyholograms" -> {
-                if (!Plugins.fancy_holograms.isEnabled()) return;
+                if (!this.fusion.isModReady(PluginSupport.fancy_holograms)) return;
 
                 this.holograms = new FancyHologramsSupport();
             }
 
             case "cmi" -> {
-                if (!Plugins.cmi.isEnabled() && !CMIModule.holograms.isEnabled()) return;
+                if (!this.fusion.isModReady(PluginSupport.cmi) && !CMIModule.holograms.isEnabled()) return;
 
                 this.holograms = new CMIHologramsSupport();
             }
@@ -311,7 +321,7 @@ public class CrateManager {
             case "none" -> {}
 
             default -> {
-                if (Plugins.decent_holograms.isEnabled()) {
+                if (this.fusion.isModReady(PluginSupport.fancy_holograms)) {
                     if (this.holograms == null) {
                         this.holograms = new DecentHologramsSupport();
                     }
@@ -319,13 +329,13 @@ public class CrateManager {
                     break;
                 }
 
-                if (Plugins.fancy_holograms.isEnabled()) {
+                if (this.fusion.isModReady(PluginSupport.decent_holograms)) {
                     this.holograms = new FancyHologramsSupport();
 
                     break;
                 }
 
-                if (this.holograms == null && Plugins.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
+                if (this.holograms == null && this.fusion.isModReady(PluginSupport.cmi) && CMIModule.holograms.isEnabled()) {
                     this.fusion.log("warn", "<red>CMI Support is currently not automatically available.");
                     this.fusion.log("warn", "<red>Try manually setting hologram-plugin to <yellow>CMI</yellow> <red>after downgrading to 9.8.2.0");
                     this.fusion.log("warn", "<red>https://github.com/Zrips/CMI/issues/9919");
@@ -348,12 +358,12 @@ public class CrateManager {
         }
     }
 
-    public List<String> getCrateNames(final boolean keepExtension) {
-        return this.instance.getCrateFiles(keepExtension);
+    public List<String> getCrateNames(final boolean removeExtension) {
+        return this.instance.getCrateFiles(removeExtension);
     }
 
     public List<String> getCrateNames() {
-        return this.instance.getCrateFiles(false);
+        return this.instance.getCrateFiles(true);
     }
 
     private final SettingsManager config = ConfigManager.getConfig();
@@ -363,17 +373,22 @@ public class CrateManager {
      */
     public void loadCrates() {
         if (this.config.getProperty(ConfigKeys.update_examples_folder)) {
-            final List<FileAction> actions = new ArrayList<>();
+            final Path examples = this.dataPath.resolve("examples");
 
-            actions.add(FileAction.DELETE_FILE);
-            actions.add(FileAction.EXTRACT_FOLDER);
+            if (Files.exists(examples)) {
+                try {
+                    this.fusion.deleteDirectory(examples);
 
-            FileUtils.extract("guis", this.dataPath.resolve("examples"), actions);
-            FileUtils.extract("logs", this.dataPath.resolve("examples"), actions);
-            FileUtils.extract("crates", this.dataPath.resolve("examples"), actions);
-            FileUtils.extract("schematics", this.dataPath.resolve("examples"), actions);
+                    Files.createDirectory(examples);
+                } catch (final IOException exception) {
+                    this.fusion.log("warn", "Failed to delete and then create the examples directory!", exception);
+                }
+            }
 
-            actions.remove(FileAction.EXTRACT_FOLDER);
+            this.fileManager.extractFolder("guis", examples);
+            this.fileManager.extractFolder("logs", examples);
+            this.fileManager.extractFolder("crates", examples);
+            this.fileManager.extractFolder("schematics", examples);
 
             List.of(
                     "config.yml",
@@ -381,7 +396,7 @@ public class CrateManager {
                     "locations.yml",
                     "messages.yml",
                     "editor.yml"
-            ).forEach(file -> FileUtils.extract(file, this.dataPath.resolve("examples"), actions));
+            ).forEach(file -> this.fileManager.extractFile(file, examples.resolve(file)));
         }
 
         this.giveNewPlayersKeys = false;
@@ -393,15 +408,19 @@ public class CrateManager {
             this.holograms.purge(false);
         }
 
-        if (MiscUtils.isLogging()) this.logger.info("Loading all crate information...");
+        this.fusion.log("warn", "Loading all crate information...");
 
         final Path crates = this.dataPath.resolve("crates");
 
-        for (final String crateName : getCrateNames(true)) {
+        for (final String crateName : getCrateNames(false)) {
             try {
-                final PaperCustomFile customFile = this.fileManager.getPaperCustomFile(crates.resolve(crateName));
+                final @NotNull Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(crates.resolve(crateName));
 
-                if (customFile == null || !customFile.isLoaded()) continue;
+                if (optional.isEmpty()) continue;
+
+                final PaperCustomFile customFile = optional.get();
+
+                if (!customFile.isLoaded()) continue;
 
                 final YamlConfiguration file = customFile.getConfiguration();
 
@@ -434,7 +453,7 @@ public class CrateManager {
                 if (isTiersEmpty && tiers.isEmpty()) {
                     this.brokeCrates.add(crateName);
 
-                    if (MiscUtils.isLogging()) this.logger.warn("No tiers were found for {}.yml file.", crateName);
+                    this.fusion.log("warn", "No tiers were found for {}.yml file.", crateName);
 
                     continue;
                 }
@@ -521,13 +540,13 @@ public class CrateManager {
             } catch (final Exception exception) {
                 this.brokeCrates.add(crateName);
 
-                if (MiscUtils.isLogging()) this.logger.warn("There was an error while loading the {} file.", crateName, exception);
+                this.fusion.log("warn", "There was an error while loading the {} file.", crateName, exception);
             }
         }
 
         addCrate(new Crate("Menu"));
 
-        if (MiscUtils.isLogging()) this.logger.warn("All crate information has been loaded, Loading physical crate locations!");
+        this.fusion.log("warn", "All crate information has been loaded, Loading physical crate locations!");
 
         final YamlConfiguration locations = FileKeys.locations.getConfiguration();
 
@@ -599,12 +618,12 @@ public class CrateManager {
                 if (schematicName.endsWith(".nbt")) {
                     this.crateSchematics.add(new CrateSchematic(schematicName, new File(this.plugin.getDataFolder() + "/schematics/" + schematicName)));
 
-                    if (isLogging) this.logger.info("{} was successfully found and loaded.", schematicName);
+                    this.fusion.log("warn", "{} was successfully found and loaded.", schematicName);
                 }
             }
         }
 
-        if (MiscUtils.isLogging()) this.logger.info("All schematics were found and loaded.");
+        this.fusion.log("warn", "All schematics were found and loaded.");
 
         cleanDataFile();
 
@@ -1488,19 +1507,26 @@ public class CrateManager {
     }
 
     // Internal methods.
-    private LegacyItemBuilder getKey(@NotNull final FileConfiguration file) {
+    private ItemBuilder getKey(@NotNull final FileConfiguration file) {
         final String name = file.getString("Crate.PhysicalKey.Name", "");
         final String customModelData = file.getString("Crate.PhysicalKey.Custom-Model-Data", "");
         final String namespace = file.getString("Crate.PhysicalKey.Model.Namespace", "");
         final String id = file.getString("Crate.PhysicalKey.Model.Id", "");
         final List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
-        final boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
-        final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
-        final LegacyItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new LegacyItemBuilder(this.plugin)
-                .fromBase64(file.getString("Crate.PhysicalKey.Data", "")) : new LegacyItemBuilder(this.plugin).withType(file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase());
+        final ItemBuilder itemBuilder = ItemBuilder.from(file.getString("Crate.PhysicalKey.Data", file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase()));
 
-        return itemBuilder.setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setItemModel(namespace, id).setHidingItemFlags(hideFlags).setCustomModelData(customModelData);
+        ItemUtils.updateEnchantGlintState(itemBuilder, file.getString("Crate.PhysicalKey.Glowing", "add_glow"));
+
+        final CustomBuilder customBuilder = itemBuilder.asCustomBuilder();
+
+        customBuilder.setCustomModelData(customModelData);
+
+        customBuilder.setItemModel(namespace, id);
+
+        customBuilder.build();
+
+        return itemBuilder.withDisplayName(name).withDisplayLore(lore)/*.setHidingItemFlags(hideFlags)*/;
     }
 
     // Cleans the data file.
@@ -1549,14 +1575,14 @@ public class CrateManager {
         }
 
         if (!removePlayers.isEmpty()) {
-            if (isLogging) this.logger.info("{} player's data has been marked to be removed.", removePlayers.size());
+            this.fusion.log("warn", "{} player's data has been marked to be removed.", removePlayers.size());
 
             removePlayers.forEach(uuid -> data.set("Players." + uuid, null));
 
-            if (isLogging) this.logger.info("All empty player data has been removed.");
+            this.fusion.log("warn", "All empty player data has been removed.");
         }
 
-        if (isLogging) this.logger.info("The data.yml file has been cleaned.");
+        this.fusion.log("warn", "The data.yml file has been cleaned.");
 
         FileKeys.data.save();
     }

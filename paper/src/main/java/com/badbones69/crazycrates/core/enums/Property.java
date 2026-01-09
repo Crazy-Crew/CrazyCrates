@@ -8,8 +8,12 @@ import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
 import com.badbones69.crazycrates.core.config.impl.messages.ErrorKeys;
 import com.badbones69.crazycrates.core.config.impl.messages.MiscKeys;
 import com.badbones69.crazycrates.core.config.impl.messages.PlayerKeys;
+import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
@@ -122,6 +126,10 @@ public enum Property {
     per_crate(CommandKeys.per_crate, newProperty("Messages.Keys.Per-Crate", CommandKeys.per_crate.getDefaultValue())),
     help(CommandKeys.help, newListProperty("Messages.Help", CommandKeys.help.getDefaultValue()), Collections.emptyList()),
     admin_help(CommandKeys.admin_help, newListProperty("Messages.Admin-Help", CommandKeys.admin_help.getDefaultValue()), Collections.emptyList());
+
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final FusionPaper fusion = this.plugin.getFusion();
 
     private ch.jalu.configme.properties.Property<String> newString;
     private ch.jalu.configme.properties.Property<String> oldString;
@@ -260,14 +268,18 @@ public enum Property {
         List<String> list = new ArrayList<>();
 
         if (this.oldList.getPath().equalsIgnoreCase("Settings.GUI-Customizer")) {
-            this.oldList.determineValue(reader).getValue().forEach(line -> list.add(line.replaceAll("Item:", "item:")
-                    .replaceAll("Slot:", "slot:")
-                    .replaceAll("Name:", "name:")
-                    .replaceAll("Lore:", "lore:")
-                    .replaceAll("Glowing:", "glowing:")
-                    .replaceAll("Player:", "player:")
-                    .replaceAll("Unbreakable-Item", "unbreakable_item:")
-                    .replaceAll("Hide-Item-Flags", "hide_item_flags:")));
+            this.oldList.determineValue(reader).getValue().forEach(line -> {
+                list.add(this.fusion.replacePlaceholder(line, new HashMap<>() {{
+                    put("Item:", "item:");
+                    put("Slot:", "slot:");
+                    put("Name:", "name:");
+                    put("Lore:", "lore:");
+                    put("Glowing:", "glowing:");
+                    put("Player:", "player:");
+                    put("Unbreakable-Item:", "unbreakable_item:");
+                    put("Hide-Item-Flags:", "hide_item_flags:");
+                }}));
+            });
         } else {
             this.oldList.determineValue(reader).getValue().forEach(line -> list.add(replace(line)));
         }
@@ -284,21 +296,23 @@ public enum Property {
      * @return the finalized message to set
      */
     private String replace(String message) {
-        return message.replaceAll("%page%", "{page}")
-                .replaceAll("%prefix%", "{prefix}")
-                .replaceAll("%world%", "{world}")
-                .replaceAll("%crate%", "{crate}")
-                .replaceAll("%key%", "{key}")
-                .replaceAll("%keys%", "{keys}")
-                .replaceAll("%cratetype%", "{cratetype}")
-                .replaceAll("%player%", "{player}")
-                .replaceAll("%prize%", "{prize}")
-                .replaceAll("%number%", "{number}")
-                .replaceAll("%keytype%", "{keytype}")
-                .replaceAll("%usage%", "{usage}")
-                .replaceAll("%key-amount%", "{key_amount}")
-                .replaceAll("%amount%", "{amount}")
-                .replaceAll("%id%", "{id}")
-                .replaceAll("%crates_opened%", "{crates_opened}");
+        return this.fusion.replacePlaceholder(message, new HashMap<>() {{
+            put("%page%", "{page}");
+            put("%prefix%", "{prefix}");
+            put("%world%", "{world}");
+            put("%crate%", "{crate}");
+            put("%key%", "{key}");
+            put("%keys%", "{keys}");
+            put("%cratetype%", "{cratetype}");
+            put("%player%", "{player}");
+            put("%prize%", "{prize}");
+            put("%number%", "{number}");
+            put("%keytype%", "{keytype}");
+            put("%usage%", "{usage}");
+            put("%key-amount%", "{key_amount}");
+            put("%amount%", "{amount}");
+            put("%id%", "{id}");
+            put("%crates_opened%", "{crates_opened}");
+        }});
     }
 }

@@ -1,9 +1,9 @@
 package com.badbones69.crazycrates.paper;
 
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.core.Server;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.core.constants.PluginSupport;
 import com.badbones69.crazycrates.paper.listeners.crates.CrateInteractListener;
 import com.badbones69.crazycrates.paper.listeners.items.PaperInteractListener;
 import com.badbones69.crazycrates.paper.managers.BukkitKeyManager;
@@ -24,16 +24,15 @@ import com.badbones69.crazycrates.paper.support.placeholders.PlaceholderAPISuppo
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.core.api.enums.FileAction;
-import com.ryderbelserion.fusion.core.api.enums.FileType;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.kyori.mods.ModManager;
+import com.ryderbelserion.fusion.kyori.mods.ModSupport;
+import com.ryderbelserion.fusion.kyori.mods.objects.Mod;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.files.FileManager;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -65,12 +64,16 @@ public class CrazyCrates extends JavaPlugin {
 
     private MetricsWrapper metrics;
 
-    private FileManager fileManager;
+    private PaperFileManager fileManager;
 
     @Override
     public void onEnable() {
-        this.fusion = new FusionPaper(getComponentLogger(), getDataPath());
-        this.fusion.enable(this);
+        this.fusion = new FusionPaper(this);
+        this.fusion.init();
+
+        final ModManager modManager = this.fusion.getModManager();
+
+        PluginSupport.dependencies.forEach(dependency -> modManager.addMod(dependency, new Mod(this.fusion)));
 
         this.fileManager = this.fusion.getFileManager();
 
@@ -79,25 +82,14 @@ public class CrazyCrates extends JavaPlugin {
         this.instance = new Server(path);
         this.instance.apply();
 
-        this.fileManager.refresh(false).addFile(path.resolve("locations.yml"), FileType.PAPER, List.of(
-                        FileAction.STATIC_FILE
-                ), null)
-                .addFile(path.resolve("data.yml"), FileType.PAPER, List.of(
-                        FileAction.STATIC_FILE
-                ), null)
-                .addFile(path.resolve("guis").resolve("respin-gui.yml"), FileType.PAPER, List.of(
-                        FileAction.STATIC_FILE
-                ), null)
-                .addFolder(path.resolve("logs"), FileType.LOG, List.of(
-                        FileAction.EXTRACT_FOLDER,
-                        FileAction.STATIC_FILE
-                ), null)
-                .addFolder(path.resolve("crates"), FileType.PAPER, List.of(
-                        FileAction.EXTRACT_FOLDER
-                ), null)
-                .addFolder(path.resolve("schematics"), FileType.NBT, List.of(
-                        FileAction.EXTRACT_FOLDER
-                ), null);
+        this.fileManager.extractFolder("guis", path);
+
+        this.fileManager.addPaperFile(path.resolve("locations.yml"))
+                .addPaperFile(path.resolve("data.yml"))
+                .addPaperFile(path.resolve("guis").resolve("respin-gui.yml"))
+                .addPaperFolder(path.resolve("crates"))
+                .addFolder(path.resolve("schematics"), FileType.NBT)
+                .addFolder(path.resolve("logs"), FileType.LOG);
 
         MiscUtils.janitor();
         MiscUtils.save();
@@ -124,7 +116,7 @@ public class CrazyCrates extends JavaPlugin {
         this.crateManager.loadCrates();
 
         if (ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics)) {
-            this.metrics = new MetricsWrapper(4514);
+            this.metrics = new MetricsWrapper(this, 4514);
             this.metrics.start();
         }
 
@@ -152,26 +144,13 @@ public class CrazyCrates extends JavaPlugin {
 
         this.crateManager.loadCustomItems();
 
-        if (Plugins.placeholder_api.isEnabled()) {
-            if (MiscUtils.isLogging()) getComponentLogger().info("PlaceholderAPI support is enabled!");
+        if (this.fusion.isModReady(ModSupport.placeholder_api)) {
+            this.fusion.log("warn", "<gold>PlaceholderAPI support is enabled!");
 
             new PlaceholderAPISupport().register();
         }
 
-        if (MiscUtils.isLogging()) {
-            final ComponentLogger logger = getComponentLogger();
-
-            // Print dependency garbage
-            for (final Plugins value : Plugins.values()) {
-                if (value.isEnabled()) {
-                    logger.info(AdvUtils.parse("<bold><gold>" + value.getName() + " <green>FOUND"));
-                } else {
-                    logger.info(AdvUtils.parse("<bold><gold>" + value.getName() + " <red>NOT FOUND"));
-                }
-            }
-
-            logger.info("Done ({})!", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
-        }
+        this.fusion.log("info", "Done ({})", String.format(Locale.ROOT, "%.3fs", (double) (System.nanoTime() - this.startTime) / 1.0E9D));
     }
 
     @Override
@@ -223,7 +202,7 @@ public class CrazyCrates extends JavaPlugin {
         return this.crateManager;
     }
 
-    public final FileManager getFileManager() {
+    public final PaperFileManager getFileManager() {
         return this.fileManager;
     }
 

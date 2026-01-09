@@ -17,8 +17,9 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -43,6 +44,8 @@ import java.util.List;
 public abstract class CrateBuilder extends FoliaScheduler {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    protected final FusionPaper fusion = this.plugin.getFusion();
 
     protected final ComponentLogger logger = this.plugin.getComponentLogger();
 
@@ -203,7 +206,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
                     }
 
                     reward.setVelocity(new Vector(0, 0.2, 0));
-                    reward.customName(AdvUtils.parse(prize.getPrizeName()));
+                    reward.customName(fusion.parse(player, prize.getPrizeName()));
                     reward.setCustomNameVisible(true);
                     reward.setCanMobPickup(false);
                     reward.setCanPlayerPickup(false);
@@ -343,7 +346,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param lore lore of item
      */
     public void setItem(final int slot, @NotNull final ItemType itemType, @NotNull final String name, @NotNull final List<String> lore) {
-        this.inventory.setItem(slot, new LegacyItemBuilder(this.plugin, itemType).setPlayer(this.player).setDisplayName(name).setDisplayLore(lore).asItemStack());
+        this.inventory.setItem(slot, ItemBuilder.from(itemType, 1).withDisplayName(name).withDisplayLore(lore).asItemStack(this.player));
     }
 
     /**
@@ -354,7 +357,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param name name of item
      */
     public void setItem(final int slot, @NotNull final ItemType itemType, @NotNull final String name) {
-        this.inventory.setItem(slot, new LegacyItemBuilder(this.plugin, itemType).setPlayer(this.player).setDisplayName(name).asItemStack());
+        this.inventory.setItem(slot, ItemBuilder.from(itemType, 1).withDisplayName(name).asItemStack(this.player));
     }
 
     /**
@@ -370,7 +373,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @return the itemstack
      */
     public @NotNull final ItemStack getRandomGlassPane() {
-        return MiscUtils.getRandomPaneColor().setDisplayName(" ").asItemStack();
+        return MiscUtils.getRandomPaneColor().withDisplayName(" ").asItemStack();
     }
 
     protected final SettingsManager config = ConfigManager.getConfig();
@@ -459,19 +462,17 @@ public abstract class CrateBuilder extends FoliaScheduler {
 
     public final void populateTiers() {
         final CosmicCrateManager manager = (CosmicCrateManager) this.crate.getManager();
-        final LegacyItemBuilder itemBuilder = manager.getMysteryCrate().setPlayer(this.player);
+        final ItemBuilder itemBuilder = manager.getMysteryCrate();
 
         for (int slot = 0; slot <= this.size; slot++) {
-            itemBuilder.addNamePlaceholder("%Slot%", String.valueOf(slot)).addLorePlaceholder("%Slot%", String.valueOf(slot));
-
-            itemBuilder.setAmount(slot);
+            itemBuilder.addPlaceholder("%Slot%", String.valueOf(slot)).setAmount(slot);
 
             final Tier tier = PrizeManager.getTier(this.crate);
 
             if (tier != null) {
                 this.crateManager.addTier(this.player, slot, tier);
 
-                getInventory().setItem(getInventory().firstEmpty(), itemBuilder.asItemStack());
+                getInventory().setItem(getInventory().firstEmpty(), itemBuilder.asItemStack(this.player));
             }
         }
     }

@@ -2,16 +2,14 @@ package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migr
 
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.fusion.core.api.enums.FileType;
-import com.ryderbelserion.fusion.core.api.interfaces.files.ICustomFile;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public class DeprecatedCrateMigrator extends ICrateMigrator {
 
@@ -21,28 +19,113 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Collection<ICustomFile<? extends ICustomFile<?>>> customFiles = this.fileManager.getCustomFiles().values();
-
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
 
-        customFiles.forEach(key -> {
+        final List<Path> paths = this.fusion.getFiles(getCratesDirectory(), ".yml");
+
+        for (final Path path : paths) {
+            final Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(path);
+
+            if (optional.isEmpty()) continue;
+
+            final PaperCustomFile customFile = optional.get();
+
+            if (!customFile.isLoaded()) continue;
+
+            final YamlConfiguration configuration = customFile.getConfiguration();
+
+            final ConfigurationSection section = configuration.getConfigurationSection("Crate");
+
+            if (section == null) continue;
+
             try {
-                if (key.isStatic() || !key.isLoaded() || key.getFileType() != FileType.PAPER) return;
-
-                final PaperCustomFile customFile = (PaperCustomFile) key;
-
-                final YamlConfiguration configuration = customFile.getConfiguration();
-
-                final ConfigurationSection section = configuration.getConfigurationSection("Crate");
-
-                if (section == null) return;
-
                 boolean isSave = false;
 
                 if (section.contains("CrateName")) {
                     set(section, "Name", section.getString("CrateName", " "));
                     set(section, "CrateName", null);
+
+                    isSave = true;
+                }
+
+                final ConfigurationSection displaySection = section.contains("Preview.Display") ? section.getConfigurationSection("Preview.Display") : section.createSection("Preview.Display");
+
+                if (displaySection != null) {
+                    if (section.contains("Glowing") && section.isBoolean("Glowing")) {
+                        final boolean isGlowing  = section.getBoolean("Glowing", false);
+
+                        if (isGlowing) {
+                            set(displaySection, "Glowing", "add_glow");
+                        } else {
+                            set(displaySection, "Glowing", "remove_glow");
+                        }
+
+                        set(section, "Glowing", null);
+
+                        isSave = true;
+                    }
+
+                    if (section.contains("Item")) {
+                        set(displaySection, "Item", section.getString("Item", "chest"));
+                        set(section, "Item", null);
+
+                        isSave = true;
+                    }
+
+                    if (section.contains("Custom-Model-Data")) {
+                        set(displaySection, "Custom-Model-Data", section.getInt("Custom-Model-Data", -1));
+                        set(section, "Custom-Model-Data", null);
+
+                        isSave = true;
+                    }
+
+                    if (section.contains("Model.Namespace") && section.contains("Model.Id")) {
+                        set(displaySection, "Model.Namespace", section.getString("Model.Namespace", ""));
+                        set(displaySection, "Model.Id", section.getString("Model.Id", ""));
+
+                        set(section, "Model", null);
+
+                        isSave = true;
+                    }
+
+                    if (section.contains("Slot")) {
+                        set(displaySection, "Slot", section.getInt("Slot", -1));
+                        set(section, "Slot", null);
+
+                        isSave = true;
+                    }
+
+                    if (section.contains("Name")) {
+                        set(displaySection, "Name", section.getString("Name", " "));
+                        set(section, "Name", null);
+
+                        isSave = true;
+                    }
+
+                    if (section.contains("Lore")) {
+                        set(displaySection, "Lore", section.getStringList("Lore"));
+                        set(section, "Lore", null);
+
+                        isSave = true;
+                    }
+
+                    if (section.contains("InGUI")) {
+                        set(displaySection, "Toggle", section.getBoolean("InGUI", false));
+                        set(section, "InGUI", null);
+
+                        isSave = true;
+                    }
+                }
+
+                if (section.contains("PhysicalKey.Glowing") && section.isBoolean("PhysicalKey.Glowing")) {
+                    final boolean isGlowing  = section.getBoolean("PhysicalKey.Glowing", false);
+
+                    if (isGlowing) {
+                        set(section, "PhysicalKey.Glowing", "add_glow");
+                    } else {
+                        set(section, "PhysicalKey.Glowing", "remove_glow");
+                    }
 
                     isSave = true;
                 }
@@ -93,18 +176,31 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
 
                             isSave = true;
                         }
+
+                        if (prizeSection.contains("Glowing") && prizeSection.isBoolean("Glowing")) {
+                            final boolean isGlowing  = section.getBoolean("Glowing", false);
+
+                            if (isGlowing) {
+                                set(section, "Glowing", "add_glow");
+                            } else {
+                                set(section, "Glowing", "remove_glow");
+                            }
+
+                            isSave = true;
+                        }
                     }
                 }
 
                 if (isSave) {
                     customFile.save();
+                    customFile.load();
                 }
 
                 success.add("<green>⤷ " + customFile.getFileName());
-            } catch (Exception exception) {
-                failed.add("<red>⤷ " + key.getFileName());
+            } catch (final Exception exception) {
+                failed.add("<red>⤷ " + customFile.getFileName());
             }
-        });
+        }
 
         final int convertedCrates = success.size();
         final int failedCrates = failed.size();
@@ -116,8 +212,6 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
 
         sendMessage(files, convertedCrates, failedCrates);
 
-        this.fileManager.init(new ArrayList<>());
-
         // reload crates
         this.crateManager.loadHolograms();
         this.crateManager.loadCrates();
@@ -126,10 +220,5 @@ public class DeprecatedCrateMigrator extends ICrateMigrator {
     @Override
     public <T> void set(final ConfigurationSection section, final String path, T value) {
         section.set(path, value);
-    }
-
-    @Override
-    public final File getCratesDirectory() {
-        return new File(this.plugin.getDataFolder(), "crates");
     }
 }

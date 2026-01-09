@@ -7,9 +7,8 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
-import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
-import com.ryderbelserion.fusion.paper.files.FileManager;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.command.CommandSender;
@@ -18,12 +17,13 @@ import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class EventManager {
 
     private final static CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final static FusionPaper fusion = plugin.getFusion();
 
     private final static ComponentLogger logger = plugin.getComponentLogger();
 
@@ -98,23 +98,19 @@ public class EventManager {
         log(message, path, type);
     }
 
-    private static final FileManager fileManager = plugin.getFileManager();
+    private static final PaperFileManager fileManager = plugin.getFileManager();
 
     private static void log(@NotNull final String message, @Nullable final Path path, @NotNull final EventType type) {
         final String time = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(System.currentTimeMillis()));
 
         if (path != null && config.getProperty(ConfigKeys.log_to_file)) {
-            final LogCustomFile customFile = (LogCustomFile) fileManager.getCustomFile(path);
-
-            if (customFile != null) {
-                customFile.save("[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(AdvUtils.parse(message)), new ArrayList<>());
-            }
+            fileManager.getLogFile(path).ifPresent(file -> file.save("[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(fusion.parse(message))));
         }
 
         final boolean log_to_console = config.getProperty(ConfigKeys.log_to_console);
 
         if (log_to_console) {
-            logger.info("[{} {}]: {}", time, type.getEvent(), AdvUtils.parse(message));
+            logger.info("[{} {}]: {}", time, type.getEvent(), PlainTextComponentSerializer.plainText().serialize(fusion.parse(message)));
         }
     }
 }

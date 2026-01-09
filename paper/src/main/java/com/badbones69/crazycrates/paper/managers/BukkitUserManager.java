@@ -7,9 +7,8 @@ import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.inventory.EntityEquipment;
@@ -36,11 +35,11 @@ public class BukkitUserManager extends UserManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
+    private final FusionPaper fusion = this.plugin.getFusion();
+
     private final Server server = this.plugin.getServer();
 
     private final PluginManager pluginManager = this.server.getPluginManager();
-
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
@@ -59,7 +58,7 @@ public class BukkitUserManager extends UserManager {
     @Override
     public void addVirtualKeys(@NotNull final UUID uuid, @NotNull final String crateName, final int amount) {
         if (isPlayerNull(uuid)) {
-            if (MiscUtils.isLogging()) this.logger.warn("Player with the uuid: {} is null.", uuid);
+            this.fusion.log("warn", "Player with the uuid: {} is null.", uuid);
 
             return;
         }
@@ -67,7 +66,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -90,7 +89,7 @@ public class BukkitUserManager extends UserManager {
     @Override
     public void setKeys(@NotNull final UUID uuid, @NotNull final String crateName, final int amount) {
         if (isPlayerNull(uuid)) {
-            if (MiscUtils.isLogging()) this.logger.warn("Player with the uuid: {} is null.", uuid);
+            this.fusion.log("warn", "Player with the uuid: {} is null.", uuid);
 
             return;
         }
@@ -98,7 +97,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -122,7 +121,7 @@ public class BukkitUserManager extends UserManager {
     @Override
     public void addKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull final KeyType keyType, final int amount) {
         if (isPlayerNull(uuid)) {
-            if (MiscUtils.isLogging()) this.logger.warn("Player with the uuid {} is null.", uuid);
+            this.fusion.log("warn", "Player with the uuid {} is null.", uuid);
 
             return;
         }
@@ -130,7 +129,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -173,7 +172,7 @@ public class BukkitUserManager extends UserManager {
     @Override
     public int getPhysicalKeys(@NotNull final UUID uuid, @NotNull final String crateName) {
         if (isPlayerNull(uuid)) {
-            if (MiscUtils.isLogging()) this.logger.warn("Player with the uuid {} is null.", uuid);
+            this.fusion.log("warn", "Player with the uuid {} is null.", uuid);
 
             return 0;
         }
@@ -181,7 +180,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return 0;
         }
@@ -202,7 +201,7 @@ public class BukkitUserManager extends UserManager {
     @Override
     public boolean takeKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull final KeyType keyType, final int amount, final boolean checkHand) {
         if (isPlayerNull(uuid)) {
-            if (MiscUtils.isLogging()) this.logger.warn("Player with the uuid {} is null.", uuid);
+            this.fusion.log("warn", "Player with the uuid {} is null.", uuid);
 
             return false;
         }
@@ -210,7 +209,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return false;
         }
@@ -319,7 +318,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return false;
         }
@@ -357,7 +356,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return false;
         }
@@ -385,7 +384,7 @@ public class BukkitUserManager extends UserManager {
 
             return true;
         } catch (final Exception exception) {
-            if (MiscUtils.isLogging()) this.logger.error("Could not add keys to offline player with uuid: {}", uuid, exception);
+            this.fusion.log("error", "Could not add keys to offline player with uuid: {}", uuid, exception);
 
             return false;
         }
@@ -396,7 +395,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return false;
         }
@@ -430,7 +429,7 @@ public class BukkitUserManager extends UserManager {
 
             return true;
         } catch (final Exception exception) {
-            if (MiscUtils.isLogging()) this.logger.error("Could not take keys from offline player with uuid: {}", uuid, exception);
+            this.fusion.log("error", "Could not take keys from offline player with uuid: {}", uuid, exception);
 
             return false;
         }
@@ -587,7 +586,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return 0;
         }
@@ -600,7 +599,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -637,7 +636,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -675,7 +674,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return 0;
         }
@@ -687,7 +686,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -705,7 +704,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return false;
         }
@@ -721,7 +720,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -745,7 +744,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return "";
         }
@@ -761,7 +760,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -787,7 +786,7 @@ public class BukkitUserManager extends UserManager {
         final Crate crate = isCrateInvalid(crateName);
 
         if (crate == null) {
-            if (MiscUtils.isLogging()) this.logger.warn("Crate {} doesn't exist.", crateName);
+            this.fusion.log("warn", "Crate {} doesn't exist.", crateName);
 
             return;
         }
@@ -819,40 +818,5 @@ public class BukkitUserManager extends UserManager {
         if (crateName.isEmpty()) return null;
 
         return this.crateManager.getCrateFromName(crateName);
-    }
-
-    /**
-     * Adds internal placeholders to the itembuilder.
-     *
-     * @param itemBuilder the itembuilder
-     * @param crate the crate
-     * @return the itembuilder
-     */
-    public LegacyItemBuilder addPlaceholders(@NotNull final LegacyItemBuilder itemBuilder, @NotNull final Crate crate) {
-        final String fileName = crate.getFileName();
-
-        if (fileName.isEmpty()) return itemBuilder;
-
-        final UUID uuid = itemBuilder.getPlayer();
-
-        if (uuid == null) return itemBuilder;
-
-        final int virtualKeys = getVirtualKeys(uuid, fileName);
-        final int physicalKeys = getPhysicalKeys(uuid, fileName);
-
-        final int totalKeys = virtualKeys + physicalKeys;
-
-        final int openedCrates = getCrateOpened(uuid, fileName);
-
-        final NumberFormat instance = NumberFormat.getNumberInstance();
-
-        return itemBuilder.addNamePlaceholder("%keys%", instance.format(virtualKeys))
-                .addNamePlaceholder("%keys_physical%", instance.format(physicalKeys))
-                .addNamePlaceholder("%keys_total%", instance.format(totalKeys))
-                .addNamePlaceholder("%crate_opened%", instance.format(openedCrates))
-                .addNamePlaceholder("%keys_raw%", String.valueOf(virtualKeys))
-                .addNamePlaceholder("%keys_physical_raw%", String.valueOf(physicalKeys))
-                .addNamePlaceholder("%keys_total_raw%", String.valueOf(totalKeys))
-                .addNamePlaceholder("%crate_opened_raw", String.valueOf(openedCrates));
     }
 }

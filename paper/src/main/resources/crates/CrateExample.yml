@@ -12,22 +12,17 @@ Crate:
   RequiredKeys: 0
   # Max amount of crates that can be opened at once using /crates mass-open
   Max-Mass-Open: 10
-  # If the crate shows in the /crates.
-  # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
-  InGUI: true
-  # Slot the item is in the GUI.
-  Slot: 11
   # Enables/Disables the Broadcasts message when they open a crate.
   OpeningBroadCast: true
   # Message that is broadcast when opening the crate.
-  BroadCast: "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><green>Basic Crate.</bold>"
+  BroadCast: "{prefix}<bold><gold>{player}</bold><reset> <gray>is opening a <bold><green>Basic Crate.</bold>"
   # This section is related to commands opening when a crate is opened.
   opening-command:
     # If the commands should be sent or not.
     toggle: false
     # The commands to run when the crate opens.
     # Supports all placeholderapi placeholders
-    # Supports %prefix which returns our prefix, %player% which uses the player name
+    # Supports {prefix} which returns our prefix, {player} which uses the player name
     commands:
       - "put your command here."
   sound:
@@ -67,7 +62,7 @@ Crate:
   # A default message if the prize doesn't have any Messages
   # i.e. Messages: [] or the value isn't there.
   Prize-Message:
-    - "<gray>You have won <red>%reward% <gray>from <red>%crate%."
+    - "<gray>You have won <red>{reward} <gray>from <red>{crate}."
   # A list of commands to run by default on every prize.
   # If you do not want these commands to run, set this to []
   Prize-Commands: []
@@ -87,7 +82,7 @@ Crate:
       Toggle: false
       # The messages to broadcast.
       Messages:
-        - "<red>%player% won the prize <yellow>%reward%."
+        - "<red>{player} won the prize <yellow>{reward}."
       # If the player has this permission, they don't get the broadcast.
       Permission: ""
     # Settings related to rewards.
@@ -104,27 +99,7 @@ Crate:
         # i.e. crazycrates.respin.<crate_name>.1-20
         # It will simply register multiple permissions, so it shows up in things like LuckPerms.
         Max-Cap: 20
-  # Item the crate is in the GUI
-  Item: "diamond"
-  # The custom model data of the item, -1 is disabled.
-  Custom-Model-Data: -1
-  # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
-  # Set this to blank for it to do nothing.
-  Model:
-    # The namespace i.e. nexo
-    Namespace: ""
-    # The id i.e. emerald_helmet
-    Id: ""
-  # If the crate in the main /crates is glowing or not.
-  Glowing: false
-  # Name of the item in the GUI.
-  Name: "<bold><green>Basic Crate</bold>"
-  # The lore of the item in the GUI.
-  Lore:
-    - "<gray>This crate contains strange objects."
-    - "<gray>You have <gold>%keys% keys <gray>to open this crate with."
-    - "<gray>You have opened this crate: <gold>%crate_opened% times"
-    - "<gray>(<yellow>!<gray>) Right click to view rewards."
+  # Preview related settings
   Preview:
     # The name of the inventory for the preview menu.
     Name: "<green>Basic Crate Preview"
@@ -149,6 +124,33 @@ Crate:
         Namespace: ""
         # The id i.e. emerald_helmet
         Id: ""
+    # Settings related to the item in /crates
+    Display:
+      # If the crate shows in the /crates.
+      # If the type is QuickCrate/CrateOnTheGo/FireCracker, They will not work as they require a Physical Crate.
+      Toggle: true
+      # Item the crate is in the GUI
+      Item: "diamond"
+      # Name of the item in the GUI.
+      Name: "<bold><green>Basic Crate</bold>"
+      # The lore of the item in the GUI.
+      Lore:
+        - "<gray>This crate contains strange objects."
+        - "<gray>You have <gold>{keys} keys <gray>to open this crate with."
+        - "<gray>You have opened this crate: <gold>{crate_opened} times"
+        - "<gray>(<yellow>!<gray>) Right click to view rewards."
+      # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+      # Set this to blank for it to do nothing.
+      Model:
+        # The namespace i.e. nexo
+        Namespace: ""
+        # The id i.e. emerald_helmet
+        Id: ""
+      # Available Types: add_glow, remove_glow, or none.
+      # None, or blank value means no state will be applied.
+      Glowing: "add_glow"
+      # Slot the item is in the GUI.
+      Slot: 11
   # Settings related to animations...
   Animation:
     # This is only when an animation starts.
@@ -213,8 +215,9 @@ Crate:
       Namespace: ""
       # The id i.e. emerald_helmet
       Id: ""
-    # Makes the key look enchanted.
-    Glowing: true
+    # Available Types: add_glow, remove_glow, or none.
+    # None, or blank value means no state will be applied.
+    Glowing: "add_glow"
   # Settings for the holograms.
   Hologram:
     # Toggle on and off the holograms for the crates.
@@ -263,8 +266,18 @@ Crate:
       Player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
       # Only uncomment this if using HeadDatabase by Arcaniax
       # Skull: "7129"
+      # The list of items to win.
       Items:
-        - "Item:player_head, Player:1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Name:<gold>BadBones69"
+        1:
+          # The material of the item.
+          material: "player_head"
+          # The name of the item.
+          name: "<gold>BadBones69"
+          # Generic settings.
+          settings:
+            # The player name/texture to display.
+            # https://minecraft-heads.com/
+            player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
     "2":
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Sword"
@@ -291,7 +304,17 @@ Crate:
       Weight: 15.0
       # The list of items to win.
       Items:
-        - "Item:diamond_sword, Name:<red>Diamond Sword, sharpness:5, looting:3"
+        1:
+          # The material of the item.
+          material: "diamond_sword"
+          # The name of the item.
+          name: "<red>Diamond Sword"
+          # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
+          # A list of enchantments https://jd.papermc.io/paper/1.21.10/io/papermc/paper/registry/keys/EnchantmentKeys.html
+          # enchantment: amount
+          enchantments:
+            looting: 3
+            sharpness: 5
     "3":
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Helmet"
@@ -326,7 +349,25 @@ Crate:
       Weight: 15.0
       # The list of items to win.
       Items:
-        - "Item:diamond_helmet, Name:<red>Diamond Helmet, protection:5, unbreaking:3, Trim-Material:quartz, Trim-Pattern:sentry"
+        1:
+          # The material of the item.
+          material: "diamond_helmet"
+          # The name of the item.
+          name: "<red>Diamond Helmet"
+          # Generic settings.
+          settings:
+            # The trim settings
+            trim:
+              # The trim pattern of the armor.
+              pattern: "sentry"
+              # The trim material of the armor.
+              material: "quartz"
+          # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
+          # A list of enchantments https://jd.papermc.io/paper/1.21.10/io/papermc/paper/registry/keys/EnchantmentKeys.html
+          # enchantment: amount
+          enchantments:
+            unbreaking: 3
+            protection: 5
     "4":
       # The enchants to be stored on the book.
       DisplayEnchantments:
@@ -355,7 +396,15 @@ Crate:
       Weight: 25.0
       # The list of items to win.
       Items:
-        - "Item:enchanted_book, protection:5, unbreaking:3"
+        1:
+          # The material of the item.
+          material: "enchanted_book"
+          # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
+          # A list of enchantments https://jd.papermc.io/paper/1.21.10/io/papermc/paper/registry/keys/EnchantmentKeys.html
+          # enchantment: amount
+          enchantments:
+            unbreaking: 3
+            protection: 5
     "5":
       # The display name of the item.
       DisplayName: "<yellow>$1,000"
@@ -379,7 +428,7 @@ Crate:
           Toggle: false
           # The messages to broadcast.
           Messages:
-            - "<red>%player% won the prize <yellow>%reward%."
+            - "<red>{player} won the prize <yellow>{reward}."
           # If the player has this permission, they don't get the broadcast.
           Permission: ""
       # The amount to display in the gui.
@@ -394,13 +443,13 @@ Crate:
       Firework: true
       # Run commands when a prize is won.
       Commands:
-        - "eco give %player% 1000"
+        - "eco give {player} 1000"
       # Override the global message.
       Messages:
-        - "<gray>You won <reset>%reward%."
+        - "<gray>You won <reset>{reward}."
     "6":
       # The name of the item to display in the gui.
-      DisplayName: "<green>Fancy Shield <gray>| <red>%pulls%<gray>/<red>%maxpulls%"
+      DisplayName: "<green>Fancy Shield <gray>| <red>{pulls}<gray>/<red>{maxpulls}"
       # The item to display in the gui.
       DisplayItem: "shield"
       # A list of patterns: https://jd.papermc.io/paper/1.21/org/bukkit/block/banner/PatternType.html
@@ -431,33 +480,20 @@ Crate:
       Weight: 15.0
       # The list of items to win.
       Items:
-        - "Item:shield, base:white, gradient_up:light_gray, straight_cross:light_blue, flower:light_blue"
+        1:
+          # The material of the item.
+          material: "shield"
+          # Generic settings.
+          settings:
+            # The configuration section for patterns, minecraft: is not needed in front of the pattern.
+            # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/BannerPatternKeys.html
+            # pattern: color
+            patterns:
+              straight_cross: light_blue
+              gradient_up: light_gray
+              base: white
+              flower: light_blue
     "7":
-      # The name of the item to display in the gui.
-      DisplayName: "<green>Creeper Spawner"
-      # The spawner to display in the gui.
-      DisplayItem: "spawner"
-      # Prize display preview settings
-      Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
-        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
-        # Set this to blank for it to do nothing.
-        Model:
-          # The namespace i.e. nexo
-          Namespace: ""
-          # The id i.e. emerald_helmet
-          Id: ""
-        # The type of mob for the spawner.
-        Mob-Type: creeper
-      # The amount to display in the gui.
-      DisplayAmount: 1
-      # The lower the number, the less likely to win it.
-      Weight: 23.5
-      # The list of items to win.
-      Items:
-        - "Item:spawner, Mob:creeper"
-    "8":
       # The name of the item to display in the gui.
       DisplayName: "<red>Red Potion"
       # The item to display in the gui.
@@ -474,6 +510,7 @@ Crate:
           # The id i.e. emerald_helmet
           Id: ""
         # The rgb used for the potion.
+        # RGB = performance
         RGB: '229,164,229'
         # Color: RED
       # The amount to display in the gui.
@@ -482,4 +519,27 @@ Crate:
       Weight: 15.0
       # The list of items to win.
       Items:
-        - "Item:potion, RGB:229,164,229" # Color:RED
+        1:
+          # The material of the item.
+          material: potion
+          # Generic settings.
+          settings:
+            # The rgb of the item.
+            # RGB = performance
+            rgb: 229,164,229
+            # The potion settings.
+            potions:
+              # The name of the potion.
+              strength:
+                # The length of the potion.
+                duration: 60
+                # The level of the potion.
+                level: 3
+                # The style settings of the potion.
+                style:
+                  # Should the icon show?
+                  icon: false
+                  # Should there be ambient effects?
+                  ambient: false
+                  # Should particles be shown?
+                  particles: true

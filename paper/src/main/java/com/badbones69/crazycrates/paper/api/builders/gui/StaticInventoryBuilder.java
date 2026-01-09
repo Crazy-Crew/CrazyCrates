@@ -1,17 +1,40 @@
 package com.badbones69.crazycrates.paper.api.builders.gui;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.Gui;
+import com.badbones69.crazycrates.paper.api.objects.Tier;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.Gui;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class StaticInventoryBuilder extends InventoryBuilder {
 
+    private final List<Tier> tiers;
     private final Player player;
     private final Crate crate;
-
     private final Gui gui;
+
+    /**
+     * Builds an inventory with a set title/rows
+     *
+     * @param player {@link Player}
+     * @param title {@link String}
+     * @param rows {@link Integer}
+     */
+    public StaticInventoryBuilder(@NotNull final Player player, @NotNull final Crate crate, @NotNull final List<Tier> tiers, @NotNull final String title, final int rows) {
+        super(player);
+
+        this.gui = Gui.gui(this.plugin).setTitle(this.fusion.papi(player, title)).setRows(rows).disableInteractions().create();
+
+        this.player = player;
+        this.crate = crate;
+        this.tiers = tiers;
+    }
 
     /**
      * Builds an inventory with a set title/rows
@@ -23,10 +46,11 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
     public StaticInventoryBuilder(@NotNull final Player player, @NotNull final Crate crate, @NotNull final String title, final int rows) {
         super(player);
 
-        this.gui = Gui.gui(this.plugin).setTitle(parse(player, title)).setRows(rows).disableInteractions().create();
+        this.gui = Gui.gui(this.plugin).setTitle(this.fusion.papi(player, title)).setRows(rows).disableInteractions().create();
 
         this.player = player;
         this.crate = crate;
+        this.tiers = new ArrayList<>();
     }
 
     /**
@@ -39,10 +63,11 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
     public StaticInventoryBuilder(@NotNull final Player player, @NotNull final String title, final int rows) {
         super(player);
 
-        this.gui = Gui.gui(this.plugin).setTitle(parse(player, title)).setRows(rows).disableInteractions().create();
+        this.gui = Gui.gui(this.plugin).setTitle(this.fusion.papi(player, title)).setRows(rows).disableInteractions().create();
 
         this.player = player;
         this.crate = null;
+        this.tiers = new ArrayList<>();
     }
 
     /**
@@ -54,10 +79,11 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
     public StaticInventoryBuilder(@NotNull final Player player, @NotNull final Crate crate) {
         super(player);
 
-        this.gui = Gui.gui(this.plugin).setTitle(parse(player, crate.getPreviewName())).setRows(crate.getPreviewTierCrateRows()).disableInteractions().create();
+        this.gui = Gui.gui(this.plugin).setTitle(this.fusion.papi(player, crate.getPreviewName())).setRows(crate.getPreviewTierCrateRows()).disableInteractions().create();
 
         this.player = player;
         this.crate = crate;
+        this.tiers = new ArrayList<>();
     }
 
     public abstract void open();
@@ -85,7 +111,7 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
      *
      * @return the title of the gui
      */
-    public @NotNull final String getTitle() {
+    public @NotNull String getTitle() {
         return this.gui.getTitle();
     }
 
@@ -97,6 +123,43 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
      */
     public final boolean contains(@NotNull final String message) {
         return getTitle().contains(message);
+    }
+
+    /**
+     * Updates the gui title.
+     *
+     * @param message the new title
+     */
+    public void updateTitle(@NotNull final String message) {
+        this.gui.setTitle(message);
+        this.gui.updateTitle(this.player);
+    }
+
+    /**
+     * Get a list of tiers.
+     *
+     * @return list of tiers
+     */
+    public @NotNull final List<Tier> getTiers() {
+        return this.tiers;
+    }
+
+    /**
+     * Fetches the inventory view.
+     *
+     * @return the inventory view
+     */
+    public @NotNull final InventoryView getView() {
+        return getPlayer().getOpenInventory();
+    }
+
+    /**
+     * Fetches the gui inventory.
+     *
+     * @return the inventory
+     */
+    public @NotNull final Inventory getInventory() {
+        return getGui().getInventory();
     }
 
     /**

@@ -10,11 +10,11 @@ import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
-import com.ryderbelserion.fusion.paper.files.FileManager;
-import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import io.papermc.paper.datacomponent.DataComponentTypes;
@@ -38,15 +38,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import java.nio.file.Path;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class Crate {
 
-    private LegacyItemBuilder previewTierBorderItem;
-    private LegacyItemBuilder borderItem;
-    private LegacyItemBuilder keyBuilder;
+    private ItemBuilder previewTierBorderItem;
+    private ItemBuilder borderItem;
+    private ItemBuilder keyBuilder;
 
     private AbstractCrateManager manager;
     private final String fileName;
@@ -120,7 +122,7 @@ public class Crate {
     public Crate(@NotNull final String name,
                  @NotNull final String previewName,
                  @NotNull final CrateType crateType,
-                 @NotNull final LegacyItemBuilder key,
+                 @NotNull final ItemBuilder key,
                  @NotNull final String keyName,
                  @NotNull final ArrayList<Prize> prizes,
                  @NotNull final YamlConfiguration file,
@@ -132,7 +134,7 @@ public class Crate {
                  @NotNull final List<String> prizeCommands,
                  @NotNull final CrateHologram hologram) {
         this.name = name.replaceAll(".yml", "");
-        this.keyBuilder = key.setDisplayName(keyName).setPersistentString(ItemKeys.crate_key.getNamespacedKey(), this.name);
+        this.keyBuilder = key.withDisplayName(keyName).setPersistentString(ItemKeys.crate_key.getNamespacedKey(), this.name);
         this.keyName = keyName;
 
         this.file = file;
@@ -142,6 +144,8 @@ public class Crate {
         this.requiredKeys = requiredKeys;
         this.prizeMessage = prizeMessage;
         this.prizeCommands = prizeCommands;
+
+        this.crateName = file.getString("Crate.Preview.Display.Name", " ");
 
         this.glassBorderToggle = this.file.contains("Crate.Settings.Border.Glass-Border.Toggle") ?
                 this.file.getBoolean("Crate.Settings.Border.Glass-Border.Toggle", this.glassBorderToggle) :
@@ -222,27 +226,33 @@ public class Crate {
 
         this.maxSlots = this.rows * 9;
 
-        this.crateName = file.getString("Crate.Name", " ");
-
         this.animationName = file.getString("Crate.Animation.Name", this.crateName);
 
         @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
-        this.borderItem = new LegacyItemBuilder(this.plugin)
-                .withType(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane").toLowerCase())
-                .setCustomModelData(file.getString("Crate.Preview.Glass.Custom-Model-Data", ""))
-                .setItemModel(file.getString("Crate.Preview.Glass.Model.Namespace", ""), file.getString("Crate.Preview.Glass.Model.Id", ""))
-                .setHidingItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
-                .setDisplayName(borderName);
+        this.borderItem = ItemBuilder.from(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane").toLowerCase())
+                .withDisplayName(borderName).withConsumer(consumer -> {
+                    final CustomBuilder customBuilder = consumer.asCustomBuilder();
+
+                    customBuilder.setCustomModelData(file.getString("Crate.Preview.Glass.Custom-Model-Data", ""));
+
+                    customBuilder.setItemModel(file.getString("Crate.Preview.Glass.Model.Namespace", ""), file.getString("Crate.Preview.Glass.Model.Id", ""));
+
+                    customBuilder.build();
+                });
 
         @NotNull final String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
 
-        this.previewTierBorderItem = new LegacyItemBuilder(this.plugin)
-                .withType(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
-                .setCustomModelData(file.getString("Crate.tier-preview.glass.custom-model-data", ""))
-                .setItemModel(file.getString("Crate.tier-preview.glass.model.namespace", ""), file.getString("Crate.tier-preview.glass.model.id", ""))
-                .setHidingItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
-                .setDisplayName(previewTierBorderName);
+        this.previewTierBorderItem = ItemBuilder.from(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
+                .withDisplayName(previewTierBorderName).withConsumer(consumer -> {
+                    final CustomBuilder customBuilder = consumer.asCustomBuilder();
+
+                    customBuilder.setCustomModelData(file.getString("Crate.tier-preview.glass.custom-model-data", ""));
+
+                    customBuilder.setItemModel(file.getString("Crate.tier-preview.glass.model.namespace", ""), file.getString("Crate.tier-preview.glass.model.id", ""));
+
+                    customBuilder.build();
+                });
 
         setTierPreviewRows(file.getInt("Crate.tier-preview.rows", 5));
 
@@ -307,7 +317,7 @@ public class Crate {
     /**
      * @return item for the preview border.
      */
-    public @NotNull final LegacyItemBuilder getPreviewTierBorderItem() {
+    public @NotNull final ItemBuilder getPreviewTierBorderItem() {
         return this.previewTierBorderItem;
     }
 
@@ -565,7 +575,7 @@ public class Crate {
      *
      * @return the ItemBuilder for the border item.
      */
-    public @NotNull final LegacyItemBuilder getBorderItem() {
+    public @NotNull final ItemBuilder getBorderItem() {
         return this.borderItem;
     }
     
@@ -624,7 +634,33 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey(@NotNull final Player player) {
-        return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).asItemStack();
+        final UUID uuid = player.getUniqueId();
+
+        final int virtualKeys = this.userManager.getVirtualKeys(uuid, fileName);
+        final int physicalKeys = this.userManager.getPhysicalKeys(uuid, fileName);
+
+        final int totalKeys = virtualKeys + physicalKeys;
+
+        final int openedCrates = this.userManager.getCrateOpened(uuid, fileName);
+
+        final NumberFormat instance = NumberFormat.getNumberInstance();
+
+        return this.keyBuilder.addPlaceholder("{keys_physical_raw}", String.valueOf(physicalKeys))
+                .addPlaceholder("{keys_physical}", instance.format(physicalKeys))
+                .addPlaceholder("{keys_total_raw}", String.valueOf(totalKeys))
+                .addPlaceholder("{keys_total}", instance.format(totalKeys))
+                .addPlaceholder("{keys}", instance.format(virtualKeys))
+                .addPlaceholder("{crate_opened_raw}", String.valueOf(openedCrates))
+                .addPlaceholder("{crate_opened}", instance.format(openedCrates))
+
+                .addPlaceholder("%keys_physical_raw%", String.valueOf(physicalKeys))
+                .addPlaceholder("%keys_physical%", instance.format(physicalKeys))
+                .addPlaceholder("%keys_total_raw%", String.valueOf(totalKeys))
+                .addPlaceholder("%keys_total%", instance.format(totalKeys))
+                .addPlaceholder("%keys%", instance.format(virtualKeys))
+                .addPlaceholder("%crate_opened_raw%", String.valueOf(openedCrates))
+                .addPlaceholder("%crate_opened%", instance.format(openedCrates))
+                .asItemStack(player);
     }
 
     /**
@@ -641,7 +677,33 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey(final int amount, @NotNull final Player player) {
-        return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).setAmount(amount).asItemStack();
+        final UUID uuid = player.getUniqueId();
+
+        final int virtualKeys = this.userManager.getVirtualKeys(uuid, fileName);
+        final int physicalKeys = this.userManager.getPhysicalKeys(uuid, fileName);
+
+        final int totalKeys = virtualKeys + physicalKeys;
+
+        final int openedCrates = this.userManager.getCrateOpened(uuid, fileName);
+
+        final NumberFormat instance = NumberFormat.getNumberInstance();
+
+        return this.keyBuilder.setAmount(amount).addPlaceholder("{keys_physical_raw}", String.valueOf(physicalKeys))
+                .addPlaceholder("{keys_physical}", instance.format(physicalKeys))
+                .addPlaceholder("{keys_total_raw}", String.valueOf(totalKeys))
+                .addPlaceholder("{keys_total}", instance.format(totalKeys))
+                .addPlaceholder("{keys}", instance.format(virtualKeys))
+                .addPlaceholder("{crate_opened_raw}", String.valueOf(openedCrates))
+                .addPlaceholder("{crate_opened}", instance.format(openedCrates))
+
+                .addPlaceholder("%keys_physical_raw%", String.valueOf(physicalKeys))
+                .addPlaceholder("%keys_physical%", instance.format(physicalKeys))
+                .addPlaceholder("%keys_total_raw%", String.valueOf(totalKeys))
+                .addPlaceholder("%keys_total%", instance.format(totalKeys))
+                .addPlaceholder("%keys%", instance.format(virtualKeys))
+                .addPlaceholder("%crate_opened_raw%", String.valueOf(openedCrates))
+                .addPlaceholder("%crate_opened%", instance.format(openedCrates))
+                .asItemStack(player);
     }
 
     /**
@@ -858,7 +920,7 @@ public class Crate {
         return section + "." + path;
     }
 
-    private final FileManager fileManager = this.plugin.getFileManager();
+    private final PaperFileManager fileManager = this.plugin.getFileManager();
 
     private final Path dataPath = this.plugin.getDataPath();
 
@@ -868,11 +930,7 @@ public class Crate {
     private void saveFile() {
         if (this.fileName.isEmpty()) return;
 
-        final PaperCustomFile customFile = this.fileManager.getPaperCustomFile(this.dataPath.resolve("crates").resolve(this.fileName));
-
-        if (customFile != null) {
-            customFile.save(); // save to file
-        }
+        this.fileManager.getPaperFile(this.dataPath.resolve("crates").resolve(this.fileName)).ifPresent(ICustomFile::save);
 
         this.crateManager.reloadCrate(this.crateManager.getCrateFromName(this.name));
     }
@@ -932,16 +990,14 @@ public class Crate {
      * @return list of prizes
      */
     public @NotNull final List<ItemStack> getPreviewItems(@Nullable final Player player, @Nullable final Tier tier) {
-        List<ItemStack> prizes = new ArrayList<>();
+        final List<ItemStack> prizes = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
-            // if (prize.getWeight() == -1) continue;
-
             if (tier == null) {
-                prizes.add(player == null ? prize.getDisplayItem(this) : prize.getDisplayItem(player, this));
+                prizes.add(prize.getDisplayItem(player, this));
             } else {
                 if (prize.getTiers().contains(tier)) {
-                    prizes.add(player == null ? prize.getDisplayItem(this) : prize.getDisplayItem(player, this));
+                    prizes.add(prize.getDisplayItem(player, this));
                 }
             }
         }

@@ -7,8 +7,8 @@ import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiAction;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiAction;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiItem;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -30,7 +30,12 @@ public class CrateButton extends GuiButton {
         super(section, Map.of(
                 "%crate_pretty%", crate.getCrateName(),
                 "%crate_raw%", crate.getFileName(),
-                "%prize%", prize != null ? prize.getSectionName() : "N/A"
+                "%prize%", prize != null ? prize.getSectionName() : "N/A",
+
+                "{crate_pretty}", crate.getCrateName(),
+                "{crate_raw}", crate.getFileName(),
+
+                "{prize}", prize != null ? prize.getSectionName() : "N/A"
         ));
 
         this.crate = crate;
@@ -86,8 +91,8 @@ public class CrateButton extends GuiButton {
                         final int cap = PrizeManager.getCap(crate, player);
 
                         Messages.crate_prize_max_respins.sendMessage(player, Map.of("{status}", cap >= 1 ?
-                                Messages.crate_prize_max_respins_left.getMessage(player, Map.of("{respins_total}", String.valueOf(cap), "{respins_left}", "0")) :
-                                Messages.crate_prize_max_respins_none.getMessage(player)));
+                                Messages.crate_prize_max_respins_left.getString(player, Map.of("{respins_total}", String.valueOf(cap), "{respins_left}", "0")) :
+                                Messages.crate_prize_max_respins_none.getString(player)));
 
                         return;
                     }

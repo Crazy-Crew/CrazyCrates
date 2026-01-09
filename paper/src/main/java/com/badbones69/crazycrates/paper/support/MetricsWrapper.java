@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.support;
 
+import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.core.config.ConfigManager;
@@ -14,20 +15,20 @@ import java.util.List;
 
 public class MetricsWrapper{
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final SettingsManager config = ConfigManager.getConfig();
 
     private final CrateManager crateManager;
 
     private final Metrics metrics;
 
-    public MetricsWrapper(final int serviceId) {
-        this.metrics = new Metrics(this.plugin, serviceId);
+    public MetricsWrapper(@NotNull final CrazyCrates plugin, final int serviceId) {
+        this.metrics = new Metrics(plugin, serviceId);
 
-        this.crateManager = this.plugin.getCrateManager();
+        this.crateManager = plugin.getCrateManager();
     }
 
     public void start() {
-        if (this.metrics == null || !ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics)) return;
+        if (this.metrics == null || !this.config.getProperty(ConfigKeys.toggle_metrics)) return;
 
         final List<Crate> crates = new ArrayList<>(this.crateManager.getCrates());
 

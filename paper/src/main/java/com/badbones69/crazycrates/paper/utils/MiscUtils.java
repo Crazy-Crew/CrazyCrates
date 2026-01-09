@@ -1,13 +1,10 @@
 package com.badbones69.crazycrates.paper.utils;
 
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
-import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
-import me.clip.placeholderapi.PlaceholderAPI;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.scheduler.FoliaScheduler;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -47,28 +44,11 @@ public class MiscUtils {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
+    private static final FusionPaper fusion = plugin.getFusion();
+
     private static final Path dataPath = plugin.getDataPath();
 
     private static final ComponentLogger logger = plugin.getComponentLogger();
-
-    public static void sendCommand(@Nullable final CommandSender sender, @NotNull final String command, @NotNull final Map<String, String> placeholders) {
-        if (command.isEmpty()) return;
-
-        final Server server = plugin.getServer();
-
-        final String result = populatePlaceholders(sender, command, placeholders);
-
-        new FoliaScheduler(plugin, Scheduler.global_scheduler) {
-            @Override
-            public void run() {
-                server.dispatchCommand(server.getConsoleSender(), result);
-            }
-        }.runNow();
-    }
-
-    public static void sendCommand(@NotNull final String command, @NotNull final Map<String, String> placeholders) {
-        sendCommand(null, command, placeholders);
-    }
 
     public static void dropBuilders(@NotNull final List<ItemBuilder> builders, @NotNull final Player player) {
         if (builders.isEmpty()) return;
@@ -77,38 +57,6 @@ public class MiscUtils {
 
         for (final ItemBuilder builder : builders) {
             items.add(builder.asItemStack(player));
-        }
-
-        dropItems(items, player);
-    }
-
-    public static void dropLegacyBuilders(@NotNull final List<LegacyItemBuilder> builders, @NotNull final Player player) {
-        if (builders.isEmpty()) return;
-
-        final boolean isPlaceholderAPIEnabled = Plugins.placeholder_api.isEnabled();
-
-        final List<ItemStack> items = new ArrayList<>();
-
-        for (final LegacyItemBuilder builder : builders) {
-            if (isPlaceholderAPIEnabled) {
-                final String displayName = builder.getDisplayName();
-
-                if (!displayName.isEmpty()) {
-                    builder.setDisplayName(PlaceholderAPI.setPlaceholders(player, displayName));
-                }
-
-                final List<String> displayLore = builder.getDisplayLore();
-
-                if (!displayLore.isEmpty()) {
-                    List<String> lore = new ArrayList<>();
-
-                    displayLore.forEach(line -> lore.add(PlaceholderAPI.setPlaceholders(player, line)));
-
-                    builder.setDisplayLore(lore);
-                }
-            }
-
-            items.add(builder.asItemStack());
         }
 
         dropItems(items, player);
@@ -152,34 +100,6 @@ public class MiscUtils {
         } else {
             world.dropItemNaturally(location, itemStack.clone());
         }
-    }
-
-    public static void sendCommand(@NotNull final String command) {
-        sendCommand(command, new HashMap<>());
-    }
-
-    public static String populatePlaceholders(@Nullable final CommandSender sender, @NotNull String line, @NotNull final Map<String, String> placeholders) {
-        if (sender != null && Plugins.placeholder_api.isEnabled()) {
-            if (sender instanceof Player player) {
-                line = PlaceholderAPI.setPlaceholders(player, line);
-            }
-        }
-
-        if (!placeholders.isEmpty()) {
-            for (final Map.Entry<String, String> placeholder : placeholders.entrySet()) {
-
-                if (placeholder != null) {
-                    final String key = placeholder.getKey();
-                    final String value = placeholder.getValue();
-
-                    if (key != null && value != null) {
-                        line = line.replace(key, value).replace(key.toLowerCase(), value);
-                    }
-                }
-            }
-        }
-
-        return line;
     }
 
     public static void janitor() {
@@ -334,7 +254,7 @@ public class MiscUtils {
 
             return leftover;
         } else {
-            if (MiscUtils.isLogging()) logger.warn("Items cannot be null.");
+            fusion.log("warn", "Items cannot be null.");
         }
 
         return null;
@@ -401,7 +321,7 @@ public class MiscUtils {
         return useDifferentRandom() ? ThreadLocalRandom.current() : new Random();
     }
 
-    public static LegacyItemBuilder getRandomPaneColor() {
+    public static ItemBuilder getRandomPaneColor() {
         List<ItemType> panes = Arrays.asList(
                 ItemType.LIGHT_BLUE_STAINED_GLASS_PANE,
                 ItemType.MAGENTA_STAINED_GLASS_PANE,
@@ -419,7 +339,7 @@ public class MiscUtils {
                 ItemType.RED_STAINED_GLASS_PANE
         );
 
-        return new LegacyItemBuilder(plugin, panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
+        return ItemBuilder.from(panes.get(ThreadLocalRandom.current().nextInt(panes.size())), 1);
     }
 
     public static void addItem(@NotNull final Player player, @NotNull final ItemStack... items) {
