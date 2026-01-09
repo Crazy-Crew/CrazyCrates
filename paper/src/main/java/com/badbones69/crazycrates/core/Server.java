@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.core.impl.Settings;
 import com.ryderbelserion.fusion.core.api.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
+import us.crazycrew.crazycrates.api.KeyManager;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import us.crazycrew.crazycrates.platform.ISettings;
 import us.crazycrew.crazycrates.platform.IServer;
@@ -22,6 +23,7 @@ public class Server implements IServer {
     }
 
     private UserManager userManager;
+    private KeyManager keyManager;
     private Settings settings;
 
     public void apply() {
@@ -36,6 +38,12 @@ public class Server implements IServer {
         if (this.userManager != null) return;
 
         this.userManager = userManager;
+    }
+
+    public void setKeyManager(@NotNull final KeyManager keyManager) {
+        if (this.keyManager != null) return;
+
+        this.keyManager = keyManager;
     }
 
     public void disable() {
@@ -70,6 +78,11 @@ public class Server implements IServer {
     @Override
     public @NotNull final UserManager getUserManager() {
         return this.userManager;
+    }
+
+    @Override
+    public @NotNull final KeyManager getKeyManager() {
+        return this.keyManager;
     }
 
     @Override

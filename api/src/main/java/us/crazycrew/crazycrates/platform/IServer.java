@@ -1,6 +1,7 @@
 package us.crazycrew.crazycrates.platform;
 
 import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.api.KeyManager;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import java.io.File;
 import java.nio.file.Path;
@@ -87,6 +88,8 @@ public interface IServer {
      * @since 0.5
      */
     @NotNull UserManager getUserManager();
+
+    @NotNull KeyManager getKeyManager();
 
     /**
      * Gets available config options in a friendly way.
