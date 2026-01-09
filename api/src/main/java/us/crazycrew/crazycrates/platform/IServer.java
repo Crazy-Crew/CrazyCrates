@@ -44,8 +44,9 @@ public interface IServer {
      *
      * @return {@link File}
      * @since 0.5.0
+     * @see #getCratesPath()
      */
-    @Deprecated(since = "0.9", forRemoval = true)
+    @Deprecated(since = "0.9.0", forRemoval = true)
     @NotNull
     default File getCrateFolder() {
         return getCratesPath().toFile();
@@ -56,8 +57,9 @@ public interface IServer {
      *
      * @return {@link File}
      * @since 0.8.0
+     * @see #getDataPath()
      */
-    @Deprecated(since = "0.9", forRemoval = true)
+    @Deprecated(since = "0.9.0", forRemoval = true)
     @NotNull
     default File getDataFolder() {
         return getDataPath().toFile();
