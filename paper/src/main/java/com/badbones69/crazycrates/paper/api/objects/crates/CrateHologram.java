@@ -12,6 +12,7 @@ public class CrateHologram {
     private final int range;
     private final List<String> messages;
     private final String backgroundColor;
+    private final boolean textShadow;
     private final int updateInterval;
 
     /**
@@ -23,6 +24,7 @@ public class CrateHologram {
         this.range = 8;
         this.messages = new ArrayList<>();
         this.backgroundColor = "transparent";
+        this.textShadow = false;
         this.updateInterval = -1;
     }
 
@@ -36,11 +38,12 @@ public class CrateHologram {
      * @param updateInterval the update interval
      * @param messages the hologram will display
      */
-    public CrateHologram(final boolean enabled, final double height, final int range, @NotNull final String color, final int updateInterval, @NotNull final List<String> messages) {
+    public CrateHologram(final boolean enabled, final double height, final int range, @NotNull final String color, final boolean textShadow, final int updateInterval, @NotNull final List<String> messages) {
         this.enabled = enabled;
         this.height = height;
         this.range = range;
         this.backgroundColor = color;
+        this.textShadow = textShadow;
         this.updateInterval = updateInterval;
         this.messages = messages;
     }
@@ -79,6 +82,15 @@ public class CrateHologram {
      */
     public String getBackgroundColor() {
         return this.backgroundColor;
+    }
+
+    /**
+     * Whether to apply text shadow (FancyHolograms only)
+     *
+     * @return true if shadow is enabled, otherwise false
+     */
+    public boolean getTextShadow() {
+        return this.textShadow;
     }
 
     /**
