@@ -18,7 +18,7 @@ nexo = "1.6.0" # https://github.com/Nexo-MC
 
 ## Hologram API
 decentholograms = "2.8.8" # https://modrinth.com/plugin/decentholograms
-fancyholograms = "2.4.1" # https://modrinth.com/plugin/fancyholograms
+fancyholograms = "2.9.1" # https://modrinth.com/plugin/fancyholograms
 cmi-api = "9.7.14.3" # https://github.com/Zrips/CMI-API
 cmi-lib = "1.5.7.0" # https://www.spigotmc.org/resources/cmilib.87610/
 
