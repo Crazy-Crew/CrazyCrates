@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.commands;
 
+import com.badbones69.common.api.enums.FileKeys;
 import com.badbones69.crazycrates.paper.api.commands.CratesCommand;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.mojang.brigadier.Command;
@@ -16,7 +17,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.common.config.impl.ConfigKeys;
+import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,10 +25,12 @@ public class BaseCommand extends CratesCommand {
 
     @Override
     public void run(@NotNull final PaperCommandContext context) {
+        final CommentedConfigurationNode configuration = FileKeys.config.getYamlConfig();
+
         final SimpleGui gui = SimpleGui.gui(
                 this.plugin,
-                this.config.getProperty(ConfigKeys.inventory_name),
-                this.config.getProperty(ConfigKeys.inventory_rows)
+                configuration.node("gui", "inventory", "name").getString("<bold><gradient:#e91e63:blue>Crazy Crates</gradient></bold>"),
+                configuration.node("gui", "inventory", "rows").getInt(5)
         );
 
         final Collection<Crate> crates = this.crateManager.getCrates().values();

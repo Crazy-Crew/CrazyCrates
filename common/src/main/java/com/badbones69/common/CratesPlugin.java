@@ -42,7 +42,7 @@ public abstract class CratesPlugin extends Crates {
         List.of(
                 //FileKeys.messages,
                 //FileKeys.editor,
-                //FileKeys.config,
+                FileKeys.config,
 
                 FileKeys.crates_log,
                 FileKeys.keys_log,
