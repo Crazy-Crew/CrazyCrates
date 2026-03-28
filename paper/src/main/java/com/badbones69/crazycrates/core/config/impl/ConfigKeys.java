@@ -80,21 +80,6 @@ public class ConfigKeys implements SettingsHolder {
     public static final Property<Boolean> toggle_metrics = newProperty("root.toggle-metrics", true);
 
     @Comment({
-            "A recent change to permissions related to opening crates was made",
-            "The way I assumed wildcard permissions worked isn't how they worked",
-            "The superperms system for wildcards is stupid... but I digress",
-            "",
-            "It feels right to make a toggle for it regardless.",
-            "",
-            "false -> crazycrates.open.<crate-name>",
-            "true -> crazycrates.deny.open.<crate_name>",
-            "",
-            "This option is being removed, crazycrates.open.<crate-name> will be the permission going forward.",
-            "Changing this option requires you to restart your server!"
-    })
-    public static final Property<Boolean> use_new_permission_system = newProperty("root.use-new-permission-system", false);
-
-    @Comment({
             "This option will tell the plugin to send all messages as action bars or messages in chat.",
             "",
             "send_message -> sends messages in chat.",

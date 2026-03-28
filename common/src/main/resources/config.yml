@@ -21,18 +21,6 @@ root:
   # false -> uses the old editor
   #
   use-new-editor: false
-  # A recent change to permissions related to opening crates was made
-  # The way I assumed wildcard permissions worked isn't how they worked
-  # The superperms system for wildcards is stupid... but I digress
-  #
-  # It feels right to make a toggle for it regardless.
-  #
-  # false -> crazycrates.open.<crate-name>
-  # true -> crazycrates.deny.open.<crate_name>
-  #
-  # Eventually, one of these options will be either removed or kept.
-  # Changing this option requires you to restart your server!
-  use-new-permission-system: false
   # This option will tell the plugin to send all messages as action bars or messages in chat.
   #
   # send_message -> sends messages in chat.
