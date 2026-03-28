@@ -1,12 +1,12 @@
-package com.badbones69.crazycrates.core.config.impl;
+package com.badbones69.common.impl;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
-import com.badbones69.crazycrates.core.config.beans.ModelData;
-import com.badbones69.crazycrates.core.config.beans.inventories.ItemPlacement;
-import com.badbones69.crazycrates.core.enums.State;
+import com.badbones69.common.beans.ModelData;
+import com.badbones69.common.beans.inventories.ItemPlacement;
+import com.badbones69.common.enums.State;
 import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newBeanProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;

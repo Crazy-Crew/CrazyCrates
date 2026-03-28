@@ -1,17 +1,17 @@
-package com.badbones69.crazycrates.core.config;
+package com.badbones69.common.config;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
-import com.badbones69.crazycrates.core.config.impl.EditorKeys;
-import com.badbones69.crazycrates.core.config.migrate.ConfigMigration;
-import com.badbones69.crazycrates.core.config.migrate.LocaleMigration;
-import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.core.config.impl.messages.CommandKeys;
-import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
-import com.badbones69.crazycrates.core.config.impl.messages.ErrorKeys;
-import com.badbones69.crazycrates.core.config.impl.messages.MiscKeys;
-import com.badbones69.crazycrates.core.config.impl.messages.PlayerKeys;
+import com.badbones69.common.impl.EditorKeys;
+import com.badbones69.common.migrate.ConfigMigration;
+import com.badbones69.common.migrate.LocaleMigration;
+import com.badbones69.common.impl.ConfigKeys;
+import com.badbones69.common.impl.messages.CommandKeys;
+import com.badbones69.common.impl.messages.CrateKeys;
+import com.badbones69.common.impl.messages.ErrorKeys;
+import com.badbones69.common.impl.messages.MiscKeys;
+import com.badbones69.common.impl.messages.PlayerKeys;
 import java.nio.file.Path;
 
 public class ConfigManager {

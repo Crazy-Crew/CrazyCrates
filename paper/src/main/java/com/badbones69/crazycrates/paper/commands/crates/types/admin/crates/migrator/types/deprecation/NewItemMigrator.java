@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.deprecation;
 
-import com.badbones69.crazycrates.core.enums.Comments;
+import com.badbones69.common.enums.Comments;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;

@@ -1,9 +1,9 @@
 package com.badbones69.crazycrates.paper;
 
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
-import com.badbones69.crazycrates.core.Server;
-import com.badbones69.crazycrates.core.config.ConfigManager;
-import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
+import com.badbones69.common.Server;
+import com.badbones69.common.config.ConfigManager;
+import com.badbones69.common.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.listeners.crates.CrateInteractListener;
 import com.badbones69.crazycrates.paper.listeners.items.PaperInteractListener;
 import com.badbones69.crazycrates.paper.managers.BukkitKeyManager;

@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
+import com.badbones69.common.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
@@ -10,8 +10,8 @@ import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.badbones69.crazycrates.core.config.ConfigManager;
-import com.badbones69.crazycrates.core.config.impl.messages.CrateKeys;
+import com.badbones69.common.config.ConfigManager;
+import com.badbones69.common.impl.messages.CrateKeys;
 import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
 import com.ryderbelserion.fusion.core.api.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;

@@ -1,8 +1,7 @@
-package com.badbones69.crazycrates.core.impl;
+package com.badbones69.common.impl;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.core.config.ConfigManager;
-import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
+import com.badbones69.common.config.ConfigManager;
 import us.crazycrew.crazycrates.platform.ISettings;
 import java.util.List;
 

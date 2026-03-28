@@ -4,7 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
-import com.badbones69.crazycrates.core.config.impl.EditorKeys;
+import com.badbones69.common.impl.EditorKeys;
 import com.badbones69.crazycrates.paper.listeners.items.NexoInteractListener;
 import com.badbones69.crazycrates.paper.listeners.items.OraxenInteractListener;
 import com.badbones69.crazycrates.paper.managers.BukkitKeyManager;
@@ -60,8 +60,8 @@ import org.joml.Matrix4f;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
-import com.badbones69.crazycrates.core.config.ConfigManager;
-import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
+import com.badbones69.common.config.ConfigManager;
+import com.badbones69.common.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -88,7 +88,7 @@ public class CrateManager {
     private final Path dataPath = this.plugin.getDataPath();
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
     private final FileManager fileManager = this.plugin.getFileManager();
-    private final com.badbones69.crazycrates.core.Server instance = this.plugin.getInstance();
+    private final com.badbones69.common.Server instance = this.plugin.getInstance();
     private final FusionPaper fusion = this.plugin.getFusion();
 
     private final ComponentLogger logger = this.plugin.getComponentLogger();

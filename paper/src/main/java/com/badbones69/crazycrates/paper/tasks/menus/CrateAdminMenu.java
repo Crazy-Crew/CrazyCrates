@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.paper.api.builders.gui.DynamicInventoryBuilder
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
+import com.badbones69.common.impl.ConfigKeys;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.api.builders.gui.types.PaginatedGui;

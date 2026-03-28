@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.managers;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.core.config.beans.ModelData;
+import com.badbones69.common.beans.ModelData;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
@@ -15,8 +15,8 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.badbones69.crazycrates.core.config.ConfigManager;
-import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
+import com.badbones69.common.config.ConfigManager;
+import com.badbones69.common.impl.ConfigKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.Collections;
