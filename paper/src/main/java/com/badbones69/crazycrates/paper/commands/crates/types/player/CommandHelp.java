@@ -9,7 +9,7 @@ import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
-import com.badbones69.common.impl.ConfigKeys;
+import com.badbones69.common.config.impl.ConfigKeys;
 
 public class CommandHelp extends BaseCommand {
 

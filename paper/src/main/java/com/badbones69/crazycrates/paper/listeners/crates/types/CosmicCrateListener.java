@@ -12,7 +12,7 @@ import io.papermc.paper.persistence.PersistentDataContainerView;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
 import com.badbones69.common.config.ConfigManager;
-import com.badbones69.common.impl.ConfigKeys;
+import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;

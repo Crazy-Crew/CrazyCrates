@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.support.MetricsWrapper;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
-import com.badbones69.common.impl.ConfigKeys;
+import com.badbones69.common.config.impl.ConfigKeys;
 import com.ryderbelserion.fusion.core.api.enums.FileAction;
 import com.ryderbelserion.fusion.core.api.enums.FileType;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;

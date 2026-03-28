@@ -2,6 +2,7 @@ package com.badbones69.common.impl;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.common.config.ConfigManager;
+import com.badbones69.common.config.impl.ConfigKeys;
 import us.crazycrew.crazycrates.platform.ISettings;
 import java.util.List;
 

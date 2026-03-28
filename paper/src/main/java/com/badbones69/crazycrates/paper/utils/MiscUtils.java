@@ -17,7 +17,7 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
 import com.badbones69.common.config.ConfigManager;
-import com.badbones69.common.impl.ConfigKeys;
+import com.badbones69.common.config.impl.ConfigKeys;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;

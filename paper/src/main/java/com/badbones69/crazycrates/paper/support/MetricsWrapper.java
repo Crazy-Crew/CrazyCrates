@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.paper.support;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.common.config.ConfigManager;
-import com.badbones69.common.impl.ConfigKeys;
+import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;

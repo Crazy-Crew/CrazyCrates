@@ -1,4 +1,4 @@
-package com.badbones69.common.migrate;
+package com.badbones69.common.config.migrate;
 
 import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.migration.PlainMigrationService;

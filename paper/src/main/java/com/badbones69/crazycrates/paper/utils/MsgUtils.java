@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.utils;
 
 import com.badbones69.common.config.ConfigManager;
-import com.badbones69.common.impl.ConfigKeys;
+import com.badbones69.common.config.impl.ConfigKeys;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import static java.util.regex.Matcher.quoteReplacement;

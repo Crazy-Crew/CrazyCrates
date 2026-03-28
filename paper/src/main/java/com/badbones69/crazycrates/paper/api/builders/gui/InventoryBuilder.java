@@ -1,14 +1,14 @@
 package com.badbones69.crazycrates.paper.api.builders.gui;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.common.beans.inventories.ItemPlacement;
+import com.badbones69.common.config.beans.inventories.ItemPlacement;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.common.config.ConfigManager;
-import com.badbones69.common.impl.ConfigKeys;
+import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;

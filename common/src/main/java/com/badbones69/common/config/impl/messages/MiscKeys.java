@@ -1,4 +1,4 @@
-package com.badbones69.common.impl.messages;
+package com.badbones69.common.config.impl.messages;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;

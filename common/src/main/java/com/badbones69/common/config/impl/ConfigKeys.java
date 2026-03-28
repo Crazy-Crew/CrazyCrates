@@ -1,11 +1,11 @@
-package com.badbones69.common.impl;
+package com.badbones69.common.config.impl;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
-import com.badbones69.common.beans.ModelData;
-import com.badbones69.common.beans.inventories.ItemPlacement;
+import com.badbones69.common.config.beans.ModelData;
+import com.badbones69.common.config.beans.inventories.ItemPlacement;
 import com.badbones69.common.enums.State;
 import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newBeanProperty;

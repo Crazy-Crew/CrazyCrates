@@ -1,4 +1,4 @@
-package com.badbones69.common.beans.inventories;
+package com.badbones69.common.config.beans.inventories;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.beanmapper.ExportName;
