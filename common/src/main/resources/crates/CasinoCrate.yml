@@ -308,7 +308,16 @@ Crate:
       # Only uncomment this if using HeadDatabase by Arcaniax
       # Skull: "7129"
       Items:
-        - "Item:player_head, Player:1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e, Name:<gold>BadBones69"
+        "1":
+          # The item material.
+          material: "player_head"
+          # Per item settings.
+          settings:
+            # The player name/texture to display.
+            # https://minecraft-heads.com/
+            player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
+          # The name of the item.
+          name: "<gold>BadBones69"
     "2":
       # The name of the item to display in the gui.
       DisplayName: "<bold><dark_red>Warlord's Set</bold>"
@@ -354,10 +363,98 @@ Crate:
         - "lp user %player% permission set crazycrates.blacklist.warlord"
       # The list of items to give.
       Items:
-        - "Item:netherite_helmet, Amount:1, Damage:25, Trim-Pattern:sentry, Trim-Material:redstone, Name:<bold><dark_red>Warlord's Helmet</bold>, protection:5, unbreaking:3"
-        - "Item:netherite_chestplate, Amount:1, Damage:25, Trim-Pattern:sentry, Trim-Material:redstone, Name:<bold><dark_red>Warlord's Chestplate</bold>, protection:5, unbreaking:3"
-        - "Item:netherite_leggings, Amount:1, Damage:25, Trim-Pattern:sentry, Trim-Material:redstone, Name:<bold><dark_red>Warlord's Leggings</bold>, protection:5, unbreaking:3"
-        - "Item:netherite_boots, Amount:1, Damage:25, Trim-Pattern:sentry, Trim-Material:redstone, Name:<bold><dark_red>Warlord's Boots</bold>, protection:5, unbreaking:3"
+        "1":
+          # The item material.
+          material: "netherite_helmet"
+          # The amount of the item to give.
+          amount: 1
+          # Per item settings.
+          settings:
+            # The damage to apply to the item.
+            damage: 25
+            # Trim settings.
+            trim:
+              # The trim pattern for the armor.
+              pattern: "sentry"
+              # The trim material of the armor.
+              material: "redstone"
+          # The name of the item.
+          name: "<bold><dark_red>Warlord's Helmet</bold>"
+          # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
+          # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
+          # enchantment: amount
+          enchantments:
+            unbreaking: 3
+            protection: 5
+        "2":
+          # The item material.
+          material: "netherite_chestplate"
+          # The amount of the item to give.
+          amount: 1
+          # Per item settings.
+          settings:
+            # The damage to apply to the item.
+            damage: 25
+            # Trim settings.
+            trim:
+              # The trim pattern for the armor.
+              pattern: "sentry"
+              # The trim material of the armor.
+              material: "redstone"
+          # The name of the item.
+          name: "<bold><dark_red>Warlord's Chestplate</bold>"
+          # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
+          # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
+          # enchantment: amount
+          enchantments:
+            unbreaking: 3
+            protection: 5
+        "3":
+          # The item material.
+          material: "netherite_leggings"
+          # The amount of the item to give.
+          amount: 1
+          # Per item settings.
+          settings:
+            # The damage to apply to the item.
+            damage: 25
+            # Trim settings.
+            trim:
+              # The trim pattern for the armor.
+              pattern: "sentry"
+              # The trim material of the armor.
+              material: "redstone"
+          # The name of the item.
+          name: "<bold><dark_red>Warlord's Leggings</bold>"
+          # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
+          # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
+          # enchantment: amount
+          enchantments:
+            unbreaking: 3
+            protection: 5
+        "4":
+          # The item material.
+          material: "netherite_boots"
+          # The amount of the item to give.
+          amount: 1
+          # Per item settings.
+          settings:
+            # The damage to apply to the item.
+            damage: 25
+            # Trim settings.
+            trim:
+              # The trim pattern for the armor.
+              pattern: "sentry"
+              # The trim material of the armor.
+              material: "redstone"
+          # The name of the item.
+          name: "<bold><dark_red>Warlord's Boots</bold>"
+          # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
+          # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
+          # enchantment: amount
+          enchantments:
+            unbreaking: 3
+            protection: 5
       # A list of permissions, If a player has any of these permissions. they cannot win this prize again!
       BlackListed-Permissions:
         - "crazycrates.blacklist.warlord"
@@ -373,7 +470,11 @@ Crate:
           - "give %player% gold_nugget 16"
         # Alternatively, instead of commands. You can have an Items section which functions the same as the Items section above.
         Items:
-          - "Item:gold_nugget, Amount:16"
+          "1":
+            # The item material.
+            material: "gold_nugget"
+            # The amount of the item to give.
+            amount: 16
     "3":
       # The enchants to be stored on the book.
       DisplayEnchantments:
@@ -406,7 +507,15 @@ Crate:
         - "Rare"
       # The list of items to win.
       Items:
-        - "Item:enchanted_book, protection:5, unbreaking:3"
+        "1":
+          # The item material.
+          material: "enchanted_book"
+          # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
+          # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
+          # enchantment: amount
+          enchantments:
+            unbreaking: 3
+            protection: 5
     "4":
       # The name of the item to display in the gui.
       DisplayName: "<bold><green>Fancy Pants</bold>"
@@ -451,7 +560,28 @@ Crate:
         - "<bold><gold>Chance: <red>%chance%</bold>"
       # The items to win.
       Items:
-        - "Item:chainmail_leggings, Amount:1, Damage:75, Trim-Pattern:sentry, Trim-Material:lapis, Name:<bold><green>Fancy Pants</bold>, protection:2"
+        "1":
+          # The item material.
+          material: "chainmail_leggings"
+          # The amount of the item to give.
+          amount: 1
+          # Per item settings.
+          settings:
+            # The damage to apply to the item.
+            damage: 75
+            # Trim settings.
+            trim:
+              # The trim pattern for the armor.
+              pattern: "sentry"
+              # The trim material of the armor.
+              material: "lapis"
+          # The name of the item.
+          name: "<bold><green>Fancy Pants</bold>"
+          # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
+          # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
+          # enchantment: amount
+          enchantments:
+            protection: 2
       # The messages to send.
       Messages:
         - "<gray>You just won a <reset>%reward%."
@@ -495,7 +625,23 @@ Crate:
         - "Rare"
       # The items to win.
       Items:
-        - "Item:diamond_sword, Amount:1, Damage:7, Name:<bold><blue>Classic Sword</bold>, sharpness:2, fire_aspect:1"
+        "1":
+          # The item material.
+          material: "diamond_sword"
+          # The amount of the item to give.
+          amount: 1
+          # Per item settings.
+          settings:
+            # The damage to apply to the item.
+            damage: 7
+          # The name of the item.
+          name: "<bold><blue>Classic Sword</bold>"
+          # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
+          # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
+          # enchantment: amount
+          enchantments:
+            sharpness: 2
+            fire_aspect: 1
       # The messages to send.
       Messages:
         - "<gray>You just won <reset>%reward%."
