@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.paper.commands.relations;
 import com.badbones69.crazycrates.paper.commands.MessageManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
 import dev.triumphteam.cmd.core.message.MessageKey;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import us.crazycrew.common.api.enums.Messages;
 
 public class ArgumentRelations extends MessageManager {
 

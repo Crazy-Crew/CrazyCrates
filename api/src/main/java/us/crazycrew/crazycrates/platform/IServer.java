@@ -13,7 +13,10 @@ import java.util.List;
  * @author Ryder Belserion
  * @version 0.7.0
  * @since 0.5.0
+ * @deprecated
+ * @see us.crazycrew.crazycrates.api.objects.Crates
  */
+@Deprecated(forRemoval = true, since = "1.0.0")
 public interface IServer {
 
     /**
@@ -66,23 +69,6 @@ public interface IServer {
     }
 
     /**
-     * Gets a list of crate files with the option to keep or remove the extension.
-     *
-     * @param keepExtension true or false
-     * @return {@link List<String>}
-     * @since 0.9.0
-     */
-    List<String> getCrateFiles(final boolean keepExtension);
-
-    /**
-     * Gets a list of crate files without the extension.
-     *
-     * @return {@link List<String>}
-     * @since 0.5.0
-     */
-    List<String> getCrateFiles();
-
-    /**
      * A getter for the UserManager that handles fetching users, checking virtual keys, adding virtual keys or physical keys
      * Ability to set keys, get keys, getting total keys or checking total crates opened or individual crates opened.
      *
@@ -106,5 +92,22 @@ public interface IServer {
      * @since 0.5.0
      */
     @NotNull ISettings getSettings();
+
+    /**
+     * Fetches a list of files, from the crates directory.
+     *
+     * @param hasExtension true or false
+     * @return list of files
+     * @since 0.5.0
+     */
+    List<String> getCrateFiles(final boolean hasExtension);
+
+    /**
+     * Fetches a list of files, from the crates directory.
+     *
+     * @return list of files
+     * @since 0.5.0
+     */
+    List<String> getCrateFiles();
 
 }

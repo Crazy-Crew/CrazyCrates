@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.editor;
 
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import us.crazycrew.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;

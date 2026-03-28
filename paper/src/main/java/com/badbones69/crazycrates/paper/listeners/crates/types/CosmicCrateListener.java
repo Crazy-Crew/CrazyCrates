@@ -38,7 +38,7 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import us.crazycrew.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import java.util.HashMap;

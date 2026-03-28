@@ -27,7 +27,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import us.crazycrew.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import java.text.NumberFormat;
 import java.util.*;

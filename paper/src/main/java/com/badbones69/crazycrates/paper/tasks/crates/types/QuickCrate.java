@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.tasks.crates.types;
 
 import com.badbones69.crazycrates.paper.api.builders.types.features.CrateSpinMenu;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import us.crazycrew.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;

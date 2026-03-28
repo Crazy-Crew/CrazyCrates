@@ -33,7 +33,6 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;

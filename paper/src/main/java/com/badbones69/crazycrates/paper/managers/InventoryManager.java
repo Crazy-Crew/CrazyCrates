@@ -3,7 +3,7 @@ package com.badbones69.crazycrates.paper.managers;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.core.config.beans.ModelData;
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import us.crazycrew.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;

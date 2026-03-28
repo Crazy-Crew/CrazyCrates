@@ -17,7 +17,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.SessionMan
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import us.crazycrew.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.ChestManager;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;

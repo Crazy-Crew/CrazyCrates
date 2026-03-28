@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates;
 
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import us.crazycrew.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.deprecation.NewItemMigrator;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;

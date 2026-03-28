@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates;
 
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import us.crazycrew.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.*;
