@@ -14,7 +14,7 @@ root:
   # You can run /crazycrates migrate -mt NewItemFormat which should migrate all existing prizes after you set this to true
   #
   # Take a backup before you run the migration as there may be bugs.
-  use-different-items-layout: false
+  use-different-items-layout: true
   # This option defines what in-game editor format is used in CrazyCrates.
   #
   # true -> uses the new editor
