@@ -88,7 +88,7 @@ public class CrateManager {
     private final Path dataPath = this.plugin.getDataPath();
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
     private final FileManager fileManager = this.plugin.getFileManager();
-    private final com.badbones69.common.Server instance = this.plugin.getInstance();
+    private final com.badbones69.crazycrates.core.Server instance = this.plugin.getInstance();
     private final FusionPaper fusion = this.plugin.getFusion();
 
     private final ComponentLogger logger = this.plugin.getComponentLogger();
