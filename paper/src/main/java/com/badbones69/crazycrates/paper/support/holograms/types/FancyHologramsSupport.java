@@ -53,6 +53,8 @@ public class FancyHologramsSupport extends HologramManager {
 
         TextHologramData hologramData = new TextHologramData(name(id), location.clone().add(getVector(crate))).setBackground(background);
 
+        hologramData.setTextShadow(crateHologram.getTextShadow());
+
         hologramData.setText(crateHologram.getMessages());
 
         if (crateHologram.getUpdateInterval() != -1) {

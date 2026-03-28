@@ -26,6 +26,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +66,8 @@ public class Prize {
 
     private List<ItemStack> editorItems = new ArrayList<>();
 
-    public Prize(@NotNull final ConfigurationSection section, @NotNull final List<ItemStack> editorItems, @NotNull final List<Tier> tierPrizes, @NotNull final String crateName, @Nullable final Prize alternativePrize) {
+    public Prize(@NotNull final ConfigurationSection section, @NotNull final List<ItemStack> editorItems, @NotNull final List<Tier> tierPrizes,
+                 @NotNull final String crateName, @Nullable final Prize alternativePrize) {
         this.section = section;
 
         this.sectionName = section.getName();
@@ -195,7 +198,9 @@ public class Prize {
 
         this.displayItem.withDisplayLore(lore);
 
-        final String weight = StringUtils.format(crate.getChance(getWeight()));
+        final CrateType crateType = crate.getCrateType();
+
+        final String weight = crateType != CrateType.casino && crateType != CrateType.cosmic ? StringUtils.format(crate.getChance(getWeight())) : StringUtils.format(crate.getTierChance(getWeight()));
 
         this.displayItem.addPlaceholder("{chance}", weight)
                 .addPlaceholder("{maxpulls}", String.valueOf(maxPulls))

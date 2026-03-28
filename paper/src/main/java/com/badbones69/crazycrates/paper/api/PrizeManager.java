@@ -24,6 +24,8 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.utils.MsgUtils;
 import org.jetbrains.annotations.Nullable;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
+
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;

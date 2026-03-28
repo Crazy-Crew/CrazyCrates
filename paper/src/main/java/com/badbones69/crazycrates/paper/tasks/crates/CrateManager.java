@@ -519,6 +519,7 @@ public class CrateManager {
                         file.getDouble("Crate.Hologram.Height", 0.0),
                         file.getInt("Crate.Hologram.Range", 8),
                         file.getString("Crate.Hologram.Color", "transparent"),
+                        file.getBoolean("Crate.Hologram.TextShadow", false),
                         file.getInt("Crate.Hologram.Update-Interval", -1),
                         file.getStringList("Crate.Hologram.Message"));
 
