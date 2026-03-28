@@ -1,12 +1,13 @@
 package com.badbones69.crazycrates.paper.api.events;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.nexomc.nexo.api.NexoFurniture;
 import com.nexomc.nexo.api.events.furniture.NexoFurnitureBreakEvent;
 import com.nexomc.nexo.api.events.furniture.NexoFurnitureInteractEvent;
+import com.ryderbelserion.fusion.kyori.mods.ModSupport;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import io.th0rgal.oraxen.api.OraxenFurniture;
 import io.th0rgal.oraxen.api.events.furniture.OraxenFurnitureBreakEvent;
 import io.th0rgal.oraxen.api.events.furniture.OraxenFurnitureInteractEvent;
@@ -23,6 +24,8 @@ import org.jetbrains.annotations.NotNull;
 public class CrateInteractEvent extends Event implements Cancellable {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final FusionPaper fusion = this.plugin.getFusion();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
@@ -124,19 +127,19 @@ public class CrateInteractEvent extends Event implements Cancellable {
      * @return true or false
      */
     public boolean isFurniture(@NotNull final Location location) {
-        final String pluginName = this.plugin.getFusion().getItemsPlugin().toLowerCase();
+        final String pluginName = this.fusion.getItemsPlugin().toLowerCase();
 
         boolean isFurniture = false;
 
         switch (pluginName) {
-            case "nexo" -> isFurniture = Plugins.nexo.isEnabled() && NexoFurniture.isFurniture(location);
+            case "nexo" -> isFurniture = this.fusion.isModReady(ModSupport.nexo) && NexoFurniture.isFurniture(location);
 
-            case "oraxen" -> isFurniture = Plugins.oraxen.isEnabled() && OraxenFurniture.isFurniture(location.getBlock());
+            case "oraxen" -> isFurniture = this.fusion.isModReady(ModSupport.oraxen) && OraxenFurniture.isFurniture(location.getBlock());
 
             default -> {
-                if (Plugins.nexo.isEnabled() && NexoFurniture.isFurniture(location)) {
+                if (this.fusion.isModReady(ModSupport.nexo) && NexoFurniture.isFurniture(location)) {
                     isFurniture = true;
-                } else if (Plugins.oraxen.isEnabled() && OraxenFurniture.isFurniture(location.getBlock())) {
+                } else if (this.fusion.isModReady(ModSupport.oraxen) && OraxenFurniture.isFurniture(location.getBlock())) {
                     isFurniture = true;
                 }
             }

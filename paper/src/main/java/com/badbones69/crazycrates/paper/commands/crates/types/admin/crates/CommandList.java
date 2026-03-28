@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Syntax;
@@ -27,7 +27,7 @@ public class CommandList extends BaseCommand {
             final Location location = crateLocation.getLocation();
             final Crate crate = crateLocation.getCrate();
 
-            crates.add(Messages.crate_locations_format.getMessage(sender, Map.of(
+            crates.add(Messages.crate_locations_format.getString(sender, Map.of(
                     "{crate_name}", crate.getCrateName(),
                     "{id}", crateLocation.getID(),
                     "{x}", String.valueOf(location.getBlockX()),

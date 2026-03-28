@@ -4,8 +4,8 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import io.papermc.paper.datacomponent.DataComponentTypes;
@@ -28,6 +28,8 @@ import su.nightexpress.nightcore.config.FileConfig;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -89,15 +91,19 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             return;
         }
 
-        final File directory = getCratesDirectory();
+        final Path directory = getCratesDirectory();
 
-        if (!directory.exists()) {
-            directory.mkdirs();
+        if (!Files.exists(directory)) {
+            try {
+                Files.createDirectory(directory);
+            } catch (final IOException exception) {
+                this.fusion.log("warn", "Could not create directory {}, {}", directory, exception);
+            }
         }
 
         final File crateDirectory = CratesAPI.PLUGIN.getDataFolder();
 
-        YamlConfiguration locationData = FileKeys.locations.getConfiguration();
+        final YamlConfiguration locationData = FileKeys.locations.getConfiguration();
 
         final @NotNull Collection<Crate> crates = CratesAPI.getCrateManager().getCrates();
 
@@ -111,10 +117,10 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             final String crateName = crate.getFile().getName();
             final String strippedName = crateName.replace(".yml", "");
 
-            final File crateFile = new File(directory, crateName);
+            final Path path = directory.resolve(crateName);
 
-            if (crateFile.exists()) {
-                if (MiscUtils.isLogging()) this.logger.warn("Crate {} already exists in {}.", crateName, directory.getName());
+            if (Files.exists(path)) {
+                this.fusion.log("warn", "Crate {} already exists in {}.", crateName, directory.getFileName());
 
                 failed.add("<red>⤷ " + crateName);
 
@@ -122,14 +128,14 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             }
 
             try {
-                crateFile.createNewFile();
+                Files.createFile(path);
             } catch (final IOException exception) {
-                if (MiscUtils.isLogging()) this.logger.warn("Failed to create crate file {} in {}.", crateName, directory.getName(), exception);
+                this.fusion.log("warn", "Failed to create crate file {} in {}.", crateName, directory.getFileName(), exception);
 
                 failed.add("<red>⤷ " + crateName);
             }
 
-            final PaperCustomFile customFile = new PaperCustomFile(crateFile.toPath(), new ArrayList<>()).load();
+            final PaperCustomFile customFile = new PaperCustomFile(this.fileManager, path, consumer -> consumer.addAction(FileAction.ALREADY_EXTRACTED)).load();
 
             final YamlConfiguration configuration = customFile.getConfiguration();
 
@@ -183,8 +189,8 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 menuFile.getStringList("Crate.Lore").forEach(line -> previewLore.add(line.replaceAll("<l", "<").replaceAll("</l", "</")));
 
-                set(root, "Name", AdvUtils.convert(previewName));
-                set(root, "Lore", AdvUtils.convert(previewLore));
+                set(root, "Name", StringUtils.convertLegacy(previewName));
+                set(root, "Lore", StringUtils.convertLegacy(previewLore));
 
                 final org.bukkit.configuration.ConfigurationSection section = menuFile.getConfigurationSection("Crate.Slots");
 
@@ -204,7 +210,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             set(root, "Preview.Toggle", true);
             set(root, "Preview.ChestLines", 6);
-            set(root, "Preview.Name", AdvUtils.convert(crate.getName()));
+            set(root, "Preview.Name", StringUtils.convertLegacy(crate.getName()));
             set(root, "Preview.Glass.Toggle", true);
             set(root, "Preview.Glass.Name", " ");
             set(root, "Preview.Glass.Item", "gray_stained_glass_pane");
@@ -218,7 +224,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             set(root, "Max-Mass-Open", 10);
 
             set(root, "OpeningBroadCast", false);
-            set(root, "BroadCast", "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><green>%crate%.</bold>".replace("%crate%", AdvUtils.convert(crate.getName())));
+            set(root, "BroadCast", "%prefix%<bold><gold>%player%</bold><reset> <gray>is opening a <bold><green>%crate%.</bold>".replace("%crate%", StringUtils.convertLegacy(crate.getName())));
 
             set(root, "opening-command.toggle", false);
             set(root, "opening-command.commands", List.of("put your command here."));
@@ -246,7 +252,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             final String itemName = crateConfig.getString("Item.Name", "");
 
-            set(root, "Preview-Name", AdvUtils.convert(itemName.isEmpty() ? crateConfig.getString("Name", "%crate%").replace("%crate%", strippedName) : itemName + " Preview"));
+            set(root, "Preview-Name", StringUtils.convertLegacy(itemName.isEmpty() ? crateConfig.getString("Name", "%crate%").replace("%crate%", strippedName) : itemName + " Preview"));
 
             if (crateItem.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
                 @Nullable final CustomModelData builder = crateItem.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
@@ -277,7 +283,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                         crate.getName()
                 );
 
-                hologramText.add(AdvUtils.convert(filtered));
+                hologramText.add(StringUtils.convertLegacy(filtered));
             });
 
             set(root, "Hologram.Message", hologramText);
@@ -293,10 +299,10 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 set(root, "PhysicalKey.Data", ItemUtils.toBase64(itemStack));
 
-                set(root, "PhysicalKey.Name", AdvUtils.convert(key.getName().replace("#", "#&")));
+                set(root, "PhysicalKey.Name", StringUtils.convertLegacy(key.getName().replace("#", "#&")));
                 set(root, "PhysicalKey.Item", itemStack.getType().getKey().getKey());
 
-                set(root, "PhysicalKey.Lore", AdvUtils.convert(key.getConfig().getStringList("Lore")));
+                set(root, "PhysicalKey.Lore", StringUtils.convertLegacy(key.getConfig().getStringList("Lore")));
 
                 set(root, "PhysicalKey.Glowing", config.contains("Item.Enchants"));
             }
@@ -314,12 +320,12 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                         final List<Component> lore = itemLore.lines();
 
                         if (!lore.isEmpty()) {
-                            set(root, "Prizes." + id + ".DisplayLore", AdvUtils.fromComponent(lore));
+                            set(root, "Prizes." + id + ".DisplayLore", StringUtils.fromComponent(lore));
                         }
                     }
                 }
 
-                set(root, "Prizes." + id + ".DisplayName", AdvUtils.convert(reward.getName().replace("#", "#&")));
+                set(root, "Prizes." + id + ".DisplayName", StringUtils.convertLegacy(reward.getName().replace("#", "#&")));
 
                 set(root, "Prizes." + id + ".Commands", reward.getCommands());
 
@@ -366,7 +372,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                 });
             });
 
-            this.fileManager.addFile(customFile.save());
+            this.fileManager.addFile(customFile.getPath(), customFile.save());
 
             success.add("<green>⤷ " + crateName);
         }
@@ -389,10 +395,5 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
     @Override
     public <T> void set(final ConfigurationSection section, final String path, T value) {
         section.set(path, value);
-    }
-
-    @Override
-    public final File getCratesDirectory() {
-        return new File(this.plugin.getDataFolder(), "crates");
     }
 }

@@ -68,11 +68,11 @@ public interface IServer {
     /**
      * Gets a list of crate files with the option to keep or remove the extension.
      *
-     * @param keepExtension true or false
+     * @param removeExtension true means remove it, false means keep it
      * @return {@link List<String>}
      * @since 0.9.0
      */
-    List<String> getCrateFiles(final boolean keepExtension);
+    List<String> getCrateFiles(final boolean removeExtension);
 
     /**
      * Gets a list of crate files without the extension.

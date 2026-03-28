@@ -1,10 +1,6 @@
 package com.badbones69.crazycrates.paper.api;
 
-import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.core.config.ConfigManager;
-import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import com.badbones69.crazycrates.paper.CrazyCrates;
@@ -12,9 +8,9 @@ import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
-import me.clip.placeholderapi.PlaceholderAPI;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import com.badbones69.crazycrates.paper.utils.CommandUtils;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
@@ -31,19 +27,17 @@ import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import static java.util.regex.Matcher.quoteReplacement;
 
 public class PrizeManager {
     
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final FusionPaper fusion = plugin.getFusion();
     private static final Server server = plugin.getServer();
     private static final PluginManager pluginManager = server.getPluginManager();
-    private static final ComponentLogger logger = plugin.getComponentLogger();
     private static final BukkitUserManager userManager = plugin.getUserManager();
-
-    private static final SettingsManager config = ConfigManager.getConfig();
 
     public static int getCap(@NotNull final Crate crate, @NotNull final Player player) {
         final String format = "crazycrates.respin." + crate.getFileName() + ".";
@@ -135,7 +129,7 @@ public class PrizeManager {
      */
     public static void givePrize(@NotNull final Player player, @NotNull final Location location, @NotNull final Crate crate, @Nullable Prize prize) {
         if (prize == null) {
-            if (MiscUtils.isLogging()) logger.warn("No prize was found when giving {} a prize.", player.getName());
+            fusion.log("warn", "No prize was found when giving {} a prize.", player.getName());
 
             return;
         }
@@ -163,11 +157,7 @@ public class PrizeManager {
 
         MiscUtils.dropItems(prize.getEditorItems(), player); // drops any leftover editor items.
 
-        if (config.getProperty(ConfigKeys.use_different_items_layout)) {
-            MiscUtils.dropBuilders(prize.getItems(), player);
-        } else {
-            MiscUtils.dropLegacyBuilders(prize.getItemBuilders(), player);
-        }
+        MiscUtils.dropBuilders(prize.getItems(), player);
 
         for (final String command : crate.getPrizeCommands()) {
             runCommands(player, prize, crate, command);
@@ -195,52 +185,47 @@ public class PrizeManager {
         }
     }
 
-    private static void runCommands(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, @NotNull String command) {
-        String cmd = command;
-
-        if (cmd.contains("%random%:")) {
-            final StringBuilder commandBuilder = new StringBuilder();
-
-            for (String word : cmd.split(" ")) {
-                if (word.startsWith("%random%:")) {// /give %player% iron %random%:1-64
-                    word = word.replace("%random%:", "");
-
-                    try {
-                        long min = Long.parseLong(word.split("-")[0]);
-                        long max = Long.parseLong(word.split("-")[1]);
-
-                        commandBuilder.append(MiscUtils.pickNumber(min, max)).append(" ");
-                    } catch (final Exception exception) {
-                        commandBuilder.append("1 ");
-
-                        if (MiscUtils.isLogging()) {
-                            logger.warn("The prize {} in the {} crate has caused an error when trying to run a command.", prize.getPrizeName(), prize.getCrateName());
-                            logger.warn("Command: {}", cmd);
-                        }
-                    }
-                } else {
-                    commandBuilder.append(word).append(" ");
-                }
-            }
-
-            cmd = commandBuilder.toString();
-            cmd = cmd.substring(0, cmd.length() - 1);
-        }
-
-        if (Plugins.placeholder_api.isEnabled() ) cmd = PlaceholderAPI.setPlaceholders(player, cmd);
+    private static void runCommands(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, @NotNull final String command) {
+        final String value = MsgUtils.getRandomNumber(command);
 
         final String maxPulls = String.valueOf(prize.getMaxPulls());
         final String pulls = String.valueOf(getCurrentPulls(prize, crate));
-        final String prizeName = prize.getPrizeName().replaceAll("%maxpulls%", maxPulls).replaceAll("%pulls%", pulls);
+        final String playerName = player.getName();
+        final String fancyName = crate.getCrateName();
+        final String crateName = crate.getFileName();
 
-        MiscUtils.sendCommand(cmd
-                .replaceAll("%player%", quoteReplacement(player.getName()))
-                .replaceAll("%reward%", quoteReplacement(prizeName))
-                .replaceAll("%reward_stripped%", quoteReplacement(prize.getStrippedName()))
-                .replaceAll("%crate_fancy%", quoteReplacement(crate.getCrateName()))
-                .replaceAll("%crate%", quoteReplacement(crate.getFileName()))
-                .replaceAll("%maxpulls%", maxPulls)
-                .replaceAll("%pulls%", pulls));
+        final String chance = StringUtils.format(crate.getChance(prize.getWeight()));
+        final String weight = String.valueOf(prize.getWeight());
+
+        final Map<String, String> placeholders = new HashMap<>();
+
+        placeholders.put("%player%", playerName);
+        placeholders.put("%crate_fancy%", fancyName);
+        placeholders.put("%crate%", crateName);
+        placeholders.put("%maxpulls%", maxPulls);
+        placeholders.put("%pulls%", pulls);
+        placeholders.put("%chance%", chance);
+        placeholders.put("%weight%", weight);
+
+        placeholders.put("{player}", playerName);
+        placeholders.put("{crate_fancy}", fancyName);
+        placeholders.put("{crate}", crateName);
+        placeholders.put("{maxpulls}", maxPulls);
+        placeholders.put("{pulls}", pulls);
+        placeholders.put("{chance}", chance);
+        placeholders.put("{weight}", weight);
+
+        final String prizeName = fusion.replacePlaceholder(prize.getPrizeName(), placeholders);
+
+        final String strippedName = prize.getStrippedName();
+
+        placeholders.put("%reward_stripped%", strippedName);
+        placeholders.put("%reward%", prizeName);
+
+        placeholders.put("{reward_stripped}", strippedName);
+        placeholders.put("{reward}", prizeName);
+
+        CommandUtils.executeCommand(player, value, placeholders);
     }
 
     private static void sendMessage(@NotNull final Player player, @NotNull final Prize prize, @NotNull final Crate crate, @NotNull final String message) {
@@ -248,23 +233,42 @@ public class PrizeManager {
 
         final String maxPulls = String.valueOf(prize.getMaxPulls());
         final String pulls = String.valueOf(getCurrentPulls(prize, crate));
-        final String prizeName = prize.getPrizeName().replaceAll("%maxpulls%", maxPulls).replaceAll("%pulls%", pulls);
+        final String playerName = player.getName();
+        final String fancyName = crate.getCrateName();
+        final String crateName = crate.getFileName();
 
-        final CrateType crateType = crate.getCrateType();
+        final String chance = StringUtils.format(crate.getChance(prize.getWeight()));
+        final String weight = String.valueOf(prize.getWeight());
 
-        final String weight = crateType != CrateType.casino && crateType != CrateType.cosmic ? StringUtils.format(crate.getChance(prize.getWeight())) : StringUtils.format(crate.getTierChance(prize.getWeight()));
+        final Map<String, String> placeholders = new HashMap<>();
 
-        final String defaultMessage = message
-                .replaceAll("%player%", quoteReplacement(player.getName()))
-                .replaceAll("%reward%", quoteReplacement(prizeName))
-                .replaceAll("%reward_stripped%", quoteReplacement(prize.getStrippedName()))
-                .replaceAll("%crate%", quoteReplacement(crate.getCrateName()))
-                .replaceAll("%maxpulls%", maxPulls)
-                .replaceAll("%pulls%", pulls)
-                .replaceAll("%chance%", weight)
-                .replaceAll("%weight%", String.valueOf(prize.getWeight()));
+        placeholders.put("%player%", playerName);
+        placeholders.put("%crate_fancy%", fancyName);
+        placeholders.put("%crate%", crateName);
+        placeholders.put("%maxpulls%", maxPulls);
+        placeholders.put("%pulls%", pulls);
+        placeholders.put("%chance%", chance);
+        placeholders.put("%weight%", weight);
 
-        MsgUtils.sendMessage(player, Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, defaultMessage) : defaultMessage, false);
+        placeholders.put("{player}", playerName);
+        placeholders.put("{crate_fancy}", fancyName);
+        placeholders.put("{crate}", crateName);
+        placeholders.put("{maxpulls}", maxPulls);
+        placeholders.put("{pulls}", pulls);
+        placeholders.put("{chance}", chance);
+        placeholders.put("{weight}", weight);
+
+        final String prizeName = fusion.replacePlaceholder(prize.getPrizeName(), placeholders);
+
+        final String strippedName = prize.getStrippedName();
+
+        placeholders.put("%reward_stripped%", strippedName);
+        placeholders.put("%reward%", prizeName);
+
+        placeholders.put("{reward_stripped}", strippedName);
+        placeholders.put("{reward}", prizeName);
+
+        player.sendMessage(fusion.parse(player, message, placeholders));
     }
 
     public static int getCurrentPulls(final Prize prize, final Crate crate) {

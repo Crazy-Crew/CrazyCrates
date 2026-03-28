@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.paper.listeners.crates;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.core.config.ConfigManager;
 import com.badbones69.crazycrates.core.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
@@ -11,20 +10,23 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
-import me.clip.placeholderapi.PlaceholderAPI;
+import com.badbones69.crazycrates.paper.utils.CommandUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CrateOpenListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final FusionPaper fusion = this.plugin.getFusion();
 
     private final Server server = this.plugin.getServer();
 
@@ -90,35 +92,39 @@ public class CrateOpenListener implements Listener {
         final String broadcastMessage = configuration.getString("Crate.BroadCast", "");
         final boolean broadcastToggle = configuration.getBoolean("Crate.OpeningBroadCast", false);
 
-        if (broadcastToggle && crateType != CrateType.cosmic && !event.isSilent()) { //todo() add a permission?
-            if (!broadcastMessage.isBlank()) {
-                final String builder = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
+        if (broadcastToggle && crateType != CrateType.cosmic && !event.isSilent() && !broadcastMessage.isBlank()) {
+            this.server.broadcast(this.fusion.parse(player, broadcastMessage, new HashMap<>() {{
+                put("{prefix}", config.getProperty(ConfigKeys.command_prefix));
+                put("{player}", player.getName());
+                put("{crate}", fancyName);
 
-                this.server.broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName)
-                        .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
-                        .replaceAll("%player%", playerName)));
-            }
+                put("%prefix%", config.getProperty(ConfigKeys.command_prefix));
+                put("%player%", player.getName());
+                put("%crate%", fancyName);
+            }}));
         }
 
-        final boolean commandToggle = configuration.contains("Crate.opening-command") && configuration.getBoolean("Crate.opening-command.toggle");
+        final boolean commandToggle = configuration.getBoolean("Crate.opening-command.toggle", false);
 
         if (commandToggle) {
             final List<String> commands = configuration.getStringList("Crate.opening-command.commands");
 
             if (!commands.isEmpty()) {
-                commands.forEach(line -> {
-                    String builder;
+                final Map<String, String> placeholders = new HashMap<>() {{
+                    put("%crate%", fileName);
+                    put("%prefix%", config.getProperty(ConfigKeys.command_prefix));
+                    put("%player%", playerName);
 
-                    if (Plugins.placeholder_api.isEnabled() ) {
-                        builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%crate%", fileName)
-                                .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
-                                .replaceAll("%player%", playerName));
-                    } else {
-                        builder = line.replaceAll("%crate%", fileName).replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix)).replaceAll("%player%", playerName);
-                    }
+                    put("{crate}", fileName);
+                    put("{prefix}", config.getProperty(ConfigKeys.command_prefix));
+                    put("{player}", playerName);
+                }};
 
-                    MiscUtils.sendCommand(builder);
-                });
+                for (final String command : commands) {
+                    if (command.isEmpty()) continue;
+
+                    CommandUtils.executeCommand(player, command, placeholders);
+                }
             }
         }
 

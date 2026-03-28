@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import java.util.Objects;
 
 public class CommandTeleport extends BaseCommand {
 
@@ -37,24 +36,46 @@ public class CommandTeleport extends BaseCommand {
             return;
         }
 
+        String value = "";
+
         for (final String name : section.getKeys(false)) {
             if (name.equalsIgnoreCase(id)) {
-                final World world = this.server.getWorld(Objects.requireNonNull(this.locations.getString("Locations." + name + ".World")));
+                value = name;
 
-                final int x = this.locations.getInt("Locations." + name + ".X");
-                final int y = this.locations.getInt("Locations." + name + ".Y");
-                final int z = this.locations.getInt("Locations." + name + ".Z");
-
-                final Location loc = new Location(world, x, y, z);
-
-                player.teleport(loc.add(.5, 0, .5));
-
-                Messages.crate_teleported.sendMessage(player, "{name}", name);
-
-                return;
+                break;
             }
         }
 
-        Messages.crate_cannot_teleport.sendMessage(player, "{id}", id);
+        Location validLocation = null;
+
+        if (!value.isBlank()) {
+            final ConfigurationSection location = this.locations.getConfigurationSection("Locations." + value);
+
+            if (location != null) {
+                final String worldName = location.getString("World", "");
+
+                if (!worldName.isBlank()) {
+                    final World world = this.server.getWorld(worldName);
+
+                    if (world != null) {
+                        final int x = location.getInt("X");
+                        final int y = location.getInt("Y");
+                        final int z = location.getInt("Z");
+
+                        validLocation = new Location(world, x, y, z);
+                    }
+                }
+            }
+        }
+
+        if (validLocation == null) {
+            Messages.crate_cannot_teleport.sendMessage(player, "{id}", id);
+
+            return;
+        }
+
+        player.teleport(validLocation.add(0.5, 0, 0.5));
+
+        Messages.crate_teleported.sendMessage(player, "{name}", value);
     }
 }

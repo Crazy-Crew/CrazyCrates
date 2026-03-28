@@ -4,22 +4,16 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
-import com.ryderbelserion.fusion.paper.api.builders.items.types.PatternBuilder;
-import com.ryderbelserion.fusion.paper.api.builders.items.types.PotionBuilder;
-import com.ryderbelserion.fusion.paper.api.builders.items.types.SkullBuilder;
-import com.ryderbelserion.fusion.paper.api.builders.items.types.SpawnerBuilder;
-import com.ryderbelserion.fusion.paper.utils.ColorUtils;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.PatternBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.PotionBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.SkullBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
 import io.papermc.paper.persistence.PersistentDataContainerView;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.block.banner.PatternType;
-import org.bukkit.entity.EntityType;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.PlayerInventory;
@@ -53,6 +47,28 @@ public class ItemUtils {
         }
 
         item.setAmount(amount - 1);
+    }
+
+    public static void updateEnchantGlintState(@NotNull final ItemBuilder itemBuilder, @NotNull final String state) {
+        final Optional<Boolean> legacy = StringUtils.tryParseBoolean(state);
+
+        if (legacy.isPresent()) {
+            final boolean isGlowing = legacy.get();
+
+            if (isGlowing) {
+                itemBuilder.addEnchantGlint();
+            } else {
+                itemBuilder.removeEnchantGlint();
+            }
+
+            return;
+        }
+
+        switch (state) {
+            case "add_glow" -> itemBuilder.addEnchantGlint();
+            case "remove_glow" -> itemBuilder.removeEnchantGlint();
+            case "none", "" -> {}
+        }
     }
 
     public static String getEnchant(@NotNull final String enchant) {
@@ -158,68 +174,60 @@ public class ItemUtils {
         return container.get(ItemKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
     }
 
-    public static @NotNull LegacyItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final LegacyItemBuilder builder, @NotNull final Player player) {
-        return getItem(section, builder.setPlayer(player));
-    }
+    public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder) {
+        ItemUtils.updateEnchantGlintState(builder, section.getString("Glowing", "add_glow"));
 
-    public static @NotNull LegacyItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final LegacyItemBuilder builder) {
-        if (section.contains("Glowing")) {
-            builder.setGlowing(section.getBoolean("Glowing", false));
+        builder.setItemDamage(section.getInt("DisplayDamage", 0));
+        
+        builder.withDisplayLore(section.getStringList("Lore"));
+
+        if (section.contains("Patterns")) {
+            final PatternBuilder patternBuilder = builder.asPatternBuilder();
+
+            for (final String key : section.getStringList("Patterns")) {
+                final String[] split = key.split(":");
+                final String type = split[0];
+                final String color = split[1];
+
+                patternBuilder.addPattern(type, color);
+            }
+
+            patternBuilder.build();
         }
-        
-        builder.setDamage(section.getInt("DisplayDamage", 0));
-        
-        builder.setDisplayLore(section.getStringList("Lore"));
-
-        builder.addPatterns(section.getStringList("Patterns"));
-
-        builder.setHidingItemFlags(section.getBoolean("HideItemFlags", false) || !section.getStringList("Flags").isEmpty());
 
         builder.setUnbreakable(section.getBoolean("Unbreakable", false));
         
         if (section.contains("Skull")) {
-            builder.setSkull(section.getString("Skull", ""));
+            builder.withSkull(section.getString("Skull", ""));
         }
         
-        if (section.contains("Player") && builder.isPlayerHead()) {
-            builder.setPlayer(section.getString("Player", ""));
+        if (section.contains("Player")) {
+            builder.asSkullBuilder().withName(section.getString("Player", "")).build();
         }
 
-        builder.setCustomModelData(section.getString("Custom-Model-Data", ""));
+        final CustomBuilder customBuilder = builder.asCustomBuilder();
 
-        builder.setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
-        
-        if (section.contains("DisplayTrim.Pattern") && builder.isArmor()) {
-            builder.applyTrimPattern(section.getString("DisplayTrim.Pattern", "sentry"));
-        }
-        
-        if (section.contains("DisplayTrim.Material") && builder.isArmor()) {
-            builder.applyTrimMaterial(section.getString("DisplayTrim.Material", "quartz"));
-        }
+        customBuilder.setCustomModelData(section.getString("Custom-Model-Data", ""));
+
+        customBuilder.setItemModel(section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
+
+        customBuilder.build();
+
+        builder.setTrim(section.getString("DisplayTrim.Pattern", ""), section.getString("DisplayTrim.Material", ""));
         
         if (section.contains("DisplayEnchantments")) {
             for (final String ench : section.getStringList("DisplayEnchantments")) {
                 String[] value = ench.split(":");
 
-                builder.addEnchantment(value[0], Integer.parseInt(value[1]), true);
+                builder.addEnchantment(value[0], Integer.parseInt(value[1]));
             }
         }
         
         return builder;
     }
 
-    public static LegacyItemBuilder convertItemStack(@Nullable final Player player, @NotNull final ItemStack itemStack) {
-        LegacyItemBuilder itemBuilder = new LegacyItemBuilder(plugin, itemStack);
-
-        if (player != null) {
-            itemBuilder.setPlayer(player);
-        }
-
-        return itemBuilder;
-    }
-
-    public static LegacyItemBuilder convertItemStack(@NotNull final ItemStack itemStack) {
-        return convertItemStack(null, itemStack);
+    public static ItemBuilder convertItemStack(@Nullable final Player player, @NotNull final ItemStack itemStack) {
+        return ItemBuilder.from(itemStack);
     }
 
     public static List<ItemBuilder> convertConfigurationSection(final ConfigurationSection section) {
@@ -237,13 +245,13 @@ public class ItemUtils {
             if (item.contains("data")) {
                 final String base64 = item.getString("data", null);
 
-                if (base64 != null && !base64.isEmpty()) { //todo() move this if check to fusion's itembuilder as we should not set a name if it's empty to ensure Minecraft can do it's thing.
+                if (base64 != null && !base64.isEmpty()) {
                     itemBuilder.withBase64(base64);
                 }
             }
 
-            if (item.contains("name")) { //todo() move this if check to fusion's itembuilder as we should not set a name if it's empty to ensure Minecraft can do it's thing.
-                itemBuilder.setDisplayName(item.getString("name", ""));
+            if (item.contains("name")) {
+                itemBuilder.withDisplayName(item.getString("name", ""));
             }
 
             if (item.contains("lore")) {
@@ -268,7 +276,7 @@ public class ItemUtils {
                 }
             }
 
-            itemBuilder.setCustomModelData(item.getString("custom-model-data", ""));
+            itemBuilder.asCustomBuilder().setCustomModelData(item.getString("custom-model-data", "")).build();
 
             if (item.getBoolean("hide-tool-tip", false)) {
                 itemBuilder.hideToolTip();
@@ -278,8 +286,7 @@ public class ItemUtils {
 
             itemBuilder.setUnbreakable(item.getBoolean("unbreakable-item", false));
 
-            // settings
-            itemBuilder.setEnchantGlint(item.getBoolean("settings.glowing", false));
+            ItemUtils.updateEnchantGlintState(itemBuilder, item.getString("settings.glowing", "none"));
 
             final String player = item.getString("settings.player", null);
 
@@ -300,14 +307,6 @@ public class ItemUtils {
             final String value = !color.isEmpty() ? color : !rgb.isEmpty() ? rgb : "";
 
             itemBuilder.setColor(value);
-
-            final String mobType = item.getString("settings.mob.type", null);
-
-            if (mobType != null && !mobType.isEmpty()) {
-                final SpawnerBuilder spawnerBuilder = itemBuilder.asSpawnerBuilder();
-
-                spawnerBuilder.withEntityType(com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(mobType)).build();
-            }
 
             itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""));
 
@@ -360,12 +359,12 @@ public class ItemUtils {
         return cache;
     }
 
-    public static List<LegacyItemBuilder> convertStringList(@NotNull final List<String> itemStrings, @NotNull final String section) {
+    public static List<ItemBuilder> convertStringList(@NotNull final List<String> itemStrings, @NotNull final String section) {
         return itemStrings.stream().map(itemString -> convertString(itemString, section)).collect(Collectors.toList());
     }
 
-    public static LegacyItemBuilder convertString(@NotNull final String itemString, @NotNull final String section) {
-        LegacyItemBuilder itemBuilder = new LegacyItemBuilder(plugin);
+    public static ItemBuilder convertString(@NotNull final String itemString, @NotNull final String section) {
+        ItemBuilder itemBuilder = ItemBuilder.from(ItemType.STONE, 1);
 
         try {
             for (String optionString : itemString.split(", ")) {
@@ -373,76 +372,59 @@ public class ItemUtils {
                 String value = optionString.replace(option + ":", "").replace(option, "");
 
                 switch (option.toLowerCase()) {
-                    case "item" -> itemBuilder.withType(value.toLowerCase());
-                    case "data" -> itemBuilder = itemBuilder.fromBase64(value);
-                    case "name" -> itemBuilder.setDisplayName(value);
-                    case "mob" -> {
-                        final EntityType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getEntity(value);
-
-                        if (type != null) {
-                            itemBuilder.setEntityType(type);
-                        }
-                    }
-                    case "glowing" -> itemBuilder.setGlowing(StringUtils.tryParseBoolean(value).orElse(false));
+                    case "item" -> itemBuilder.withCustomItem(value.toLowerCase());
+                    case "data" -> itemBuilder.withBase64(value);
+                    case "name" -> itemBuilder.withDisplayName(value);
+                    case "glowing" -> ItemUtils.updateEnchantGlintState(itemBuilder, value);
                     case "amount" -> {
                         final Optional<Number> amount = StringUtils.tryParseInt(value);
                         itemBuilder.setAmount(amount.map(Number::intValue).orElse(1));
                     }
                     case "damage" -> {
                         final Optional<Number> amount = StringUtils.tryParseInt(value);
-                        itemBuilder.setDamage(amount.map(Number::intValue).orElse(0));
+                        itemBuilder.setItemDamage(amount.map(Number::intValue).orElse(0));
                     }
-                    case "lore" -> itemBuilder.setDisplayLore(List.of(value.split(",")));
-                    case "player" -> itemBuilder.setPlayer(value);
-                    case "skull" -> itemBuilder.setSkull(value);
-                    case "custom-model-data" -> itemBuilder.setCustomModelData(value);
+                    case "lore" -> itemBuilder.withDisplayLore(List.of(value.split(",")));
+                    case "player" -> itemBuilder.asSkullBuilder().withName(value).build();
+                    case "skull" -> itemBuilder.withSkull(value);
+                    case "custom-model-data" -> itemBuilder.asCustomBuilder().setCustomModelData(value).build();
                     case "unbreakable-item" -> itemBuilder.setUnbreakable(value.isEmpty() || value.equalsIgnoreCase("true"));
-                    case "hide-tool-tip" -> itemBuilder.setHidingItemFlags(value.equalsIgnoreCase("true"));
-                    case "trim-pattern" -> itemBuilder.applyTrimPattern(value);
-                    case "trim-material" -> itemBuilder.applyTrimMaterial(value);
-                    case "rgb" -> {
-                        @Nullable final Color color = ColorUtils.getRGB(value);
-
-                        if (color != null) {
-                            itemBuilder.setColor(color);
+                    case "hide-tool-tip" -> {
+                        if (value.equalsIgnoreCase("true")) {
+                            itemBuilder.hideToolTip();
                         }
                     }
-                    case "color" -> {
-                        @Nullable final Color color = ColorUtils.getColor(value);
+                    case "trim" -> {
+                        String[] split = value.split("!"); // trim:trim_pattern!trim_material
 
-                        itemBuilder.setColor(color);
+                        String trim = split[0];
+                        String material = split[1];
+
+                        itemBuilder.setTrim(trim.toLowerCase(), material.toLowerCase());
                     }
+
+                    case "rgb", "color" -> itemBuilder.setColor(value);
+
                     default -> {
                         if (com.ryderbelserion.fusion.paper.utils.ItemUtils.getEnchantment(option.toLowerCase()) != null) {
-                            final Optional<Number> amount = StringUtils.tryParseInt(value);
+                            final Optional<Number> amount = NumberUtils.tryParseInt(value);
 
-                            itemBuilder.addEnchantment(option.toLowerCase(), amount.map(Number::intValue).orElse(1), true);
+                        if (enchantment != null) {
+                            final Optional<Number> level = StringUtils.tryParseInt(value);
 
-                            break;
+                            itemBuilder.addEnchantment(getEnchant(option), level.map(Number::intValue).orElse(1));
                         }
 
-                        for (ItemFlag itemFlag : ItemFlag.values()) {
-                            if (itemFlag.name().equalsIgnoreCase(option)) {
-                                itemBuilder.setHidingItemFlags(true);
+                        if (itemBuilder.isBanner() || itemBuilder.isShield()) {
+                            final PatternBuilder builder = itemBuilder.asPatternBuilder();
 
-                                break;
-                            }
+                            builder.addPattern(option, value).build();
                         }
-
-                        try {
-                            DyeColor color = ColorUtils.getDyeColor(value);
-
-                            PatternType patternType = com.ryderbelserion.fusion.paper.utils.ItemUtils.getPatternType(option.toLowerCase());
-
-                            if (patternType != null) {
-                                itemBuilder.addPattern(patternType, color);
-                            }
-                        } catch (final Exception ignored) {}
                     }
                 }
             }
         } catch (final Exception exception) {
-            itemBuilder.withType(ItemType.RED_TERRACOTTA).setDisplayName("<red>Error found!, Prize Name: " + section);
+            itemBuilder.withType(ItemType.RED_TERRACOTTA).withDisplayName("<red>Error found!, Prize Name: " + section);
 
             fusion.log("error", "An error has occurred with the prize {}, {}", section, exception.getMessage());
         }

@@ -76,7 +76,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == CrateType.menu) {
             Messages.internal_error.sendMessage(player);
 
-            if (MiscUtils.isLogging()) this.logger.error("An error has occurred: The crate type is Menu for the crate named {}", crateName);
+            this.fusion.log("error", "An error has occurred: The crate type is Menu for the crate named {}", crateName);
 
             return;
         }

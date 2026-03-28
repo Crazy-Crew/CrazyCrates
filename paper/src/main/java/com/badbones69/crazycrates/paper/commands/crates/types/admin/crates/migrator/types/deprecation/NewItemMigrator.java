@@ -4,18 +4,15 @@ import com.badbones69.crazycrates.core.enums.Comments;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.core.api.enums.FileType;
-import com.ryderbelserion.fusion.core.api.interfaces.files.ICustomFile;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.potion.PotionEffectType;
-import java.io.File;
+import java.nio.file.Path;
 import java.util.*;
 
 public class NewItemMigrator extends ICrateMigrator {
@@ -26,22 +23,26 @@ public class NewItemMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Collection<ICustomFile<? extends ICustomFile<?>>> customFiles = this.fileManager.getCustomFiles().values();
-
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
 
-        customFiles.forEach(key -> {
+        final List<Path> paths = this.fusion.getFiles(getCratesDirectory(), ".yml");
+
+        for (final Path path : paths) {
+            final Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(path);
+
+            if (optional.isEmpty()) continue;
+
+            final PaperCustomFile customFile = optional.get();
+
+            if (!customFile.isLoaded()) continue;
+
             try {
-                if (key.isStatic() || !key.isLoaded() || key.getFileType() != FileType.PAPER) return;
-
-                final PaperCustomFile customFile = (PaperCustomFile) key;
-
                 final YamlConfiguration configuration = customFile.getConfiguration();
 
                 final ConfigurationSection section = configuration.getConfigurationSection("Crate");
 
-                if (section == null) return;
+                if (section == null) continue;
 
                 boolean isSave = false;
 
@@ -158,8 +159,11 @@ public class NewItemMigrator extends ICrateMigrator {
                                                 }
                                             } catch (final Exception ignored) {}
 
-                                            if (ItemUtils.getEnchantment(placeholder) != null) {
-                                                enchantments.put(option.toLowerCase(), StringUtils.tryParseInt(value).map(Number::intValue).orElse(1));
+                                            final String[] splitter = split.split(":");
+                                            final String enchantment = splitter[0];
+
+                                            if (ItemUtils.getEnchantment(enchantment) != null) {
+                                                enchantments.put(enchantment.toLowerCase(), StringUtils.tryParseInt(splitter[1]).map(Number::intValue).orElse(1));
 
                                                 final ConfigurationSection enchantmentSection = prizeSection.createSection("Items." + uuid + ".enchantments");
 
@@ -168,17 +172,6 @@ public class NewItemMigrator extends ICrateMigrator {
                                                 enchantments.forEach(enchantmentSection::set);
 
                                                 break;
-                                            }
-
-                                            if (!prizeSection.contains("Items." + uuid + ".hide-tool-tip")) {
-                                                for (ItemFlag itemFlag : ItemFlag.values()) {
-                                                    if (itemFlag.name().equalsIgnoreCase(option)) {
-                                                        prizeSection.set("Items." + uuid + ".hide-tool-tip", true);
-                                                        prizeSection.setComments("Items." + uuid + ".hide-tool-tip", Comments.hide_tool_tip.getComments());
-
-                                                        break;
-                                                    }
-                                                }
                                             }
 
                                             try {
@@ -206,13 +199,14 @@ public class NewItemMigrator extends ICrateMigrator {
 
                 if (isSave) {
                     customFile.save();
+                    customFile.load();
                 }
 
                 success.add("<green>⤷ " + customFile.getFileName());
             } catch (final Exception exception) {
-                failed.add("<red>⤷ " + key.getFileName());
+                failed.add("<red>⤷ " + customFile.getFileName());
             }
-        });
+        }
 
         final int convertedCrates = success.size();
         final int failedCrates = failed.size();
@@ -224,8 +218,6 @@ public class NewItemMigrator extends ICrateMigrator {
 
         sendMessage(files, convertedCrates, failedCrates);
 
-        this.fileManager.init(new ArrayList<>());
-
         // reload crates
         this.crateManager.loadHolograms();
         this.crateManager.loadCrates();
@@ -234,10 +226,5 @@ public class NewItemMigrator extends ICrateMigrator {
     @Override
     public <T> void set(final ConfigurationSection section, final String path, T value) {
         section.set(path, value);
-    }
-
-    @Override
-    public final File getCratesDirectory() {
-        return new File(this.plugin.getDataFolder(), "crates");
     }
 }

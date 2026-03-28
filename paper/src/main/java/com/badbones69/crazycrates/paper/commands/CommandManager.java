@@ -22,7 +22,7 @@ import com.badbones69.crazycrates.paper.commands.crates.types.admin.keys.Command
 import com.badbones69.crazycrates.paper.commands.crates.types.player.CommandKey;
 import com.badbones69.crazycrates.paper.commands.crates.types.player.CommandTransfer;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.paper.api.PlayerBuilder;
+import com.ryderbelserion.fusion.paper.builders.PlayerBuilder;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
 import org.bukkit.Server;
@@ -124,7 +124,7 @@ public class CommandManager {
             return migrators;
         });
 
-        commandManager.registerArgument(PlayerBuilder.class, (sender, context) -> new PlayerBuilder(context));
+        commandManager.registerArgument(PlayerBuilder.class, (sender, context) -> new PlayerBuilder(plugin, context));
 
         List.of(
                 new CommandTeleport(),

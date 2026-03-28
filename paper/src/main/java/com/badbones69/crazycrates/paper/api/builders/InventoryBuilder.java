@@ -1,20 +1,18 @@
 package com.badbones69.crazycrates.paper.api.builders;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Server;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -25,7 +23,9 @@ import java.util.List;
 public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
-  
+
+    protected final FusionPaper fusion = this.plugin.getFusion();
+
     protected final BukkitUserManager userManager = this.plugin.getUserManager();
 
     protected final InventoryManager inventoryManager = this.plugin.getInventoryManager();
@@ -49,9 +49,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
         this.title = title;
         this.size = size;
 
-        final String inventoryTitle = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
-
-        this.inventory = this.server.createInventory(this, this.size, AdvUtils.parse(inventoryTitle));
+        this.inventory = this.server.createInventory(this, this.size, this.fusion.parse(this.player, this.title));
     }
 
     public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, @NotNull final Crate crate) {
@@ -61,9 +59,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         this.crate = crate;
 
-        final String inventoryTitle = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
-
-        this.inventory = this.server.createInventory(this, this.size, AdvUtils.parse(inventoryTitle));
+        this.inventory = this.server.createInventory(this, this.size, this.fusion.parse(this.player, this.title));
     }
 
     public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, final int page, @NotNull final Crate crate) {
@@ -74,9 +70,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         this.crate = crate;
 
-        final String inventoryTitle = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
-
-        this.inventory = this.server.createInventory(this, this.size, AdvUtils.parse(inventoryTitle));
+        this.inventory = this.server.createInventory(this, this.size, this.fusion.parse(this.player, this.title));
     }
 
     public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, @NotNull final Crate crate, @NotNull final List<Tier> tiers) {
@@ -87,9 +81,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
         this.crate = crate;
         this.tiers = tiers;
 
-        final String inventoryTitle = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(getPlayer(), this.title) : this.title;
-
-        this.inventory = this.server.createInventory(this, this.size, AdvUtils.parse(inventoryTitle));
+        this.inventory = this.server.createInventory(this, this.size, this.fusion.parse(this.player, this.title));
     }
 
     public InventoryBuilder() {}

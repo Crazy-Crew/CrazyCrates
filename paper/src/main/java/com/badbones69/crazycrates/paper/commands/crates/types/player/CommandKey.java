@@ -2,13 +2,11 @@ package com.badbones69.crazycrates.paper.commands.crates.types.player;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.*;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
@@ -32,11 +30,11 @@ public class CommandKey {
     @Permission(value = "crazycrates.keys", def = PermissionDefault.TRUE)
     @Syntax("/keys")
     public void personal(Player player) {
-        getKeys(player, player, Messages.virtual_keys_header.getMessage(
+        getKeys(player, player, Messages.virtual_keys_header.getString(
                 player,
                 "{crates_opened}",
                 String.valueOf(userManager.getTotalCratesOpened(player.getUniqueId()))
-        ), Messages.no_virtual_key.getMessage(player));
+        ), Messages.no_virtual_key.getString(player));
     }
 
     @Command("view")
@@ -61,10 +59,10 @@ public class CommandKey {
             return;
         }
 
-        getKeys(target, sender, Messages.other_player_no_keys_header.getMessage(target, Map.of(
+        getKeys(target, sender, Messages.other_player_no_keys_header.getString(target, Map.of(
                 "{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(target.getUniqueId())),
                 "{player}", targetName
-        )), Messages.other_player_no_keys.getMessage(target, "{player}", targetName));
+        )), Messages.other_player_no_keys.getString(target, "{player}", targetName));
     }
 
     /**
@@ -96,28 +94,12 @@ public class CommandKey {
             if (amount > 0) {
                 hasKeys = true;
 
-                message.add(Messages.per_crate.getMessage(player, Map.of(
+                message.add(Messages.per_crate.getString(player, Map.of(
                         "{crate_opened}", String.valueOf(userManager.getCrateOpened(uuid, crate.getFileName())),
                         "{keys}", String.valueOf(amount),
                         "{crate}", crate.getCrateName()
                 )));
             }
-        }
-
-        if (Plugins.placeholder_api.isEnabled() ) {
-            if (sender instanceof Player person) {
-                if (hasKeys) {
-                    message.forEach(line -> person.sendRichMessage(PlaceholderAPI.setPlaceholders(person, line)));
-
-                    return;
-                }
-
-                sender.sendRichMessage(PlaceholderAPI.setPlaceholders(person, content));
-
-                return;
-            }
-
-            return;
         }
 
         if (hasKeys) {
