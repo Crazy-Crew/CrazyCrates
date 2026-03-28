@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.paper.api;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.commands.BaseCommand;
 import com.badbones69.crazycrates.paper.commands.types.admin.ReloadCommand;
+import com.badbones69.crazycrates.paper.commands.types.admin.TestCommand;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.files.FileManager;
@@ -61,7 +62,10 @@ public class CratePlatform extends CratesPlugin {
             LiteralArgumentBuilder<CommandSourceStack> root = new BaseCommand().registerPermissions().literal().createBuilder();
 
             List.of(
-                    new ReloadCommand()
+                    new ReloadCommand(),
+
+                    // debug
+                    new TestCommand()
             ).forEach(command -> root.then(command.registerPermissions().literal()));
 
             event.registrar().register(root.build(), "The base command for CrazyCrates");

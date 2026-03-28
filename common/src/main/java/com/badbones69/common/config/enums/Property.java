@@ -4,8 +4,6 @@ import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.resource.PropertyReader;
 import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.common.config.impl.messages.*;
-import us.crazycrew.common.config.impl.messages.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

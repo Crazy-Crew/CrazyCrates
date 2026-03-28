@@ -25,6 +25,8 @@ public class Crate {
 
     private final Map<String, CrateSound> sounds = new HashMap<>();
 
+    private final CommentedConfigurationNode configuration;
+
     private final CrateType crateType;
 
     private final boolean displayButton;
@@ -60,6 +62,7 @@ public class Crate {
         this.isBroadcasting = configuration.node("OpeningBroadcast").getBoolean(true);
         this.broadcastValue = configuration.node("BroadCast").getString("");
 
+        this.configuration = configuration;
         this.crateName = crateName;
     }
 
@@ -95,6 +98,10 @@ public class Crate {
 
     public @NotNull final CrateType getCrateType() {
         return this.crateType;
+    }
+
+    public @NotNull final CommentedConfigurationNode getConfiguration() {
+        return this.configuration;
     }
 
     public @NotNull final String getCrateName() {

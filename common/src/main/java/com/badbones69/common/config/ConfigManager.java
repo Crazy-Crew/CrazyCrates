@@ -6,7 +6,6 @@ import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.common.config.impl.EditorKeys;
 import com.badbones69.common.config.impl.messages.*;
-import us.crazycrew.common.config.impl.messages.*;
 import com.badbones69.common.config.migrate.ConfigMigration;
 import com.badbones69.common.config.migrate.LocaleMigration;
 import java.nio.file.Path;
