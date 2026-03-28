@@ -10,7 +10,7 @@ import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.config.impl.ConfigKeys;
-import com.badbones69.common.config.enums.State;
+import com.badbones69.common.enums.State;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

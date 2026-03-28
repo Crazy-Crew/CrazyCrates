@@ -1,4 +1,4 @@
-package com.badbones69.common.config.enums;
+package com.badbones69.common.enums;
 
 import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.resource.PropertyReader;

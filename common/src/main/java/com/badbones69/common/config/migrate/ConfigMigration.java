@@ -4,7 +4,7 @@ import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.migration.PlainMigrationService;
 import ch.jalu.configme.resource.PropertyReader;
 import org.jetbrains.annotations.NotNull;
-import com.badbones69.common.config.enums.Property;
+import com.badbones69.common.enums.Property;
 
 public class ConfigMigration extends PlainMigrationService {
 
