@@ -15,15 +15,10 @@ repositories {
 dependencies {
     implementation(project(":common"))
 
-    implementation(libs.triumph.cmds)
-
     implementation(libs.fusion.paper)
-
-    implementation(libs.metrics)
 
     compileOnly(libs.bundles.holograms)
     compileOnly(libs.bundles.shared)
-    compileOnly(libs.bundles.crates)
 }
 
 tasks {
