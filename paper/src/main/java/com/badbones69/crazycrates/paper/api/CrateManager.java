@@ -31,6 +31,8 @@ public class CrateManager {
     public void load() {
         final Path folder = this.platform.getCratesPath();
 
+        this.crates.clear();
+
         for (final Path path : this.fusion.getFilesByPath(folder, List.of(".yml"))) {
             final Optional<YamlCustomFile> optional = this.fileManager.getYamlFile(path);
 
@@ -40,11 +42,11 @@ public class CrateManager {
 
             final CommentedConfigurationNode configuration = optional.get().getConfiguration();
 
-            if (!configuration.hasChild("Crate")) {
+            if (!configuration.hasChild("crate")) {
                 continue;
             }
 
-            final CommentedConfigurationNode child = configuration.node("Crate");
+            final CommentedConfigurationNode child = configuration.node("crate");
 
             final String fileName = strip(path, ".yml");
 

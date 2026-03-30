@@ -35,18 +35,13 @@ public abstract class CratesPlugin extends Crates {
         } catch (final IOException ignored) {}
 
         this.fileManager.addFolder(this.path.resolve("crates"), FileType.YAML)
-                .addFolder(this.path.resolve("schematics"), FileType.NBT)
+                //.addFolder(this.path.resolve("schematics"), FileType.NBT)
                 .addFolder(this.path.resolve("guis"), FileType.YAML);
 
         List.of(
-                //FileKeys.messages,
-                //FileKeys.editor,
                 FileKeys.config,
 
-                FileKeys.crates_log,
-                FileKeys.keys_log,
-
-                FileKeys.respin
+                FileKeys.crate_menu
         ).forEach(FileKeys::addFile);
     }
 
@@ -57,7 +52,7 @@ public abstract class CratesPlugin extends Crates {
 
     @Override
     public void reload() {
-
+        this.fileManager.refresh(false);
     }
 
     @Override

@@ -24,10 +24,11 @@ public enum FileKeys {
 
     editor("editor.yml", FileType.YAML),
 
-    crates_log("crates.log", "logs", FileType.LOG),
-    keys_log("keys.log", "logs", FileType.LOG),
+    crate_menu("crate-menu.yml", "guis", FileType.YAML),
 
-    respin("respin-gui.yml", "guis", FileType.YAML);
+    respin("respin-gui.yml", "guis", FileType.YAML),
+    crates_log("crates.log", "logs", FileType.LOG),
+    keys_log("keys.log", "logs", FileType.LOG);
 
     private final FusionCore fusion = FusionProvider.getInstance();
     private final FileManager fileManager = this.fusion.getFileManager();

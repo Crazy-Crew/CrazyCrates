@@ -2,10 +2,19 @@ package com.badbones69.crazycrates.paper.api;
 
 import com.badbones69.common.CratesPlugin;
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.commands.BaseCommand;
+import com.badbones69.crazycrates.paper.commands.types.admin.ReloadCommand;
+import com.badbones69.crazycrates.paper.commands.types.admin.TestCommand;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.paper.FusionPaper;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import java.util.List;
 import java.util.Map;
 
 public class CratePlatform extends CratesPlugin {
@@ -23,13 +32,13 @@ public class CratePlatform extends CratesPlugin {
         this.time = System.nanoTime();
     }
 
-    private com.badbones69.crazycrates.paper.api.CrateManager crateManager;
+    private CrateManager crateManager;
 
     @Override
     public void init() {
         super.init();
 
-        this.crateManager = new com.badbones69.crazycrates.paper.api.CrateManager(this, this.plugin);
+        this.crateManager = new CrateManager(this, this.plugin);
         this.crateManager.load();
 
         this.fusion.log(Level.INFO, "Done ({time})!", Map.of(
@@ -60,7 +69,14 @@ public class CratePlatform extends CratesPlugin {
         });
     }
 
-    public @NotNull final com.badbones69.crazycrates.paper.api.CrateManager getCrateManager() {
+    @Override
+    public void reload() {
+        super.reload();
+
+        this.crateManager.load();
+    }
+
+    public @NotNull final CrateManager getCrateManager() {
         return this.crateManager;
     }
 
