@@ -1,0 +1,59 @@
+# Settings related to the crate i.e. things like previews
+crate:
+  # Preview related settings i.e. the look of the item.
+  preview:
+    # The name of the item.
+    name: "<yellow>Do you have protection?"
+    # The lore of the item.
+    lore:
+      - "<gradient:#8fcfa0:#32a852>I'm wearing my armor!"
+    # The item material.
+    item: "enchanted_book"
+    # The list of enchantments.
+    enchantments:
+      - "protection:5"
+      - "unbreaking:3"
+    # The amount to display.
+    amount: 1
+    # Other preview settings.
+    settings:
+      # The item model, which replaces Custom Model Data indefinitely now.
+      # This is much preferred over direct integration with plugins. It is less likely to break.
+      # If you wish to disable this, set the fields to blank as they are by default.
+      model:
+        # The namespace i.e. nexo
+        namespace: ""
+        # The id i.e. emerald_helmet
+        id: ""
+  # Broadcast a message to the server.
+  broadcast:
+    # If the messages should be sent.
+    enabled: false
+    # The messages to broadcast.
+    messages:
+      - "<red>{player} won the prize <yellow>{reward}."
+    # If the player has this permission, they do not get the broadcast.
+    permission: ""
+  # Spawn fireworks, when a player wins this prize.
+  firework:
+    # Should fireworks spawn?
+    enabled: false
+
+# The items to win, when a prize is selected.
+items:
+  "1":
+    # The item material.
+    material: "enchanted_book"
+    # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
+    # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
+    # enchantment: amount
+    enchantments:
+      unbreaking: 3
+      protection: 5
+
+# Commands to send, when a prize is selected.
+commands:
+  - "msg {player} <red>You won the prize <yellow>{reward}."
+
+# Messages to send, when a prize is selected.
+messages: []
