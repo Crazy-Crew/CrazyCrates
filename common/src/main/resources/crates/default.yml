@@ -1,0 +1,23 @@
+# The default crate example
+crate:
+  # The crate type
+  type: "CSGO"
+  # The display item for /crates
+  display:
+    # Should the item be displayed in /crates?
+    enabled: true
+    # The slot of the item in /crates
+    slot: 13
+    # The item configuration.
+    item:
+      # The item material.
+      material: "ender_chest"
+      # The name of the item.
+      name: "<yellow>Default Crate"
+      # The amount the item has.
+      amount: 3
+  gui:
+    # The name of the gui.
+    name: "<yellow>Default Crate"
+    # The size of the gui. Each row is 9 slots, so 3*9=27
+    rows: 3

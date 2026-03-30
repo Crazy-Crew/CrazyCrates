@@ -1,0 +1,5 @@
+gui:
+  # The name of the gui.
+  name: "<bold><gradient:#e91e63:blue>CrazyCrates</gradient></bold>"
+  # The size of the gui. Each row is 9 slots, so 3*9=27
+  rows: 3
