@@ -65,7 +65,7 @@ public class CratePlatform extends CratesPlugin {
                     new TestCommand()
             ).forEach(command -> root.then(command.registerPermissions().literal()));
 
-            event.registrar().register(root.build(), "The base command for CrazyCrates");
+            event.registrar().register(root.build(), "The base command for CrazyCrates", List.of("crates"));
         });
     }
 
