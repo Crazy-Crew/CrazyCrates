@@ -44,7 +44,7 @@ public class CratePlatform extends CratesPlugin {
     public void post() {
         super.post();
 
-        /*final LifecycleEventManager<Plugin> eventManager = this.plugin.getLifecycleManager();
+        final LifecycleEventManager<Plugin> eventManager = this.plugin.getLifecycleManager();
 
         eventManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             LiteralArgumentBuilder<CommandSourceStack> root = new BaseCommand().registerPermissions().literal().createBuilder();
@@ -57,7 +57,7 @@ public class CratePlatform extends CratesPlugin {
             ).forEach(command -> root.then(command.registerPermissions().literal()));
 
             event.registrar().register(root.build(), "The base command for CrazyCrates");
-        });*/
+        });
     }
 
     public @NotNull final com.badbones69.crazycrates.paper.api.CrateManager getCrateManager() {
