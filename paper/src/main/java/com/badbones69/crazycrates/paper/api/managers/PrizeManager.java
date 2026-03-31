@@ -1,7 +1,8 @@
-package com.badbones69.crazycrates.paper.api;
+package com.badbones69.crazycrates.paper.api.managers;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.objects.crate.Crate;
+import com.badbones69.crazycrates.paper.api.CratePlatform;
+import com.badbones69.crazycrates.paper.api.objects.prize.Prize;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import com.ryderbelserion.fusion.paper.FusionPaper;
@@ -10,7 +11,7 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.nio.file.Path;
 import java.util.*;
 
-public class CrateManager {
+public class PrizeManager {
 
     private final FileManager fileManager;
     private final CratePlatform platform;
@@ -19,9 +20,7 @@ public class CrateManager {
 
     private final FusionPaper fusion;
 
-    private final Map<String, Crate> crates = new HashMap<>();
-
-    public CrateManager(@NotNull final CrazyCrates plugin) {
+    public PrizeManager(@NotNull final CrazyCrates plugin) {
         this.plugin = plugin;
 
         this.platform = this.plugin.getPlatform();
@@ -30,10 +29,12 @@ public class CrateManager {
         this.fusion = this.platform.getFusion();
     }
 
-    public void load() {
-        final Path folder = this.platform.getCratesPath();
+    private final Map<String, Prize> prizes = new HashMap<>();
 
-        this.crates.clear();
+    public void load() {
+        final Path folder = this.platform.getPrizesPath();
+
+        this.prizes.clear();
 
         for (final Path path : this.fusion.getFilesByPath(folder, List.of(".yml"))) {
             final Optional<YamlCustomFile> optional = this.fileManager.getYamlFile(path);
@@ -48,13 +49,9 @@ public class CrateManager {
                 continue;
             }
 
-            final CommentedConfigurationNode child = configuration.node("crate");
-
             final String cleanName = strip(path, ".yml");
 
-            final Crate crate = new Crate(child, cleanName);
-
-            this.crates.put(cleanName, crate);
+            this.prizes.put(cleanName, new Prize(configuration, cleanName));
         }
     }
 
@@ -62,11 +59,11 @@ public class CrateManager {
         return path.getFileName().toString().replace(extension, "");
     }
 
-    public @NotNull final Optional<Crate> getCrate(@NotNull final String name) {
-        return Optional.ofNullable(this.crates.get(name));
+    public @NotNull final Optional<Prize> getPrize(@NotNull final String name) {
+        return Optional.ofNullable(this.prizes.get(name));
     }
 
-    public @NotNull final Map<String, Crate> getCrates() {
-        return Collections.unmodifiableMap(this.crates);
+    public @NotNull final Map<String, Prize> getPrizes() {
+        return Collections.unmodifiableMap(this.prizes);
     }
 }

@@ -1,10 +1,14 @@
 package com.badbones69.crazycrates.paper.utils;
 
+import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.CratePlatform;
+import com.badbones69.crazycrates.paper.api.managers.ItemManager;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.custom.CustomBuilder;
+import org.bukkit.inventory.ItemType;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -13,6 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 public class ItemUtils {
+
+    private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private static final CratePlatform platform = plugin.getPlatform();
+
+    private static final ItemManager itemManager = platform.getItemManager();
 
     public static List<ItemBuilder> convertNodes(@NotNull final CommentedConfigurationNode configuration) {
         final List<ItemBuilder> builders = new ArrayList<>();
@@ -25,9 +35,23 @@ public class ItemUtils {
     }
 
     public static ItemBuilder convertNode(@NotNull final CommentedConfigurationNode configuration) {
-        final ItemBuilder builder = ItemBuilder.from(configuration.node("material").getString("stone"));
+        ItemBuilder builder = ItemBuilder.from(configuration.node("material").getString("stone"));
 
-        if (configuration.hasChild("data")) {
+        if (configuration.hasChild("key")) {
+            final String key = configuration.node("key").getString("");
+
+            if (!key.isBlank()) {
+                final ItemBuilder custom = itemManager.getItem(key);
+
+                final ItemType itemType = custom.getType();
+
+                if (itemType != ItemType.AIR) {
+                    builder = custom;
+                }
+            }
+        }
+
+        if (configuration.hasChild("data")) { //todo() write migrator
             final String item = configuration.node("data").getString("");
 
             if (!item.isBlank()) {

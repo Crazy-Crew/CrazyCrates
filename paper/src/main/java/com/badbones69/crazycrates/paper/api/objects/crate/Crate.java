@@ -1,7 +1,9 @@
-package com.badbones69.crazycrates.paper.api.objects;
+package com.badbones69.crazycrates.paper.api.objects.crate;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.managers.ItemManager;
 import com.badbones69.crazycrates.paper.api.objects.items.DisplayItem;
+import com.badbones69.crazycrates.paper.api.objects.other.CratePrize;
 import com.badbones69.crazycrates.paper.api.objects.other.CrateSound;
 import com.badbones69.crazycrates.paper.api.CratePlatform;
 import com.ryderbelserion.fusion.paper.FusionPaper;
@@ -9,6 +11,7 @@ import org.bukkit.Server;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import us.crazycrew.crazycrates.api.enums.CrateType;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -19,25 +22,20 @@ public class Crate {
 
     private final CratePlatform platform = this.plugin.getPlatform();
 
+    private final ItemManager itemManager = this.platform.getItemManager();
+
     private final FusionPaper fusion = this.platform.getFusion();
 
     private final Server server = this.plugin.getServer();
 
     private final Map<String, CrateSound> sounds = new HashMap<>();
+    private final Map<String, CratePrize> prizes = new HashMap<>();
 
     private final CommentedConfigurationNode configuration;
 
     private final DisplayItem displayItem;
 
     private final CrateType crateType;
-
-    //private final int startingKeys;
-    //private final int requiredKeys;
-
-    //private final int bulkOpenLimit;
-
-    //private final boolean isBroadcasting;
-    //private final String broadcastValue;
 
     private final String crateName;
 
@@ -50,17 +48,20 @@ public class Crate {
         this.sounds.put("click", new CrateSound(sound.node("click-sound")));
         this.sounds.put("stop", new CrateSound(sound.node("stop-sound")));
 
-        //this.startingKeys = configuration.node("StartingKeys").getInt(0);
-        //this.requiredKeys = configuration.node("RequiredKeys").getInt(0);
+        this.displayItem = new DisplayItem(configuration.node("display"));
 
-        //this.bulkOpenLimit = configuration.node("Max-Mass-Open").getInt(10);
+        final CommentedConfigurationNode prizes = configuration.node("prizes");
 
-        this.displayItem = new DisplayItem(
-                configuration.node("display")
-        );
+        for (final Object key : prizes.childrenMap().keySet()) {
+            final CommentedConfigurationNode prize = configuration.node(key);
 
-        //this.isBroadcasting = configuration.node("OpeningBroadcast").getBoolean(true);
-        //this.broadcastValue = configuration.node("BroadCast").getString("");
+            final String name = key.toString();
+
+            this.prizes.put(name, new CratePrize(
+                    name,
+                    prize
+            ));
+        }
 
         this.configuration = configuration;
         this.crateName = crateName;
@@ -70,23 +71,13 @@ public class Crate {
         return Optional.ofNullable(this.sounds.get(type));
     }
 
-    /*public final int getStartingKeys() {
-        return this.startingKeys;
+    public final Optional<CratePrize> getPrize(@NotNull final String type) {
+        return Optional.ofNullable(this.prizes.get(type));
     }
 
-    public final int getRequiredKeys() {
-        return this.requiredKeys;
+    public @NotNull final Map<String, CratePrize> getPrizes() {
+        return Collections.unmodifiableMap(this.prizes);
     }
-
-    public final int getBulkOpenLimit() {
-        return this.bulkOpenLimit;
-    }
-
-    public void broadcast(@NotNull final Player player, @NotNull final Map<String, String> placeholders) {
-        if (!this.isBroadcasting || this.broadcastValue.isBlank()) return;
-
-        this.server.broadcast(this.fusion.asComponent(player, this.broadcastValue, placeholders));
-    }*/
 
     public @NotNull final CommentedConfigurationNode getConfiguration() {
         return this.configuration;

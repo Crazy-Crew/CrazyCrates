@@ -19,16 +19,15 @@ import java.util.Optional;
 
 public enum FileKeys {
 
+    // gui files
+    crate_menu("crate-menu.yml", "guis", FileType.YAML),
+
+    // static files
     messages("messages.yml", FileType.YAML),
     config("config.yml", FileType.YAML),
 
-    editor("editor.yml", FileType.YAML),
-
-    crate_menu("crate-menu.yml", "guis", FileType.YAML),
-
-    respin("respin-gui.yml", "guis", FileType.YAML),
-    crates_log("crates.log", "logs", FileType.LOG),
-    keys_log("keys.log", "logs", FileType.LOG);
+    // json files
+    items("items.json", FileType.JSON);
 
     private final FusionCore fusion = FusionProvider.getInstance();
     private final FileManager fileManager = this.fusion.getFileManager();

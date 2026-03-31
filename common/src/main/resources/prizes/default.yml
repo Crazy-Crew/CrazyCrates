@@ -21,9 +21,9 @@ crate:
       # This is much preferred over direct integration with plugins. It is less likely to break.
       # If you wish to disable this, set the fields to blank as they are by default.
       model:
-        # The namespace i.e. nexo
+        # The namespace i.e. nexo.
         namespace: ""
-        # The id i.e. emerald_helmet
+        # The id i.e. emerald_helmet.
         id: ""
   # Broadcast a message to the server.
   broadcast:
@@ -31,7 +31,7 @@ crate:
     enabled: false
     # The messages to broadcast.
     messages:
-      - "<red>{player} won the prize <yellow>{reward}."
+      - "<red>{player} won the prize <yellow>{reward} from {crate}."
     # If the player has this permission, they do not get the broadcast.
     permission: ""
   # Spawn fireworks, when a player wins this prize.
@@ -44,12 +44,15 @@ items:
   "1":
     # The item material.
     material: "enchanted_book"
-    # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
-    # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
-    # enchantment: amount
+    # The enchantments, to apply to the item.
+    # All enchantments use vanilla identifiers, so  fire_aspect, bane_of_arthropods, luck, etc.
     enchantments:
       unbreaking: 3
       protection: 5
+  "2":
+    # Grabs an item, from items.json which is populated by /crates item <id> [value].
+    # Often used for items that are hard to allow in configurations.
+    key: "default"
 
 # Commands to send, when a prize is selected.
 commands:

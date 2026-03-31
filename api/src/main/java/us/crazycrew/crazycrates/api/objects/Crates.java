@@ -23,6 +23,10 @@ public abstract class Crates {
         return getDataPath().resolve("crates");
     }
 
+    public @NotNull Path getPrizesPath() {
+        return getDataPath().resolve("prizes");
+    }
+
     /**
      * Gets the plugin's home folder.
      *

@@ -39,9 +39,11 @@ public abstract class CratesPlugin extends Crates {
                 .addFolder(this.path.resolve("guis"), FileType.YAML);
 
         List.of(
+                FileKeys.crate_menu,
+
                 FileKeys.config,
 
-                FileKeys.crate_menu
+                FileKeys.items
         ).forEach(FileKeys::addFile);
     }
 

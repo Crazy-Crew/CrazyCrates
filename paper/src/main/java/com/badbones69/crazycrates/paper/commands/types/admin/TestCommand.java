@@ -4,7 +4,6 @@ import com.badbones69.crazycrates.paper.api.commands.CratesCommand;
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
@@ -29,11 +28,7 @@ public class TestCommand extends CratesCommand {
             for (final Object key : configuration.childrenMap().keySet()) {
                 final CommentedConfigurationNode prize = configuration.node(key).node("Items");
 
-                this.fusion.log(Level.WARNING, "<red>Prize: <green>%s".formatted(prize.path()));
-
                 for (final CommentedConfigurationNode node : prize.childrenMap().values()) {
-                    this.fusion.log(Level.WARNING, "<red>Item: <green>%s <yellow>%s".formatted(node.path(), node.node("name").getString("N/A")));
-
                     items.add(ItemUtils.convertNode(node).asItemStack());
                 }
             }

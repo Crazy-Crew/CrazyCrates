@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.paper.commands;
 
 import com.badbones69.common.api.enums.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.commands.CratesCommand;
-import com.badbones69.crazycrates.paper.api.objects.Crate;
+import com.badbones69.crazycrates.paper.api.objects.crate.Crate;
 import com.badbones69.crazycrates.paper.api.objects.items.DisplayItem;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;

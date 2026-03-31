@@ -23,9 +23,12 @@ crate:
     rows: 3
   # The prizes section.
   prizes:
+    # The name of the prize.
     "1":
-      # The name of the file, excluding the extension found in the prizes' folder.
-      key: "default"
+      # The names of the files, excluding the extension found in the prizes' folder.
+      # A list of commonly shared prizes.
+      keys:
+        - "default"
       # The max amount of times this prize can be won.
       max-pulls: 10
       # The prize weight.

@@ -2,6 +2,8 @@ package com.badbones69.crazycrates.paper.api.objects.items;
 
 import com.badbones69.crazycrates.paper.utils.ItemUtils;
 import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiAction;
+import com.ryderbelserion.fusion.paper.builders.gui.objects.GuiItem;
+import com.ryderbelserion.fusion.paper.builders.gui.types.paginated.PaginatedGui;
 import com.ryderbelserion.fusion.paper.builders.gui.types.simple.SimpleGui;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -31,5 +33,19 @@ public class DisplayItem {
         }
 
         gui.addSlotAction(this.slot, ItemUtils.convertNode(this.configuration.node("item")).asItemStack(player), action);
+    }
+
+    public void addItem(@NotNull final Player player, @NotNull final PaginatedGui gui, @NotNull final GuiAction<InventoryClickEvent> action) {
+        if (!this.isEnabled) {
+            return;
+        }
+
+        if (this.slot == -1) {
+            gui.addPageItem(new GuiItem(ItemUtils.convertNode(this.configuration.node("item")).asItemStack(player), action));
+
+            return;
+        }
+
+        gui.setPageItem(this.slot, ItemUtils.convertNode(this.configuration.node("item")).asItemStack(player), action);
     }
 }
