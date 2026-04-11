@@ -1,7 +1,8 @@
 package com.badbones69.crazycrates.paper.api.builders.gui;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.Gui;
+import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiState;
+import com.ryderbelserion.fusion.paper.builders.gui.types.simple.SimpleGui;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -11,7 +12,7 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
     private final Player player;
     private final Crate crate;
 
-    private final Gui gui;
+    private final SimpleGui gui;
 
     /**
      * Builds an inventory with a set title/rows
@@ -23,7 +24,7 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
     public StaticInventoryBuilder(@NotNull final Player player, @NotNull final Crate crate, @NotNull final String title, final int rows) {
         super(player);
 
-        this.gui = Gui.gui(this.plugin).setTitle(parse(player, title)).setRows(rows).disableInteractions().create();
+        this.gui = SimpleGui.gui(this.plugin, player, title, rows).addState(GuiState.block_all_interactions);
 
         this.player = player;
         this.crate = crate;
@@ -39,7 +40,7 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
     public StaticInventoryBuilder(@NotNull final Player player, @NotNull final String title, final int rows) {
         super(player);
 
-        this.gui = Gui.gui(this.plugin).setTitle(parse(player, title)).setRows(rows).disableInteractions().create();
+        this.gui = SimpleGui.gui(this.plugin, player, title, rows).addState(GuiState.block_all_interactions);
 
         this.player = player;
         this.crate = null;
@@ -54,7 +55,7 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
     public StaticInventoryBuilder(@NotNull final Player player, @NotNull final Crate crate) {
         super(player);
 
-        this.gui = Gui.gui(this.plugin).setTitle(parse(player, crate.getPreviewName())).setRows(crate.getPreviewTierCrateRows()).disableInteractions().create();
+        this.gui = SimpleGui.gui(this.plugin, player, crate.getPreviewName(), crate.getPreviewTierCrateRows()).addState(GuiState.block_all_interactions);
 
         this.player = player;
         this.crate = crate;
@@ -100,11 +101,11 @@ public abstract class StaticInventoryBuilder extends InventoryBuilder {
     }
 
     /**
-     * Gets the {@link Gui}.
+     * Gets the {@link SimpleGui}.
      *
-     * @return {@link Gui}
+     * @return {@link SimpleGui}
      */
-    public @NotNull final Gui getGui() {
+    public @NotNull final SimpleGui getGui() {
         return this.gui;
     }
 }

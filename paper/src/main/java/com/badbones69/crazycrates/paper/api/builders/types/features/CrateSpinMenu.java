@@ -4,11 +4,11 @@ import com.badbones69.crazycrates.paper.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.Gui;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
-import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
+import com.ryderbelserion.fusion.paper.builders.gui.objects.GuiItem;
+import com.ryderbelserion.fusion.paper.builders.gui.objects.border.GuiFiller;
+import com.ryderbelserion.fusion.paper.builders.gui.types.simple.SimpleGui;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
@@ -27,7 +27,7 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
 
     private final Player player = getPlayer();
     private final Crate crate = getCrate();
-    private final Gui gui = getGui();
+    private final SimpleGui gui = getGui();
 
     @Override
     public void open() {
@@ -54,11 +54,11 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
         final UUID uuid = this.player.getUniqueId();
         final String fileName = this.crate.getFileName();
 
-        this.settings.getButtons().forEach((slot, button) -> this.gui.setItem(slot, button.getGuiItem()));
+        this.settings.getButtons().forEach((slot, button) -> this.gui.addSlotAction(slot, button.getGuiItem()));
 
-        this.gui.setOpenGuiAction(action -> this.userManager.addRespinPrize(uuid, fileName, this.settings.getPrize().getSectionName()));
+        this.gui.setOpenAction(action -> this.userManager.addRespinPrize(uuid, fileName, this.settings.getPrize().getSectionName()));
 
-        this.gui.setCloseGuiAction(action -> {
+        this.gui.setCloseAction(action -> {
             new FoliaScheduler(this.plugin, Scheduler.global_scheduler) {
                 @Override
                 public void run() {
@@ -78,7 +78,7 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
             this.crateManager.endCrate(this.player);
         });
 
-        this.gui.setItem(this.settings.getSlot(), new GuiItem(this.settings.getPrize().getDisplayItem(this.player, this.crate)));
+        this.gui.addSlotAction(this.settings.getSlot(), this.settings.getPrize().getDisplayItem(this.player, this.crate));
 
         this.gui.open(this.player);
     }

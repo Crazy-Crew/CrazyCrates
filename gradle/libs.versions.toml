@@ -23,7 +23,7 @@ cmi-lib = "1.5.7.0" # https://www.spigotmc.org/resources/cmilib.87610/
 ## Other
 triumph-cmds = "2.0.0-BETA-4" # https://github.com/TriumphTeam/triumph-cmds
 bStats = "3.2.1" # https://github.com/Bastian/bStats
-fusion = "1.22.12" # https://github.com/ryderbelserion/Fusion
+fusion = "4.10.0" # https://github.com/ryderbelserion/Fusion
 
 ## Gradle Plugins
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
@@ -92,7 +92,7 @@ triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "t
 
 # https://github.com/ryderbelserion/Fusion
 fusion-paper = { module = "com.ryderbelserion.fusion:fusion-paper", version.ref = "fusion" }
-fusion-kyori = { module = "com.ryderbelserion.fusion:fusion-core", version.ref = "fusion" }
+fusion-kyori = { module = "com.ryderbelserion.fusion:fusion-kyori", version.ref = "fusion" }
 
 # https://github.com/Bastian/bStats
 metrics = { module = "org.bstats:bstats-bukkit", version.ref = "bStats" }

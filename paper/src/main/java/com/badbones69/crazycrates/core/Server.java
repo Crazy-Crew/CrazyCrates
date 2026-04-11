@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.core;
 
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.crazycrates.core.impl.Settings;
-import com.ryderbelserion.fusion.core.api.utils.FileUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.KeyManager;
@@ -14,10 +14,12 @@ import java.util.List;
 
 public class Server implements IServer {
 
+    private final FusionPaper fusion;
     private final Path path;
     private final Path crates;
 
-    public Server(@NotNull final Path path) {
+    public Server(@NotNull final FusionPaper fusion, @NotNull final Path path) {
+        this.fusion = fusion;
         this.path = path;
         this.crates = this.path.resolve("crates");
     }
@@ -66,8 +68,8 @@ public class Server implements IServer {
     }
 
     @Override
-    public @NotNull final List<String> getCrateFiles(boolean keepExtension) {
-        return keepExtension ? FileUtils.getNamesByExtension("crates", this.path, ".yml") : FileUtils.getNamesWithoutExtension("crates", this.path, ".yml");
+    public @NotNull final List<String> getCrateFiles(final boolean removeExtension) {
+        return this.fusion.getFilesByName("crates", this.path, ".yml", removeExtension);
     }
 
     @Override

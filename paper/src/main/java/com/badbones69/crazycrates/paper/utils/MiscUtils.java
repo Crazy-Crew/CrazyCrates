@@ -1,12 +1,11 @@
 package com.badbones69.crazycrates.paper.utils;
 
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
-import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
+import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.*;
@@ -77,38 +76,6 @@ public class MiscUtils {
 
         for (final ItemBuilder builder : builders) {
             items.add(builder.asItemStack(player));
-        }
-
-        dropItems(items, player);
-    }
-
-    public static void dropLegacyBuilders(@NotNull final List<LegacyItemBuilder> builders, @NotNull final Player player) {
-        if (builders.isEmpty()) return;
-
-        final boolean isPlaceholderAPIEnabled = Plugins.placeholder_api.isEnabled();
-
-        final List<ItemStack> items = new ArrayList<>();
-
-        for (final LegacyItemBuilder builder : builders) {
-            if (isPlaceholderAPIEnabled) {
-                final String displayName = builder.getDisplayName();
-
-                if (!displayName.isEmpty()) {
-                    builder.setDisplayName(PlaceholderAPI.setPlaceholders(player, displayName));
-                }
-
-                final List<String> displayLore = builder.getDisplayLore();
-
-                if (!displayLore.isEmpty()) {
-                    List<String> lore = new ArrayList<>();
-
-                    displayLore.forEach(line -> lore.add(PlaceholderAPI.setPlaceholders(player, line)));
-
-                    builder.setDisplayLore(lore);
-                }
-            }
-
-            items.add(builder.asItemStack());
         }
 
         dropItems(items, player);
@@ -401,7 +368,7 @@ public class MiscUtils {
         return useDifferentRandom() ? ThreadLocalRandom.current() : new Random();
     }
 
-    public static LegacyItemBuilder getRandomPaneColor() {
+    public static ItemBuilder getRandomPaneColor() {
         List<ItemType> panes = Arrays.asList(
                 ItemType.LIGHT_BLUE_STAINED_GLASS_PANE,
                 ItemType.MAGENTA_STAINED_GLASS_PANE,
@@ -419,7 +386,7 @@ public class MiscUtils {
                 ItemType.RED_STAINED_GLASS_PANE
         );
 
-        return new LegacyItemBuilder(plugin, panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
+        return ItemBuilder.from(panes.get(ThreadLocalRandom.current().nextInt(panes.size())));
     }
 
     public static void addItem(@NotNull final Player player, @NotNull final ItemStack... items) {

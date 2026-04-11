@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.paper.api.objects;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.ryderbelserion.fusion.core.api.utils.StringUtils;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;

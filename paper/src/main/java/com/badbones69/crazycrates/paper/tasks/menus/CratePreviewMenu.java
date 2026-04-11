@@ -3,9 +3,9 @@ package com.badbones69.crazycrates.paper.tasks.menus;
 import com.badbones69.crazycrates.paper.api.builders.gui.DynamicInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
-import com.ryderbelserion.fusion.paper.api.builders.gui.types.PaginatedGui;
+import com.ryderbelserion.fusion.paper.builders.gui.objects.GuiItem;
+import com.ryderbelserion.fusion.paper.builders.gui.objects.border.GuiFiller;
+import com.ryderbelserion.fusion.paper.builders.gui.types.paginated.PaginatedGui;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
@@ -33,21 +33,18 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
         final GuiFiller guiFiller = this.gui.getFiller();
 
         if (crate.isBorderToggle()) {
-            final GuiItem guiItem = new GuiItem(crate.getBorderItem().asItemStack());
-
-            guiFiller.fillTop(guiItem);
-            guiFiller.fillBottom(guiItem);
+            guiFiller.fillBoth(crate.getBorderItem().asItemStack());
         } else {
-            guiFiller.fillBottom(new GuiItem(ItemType.AIR.createItemStack()));
+            guiFiller.fillBottom(ItemType.AIR.createItemStack());
         }
 
         final UUID uuid = this.player.getUniqueId();
 
-        crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> this.gui.addItem(new GuiItem(itemStack)));
+        crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> this.gui.addPageItem(new GuiItem(itemStack)));
 
-        this.gui.setOpenGuiAction(event -> this.inventoryManager.addPreviewViewer(uuid));
+        this.gui.setOpenAction(event -> this.inventoryManager.addPreviewViewer(uuid));
 
-        this.gui.setCloseGuiAction(event -> this.inventoryManager.removePreviewViewer(uuid));
+        this.gui.setCloseAction(event -> this.inventoryManager.removePreviewViewer(uuid));
 
         this.gui.open(this.player, gui -> {
             addBackButton(true);

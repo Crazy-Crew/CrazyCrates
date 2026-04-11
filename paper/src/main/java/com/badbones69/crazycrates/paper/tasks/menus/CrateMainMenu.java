@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.tasks.menus;
 
 import com.badbones69.common.config.beans.ModelData;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;

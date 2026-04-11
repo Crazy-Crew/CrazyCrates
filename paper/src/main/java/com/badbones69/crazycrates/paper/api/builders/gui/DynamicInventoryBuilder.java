@@ -3,11 +3,9 @@ package com.badbones69.crazycrates.paper.api.builders.gui;
 import com.badbones69.common.config.beans.inventories.ItemPlacement;
 import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.Gui;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
-import com.ryderbelserion.fusion.paper.api.builders.gui.types.PaginatedGui;
+import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiState;
+import com.ryderbelserion.fusion.paper.builders.gui.types.paginated.PaginatedGui;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
@@ -20,7 +18,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
     public DynamicInventoryBuilder(@NotNull final Player player, @Nullable final Crate crate, @NotNull final String title, final int rows) {
         super(player);
 
-        this.gui = Gui.paginated(this.plugin).setTitle(title).setRows(rows).disableInteractions().create();
+        this.gui = PaginatedGui.gui(this.plugin, player, title, rows).addState(GuiState.block_all_interactions).build();
 
         this.crate = crate;
     }
@@ -82,18 +80,18 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
 
         final int safeRow = Math.min(row == -1 ? rows : row, rows);
 
-        if (this.gui.getCurrentPageNumber() <= 1) {
+        if (this.gui.getPageNumber() <= 1) {
             setFillerItem(safeRow, column, isPreview);
 
             return;
         }
 
-        this.gui.setItem(safeRow, column, new GuiItem(this.inventoryManager.getBackButton(this.player, this.gui), event -> {
+        this.gui.setPageItem(safeRow, column, this.inventoryManager.getBackButton(this.player, this.gui), event -> {
             event.setCancelled(true);
 
-            this.gui.previous();
+            this.gui.nextPage();
 
-            final int page = this.gui.getCurrentPageNumber();
+            final int page = this.gui.getPageNumber();
 
             if (page <= 1) {
                 setFillerItem(safeRow, column, isPreview);
@@ -104,11 +102,13 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
             if (page < this.gui.getMaxPages()) {
                 addNextButton(isPreview);
             }
-        }));
+        });
     }
 
     public void addNextButton(final boolean isPreview) {
-        if (this.gui.getCurrentPageNumber() >= this.gui.getMaxPages()) {
+        final int number = this.gui.getPageNumber();
+
+        if (number >= this.gui.getMaxPages()) {
             return;
         }
 
@@ -119,12 +119,12 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
 
         final int safeRow = Math.min(row == -1 ? rows : row, rows);
 
-        this.gui.setItem(safeRow, column, new GuiItem(this.inventoryManager.getNextButton(this.player, this.gui), event -> {
+        this.gui.setPageItem(safeRow, column, this.inventoryManager.getNextButton(this.player, this.gui), event -> {
             event.setCancelled(true);
 
-            this.gui.next();
+            this.gui.nextPage();
 
-            final int page = this.gui.getCurrentPageNumber();
+            final int page = this.gui.getPageNumber();
 
             if (page >= this.gui.getMaxPages()) {
                 setFillerItem(safeRow, column, isPreview);
@@ -134,28 +134,28 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
 
             if (page <= 1) {
                 if (this.crate != null && this.crate.isBorderToggle()) {
-                    this.gui.setItem(safeRow, column, this.crate.getBorderItem().asGuiItem());
+                    //this.gui.setItem(safeRow, column, this.crate.getBorderItem().asGuiItem());
                 } else {
                     if (!isPreview) {
                         this.gui.removeItem(safeRow, column);
 
-                        this.gui.setItem(safeRow, column, new GuiItem(ItemType.BLACK_STAINED_GLASS_PANE));
+                        //this.gui.setItem(safeRow, column, new GuiItem(ItemType.BLACK_STAINED_GLASS_PANE));
                     }
                 }
             } else {
                 addBackButton(isPreview);
             }
-        }));
+        });
     }
 
     private void setFillerItem(int row, int column, boolean isPreview) {
         if (this.crate != null && this.crate.isBorderToggle()) {
-            this.gui.setItem(row, column, this.crate.getBorderItem().asGuiItem());
+            //this.gui.setItem(row, column, this.crate.getBorderItem().asGuiItem());
         } else {
             if (!isPreview) {
                 this.gui.removeItem(row, column);
 
-                this.gui.setItem(row, column, new GuiItem(ItemType.BLACK_STAINED_GLASS_PANE));
+                //this.gui.setItem(row, column, new GuiItem(ItemType.BLACK_STAINED_GLASS_PANE));
             }
         }
     }
