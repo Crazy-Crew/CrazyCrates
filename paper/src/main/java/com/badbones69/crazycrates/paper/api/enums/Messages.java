@@ -5,6 +5,7 @@ import ch.jalu.configme.properties.Property;
 import com.badbones69.common.enums.State;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import net.kyori.adventure.audience.Audience;
 import com.badbones69.common.config.ConfigManager;
@@ -231,12 +232,12 @@ public enum Messages {
 
     public void migrate() {
         if (this.isList) {
-            //this.messages.setProperty(this.properties, AdvUtils.convert(this.messages.getProperty(this.properties), true));
+            this.messages.setProperty(this.properties, AdvUtils.convert(this.messages.getProperty(this.properties), true));
 
             return;
         }
 
-        //this.messages.setProperty(this.property, AdvUtils.convert(this.messages.getProperty(this.property), true));
+        this.messages.setProperty(this.property, AdvUtils.convert(this.messages.getProperty(this.property), true));
     }
 
     private @NotNull String parse(@NotNull final Audience sender, @NotNull final Map<String, String> placeholders) {
