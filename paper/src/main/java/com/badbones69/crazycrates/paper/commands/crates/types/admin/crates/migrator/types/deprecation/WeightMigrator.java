@@ -3,8 +3,9 @@ package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migr
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.fusion.core.api.enums.FileType;
-import com.ryderbelserion.fusion.core.api.interfaces.files.ICustomFile;
+import com.ryderbelserion.fusion.files.enums.FileAction;
+import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -22,14 +23,14 @@ public class WeightMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Collection<ICustomFile<? extends ICustomFile<?>>> customFiles = this.fileManager.getCustomFiles().values();
+        final Collection<ICustomFile<?, ?, ?, ?>> customFiles = this.fileManager.getFiles().values();
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
 
         customFiles.forEach(key -> {
             try {
-                if (key.isStatic() || !key.isLoaded() || key.getFileType() != FileType.PAPER) return;
+                if (key.hasAction(FileAction.STATIC_FILE) || !key.isLoaded() || key.getFileType() != FileType.PAPER_YAML) return;
 
                 final PaperCustomFile customFile = (PaperCustomFile) key;
 
@@ -115,7 +116,7 @@ public class WeightMigrator extends ICrateMigrator {
 
         sendMessage(files, convertedCrates, failedCrates);
 
-        this.fileManager.init(new ArrayList<>());
+        this.fileManager.refresh(false);
 
         // reload crates
         this.crateManager.loadHolograms();

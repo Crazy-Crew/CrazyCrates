@@ -5,7 +5,7 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import io.papermc.paper.datacomponent.DataComponentTypes;
@@ -129,7 +129,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                 failed.add("<red>⤷ " + crateName);
             }
 
-            final PaperCustomFile customFile = new PaperCustomFile(crateFile.toPath(), new ArrayList<>()).load();
+            final PaperCustomFile customFile = new PaperCustomFile(this.fileManager, crateFile.toPath(), _ -> {}).load();
 
             final YamlConfiguration configuration = customFile.getConfiguration();
 
@@ -366,7 +366,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                 });
             });
 
-            this.fileManager.addFile(customFile.save());
+            this.fileManager.addPaperFile(customFile.save());
 
             success.add("<green>⤷ " + crateName);
         }

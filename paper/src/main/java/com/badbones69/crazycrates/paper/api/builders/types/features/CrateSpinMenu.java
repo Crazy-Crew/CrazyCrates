@@ -6,12 +6,13 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
+import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiBorder;
 import com.ryderbelserion.fusion.paper.builders.gui.objects.GuiItem;
 import com.ryderbelserion.fusion.paper.builders.gui.objects.border.GuiFiller;
 import com.ryderbelserion.fusion.paper.builders.gui.types.simple.SimpleGui;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -34,31 +35,33 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
         if (this.crate == null) return;
 
         if (this.settings.isFillerToggled()) {
-            final GuiItem item = this.settings.getFillerStack();
+            final GuiItem item = this.settings.getFillerStack(this.player);
 
             final GuiFiller guiFiller = this.gui.getFiller();
 
+            final ItemStack itemStack = item.getItemStack();
+
             switch (this.settings.getFillerType()) {
-                case FILL -> guiFiller.fill(item);
+                case FILL -> guiFiller.fill(GuiBorder.REMAINING_SLOTS, itemStack);
 
-                case FILL_BORDER -> guiFiller.fillBorder(item);
+                case FILL_BORDER -> guiFiller.fill(GuiBorder.BORDER, itemStack);
 
-                case FILL_TOP -> guiFiller.fillTop(item);
+                case FILL_TOP -> guiFiller.fillTop(itemStack);
 
-                case FILL_SIDE -> guiFiller.fillSide(GuiFiller.Side.BOTH, List.of(item));
+                case FILL_SIDE -> guiFiller.fill(GuiBorder.BOTH_SIDES, itemStack);
 
-                case FILL_BOTTOM -> guiFiller.fillBottom(item);
+                case FILL_BOTTOM -> guiFiller.fillBottom(itemStack);
             }
         }
 
         final UUID uuid = this.player.getUniqueId();
         final String fileName = this.crate.getFileName();
 
-        this.settings.getButtons().forEach((slot, button) -> this.gui.addSlotAction(slot, button.getGuiItem()));
+        this.settings.getButtons().forEach((slot, button) -> this.gui.addSlotAction(slot, button.getGuiItem(this.player)));
 
-        this.gui.setOpenAction(action -> this.userManager.addRespinPrize(uuid, fileName, this.settings.getPrize().getSectionName()));
+        this.gui.setOpenAction(_ -> this.userManager.addRespinPrize(uuid, fileName, this.settings.getPrize().getSectionName()));
 
-        this.gui.setCloseAction(action -> {
+        this.gui.setCloseAction(_ -> {
             new FoliaScheduler(this.plugin, Scheduler.global_scheduler) {
                 @Override
                 public void run() {

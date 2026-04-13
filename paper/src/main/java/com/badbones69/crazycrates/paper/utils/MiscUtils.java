@@ -1,12 +1,13 @@
 package com.badbones69.crazycrates.paper.utils;
 
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
+import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
-import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -45,6 +46,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MiscUtils {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private static final FusionPaper fusion = plugin.getFusion();
 
     private static final Path dataPath = plugin.getDataPath();
 
@@ -125,28 +128,8 @@ public class MiscUtils {
         sendCommand(command, new HashMap<>());
     }
 
-    public static String populatePlaceholders(@Nullable final CommandSender sender, @NotNull String line, @NotNull final Map<String, String> placeholders) {
-        if (sender != null && Plugins.placeholder_api.isEnabled()) {
-            if (sender instanceof Player player) {
-                line = PlaceholderAPI.setPlaceholders(player, line);
-            }
-        }
-
-        if (!placeholders.isEmpty()) {
-            for (final Map.Entry<String, String> placeholder : placeholders.entrySet()) {
-
-                if (placeholder != null) {
-                    final String key = placeholder.getKey();
-                    final String value = placeholder.getValue();
-
-                    if (key != null && value != null) {
-                        line = line.replace(key, value).replace(key.toLowerCase(), value);
-                    }
-                }
-            }
-        }
-
-        return line;
+    public static String populatePlaceholders(@Nullable final CommandSender sender, @NotNull final String line, @NotNull final Map<String, String> placeholders) {
+        return fusion.parse(sender == null ? Audience.empty() : sender, line, placeholders);
     }
 
     public static void janitor() {
@@ -301,7 +284,7 @@ public class MiscUtils {
 
             return leftover;
         } else {
-            if (MiscUtils.isLogging()) logger.warn("Items cannot be null.");
+            fusion.log(Level.WARNING, "Items cannot be null!");
         }
 
         return null;
@@ -422,12 +405,12 @@ public class MiscUtils {
         if (permission.isEmpty()) return;
 
         if (pluginManager.getPermission(permission) != null) {
-            if (isLogging()) logger.warn("Permission {} is already on the server. Pick a different name", permission);
+            fusion.log(Level.WARNING, "Permission %s is already on the server. Pick a different name", permission);
 
             return;
         }
 
-        if (isLogging()) logger.warn("Permission {} is registered", permission);
+        fusion.log(Level.WARNING, "Permission %s is registered!", permission);
 
         pluginManager.addPermission(new Permission(permission, description, isDefault ? PermissionDefault.TRUE : PermissionDefault.OP));
     }
@@ -436,12 +419,12 @@ public class MiscUtils {
         if (permission.isEmpty()) return;
 
         if (pluginManager.getPermission(permission) == null) {
-            if (isLogging()) logger.warn("Permission {} is not registered", permission);
+            fusion.log(Level.WARNING, "Permission %s is not registered!", permission);
 
             return;
         }
 
-        if (isLogging()) logger.warn("Permission {} is unregistered", permission);
+        fusion.log(Level.WARNING, "Permission %s is unregistered!", permission);
 
         pluginManager.removePermission(permission);
     }

@@ -3,12 +3,13 @@ package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migr
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
-import com.badbones69.crazycrates.paper.utils.ItemUtils;
+import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
-import com.ryderbelserion.fusion.paper.files.FileManager;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.command.CommandSender;
@@ -22,6 +23,8 @@ public abstract class ICrateMigrator {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
+    protected final FusionPaper fusion = this.plugin.getFusion();
+
     protected final ComponentLogger logger = this.plugin.getComponentLogger();
 
     protected final Path dataPath = this.plugin.getDataPath();
@@ -32,7 +35,7 @@ public abstract class ICrateMigrator {
 
     protected final SettingsManager messages = ConfigManager.getMessages();
 
-    protected final FileManager fileManager = this.plugin.getFileManager();
+    protected final PaperFileManager fileManager = this.plugin.getFileManager();
 
     protected final CommandSender sender;
 
@@ -112,7 +115,7 @@ public abstract class ICrateMigrator {
                 if (prizeSection.contains("DisplayEnchantments")) {
                     final List<String> enchants = new ArrayList<>();
 
-                    prizeSection.getStringList("DisplayEnchantments").forEach(enchant -> enchants.add(ItemUtils.getEnchant(enchant)));
+                    prizeSection.getStringList("DisplayEnchantments").forEach(enchant -> enchants.add(ItemUtil.getEnchant(enchant)));
 
                     set(prizeSection, "DisplayEnchantments", enchants);
                 }

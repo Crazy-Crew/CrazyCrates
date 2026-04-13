@@ -10,9 +10,10 @@ import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
-import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
-import com.ryderbelserion.fusion.paper.files.FileManager;
+import com.badbones69.crazycrates.paper.utils.ItemUtil;
+import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
+import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
@@ -40,12 +41,13 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class Crate {
 
-    private LegacyItemBuilder previewTierBorderItem;
-    private LegacyItemBuilder borderItem;
-    private LegacyItemBuilder keyBuilder;
+    private ItemBuilder previewTierBorderItem;
+    private ItemBuilder borderItem;
+    private ItemBuilder keyBuilder;
 
     private AbstractCrateManager manager;
     private final String fileName;
@@ -119,7 +121,7 @@ public class Crate {
     public Crate(@NotNull final String name,
                  @NotNull final String previewName,
                  @NotNull final CrateType crateType,
-                 @NotNull final LegacyItemBuilder key,
+                 @NotNull final ItemBuilder key,
                  @NotNull final String keyName,
                  @NotNull final ArrayList<Prize> prizes,
                  @NotNull final YamlConfiguration file,
@@ -131,7 +133,7 @@ public class Crate {
                  @NotNull final List<String> prizeCommands,
                  @NotNull final CrateHologram hologram) {
         this.name = name.replaceAll(".yml", "");
-        this.keyBuilder = key.setDisplayName(keyName).setPersistentString(ItemKeys.crate_key.getNamespacedKey(), this.name);
+        this.keyBuilder = key.withDisplayName(keyName).setPersistentString(ItemKeys.crate_key.getNamespacedKey(), this.name);
         this.keyName = keyName;
 
         this.file = file;
@@ -173,7 +175,7 @@ public class Crate {
         }
 
         if (itemsSection != null) {
-            this.animationBorderItems = com.badbones69.crazycrates.paper.utils.ItemUtils.convertConfigurationSection(itemsSection);
+            this.animationBorderItems = ItemUtil.convertConfigurationSection(itemsSection);
         }
 
         this.broadcastToggle = this.file.getBoolean("Crate.Settings.Broadcast.Toggle", false);
@@ -227,21 +229,21 @@ public class Crate {
 
         @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
 
-        this.borderItem = new LegacyItemBuilder(this.plugin)
-                .withType(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane").toLowerCase())
-                .setCustomModelData(file.getString("Crate.Preview.Glass.Custom-Model-Data", ""))
-                .setItemModel(file.getString("Crate.Preview.Glass.Model.Namespace", ""), file.getString("Crate.Preview.Glass.Model.Id", ""))
-                .setHidingItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false))
-                .setDisplayName(borderName);
+        this.borderItem = ItemBuilder.from(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane").toLowerCase())
+                //.setHidingItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false)) //todo() this doesn't exist now.
+                .withDisplayName(borderName);
+
+        ItemUtil.addItemModel(this.borderItem, file.getString("Crate.Preview.Glass.Model.Namespace", ""), file.getString("Crate.Preview.Glass.Model.Id", ""));
+        ItemUtil.addCustomModel(this.borderItem, file.getString("Crate.Preview.Glass.Custom-Model-Data", ""));
 
         @NotNull final String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
 
-        this.previewTierBorderItem = new LegacyItemBuilder(this.plugin)
-                .withType(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
-                .setCustomModelData(file.getString("Crate.tier-preview.glass.custom-model-data", ""))
-                .setItemModel(file.getString("Crate.tier-preview.glass.model.namespace", ""), file.getString("Crate.tier-preview.glass.model.id", ""))
-                .setHidingItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false))
-                .setDisplayName(previewTierBorderName);
+        this.previewTierBorderItem = ItemBuilder.from(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
+                //.setHidingItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false)) //todo() this doesn't exist now.
+                .withDisplayName(previewTierBorderName);
+
+        ItemUtil.addItemModel(this.previewTierBorderItem, file.getString("Crate.tier-preview.glass.model.namespace", ""), file.getString("Crate.tier-preview.glass.model.id", ""));
+        ItemUtil.addCustomModel(this.previewTierBorderItem, file.getString("Crate.tier-preview.glass.custom-model-data", ""));
 
         setTierPreviewRows(file.getInt("Crate.tier-preview.rows", 5));
 
@@ -306,7 +308,7 @@ public class Crate {
     /**
      * @return item for the preview border.
      */
-    public @NotNull final LegacyItemBuilder getPreviewTierBorderItem() {
+    public @NotNull final ItemBuilder getPreviewTierBorderItem() {
         return this.previewTierBorderItem;
     }
 
@@ -564,7 +566,7 @@ public class Crate {
      *
      * @return the ItemBuilder for the border item.
      */
-    public @NotNull final LegacyItemBuilder getBorderItem() {
+    public @NotNull final ItemBuilder getBorderItem() {
         return this.borderItem;
     }
     
@@ -623,7 +625,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey(@NotNull final Player player) {
-        return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).asItemStack();
+        return this.userManager.addPlaceholders(this.keyBuilder, player, this).asItemStack(player);
     }
 
     /**
@@ -640,7 +642,7 @@ public class Crate {
      * @return the key as an item stack.
      */
     public @NotNull final ItemStack getKey(final int amount, @NotNull final Player player) {
-        return this.userManager.addPlaceholders(this.keyBuilder.setPlayer(player), this).setAmount(amount).asItemStack();
+        return this.userManager.addPlaceholders(this.keyBuilder, player, this).setAmount(amount).asItemStack(player);
     }
 
     /**
@@ -771,7 +773,7 @@ public class Crate {
             final Component displayName = itemStack.getData(DataComponentTypes.CUSTOM_NAME);
 
             if (displayName != null) {
-                section.set(getPath(prizeName, "DisplayName"), AdvUtils.fromComponent(displayName));
+                //section.set(getPath(prizeName, "DisplayName"), AdvUtils.fromComponent(displayName));
             }
         }
 
@@ -782,7 +784,7 @@ public class Crate {
                 final List<Component> lore = itemLore.lines();
 
                 if (!lore.isEmpty()) {
-                    section.set(getPath(prizeName, "DisplayLore"), AdvUtils.fromComponent(lore));
+                    //section.set(getPath(prizeName, "DisplayLore"), AdvUtils.fromComponent(lore));
                 }
             }
         }
@@ -857,7 +859,7 @@ public class Crate {
         return section + "." + path;
     }
 
-    private final FileManager fileManager = this.plugin.getFileManager();
+    private final PaperFileManager fileManager = this.plugin.getFileManager();
 
     private final Path dataPath = this.plugin.getDataPath();
 
@@ -867,11 +869,10 @@ public class Crate {
     private void saveFile() {
         if (this.fileName.isEmpty()) return;
 
-        final PaperCustomFile customFile = this.fileManager.getPaperCustomFile(this.dataPath.resolve("crates").resolve(this.fileName));
+        final Optional<PaperCustomFile> customFile = this.fileManager.getPaperFile(this.dataPath.resolve("crates").resolve(this.fileName));
 
-        if (customFile != null) {
-            customFile.save(); // save to file
-        }
+        // save to file
+        customFile.ifPresent(ICustomFile::save);
 
         this.crateManager.reloadCrate(this.crateManager.getCrateFromName(this.name));
     }

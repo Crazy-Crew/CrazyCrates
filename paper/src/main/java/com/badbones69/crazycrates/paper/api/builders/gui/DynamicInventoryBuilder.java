@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiState;
 import com.ryderbelserion.fusion.paper.builders.gui.types.paginated.PaginatedGui;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
@@ -134,12 +135,12 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
 
             if (page <= 1) {
                 if (this.crate != null && this.crate.isBorderToggle()) {
-                    //this.gui.setItem(safeRow, column, this.crate.getBorderItem().asGuiItem());
+                    this.gui.addSlotAction(safeRow, column, this.crate.getBorderItem().asGuiItem(this.player));
                 } else {
                     if (!isPreview) {
                         this.gui.removeItem(safeRow, column);
 
-                        //this.gui.setItem(safeRow, column, new GuiItem(ItemType.BLACK_STAINED_GLASS_PANE));
+                        this.gui.addSlotAction(safeRow, column, ItemType.BLACK_STAINED_GLASS_PANE.createItemStack(), _ -> {});
                     }
                 }
             } else {
@@ -150,12 +151,12 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
 
     private void setFillerItem(int row, int column, boolean isPreview) {
         if (this.crate != null && this.crate.isBorderToggle()) {
-            //this.gui.setItem(row, column, this.crate.getBorderItem().asGuiItem());
+            this.gui.addSlotAction(row, column, this.crate.getBorderItem().asGuiItem(this.player));
         } else {
             if (!isPreview) {
                 this.gui.removeItem(row, column);
 
-                //this.gui.setItem(row, column, new GuiItem(ItemType.BLACK_STAINED_GLASS_PANE));
+                this.gui.addSlotAction(row, column, ItemType.BLACK_STAINED_GLASS_PANE.createItemStack(), _ -> {});
             }
         }
     }

@@ -63,7 +63,7 @@ public class CommandTransfer extends BaseCommand {
 
         this.pluginManager.callEvent(event);
 
-        // If the event is cancelled, We return.
+        // If the event is canceled, We return.
         if (event.isCancelled()) return;
 
         this.userManager.takeKeys(uuid, fileName, KeyType.virtual_key, amount, false);

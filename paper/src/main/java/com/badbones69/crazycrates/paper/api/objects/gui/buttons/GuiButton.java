@@ -4,7 +4,8 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.utils.MsgUtils;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.builders.gui.objects.GuiItem;
+import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -19,16 +20,15 @@ public class GuiButton {
 
     private final Map<String, String> placeholders;
     private final ConfigurationSection section;
-    private final LegacyItemBuilder guiItem;
+    private final ItemBuilder guiItem;
 
     private final List<String> commands;
     private final List<String> messages;
 
     public GuiButton(@NotNull final ConfigurationSection section, @NotNull final Map<String, String> placeholders) {
-        this.guiItem = new LegacyItemBuilder(this.plugin)
-                .withType(section.getString("material", "emerald_block"))
-                .setDisplayName(section.getString("name", "No display name found."))
-                .setDisplayLore(section.getStringList("lore"));
+        this.guiItem = ItemBuilder.from(section.getString("material", "emerald_block"))
+                .withDisplayName(section.getString("name", "No display name found."))
+                .withDisplayLore(section.getStringList("lore"));
 
         this.commands = section.getStringList("commands");
         this.messages = section.getStringList("messages");
@@ -36,14 +36,14 @@ public class GuiButton {
         this.section = section;
     }
 
-    public @NotNull GuiItem getGuiItem() {
-        return this.guiItem.asGuiItem(event -> {
-            if (!(event.getWhoClicked() instanceof Player player)) return;
+    public @NotNull GuiItem getGuiItem(@NotNull final Player player) {
+        return this.guiItem.asGuiItem(player, event -> {
+            if (!(event.getWhoClicked() instanceof Player clicker)) return;
 
-            player.closeInventory(InventoryCloseEvent.Reason.OPEN_NEW);
+            clicker.closeInventory(InventoryCloseEvent.Reason.OPEN_NEW);
 
             this.commands.forEach(command -> MiscUtils.sendCommand(command, this.placeholders));
-            this.messages.forEach(message -> MsgUtils.sendMessage(player, MiscUtils.populatePlaceholders(player, message, this.placeholders), false));
+            this.messages.forEach(message -> MsgUtils.sendMessage(clicker, MiscUtils.populatePlaceholders(clicker, message, this.placeholders), false));
 
             final ConfigurationSection sound = this.section.getConfigurationSection("sound");
 
@@ -55,7 +55,7 @@ public class GuiButton {
                         Sound.Source.MASTER
                 );
 
-                effect.play(player, player.getLocation());
+                effect.play(clicker, clicker.getLocation());
             }
         });
     }

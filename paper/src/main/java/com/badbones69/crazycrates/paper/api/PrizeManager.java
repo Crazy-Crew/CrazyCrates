@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.paper.api;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.common.config.ConfigManager;
-import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
@@ -12,7 +11,7 @@ import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
@@ -29,7 +28,6 @@ import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.utils.MsgUtils;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -163,11 +161,7 @@ public class PrizeManager {
 
         MiscUtils.dropItems(prize.getEditorItems(), player); // drops any leftover editor items.
 
-        if (config.getProperty(ConfigKeys.use_different_items_layout)) {
-            MiscUtils.dropBuilders(prize.getItems(), player);
-        } else {
-            MiscUtils.dropLegacyBuilders(prize.getItemBuilders(), player);
-        }
+        MiscUtils.dropBuilders(prize.getItems(), player);
 
         for (final String command : crate.getPrizeCommands()) {
             runCommands(player, prize, crate, command);

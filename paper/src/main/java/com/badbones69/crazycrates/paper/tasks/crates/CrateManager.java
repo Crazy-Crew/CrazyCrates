@@ -17,6 +17,7 @@ import com.badbones69.crazycrates.paper.api.objects.crates.quadcrates.CrateSchem
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.objects.crates.BrokeLocation;
 import com.badbones69.crazycrates.paper.api.ChestManager;
+import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.support.holograms.types.DecentHologramsSupport;
 import com.badbones69.crazycrates.paper.support.holograms.types.FancyHologramsSupport;
@@ -32,11 +33,10 @@ import com.badbones69.crazycrates.paper.tasks.crates.types.RouletteCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WonderCrate;
-import com.ryderbelserion.fusion.core.api.enums.FileAction;
-import com.ryderbelserion.fusion.core.api.utils.FileUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
-import com.ryderbelserion.fusion.paper.files.FileManager;
+import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
@@ -86,7 +86,7 @@ public class CrateManager {
     private final BukkitKeyManager keyManager = this.plugin.getKeyManager();
     private final Path dataPath = this.plugin.getDataPath();
     private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-    private final FileManager fileManager = this.plugin.getFileManager();
+    private final PaperFileManager fileManager = this.plugin.getFileManager();
     private final com.badbones69.crazycrates.core.Server instance = this.plugin.getInstance();
     private final FusionPaper fusion = this.plugin.getFusion();
 
@@ -322,12 +322,6 @@ public class CrateManager {
 
                     break;
                 }
-
-                if (this.holograms == null && Plugins.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
-                    this.fusion.log("warn", "<red>CMI Support is currently not automatically available.");
-                    this.fusion.log("warn", "<red>Try manually setting hologram-plugin to <yellow>CMI</yellow> <red>after downgrading to 9.8.2.0");
-                    this.fusion.log("warn", "<red>https://github.com/Zrips/CMI/issues/9919");
-                }
             }
         }
 
@@ -361,17 +355,12 @@ public class CrateManager {
      */
     public void loadCrates() {
         if (this.config.getProperty(ConfigKeys.update_examples_folder)) {
-            final List<FileAction> actions = new ArrayList<>();
+            final Path examples = this.dataPath.resolve("examples");
 
-            actions.add(FileAction.DELETE_FILE);
-            actions.add(FileAction.EXTRACT_FOLDER);
-
-            FileUtils.extract("guis", this.dataPath.resolve("examples"), actions);
-            FileUtils.extract("logs", this.dataPath.resolve("examples"), actions);
-            FileUtils.extract("crates", this.dataPath.resolve("examples"), actions);
-            FileUtils.extract("schematics", this.dataPath.resolve("examples"), actions);
-
-            actions.remove(FileAction.EXTRACT_FOLDER);
+            this.fileManager.extractFolder("guis", examples);
+            this.fileManager.extractFolder("logs", examples);
+            this.fileManager.extractFolder("crates", examples);
+            this.fileManager.extractFolder("schematics", examples);
 
             List.of(
                     "config.yml",
@@ -379,7 +368,7 @@ public class CrateManager {
                     "locations.yml",
                     "messages.yml",
                     "editor.yml"
-            ).forEach(file -> FileUtils.extract(file, this.dataPath.resolve("examples"), actions));
+            ).forEach(file -> this.fileManager.extractFile(file, examples));
         }
 
         this.giveNewPlayersKeys = false;
@@ -397,9 +386,13 @@ public class CrateManager {
 
         for (final String crateName : getCrateNames(true)) {
             try {
-                final PaperCustomFile customFile = this.fileManager.getPaperCustomFile(crates.resolve(crateName));
+                final @NotNull Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(crates.resolve(crateName));
 
-                if (customFile == null || !customFile.isLoaded()) continue;
+                if (optional.isEmpty()) continue;
+
+                final PaperCustomFile customFile = optional.get();
+
+                if (!customFile.isLoaded()) continue;
 
                 final YamlConfiguration file = customFile.getConfiguration();
 
@@ -1484,7 +1477,7 @@ public class CrateManager {
     }
 
     // Internal methods.
-    private LegacyItemBuilder getKey(@NotNull final FileConfiguration file) {
+    private ItemBuilder getKey(@NotNull final FileConfiguration file) {
         final String name = file.getString("Crate.PhysicalKey.Name", "");
         final String customModelData = file.getString("Crate.PhysicalKey.Custom-Model-Data", "");
         final String namespace = file.getString("Crate.PhysicalKey.Model.Namespace", "");
@@ -1493,10 +1486,22 @@ public class CrateManager {
         final boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
         final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
 
-        final LegacyItemBuilder itemBuilder = file.contains("Crate.PhysicalKey.Data") ? new LegacyItemBuilder(this.plugin)
-                .fromBase64(file.getString("Crate.PhysicalKey.Data", "")) : new LegacyItemBuilder(this.plugin).withType(file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase());
+        final ItemBuilder itemBuilder = ItemBuilder.from(file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase());
 
-        return itemBuilder.setDisplayName(name).setDisplayLore(lore).setGlowing(glowing).setItemModel(namespace, id).setHidingItemFlags(hideFlags).setCustomModelData(customModelData);
+        if (file.contains("Crate.PhysicalKey.Data")) {
+            itemBuilder.withBase64(file.getString("Crate.PhysicalKey.Data", ""));
+        }
+
+        if (glowing) {
+            itemBuilder.addEnchantGlint();
+        }
+
+        ItemUtil.addItemModel(itemBuilder, namespace, id);
+        ItemUtil.addCustomModel(itemBuilder, customModelData);
+
+        //return itemBuilder.setHidingItemFlags(hideFlags); //todo() this no longer exists.
+
+        return itemBuilder.withDisplayName(name).withDisplayLore(lore);
     }
 
     // Cleans the data file.

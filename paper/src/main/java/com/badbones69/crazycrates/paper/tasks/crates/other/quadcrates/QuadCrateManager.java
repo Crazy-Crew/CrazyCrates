@@ -4,8 +4,8 @@ import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.structures.StructureManager;
-import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.*;
 import com.badbones69.common.config.ConfigManager;
@@ -266,7 +266,7 @@ public class QuadCrateManager {
 
                 crate.playSound(player, player.getLocation(), "stop-sound", "entity.player.levelup", Sound.Source.MASTER);
             }
-        }.runDelayed(ConfigManager.getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20));
+        }.runDelayed(ConfigManager.getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20L));
     }
 
     /**

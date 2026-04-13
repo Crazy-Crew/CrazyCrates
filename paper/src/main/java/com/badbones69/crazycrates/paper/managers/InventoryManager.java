@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
+import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.ryderbelserion.fusion.paper.builders.gui.types.paginated.PaginatedGui;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import org.bukkit.Server;
@@ -41,24 +42,27 @@ public class InventoryManager {
         this.menuButton = ItemBuilder.from(this.config.getProperty(ConfigKeys.menu_button_item).toLowerCase())
                 .withDisplayName(this.config.getProperty(ConfigKeys.menu_button_name))
                 .withDisplayLore(this.config.getProperty(ConfigKeys.menu_button_lore));
-                //.setCustomModelData(this.config.getProperty(ConfigKeys.menu_button_model_data))
-                //.setItemModel(menuModelData.getNamespace(), menuModelData.getId()); //todo() model data
+
+        ItemUtil.addCustomModel(this.menuButton, this.config.getProperty(ConfigKeys.menu_button_model_data));
+        ItemUtil.addItemModel(this.menuButton, menuModelData.getNamespace(), menuModelData.getId());
 
         final ModelData nextModelData = this.config.getProperty(ConfigKeys.next_button_item_model);
 
         this.nextButton = ItemBuilder.from(this.config.getProperty(ConfigKeys.next_button_item).toLowerCase())
                 .withDisplayName(this.config.getProperty(ConfigKeys.next_button_name))
                 .withDisplayLore(this.config.getProperty(ConfigKeys.next_button_lore));
-                //.setCustomModelData(this.config.getProperty(ConfigKeys.next_button_model_data))
-                //.setItemModel(nextModelData.getNamespace(), nextModelData.getId()); //todo() model data
+
+        ItemUtil.addCustomModel(this.nextButton, this.config.getProperty(ConfigKeys.next_button_model_data));
+        ItemUtil.addItemModel(this.nextButton, nextModelData.getNamespace(), nextModelData.getId());
 
         final ModelData backModelData = this.config.getProperty(ConfigKeys.back_button_item_model);
 
         this.backButton = ItemBuilder.from(this.config.getProperty(ConfigKeys.back_button_item).toLowerCase())
                 .withDisplayName(this.config.getProperty(ConfigKeys.back_button_name))
                 .withDisplayLore(this.config.getProperty(ConfigKeys.back_button_lore));
-                //.setCustomModelData(this.config.getProperty(ConfigKeys.back_button_model_data))
-                //.setItemModel(backModelData.getNamespace(), backModelData.getId()); //todo() model data
+
+        ItemUtil.addCustomModel(this.backButton, this.config.getProperty(ConfigKeys.back_button_model_data));
+        ItemUtil.addItemModel(this.backButton, backModelData.getNamespace(), backModelData.getId());
     }
 
     public final ItemStack getMenuButton(@NotNull final Player player) {

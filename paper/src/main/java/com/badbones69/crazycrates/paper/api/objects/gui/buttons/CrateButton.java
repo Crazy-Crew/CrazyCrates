@@ -7,8 +7,8 @@ import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiAction;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiAction;
+import com.ryderbelserion.fusion.paper.builders.gui.objects.GuiItem;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -38,25 +38,24 @@ public class CrateButton extends GuiButton {
     }
 
     @Override
-    public @NotNull final GuiItem getGuiItem() {
-        final GuiItem guiItem = super.getGuiItem();
+    public @NotNull final GuiItem getGuiItem(@NotNull final Player player) { //todo() test if we even need to check if clicker is player lol
+        final GuiItem guiItem = super.getGuiItem(player);
 
         final GuiAction<InventoryClickEvent> action = guiItem.getAction();
 
         guiItem.setAction(event -> {
-            if (action != null) {
-                action.execute(event);
-            }
+            action.execute(event);
 
-            final Player player = (Player) event.getWhoClicked();
-            final UUID uuid = player.getUniqueId();
+            if (!(event.getWhoClicked() instanceof Player clicker)) return;
+
+            final UUID uuid = clicker.getUniqueId();
             final String crateName = this.crate.getFileName();
 
             switch (getSection().getName()) {
                 case "accept" -> {
                     final Prize prize = this.crate.getPrize(this.userManager.getRespinPrize(uuid, crateName));
 
-                    PrizeManager.givePrize(player, this.crate, prize);
+                    PrizeManager.givePrize(clicker, this.crate, prize);
 
                     if (!this.crate.isCyclePersistRestart()) {
                         this.userManager.removeRespinCrate(uuid, crateName, this.userManager.getCrateRespin(uuid, crateName));
@@ -64,17 +63,17 @@ public class CrateButton extends GuiButton {
 
                     this.userManager.removeRespinPrize(uuid, crateName);
 
-                    this.crateManager.removePlayerFromOpeningList(player);
-                    this.crateManager.removeCrateInUse(player);
-                    this.crateManager.removeCrateTask(player);
-                    this.crateManager.endCrate(player);
+                    this.crateManager.removePlayerFromOpeningList(clicker);
+                    this.crateManager.removeCrateInUse(clicker);
+                    this.crateManager.removeCrateTask(clicker);
+                    this.crateManager.endCrate(clicker);
                 }
 
                 case "deny" -> {
-                    if (PrizeManager.isCapped(this.crate, player)) {
+                    if (PrizeManager.isCapped(this.crate, clicker)) {
                         final Prize prize = this.crate.getPrize(this.userManager.getRespinPrize(uuid, crateName));
 
-                        PrizeManager.givePrize(player, this.crate, prize);
+                        PrizeManager.givePrize(clicker, this.crate, prize);
 
                         this.userManager.removeRespinPrize(uuid, crateName); // remove just in case
 
@@ -83,18 +82,18 @@ public class CrateButton extends GuiButton {
                             this.userManager.removeRespinCrate(uuid, crateName, this.userManager.getCrateRespin(uuid, crateName));
                         }
 
-                        final int cap = PrizeManager.getCap(crate, player);
+                        final int cap = PrizeManager.getCap(this.crate, clicker);
 
-                        Messages.crate_prize_max_respins.sendMessage(player, Map.of("{status}", cap >= 1 ?
-                                Messages.crate_prize_max_respins_left.getMessage(player, Map.of("{respins_total}", String.valueOf(cap), "{respins_left}", "0")) :
-                                Messages.crate_prize_max_respins_none.getMessage(player)));
+                        Messages.crate_prize_max_respins.sendMessage(clicker, Map.of("{status}", cap >= 1 ?
+                                Messages.crate_prize_max_respins_left.getMessage(clicker, Map.of("{respins_total}", String.valueOf(cap), "{respins_left}", "0")) :
+                                Messages.crate_prize_max_respins_none.getMessage(clicker)));
 
                         return;
                     }
 
                     this.userManager.addRespinCrate(uuid, crateName, 1);
 
-                    this.crateManager.openCrate(player, this.crate, KeyType.free_key, player.getLocation(), true, false, true, EventType.event_crate_opened);
+                    this.crateManager.openCrate(clicker, this.crate, KeyType.free_key, clicker.getLocation(), true, false, true, EventType.event_crate_opened);
                 }
             }
         });

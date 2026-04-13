@@ -23,7 +23,7 @@ cmi-lib = "1.5.7.0" # https://www.spigotmc.org/resources/cmilib.87610/
 ## Other
 triumph-cmds = "2.0.0-BETA-4" # https://github.com/TriumphTeam/triumph-cmds
 bStats = "3.2.1" # https://github.com/Bastian/bStats
-fusion = "4.10.0" # https://github.com/ryderbelserion/Fusion
+fusion = "4.15.0" # https://github.com/ryderbelserion/Fusion
 
 ## Gradle Plugins
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
@@ -82,7 +82,6 @@ excellentcrates = { module = "su.nightexpress.excellentcrates:ExcellentCrates", 
 nightcore = { module = "su.nightexpress.nightcore:nightcore", version = "2.6.3" }
 
 # https://github.com/KyoriPowered/adventure
-kyori-legacy = { module = "net.kyori:adventure-text-serializer-legacy", version.ref = "adventure" }
 kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref = "adventure" }
 kyori-text = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 kyori-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
@@ -99,7 +98,6 @@ metrics = { module = "org.bstats:bstats-bukkit", version.ref = "bStats" }
 
 [bundles]
 adventure = [
-    "kyori-legacy",
     "kyori-logger",
     "kyori-text",
     "kyori-api"

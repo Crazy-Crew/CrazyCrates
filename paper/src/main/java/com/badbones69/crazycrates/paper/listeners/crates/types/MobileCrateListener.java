@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import com.badbones69.crazycrates.paper.utils.ItemUtils;
+import com.badbones69.crazycrates.paper.utils.ItemUtil;
 
 public class MobileCrateListener implements Listener {
 
@@ -47,13 +47,13 @@ public class MobileCrateListener implements Listener {
 
         if (crate.getCrateType() != CrateType.crate_on_the_go) return;
 
-        if (!ItemUtils.isSimilar(item, crate)) return;
+        if (!ItemUtil.isSimilar(item, crate)) return;
 
         event.setCancelled(true);
 
         this.crateManager.addPlayerToOpeningList(player, crate);
 
-        ItemUtils.removeItem(item, player);
+        ItemUtil.removeItem(item, player);
 
         final Prize prize = crate.pickPrize(player);
 

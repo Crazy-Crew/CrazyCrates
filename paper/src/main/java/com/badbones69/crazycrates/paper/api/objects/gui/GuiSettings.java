@@ -7,10 +7,12 @@ import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.gui.buttons.CrateButton;
 import com.badbones69.crazycrates.paper.api.objects.gui.buttons.GuiButton;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.builders.gui.objects.GuiItem;
+import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
@@ -27,7 +29,7 @@ public class GuiSettings {
     private final int slot;
 
     private final boolean isFillerToggled;
-    private final GuiItem fillerStack;
+    private final ItemBuilder fillerStack;
     private final FillerType fillerType;
 
     private final Map<Integer, GuiButton> buttons = new HashMap<>();
@@ -43,9 +45,8 @@ public class GuiSettings {
         this.isFillerToggled = configuration.getBoolean("filler.toggle", false);
         this.fillerType = FillerType.getFromName(configuration.getString("filler.fill-type", "border"));
 
-        this.fillerStack = new LegacyItemBuilder(this.plugin)
-                .withType(configuration.getString("filler.toggle.material", "red_stained_glass_pane"))
-                .setDisplayName(configuration.getString("filler.toggle.name", " ")).asGuiItem();
+        this.fillerStack = ItemBuilder.from(configuration.getString("filler.toggle.material", "red_stained_glass_pane"))
+                .withDisplayName(configuration.getString("filler.toggle.name", " "));
 
         final ConfigurationSection staticButtons = configuration.getConfigurationSection("buttons.static");
 
@@ -115,8 +116,8 @@ public class GuiSettings {
         return this.fillerType;
     }
 
-    public @NotNull final GuiItem getFillerStack() {
-        return this.fillerStack;
+    public @NotNull final GuiItem getFillerStack(@NotNull final Player player) {
+        return this.fillerStack.asGuiItem(player);
     }
 
     public @NotNull final Map<Integer, GuiButton> getButtons() {

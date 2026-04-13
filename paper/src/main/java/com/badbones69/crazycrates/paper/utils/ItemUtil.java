@@ -26,13 +26,29 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ItemUtils {
+public class ItemUtil {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private static final FusionPaper fusion = plugin.getFusion();
 
     private static final CrateManager crateManager = plugin.getCrateManager();
+
+    public static void addItemModel(@NotNull final ItemBuilder builder, @NotNull final String namespace, @NotNull final String id) {
+        final CustomBuilder custom = builder.asCustomBuilder();
+
+        custom.setItemModel(namespace, id);
+
+        custom.build();
+    }
+
+    public static void addCustomModel(@NotNull final ItemBuilder builder, @NotNull final String id) {
+        final CustomBuilder custom = builder.asCustomBuilder();
+
+        custom.setCustomModelData(id);
+
+        custom.build();
+    }
 
     public static void removeItem(@NotNull final ItemStack item, @NotNull final Player player) {
         final int amount = item.getAmount();
