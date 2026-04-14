@@ -24,6 +24,7 @@ import com.badbones69.crazycrates.paper.support.placeholders.PlaceholderAPISuppo
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.paper.FusionPaper;
@@ -142,12 +143,12 @@ public class CrazyCrates extends JavaPlugin {
         this.crateManager.loadCustomItems();
 
         if (Plugins.placeholder_api.isEnabled()) {
-            if (MiscUtils.isLogging()) getComponentLogger().info("PlaceholderAPI support is enabled!");
+            this.fusion.log(Level.INFO, "PlaceholderAPI support is enabled!");
 
             new PlaceholderAPISupport().register();
         }
 
-        if (MiscUtils.isLogging()) {
+        if (this.fusion.isVerbose()) {
             final ComponentLogger logger = getComponentLogger();
 
             // Print dependency garbage

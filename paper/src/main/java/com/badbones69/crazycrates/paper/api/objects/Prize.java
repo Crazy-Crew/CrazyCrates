@@ -9,6 +9,7 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.common.config.ConfigManager;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
@@ -182,7 +183,7 @@ public class Prize {
         final List<String> lore = new ArrayList<>();
 
         if (this.section.contains("Lore")) {
-            if (MiscUtils.isLogging()) {
+            if (this.fusion.isVerbose()) {
                 List.of(
                         "Deprecated usage of Lore in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
                         "Lore will be removed in the next major version of Minecraft in favor of DisplayLore",
@@ -269,8 +270,8 @@ public class Prize {
      * @return the weight
      */
     public final double getWeight() {
-        if (this.weight == -1 && MiscUtils.isLogging()) {
-            this.logger.warn("Cannot fetch the weight as the option is not present for this prize: {} in the crate: {}", this.prizeName, this.crateName);
+        if (this.weight == -1) {
+            this.fusion.log(Level.WARNING, "Cannot fetch the weight as the option is not present for this prize: %s in the crate: %s", this.prizeName, this.crateName);
         }
 
         return this.weight;
@@ -374,7 +375,7 @@ public class Prize {
             }
 
             if (this.section.contains("Lore")) {
-                if (MiscUtils.isLogging()) {
+                if (this.fusion.isVerbose()) {
                     List.of(
                             "Deprecated usage of Lore in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Lore to DisplayLore",
                             "Lore will be removed in the next major version of Minecraft in favor of DisplayLore",
@@ -385,8 +386,6 @@ public class Prize {
                 builder.withDisplayLore(this.section.getStringList("Lore"));
             }
 
-            //builder.addLorePlaceholder("%chance%", this.getTotalChance());
-
             if (this.section.contains("Glowing") && this.section.getBoolean("Glowing", false)) {
                 builder.addEnchantGlint();
             }
@@ -394,7 +393,7 @@ public class Prize {
             builder.setItemDamage(this.section.getInt("DisplayDamage", -1));
 
             if (this.section.contains("Patterns")) {
-                if (MiscUtils.isLogging()) {
+                if (this.fusion.isVerbose()) {
                     List.of(
                             "Deprecated usage of Patterns in your Prize " + this.sectionName + " in " + this.crateName + ".yml, please change Patterns to DisplayPatterns",
                             "Patterns will be removed in the next major version of Minecraft in favor of DisplayPatterns",

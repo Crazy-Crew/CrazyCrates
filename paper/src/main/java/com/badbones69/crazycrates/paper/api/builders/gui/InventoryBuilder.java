@@ -12,10 +12,11 @@ import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
+import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.gui.GuiBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import java.text.NumberFormat;
@@ -33,7 +34,7 @@ public abstract class InventoryBuilder {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    protected final ComponentLogger logger = this.plugin.getComponentLogger();
+    protected final FusionPaper fusion = this.plugin.getFusion();
 
     protected final CrateManager crateManager = this.plugin.getCrateManager();
 
@@ -69,7 +70,7 @@ public abstract class InventoryBuilder {
                     return;
                 }
 
-                if (MiscUtils.isLogging()) this.logger.warn("The property {} is empty, so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
+                this.fusion.log(Level.WARNING, "The property %s is empty, so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
 
                 return;
             }

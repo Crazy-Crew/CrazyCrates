@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
@@ -17,7 +18,6 @@ import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -40,7 +40,6 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -50,8 +49,6 @@ public class CosmicCrateListener implements Listener {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final FusionPaper fusion = this.plugin.getFusion();
-
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
 
     private final Server server = this.plugin.getServer();
 
@@ -255,6 +252,7 @@ public class CosmicCrateListener implements Listener {
             // If they don't have enough keys.
             if (value) {
                 Map<String, String> placeholders = new HashMap<>();
+
                 placeholders.put("{crate}", fancyName);
                 placeholders.put("{key}", crate.getKeyName());
 
@@ -365,7 +363,7 @@ public class CosmicCrateListener implements Listener {
 
                                     Messages.key_refund.sendMessage(player, "{crate}", fancyName);
 
-                                    if (MiscUtils.isLogging()) logger.error("An issue occurred when the user {} was using the {} crate and so they were issued a key refund.", player.getName(), fileName, exception);
+                                    fusion.log(Level.ERROR, "An issue occurred when the user %s was using the %s crate and so they were issued a key refund.", exception, player.getName(), fileName);
 
                                     // Play a sound
                                     crate.playSound(player, player.getLocation(), "stop-sound", "block.anvil.place", Sound.Source.MASTER);
@@ -440,12 +438,7 @@ public class CosmicCrateListener implements Listener {
                         }
                     }.runNow();
 
-                    if (MiscUtils.isLogging()) {
-                        List.of(
-                                player.getName() + " spent 10 seconds staring at a gui instead of collecting their prizes",
-                                "The task has been cancelled, They have been given their prizes and the gui is closed."
-                        ).forEach(logger::info);
-                    }
+                    fusion.log(Level.ERROR, "%s spent 10 seconds staring at a gui, The task has been cancelled, They have been given their prizes and the gui is closed.", player.getName());
                 }
             }, 10000L);
         }

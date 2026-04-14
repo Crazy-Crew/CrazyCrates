@@ -310,7 +310,7 @@ public class MiscUtils {
     }
 
     public static void failedToTakeKey(@NotNull final CommandSender player, @NotNull final String crateName) {
-        if (MiscUtils.isLogging()) {
+        if (fusion.isVerbose()) {
             List.of(
                     "An error has occurred while trying to take a key from a player.",
                     "Player: " + player.getName(),

@@ -1,9 +1,9 @@
 package com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.structures;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.google.common.collect.Lists;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import com.badbones69.crazycrates.paper.utils.ItemUtil;
+import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
@@ -28,9 +28,8 @@ public class StructureManager implements IStructureManager {
     private final Set<Location> preStructurePasteBlocks = new HashSet<>();
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final FusionPaper fusion = this.plugin.getFusion();
     private final Server server = this.plugin.getServer();
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
-    private final boolean isVerbose = MiscUtils.isLogging();
 
     private File file = null;
 
@@ -52,7 +51,7 @@ public class StructureManager implements IStructureManager {
             try {
                 return getStructureManager().loadStructure(this.file);
             } catch (final IOException exception) {
-                if (this.isVerbose) this.logger.error("Failed to load structure: {}!", this.file.getName(), exception);
+                this.fusion.log(Level.ERROR, "Failed to load structure: %s!", exception, this.file.getName());
 
                 return null;
             }
@@ -77,7 +76,7 @@ public class StructureManager implements IStructureManager {
         try {
             getStructureManager().saveStructure(file, this.structure);
         } catch (final IOException exception) {
-            if (this.isVerbose) this.logger.error("Failed to save structure to: {}!", file.getName(), exception);
+            this.fusion.log(Level.ERROR, "Failed to save structure: %s!", exception, this.file.getName());
         }
     }
 
@@ -99,7 +98,7 @@ public class StructureManager implements IStructureManager {
             // Get the structure blocks.
             if (storeBlocks) getStructureBlocks(clonedLocation);
         } catch (final Exception exception) {
-            if (this.isVerbose) this.logger.error("Could not paste structure", exception);
+            this.fusion.log(Level.ERROR, "Could not paste %s structure!", exception, this.file.getName());
         }
     }
 

@@ -17,6 +17,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
@@ -195,10 +196,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
                         final String crateName = prize.getCrateName();
                         final String prizeName = prize.getPrizeName();
 
-                        List.of(
-                                "A prize could not be given due to an invalid display item for this prize.",
-                                "Crate: %s Prize: %s"
-                        ).forEach(line -> logger.warn(String.format(line, crateName, prizeName), exception));
+                        fusion.log(Level.WARNING, "A prize could not be given due to an invalid display item for this prize. Crate: %s, Prize: %s", exception, crateName, prizeName);
 
                         cancel();
 
@@ -391,8 +389,10 @@ public abstract class CrateBuilder extends FoliaScheduler {
 
         event.callEvent();
 
-        if (event.isCancelled()) {
-            if (MiscUtils.isLogging()) {
+        final boolean isCancelled = event.isCancelled();
+
+        if (isCancelled) {
+            if (this.fusion.isVerbose()) {
                 final String fileName = this.crate.getFileName();
 
                 final String playerName = this.player.getName();
@@ -405,7 +405,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
             }
         }
 
-        return event.isCancelled();
+        return isCancelled;
     }
 
     protected boolean isCancelled = false;

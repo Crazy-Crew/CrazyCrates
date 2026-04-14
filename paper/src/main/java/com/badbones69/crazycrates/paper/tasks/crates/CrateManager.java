@@ -33,6 +33,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.types.RouletteCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WonderCrate;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
@@ -251,7 +252,7 @@ public class CrateManager {
 
             this.brokeCrates.add(fileName);
 
-            if (MiscUtils.isLogging()) this.logger.warn("There was an error while loading the {} file.", fileName, exception);
+            this.fusion.log(Level.WARNING, "There was an error while loading the %s file.", exception, fileName);
         }
     }
 
@@ -325,19 +326,13 @@ public class CrateManager {
             }
         }
 
-        if (MiscUtils.isLogging()) {
-            if (this.holograms == null) {
-                List.of(
-                        "There was no hologram plugin found on the server. If you are using CMI",
-                        "Please make sure you enabled the hologram module in modules.yml",
-                        "You can run /crazycrates reload if using CMI otherwise restart your server."
-                ).forEach(this.logger::warn);
+        if (this.holograms == null) {
+            this.fusion.log(Level.WARNING, "There was no hologram plugin found on the server.");
 
-                return;
-            }
-
-            this.logger.info("{} support has been enabled.", this.holograms.getName());
+            return;
         }
+
+        this.fusion.log(Level.WARNING, "%s support has been enabled.", this.holograms.getName());
     }
 
     public List<String> getCrateNames(final boolean keepExtension) {
@@ -380,7 +375,7 @@ public class CrateManager {
             this.holograms.purge(false);
         }
 
-        if (MiscUtils.isLogging()) this.logger.info("Loading all crate information...");
+        this.fusion.log(Level.WARNING, "Loading all crate information...");
 
         final Path crates = this.dataPath.resolve("crates");
 
@@ -425,7 +420,7 @@ public class CrateManager {
                 if (isTiersEmpty && tiers.isEmpty()) {
                     this.brokeCrates.add(crateName);
 
-                    if (MiscUtils.isLogging()) this.logger.warn("No tiers were found for {}.yml file.", crateName);
+                    this.fusion.log(Level.WARNING, "No tiers were found for %s.yml file.", crateName);
 
                     continue;
                 }
@@ -510,13 +505,13 @@ public class CrateManager {
             } catch (final Exception exception) {
                 this.brokeCrates.add(crateName);
 
-                if (MiscUtils.isLogging()) this.logger.warn("There was an error while loading the {} file.", crateName, exception);
+                this.fusion.log(Level.WARNING, "There was an error while loading the %s file.", exception, crateName);
             }
         }
 
         addCrate(new Crate("Menu"));
 
-        if (MiscUtils.isLogging()) this.logger.warn("All crate information has been loaded, Loading physical crate locations!");
+        this.fusion.log(Level.WARNING, "All crate information has been loaded, Loading physical crate locations!");
 
         final YamlConfiguration locations = FileKeys.locations.getConfiguration();
 
@@ -565,7 +560,7 @@ public class CrateManager {
         }
 
         // Checking if all physical locations loaded
-        if (MiscUtils.isLogging()) {
+        if (this.fusion.isVerbose()) {
             if (loadedAmount > 0 || brokeAmount > 0) {
                 if (brokeAmount <= 0) {
                     this.logger.info("All physical crate locations have been loaded.");
@@ -593,7 +588,7 @@ public class CrateManager {
             }
         }
 
-        if (MiscUtils.isLogging()) this.logger.info("All schematics were found and loaded.");
+        this.fusion.log(Level.WARNING, "All schematics were found and loaded.");
 
         cleanDataFile();
 
@@ -710,7 +705,7 @@ public class CrateManager {
             default -> {
                 crateBuilder = new CsgoCrate(crate, player, 27);
 
-                if (MiscUtils.isLogging()) {
+                if (this.fusion.isVerbose()) {
                     List.of(
                             crate.getFileName() + " has an invalid crate type. Your Value: " + crate.getFile().getString("Crate.CrateType", "CSGO"),
                             "We will use " + CrateType.csgo.getName() + " until you change the crate type.",
@@ -1510,9 +1505,7 @@ public class CrateManager {
 
         if (!data.contains("Players")) return;
 
-        final boolean isLogging = MiscUtils.isLogging();
-
-        if (isLogging) this.logger.info("Cleaning up the data.yml file.");
+        this.fusion.log(Level.INFO, "Cleaning up the data.yml file!");
 
         final List<String> removePlayers = new ArrayList<>();
 
@@ -1550,14 +1543,14 @@ public class CrateManager {
         }
 
         if (!removePlayers.isEmpty()) {
-            if (isLogging) this.logger.info("{} player's data has been marked to be removed.", removePlayers.size());
+            this.fusion.log(Level.INFO, "%s player's data has been marked to be removed.", removePlayers.size());
 
             removePlayers.forEach(uuid -> data.set("Players." + uuid, null));
 
-            if (isLogging) this.logger.info("All empty player data has been removed.");
+            this.fusion.log(Level.INFO, "All empty player data has been removed.");
         }
 
-        if (isLogging) this.logger.info("The data.yml file has been cleaned.");
+        this.fusion.log(Level.INFO, "The data.yml file has been cleaned.");
 
         FileKeys.data.save();
     }

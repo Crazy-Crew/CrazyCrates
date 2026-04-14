@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.paper.api.objects.Tier;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
@@ -115,7 +116,7 @@ public class CasinoCrate extends CrateBuilder {
                 @Nullable final Tier tier_tres = this.crate.getTier(section.getString("types.row-1", ""));
 
                 if (tier_uno == null || tier_dos == null || tier_tres == null) {
-                    if (MiscUtils.isLogging()) this.logger.warn("One of your tiers in {} could not be found, or is empty. Search for row-1, row-2 or row-3", fileName);
+                    this.fusion.log(Level.WARNING, "One of your tiers in %s could not be found, or is empty. Search for row-1, row-2 or row-3", fileName);
 
                     this.crateManager.endCrate(this.player);
 

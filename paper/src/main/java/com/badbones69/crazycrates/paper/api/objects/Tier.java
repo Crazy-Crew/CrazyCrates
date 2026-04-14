@@ -3,10 +3,10 @@ package com.badbones69.crazycrates.paper.api.objects;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.utils.ItemUtil;
-import com.badbones69.crazycrates.paper.utils.MiscUtils;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +17,7 @@ public class Tier {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
+    private final FusionPaper fusion = this.plugin.getFusion();
 
     private final ItemBuilder item;
     private final String name;
@@ -71,8 +71,8 @@ public class Tier {
      * @return the total chance divided
      */
     public final double getWeight() {
-        if (this.weight == -1 && MiscUtils.isLogging()) {
-            this.logger.warn("Cannot fetch the weight as the option is not present for this tier: {}", this.name);
+        if (this.weight == -1) {
+            this.fusion.log(Level.WARNING, "Cannot fetch the weight as the option is not present for this tier: {}", this.name);
         }
 
         return this.weight;

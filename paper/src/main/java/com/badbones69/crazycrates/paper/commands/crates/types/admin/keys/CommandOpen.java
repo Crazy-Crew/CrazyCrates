@@ -10,6 +10,7 @@ import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
@@ -76,7 +77,7 @@ public class CommandOpen extends BaseCommand {
         if (crateType == CrateType.menu) {
             Messages.internal_error.sendMessage(player);
 
-            if (MiscUtils.isLogging()) this.logger.error("An error has occurred: The crate type is Menu for the crate named {}", crateName);
+            this.fusion.log(Level.ERROR, "An error has occurred: The crate type is Menu for the crate named %s.", crateName);
 
             return;
         }
@@ -282,7 +283,7 @@ public class CommandOpen extends BaseCommand {
                             @Nullable final Tier row_tres = crate.getTier(section.getString("types.row-3", ""));
 
                             if (row_uno == null || row_dos == null || row_tres == null) {
-                                if (MiscUtils.isLogging()) {
+                                if (this.fusion.isVerbose()) {
                                     List.of(
                                             "One of your rows has a tier that doesn't exist supplied in " + fileName,
                                             "You can find this in your crate config, search for row-1, row-2, and row-3"

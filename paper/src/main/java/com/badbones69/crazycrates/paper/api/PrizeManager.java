@@ -11,9 +11,9 @@ import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
-import me.clip.placeholderapi.PlaceholderAPI;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
@@ -36,12 +36,10 @@ import static java.util.regex.Matcher.quoteReplacement;
 public class PrizeManager {
     
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final FusionPaper fusion = plugin.getFusion();
     private static final Server server = plugin.getServer();
     private static final PluginManager pluginManager = server.getPluginManager();
-    private static final ComponentLogger logger = plugin.getComponentLogger();
     private static final BukkitUserManager userManager = plugin.getUserManager();
-
-    private static final SettingsManager config = ConfigManager.getConfig();
 
     public static int getCap(@NotNull final Crate crate, @NotNull final Player player) {
         final String format = "crazycrates.respin." + crate.getFileName() + ".";
@@ -133,7 +131,7 @@ public class PrizeManager {
      */
     public static void givePrize(@NotNull final Player player, @NotNull final Location location, @NotNull final Crate crate, @Nullable Prize prize) {
         if (prize == null) {
-            if (MiscUtils.isLogging()) logger.warn("No prize was found when giving {} a prize.", player.getName());
+            fusion.log(Level.WARNING, "No prize was found when giving %s a prize.", player.getName());
 
             return;
         }
@@ -207,10 +205,7 @@ public class PrizeManager {
                     } catch (final Exception exception) {
                         commandBuilder.append("1 ");
 
-                        if (MiscUtils.isLogging()) {
-                            logger.warn("The prize {} in the {} crate has caused an error when trying to run a command.", prize.getPrizeName(), prize.getCrateName());
-                            logger.warn("Command: {}", cmd);
-                        }
+                        fusion.log(Level.WARNING, "The prize %s in the %s crate has caused an error when trying to run a command %s", prize.getPrizeName(), prize.getCrateName(), origin);
                     }
                 } else {
                     commandBuilder.append(word).append(" ");
