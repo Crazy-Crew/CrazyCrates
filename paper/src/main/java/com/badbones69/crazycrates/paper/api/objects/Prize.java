@@ -168,17 +168,9 @@ public class Prize {
         final int maxPulls = getMaxPulls();
         final String amount = String.valueOf(pulls);
 
-        //List<String> lore = new ArrayList<>();
-
-        //final boolean isPapiEnabled = Plugins.placeholder_api.isEnabled();
-
         //final String displayName = this.displayItem.getPlainName();
 
         //this.displayItem.withDisplayName(displayName);
-
-        //if (this.section.contains("DisplayLore") && !this.section.contains("Lore")) {
-        //    this.section.getStringList("DisplayLore").forEach(line -> lore.add(player != null && isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, line) : line));
-        //}
 
         final List<String> lore = new ArrayList<>();
 
@@ -192,8 +184,6 @@ public class Prize {
             }
 
             lore.addAll(this.section.getStringList("Lore"));
-
-            //this.section.getStringList("Lore").forEach(line -> lore.add(player != null && isPapiEnabled ? PlaceholderAPI.setPlaceholders(player, line) : line));
         }
 
         if (this.section.contains("DisplayLore") && !this.section.contains("Lore")) {

@@ -49,6 +49,10 @@ public class MiscUtils {
 
     private static final FusionPaper fusion = plugin.getFusion();
 
+    private static final Server server = plugin.getServer();
+
+    private static final PluginManager pluginManager = server.getPluginManager();
+
     private static final Path dataPath = plugin.getDataPath();
 
     private static final ComponentLogger logger = plugin.getComponentLogger();
@@ -56,9 +60,7 @@ public class MiscUtils {
     public static void sendCommand(@Nullable final CommandSender sender, @NotNull final String command, @NotNull final Map<String, String> placeholders) {
         if (command.isEmpty()) return;
 
-        final Server server = plugin.getServer();
-
-        final String result = populatePlaceholders(sender, command, placeholders);
+        final String result = fusion.parse(sender, command, placeholders);
 
         new FoliaScheduler(plugin, Scheduler.global_scheduler) {
             @Override

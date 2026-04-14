@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.paper.listeners.crates;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
@@ -13,7 +12,6 @@ import com.badbones69.crazycrates.paper.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -95,20 +93,14 @@ public class CrateOpenListener implements Listener {
         if (commandToggle) {
             final List<String> commands = configuration.getStringList("Crate.opening-command.commands");
 
-            if (!commands.isEmpty()) {
-                commands.forEach(line -> {
-                    String builder;
+            for (final String line : commands) {
+                if (line.isBlank()) continue;
 
-                    if (Plugins.placeholder_api.isEnabled() ) {
-                        builder = PlaceholderAPI.setPlaceholders(player, line.replaceAll("%crate%", fileName)
-                                .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
-                                .replaceAll("%player%", playerName));
-                    } else {
-                        builder = line.replaceAll("%crate%", fileName).replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix)).replaceAll("%player%", playerName);
-                    }
-
-                    MiscUtils.sendCommand(builder);
-                });
+                MiscUtils.sendCommand(player, line, Map.of(
+                        "%prefix%", this.config.getProperty(ConfigKeys.command_prefix),
+                        "%player%", playerName,
+                        "%crate%", fileName
+                ));
             }
         }
 
