@@ -344,12 +344,25 @@ public class CrateManager {
 
     private final SettingsManager config = ConfigManager.getConfig();
 
-    /**
-     * Loads the crates.
-     */
-    public void loadCrates() {
+    public void loadExamples() {
         if (this.config.getProperty(ConfigKeys.update_examples_folder)) {
             final Path examples = this.dataPath.resolve("examples");
+
+            if (Files.exists(examples)) {
+                try (final Stream<Path> values = Files.walk(examples)) {
+                    values.sorted(Comparator.reverseOrder()).forEach(path -> { // sorted in reverse order, to ensure the directories are empty first.
+                        try {
+                            this.fusion.log(Level.WARNING, "Successfully deleted path %s, re-generating the examples later.", path);
+
+                            Files.delete(path);
+                        } catch (final IOException exception) {
+                            this.fusion.log(Level.WARNING, "Failed to delete %s in loop.", exception, path);
+                        }
+                    });
+                } catch (final Exception exception) {
+                    this.fusion.log(Level.WARNING, "Failed to delete %s.", exception, exception);
+                }
+            }
 
             this.fileManager.extractFolder("guis", examples);
             this.fileManager.extractFolder("logs", examples);
@@ -362,7 +375,7 @@ public class CrateManager {
                     "locations.yml",
                     "messages.yml",
                     "editor.yml"
-            ).forEach(file -> this.fileManager.extractFile(file, examples));
+            ).forEach(file -> this.fileManager.extractFile(file, examples.resolve(file)));
         }
     }
 
