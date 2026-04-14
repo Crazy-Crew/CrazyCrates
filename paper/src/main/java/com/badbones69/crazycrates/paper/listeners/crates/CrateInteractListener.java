@@ -127,7 +127,6 @@ public class CrateInteractListener implements Listener {
         if (requiredKeys > 0 && totalKeys < requiredKeys) {
             Messages.not_enough_keys.sendMessage(player, Map.of(
                 "{required_amount}", String.valueOf(requiredKeys),
-                "{key_amount}", String.valueOf(requiredKeys), // deprecated, remove in next major version of minecraft.
                 "{amount}", String.valueOf(totalKeys),
                 "{key}", crate.getKeyName(),
                 "{crate}", fancyName
