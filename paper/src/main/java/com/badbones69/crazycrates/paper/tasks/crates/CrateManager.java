@@ -1170,11 +1170,11 @@ public class CrateManager {
     public void addCrateLocation(@NotNull final Location location, @Nullable final Crate crate) {
         if (crate == null) return;
 
-        final YamlConfiguration locations = FileKeys.locations.getConfiguration();
+        final YamlConfiguration configuration = FileKeys.locations.getConfiguration();
 
         String id = "1"; // Location ID
 
-        for (int i = 1; locations.contains("Locations." + i); i++) {
+        for (int i = 1; configuration.contains("Locations." + i); i++) {
             id = (i + 1) + "";
         }
 
@@ -1186,11 +1186,11 @@ public class CrateManager {
             }
         }
 
-        locations.set("Locations." + id + ".Crate", crate.getFileName());
-        locations.set("Locations." + id + ".World", location.getWorld().getName());
-        locations.set("Locations." + id + ".X", location.getBlockX());
-        locations.set("Locations." + id + ".Y", location.getBlockY());
-        locations.set("Locations." + id + ".Z", location.getBlockZ());
+        configuration.set("Locations." + id + ".Crate", crate.getFileName());
+        configuration.set("Locations." + id + ".World", location.getWorld().getName());
+        configuration.set("Locations." + id + ".X", location.getBlockX());
+        configuration.set("Locations." + id + ".Y", location.getBlockY());
+        configuration.set("Locations." + id + ".Z", location.getBlockZ());
 
         FileKeys.locations.save();
 
