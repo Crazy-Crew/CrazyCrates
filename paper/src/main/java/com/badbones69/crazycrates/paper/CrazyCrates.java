@@ -152,9 +152,9 @@ public class CrazyCrates extends JavaPlugin {
             // Print dependency garbage
             for (final Plugins value : Plugins.values()) {
                 if (value.isEnabled()) {
-                    logger.info(this.fusion.parse(Audience.empty(), "<bold><gold>" + value.getName() + " <green>FOUND"));
+                    logger.info(this.fusion.asComponent(Audience.empty(), "<bold><gold>" + value.getName() + " <green>FOUND"));
                 } else {
-                    logger.info(this.fusion.parse(Audience.empty(), "<bold><gold>" + value.getName() + " <red>NOT FOUND"));
+                    logger.info(this.fusion.asComponent(Audience.empty(), "<bold><gold>" + value.getName() + " <red>NOT FOUND"));
                 }
             }
 
