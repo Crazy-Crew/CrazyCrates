@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.api.objects.gui;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.enums.FillerType;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.gui.buttons.CrateButton;
@@ -11,7 +10,6 @@ import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiBorder;
 import com.ryderbelserion.fusion.paper.builders.gui.objects.GuiItem;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -32,7 +30,7 @@ public class GuiSettings {
 
     private final boolean isFillerToggled;
     private final ItemBuilder fillerStack;
-    private final FillerType fillerType;
+    private final GuiBorder fillerType;
 
     private final Map<Integer, GuiButton> buttons = new HashMap<>();
 
@@ -45,7 +43,7 @@ public class GuiSettings {
         this.slot = configuration.getInt("slot", 5);
 
         this.isFillerToggled = configuration.getBoolean("filler.toggle", false);
-        this.fillerType = FillerType.getFromName(configuration.getString("filler.fill-type", "border"));
+        this.fillerType = GuiBorder.getFromName(configuration.getString("filler.fill-type", "border"));
 
         this.fillerStack = ItemBuilder.from(configuration.getString("filler.toggle.material", "red_stained_glass_pane"))
                 .withDisplayName(configuration.getString("filler.toggle.name", " "));
@@ -110,7 +108,7 @@ public class GuiSettings {
         return this.isFillerToggled;
     }
 
-    public @NotNull final FillerType getFillerType() {
+    public @NotNull final GuiBorder getFillerType() {
         return this.fillerType;
     }
 

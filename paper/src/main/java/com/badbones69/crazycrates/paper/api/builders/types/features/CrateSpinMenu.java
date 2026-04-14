@@ -6,7 +6,6 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
-import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiBorder;
 import com.ryderbelserion.fusion.paper.builders.gui.objects.GuiItem;
 import com.ryderbelserion.fusion.paper.builders.gui.objects.border.GuiFiller;
 import com.ryderbelserion.fusion.paper.builders.gui.types.simple.SimpleGui;
@@ -41,17 +40,7 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
 
             final ItemStack itemStack = item.getItemStack();
 
-            switch (this.settings.getFillerType()) {
-                case FILL -> guiFiller.fill(GuiBorder.REMAINING_SLOTS, itemStack);
-
-                case FILL_BORDER -> guiFiller.fill(GuiBorder.BORDER, itemStack);
-
-                case FILL_TOP -> guiFiller.fillTop(itemStack);
-
-                case FILL_SIDE -> guiFiller.fill(GuiBorder.BOTH_SIDES, itemStack);
-
-                case FILL_BOTTOM -> guiFiller.fillBottom(itemStack);
-            }
+            guiFiller.fill(this.settings.getFillerType(), itemStack);
         }
 
         final UUID uuid = this.player.getUniqueId();
