@@ -5,14 +5,14 @@ import com.badbones69.crazycrates.paper.support.MetricsWrapper;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import com.badbones69.common.config.impl.ConfigKeys;
+import com.ryderbelserion.fusion.files.enums.FileAction;
+import com.ryderbelserion.fusion.files.enums.FileType;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
-import org.jetbrains.annotations.Nullable;
-import java.util.List;
 
 public class CommandReload extends BaseCommand {
 
@@ -26,29 +26,14 @@ public class CommandReload extends BaseCommand {
 
         this.plugin.getInstance().reload();
 
-        /*this.fileManager.refresh(false).addFile(this.path.resolve("locations.yml"), FileType.PAPER, List.of(
-                    FileAction.STATIC_FILE,
-                    FileAction.RELOAD_FILE
-                ), null)
-                .addFile(this.path.resolve("data.yml"), FileType.PAPER, List.of(
-                        FileAction.STATIC_FILE,
-                        FileAction.RELOAD_FILE
-                ), null)
-                .addFile(this.path.resolve("guis").resolve("respin-gui.yml"), FileType.PAPER, List.of(
-                        FileAction.STATIC_FILE,
-                        FileAction.RELOAD_FILE
-                ), null)
-                .addFolder(this.path.resolve("logs"), FileType.LOG, List.of(
-                    FileAction.EXTRACT_FOLDER,
-                    FileAction.STATIC_FILE,
-                    FileAction.RELOAD_FILE
-                ), null)
-                .addFolder(this.path.resolve("crates"), FileType.PAPER, List.of(
-                        FileAction.EXTRACT_FOLDER
-                ), null)
-                .addFolder(this.path.resolve("schematics"), FileType.NBT, List.of(
-                        FileAction.EXTRACT_FOLDER
-                ), null);*/
+        this.fileManager.refresh(false)
+                .addFolder(this.path.resolve("schematics"), FileType.NBT)
+                .addFolder(path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE));
+
+        this.fileManager.addPaperFolder(this.path.resolve("crates"))
+                .addPaperFile(this.path.resolve("guis").resolve("respin-gui.yml"))
+                .addPaperFile(this.path.resolve("data.yml"))
+                .addPaperFile(this.path.resolve("locations.yml"));
 
         MiscUtils.save();
 
@@ -56,14 +41,12 @@ public class CommandReload extends BaseCommand {
             this.inventoryManager.closePreview();
         }
 
-        @Nullable final MetricsWrapper metrics = this.plugin.getMetrics();
+        final MetricsWrapper metrics = this.plugin.getMetrics();
 
         if (metrics != null && !this.config.getProperty(ConfigKeys.toggle_metrics)) {
             final Metrics scheduler = metrics.getMetrics();
 
-            if (scheduler != null) {
-                scheduler.shutdown();
-            }
+            scheduler.shutdown();
         }
 
         this.crateManager.loadHolograms();
