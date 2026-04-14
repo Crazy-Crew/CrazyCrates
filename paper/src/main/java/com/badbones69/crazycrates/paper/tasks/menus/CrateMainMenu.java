@@ -82,11 +82,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                         case "custom-model-data" -> ItemUtil.addCustomModel(item, value);
 
-                        case "glowing" -> {
-                            if (StringUtils.tryParseBoolean(value).orElse(false)) {
-                                item.addEnchantGlint();
-                            }
-                        }
+                        case "glowing" -> ItemUtil.addGlow(item, StringUtils.tryParseBoolean(value).orElse(false));
 
                         case "slot" -> slot = StringUtils.tryParseInt(value).orElse(-1).intValue();
 

@@ -378,8 +378,8 @@ public class Prize {
                 builder.withDisplayLore(this.section.getStringList("Lore"));
             }
 
-            if (this.section.contains("Glowing") && this.section.getBoolean("Glowing", false)) {
-                builder.addEnchantGlint();
+            if (this.section.contains("Glowing")) {
+                ItemUtil.addGlow(builder, this.section.getBoolean("Glowing", false));
             }
 
             builder.setItemDamage(this.section.getInt("DisplayDamage", -1));

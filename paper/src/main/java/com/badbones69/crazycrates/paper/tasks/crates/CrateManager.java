@@ -54,7 +54,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.joml.Matrix4f;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
@@ -1532,7 +1531,6 @@ public class CrateManager {
         final String namespace = section.getString("PhysicalKey.Model.Namespace", "");
         final String id = section.getString("PhysicalKey.Model.Id", "");
         final List<String> lore = section.getStringList("PhysicalKey.Lore");
-        final boolean glowing = section.getBoolean("PhysicalKey.Glowing", true);
         final boolean hideFlags = section.getBoolean("PhysicalKey.HideItemFlags", false);
 
         final ItemBuilder itemBuilder = ItemBuilder.from(section.getString("PhysicalKey.Item", "tripwire_hook").toLowerCase());
@@ -1541,8 +1539,8 @@ public class CrateManager {
             itemBuilder.withBase64(section.getString("PhysicalKey.Data", ""));
         }
 
-        if (glowing) {
-            itemBuilder.addEnchantGlint();
+        if (section.contains("PhysicalKey.Glowing")) {
+            ItemUtil.addGlow(itemBuilder, section.getBoolean("PhysicalKey.Glowing", true));
         }
 
         ItemUtil.addItemModel(itemBuilder, namespace, id);
