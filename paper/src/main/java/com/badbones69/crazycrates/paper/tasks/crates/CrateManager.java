@@ -69,7 +69,6 @@ import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -77,7 +76,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import java.io.File;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -583,19 +581,16 @@ public class CrateManager {
             this.logger.info("Searching for schematics to load.");
         }
 
-        // Loading schematic files
-        final String[] schems = new File(this.plugin.getDataFolder() + "/schematics/").list();
+        final List<Path> values = this.fusion.getFilesByPath(this.dataPath.resolve("schematics"), ".nbt");
 
-        if (schems != null) {
-            final boolean isLogging = MiscUtils.isLogging();
+        for (final Path path : values) {
+            final String fileName = path.getFileName().toString();
 
-            for (final String schematicName : schems) {
-                if (schematicName.endsWith(".nbt")) {
-                    this.crateSchematics.add(new CrateSchematic(schematicName, new File(this.plugin.getDataFolder() + "/schematics/" + schematicName)));
+            final CrateSchematic schematic = new CrateSchematic(fileName, path);
 
-                    if (isLogging) this.logger.info("{} was successfully found and loaded.", schematicName);
-                }
-            }
+            this.crateSchematics.add(schematic);
+
+            this.fusion.log(Level.WARNING, "%s was successfully found and loaded.", fileName);
         }
 
         this.fusion.log(Level.WARNING, "All schematics were found and loaded.");

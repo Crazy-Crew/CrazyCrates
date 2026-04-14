@@ -46,7 +46,7 @@ public class QuadCrate extends CrateBuilder {
 
         final StructureManager handler = new StructureManager();
 
-        handler.applyStructure(crateSchematic.schematicFile());
+        handler.applyStructure(crateSchematic.schematicFile().toFile());
 
         final CrateLocation crateLocation = this.crateManager.getCrateLocation(this.location);
 
