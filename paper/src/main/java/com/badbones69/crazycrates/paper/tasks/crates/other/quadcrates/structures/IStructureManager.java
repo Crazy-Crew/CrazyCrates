@@ -1,10 +1,8 @@
 package com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.structures;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.structure.StructureManager;
 import org.jetbrains.annotations.Nullable;
-
 import java.io.File;
 import java.util.List;
 import java.util.Set;
@@ -31,7 +29,7 @@ public interface IStructureManager {
 
     Set<Location> getNearbyBlocks();
 
-    List<Material> getBlockBlacklist();
+    List<String> getBlockBlacklist();
 
     void createStructure();
 

@@ -140,22 +140,25 @@ public class QuadCrateManager {
         // Check if the blocks are able to be changed.
         final Set<Location> structureLocations = this.handler.getBlocks(this.spawnLocation.clone());
 
+        final List<String> blocks = this.handler.getBlockBlacklist();
+
         // Loop through the blocks and check if the blacklist contains the block type.
         // Do not open the crate if the block is not able to be changed.
-        for (Location loc : structureLocations) {
+        for (final Location loc : structureLocations) {
             final Block block = loc.getBlock();
-            final Material type = block.getType();
 
-            if (this.handler.getBlockBlacklist().contains(type)) {
+            if (blocks.contains(block.translationKey())) {
                 Messages.needs_more_room.sendMessage(player);
 
                 this.crateManager.removePlayerFromOpeningList(this.player);
 
                 this.crateManager.removeQuadSession(this.instance);
 
-                return;
-            } else {
-                if (type != Material.AIR) this.oldBlocks.put(block.getLocation(), block.getState());
+                continue;
+            }
+
+            if (!block.isEmpty()) {
+                this.oldBlocks.put(block.getLocation(), block.getState());
             }
         }
 

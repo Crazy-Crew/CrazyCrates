@@ -10,6 +10,7 @@ import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.block.structure.Mirror;
 import org.bukkit.block.structure.StructureRotation;
+import org.bukkit.inventory.ItemType;
 import org.bukkit.structure.Structure;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -179,16 +180,46 @@ public class StructureManager implements IStructureManager {
     }
 
     @Override
-    public @NotNull List<Material> getBlockBlacklist() {
-        return Lists.newArrayList(
-                Material.OAK_SIGN, Material.SPRUCE_SIGN, Material.BIRCH_SIGN, Material.JUNGLE_SIGN, Material.ACACIA_SIGN, Material.CHERRY_SIGN, Material.DARK_OAK_SIGN,
-                Material.MANGROVE_SIGN, Material.BAMBOO_SIGN, Material.CRIMSON_SIGN, Material.WARPED_SIGN, Material.OAK_HANGING_SIGN, Material.SPRUCE_HANGING_SIGN,
-                Material.BIRCH_HANGING_SIGN, Material.JUNGLE_HANGING_SIGN, Material.ACACIA_HANGING_SIGN, Material.CHERRY_HANGING_SIGN, Material.DARK_OAK_HANGING_SIGN,
-                Material.MANGROVE_HANGING_SIGN, Material.BAMBOO_HANGING_SIGN, Material.CRIMSON_HANGING_SIGN, Material.WARPED_HANGING_SIGN,
+    public @NotNull List<String> getBlockBlacklist() {
+        return List.of(
+                ItemUtil.getItemKey(ItemType.OAK_SIGN),
+                ItemUtil.getItemKey(ItemType.SPRUCE_SIGN),
+                ItemUtil.getItemKey(ItemType.BIRCH_SIGN),
+                ItemUtil.getItemKey(ItemType.JUNGLE_SIGN),
+                ItemUtil.getItemKey(ItemType.ACACIA_SIGN),
+                ItemUtil.getItemKey(ItemType.CHERRY_SIGN),
+                ItemUtil.getItemKey(ItemType.DARK_OAK_SIGN),
 
-                Material.STONE_BUTTON, Material.POLISHED_BLACKSTONE_BUTTON, Material.OAK_BUTTON, Material.SPRUCE_BUTTON, Material.BIRCH_BUTTON,
-                Material.JUNGLE_BUTTON, Material.ACACIA_BUTTON, Material.CHERRY_BUTTON, Material.DARK_OAK_BUTTON, Material.MANGROVE_BUTTON, Material.BAMBOO_BUTTON,
-                Material.CRIMSON_BUTTON, Material.WARPED_BUTTON);
+                ItemUtil.getItemKey(ItemType.MANGROVE_SIGN),
+                ItemUtil.getItemKey(ItemType.BAMBOO_SIGN),
+                ItemUtil.getItemKey(ItemType.CRIMSON_SIGN),
+                ItemUtil.getItemKey(ItemType.WARPED_SIGN),
+                ItemUtil.getItemKey(ItemType.OAK_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.SPRUCE_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.BIRCH_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.JUNGLE_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.ACACIA_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.CHERRY_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.DARK_OAK_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.MANGROVE_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.BAMBOO_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.CRIMSON_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.WARPED_HANGING_SIGN),
+
+                ItemUtil.getItemKey(ItemType.STONE_BUTTON),
+                ItemUtil.getItemKey(ItemType.POLISHED_BLACKSTONE_BUTTON),
+                ItemUtil.getItemKey(ItemType.OAK_BUTTON),
+                ItemUtil.getItemKey(ItemType.SPRUCE_BUTTON),
+                ItemUtil.getItemKey(ItemType.BIRCH_BUTTON),
+                ItemUtil.getItemKey(ItemType.JUNGLE_BUTTON),
+                ItemUtil.getItemKey(ItemType.ACACIA_BUTTON),
+                ItemUtil.getItemKey(ItemType.CHERRY_BUTTON),
+                ItemUtil.getItemKey(ItemType.DARK_OAK_BUTTON),
+                ItemUtil.getItemKey(ItemType.MANGROVE_BUTTON),
+                ItemUtil.getItemKey(ItemType.BAMBOO_BUTTON),
+                ItemUtil.getItemKey(ItemType.CRIMSON_BUTTON),
+                ItemUtil.getItemKey(ItemType.WARPED_BUTTON)
+        );
     }
 
     @Override
