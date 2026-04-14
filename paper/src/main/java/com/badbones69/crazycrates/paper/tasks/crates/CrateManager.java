@@ -521,41 +521,51 @@ public class CrateManager {
         final ConfigurationSection section = locations.getConfigurationSection("Locations");
 
         if (section != null) {
-            for (final String locationName : section.getKeys(false)) {
-                try {
-                    final String worldName = locations.getString("Locations." + locationName + ".World");
+            for (final String index : section.getKeys(false)) {
+                if (index.isBlank()) continue;
 
-                    // If the name is null, we return.
-                    if (worldName == null) return;
+                final ConfigurationSection origin = section.getConfigurationSection(index);
 
-                    // If the name is empty or blank, we return.
-                    if (worldName.isBlank()) return;
+                if (origin == null) continue;
 
-                    final World world = this.server.getWorld(worldName);
+                final String worldName = origin.getString("World", "");
 
-                    final int x = locations.getInt("Locations." + locationName + ".X");
-                    final int y = locations.getInt("Locations." + locationName + ".Y");
-                    final int z = locations.getInt("Locations." + locationName + ".Z");
+                // If the name is empty or blank, we return.
+                if (worldName.isBlank()) continue;
 
-                    final Location location = new Location(world, x, y, z);
+                final World world = this.server.getWorld(worldName);
 
-                    final Crate crate = getCrateFromName(locations.getString("Locations." + locationName + ".Crate"));
+                final int x = origin.getInt("X");
+                final int y = origin.getInt("Y");
+                final int z = origin.getInt("Z");
 
-                    if (world != null && crate != null) {
-                        this.crateLocations.add(new CrateLocation(locationName, crate, location));
+                if (world == null) {
+                    this.brokeLocations.add(new BrokeLocation(index, null, x, y, z, worldName));
 
-                        if (this.holograms != null) {
-                            this.holograms.createHologram(location, crate, locationName);
-                        }
+                    brokeAmount++;
 
-                        loadedAmount++;
-                    } else {
-                        this.brokeLocations.add(new BrokeLocation(locationName, crate, x, y, z, worldName));
+                    continue;
+                }
 
-                        brokeAmount++;
-                    }
+                final Crate crate = getCrateFromName(origin.getString("Crate", ""));
 
-                } catch (final Exception ignored) {}
+                if (crate == null) {
+                    this.brokeLocations.add(new BrokeLocation(index, null, x, y, z, worldName));
+
+                    brokeAmount++;
+
+                    continue;
+                }
+
+                final Location location = new Location(world, origin.getInt("Z"), origin.getInt("Y"), origin.getInt("Z"));
+
+                this.crateLocations.add(new CrateLocation(index, crate, location));
+
+                if (this.holograms != null) {
+                    this.holograms.createHologram(location, crate, index);
+                }
+
+                loadedAmount++;
             }
         }
 
