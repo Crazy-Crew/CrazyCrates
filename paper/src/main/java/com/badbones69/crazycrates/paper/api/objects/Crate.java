@@ -28,7 +28,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
@@ -67,8 +66,8 @@ public class Crate {
     private Particle particle;
 
     private final CrateType crateType;
-    private YamlConfiguration file;
-    private ArrayList<Prize> prizes;
+    private ConfigurationSection section;
+    private List<Prize> prizes;
     private String crateName;
     private boolean giveNewPlayerKeys;
     private int newPlayerKeys;
@@ -117,27 +116,28 @@ public class Crate {
      * @param crateType The crate type of the crate.
      * @param key The key as an item stack.
      * @param prizes The prizes that can be won.
-     * @param file The crate file.
+     * @param section The crate section.
      */
     public Crate(@NotNull final String name,
                  @NotNull final String previewName,
                  @NotNull final CrateType crateType,
                  @NotNull final ItemBuilder key,
                  @NotNull final String keyName,
-                 @NotNull final ArrayList<Prize> prizes,
-                 @NotNull final YamlConfiguration file,
+                 @NotNull final List<Prize> prizes,
+                 @NotNull final ConfigurationSection section,
                  final int newPlayerKeys,
                  @NotNull final List<Tier> tiers,
                  final int maxMassOpen,
                  final int requiredKeys,
                  @NotNull final List<String> prizeMessage,
                  @NotNull final List<String> prizeCommands,
-                 @NotNull final CrateHologram hologram) {
+                 @NotNull final CrateHologram hologram
+    ) {
         this.name = name.replaceAll(".yml", "");
         this.keyBuilder = key.withDisplayName(keyName).setPersistentString(ItemKeys.crate_key.getNamespacedKey(), this.name);
         this.keyName = keyName;
 
-        this.file = file;
+        this.section = section;
         this.fileName = name;
         this.tiers = tiers;
         this.maxMassOpen = maxMassOpen;
@@ -145,11 +145,11 @@ public class Crate {
         this.prizeMessage = prizeMessage;
         this.prizeCommands = prizeCommands;
 
-        this.glassBorderToggle = this.file.contains("Crate.Settings.Border.Glass-Border.Toggle") ?
-                this.file.getBoolean("Crate.Settings.Border.Glass-Border.Toggle", this.glassBorderToggle) :
-                this.file.getBoolean("Crate.Animation.Glass-Frame.Toggle", this.glassBorderToggle);
+        this.glassBorderToggle = this.section.contains("Settings.Border.Glass-Border.Toggle") ?
+                this.section.getBoolean("Settings.Border.Glass-Border.Toggle", this.glassBorderToggle) :
+                this.section.getBoolean("Animation.Glass-Frame.Toggle", this.glassBorderToggle);
 
-        final ConfigurationSection animationSection = this.file.contains("Crate.Animation") ? this.file.getConfigurationSection("Crate.Animation") : this.file.createSection("Crate.Animation");
+        final ConfigurationSection animationSection = this.section.contains("Animation") ? this.section.getConfigurationSection("Animation") : this.section.createSection("Animation");
 
         ConfigurationSection itemsSection = null;
 
@@ -179,17 +179,17 @@ public class Crate {
             this.animationBorderItems = ItemUtil.convertConfigurationSection(itemsSection);
         }
 
-        this.broadcastToggle = this.file.getBoolean("Crate.Settings.Broadcast.Toggle", false);
-        this.broadcastMessages = this.file.getStringList("Crate.Settings.Broadcast.Messages");
-        this.broadcastPermission = this.file.getString("Crate.Settings.Broadcast.Permission", "");
+        this.broadcastToggle = this.section.getBoolean("Settings.Broadcast.Toggle", false);
+        this.broadcastMessages = this.section.getStringList("Settings.Broadcast.Messages");
+        this.broadcastPermission = this.section.getString("Settings.Broadcast.Permission", "");
 
-        this.cyclePrize = this.file.getBoolean("Crate.Settings.Rewards.Re-Roll-Spin", false);
+        this.cyclePrize = this.section.getBoolean("Settings.Rewards.Re-Roll-Spin", false);
 
-        this.cyclePermissionToggle = this.file.getBoolean("Crate.Settings.Rewards.Permission.Toggle", false);
-        this.cyclePersistRestart = this.file.getBoolean("Crate.Settings.Rewards.Permission.Persist", false);
-        this.cyclePermissionCap = this.file.getInt("Crate.Settings.Rewards.Permission.Max-Cap", 20);
+        this.cyclePermissionToggle = this.section.getBoolean("Settings.Rewards.Permission.Toggle", false);
+        this.cyclePersistRestart = this.section.getBoolean("Settings.Rewards.Permission.Persist", false);
+        this.cyclePermissionCap = this.section.getInt("Settings.Rewards.Permission.Max-Cap", 20);
 
-        this.isTrackingOpening = this.file.getBoolean("Crate.Settings.Tracking-Crate-Opening", false);
+        this.isTrackingOpening = this.section.getBoolean("Settings.Tracking-Crate-Opening", false);
 
         for (int node = 1; node <= this.cyclePermissionCap; node++) {
             if (this.cyclePermissionToggle) {
@@ -210,55 +210,57 @@ public class Crate {
         this.sum = this.prizes.stream().filter(prize -> prize.getWeight() != -1).mapToDouble(Prize::getWeight).sum();
 
         this.crateType = crateType;
-        this.previewToggle = file.getBoolean("Crate.Preview.Toggle", false);
-        this.borderToggle = file.getBoolean("Crate.Preview.Glass.Toggle", false);
+        this.previewToggle = this.section.getBoolean("Preview.Toggle", false);
+        this.borderToggle = this.section.getBoolean("Preview.Glass.Toggle", false);
 
-        this.previewTierToggle = file.getBoolean("Crate.tier-preview.toggle", false);
-        this.previewTierBorderToggle = file.getBoolean("Crate.tier-preview.glass.toggle", false);
+        this.previewTierToggle = this.section.getBoolean("tier-preview.toggle", false);
+        this.previewTierBorderToggle = this.section.getBoolean("tier-preview.glass.toggle", false);
 
         this.previewName = previewName;
         this.newPlayerKeys = newPlayerKeys;
         this.giveNewPlayerKeys = newPlayerKeys > 0;
 
-        setPreviewRows(file.contains("Crate.Preview.ChestLines") ? file.getInt("Crate.Preview.ChestLines", 6) : file.getInt("Crate.Preview.Rows", 6));
+        setPreviewRows(this.section.contains("Preview.ChestLines") ? this.section.getInt("Preview.ChestLines", 6) : this.section.getInt("Preview.Rows", 6));
 
         this.maxSlots = this.rows * 9;
 
-        this.crateName = file.getString("Crate.Name", " ");
+        this.crateName = this.section.getString("Name", " ");
 
-        this.animationName = file.getString("Crate.Animation.Name", this.crateName);
+        this.animationName = this.section.getString("Animation.Name", this.crateName);
 
-        @NotNull final String borderName = file.getString("Crate.Preview.Glass.Name", " ");
+        @NotNull final String borderName = this.section.getString("Preview.Glass.Name", " ");
 
-        this.borderItem = ItemBuilder.from(file.getString("Crate.Preview.Glass.Item", "gray_stained_glass_pane").toLowerCase())
-                //.setHidingItemFlags(file.getBoolean("Crate.Preview.Glass.HideItemFlags", false)) //todo() this doesn't exist now.
+        this.borderItem = ItemBuilder.from(this.section.getString("Preview.Glass.Item", "gray_stained_glass_pane").toLowerCase())
+                //.setHidingItemFlags(this.section.getBoolean("Preview.Glass.HideItemFlags", false)) //todo() this doesn't exist now.
                 .withDisplayName(borderName);
 
-        ItemUtil.addItemModel(this.borderItem, file.getString("Crate.Preview.Glass.Model.Namespace", ""), file.getString("Crate.Preview.Glass.Model.Id", ""));
-        ItemUtil.addCustomModel(this.borderItem, file.getString("Crate.Preview.Glass.Custom-Model-Data", ""));
+        ItemUtil.addItemModel(this.borderItem, this.section.getString("Preview.Glass.Model.Namespace", ""), this.section.getString("Preview.Glass.Model.Id", ""));
+        ItemUtil.addCustomModel(this.borderItem, this.section.getString("Preview.Glass.Custom-Model-Data", ""));
 
-        @NotNull final String previewTierBorderName = file.getString("Crate.tier-preview.glass.name", " ");
+        @NotNull final String previewTierBorderName = this.section.getString("tier-preview.glass.name", " ");
 
-        this.previewTierBorderItem = ItemBuilder.from(file.getString("Crate.tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
-                //.setHidingItemFlags(file.getBoolean("Crate.tier-preview.glass.hideitemflags", false)) //todo() this doesn't exist now.
+        this.previewTierBorderItem = ItemBuilder.from(this.section.getString("tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
+                //.setHidingItemFlags(this.section.getBoolean("tier-preview.glass.hideitemflags", false)) //todo() this doesn't exist now.
                 .withDisplayName(previewTierBorderName);
 
-        ItemUtil.addItemModel(this.previewTierBorderItem, file.getString("Crate.tier-preview.glass.model.namespace", ""), file.getString("Crate.tier-preview.glass.model.id", ""));
-        ItemUtil.addCustomModel(this.previewTierBorderItem, file.getString("Crate.tier-preview.glass.custom-model-data", ""));
+        ItemUtil.addItemModel(this.previewTierBorderItem, this.section.getString("tier-preview.glass.model.namespace", ""), this.section.getString("tier-preview.glass.model.id", ""));
+        ItemUtil.addCustomModel(this.previewTierBorderItem, this.section.getString("tier-preview.glass.custom-model-data", ""));
 
-        setTierPreviewRows(file.getInt("Crate.tier-preview.rows", 5));
+        setTierPreviewRows(this.section.getInt("tier-preview.rows", 5));
 
         if (this.crateType == CrateType.quad_crate) {
-            this.particle = ItemUtils.getParticleType(file.getString("Crate.particles.type", "dust"));
+            this.particle = ItemUtils.getParticleType(this.section.getString("particles.type", "dust"));
 
-            this.color = ColorUtils.getColor(file.getString("Crate.particles.color", "235,64,52"));
+            this.color = ColorUtils.getColor(this.section.getString("particles.color", "235,64,52"));
         }
 
         this.hologram = hologram;
 
         switch (this.crateType) {
             case cosmic -> {
-                if (this.file != null) this.manager = new CosmicCrateManager(this.file);
+                if (this.section != null) {
+                    this.manager = new CosmicCrateManager(this.section);
+                }
 
                 this.tierSum = this.tiers.stream().filter(tier -> tier.getWeight() != -1).mapToDouble(Tier::getWeight).sum();
             }
@@ -647,10 +649,10 @@ public class Crate {
     }
 
     /**
-     * @return the crates' file.
+     * @return the crates' this.section.
      */
-    public @NotNull final YamlConfiguration getFile() {
-        return this.file;
+    public @NotNull final ConfigurationSection getSection() {
+        return this.section;
     }
     
     /**
@@ -742,25 +744,17 @@ public class Crate {
      * @return the configuration section.
      */
     public @NotNull final ConfigurationSection getPrizeSection() {
-        ConfigurationSection section = this.file.getConfigurationSection("Crate");
+        final ConfigurationSection section = this.section;
 
-        if (section == null) {
-            section = this.file.createSection("Crate");
-        }
+        final ConfigurationSection prizeSection = section.getConfigurationSection("Prizes");
 
-        ConfigurationSection prizeSection = section.getConfigurationSection("Prizes");
-
-        if (prizeSection == null) {
-            prizeSection = section.createSection("Prizes");
-        }
-
-        return prizeSection;
+        return prizeSection == null ? section.createSection("Prizes") : prizeSection;
     }
 
     /**
      * Adds an item to the config to display in the crate.
      *
-     * @param itemStack the itemstack to set.
+     * @param itemStack the ItemStack to set.
      * @param prizeName the prize name.
      * @param section the prizes section.
      * @param weight the chance of the prize.
@@ -929,22 +923,27 @@ public class Crate {
     /**
      * Get prizes for tier specific preview gui's
      *
+     * @param player The player
      * @param tier The tier to check
      * @return list of prizes
      */
     public @NotNull final List<ItemStack> getPreviewItems(@Nullable final Player player, @Nullable final Tier tier) {
-        List<ItemStack> prizes = new ArrayList<>();
+        final List<ItemStack> prizes = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
-            // if (prize.getWeight() == -1) continue;
-
             if (tier == null) {
-                prizes.add(player == null ? prize.getDisplayItem(this) : prize.getDisplayItem(player, this));
-            } else {
-                if (prize.getTiers().contains(tier)) {
-                    prizes.add(player == null ? prize.getDisplayItem(this) : prize.getDisplayItem(player, this));
-                }
+                prizes.add(prize.getDisplayItem(player, this));
+
+                continue;
             }
+
+            final List<Tier> tiers = prize.getTiers();
+
+            if (!tiers.contains(tier)) {
+                continue;
+            }
+
+            prizes.add(prize.getDisplayItem(player, this));
         }
 
         return prizes;
@@ -976,7 +975,7 @@ public class Crate {
     public void playSound(@NotNull final Player player, @NotNull final Location location, @NotNull final String type, @NotNull final String fallback, @NotNull final Sound.Source source) {
         if (type.isEmpty() && fallback.isEmpty()) return;
 
-        final ConfigurationSection section = this.file.getConfigurationSection("Crate.sound");
+        final ConfigurationSection section = this.section.getConfigurationSection("sound");
 
         if (section != null) {
             final SoundEffect sound = new SoundEffect(

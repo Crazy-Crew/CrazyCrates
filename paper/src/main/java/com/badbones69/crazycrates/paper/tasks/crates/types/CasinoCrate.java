@@ -104,7 +104,7 @@ public class CasinoCrate extends CrateBuilder {
 
         final String fileName = this.crate.getFileName();
 
-        final ConfigurationSection section = this.crate.getFile().getConfigurationSection("Crate.random");
+        final ConfigurationSection section = this.crate.getSection().getConfigurationSection("random");
 
         if (section != null) {
             final boolean isRandom = section.getBoolean("toggle", false);
@@ -147,7 +147,7 @@ public class CasinoCrate extends CrateBuilder {
     }
 
     private void setDisplayItems(final boolean isStatic) {
-        final ConfigurationSection section = this.crate.getFile().getConfigurationSection("Crate.random");
+        final ConfigurationSection section = this.crate.getSection().getConfigurationSection("random");
 
         final boolean isGlassBorderToggled = this.crate.isGlassBorderToggled();
 

@@ -17,6 +17,7 @@ import com.badbones69.common.config.impl.messages.PlayerKeys;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.common.config.impl.ConfigKeys;
+import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,7 +152,7 @@ public enum Messages {
         return this.messages.getProperty(this.properties);
     }
 
-    public void sendMessage(@NotNull final Audience sender, @NotNull final String placeholder, @NotNull final String replacement) {
+    public void sendMessage(@Nullable final Audience sender, @NotNull final String placeholder, @NotNull final String replacement) {
         final State state = this.config.getProperty(ConfigKeys.message_state);
 
         switch (state) {
@@ -160,7 +161,7 @@ public enum Messages {
         }
     }
 
-    public void sendMessage(@NotNull final Audience sender, @NotNull final Map<String, String> placeholders) {
+    public void sendMessage(@Nullable final Audience sender, @NotNull final Map<String, String> placeholders) {
         final State state = this.config.getProperty(ConfigKeys.message_state);
 
         switch (state) {
@@ -169,7 +170,7 @@ public enum Messages {
         }
     }
 
-    public void sendMessage(@NotNull final Audience sender) {
+    public void sendMessage(@Nullable final Audience sender) {
         final State state = this.config.getProperty(ConfigKeys.message_state);
 
         switch (state) {
@@ -178,11 +179,11 @@ public enum Messages {
         }
     }
 
-    public void sendRichMessage(@NotNull final Audience sender, @NotNull final String placeholder, @NotNull final String replacement) {
+    public void sendRichMessage(@Nullable final Audience sender, @NotNull final String placeholder, @NotNull final String replacement) {
         sendRichMessage(sender, Map.of(placeholder, replacement));
     }
 
-    public void sendRichMessage(@NotNull final Audience sender, @NotNull final Map<String, String> placeholders) {
+    public void sendRichMessage(@Nullable final Audience sender, @NotNull final Map<String, String> placeholders) {
         final String value = getMessage(sender, placeholders);
 
         if (value.isBlank()) return;
@@ -192,15 +193,15 @@ public enum Messages {
         }
     }
 
-    public void sendRichMessage(@NotNull final Audience sender) {
+    public void sendRichMessage(@Nullable final Audience sender) {
         sendRichMessage(sender, Map.of());
     }
 
-    public void sendActionBar(@NotNull final Audience sender, @NotNull final String placeholder, @NotNull final String replacement) {
+    public void sendActionBar(@Nullable final Audience sender, @NotNull final String placeholder, @NotNull final String replacement) {
         sendActionBar(sender, Map.of(placeholder, replacement));
     }
 
-    public void sendActionBar(@NotNull final Audience sender, @NotNull final Map<String, String> placeholders) {
+    public void sendActionBar(@Nullable final Audience sender, @NotNull final Map<String, String> placeholders) {
         final String value = getMessage(sender, placeholders);
 
         if (value.isBlank()) return;
@@ -210,11 +211,11 @@ public enum Messages {
         }
     }
 
-    public void sendActionBar(@NotNull final Audience sender) {
+    public void sendActionBar(@Nullable final Audience sender) {
         sendActionBar(sender, Map.of());
     }
 
-    public String getMessage(@NotNull final Audience sender, @NotNull final String placeholder, @NotNull final String replacement) {
+    public String getMessage(@Nullable final Audience sender, @NotNull final String placeholder, @NotNull final String replacement) {
         final Map<String, String> placeholders = new HashMap<>();
 
         placeholders.put(placeholder, replacement);
@@ -222,11 +223,11 @@ public enum Messages {
         return getMessage(sender, placeholders);
     }
 
-    public String getMessage(@NotNull final Audience sender, @NotNull final Map<String, String> placeholders) {
+    public String getMessage(@Nullable final Audience sender, @NotNull final Map<String, String> placeholders) {
         return parse(sender, placeholders);
     }
 
-    public String getMessage(@NotNull final Audience sender) {
+    public String getMessage(@Nullable final Audience sender) {
         return getMessage(sender, new HashMap<>());
     }
 
@@ -240,7 +241,7 @@ public enum Messages {
         this.messages.setProperty(this.property, AdvUtils.convert(this.messages.getProperty(this.property), true));
     }
 
-    private @NotNull String parse(@NotNull final Audience sender, @NotNull final Map<String, String> placeholders) {
+    private @NotNull String parse(@Nullable final Audience sender, @NotNull final Map<String, String> placeholders) {
         final Map<String, String> origin = new HashMap<>(placeholders);
 
         origin.putIfAbsent("{prefix}", this.config.getProperty(ConfigKeys.command_prefix));

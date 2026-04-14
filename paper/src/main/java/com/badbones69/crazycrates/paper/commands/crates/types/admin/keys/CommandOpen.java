@@ -252,7 +252,7 @@ public class CommandOpen extends BaseCommand {
 
         this.crateManager.addPlayerToOpeningList(player, crate);
 
-        final YamlConfiguration configuration = crate.getFile();
+        final ConfigurationSection configuration = crate.getSection();
 
         for (;keys > 0; keys--) {
             if (MiscUtils.isInventoryFull(player)) break;
@@ -263,7 +263,7 @@ public class CommandOpen extends BaseCommand {
 
             switch (crateType) {
                 case casino -> {
-                    final ConfigurationSection section = configuration.getConfigurationSection("Crate.random");
+                    final ConfigurationSection section = configuration.getConfigurationSection("random");
 
                     if (section != null) {
                         final boolean isRandom = section.getBoolean("toggle", false);

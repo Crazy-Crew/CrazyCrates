@@ -298,8 +298,8 @@ public abstract class CrateBuilder extends FoliaScheduler {
     /**
      * @return file configuration of crate
      */
-    public final YamlConfiguration getFile() {
-        return this.crate.getFile();
+    public final ConfigurationSection getSection() {
+        return this.crate.getSection();
     }
 
     /**
@@ -385,7 +385,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @return true if canceled otherwise false
      */
     public final boolean isCrateEventValid(@NotNull final KeyType keyType, final boolean checkHand, final boolean isSilent, final EventType eventType) {
-        final CrateOpenEvent event = new CrateOpenEvent(this.player, this.crate, keyType, checkHand, this.crate.getFile(), isSilent, eventType);
+        final CrateOpenEvent event = new CrateOpenEvent(this.player, this.crate, keyType, checkHand, this.crate.getSection(), isSilent, eventType);
 
         event.callEvent();
 
@@ -444,7 +444,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
     public void playSound(@NotNull final String type, @NotNull final Sound.Source source, @NotNull final String fallback) {
         if (type.isEmpty() && fallback.isEmpty()) return;
 
-        final ConfigurationSection section = getFile().getConfigurationSection("Crate.sound");
+        final ConfigurationSection section = getSection().getConfigurationSection("sound");
 
         if (section != null) {
             final SoundEffect sound = new SoundEffect(

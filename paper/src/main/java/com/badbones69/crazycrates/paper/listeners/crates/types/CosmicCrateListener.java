@@ -20,6 +20,7 @@ import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,7 +29,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
@@ -312,10 +312,10 @@ public class CosmicCrateListener implements Listener {
             // Clear the top inventory.
             view.getTopInventory().clear();
 
-            YamlConfiguration configuration = crate.getFile();
+            ConfigurationSection configuration = crate.getSection();
 
-            final String broadcastMessage = configuration.getString("Crate.BroadCast", "");
-            final boolean broadcastToggle = configuration.getBoolean("Crate.OpeningBroadCast", false);
+            final String broadcastMessage = configuration.getString("BroadCast", "");
+            final boolean broadcastToggle = configuration.getBoolean("OpeningBroadCast", false);
 
             if (broadcastToggle && !broadcastMessage.isBlank()) { //todo() add a permission?
                 this.server.broadcast(this.fusion.asComponent(player, broadcastMessage, Map.of(

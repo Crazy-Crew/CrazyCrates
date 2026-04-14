@@ -9,13 +9,14 @@ import com.ryderbelserion.fusion.paper.builders.gui.types.paginated.PaginatedGui
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class CratePreviewMenu extends DynamicInventoryBuilder {
 
     private final Tier tier;
 
-    public CratePreviewMenu(@NotNull final Player player, @NotNull final Crate crate, @NotNull final Tier tier) {
+    public CratePreviewMenu(@NotNull final Player player, @NotNull final Crate crate, @Nullable final Tier tier) {
         super(player, crate, crate.getPreviewName(), crate.getPreviewRows());
 
         this.tier = tier;
@@ -42,9 +43,9 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
 
         crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> this.gui.addPageItem(new GuiItem(itemStack)));
 
-        this.gui.setOpenAction(event -> this.inventoryManager.addPreviewViewer(uuid));
+        this.gui.setOpenAction(_ -> this.inventoryManager.addPreviewViewer(uuid));
 
-        this.gui.setCloseAction(event -> this.inventoryManager.removePreviewViewer(uuid));
+        this.gui.setCloseAction(_ -> this.inventoryManager.removePreviewViewer(uuid));
 
         this.gui.open(this.player, gui -> {
             addBackButton(true);

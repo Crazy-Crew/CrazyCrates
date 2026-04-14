@@ -76,8 +76,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class CrateManager {
 
@@ -180,7 +183,7 @@ public class CrateManager {
             if (crate == null) return;
 
             // Grab the new file.
-            final FileConfiguration file = crate.getFile();
+            final ConfigurationSection section = crate.getSection();
 
             // Close the preview menu
             this.inventoryManager.closePreview();
@@ -191,7 +194,7 @@ public class CrateManager {
             // Profit?
             final List<Prize> prizes = new ArrayList<>();
 
-            final ConfigurationSection prizesSection = file.getConfigurationSection("Crate.Prizes");
+            final ConfigurationSection prizesSection = section.getConfigurationSection("Prizes");
 
             if (prizesSection != null) {
                 for (final String prize : prizesSection.getKeys(false)) {
@@ -246,7 +249,7 @@ public class CrateManager {
 
             this.inventoryManager.openPreview(crate);
         } catch (final Exception exception) {
-            final String fileName = crate.getFileName(); //todo() this might be null
+            final String fileName = crate.getFileName();
 
             this.brokeCrates.add(fileName);
 
@@ -318,8 +321,6 @@ public class CrateManager {
 
                 if (Plugins.fancy_holograms.isEnabled()) {
                     this.holograms = new FancyHologramsSupport();
-
-                    break;
                 }
             }
         }
@@ -363,6 +364,13 @@ public class CrateManager {
                     "editor.yml"
             ).forEach(file -> this.fileManager.extractFile(file, examples));
         }
+    }
+
+    /**
+     * Loads the crates.
+     */
+    public void loadCrates() {
+        loadExamples();
 
         this.giveNewPlayersKeys = false;
 
@@ -377,133 +385,161 @@ public class CrateManager {
 
         final Path crates = this.dataPath.resolve("crates");
 
-        for (final String crateName : getCrateNames(true)) {
-            try {
-                final @NotNull Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(crates.resolve(crateName));
+        for (final Path path : this.fusion.getFilesByPath(crates, ".yml")) {
+            final Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(path);
 
-                if (optional.isEmpty()) continue;
+            if (optional.isEmpty()) continue;
 
-                final PaperCustomFile customFile = optional.get();
+            final PaperCustomFile customFile = optional.get();
 
-                if (!customFile.isLoaded()) continue;
+            if (!customFile.isLoaded()) continue;
 
-                final YamlConfiguration file = customFile.getConfiguration();
+            final YamlConfiguration configuration = customFile.getConfiguration();
 
-                final CrateType crateType = CrateType.getFromName(file.getString("Crate.CrateType", "CSGO"));
+            final ConfigurationSection section = configuration.getConfigurationSection("Crate");
 
-                final ArrayList<Prize> prizes = new ArrayList<>();
-                final List<Tier> tiers = new ArrayList<>();
+            if (section == null) continue;
 
-                final String previewName = file.contains("Crate.Preview.Name") ? file.getString("Crate.Preview.Name", " ") : file.getString("Crate.Name", " ");
+            final CrateType type = CrateType.getFromName(section.getString("CrateType", "CSGO"));
 
-                final int maxMassOpen = file.getInt("Crate.Max-Mass-Open", 10);
-                final int requiredKeys = file.getInt("Crate.RequiredKeys", 0);
+            final List<Prize> prizes = new ArrayList<>();
+            final List<Tier> tiers = new ArrayList<>();
 
-                ConfigurationSection section = file.getConfigurationSection("Crate.Tiers");
+            final String preview = section.contains("Preview.Name") ? section.getString("Preview.Name", " ") : section.getString("Name", " ");
 
-                if (file.contains("Crate.Tiers") && section != null) {
-                    for (String tier : section.getKeys(false)) {
-                        final String path = "Crate.Tiers." + tier;
+            final int maxMassOpen = section.getInt("Max-Mass-Open", 10);
 
-                        final ConfigurationSection tierSection = file.getConfigurationSection(path);
+            final int requiredKeys = section.getInt("RequiredKeys", 0);
 
-                        if (tierSection != null) {
-                            tiers.add(new Tier(tier, tierSection));
-                        }
+            final ConfigurationSection prizesSection = section.getConfigurationSection("Prizes");
+
+            final String fileName = customFile.getFileName();
+
+            if (prizesSection == null) {
+                this.brokeCrates.add(fileName);
+
+                this.fusion.log(Level.WARNING, "No prizes section was found for %s.yml file.", fileName);
+
+                continue;
+            }
+
+            if (type == CrateType.cosmic || type == CrateType.casino) {
+                final ConfigurationSection tiersGroup = section.getConfigurationSection("Tiers");
+
+                if (tiersGroup != null) {
+                    for (final String tier : tiersGroup.getKeys(false)) {
+                        final ConfigurationSection origin = tiersGroup.getConfigurationSection(tier);
+
+                        if (origin == null) continue;
+
+                        tiers.add(new Tier(tier, origin));
                     }
                 }
 
-                final boolean isTiersEmpty = crateType == CrateType.cosmic || crateType == CrateType.casino;
+                if (tiers.isEmpty()) {
+                    this.brokeCrates.add(fileName);
 
-                if (isTiersEmpty && tiers.isEmpty()) {
-                    this.brokeCrates.add(crateName);
-
-                    this.fusion.log(Level.WARNING, "No tiers were found for %s.yml file.", crateName);
+                    this.fusion.log(Level.WARNING, "No tiers were found for %s.yml file.", fileName);
 
                     continue;
                 }
+            }
 
-                final ConfigurationSection prizesSection = file.getConfigurationSection("Crate.Prizes");
+            for (final String prize : prizesSection.getKeys(false)) {
+                final ConfigurationSection prizeSection = prizesSection.getConfigurationSection(prize);
 
-                if (prizesSection != null) {
-                    for (String prize : prizesSection.getKeys(false)) {
-                        final ConfigurationSection prizeSection = prizesSection.getConfigurationSection(prize);
+                final List<Tier> tierPrizes = new ArrayList<>();
 
-                        final List<Tier> tierPrizes = new ArrayList<>();
+                Prize alternativePrize = null;
 
-                        Prize alternativePrize = null;
+                if (prizeSection != null) {
+                    final List<ItemStack> editorItems = new ArrayList<>();
 
-                        if (prizeSection != null) {
-                            final List<ItemStack> editorItems = new ArrayList<>();
+                    if (prizeSection.contains("Editor-Items")) {
+                        final List<?> keys = prizeSection.getList("Editor-Items");
 
-                            if (prizeSection.contains("Editor-Items")) {
-                                final List<?> keys = prizeSection.getList("Editor-Items");
-
-                                if (keys != null) {
-                                    for (final Object key : keys) {
-                                        editorItems.add((ItemStack) key);
-                                    }
-                                }
+                        if (keys != null) {
+                            for (final Object key : keys) {
+                                editorItems.add((ItemStack) key);
                             }
-
-                            for (final String tier : prizeSection.getStringList("Tiers")) {
-                                for (final Tier key : tiers) {
-                                    if (key.getName().equalsIgnoreCase(tier)) {
-                                        tierPrizes.add(key);
-                                    }
-                                }
-                            }
-
-                            final ConfigurationSection alternativeSection = prizeSection.getConfigurationSection("Alternative-Prize");
-
-                            if (alternativeSection != null) {
-                                final boolean isEnabled = alternativeSection.getBoolean("Toggle");
-
-                                if (isEnabled) {
-                                    alternativePrize = new Prize(prizeSection.getString("DisplayName", "<lang:item.minecraft." + prizeSection.getString("DisplayItem", "stone").toLowerCase() + ">"), prizeSection.getName(), alternativeSection);
-                                }
-                            }
-
-                            prizes.add(new Prize(prizeSection, editorItems, tierPrizes, crateName, alternativePrize));
                         }
                     }
+
+                    for (final String tier : prizeSection.getStringList("Tiers")) {
+                        for (final Tier key : tiers) {
+                            if (key.getName().equalsIgnoreCase(tier)) {
+                                tierPrizes.add(key);
+                            }
+                        }
+                    }
+
+                    final ConfigurationSection alternativeSection = prizeSection.getConfigurationSection("Alternative-Prize");
+
+                    if (alternativeSection != null) {
+                        final boolean isEnabled = alternativeSection.getBoolean("Toggle", false);
+
+                        if (isEnabled) {
+                            alternativePrize = new Prize(prizeSection.getString("DisplayName", "<lang:item.minecraft." + prizeSection.getString("DisplayItem", "stone").toLowerCase() + ">"), prizeSection.getName(), alternativeSection);
+                        }
+                    }
+
+                    prizes.add(new Prize(prizeSection, editorItems, tierPrizes, fileName, alternativePrize));
                 }
+            }
 
-                final int newPlayersKeys = file.getInt("Crate.StartingKeys", 0);
+            final int keys = section.getInt("StartingKeys", 0);
 
-                if (!this.giveNewPlayersKeys) {
-                    if (newPlayersKeys > 0) this.giveNewPlayersKeys = true;
-                }
+            if (!this.giveNewPlayersKeys) {
+                if (keys > 0) this.giveNewPlayersKeys = true;
+            }
 
-                final List<String> prizeMessage = file.contains("Crate.Prize-Message") ? file.getStringList("Crate.Prize-Message") : Collections.emptyList();
+            final ConfigurationSection hologram = section.getConfigurationSection("Hologram");
 
-                final List<String> prizeCommands = file.contains("Crate.Prize-Commands") ? file.getStringList("Crate.Prize-Commands") : Collections.emptyList();
+            CrateHologram crateHologram = new CrateHologram();
 
-                final CrateHologram holo = new CrateHologram(
-                        file.getBoolean("Crate.Hologram.Toggle"),
-                        file.getDouble("Crate.Hologram.Height", 0.0),
-                        file.getInt("Crate.Hologram.Range", 8),
-                        file.getString("Crate.Hologram.Color", "transparent"),
-                        file.getBoolean("Crate.Hologram.TextShadow", false),
-                        file.getInt("Crate.Hologram.Update-Interval", -1),
-                        file.getStringList("Crate.Hologram.Message"));
+            if (hologram != null) {
+                crateHologram = new CrateHologram(
+                        hologram.getBoolean("Toggle", false),
+                        hologram.getDouble("Height", 0.0),
+                        hologram.getInt("Range", 8),
+                        hologram.getString("Color", "transparent"),
+                        hologram.getBoolean("TextShadow", false),
+                        hologram.getInt("Update-Interval", -1),
+                        hologram.getStringList("Message")
+                );
+            }
 
-                addCrate(new Crate(crateName, previewName, crateType, getKey(file), file.getString("Crate.PhysicalKey.Name", "Crate.PhysicalKey.Name is missing from " + crateName), prizes, file, newPlayersKeys, tiers, maxMassOpen, requiredKeys, prizeMessage, prizeCommands, holo));
+            final List<String> messages = section.getStringList("Prize-Message");
+            final List<String> commands = section.getStringList("Prize-Commands");
 
-                final String cleanName = crateName.replace(".yml", "");
+            addCrate(
+                    new Crate(
+                            fileName,
+                            preview,
+                            type,
+                            getKey(section),
+                            section.getString("PhysicalKey.Name", "Crate.PhysicalKey.Name is missing from " + fileName),
+                            prizes,
+                            section,
+                            keys,
+                            tiers,
+                            maxMassOpen,
+                            requiredKeys,
+                            messages,
+                            commands,
+                            crateHologram
+                    )
+            );
 
-                final String node = "crazycrates.open.%s".formatted(cleanName);
-                final String description = "Allows you to open %s".formatted(cleanName);
+            final String cleanName = fileName.replace(".yml", "");
 
-                if (this.pluginManager.getPermission(node) == null) {
-                    final Permission permission = new Permission(node, description, PermissionDefault.TRUE);
+            final String node = "crazycrates.open.%s".formatted(cleanName);
+            final String description = "Allows you to open %s".formatted(cleanName);
 
-                    this.pluginManager.addPermission(permission);
-                }
-            } catch (final Exception exception) {
-                this.brokeCrates.add(crateName);
+            if (this.pluginManager.getPermission(node) == null) {
+                final Permission permission = new Permission(node, description, PermissionDefault.TRUE);
 
-                this.fusion.log(Level.WARNING, "There was an error while loading the %s file.", exception, crateName);
+                this.pluginManager.addPermission(permission);
             }
         }
 
@@ -712,7 +748,7 @@ public class CrateManager {
 
                 if (this.fusion.isVerbose()) {
                     List.of(
-                            crate.getFileName() + " has an invalid crate type. Your Value: " + crate.getFile().getString("Crate.CrateType", "CSGO"),
+                            crate.getFileName() + " has an invalid crate type. Your Value: " + crate.getSection().getString("CrateType", "CSGO"),
                             "We will use " + CrateType.csgo.getName() + " until you change the crate type.",
                             "Valid Crate Types: CSGO/Casino/Cosmic/QuadCrate/QuickCrate/Roulette/CrateOnTheGo/FireCracker/Wonder/Wheel/War"
                     ).forEach(this.logger::warn);
@@ -1477,19 +1513,19 @@ public class CrateManager {
     }
 
     // Internal methods.
-    private ItemBuilder getKey(@NotNull final FileConfiguration file) {
-        final String name = file.getString("Crate.PhysicalKey.Name", "");
-        final String customModelData = file.getString("Crate.PhysicalKey.Custom-Model-Data", "");
-        final String namespace = file.getString("Crate.PhysicalKey.Model.Namespace", "");
-        final String id = file.getString("Crate.PhysicalKey.Model.Id", "");
-        final List<String> lore = file.getStringList("Crate.PhysicalKey.Lore");
-        final boolean glowing = file.getBoolean("Crate.PhysicalKey.Glowing", true);
-        final boolean hideFlags = file.getBoolean("Crate.PhysicalKey.HideItemFlags", false);
+    private ItemBuilder getKey(@NotNull final ConfigurationSection section) {
+        final String name = section.getString("PhysicalKey.Name", "");
+        final String customModelData = section.getString("PhysicalKey.Custom-Model-Data", "");
+        final String namespace = section.getString("PhysicalKey.Model.Namespace", "");
+        final String id = section.getString("PhysicalKey.Model.Id", "");
+        final List<String> lore = section.getStringList("PhysicalKey.Lore");
+        final boolean glowing = section.getBoolean("PhysicalKey.Glowing", true);
+        final boolean hideFlags = section.getBoolean("PhysicalKey.HideItemFlags", false);
 
-        final ItemBuilder itemBuilder = ItemBuilder.from(file.getString("Crate.PhysicalKey.Item", "tripwire_hook").toLowerCase());
+        final ItemBuilder itemBuilder = ItemBuilder.from(section.getString("PhysicalKey.Item", "tripwire_hook").toLowerCase());
 
-        if (file.contains("Crate.PhysicalKey.Data")) {
-            itemBuilder.withBase64(file.getString("Crate.PhysicalKey.Data", ""));
+        if (section.contains("PhysicalKey.Data")) {
+            itemBuilder.withBase64(section.getString("PhysicalKey.Data", ""));
         }
 
         if (glowing) {

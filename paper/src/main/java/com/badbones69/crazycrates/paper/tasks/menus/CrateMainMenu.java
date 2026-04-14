@@ -18,7 +18,6 @@ import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -61,7 +60,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
         if (this.config.getProperty(ConfigKeys.gui_customizer_toggle)) {
             for (String custom : this.config.getProperty(ConfigKeys.gui_customizer)) {
-                final ItemBuilder item = ItemBuilder.from(ItemType.STONE);
+                ItemBuilder item = ItemBuilder.from(ItemType.STONE);
 
                 int slot = 0;
 
@@ -70,7 +69,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                     String value = key.replace(option + ":", "").replace(option, "");
 
                     switch (option.toLowerCase()) {
-                        case "item" -> item.withBase64(value.toLowerCase());
+                        case "item" -> item = ItemBuilder.from(value);
                         case "name" -> item.withDisplayName(getCrates(value).replace("{player}", player.getName()));
 
                         case "lore" -> {
@@ -117,69 +116,67 @@ public class CrateMainMenu extends StaticInventoryBuilder {
             }
         }
 
-        for (Crate crate : this.crateManager.getUsableCrates()) {
-            final YamlConfiguration file = crate.getFile();
+        for (final Crate crate : this.crateManager.getUsableCrates()) {
+            final ConfigurationSection section = crate.getSection();
 
-            final ConfigurationSection section = file.getConfigurationSection("Crate");
+            if (!section.getBoolean("InGUI", false)) continue;
 
-            if (section != null) {
-                if (section.getBoolean("InGUI", false)) {
-                    final String fileName = crate.getFileName();
+            final String fileName = crate.getFileName();
 
-                    int slot = section.getInt("Slot");
+            int slot = section.getInt("Slot", -1);
 
-                    final int virtualKeys = this.userManager.getVirtualKeys(uuid, fileName);
-                    final int physicalKeys = this.userManager.getPhysicalKeys(uuid, fileName);
+            if (slot == -1) continue;
 
-                    final int totalKeys = virtualKeys + physicalKeys;
+            final int virtualKeys = this.userManager.getVirtualKeys(uuid, fileName);
+            final int physicalKeys = this.userManager.getPhysicalKeys(uuid, fileName);
 
-                    final int openedCrates = this.userManager.getCrateOpened(uuid, fileName);
+            final int totalKeys = virtualKeys + physicalKeys;
 
-                    final NumberFormat instance = NumberFormat.getNumberInstance();
+            final int openedCrates = this.userManager.getCrateOpened(uuid, fileName);
 
-                    final ItemBuilder builder = ItemBuilder.from(section.getString("Item", "chest").toLowerCase())
-                            .withDisplayName(crate.getCrateName())
-                            .addPlaceholder("%keys%", instance.format(virtualKeys))
-                            .addPlaceholder("%keys_physical%", instance.format(physicalKeys))
-                            .addPlaceholder("%keys_total%", instance.format(totalKeys))
-                            .addPlaceholder("%crate_opened%", instance.format(openedCrates))
-                            .addPlaceholder("%keys_raw%", String.valueOf(virtualKeys))
-                            .addPlaceholder("%keys_physical_raw%", String.valueOf(physicalKeys))
-                            .addPlaceholder("%keys_total_raw%", String.valueOf(totalKeys))
-                            .addPlaceholder("%crate_opened_raw%", String.valueOf(openedCrates))
-                            .addPlaceholder("%player%", this.player.getName())
-                            .setPersistentString(ItemKeys.crate_key.getNamespacedKey(), fileName);
+            final NumberFormat instance = NumberFormat.getNumberInstance();
 
-                    ItemUtil.addCustomModel(builder, section.getString("Custom-Model-Data", ""));
-                    ItemUtil.addItemModel(builder, section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
+            final ItemBuilder builder = ItemBuilder.from(section.getString("Item", "chest").toLowerCase())
+                    .withDisplayName(crate.getCrateName())
+                    .addPlaceholder("%keys%", instance.format(virtualKeys))
+                    .addPlaceholder("%keys_physical%", instance.format(physicalKeys))
+                    .addPlaceholder("%keys_total%", instance.format(totalKeys))
+                    .addPlaceholder("%crate_opened%", instance.format(openedCrates))
+                    .addPlaceholder("%keys_raw%", String.valueOf(virtualKeys))
+                    .addPlaceholder("%keys_physical_raw%", String.valueOf(physicalKeys))
+                    .addPlaceholder("%keys_total_raw%", String.valueOf(totalKeys))
+                    .addPlaceholder("%crate_opened_raw%", String.valueOf(openedCrates))
+                    .addPlaceholder("%player%", this.player.getName())
+                    .setPersistentString(ItemKeys.crate_key.getNamespacedKey(), fileName);
 
-                    this.gui.addSlotAction(slot, ItemUtil.getItem(section, builder, this.player).asGuiItem(event -> {
-                        final String fancyName = crate.getCrateName();
+            ItemUtil.addCustomModel(builder, section.getString("Custom-Model-Data", ""));
+            ItemUtil.addItemModel(builder, section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
 
-                        switch (event.getClick()) {
-                            case ClickType.LEFT -> {
-                                final boolean isLeftClickToPreview = this.config.getProperty(ConfigKeys.crate_virtual_interaction);
+            this.gui.addSlotAction(slot, ItemUtil.getItem(section, builder, this.player).asGuiItem(event -> {
+                final String fancyName = crate.getCrateName();
 
-                                if (isLeftClickToPreview) {
-                                    openPreview(crate, fancyName);
-                                } else {
-                                    openCrate(uuid, crate, fileName, fancyName);
-                                }
-                            }
+                switch (event.getClick()) {
+                    case ClickType.LEFT -> {
+                        final boolean isLeftClickToPreview = this.config.getProperty(ConfigKeys.crate_virtual_interaction);
 
-                            case ClickType.RIGHT -> {
-                                final boolean isRightClickToOpen = this.config.getProperty(ConfigKeys.crate_virtual_interaction);
-
-                                if (isRightClickToOpen) {
-                                    openCrate(uuid, crate, fileName, fancyName);
-                                } else {
-                                    openPreview(crate, fancyName);
-                                }
-                            }
+                        if (isLeftClickToPreview) {
+                            openPreview(crate, fancyName);
+                        } else {
+                            openCrate(uuid, crate, fileName, fancyName);
                         }
-                    }));
+                    }
+
+                    case ClickType.RIGHT -> {
+                        final boolean isRightClickToOpen = this.config.getProperty(ConfigKeys.crate_virtual_interaction);
+
+                        if (isRightClickToOpen) {
+                            openCrate(uuid, crate, fileName, fancyName);
+                        } else {
+                            openPreview(crate, fancyName);
+                        }
+                    }
                 }
-            }
+            }));
         }
 
         this.gui.open(this.player);

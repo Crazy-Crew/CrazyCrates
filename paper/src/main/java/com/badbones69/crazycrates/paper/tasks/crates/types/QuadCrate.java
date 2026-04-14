@@ -6,9 +6,9 @@ import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.structures.StructureManager;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.QuadCrateManager;
@@ -32,12 +32,12 @@ public class QuadCrate extends CrateBuilder {
             return;
         }
 
-        final YamlConfiguration config = getFile();
+        final ConfigurationSection config = getSection();
         final List<CrateSchematic> schematics = this.crateManager.getCrateSchematics();
 
-        final CrateSchematic crateSchematic = config.getBoolean("Crate.structure.random", true) ?
+        final CrateSchematic crateSchematic = config.getBoolean("structure.random", true) ?
                 schematics.get(ThreadLocalRandom.current().nextInt(schematics.size())) :
-                this.crateManager.getCrateSchematic(config.getString("Crate.structure.file", ""));
+                this.crateManager.getCrateSchematic(config.getString("structure.file", ""));
 
         // todo() add message if schematic null before session starts.
         if (crateSchematic == null) {
