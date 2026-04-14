@@ -60,9 +60,9 @@ public class CommandManager {
         commandManager.registerStaticSuggestion(SuggestionKey.of("keys"), Arrays.asList("virtual", "v", "physical", "p"));
         commandManager.registerStaticSuggestion(SuggestionKey.of("admin-keys"), Arrays.asList("virtual", "v", "physical", "p", "free", "f"));
 
-        commandManager.registerSuggestion(SuggestionKey.of("players"), (context) -> server.getOnlinePlayers().stream().map(Player::getName).toList());
+        commandManager.registerSuggestion(SuggestionKey.of("players"), (_) -> server.getOnlinePlayers().stream().map(Player::getName).toList());
 
-        commandManager.registerSuggestion(SuggestionKey.of("locations"), (context) -> crateManager.getCrateLocations().stream().map(CrateLocation::getID).toList());
+        commandManager.registerSuggestion(SuggestionKey.of("locations"), (_) -> crateManager.getCrateLocations().stream().map(CrateLocation::getID).toList());
 
         commandManager.registerSuggestion(SuggestionKey.of("prizes"), (context) -> {
             final List<String> prizes = new ArrayList<>();
@@ -88,7 +88,7 @@ public class CommandManager {
             return tiers;
         });
 
-        commandManager.registerSuggestion(SuggestionKey.of("numbers"), (context) -> {
+        commandManager.registerSuggestion(SuggestionKey.of("numbers"), (_) -> {
             final List<String> numbers = new ArrayList<>();
 
             for (int i = 1; i <= 100; i++) numbers.add(String.valueOf(i));
@@ -96,7 +96,7 @@ public class CommandManager {
             return numbers;
         });
 
-        commandManager.registerSuggestion(SuggestionKey.of("doubles"), (context) -> {
+        commandManager.registerSuggestion(SuggestionKey.of("doubles"), (_) -> {
             final List<String> numbers = new ArrayList<>();
 
             int count = 0;
@@ -112,7 +112,7 @@ public class CommandManager {
             return numbers;
         });
 
-        commandManager.registerSuggestion(SuggestionKey.of("migrators"), (context) -> {
+        commandManager.registerSuggestion(SuggestionKey.of("migrators"), (_) -> {
             final List<String> migrators = new ArrayList<>();
 
             for (MigrationType value : MigrationType.values()) {
@@ -124,7 +124,7 @@ public class CommandManager {
             return migrators;
         });
 
-        commandManager.registerArgument(PlayerBuilder.class, (sender, context) -> new PlayerBuilder(context));
+        commandManager.registerArgument(PlayerBuilder.class, (_, context) -> new PlayerBuilder(context));
 
         List.of(
                 new CommandTeleport(),

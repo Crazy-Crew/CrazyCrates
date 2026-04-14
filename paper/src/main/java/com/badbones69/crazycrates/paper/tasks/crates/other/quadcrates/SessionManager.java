@@ -27,11 +27,17 @@ public class SessionManager {
 
         final UUID uuid = player.getUniqueId();
 
+        QuadCrateManager instance = null;
+
         for (final QuadCrateManager session : sessions) {
-            if (session.getPlayer().getUniqueId().equals(uuid)) return true;
+            if (session.getPlayer().getUniqueId().equals(uuid)) {
+                instance = session;
+
+                break;
+            }
         }
 
-        return false;
+        return instance != null;
     }
 
     /**

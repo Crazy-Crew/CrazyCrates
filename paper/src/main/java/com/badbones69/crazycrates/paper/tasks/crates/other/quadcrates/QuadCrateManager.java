@@ -212,7 +212,9 @@ public class QuadCrateManager {
 
         // This holds the quad crate's spawned chests.
         for (final Location loc : this.crateLocations) {
-            if (this.crateLocations.contains(loc)) this.quadCrateChests.put(loc.clone(), loc.getBlock().getState());
+            if (this.crateLocations.contains(loc)) {
+                this.quadCrateChests.put(loc.clone(), loc.getBlock().getState());
+            }
         }
 
         // Paste the structure in.

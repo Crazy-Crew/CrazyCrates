@@ -12,6 +12,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
+import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
@@ -773,7 +774,7 @@ public class Crate {
             final Component displayName = itemStack.getData(DataComponentTypes.CUSTOM_NAME);
 
             if (displayName != null) {
-                //section.set(getPath(prizeName, "DisplayName"), AdvUtils.fromComponent(displayName));
+                section.set(getPath(prizeName, "DisplayName"), AdvUtils.fromComponent(displayName));
             }
         }
 
@@ -784,7 +785,7 @@ public class Crate {
                 final List<Component> lore = itemLore.lines();
 
                 if (!lore.isEmpty()) {
-                    //section.set(getPath(prizeName, "DisplayLore"), AdvUtils.fromComponent(lore));
+                    section.set(getPath(prizeName, "DisplayLore"), AdvUtils.fromComponent(lore));
                 }
             }
         }

@@ -16,7 +16,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.List;
 import java.util.UUID;
@@ -111,9 +110,9 @@ public class CasinoCrate extends CrateBuilder {
             final boolean isRandom = section.getBoolean("toggle", false);
 
             if (!isRandom) {
-                @Nullable final Tier tier_uno = this.crate.getTier(section.getString("types.row-3", ""));
-                @Nullable final Tier tier_dos = this.crate.getTier(section.getString("types.row-2", ""));
-                @Nullable final Tier tier_tres = this.crate.getTier(section.getString("types.row-1", ""));
+                final Tier tier_uno = this.crate.getTier(section.getString("types.row-3", ""));
+                final Tier tier_dos = this.crate.getTier(section.getString("types.row-2", ""));
+                final Tier tier_tres = this.crate.getTier(section.getString("types.row-1", ""));
 
                 if (tier_uno == null || tier_dos == null || tier_tres == null) {
                     this.fusion.log(Level.WARNING, "One of your tiers in %s could not be found, or is empty. Search for row-1, row-2 or row-3", fileName);
@@ -183,7 +182,7 @@ public class CasinoCrate extends CrateBuilder {
                 return;
             }
 
-            @Nullable final Tier tierUno = this.crate.getTier(section.getString("types.row-1", ""));
+            final Tier tierUno = this.crate.getTier(section.getString("types.row-1", ""));
 
             if (tierUno != null) {
                 setItem(2, getDisplayItem(tierUno));
@@ -191,7 +190,7 @@ public class CasinoCrate extends CrateBuilder {
                 setItem(20, getDisplayItem(tierUno));
             }
 
-            @Nullable final Tier tierDos = this.crate.getTier(section.getString("types.row-2", ""));
+            final Tier tierDos = this.crate.getTier(section.getString("types.row-2", ""));
 
             if (tierDos != null) {
                 setItem(4, getDisplayItem(tierDos));
@@ -199,7 +198,7 @@ public class CasinoCrate extends CrateBuilder {
                 setItem(22, getDisplayItem(tierDos));
             }
 
-            @Nullable final Tier tierTres = this.crate.getTier(section.getString("types.row-3", ""));
+            final Tier tierTres = this.crate.getTier(section.getString("types.row-3", ""));
 
             if (tierTres != null) {
                 setItem(6, getDisplayItem(tierTres));

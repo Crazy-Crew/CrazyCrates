@@ -20,12 +20,12 @@ import java.util.UUID;
 
 public class CosmicCrateManager extends AbstractCrateManager {
 
+    private final Map<UUID, Map<Integer, Tier>> prizes = new HashMap<>();
+
     private final ItemBuilder mysteryCrate;
     private final ItemBuilder pickedCrate;
     private final YamlConfiguration file;
     private final int totalPrizes;
-
-    private final Map<UUID, Map<Integer, Tier>> prizes = new HashMap<>();
 
     /**
      * Creates a cosmic crate manager instance.

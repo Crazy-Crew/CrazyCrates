@@ -33,7 +33,9 @@ public enum Plugins {
 
     placeholder_api("PlaceholderAPI"),
 
-    luckperms("LuckPerms");
+    luckperms("LuckPerms"),
+
+    excellent_crates("ExcellentCrates");
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 

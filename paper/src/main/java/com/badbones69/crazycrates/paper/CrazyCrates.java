@@ -79,8 +79,6 @@ public class CrazyCrates extends JavaPlugin {
         this.instance = new Server(this.fusion, path);
         this.instance.apply();
 
-        this.fileManager.refresh(false);
-
         this.fileManager.addPaperFile(path.resolve("locations.yml"))
                 .addPaperFile(path.resolve("data.yml"))
                 .addPaperFile(path.resolve("guis").resolve("respin-gui.yml"))

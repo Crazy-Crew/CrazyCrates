@@ -12,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.*;
 
 @Command(value = "keys", alias = { "key" })

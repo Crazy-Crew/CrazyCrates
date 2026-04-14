@@ -1391,7 +1391,7 @@ public class CrateManager {
         if (entity instanceof Item item) {
             final ItemStack itemStack = item.getItemStack();
 
-            if (itemStack.getType() == Material.AIR) return false;
+            if (itemStack.isEmpty()) return false;
 
             return itemStack.getPersistentDataContainer().has(ItemKeys.crate_prize.getNamespacedKey());
         }
@@ -1409,7 +1409,7 @@ public class CrateManager {
     public final boolean isKeyFromCrate(@Nullable final ItemStack item, @Nullable final Crate crate) {
         if (item == null || crate == null) return false;
         if (crate.getCrateType() == CrateType.menu) return false;
-        if (item.getType() == Material.AIR) return false;
+        if (item.isEmpty()) return false;
 
         final String key = this.keyManager.getKey(item);
 

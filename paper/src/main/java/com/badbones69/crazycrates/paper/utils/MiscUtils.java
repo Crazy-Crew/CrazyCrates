@@ -200,8 +200,8 @@ public class MiscUtils {
     }
 
     public static void save() {
-        YamlConfiguration data = FileKeys.data.getConfiguration();
-        YamlConfiguration location = FileKeys.locations.getConfiguration();
+        final YamlConfiguration data = FileKeys.data.getConfiguration();
+        final YamlConfiguration location = FileKeys.locations.getConfiguration();
 
         boolean isSave = false;
 
@@ -429,26 +429,12 @@ public class MiscUtils {
         pluginManager.removePermission(permission);
     }
 
-    private static final PluginManager pluginManager = plugin.getServer().getPluginManager();
-
     public static void registerPermissions() {
-        Arrays.stream(Permissions.values()).toList().forEach(permission -> {
-            Permission newPermission = new Permission(
-                    permission.getPermission(),
-                    permission.getDescription(),
-                    permission.isDefault(),
-                    permission.getChildren()
-            );
-
-            pluginManager.addPermission(newPermission);
-        });
-    }
-
-    public static boolean isLogging() {
-        return plugin.getFusion().isVerbose();
-    }
-
-    public static boolean isExcellentCratesEnabled() {
-        return pluginManager.isPluginEnabled("ExcellentCrates");
+        Arrays.stream(Permissions.values()).toList().forEach(permission -> pluginManager.addPermission(new Permission(
+                permission.getPermission(),
+                permission.getDescription(),
+                permission.isDefault(),
+                permission.getChildren()
+        )));
     }
 }

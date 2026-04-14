@@ -382,7 +382,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param keyType virtual or physical key
      * @param checkHand true or false
      * @param eventType {@link EventType}
-     * @return true if cancelled otherwise false
+     * @return true if canceled otherwise false
      */
     public final boolean isCrateEventValid(@NotNull final KeyType keyType, final boolean checkHand, final boolean isSilent, final EventType eventType) {
         final CrateOpenEvent event = new CrateOpenEvent(this.player, this.crate, keyType, checkHand, this.crate.getFile(), isSilent, eventType);
@@ -444,7 +444,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
     public void playSound(@NotNull final String type, @NotNull final Sound.Source source, @NotNull final String fallback) {
         if (type.isEmpty() && fallback.isEmpty()) return;
 
-        ConfigurationSection section = getFile().getConfigurationSection("Crate.sound");
+        final ConfigurationSection section = getFile().getConfigurationSection("Crate.sound");
 
         if (section != null) {
             final SoundEffect sound = new SoundEffect(
@@ -463,16 +463,16 @@ public abstract class CrateBuilder extends FoliaScheduler {
         final ItemBuilder itemBuilder = manager.getMysteryCrate();
 
         for (int slot = 0; slot <= this.size; slot++) {
-            itemBuilder.addPlaceholder("%Slot%", String.valueOf(slot));
-
-            itemBuilder.setAmount(slot);
+            itemBuilder.addPlaceholder("%Slot%", String.valueOf(slot)).setAmount(slot);
 
             final Tier tier = PrizeManager.getTier(this.crate);
 
             if (tier != null) {
+                final Inventory inventory = getInventory();
+
                 this.crateManager.addTier(this.player, slot, tier);
 
-                getInventory().setItem(getInventory().firstEmpty(), itemBuilder.asItemStack(this.player));
+                inventory.setItem(inventory.firstEmpty(), itemBuilder.asItemStack(this.player));
             }
         }
     }

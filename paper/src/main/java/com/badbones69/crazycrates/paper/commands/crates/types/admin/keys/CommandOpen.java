@@ -20,6 +20,7 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.Nullable;
@@ -251,6 +252,8 @@ public class CommandOpen extends BaseCommand {
 
         this.crateManager.addPlayerToOpeningList(player, crate);
 
+        final YamlConfiguration configuration = crate.getFile();
+
         for (;keys > 0; keys--) {
             if (MiscUtils.isInventoryFull(player)) break;
 
@@ -260,7 +263,7 @@ public class CommandOpen extends BaseCommand {
 
             switch (crateType) {
                 case casino -> {
-                    final ConfigurationSection section = crate.getFile().getConfigurationSection("Crate.random");
+                    final ConfigurationSection section = configuration.getConfigurationSection("Crate.random");
 
                     if (section != null) {
                         final boolean isRandom = section.getBoolean("toggle", false);
