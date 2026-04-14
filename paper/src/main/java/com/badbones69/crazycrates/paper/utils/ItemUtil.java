@@ -42,6 +42,10 @@ public class ItemUtil {
         custom.build();
     }
 
+    public static String getItemKey(@NotNull final ItemType itemType) {
+        return itemType.getKey().getKey();
+    }
+
     public static void addCustomModel(@NotNull final ItemBuilder builder, @NotNull final String id) {
         final CustomBuilder custom = builder.asCustomBuilder();
 
