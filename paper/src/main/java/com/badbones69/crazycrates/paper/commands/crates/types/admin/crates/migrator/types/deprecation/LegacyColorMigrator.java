@@ -4,17 +4,15 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.common.config.impl.ConfigKeys;
-import com.ryderbelserion.fusion.files.enums.FileAction;
-import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public class LegacyColorMigrator extends ICrateMigrator {
 
@@ -64,20 +62,30 @@ public class LegacyColorMigrator extends ICrateMigrator {
             failed.add("<red>⤷ messages.yml");
         }
 
-        final Collection<ICustomFile<?, ?, ?, ?>> customFiles = this.fileManager.getFiles().values();
+        for (final Path path : this.fusion.getFilesByPath(this.dataPath.resolve("crates"), ".yml")) {
+            final Optional<PaperCustomFile> origin = this.fileManager.getPaperFile(path);
 
-        customFiles.forEach(key -> {
+            final String fileName = path.getFileName().toString();
+
+            if (origin.isEmpty()) {
+                failed.add("<red>⤷ " + fileName);
+
+                continue;
+            }
+
+            final PaperCustomFile customFile = origin.get();
+
+            final YamlConfiguration configuration = customFile.getConfiguration();
+
+            final ConfigurationSection section = configuration.getConfigurationSection("Crate");
+
+            if (section == null) {
+                failed.add("<red>⤷ " + fileName);
+
+                continue;
+            }
+
             try {
-                if (key.hasAction(FileAction.STATIC_FILE) || !key.isLoaded() || key.getFileType() != FileType.PAPER_YAML) return;
-
-                final PaperCustomFile customFile = (PaperCustomFile) key;
-
-                final YamlConfiguration configuration = customFile.getConfiguration();
-
-                final ConfigurationSection section = configuration.getConfigurationSection("Crate");
-
-                if (section == null) return;
-
                 boolean isSave = false;
 
                 if (section.contains("CrateName")) {
@@ -212,10 +220,10 @@ public class LegacyColorMigrator extends ICrateMigrator {
                 }
 
                 success.add("<green>⤷ " + customFile.getFileName());
-            } catch (final Exception exception) {
-                failed.add("<red>⤷ " + key.getFileName());
+            } catch (Exception exception) {
+                failed.add("<red>⤷ " + fileName);
             }
-        });
+        }
 
         final int convertedCrates = success.size();
         final int failedCrates = failed.size();

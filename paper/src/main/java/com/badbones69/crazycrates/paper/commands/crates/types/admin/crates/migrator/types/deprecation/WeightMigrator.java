@@ -3,17 +3,14 @@ package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migr
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.fusion.files.enums.FileAction;
-import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public class WeightMigrator extends ICrateMigrator {
 
@@ -23,23 +20,33 @@ public class WeightMigrator extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Collection<ICustomFile<?, ?, ?, ?>> customFiles = this.fileManager.getFiles().values();
-
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
 
-        customFiles.forEach(key -> {
+        for (final Path path : this.fusion.getFilesByPath(this.dataPath.resolve("crates"), ".yml")) {
+            final Optional<PaperCustomFile> origin = this.fileManager.getPaperFile(path);
+
+            final String fileName = path.getFileName().toString();
+
+            if (origin.isEmpty()) {
+                failed.add("<red>⤷ " + fileName);
+
+                continue;
+            }
+
+            final PaperCustomFile customFile = origin.get();
+
+            final YamlConfiguration configuration = customFile.getConfiguration();
+
+            final ConfigurationSection section = configuration.getConfigurationSection("Crate");
+
+            if (section == null) {
+                failed.add("<red>⤷ " + fileName);
+
+                continue;
+            }
+
             try {
-                if (key.hasAction(FileAction.STATIC_FILE) || !key.isLoaded() || key.getFileType() != FileType.PAPER_YAML) return;
-
-                final PaperCustomFile customFile = (PaperCustomFile) key;
-
-                final YamlConfiguration configuration = customFile.getConfiguration();
-
-                final ConfigurationSection section = configuration.getConfigurationSection("Crate");
-
-                if (section == null) return;
-
                 boolean isSave = false;
 
                 if (section.contains("Tiers")) {
@@ -101,10 +108,10 @@ public class WeightMigrator extends ICrateMigrator {
                 }
 
                 success.add("<green>⤷ " + customFile.getFileName());
-            } catch (final Exception exception) {
-                failed.add("<red>⤷ " + key.getFileName());
+            } catch (Exception exception) {
+                failed.add("<red>⤷ " + fileName);
             }
-        });
+        }
 
         final int convertedCrates = success.size();
         final int failedCrates = failed.size();
@@ -126,10 +133,5 @@ public class WeightMigrator extends ICrateMigrator {
     @Override
     public <T> void set(final ConfigurationSection section, final String path, T value) {
         section.set(path, value);
-    }
-
-    @Override
-    public final File getCratesDirectory() {
-        return new File(this.plugin.getDataFolder(), "crates");
     }
 }

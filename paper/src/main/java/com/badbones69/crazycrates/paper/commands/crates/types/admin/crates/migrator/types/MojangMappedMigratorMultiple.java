@@ -2,16 +2,13 @@ package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migr
 
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.fusion.files.enums.FileAction;
-import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public class MojangMappedMigratorMultiple extends ICrateMigrator {
 
@@ -21,24 +18,32 @@ public class MojangMappedMigratorMultiple extends ICrateMigrator {
 
     @Override
     public void run() {
-        final Collection<ICustomFile<?, ?, ?, ?>> customFiles = this.fileManager.getFiles().values();
-
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
 
-        customFiles.forEach(key -> {
-            try {
-                if (key.hasAction(FileAction.STATIC_FILE) || !key.isLoaded() || key.getFileType() != FileType.PAPER_YAML) return;
+        for (final Path path : this.fusion.getFilesByPath(this.dataPath.resolve("crates"), ".yml")) {
+            final Optional<PaperCustomFile> origin = this.fileManager.getPaperFile(path);
 
-                final PaperCustomFile customFile = (PaperCustomFile) key;
+            final String fileName = path.getFileName().toString();
 
-                migrate(customFile, "");
+            if (origin.isEmpty()) {
+                failed.add("<red>⤷ " + fileName);
 
-                success.add("<green>⤷ " + customFile.getFileName());
-            } catch (final Exception exception) {
-                failed.add("<red>⤷ " + key.getFileName());
+                continue;
             }
-        });
+
+            final PaperCustomFile customFile = origin.get();
+
+            try {
+                if (migrate(customFile)) {
+                    success.add("<green>⤷ " + customFile.getFileName());
+                } else {
+                    failed.add("<red>⤷ " + fileName);
+                }
+            } catch (Exception exception) {
+                failed.add("<red>⤷ " + fileName);
+            }
+        }
 
         // reload crates
         this.crateManager.loadHolograms();
@@ -58,10 +63,5 @@ public class MojangMappedMigratorMultiple extends ICrateMigrator {
     @Override
     public <T> void set(final ConfigurationSection section, final String path, T value) {
         section.set(path, value);
-    }
-
-    @Override
-    public final File getCratesDirectory() {
-        return new File(this.plugin.getDataFolder(), "crates");
     }
 }

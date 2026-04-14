@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.badbones69.crazycrates.paper.utils.MiscUtils;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
@@ -17,7 +17,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 import su.nightexpress.excellentcrates.CratesAPI;
@@ -28,6 +27,8 @@ import su.nightexpress.nightcore.config.FileConfig;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -89,17 +90,21 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             return;
         }
 
-        final File directory = getCratesDirectory();
+        final Path origin = getDirectory();
 
-        if (!directory.exists()) {
-            directory.mkdirs();
+        if (!Files.exists(origin)) {
+            try {
+                Files.createDirectory(origin);
+            } catch (final IOException exception) {
+                this.fusion.log(Level.WARNING, "Failed to create crates directory", exception);
+            }
         }
 
         final File crateDirectory = CratesAPI.PLUGIN.getDataFolder();
 
-        YamlConfiguration locationData = FileKeys.locations.getConfiguration();
+        final YamlConfiguration locationData = FileKeys.locations.getConfiguration();
 
-        final @NotNull Collection<Crate> crates = CratesAPI.getCrateManager().getCrates();
+        final Collection<Crate> crates = CratesAPI.getCrateManager().getCrates();
 
         if (crates.isEmpty()) {
             Messages.migration_no_crates_available.sendMessage(sender);
@@ -111,25 +116,27 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
             final String crateName = crate.getFile().getName();
             final String strippedName = crateName.replace(".yml", "");
 
-            final File crateFile = new File(directory, crateName);
+            final Path output = origin.resolve(crateName);
 
-            if (crateFile.exists()) {
-                if (MiscUtils.isLogging()) this.logger.warn("Crate {} already exists in {}.", crateName, directory.getName());
+            if (Files.exists(output)) {
+                this.fusion.log(Level.WARNING, "Crate %s already exists in %s", crateName, "crates");
 
                 failed.add("<red>⤷ " + crateName);
 
                 return;
             }
 
-            try {
-                crateFile.createNewFile();
-            } catch (final IOException exception) {
-                if (MiscUtils.isLogging()) this.logger.warn("Failed to create crate file {} in {}.", crateName, directory.getName(), exception);
+            if (!Files.exists(output)) {
+                try {
+                    Files.createDirectory(output);
+                } catch (final IOException exception) {
+                    this.fusion.log(Level.WARNING, "Failed to file for %s crate!", exception, crateName);
 
-                failed.add("<red>⤷ " + crateName);
+                    failed.add("<red>⤷ " + crateName);
+                }
             }
 
-            final PaperCustomFile customFile = new PaperCustomFile(this.fileManager, crateFile.toPath(), _ -> {}).load();
+            final PaperCustomFile customFile = new PaperCustomFile(this.fileManager, output, _ -> {}).load();
 
             final YamlConfiguration configuration = customFile.getConfiguration();
 
@@ -181,7 +188,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
                 final List<String> previewLore = new ArrayList<>();
 
-                menuFile.getStringList("Crate.Lore").forEach(line -> previewLore.add(line.replaceAll("<l", "<").replaceAll("</l", "</")));
+                menuFile.getStringList("Crate.Lore").forEach(line -> previewLore.add(line.replace("<l", "<").replace("</l", "</")));
 
                 set(root, "Name", AdvUtils.convert(previewName));
                 set(root, "Lore", AdvUtils.convert(previewLore));
@@ -192,7 +199,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                     for (String key : section.getKeys(false)) {
                         final int slot = section.getInt(key);
 
-                        if (key.equalsIgnoreCase(crateName.replace(".yml", ""))) {
+                        if (key.equalsIgnoreCase(strippedName)) {
                             set(root, "InGUI", slot > 0);
                             set(root, "Slot", slot);
 
@@ -389,10 +396,5 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
     @Override
     public <T> void set(final ConfigurationSection section, final String path, T value) {
         section.set(path, value);
-    }
-
-    @Override
-    public final File getCratesDirectory() {
-        return new File(this.plugin.getDataFolder(), "crates");
     }
 }

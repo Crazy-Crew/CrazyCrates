@@ -15,7 +15,7 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import java.io.File;
+import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -62,8 +62,8 @@ public abstract class ICrateMigrator {
 
     public abstract <T> void set(ConfigurationSection section, String path, T value);
 
-    public File getCratesDirectory() {
-        return null;
+    public Path getDirectory() {
+        return this.dataPath.resolve("crates");
     }
 
     public void sendMessage(List<String> files, final int success, final int failed) {
@@ -76,7 +76,7 @@ public abstract class ICrateMigrator {
         ));
     }
 
-    public void migrate(final PaperCustomFile customFile, final String crateName) {
+    public boolean migrate(final PaperCustomFile customFile, final String crateName) {
         final YamlConfiguration configuration = customFile.getConfiguration();
 
         final ConfigurationSection crate = configuration.getConfigurationSection("Crate");
@@ -88,7 +88,7 @@ public abstract class ICrateMigrator {
                     "{reason}", "File could not be found in our data, likely invalid yml file that didn't load properly."
             ));
 
-            return;
+            return false;
         }
 
         set(crate, "Item", crate.getString("Item", "diamond").toLowerCase());
@@ -124,6 +124,12 @@ public abstract class ICrateMigrator {
 
         customFile.save();
         customFile.load();
+
+        return true;
+    }
+
+    public boolean migrate(@NotNull final PaperCustomFile customFile) {
+        return migrate(customFile, "");
     }
 
     public final String time() {

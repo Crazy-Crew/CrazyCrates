@@ -4,11 +4,9 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,23 +40,15 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
 
         final PaperCustomFile customFile = optional.get();
 
-        if (customFile.hasAction(FileAction.STATIC_FILE)) {
-            Messages.error_migrating.sendMessage(this.sender, Map.of(
-                    "{file}", crateName,
-                    "{type}", type.getName(),
-                    "{reason}", "File requested is not a crate config file."
-            ));
-
-            return;
-        }
-
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
 
         try {
-            migrate(customFile, this.crateName);
-
-            success.add("<green>⤷ " + this.crateName);
+            if (migrate(customFile, this.crateName)) {
+                success.add("<green>⤷ " + this.crateName);
+            } else {
+                failed.add("<red>⤷ " + this.crateName);
+            }
         } catch (final Exception exception) {
             failed.add("<red>⤷ " + this.crateName);
         }
@@ -81,10 +71,5 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
     @Override
     public <T> void set(final ConfigurationSection section, final String path, T value) {
         section.set(path, value);
-    }
-
-    @Override
-    public final File getCratesDirectory() {
-        return new File(this.plugin.getDataFolder(), "crates");
     }
 }
