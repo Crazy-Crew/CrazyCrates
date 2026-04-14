@@ -13,6 +13,8 @@ import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.items.types.PatternBuilder;
+import com.ryderbelserion.fusion.paper.builders.items.types.PotionBuilder;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -163,7 +165,7 @@ public class Prize {
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
-    public @NotNull final ItemStack getDisplayItem(@NotNull final Audience audience, @NotNull final Crate crate) {
+    public @NotNull final ItemStack getDisplayItem(@Nullable final Audience audience, @NotNull final Crate crate) {
         final int pulls = PrizeManager.getCurrentPulls(this, crate);
         final int maxPulls = getMaxPulls();
         final String amount = String.valueOf(pulls);
@@ -391,15 +393,27 @@ public class Prize {
                     ).forEach(this.logger::warn);
                 }
 
+                final PatternBuilder patternBuilder = builder.asPatternBuilder();
+
                 for (final String pattern : this.section.getStringList("Patterns")) {
-                    //builder.addPattern(pattern.toLowerCase());
+                    final String[] origin = pattern.split(":");
+
+                    patternBuilder.addPattern(origin[0], origin[1]);
                 }
+
+                patternBuilder.build();
             }
 
             if (this.section.contains("DisplayPatterns")) {
+                final PatternBuilder patternBuilder = builder.asPatternBuilder();
+
                 for (final String pattern : this.section.getStringList("DisplayPatterns")) {
-                    //builder.addPattern(pattern.toLowerCase());
+                    final String[] origin = pattern.split(":");
+
+                    patternBuilder.addPattern(origin[0], origin[1]);
                 }
+
+                patternBuilder.build();
             }
 
             //builder.setHidingItemFlags(this.section.getBoolean("HideItemFlags", false) || !this.section.getStringList("Flags").isEmpty());
@@ -435,6 +449,8 @@ public class Prize {
             if (this.section.contains("DisplayPotions")) {
                 final ConfigurationSection potions = this.section.getConfigurationSection("DisplayPotions");
 
+                final PotionBuilder potionBuilder = builder.asPotionBuilder();
+
                 if (potions != null) {
                     for (final String potion : potions.getKeys(false)) {
                         final PotionEffectType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getPotionEffect(potion);
@@ -446,10 +462,12 @@ public class Prize {
                                 final int duration = data.getInt("duration", 10) * 20;
                                 final int level = data.getInt("level", 1);
 
-                                //builder.addPotionEffect(type, duration, level);
+                                potionBuilder.withPotionEffect(type, duration, level);
                             }
                         }
                     }
+
+                    potionBuilder.build();
                 }
             }
 
