@@ -49,8 +49,8 @@ public class CommandManager {
     public static void load() {
         new ArgumentRelations().build();
 
-        commandManager.registerSuggestion(SuggestionKey.of("crates"), (context -> {
-            final List<String> crates = new ArrayList<>(crateManager.getCrateNames());
+        commandManager.registerSuggestion(SuggestionKey.of("crates"), (_ -> {
+            final List<String> crates = new ArrayList<>(crateManager.getCrateNames(true));
 
             crates.add("Menu");
 
