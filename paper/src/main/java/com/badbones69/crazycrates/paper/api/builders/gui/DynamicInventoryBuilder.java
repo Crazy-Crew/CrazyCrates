@@ -87,7 +87,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
             return;
         }
 
-        this.gui.setPageItem(safeRow, column, this.inventoryManager.getBackButton(this.player, this.gui), event -> {
+        this.gui.addSlotAction(safeRow, column, this.inventoryManager.getBackButton(this.player, this.gui), event -> {
             event.setCancelled(true);
 
             this.gui.nextPage();
@@ -120,7 +120,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
 
         final int safeRow = Math.min(row == -1 ? rows : row, rows);
 
-        this.gui.setPageItem(safeRow, column, this.inventoryManager.getNextButton(this.player, this.gui), event -> {
+        this.gui.addSlotAction(safeRow, column, this.inventoryManager.getNextButton(this.player, this.gui), event -> {
             event.setCancelled(true);
 
             this.gui.nextPage();

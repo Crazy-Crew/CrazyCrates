@@ -129,7 +129,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
         this.gui.open(this.player, gui -> {
             final int rows = gui.getRows();
 
-            gui.setPageItem(rows, 5, ItemBuilder.from(ItemType.CHEST)
+            gui.addSlotAction(rows, 5, ItemBuilder.from(ItemType.CHEST)
                     .withDisplayName("<red>What is this menu?")
                             .withDisplayLore(
                                     List.of(
