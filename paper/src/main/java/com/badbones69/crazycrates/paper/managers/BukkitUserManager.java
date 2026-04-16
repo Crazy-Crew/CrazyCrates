@@ -159,6 +159,15 @@ public class BukkitUserManager extends UserManager {
                 }
 
                 MiscUtils.dropItem(player, crate.getKey(amount, player), player.getLocation(), true);
+
+                this.logger.info("Dropped {} x{} key(s) for player {} at {} {} {} in world {}.",
+                        crate.getKeyName(),
+                        amount,
+                        player.getName(),
+                        (int)player.getLocation().x(),
+                        (int)player.getLocation().y(),
+                        (int)player.getLocation().z(),
+                        player.getWorld().getName());
             }
 
             case virtual_key -> addVirtualKeys(uuid, fileName, amount);
