@@ -25,9 +25,7 @@ Crate:
   opening-command:
     # If the commands should be sent or not.
     toggle: false
-    # The commands to run when the crate opens.
-    # Supports all placeholderapi placeholders
-    # Supports %prefix which returns our prefix, %player% which uses the player name
+    # Available Placeholders: %prefix%, %player% (PlaceholderAPI included)
     commands:
       - "put your command here."
   sound:
@@ -491,22 +489,14 @@ Crate:
               gradient_up: "light_gray"
               base: "white"
               flower: "light_blue"
-    "7":
+    # The name of the prize.
+    "muscleman":
       # The name of the item to display in the gui.
-      DisplayName: "<red>Red Potion"
+      DisplayName: "<red>Muscle Man Potion"
       # The item to display in the gui.
       DisplayItem: "potion"
       # Prize display preview settings
       Settings:
-        # The custom model data of the item, -1 is disabled.
-        Custom-Model-Data: -1
-        # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
-        # Set this to blank for it to do nothing.
-        Model:
-          # The namespace i.e. nexo
-          Namespace: ""
-          # The id i.e. emerald_helmet
-          Id: ""
         # The rgb used for the potion.
         RGB: '229,164,229'
         # Color: RED
@@ -516,10 +506,27 @@ Crate:
       Weight: 15.0
       # The list of items to win.
       Items:
-        "1":
+        # The name of the item, good for identification internally and externally.
+        "strength_potion":
           # The item material.
           material: "potion"
           # Per item settings.
           settings:
             # The rgb of the item.
             rgb: "229,164,229"
+            # The potion settings.
+            potions:
+              # The name of the potion effect.
+              "strength":
+                # The duration of the potion effect.
+                duration: 10
+                # The level of the potion effect.
+                level: 3
+                # The potion style settings.
+                style:
+                  # Should the icon show in the inventory?
+                  icon: false
+                  # Should there be an ambient effect for the player?
+                  ambient: false
+                  # Should the particles show around the player?
+                  particles: false

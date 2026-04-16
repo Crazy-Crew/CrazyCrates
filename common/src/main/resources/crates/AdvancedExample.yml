@@ -25,9 +25,7 @@ Crate:
   opening-command:
     # If the commands should be sent or not.
     toggle: false
-    # The commands to run when the crate opens.
-    # Supports all placeholderapi placeholders
-    # Supports %prefix which returns our prefix, %player% which uses the player name
+    # Available Placeholders: %prefix%, %player% (PlaceholderAPI included)
     commands:
       - "put your command here."
   sound:
