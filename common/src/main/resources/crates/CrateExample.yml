@@ -113,8 +113,9 @@ Crate:
     Namespace: ""
     # The id i.e. emerald_helmet
     Id: ""
-  # If the crate in the main /crates is glowing or not.
-  Glowing: false
+  # Should the item glow?
+  # Available Types: add_glow, remove_glow, none
+  Glowing: "none"
   # Name of the item in the GUI.
   Name: "<bold><green>Basic Crate</bold>"
   # The lore of the item in the GUI.
@@ -211,8 +212,9 @@ Crate:
       Namespace: ""
       # The id i.e. emerald_helmet
       Id: ""
-    # Makes the key look enchanted.
-    Glowing: true
+    # Should the item glow?
+    # Available Types: add_glow, remove_glow, none
+    Glowing: "add_glow"
   # Settings for the holograms.
   Hologram:
     # Toggle on and off the holograms for the crates.

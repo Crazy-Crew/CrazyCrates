@@ -91,8 +91,9 @@ Crate:
     Namespace: ""
     # The id i.e. emerald_helmet
     Id: ""
-  # If the crate in the main /crates is glowing or not.
-  Glowing: false
+  # Should the item glow?
+  # Available Types: add_glow, remove_glow, none
+  Glowing: "none"
   # Name of the item in the GUI.
   Name: "<bold><gradient:#E43A96:#FF91EA>Cosmic Crate</gradient></bold>"
   # The lore of the item in the GUI.
@@ -226,6 +227,11 @@ Crate:
     Name: "<bold><gradient:#E43A96:#FF91EA>Cosmic Crate Key</gradient></bold>"
     # The custom model data of the item, -1 is disabled.
     Custom-Model-Data: -1
+    # Lore of the Key.
+    Lore:
+      - "<gradient:#E43A96:#FF91EA>A fancy key to open a cosmical crate!</gradient>"
+    # The item the key is.
+    Item: "purple_dye"
     # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
     # Set this to blank for it to do nothing.
     Model:
@@ -233,13 +239,9 @@ Crate:
       Namespace: ""
       # The id i.e. emerald_helmet
       Id: ""
-    # Lore of the Key.
-    Lore:
-      - "<gradient:#E43A96:#FF91EA>A fancy key to open a cosmical crate!</gradient>"
-    # The item the key is.
-    Item: "purple_dye"
-    # Makes the key look enchanted.
-    Glowing: true
+    # Should the item glow?
+    # Available Types: add_glow, remove_glow, none
+    Glowing: "add_glow"
   # Settings for the holograms.
   Hologram:
     # Toggle on and off the holograms for the crates.
@@ -553,8 +555,9 @@ Crate:
         - "<bold><gold>Chance: <red>%chance%</bold>"
       # If the prize should spawn fireworks.
       Firework: true
-      # If the display item should glow.
-      Glowing: true
+      # Should the item glow?
+      # Available Types: add_glow, remove_glow, none
+      Glowing: "add_glow"
       # The tiers the prize can be won from.
       Tiers:
         - "UnCommon"

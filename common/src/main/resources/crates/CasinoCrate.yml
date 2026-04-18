@@ -96,8 +96,9 @@ Crate:
     Namespace: ""
     # The id i.e. emerald_helmet
     Id: ""
-  # If the crate in the main /crates is glowing or not.
-  Glowing: false
+  # Should the item glow?
+  # Available Types: add_glow, remove_glow, none
+  Glowing: "none"
   # Name of the item in the GUI.
   Name: "<bold><dark_blue>Casino Crate</bold>"
   # The lore of the item in the GUI.
@@ -252,8 +253,9 @@ Crate:
       - "<gray>For a special Crate."
     # The item the key is.
     Item: "cyan_dye"
-    # Makes the key look enchanted.
-    Glowing: true
+    # Should the item glow?
+    # Available Types: add_glow, remove_glow, none
+    Glowing: "add_glow"
   # Settings for the holograms.
   Hologram:
     # Toggle on and off the holograms for the crates.
