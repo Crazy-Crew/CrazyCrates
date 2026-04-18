@@ -46,11 +46,11 @@ public class ItemUtil {
         return itemType.getKey().getKey();
     }
 
-    public static void addGlow(@NotNull final ItemBuilder builder, final boolean isGlowing) {
-        if (isGlowing) {
-            builder.addEnchantGlint();
-        } else {
-            builder.removeEnchantGlint();
+    public static void addGlow(@NotNull final ItemBuilder builder, final String value) {
+        switch (value.toLowerCase()) {
+            case "add_glow", "true" -> builder.addEnchantGlint();
+            case "remove_glow", "false" -> builder.removeEnchantGlint();
+            default -> {}
         }
     }
 
@@ -180,9 +180,7 @@ public class ItemUtil {
     }
 
     public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder, @NotNull final Player player) {
-        if (section.contains("Glowing")) {
-            ItemUtil.addGlow(builder, section.getBoolean("Glowing", false));
-        }
+        ItemUtil.addGlow(builder, section.getString("Glowing", "none"));
         
         builder.setItemDamage(section.getInt("DisplayDamage", 0));
 
@@ -302,9 +300,7 @@ public class ItemUtil {
 
             itemBuilder.setUnbreakable(item.getBoolean("unbreakable-item", false));
 
-            if (item.contains("settings.glowing")) {
-                ItemUtil.addGlow(itemBuilder, item.getBoolean("settings.glowing", false));
-            }
+            ItemUtil.addGlow(itemBuilder, item.getString("settings.glowing", "none"));
 
             final String player = item.getString("settings.player", "");
 
@@ -393,7 +389,7 @@ public class ItemUtil {
                     }
                     case "data" -> itemBuilder.withBase64(value);
                     case "name" -> itemBuilder.withDisplayName(value);
-                    case "glowing" -> ItemUtil.addGlow(itemBuilder, StringUtils.tryParseBoolean(value).orElse(false));
+                    case "glowing" -> ItemUtil.addGlow(itemBuilder, value);
                     case "amount" -> {
                         final Optional<Number> amount = StringUtils.tryParseInt(value);
                         itemBuilder.setAmount(amount.map(Number::intValue).orElse(1));

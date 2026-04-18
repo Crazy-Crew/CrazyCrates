@@ -1539,9 +1539,7 @@ public class CrateManager {
             itemBuilder.withBase64(section.getString("PhysicalKey.Data", ""));
         }
 
-        if (section.contains("PhysicalKey.Glowing")) {
-            ItemUtil.addGlow(itemBuilder, section.getBoolean("PhysicalKey.Glowing", true));
-        }
+        ItemUtil.addGlow(itemBuilder, section.getString("PhysicalKey.Glowing", "none"));
 
         ItemUtil.addItemModel(itemBuilder, namespace, id);
         ItemUtil.addCustomModel(itemBuilder, customModelData);

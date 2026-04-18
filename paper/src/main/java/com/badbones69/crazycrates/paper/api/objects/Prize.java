@@ -378,9 +378,7 @@ public class Prize {
                 builder.withDisplayLore(this.section.getStringList("Lore"));
             }
 
-            if (this.section.contains("Glowing")) {
-                ItemUtil.addGlow(builder, this.section.getBoolean("Glowing", false));
-            }
+            ItemUtil.addGlow(builder, this.section.getString("Glowing", "none"));
 
             builder.setItemDamage(this.section.getInt("DisplayDamage", -1));
 
