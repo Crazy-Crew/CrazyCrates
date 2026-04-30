@@ -170,9 +170,7 @@ public class Prize {
         final int maxPulls = getMaxPulls();
         final String amount = String.valueOf(pulls);
 
-        //final String displayName = this.displayItem.getPlainName();
-
-        //this.displayItem.withDisplayName(displayName);
+        this.displayItem.withDisplayName(this.prizeName);
 
         final List<String> lore = new ArrayList<>();
 
@@ -354,7 +352,7 @@ public class Prize {
                 builder.withBase64(this.section.getString("DisplayData", ""));
             }
 
-            if (this.section.contains("DisplayName")) {
+            if (!this.prizeName.isBlank()) {
                 builder.withDisplayName(this.prizeName);
             }
 
