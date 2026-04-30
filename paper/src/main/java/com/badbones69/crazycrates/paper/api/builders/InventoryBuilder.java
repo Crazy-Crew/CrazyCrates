@@ -141,7 +141,7 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
     }
 
     public void sendTitleChange() {
-        GuiUtils.updateTitle(this.player, this.title);
+        GuiUtils.updateTitle(this.player, this.inventory, this.title);
     }
 
     @Override
