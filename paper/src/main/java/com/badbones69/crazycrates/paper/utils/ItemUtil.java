@@ -22,6 +22,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -179,7 +180,7 @@ public class ItemUtil {
         return container.get(ItemKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING);
     }
 
-    public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder, @NotNull final Player player) {
+    public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder) {
         ItemUtil.addGlow(builder, section.getString("Glowing", "none"));
         
         builder.setItemDamage(section.getInt("DisplayDamage", 0));
@@ -198,7 +199,9 @@ public class ItemUtil {
             pattern.build();
         }
 
-        //builder.setHidingItemFlags(section.getBoolean("HideItemFlags", false) || !section.getStringList("Flags").isEmpty());
+        if (section.getBoolean("Hide-Flags", false)) {
+            builder.hideComponents(section.getStringList("Components"));
+        }
 
         builder.setUnbreakable(section.getBoolean("Unbreakable", false));
         
@@ -408,6 +411,13 @@ public class ItemUtil {
 
                         if (isEnabled) {
                             itemBuilder.hideToolTip();
+                        }
+                    }
+                    case "components" -> {
+                        final List<String> components = Arrays.stream(value.split(",")).toList();
+
+                        if (!components.isEmpty()) {
+                            itemBuilder.hideComponents(components);
                         }
                     }
                     case "trim" -> { // trim-material, and trim-pattern are now combined i.e. trim:sentry;quartz

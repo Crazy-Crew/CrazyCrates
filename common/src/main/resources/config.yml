@@ -196,6 +196,9 @@ gui:
           - "slot:32, item:cyan_stained_glass_pane, name: "
           - "slot:33, item:cyan_stained_glass_pane, name: "
           - "slot:34, item:cyan_stained_glass_pane, name: "
+          # A list of components to hide.
+          # https://jd.papermc.io/paper/io/papermc/paper/registry/keys/DataComponentTypeKeys.html, Grab the value from the description without minecraft:
+          #- "slot:34, item:cyan_stained_glass_pane, name: , components:enchantments,profile"
 # Settings related to crates.
 crate:
   interaction:

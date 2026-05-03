@@ -104,6 +104,12 @@ Crate:
         Max-Cap: 20
   # Item the crate is in the GUI
   Item: "diamond"
+  # This allows use of the components list below.
+  Hide-Flags: false
+  # The types of components to hide.
+  # https://jd.papermc.io/paper/io/papermc/paper/registry/keys/DataComponentTypeKeys.html, Grab the value from the description without minecraft:
+  Components:
+    - "enchantments"
   # The custom model data of the item, -1 is disabled.
   Custom-Model-Data: -1
   # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
@@ -352,6 +358,10 @@ Crate:
           material: "diamond_helmet"
           # The name of the item.
           name: "<red>Diamond Helmet"
+          # The types of components to hide.
+          # https://jd.papermc.io/paper/io/papermc/paper/registry/keys/DataComponentTypeKeys.html, Grab the value from the description without minecraft:
+          hidden-components:
+            - "enchantments"
           # Per item settings.
           settings:
             # Trim settings.
@@ -397,6 +407,11 @@ Crate:
         "1":
           # The item material.
           material: "enchanted_book"
+          # This allows use of the components list below.
+          hide-flags: false
+          # The types of components to hide.
+          components:
+            - "enchantments"
           # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
           # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
           # enchantment: amount

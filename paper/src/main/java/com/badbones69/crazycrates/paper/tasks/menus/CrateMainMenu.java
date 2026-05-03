@@ -27,6 +27,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.text.NumberFormat;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -88,7 +90,21 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                         case "unbreakable-item" -> item.setUnbreakable(StringUtils.tryParseBoolean(value).orElse(false));
 
-                        //case "hide-item-flags" -> item.setHidingItemFlags(StringUtils.tryParseBoolean(value).orElse(false)); //todo() doesn't exist anymore.
+                        case "hide-tool-tip" -> {
+                            final boolean isEnabled = StringUtils.tryParseBoolean(value).orElse(false);
+
+                            if (isEnabled) {
+                                item.hideToolTip();
+                            }
+                        }
+
+                        case "components" -> {
+                            final List<String> components = Arrays.stream(value.split(",")).toList();
+
+                            if (!components.isEmpty()) {
+                                item.hideComponents(components);
+                            }
+                        }
 
                         case "command" -> item.setPersistentString(ItemKeys.crate_command.getNamespacedKey(), value);
                     }
@@ -148,7 +164,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
             ItemUtil.addCustomModel(builder, section.getString("Custom-Model-Data", ""));
             ItemUtil.addItemModel(builder, section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));
 
-            this.gui.addSlotAction(slot, ItemUtil.getItem(section, builder, this.player).asGuiItem(event -> {
+            this.gui.addSlotAction(slot, ItemUtil.getItem(section, builder).asGuiItem(event -> {
                 final String fancyName = crate.getCrateName();
 
                 switch (event.getClick()) {
