@@ -88,9 +88,7 @@ public class CrateOpenListener implements Listener {
             }
         }
 
-        final boolean commandToggle = configuration.contains("opening-command") && configuration.getBoolean("opening-command.toggle");
-
-        if (commandToggle) {
+        if (configuration.getBoolean("opening-command.toggle", false)) {
             final List<String> commands = configuration.getStringList("opening-command.commands");
 
             for (final String line : commands) {
