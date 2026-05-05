@@ -74,7 +74,7 @@ public class Prize {
 
         this.crateName = crateName;
 
-        if (this.config.getProperty(ConfigKeys.use_different_items_layout) && !this.section.isList("Items")) {
+        if (!this.section.isList("Items")) {
             this.items = ItemUtil.convertConfigurationSection(this.section.getConfigurationSection("Items"));
         } else {
             this.items = ItemUtil.convertStringList(this.section.getStringList("Items"), this.sectionName);
@@ -130,7 +130,7 @@ public class Prize {
 
         this.section = section;
 
-        if (this.config.getProperty(ConfigKeys.use_different_items_layout) && !this.section.isList("Items")) {
+        if (!this.section.isList("Items")) {
             this.items = ItemUtil.convertConfigurationSection(this.section.getConfigurationSection("Items"));
         } else {
             this.items = ItemUtil.convertStringList(this.section.getStringList("Items"), this.sectionName);
