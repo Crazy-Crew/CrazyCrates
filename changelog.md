@@ -1,98 +1,33 @@
 ## Changes 🔨
-### New API
-CrazyCrates API has been bumped to 0.9.0
+- Improved updating the `examples` folder.
+- Improved performance & readability when building crate objects.
+- Improved performance when loading/adding crate locations.
+- Removed `LegacyItemBuilder` as maintaining 2 ItemBuilders was not fun.
+  - There should be no need to change configurations unless you use `HideItemFlags: true`
+  - If you do use `HideItemFlags`, [Click Me](http://localhost:4321/mods/crazycrates/faq/#2-hideitemflags-no-longer-works-what-do-i-use-now)
+- Improved migration types by looping through the folders instead of the FileManager cache which led to unnecessary checks.
+- Improved verbose logging across the plugin.
+- Improved /crazyccrates teleport <crate_id>.
+- Improved placeholder parsing throughout the plugin.
+- Replaced {key_amount} from the not_enough_keys message with {amount}.
+  - {key_amount} is no longer usable.
+- Placeholders that normally could've only been used in the DisplayName of items can now be used in DisplayLore as well.
+- Cleaned up code related to sending messages to the player, or broadcasting messages to the server.
 
-#### A new class has been added.
-Key Manager class, which allows you to check Items that players are holding.
-
-You can fetch this by doing CratesProvider#get()#getKeyManager()
-
-```java
-/**
- * A class for the KeyManager, It handles checking physical keys, and anything else we might need soon.
- *
- * @author Ryder Belserion
- * @version 0.9.0
- * @since 0.9.0
- */
-public abstract class KeyManager<I> {
-
-    /**
-     * The default constructor for {@link KeyManager<I>}.
-     *
-     * @author Ryder Belserion
-     * @since 0.9.0
-     */
-    public KeyManager() {}
-
-    /**
-     * Checks if the item is a valid key.
-     *
-     * @param item the ItemStack
-     * @return true or false
-     * @since 0.9.0
-     */
-    public abstract boolean isKey(@NotNull final I item);
-
-    /**
-     * Checks if an item matches another item.
-     *
-     * @param item the initial ItemStack
-     * @param comparing the ItemStack to compare
-     * @return true or false
-     * @since 0.9.0
-     */
-    public abstract boolean isMatchingKey(@NotNull final I item, @NotNull final I comparing);
-
-    /**
-     * Gets the name of the crate the key belongs to.
-     *
-     * @param item the ItemStack
-     * @return the name of the crate
-     * @since 0.9.0
-     */
-    public abstract String getKey(@NotNull final I item);
-
-}
+## Configuration Changes
+### Glowing
+- Glowing no longer is true/false, however existing configurations using true/false will still work as we look for that internally as well.
+```yaml
+  # Should the item glow?
+  # Available Types: add_glow, remove_glow, none
+  Glowing: "none"
 ```
-
-### Configuration changes
-- `ChestLines` has been renamed to `Rows` in the crate config files, [5eec53b](https://github.com/Crazy-Crew/CrazyCrates/commit/5eec53b)
-  - All existing configurations should continue to work, You can run `/crazyrates migrate -mt CratesDeprecated` to change this, or simply use Find and Replace.
-
-### Other Changes
-- Added the ability to customize the row/column of the back/next and menu button.
-- Added the ability to customize the CSGO animation to either have the top/bottom be static or dynamic. [95de51e](https://github.com/Crazy-Crew/CrazyCrates/commit/95de41e)
-  - If you run /crazycrates migrate -mt CratesDeprecated, The existing options you need will generate. 
-  - Please refer to the `examples/crates/CrateExample.yml` folder for a full example of how to do it. 
-  - It supports the same structure as the new way to do items in the `Items` section which can be found on the documentation.
-- Run the command on click in the Crate Menu, instead of on open.
-  - [6c580b1](https://github.com/Crazy-Crew/CrazyCrates/commit/6c580b1)
-- Added %chance% / %weight% to the prize/default message.
-- Added command syntax suggestions to all existing commands.
-- Return "N/A" if the file is empty, because files#getFirst() throws an error because no element found.
-- Utilize built in methods from CMI/DecentHolograms to handle coloring the messages for better compatibility with their plugins.
-  - This will maybe also allow other plugin specific features like CMI's countless other features for holograms. 
-- Remove the brackets from custom name for the item displayed above QuickCrate.
-- Fill the bottom border with air to prevent item overfill with the buttons.
-- Added toggle to disable opening tracking crate.
-  - [76625ba](https://github.com/Crazy-Crew/CrazyCrates/commit/76625ba961367be51a75fc907faa75ad87676b79)
+### Hidden Components
+If you are using `Hidden-Components` or `Components` in places, It has been replaced by `flags.components`, Existing configurations will still work.
 
 ## Bugs Fixed 🐛
-- Fixed an error with WonderCrate.yml on first install, because a prize was lacking an `Items` section.
-- Fixed a potential memory leak caused by using double brace initializers.
-- Fixed multiple bugs with PlaceholderAPI support.
-- Fixed a typo in CosmicCrateManager. [#873](https://github.com/Crazy-Crew/CrazyCrates/commit/876f3a7)
-- Fixed a typo with %crate_opened_raw%.
-  - [1ef6553](https://github.com/Crazy-Crew/CrazyCrates/commit/1ef6553)
-- Fixed an issue with items dropping on Folia. [#856](https://github.com/Crazy-Crew/CrazyCrates/pull/856)
-- Fixed an issue by using #runNow instead of #run which calls the internal void method.
-- Fixed multiple issues with migration types.
-- Fixed multiple issues on Folia due to not using schedulers when needed.
-  - [0e139f6](https://github.com/Crazy-Crew/CrazyCrates/commit/0e139f6)
-- Fixed an issue with potion color not applying with the new items section.
-- Fixed an issue with the shield banners using the new item format.
-- Fixed an issue with the tier chance per prize not properly showing.
-- Fixed crates debug command.
+- Fixed an issue with paginated guis creating a second page despite there not being enough items for it.
+- Fixed an issue with log messages potentially not being saved.
+- Fixed an issue with the ExcellentCrates migrator.
 
 As always, Report 🐛 to https://github.com/Crazy-Crew/CrazyCrates/issues
