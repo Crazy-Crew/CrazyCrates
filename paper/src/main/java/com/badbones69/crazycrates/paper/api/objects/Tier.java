@@ -34,7 +34,7 @@ public class Tier {
         this.lore = section.getStringList("Lore"); // this returns an empty list if not found anyway.
 
         this.item = ItemBuilder.from(section.getString("Item", "chest").toLowerCase())
-                .hideComponents(section.getStringList("Hidden-Components"));
+                .hideComponents(section.getStringList("flags.components"));
 
         ItemUtil.addCustomModel(this.item, section.getString("Custom-Model-Data", ""));
         ItemUtil.addItemModel(this.item, section.getString("Model.Namespace", ""), section.getString("Model.Id", ""));

@@ -1543,7 +1543,7 @@ public class CrateManager {
         ItemUtil.addItemModel(itemBuilder, namespace, id);
         ItemUtil.addCustomModel(itemBuilder, customModelData);
 
-        return itemBuilder.withDisplayName(name).withDisplayLore(lore).hideComponents(section.getStringList("Hidden-Components"));
+        return itemBuilder.withDisplayName(name).withDisplayLore(lore).hideComponents(section.getStringList("flags.components"));
     }
 
     // Cleans the data file.

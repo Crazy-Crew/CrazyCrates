@@ -412,7 +412,7 @@ public class Prize {
                 patternBuilder.build();
             }
 
-            //builder.setHidingItemFlags(this.section.getBoolean("HideItemFlags", false) || !this.section.getStringList("Flags").isEmpty());
+            builder.hideComponents(this.section.getStringList("flags.components"));
 
             builder.setUnbreakable(this.section.getBoolean("Unbreakable", false));
 

@@ -200,7 +200,11 @@ public class ItemUtil {
         }
 
         if (section.getBoolean("Hide-Flags", false)) {
-            builder.hideComponents(section.getStringList("Components"));
+            if (section.contains("Components")) {
+                builder.hideComponents(section.getStringList("Components"));
+            } else {
+                builder.hideComponents(section.getStringList("flags.components"));
+            }
         }
 
         builder.setUnbreakable(section.getBoolean("Unbreakable", false));
@@ -299,7 +303,11 @@ public class ItemUtil {
                 itemBuilder.hideToolTip();
             }
 
-            itemBuilder.hideComponents(item.getStringList("hidden-components"));
+            if (item.contains("hidden-components")) {
+                itemBuilder.hideComponents(item.getStringList("hidden-components"));
+            } else {
+                itemBuilder.hideComponents(item.getStringList("flags.components"));
+            }
 
             itemBuilder.setUnbreakable(item.getBoolean("unbreakable-item", false));
 
