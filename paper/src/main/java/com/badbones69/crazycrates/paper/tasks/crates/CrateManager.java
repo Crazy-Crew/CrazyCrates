@@ -1531,7 +1531,6 @@ public class CrateManager {
         final String namespace = section.getString("PhysicalKey.Model.Namespace", "");
         final String id = section.getString("PhysicalKey.Model.Id", "");
         final List<String> lore = section.getStringList("PhysicalKey.Lore");
-        final boolean hideFlags = section.getBoolean("PhysicalKey.HideItemFlags", false);
 
         final ItemBuilder itemBuilder = ItemBuilder.from(section.getString("PhysicalKey.Item", "tripwire_hook").toLowerCase());
 
@@ -1544,9 +1543,7 @@ public class CrateManager {
         ItemUtil.addItemModel(itemBuilder, namespace, id);
         ItemUtil.addCustomModel(itemBuilder, customModelData);
 
-        //return itemBuilder.setHidingItemFlags(hideFlags); //todo() this no longer exists.
-
-        return itemBuilder.withDisplayName(name).withDisplayLore(lore);
+        return itemBuilder.withDisplayName(name).withDisplayLore(lore).hideComponents(section.getStringList("Hidden-Components"));
     }
 
     // Cleans the data file.

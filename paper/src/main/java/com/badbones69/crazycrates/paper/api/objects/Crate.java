@@ -231,7 +231,7 @@ public class Crate {
         @NotNull final String borderName = this.section.getString("Preview.Glass.Name", " ");
 
         this.borderItem = ItemBuilder.from(this.section.getString("Preview.Glass.Item", "gray_stained_glass_pane").toLowerCase())
-                //.setHidingItemFlags(this.section.getBoolean("Preview.Glass.HideItemFlags", false)) //todo() this doesn't exist now.
+                .hideComponents(this.section.getStringList("Preview.Glass.Hidden-Components"))
                 .withDisplayName(borderName);
 
         ItemUtil.addItemModel(this.borderItem, this.section.getString("Preview.Glass.Model.Namespace", ""), this.section.getString("Preview.Glass.Model.Id", ""));
@@ -240,7 +240,7 @@ public class Crate {
         @NotNull final String previewTierBorderName = this.section.getString("tier-preview.glass.name", " ");
 
         this.previewTierBorderItem = ItemBuilder.from(this.section.getString("tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
-                //.setHidingItemFlags(this.section.getBoolean("tier-preview.glass.hideitemflags", false)) //todo() this doesn't exist now.
+                .hideComponents(this.section.getStringList("tier-preview.glass.hidden-components"))
                 .withDisplayName(previewTierBorderName);
 
         ItemUtil.addItemModel(this.previewTierBorderItem, this.section.getString("tier-preview.glass.model.namespace", ""), this.section.getString("tier-preview.glass.model.id", ""));

@@ -46,7 +46,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
 
         this.mysteryCrate = ItemBuilder.from(settings.getString("Mystery-Crate.Item", "chest").toLowerCase())
                 .withDisplayName(settings.getString("Mystery-Crate.Name", "<bold><white>???</bold>"))
-                //.setHidingItemFlags(file.getBoolean("Mystery-Crate.HideItemFlags", false)) //todo() this doesn't exist now.
+                .hideComponents(settings.getStringList("Mystery-Crate.Hidden-Components"))
                 .withDisplayLore(settings.contains("Mystery-Crate.Lore") ? settings.getStringList("Mystery-Crate.Lore") : Collections.singletonList("<gray>You may choose 4 crates."))
                 .setPersistentInteger(ItemKeys.cosmic_mystery_crate.getNamespacedKey(), 1);
 
@@ -55,7 +55,7 @@ public class CosmicCrateManager extends AbstractCrateManager {
 
         this.pickedCrate = ItemBuilder.from(settings.getString("Picked-Crate.Item", "gray_stained_glass_pane").toLowerCase())
                 .withDisplayName(settings.getString("Picked-Crate.Name", "<bold><white>???</white>"))
-                //.setHidingItemFlags(file.getBoolean("Picked-Crate.HideItemFlags", false)) //todo() this doesn't exist now.
+                .hideComponents(settings.getStringList("Picked-Crate.Hidden-Components"))
                 .withDisplayLore(settings.contains("Picked-Crate.Lore") ? settings.getStringList("Picked-Crate.Lore") : Collections.singletonList("<gray>You have chosen #%slot%."))
                 .setPersistentInteger(ItemKeys.cosmic_picked_crate.getNamespacedKey(), 1);
 

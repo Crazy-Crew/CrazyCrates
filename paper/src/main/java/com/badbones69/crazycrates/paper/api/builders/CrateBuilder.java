@@ -344,7 +344,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param lore lore of item
      */
     public void setItem(final int slot, @NotNull final ItemType itemType, @NotNull final String name, @NotNull final List<String> lore) {
-        //this.inventory.setItem(slot, new LegacyItemBuilder(this.plugin, itemType).setPlayer(this.player).setDisplayName(name).setDisplayLore(lore).asItemStack());
+        this.inventory.setItem(slot, ItemBuilder.from(itemType).withDisplayName(name).withDisplayLore(lore).asItemStack(this.player));
     }
 
     /**
@@ -355,7 +355,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param name name of item
      */
     public void setItem(final int slot, @NotNull final ItemType itemType, @NotNull final String name) {
-        //this.inventory.setItem(slot, new LegacyItemBuilder(this.plugin, itemType).setPlayer(this.player).setDisplayName(name).asItemStack());
+        this.inventory.setItem(slot, ItemBuilder.from(itemType).withDisplayName(name).asItemStack(this.player));
     }
 
     /**
