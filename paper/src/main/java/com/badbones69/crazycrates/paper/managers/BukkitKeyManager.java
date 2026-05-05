@@ -3,12 +3,12 @@ package com.badbones69.crazycrates.paper.managers;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public class BukkitKeyManager extends us.crazycrew.crazycrates.api.KeyManager<ItemStack> {
 
     @Override
-    public boolean isMatchingKey(@NonNull final ItemStack item, @NonNull final ItemStack comparing) {
+    public boolean isMatchingKey(@NotNull final ItemStack item, @NotNull final ItemStack comparing) {
         final String first_key = getKey(item);
 
         if (first_key.isBlank()) return false;
@@ -21,12 +21,12 @@ public class BukkitKeyManager extends us.crazycrew.crazycrates.api.KeyManager<It
     }
 
     @Override
-    public final boolean isKey(@NonNull final ItemStack item) {
+    public final boolean isKey(@NotNull final ItemStack item) {
         return item.getPersistentDataContainer().has(ItemKeys.crate_key.getNamespacedKey());
     }
 
     @Override
-    public final String getKey(@NonNull final ItemStack item) {
+    public final String getKey(@NotNull final ItemStack item) {
         return isKey(item) ? item.getPersistentDataContainer().get(ItemKeys.crate_key.getNamespacedKey(), PersistentDataType.STRING) : "";
     }
 }

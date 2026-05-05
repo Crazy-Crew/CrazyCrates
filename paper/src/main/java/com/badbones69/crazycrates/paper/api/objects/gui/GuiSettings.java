@@ -1,17 +1,18 @@
 package com.badbones69.crazycrates.paper.api.objects.gui;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.badbones69.crazycrates.paper.api.enums.FillerType;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.gui.buttons.CrateButton;
 import com.badbones69.crazycrates.paper.api.objects.gui.buttons.GuiButton;
-import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiBorder;
+import com.ryderbelserion.fusion.paper.builders.gui.objects.GuiItem;
+import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
@@ -21,15 +22,15 @@ public class GuiSettings {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
+    private final FusionPaper fusion = this.plugin.getFusion();
 
     private final String title;
     private final int rows;
     private final int slot;
 
     private final boolean isFillerToggled;
-    private final GuiItem fillerStack;
-    private final FillerType fillerType;
+    private final ItemBuilder fillerStack;
+    private final GuiBorder fillerType;
 
     private final Map<Integer, GuiButton> buttons = new HashMap<>();
 
@@ -42,11 +43,10 @@ public class GuiSettings {
         this.slot = configuration.getInt("slot", 5);
 
         this.isFillerToggled = configuration.getBoolean("filler.toggle", false);
-        this.fillerType = FillerType.getFromName(configuration.getString("filler.fill-type", "border"));
+        this.fillerType = GuiBorder.getFromName(configuration.getString("filler.fill-type", "border"));
 
-        this.fillerStack = new LegacyItemBuilder(this.plugin)
-                .withType(configuration.getString("filler.toggle.material", "red_stained_glass_pane"))
-                .setDisplayName(configuration.getString("filler.toggle.name", " ")).asGuiItem();
+        this.fillerStack = ItemBuilder.from(configuration.getString("filler.toggle.material", "red_stained_glass_pane"))
+                .withDisplayName(configuration.getString("filler.toggle.name", " "));
 
         final ConfigurationSection staticButtons = configuration.getConfigurationSection("buttons.static");
 
@@ -59,9 +59,7 @@ public class GuiSettings {
                 final int slot = button.getInt("slot");
 
                 if (this.buttons.containsKey(slot)) {
-                    if (MiscUtils.isLogging()) {
-                        this.logger.warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
-                    }
+                    this.fusion.log(Level.WARNING, "Slot %s is taken, Try using another slot as we do not allow duplicates", slot);
 
                     return;
                 }
@@ -81,9 +79,7 @@ public class GuiSettings {
                 final int slot = button.getInt("slot");
 
                 if (this.buttons.containsKey(slot)) {
-                    if (MiscUtils.isLogging()) {
-                        this.logger.warn("Slot {} is taken, Try using another slot as we do not allow duplicates", slot);
-                    }
+                    this.fusion.log(Level.WARNING, "Slot %s is taken, Try using another slot as we do not allow duplicates", slot);
 
                     return;
                 }
@@ -112,12 +108,12 @@ public class GuiSettings {
         return this.isFillerToggled;
     }
 
-    public @NotNull final FillerType getFillerType() {
+    public @NotNull final GuiBorder getFillerType() {
         return this.fillerType;
     }
 
-    public @NotNull final GuiItem getFillerStack() {
-        return this.fillerStack;
+    public @NotNull final GuiItem getFillerStack(@NotNull final Player player) {
+        return this.fillerStack.asGuiItem(player);
     }
 
     public @NotNull final Map<Integer, GuiButton> getButtons() {

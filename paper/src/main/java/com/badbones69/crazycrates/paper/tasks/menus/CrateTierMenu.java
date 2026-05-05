@@ -4,9 +4,8 @@ import com.badbones69.crazycrates.paper.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.Gui;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.builders.gui.objects.border.GuiFiller;
+import com.ryderbelserion.fusion.paper.builders.gui.types.simple.SimpleGui;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
@@ -24,7 +23,7 @@ public class CrateTierMenu extends StaticInventoryBuilder {
 
     private final Player player = getPlayer();
     private final Crate crate = getCrate();
-    private final Gui gui = getGui();
+    private final SimpleGui gui = getGui();
 
     @Override
     public void open() {
@@ -37,12 +36,9 @@ public class CrateTierMenu extends StaticInventoryBuilder {
         final boolean isPreviewBorderEnabled = this.crate.isPreviewTierBorderToggle();
 
         if (isPreviewBorderEnabled) {
-            final GuiItem guiItem = this.crate.getPreviewTierBorderItem().setPlayer(this.player).asGuiItem();
-
             final GuiFiller guiFiller = this.gui.getFiller();
 
-            guiFiller.fillTop(guiItem);
-            guiFiller.fillBottom(guiItem);
+            guiFiller.fillBoth(this.crate.getPreviewTierBorderItem().asItemStack(this.player));
         }
 
         final UUID uuid = this.player.getUniqueId();
@@ -53,7 +49,7 @@ public class CrateTierMenu extends StaticInventoryBuilder {
             final ItemStack item = tier.getTierItem(this.player, this.crate);
             final int slot = tier.getSlot();
 
-            this.gui.setItem(slot, new GuiItem(item, action -> {
+            this.gui.addSlotAction(slot, item, action -> {
                 final ItemStack itemStack = action.getCurrentItem();
 
                 if (itemStack == null || itemStack.getType().isAir()) return;
@@ -65,14 +61,14 @@ public class CrateTierMenu extends StaticInventoryBuilder {
 
                     this.crate.getPreview(this.player, tier).open();
                 }
-            }));
+            });
         });
 
         addMenuButton(this.player, this.crate, this.gui);
 
-        this.gui.setOpenGuiAction(event -> this.inventoryManager.addPreviewViewer(uuid));
+        this.gui.setOpenAction(_ -> this.inventoryManager.addPreviewViewer(uuid));
 
-        this.gui.setCloseGuiAction(event -> this.inventoryManager.removePreviewViewer(uuid));
+        this.gui.setCloseAction(_ -> this.inventoryManager.removePreviewViewer(uuid));
 
         this.gui.open(this.player);
     }

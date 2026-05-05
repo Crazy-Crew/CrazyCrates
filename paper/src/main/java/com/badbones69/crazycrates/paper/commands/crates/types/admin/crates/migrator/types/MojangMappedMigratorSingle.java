@@ -7,10 +7,10 @@ import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migra
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class MojangMappedMigratorSingle extends ICrateMigrator {
 
@@ -26,9 +26,9 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
             return;
         }
 
-        final PaperCustomFile customFile = this.fileManager.getPaperCustomFile(this.dataPath.resolve("crates").resolve(this.crateName));
+        final Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(this.dataPath.resolve("crates").resolve(this.crateName));
 
-        if (customFile == null) {
+        if (optional.isEmpty()) {
             Messages.error_migrating.sendMessage(this.sender, Map.of(
                     "{file}", crateName,
                     "{type}", type.getName(),
@@ -38,23 +38,17 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
             return;
         }
 
-        if (customFile.isStatic()) {
-            Messages.error_migrating.sendMessage(this.sender, Map.of(
-                    "{file}", crateName,
-                    "{type}", type.getName(),
-                    "{reason}", "File requested is not a crate config file."
-            ));
-
-            return;
-        }
+        final PaperCustomFile customFile = optional.get();
 
         final List<String> failed = new ArrayList<>();
         final List<String> success = new ArrayList<>();
 
         try {
-            migrate(customFile, this.crateName);
-
-            success.add("<green>⤷ " + this.crateName);
+            if (migrate(customFile, this.crateName)) {
+                success.add("<green>⤷ " + this.crateName);
+            } else {
+                failed.add("<red>⤷ " + this.crateName);
+            }
         } catch (final Exception exception) {
             failed.add("<red>⤷ " + this.crateName);
         }
@@ -77,10 +71,5 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
     @Override
     public <T> void set(final ConfigurationSection section, final String path, T value) {
         section.set(path, value);
-    }
-
-    @Override
-    public final File getCratesDirectory() {
-        return new File(this.plugin.getDataFolder(), "crates");
     }
 }

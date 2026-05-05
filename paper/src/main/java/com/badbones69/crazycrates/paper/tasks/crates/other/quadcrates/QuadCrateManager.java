@@ -4,8 +4,8 @@ import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.structures.StructureManager;
-import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.*;
 import com.badbones69.common.config.ConfigManager;
@@ -140,22 +140,25 @@ public class QuadCrateManager {
         // Check if the blocks are able to be changed.
         final Set<Location> structureLocations = this.handler.getBlocks(this.spawnLocation.clone());
 
+        final List<String> blocks = this.handler.getBlockBlacklist();
+
         // Loop through the blocks and check if the blacklist contains the block type.
         // Do not open the crate if the block is not able to be changed.
-        for (Location loc : structureLocations) {
+        for (final Location loc : structureLocations) {
             final Block block = loc.getBlock();
-            final Material type = block.getType();
 
-            if (this.handler.getBlockBlacklist().contains(type)) {
+            if (blocks.contains(block.translationKey())) {
                 Messages.needs_more_room.sendMessage(player);
 
                 this.crateManager.removePlayerFromOpeningList(this.player);
 
                 this.crateManager.removeQuadSession(this.instance);
 
-                return;
-            } else {
-                if (type != Material.AIR) this.oldBlocks.put(block.getLocation(), block.getState());
+                continue;
+            }
+
+            if (!block.isEmpty()) {
+                this.oldBlocks.put(block.getLocation(), block.getState());
             }
         }
 
@@ -212,7 +215,9 @@ public class QuadCrateManager {
 
         // This holds the quad crate's spawned chests.
         for (final Location loc : this.crateLocations) {
-            if (this.crateLocations.contains(loc)) this.quadCrateChests.put(loc.clone(), loc.getBlock().getState());
+            if (this.crateLocations.contains(loc)) {
+                this.quadCrateChests.put(loc.clone(), loc.getBlock().getState());
+            }
         }
 
         // Paste the structure in.
@@ -266,7 +271,7 @@ public class QuadCrateManager {
 
                 crate.playSound(player, player.getLocation(), "stop-sound", "entity.player.levelup", Sound.Source.MASTER);
             }
-        }.runDelayed(ConfigManager.getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20));
+        }.runDelayed(ConfigManager.getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20L));
     }
 
     /**

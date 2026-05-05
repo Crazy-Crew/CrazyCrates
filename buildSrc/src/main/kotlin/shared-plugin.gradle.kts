@@ -6,13 +6,20 @@ plugins {
 
 val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
 
-val git = feather.getGit()
+val git = feather.getBuilder()
+val utils = git.utils
 
-val isBeta: Boolean = git.getCurrentBranch() == rootProject.property("beta_branch").toString()
-val isAlpha: Boolean = git.getCurrentBranch() == rootProject.property("alpha_branch").toString()
+val branch = utils.getRemoteBranch()
+val hash = utils.getRemoteCommitHash()
+val commit = utils.getRemoteCommitMessage(hash, "%B")
 
-val commitHash: String = git.getCurrentCommitHash().subSequence(0, 7).toString()
-val content: String = if (isBeta) "[$commitHash](https://github.com/${rootProject.property("repository_owner")}/${rootProject.name}/commit/$commitHash) ${git.getCurrentCommit()}" else rootProject.file("changelog.md").readText(Charsets.UTF_8)
+val isBeta: Boolean = branch == rootProject.property("beta_branch").toString()
+val isAlpha: Boolean = branch == rootProject.property("alpha_branch").toString()
+
+val commitHash: String = hash.subSequence(0, 7).toString()
+val content: String = if (isBeta) {
+    "[$commitHash](https://github.com/${rootProject.property("repository_owner")}/${rootProject.name}/commit/$commitHash) $commit"
+} else rootProject.file("changelog.md").readText(Charsets.UTF_8)
 
 val minecraft = libs.findVersion("minecraft").get()
 

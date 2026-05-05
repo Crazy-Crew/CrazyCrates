@@ -11,11 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import java.util.Objects;
 
 public class CommandTeleport extends BaseCommand {
-
-    private final YamlConfiguration locations = FileKeys.locations.getConfiguration();
 
     @Command("teleport")
     @Permission(value = "crazycrates.teleport", def = PermissionDefault.OP)
@@ -27,10 +24,12 @@ public class CommandTeleport extends BaseCommand {
             return;
         }
 
-       final ConfigurationSection section = this.locations.getConfigurationSection("Locations");
+        final YamlConfiguration configuration = FileKeys.locations.getConfiguration();
+
+        final ConfigurationSection section = configuration.getConfigurationSection("Locations");
 
         if (section == null) {
-            this.locations.set("Locations.Clear", null);
+            configuration.set("Locations.Clear", null);
 
             FileKeys.locations.save();
 
@@ -38,21 +37,19 @@ public class CommandTeleport extends BaseCommand {
         }
 
         for (final String name : section.getKeys(false)) {
-            if (name.equalsIgnoreCase(id)) {
-                final World world = this.server.getWorld(Objects.requireNonNull(this.locations.getString("Locations." + name + ".World")));
+            if (!name.equalsIgnoreCase(id)) continue;
 
-                final int x = this.locations.getInt("Locations." + name + ".X");
-                final int y = this.locations.getInt("Locations." + name + ".Y");
-                final int z = this.locations.getInt("Locations." + name + ".Z");
+            final ConfigurationSection origin = section.getConfigurationSection(name);
 
-                final Location loc = new Location(world, x, y, z);
+            if (origin == null) continue;
 
-                player.teleport(loc.add(.5, 0, .5));
+            final World world = this.server.getWorld(origin.getString("World", ""));
 
-                Messages.crate_teleported.sendMessage(player, "{name}", name);
+            if (world == null) continue;
 
-                return;
-            }
+            player.teleport(new Location(world, origin.getInt("Z"), origin.getInt("Y"), origin.getInt("Z")).add(.5, 0, .5));
+
+            Messages.crate_teleported.sendMessage(player, "{name}", name);
         }
 
         Messages.crate_cannot_teleport.sendMessage(player, "{id}", id);

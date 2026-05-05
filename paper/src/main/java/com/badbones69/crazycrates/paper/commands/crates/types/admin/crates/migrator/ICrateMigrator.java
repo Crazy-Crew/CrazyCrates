@@ -3,24 +3,27 @@ package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migr
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
-import com.badbones69.crazycrates.paper.utils.ItemUtils;
+import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.core.api.utils.StringUtils;
-import com.ryderbelserion.fusion.paper.files.FileManager;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import java.io.File;
+import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 import java.util.*;
 
 public abstract class ICrateMigrator {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    protected final FusionPaper fusion = this.plugin.getFusion();
 
     protected final ComponentLogger logger = this.plugin.getComponentLogger();
 
@@ -32,7 +35,7 @@ public abstract class ICrateMigrator {
 
     protected final SettingsManager messages = ConfigManager.getMessages();
 
-    protected final FileManager fileManager = this.plugin.getFileManager();
+    protected final PaperFileManager fileManager = this.plugin.getFileManager();
 
     protected final CommandSender sender;
 
@@ -59,8 +62,8 @@ public abstract class ICrateMigrator {
 
     public abstract <T> void set(ConfigurationSection section, String path, T value);
 
-    public File getCratesDirectory() {
-        return null;
+    public Path getDirectory() {
+        return this.dataPath.resolve("crates");
     }
 
     public void sendMessage(List<String> files, final int success, final int failed) {
@@ -73,7 +76,7 @@ public abstract class ICrateMigrator {
         ));
     }
 
-    public void migrate(final PaperCustomFile customFile, final String crateName) {
+    public boolean migrate(final PaperCustomFile customFile, final String crateName) {
         final YamlConfiguration configuration = customFile.getConfiguration();
 
         final ConfigurationSection crate = configuration.getConfigurationSection("Crate");
@@ -85,7 +88,7 @@ public abstract class ICrateMigrator {
                     "{reason}", "File could not be found in our data, likely invalid yml file that didn't load properly."
             ));
 
-            return;
+            return false;
         }
 
         set(crate, "Item", crate.getString("Item", "diamond").toLowerCase());
@@ -112,7 +115,7 @@ public abstract class ICrateMigrator {
                 if (prizeSection.contains("DisplayEnchantments")) {
                     final List<String> enchants = new ArrayList<>();
 
-                    prizeSection.getStringList("DisplayEnchantments").forEach(enchant -> enchants.add(ItemUtils.getEnchant(enchant)));
+                    prizeSection.getStringList("DisplayEnchantments").forEach(enchant -> enchants.add(ItemUtil.getEnchant(enchant)));
 
                     set(prizeSection, "DisplayEnchantments", enchants);
                 }
@@ -121,6 +124,12 @@ public abstract class ICrateMigrator {
 
         customFile.save();
         customFile.load();
+
+        return true;
+    }
+
+    public boolean migrate(@NotNull final PaperCustomFile customFile) {
+        return migrate(customFile, "");
     }
 
     public final String time() {

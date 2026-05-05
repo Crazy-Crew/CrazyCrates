@@ -7,8 +7,9 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
-import com.ryderbelserion.fusion.paper.api.builders.gui.types.PaginatedGui;
+import com.badbones69.crazycrates.paper.utils.ItemUtil;
+import com.ryderbelserion.fusion.paper.builders.gui.types.paginated.PaginatedGui;
+import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -31,52 +32,53 @@ public class InventoryManager {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
     private final Server server = this.plugin.getServer();
 
-    private LegacyItemBuilder menuButton;
-    private LegacyItemBuilder nextButton;
-    private LegacyItemBuilder backButton;
+    private ItemBuilder menuButton;
+    private ItemBuilder nextButton;
+    private ItemBuilder backButton;
 
     public void loadButtons() {
         final ModelData menuModelData = this.config.getProperty(ConfigKeys.menu_button_item_model);
 
-        this.menuButton = new LegacyItemBuilder(this.plugin).withType(this.config.getProperty(ConfigKeys.menu_button_item).toLowerCase())
-                .setDisplayName(this.config.getProperty(ConfigKeys.menu_button_name))
-                .setDisplayLore(this.config.getProperty(ConfigKeys.menu_button_lore))
-                .setCustomModelData(this.config.getProperty(ConfigKeys.menu_button_model_data))
-                .setItemModel(menuModelData.getNamespace(), menuModelData.getId());
+        this.menuButton = ItemBuilder.from(this.config.getProperty(ConfigKeys.menu_button_item).toLowerCase())
+                .withDisplayName(this.config.getProperty(ConfigKeys.menu_button_name))
+                .withDisplayLore(this.config.getProperty(ConfigKeys.menu_button_lore));
+
+        ItemUtil.addCustomModel(this.menuButton, this.config.getProperty(ConfigKeys.menu_button_model_data));
+        ItemUtil.addItemModel(this.menuButton, menuModelData.getNamespace(), menuModelData.getId());
 
         final ModelData nextModelData = this.config.getProperty(ConfigKeys.next_button_item_model);
 
-        this.nextButton = new LegacyItemBuilder(this.plugin).withType(this.config.getProperty(ConfigKeys.next_button_item).toLowerCase())
-                .setDisplayName(this.config.getProperty(ConfigKeys.next_button_name))
-                .setDisplayLore(this.config.getProperty(ConfigKeys.next_button_lore))
-                .setCustomModelData(this.config.getProperty(ConfigKeys.next_button_model_data))
-                .setItemModel(nextModelData.getNamespace(), nextModelData.getId());
+        this.nextButton = ItemBuilder.from(this.config.getProperty(ConfigKeys.next_button_item).toLowerCase())
+                .withDisplayName(this.config.getProperty(ConfigKeys.next_button_name))
+                .withDisplayLore(this.config.getProperty(ConfigKeys.next_button_lore));
+
+        ItemUtil.addCustomModel(this.nextButton, this.config.getProperty(ConfigKeys.next_button_model_data));
+        ItemUtil.addItemModel(this.nextButton, nextModelData.getNamespace(), nextModelData.getId());
 
         final ModelData backModelData = this.config.getProperty(ConfigKeys.back_button_item_model);
 
-        this.backButton = new LegacyItemBuilder(this.plugin).withType(this.config.getProperty(ConfigKeys.back_button_item).toLowerCase())
-                .setDisplayName(this.config.getProperty(ConfigKeys.back_button_name))
-                .setDisplayLore(this.config.getProperty(ConfigKeys.back_button_lore))
-                .setCustomModelData(this.config.getProperty(ConfigKeys.back_button_model_data))
-                .setItemModel(backModelData.getNamespace(), backModelData.getId());
+        this.backButton = ItemBuilder.from(this.config.getProperty(ConfigKeys.back_button_item).toLowerCase())
+                .withDisplayName(this.config.getProperty(ConfigKeys.back_button_name))
+                .withDisplayLore(this.config.getProperty(ConfigKeys.back_button_lore));
+
+        ItemUtil.addCustomModel(this.backButton, this.config.getProperty(ConfigKeys.back_button_model_data));
+        ItemUtil.addItemModel(this.backButton, backModelData.getNamespace(), backModelData.getId());
     }
 
     public final ItemStack getMenuButton(@NotNull final Player player) {
-        return this.menuButton.setPlayer(player).asItemStack();
+        return this.menuButton.asItemStack(player);
     }
 
     public final ItemStack getNextButton(@Nullable final Player player, @Nullable final Tier tier, @NotNull final PaginatedGui gui) {
-        final LegacyItemBuilder button = new LegacyItemBuilder(this.plugin, this.nextButton);
+        final ItemBuilder button = ItemBuilder.from(this.nextButton.asItemStack(player));
 
-        if (player != null) {
-            button.setPlayer(player).addLorePlaceholder("{page}", String.valueOf(gui.getNextPageNumber()));
-        }
+        button.addPlaceholder("{page}", String.valueOf(gui.getPageNumber()));
 
         if (tier != null) {
             button.setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), tier.getName());
         }
 
-        return button.asItemStack();
+        return button.asItemStack(player);
     }
 
     public final ItemStack getNextButton(@Nullable final Player player, @NotNull final PaginatedGui gui) {
@@ -84,17 +86,15 @@ public class InventoryManager {
     }
 
     public final ItemStack getBackButton(@Nullable final Player player, @Nullable final Tier tier, @NotNull final PaginatedGui gui) {
-        final LegacyItemBuilder button = new LegacyItemBuilder(this.plugin, this.backButton);
+        final ItemBuilder button = ItemBuilder.from(this.backButton.asItemStack(player));
 
-        if (player != null) {
-            button.setPlayer(player).addLorePlaceholder("{page}", String.valueOf(gui.getPreviousPageNumber()));
-        }
+        button.addPlaceholder("{page}", String.valueOf(gui.getPageNumber()));
 
         if (tier != null) {
             button.setPersistentString(ItemKeys.crate_tier.getNamespacedKey(), tier.getName());
         }
 
-        return button.asItemStack();
+        return button.asItemStack(player);
     }
 
     public final ItemStack getBackButton(@Nullable final Player player, @NotNull final PaginatedGui gui) {

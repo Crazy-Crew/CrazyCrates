@@ -1,15 +1,14 @@
 package com.badbones69.crazycrates.paper.listeners.crates.types;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
-import com.badbones69.crazycrates.paper.api.builders.LegacyItemBuilder;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import io.papermc.paper.persistence.PersistentDataContainerView;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.config.impl.ConfigKeys;
@@ -19,9 +18,9 @@ import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,7 +29,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
@@ -42,7 +40,6 @@ import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -51,7 +48,7 @@ public class CosmicCrateListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
+    private final FusionPaper fusion = this.plugin.getFusion();
 
     private final Server server = this.plugin.getServer();
 
@@ -196,9 +193,7 @@ public class CosmicCrateListener implements Listener {
                 final String tierName = tier.getName();
 
                 // Get item builder.
-                LegacyItemBuilder builder = cosmicCrateManager.getPickedCrate().setPlayer(player)
-                        .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
-                        .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
+                ItemBuilder builder = cosmicCrateManager.getPickedCrate().addPlaceholder("%Slot%", String.valueOf(pickedSlot));
 
                 // Set the amount.
                 builder.setAmount(pickedSlot);
@@ -207,7 +202,7 @@ public class CosmicCrateListener implements Listener {
                 cosmicCrateManager.setTier(builder, tierName);
 
                 // Overwrite the current item.
-                event.setCurrentItem(builder.asItemStack());
+                event.setCurrentItem(builder.asItemStack(player));
 
                 // Add the picked prize.
                 cosmicCrateManager.addPickedPrize(player, slot, tier);
@@ -219,9 +214,7 @@ public class CosmicCrateListener implements Listener {
             final Tier tier = this.crateManager.getTier(player, slot);
 
             // Get item builder.
-            LegacyItemBuilder builder = cosmicCrateManager.getMysteryCrate().setPlayer(player)
-                    .addNamePlaceholder("%Slot%", String.valueOf(pickedSlot))
-                    .addLorePlaceholder("%Slot%", String.valueOf(pickedSlot));
+            ItemBuilder builder = cosmicCrateManager.getMysteryCrate().addPlaceholder("%Slot%", String.valueOf(pickedSlot));
 
             // Set the amount.
             builder.setAmount(pickedSlot);
@@ -233,7 +226,7 @@ public class CosmicCrateListener implements Listener {
             cosmicCrateManager.setTier(builder, tierName);
 
             // Overwrite the current item.
-            event.setCurrentItem(builder.asItemStack());
+            event.setCurrentItem(builder.asItemStack(player));
 
             // Remove slot if we click it.
             cosmicCrateManager.removePickedPrize(player, slot);
@@ -259,6 +252,7 @@ public class CosmicCrateListener implements Listener {
             // If they don't have enough keys.
             if (value) {
                 Map<String, String> placeholders = new HashMap<>();
+
                 placeholders.put("{crate}", fancyName);
                 placeholders.put("{key}", crate.getKeyName());
 
@@ -318,19 +312,16 @@ public class CosmicCrateListener implements Listener {
             // Clear the top inventory.
             view.getTopInventory().clear();
 
-            YamlConfiguration configuration = crate.getFile();
+            ConfigurationSection configuration = crate.getSection();
 
-            final String broadcastMessage = configuration.getString("Crate.BroadCast", "");
-            final boolean broadcastToggle = configuration.getBoolean("Crate.OpeningBroadCast", false);
+            final String broadcastMessage = configuration.getString("BroadCast", "");
+            final boolean broadcastToggle = configuration.getBoolean("OpeningBroadCast", false);
 
-            if (broadcastToggle) {  //todo() add a permission?
-                if (!broadcastMessage.isBlank()) {
-                    String builder = Plugins.placeholder_api.isEnabled() ? PlaceholderAPI.setPlaceholders(player, broadcastMessage) : broadcastMessage;
-
-                    this.server.broadcast(AdvUtils.parse(builder.replaceAll("%crate%", fancyName)
-                            .replaceAll("%prefix%", this.config.getProperty(ConfigKeys.command_prefix))
-                            .replaceAll("%player%", player.getName())));
-                }
+            if (broadcastToggle && !broadcastMessage.isBlank()) { //todo() add a permission?
+                this.server.broadcast(this.fusion.asComponent(player, broadcastMessage, Map.of(
+                        "%prefix%", this.config.getProperty(ConfigKeys.command_prefix),
+                        "%player%", player.getName()
+                )));
             }
 
             EventManager.logEvent(EventType.event_crate_opened, player.getName(), player, crate, type, 1);
@@ -350,7 +341,7 @@ public class CosmicCrateListener implements Listener {
 
                                 pluginManager.callEvent(keyEvent);
 
-                                // Check if event is cancelled.
+                                // Check if event is canceled.
                                 if (!event.isCancelled()) {
                                     // Add the keys
                                     userManager.addKeys(uuid, fileName, type, 1);
@@ -372,7 +363,7 @@ public class CosmicCrateListener implements Listener {
 
                                     Messages.key_refund.sendMessage(player, "{crate}", fancyName);
 
-                                    if (MiscUtils.isLogging()) logger.error("An issue occurred when the user {} was using the {} crate and so they were issued a key refund.", player.getName(), fileName, exception);
+                                    fusion.log(Level.ERROR, "An issue occurred when the user %s was using the %s crate and so they were issued a key refund.", exception, player.getName(), fileName);
 
                                     // Play a sound
                                     crate.playSound(player, player.getLocation(), "stop-sound", "block.anvil.place", Sound.Source.MASTER);
@@ -447,12 +438,7 @@ public class CosmicCrateListener implements Listener {
                         }
                     }.runNow();
 
-                    if (MiscUtils.isLogging()) {
-                        List.of(
-                                player.getName() + " spent 10 seconds staring at a gui instead of collecting their prizes",
-                                "The task has been cancelled, They have been given their prizes and the gui is closed."
-                        ).forEach(logger::info);
-                    }
+                    fusion.log(Level.ERROR, "%s spent 10 seconds staring at a gui, The task has been cancelled, They have been given their prizes and the gui is closed.", player.getName());
                 }
             }, 10000L);
         }

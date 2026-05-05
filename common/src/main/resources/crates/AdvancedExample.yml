@@ -25,9 +25,7 @@ Crate:
   opening-command:
     # If the commands should be sent or not.
     toggle: false
-    # The commands to run when the crate opens.
-    # Supports all placeholderapi placeholders
-    # Supports %prefix which returns our prefix, %player% which uses the player name
+    # Available Placeholders: %prefix%, %player% (PlaceholderAPI included)
     commands:
       - "put your command here."
   sound:
@@ -104,8 +102,9 @@ Crate:
     Namespace: ""
     # The id i.e. emerald_helmet
     Id: ""
-  # If the crate in the main /cc GUI is glowing or not.
-  Glowing: false
+  # Should the item glow?
+  # Available Types: add_glow, remove_glow, none
+  Glowing: "none"
   # Name of the item in the GUI.
   Name: "<bold><light_purple>Advanced Crate</bold>"
   # The lore of the item in the GUI.
@@ -156,8 +155,9 @@ Crate:
       Namespace: ""
       # The id i.e. emerald_helmet
       Id: ""
-    # Makes the key look enchanted.
-    Glowing: true
+    # Should the item glow?
+    # Available Types: add_glow, remove_glow, none
+    Glowing: "add_glow"
   # Settings for the holograms.
   Hologram:
     # Toggle on and off the holograms for the crates.

@@ -12,11 +12,11 @@ import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
-import com.ryderbelserion.fusion.paper.api.builders.gui.types.BaseGui;
+import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.builders.gui.GuiBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import java.text.NumberFormat;
@@ -34,7 +34,7 @@ public abstract class InventoryBuilder {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    protected final ComponentLogger logger = this.plugin.getComponentLogger();
+    protected final FusionPaper fusion = this.plugin.getFusion();
 
     protected final CrateManager crateManager = this.plugin.getCrateManager();
 
@@ -44,7 +44,7 @@ public abstract class InventoryBuilder {
 
     protected final SettingsManager config = ConfigManager.getConfig();
 
-    public void addMenuButton(@NotNull final Player player, @NotNull final Crate crate, @NotNull final BaseGui gui) {
+    public void addMenuButton(@NotNull final Player player, @NotNull final Crate crate, @NotNull final GuiBuilder gui) {
         if (!this.config.getProperty(ConfigKeys.enable_crate_menu)) return;
 
         final ItemPlacement placement = this.config.getProperty(ConfigKeys.menu_button_placement);
@@ -56,7 +56,7 @@ public abstract class InventoryBuilder {
 
         final int safeRow = Math.min(row == -1 ? rows : row, rows);
 
-        gui.setItem(safeRow, column, new GuiItem(this.inventoryManager.getMenuButton(player), action -> {
+        gui.addSlotAction(safeRow, column, this.inventoryManager.getMenuButton(player), _ -> {
             if (this.config.getProperty(ConfigKeys.menu_button_override)) {
                 final List<String> commands = this.config.getProperty(ConfigKeys.menu_button_command_list);
 
@@ -70,7 +70,7 @@ public abstract class InventoryBuilder {
                     return;
                 }
 
-                if (MiscUtils.isLogging()) this.logger.warn("The property {} is empty, so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
+                this.fusion.log(Level.WARNING, "The property %s is empty, so no commands were run.", ConfigKeys.menu_button_command_list.getPath());
 
                 return;
             }
@@ -78,7 +78,7 @@ public abstract class InventoryBuilder {
             crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", Sound.Source.MASTER);
 
             new CrateMainMenu(player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_rows)).open();
-        }));
+        });
     }
 
     public final String parse(@NotNull final Player player, @NotNull final String title) {

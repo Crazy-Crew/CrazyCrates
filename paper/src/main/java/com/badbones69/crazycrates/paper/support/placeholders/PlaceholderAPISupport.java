@@ -1,8 +1,9 @@
 package com.badbones69.crazycrates.paper.support.placeholders;
 
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.api.builders.PlayerBuilder;
+import com.ryderbelserion.fusion.paper.builders.items.PlayerBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -86,17 +87,15 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
         final int index = identifier.lastIndexOf("_");
 
-        this.fusion.log("warn", "Parse: {}", identifier.substring(0, index));
-
         final String playerName = PlaceholderAPI.setPlaceholders(player,"%" + StringUtils.substringBetween(identifier.substring(0, index), "{", "}") + "%");
 
         if (playerName.isBlank() || playerName.equalsIgnoreCase("%player_name%")) {
-            this.fusion.log("warn", "The player name using {}_{} cannot be blank, or %player%", "crazycrates", identifier);
+            this.fusion.log(Level.WARNING, "The player name using {}_{} cannot be blank, or %player%", "crazycrates", identifier);
 
             return "N/A";
         }
 
-        final PlayerBuilder builder = new PlayerBuilder(this.server, playerName);
+        final PlayerBuilder builder = new PlayerBuilder(playerName);
 
         final Player target = builder.getPlayer();
 
@@ -111,7 +110,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         final UUID id = uuid.get();
 
         if (id == null) {
-            this.fusion.log("warn", "The player name using %s_%s (%s) cannot be null".formatted("crazycrates", identifier, playerName));
+            this.fusion.log(Level.WARNING, "The player name using %s_%s (%s) cannot be null".formatted("crazycrates", identifier, playerName));
 
             return "N/A";
         }

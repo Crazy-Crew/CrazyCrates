@@ -17,8 +17,10 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.google.common.base.Preconditions;
-import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -43,6 +45,8 @@ import java.util.List;
 public abstract class CrateBuilder extends FoliaScheduler {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    protected final FusionPaper fusion = this.plugin.getFusion();
 
     protected final ComponentLogger logger = this.plugin.getComponentLogger();
 
@@ -192,10 +196,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
                         final String crateName = prize.getCrateName();
                         final String prizeName = prize.getPrizeName();
 
-                        List.of(
-                                "A prize could not be given due to an invalid display item for this prize.",
-                                "Crate: %s Prize: %s"
-                        ).forEach(line -> logger.warn(String.format(line, crateName, prizeName), exception));
+                        fusion.log(Level.WARNING, "A prize could not be given due to an invalid display item for this prize. Crate: %s, Prize: %s", exception, crateName, prizeName);
 
                         cancel();
 
@@ -203,7 +204,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
                     }
 
                     reward.setVelocity(new Vector(0, 0.2, 0));
-                    reward.customName(AdvUtils.parse(prize.getPrizeName()));
+                    reward.customName(fusion.asComponent(player, prize.getPrizeName()));
                     reward.setCustomNameVisible(true);
                     reward.setCanMobPickup(false);
                     reward.setCanPlayerPickup(false);
@@ -297,8 +298,8 @@ public abstract class CrateBuilder extends FoliaScheduler {
     /**
      * @return file configuration of crate
      */
-    public final YamlConfiguration getFile() {
-        return this.crate.getFile();
+    public final ConfigurationSection getSection() {
+        return this.crate.getSection();
     }
 
     /**
@@ -343,7 +344,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param lore lore of item
      */
     public void setItem(final int slot, @NotNull final ItemType itemType, @NotNull final String name, @NotNull final List<String> lore) {
-        this.inventory.setItem(slot, new LegacyItemBuilder(this.plugin, itemType).setPlayer(this.player).setDisplayName(name).setDisplayLore(lore).asItemStack());
+        //this.inventory.setItem(slot, new LegacyItemBuilder(this.plugin, itemType).setPlayer(this.player).setDisplayName(name).setDisplayLore(lore).asItemStack());
     }
 
     /**
@@ -354,7 +355,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param name name of item
      */
     public void setItem(final int slot, @NotNull final ItemType itemType, @NotNull final String name) {
-        this.inventory.setItem(slot, new LegacyItemBuilder(this.plugin, itemType).setPlayer(this.player).setDisplayName(name).asItemStack());
+        //this.inventory.setItem(slot, new LegacyItemBuilder(this.plugin, itemType).setPlayer(this.player).setDisplayName(name).asItemStack());
     }
 
     /**
@@ -367,10 +368,10 @@ public abstract class CrateBuilder extends FoliaScheduler {
     }
 
     /**
-     * @return the itemstack
+     * @return the ItemStack
      */
     public @NotNull final ItemStack getRandomGlassPane() {
-        return MiscUtils.getRandomPaneColor().setDisplayName(" ").asItemStack();
+        return MiscUtils.getRandomPaneColor().withDisplayName(" ").asItemStack();
     }
 
     protected final SettingsManager config = ConfigManager.getConfig();
@@ -381,15 +382,17 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param keyType virtual or physical key
      * @param checkHand true or false
      * @param eventType {@link EventType}
-     * @return true if cancelled otherwise false
+     * @return true if canceled otherwise false
      */
     public final boolean isCrateEventValid(@NotNull final KeyType keyType, final boolean checkHand, final boolean isSilent, final EventType eventType) {
-        final CrateOpenEvent event = new CrateOpenEvent(this.player, this.crate, keyType, checkHand, this.crate.getFile(), isSilent, eventType);
+        final CrateOpenEvent event = new CrateOpenEvent(this.player, this.crate, keyType, checkHand, this.crate.getSection(), isSilent, eventType);
 
         event.callEvent();
 
-        if (event.isCancelled()) {
-            if (MiscUtils.isLogging()) {
+        final boolean isCancelled = event.isCancelled();
+
+        if (isCancelled) {
+            if (this.fusion.isVerbose()) {
                 final String fileName = this.crate.getFileName();
 
                 final String playerName = this.player.getName();
@@ -402,7 +405,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
             }
         }
 
-        return event.isCancelled();
+        return isCancelled;
     }
 
     protected boolean isCancelled = false;
@@ -441,7 +444,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
     public void playSound(@NotNull final String type, @NotNull final Sound.Source source, @NotNull final String fallback) {
         if (type.isEmpty() && fallback.isEmpty()) return;
 
-        ConfigurationSection section = getFile().getConfigurationSection("Crate.sound");
+        final ConfigurationSection section = getSection().getConfigurationSection("sound");
 
         if (section != null) {
             final SoundEffect sound = new SoundEffect(
@@ -457,19 +460,19 @@ public abstract class CrateBuilder extends FoliaScheduler {
 
     public final void populateTiers() {
         final CosmicCrateManager manager = (CosmicCrateManager) this.crate.getManager();
-        final LegacyItemBuilder itemBuilder = manager.getMysteryCrate().setPlayer(this.player);
+        final ItemBuilder itemBuilder = manager.getMysteryCrate();
 
         for (int slot = 0; slot <= this.size; slot++) {
-            itemBuilder.addNamePlaceholder("%Slot%", String.valueOf(slot)).addLorePlaceholder("%Slot%", String.valueOf(slot));
-
-            itemBuilder.setAmount(slot);
+            itemBuilder.addPlaceholder("%Slot%", String.valueOf(slot)).setAmount(slot);
 
             final Tier tier = PrizeManager.getTier(this.crate);
 
             if (tier != null) {
+                final Inventory inventory = getInventory();
+
                 this.crateManager.addTier(this.player, slot, tier);
 
-                getInventory().setItem(getInventory().firstEmpty(), itemBuilder.asItemStack());
+                inventory.setItem(inventory.firstEmpty(), itemBuilder.asItemStack(this.player));
             }
         }
     }

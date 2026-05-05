@@ -11,7 +11,9 @@ import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.ryderbelserion.fusion.paper.files.FileManager;
+import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import dev.triumphteam.cmd.core.annotations.Command;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.OfflinePlayer;
@@ -37,6 +39,8 @@ public abstract class BaseCommand {
 
     protected final Path path = this.plugin.getDataPath();
 
+    protected final FusionPaper fusion = this.plugin.getFusion();
+
     protected final Server server = this.plugin.getServer();
 
     protected final PluginManager pluginManager = this.server.getPluginManager();
@@ -49,7 +53,7 @@ public abstract class BaseCommand {
 
     protected final CrateManager crateManager = this.plugin.getCrateManager();
 
-    protected final FileManager fileManager = this.plugin.getFileManager();
+    protected final PaperFileManager fileManager = this.plugin.getFileManager();
 
     protected final SettingsManager config = ConfigManager.getConfig();
 
@@ -161,7 +165,7 @@ public abstract class BaseCommand {
             final int totalKeys = this.userManager.getTotalKeys(uuid, fileName);
 
             if (totalKeys < 1) {
-                if (MiscUtils.isLogging()) this.logger.warn("The player {} does not have enough keys to take.", name);
+                this.fusion.log(Level.WARNING, "The player %s does not have enough keys to take.", name);
 
                 Messages.cannot_take_keys.sendMessage(sender, "{player}", name);
 

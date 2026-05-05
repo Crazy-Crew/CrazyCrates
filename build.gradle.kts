@@ -8,36 +8,42 @@ plugins {
     `java-plugin`
 }
 
-val git = feather.getGit()
+val git = feather.getBuilder()
 
 allprojects {
     apply(plugin = "java-library")
 }
 
+// https://github.com/granny/Pl3xMap/blob/0547bbba3f0b7468db17983412e95bf59a1a0b7d/build.gradle.kts#L10
 tasks {
-    withType<Jar> {
+    jar {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
         subprojects {
             dependsOn(project.tasks.build)
         }
 
-        // get subproject's built jars
-        val jars = subprojects.map { zipTree(it.tasks.jar.get().archiveFile.get().asFile) }
+        archiveClassifier = ""
 
-        // merge them into main jar (except their manifests)
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        val files = subprojects.filter { it.name != "core" && it.name != "api" }.mapNotNull {
+            val file = it.tasks.jar.get().archiveFile
 
-        from(jars) {
+            if (file.isPresent) {
+                zipTree(file.get().asFile)
+            } else {
+                null
+            }
+        }
+
+        from(files) {
             exclude("META-INF/MANIFEST.MF")
         }
 
-        // put behind an action because files don't exist at configuration time
         doFirst {
-            // merge all subproject's manifests into main manifest
-            jars.forEach { jar ->
-                jar.matching { include("META-INF/MANIFEST.MF") }
-                    .files.forEach { file ->
-                        manifest.from(file)
-                    }
+            files.forEach { file ->
+                file.matching { include("META-INF/MANIFEST.MF") }.files.forEach {
+                    manifest.from(it)
+                }
             }
         }
     }
@@ -49,11 +55,9 @@ val isRelease = releaseType.equals("release", true)
 val isAlpha = releaseType.equals("alpha", true)
 
 feather {
-    rootDirectory = rootProject.rootDir.toPath()
+    workingDirectory = rootProject.rootDir.toPath()
 
-    val data = git.getGithubCommit("${rootProject.property("repository_owner")}/${rootProject.name}")
-
-    val user = data.user
+    val origin = git.getNewestCommit(rootProject.property("repository_owner").toString(),rootProject.name, git.utils.getRemoteCommitHash())
 
     discord {
         webhook {
@@ -65,9 +69,10 @@ feather {
             }
 
             if (isRelease) {
-                username(user.getName())
+                val user = origin?.user
 
-                avatar(user.avatar)
+                username(user?.name ?: "N/A")
+                avatar(user?.getAvatar() ?: "N/A")
             } else {
                 username(rootProject.property("author_name").toString())
 
@@ -80,9 +85,9 @@ feather {
 
                     title("A new $releaseType version of ${rootProject.name} is ready!")
 
-                    //if (isRelease) {
-                    //    content("<@&${rootProject.property("discord_role_id").toString()}>")
-                    //}
+                    if (isRelease) {
+                        content("<@&${rootProject.property("discord_role_id").toString()}>")
+                    }
 
                     fields {
                         field(

@@ -1,15 +1,16 @@
 package com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.structures;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.google.common.collect.Lists;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import com.badbones69.crazycrates.paper.utils.ItemUtil;
+import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.block.Block;
 import org.bukkit.block.structure.Mirror;
 import org.bukkit.block.structure.StructureRotation;
+import org.bukkit.inventory.ItemType;
 import org.bukkit.structure.Structure;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,9 +29,8 @@ public class StructureManager implements IStructureManager {
     private final Set<Location> preStructurePasteBlocks = new HashSet<>();
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final FusionPaper fusion = this.plugin.getFusion();
     private final Server server = this.plugin.getServer();
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
-    private final boolean isVerbose = MiscUtils.isLogging();
 
     private File file = null;
 
@@ -52,7 +52,7 @@ public class StructureManager implements IStructureManager {
             try {
                 return getStructureManager().loadStructure(this.file);
             } catch (final IOException exception) {
-                if (this.isVerbose) this.logger.error("Failed to load structure: {}!", this.file.getName(), exception);
+                this.fusion.log(Level.ERROR, "Failed to load structure: %s!", exception, this.file.getName());
 
                 return null;
             }
@@ -77,7 +77,7 @@ public class StructureManager implements IStructureManager {
         try {
             getStructureManager().saveStructure(file, this.structure);
         } catch (final IOException exception) {
-            if (this.isVerbose) this.logger.error("Failed to save structure to: {}!", file.getName(), exception);
+            this.fusion.log(Level.ERROR, "Failed to save structure: %s!", exception, this.file.getName());
         }
     }
 
@@ -99,7 +99,7 @@ public class StructureManager implements IStructureManager {
             // Get the structure blocks.
             if (storeBlocks) getStructureBlocks(clonedLocation);
         } catch (final Exception exception) {
-            if (this.isVerbose) this.logger.error("Could not paste structure", exception);
+            this.fusion.log(Level.ERROR, "Could not paste %s structure!", exception, this.file.getName());
         }
     }
 
@@ -180,16 +180,46 @@ public class StructureManager implements IStructureManager {
     }
 
     @Override
-    public @NotNull List<Material> getBlockBlacklist() {
-        return Lists.newArrayList(
-                Material.OAK_SIGN, Material.SPRUCE_SIGN, Material.BIRCH_SIGN, Material.JUNGLE_SIGN, Material.ACACIA_SIGN, Material.CHERRY_SIGN, Material.DARK_OAK_SIGN,
-                Material.MANGROVE_SIGN, Material.BAMBOO_SIGN, Material.CRIMSON_SIGN, Material.WARPED_SIGN, Material.OAK_HANGING_SIGN, Material.SPRUCE_HANGING_SIGN,
-                Material.BIRCH_HANGING_SIGN, Material.JUNGLE_HANGING_SIGN, Material.ACACIA_HANGING_SIGN, Material.CHERRY_HANGING_SIGN, Material.DARK_OAK_HANGING_SIGN,
-                Material.MANGROVE_HANGING_SIGN, Material.BAMBOO_HANGING_SIGN, Material.CRIMSON_HANGING_SIGN, Material.WARPED_HANGING_SIGN,
+    public @NotNull List<String> getBlockBlacklist() {
+        return List.of(
+                ItemUtil.getItemKey(ItemType.OAK_SIGN),
+                ItemUtil.getItemKey(ItemType.SPRUCE_SIGN),
+                ItemUtil.getItemKey(ItemType.BIRCH_SIGN),
+                ItemUtil.getItemKey(ItemType.JUNGLE_SIGN),
+                ItemUtil.getItemKey(ItemType.ACACIA_SIGN),
+                ItemUtil.getItemKey(ItemType.CHERRY_SIGN),
+                ItemUtil.getItemKey(ItemType.DARK_OAK_SIGN),
 
-                Material.STONE_BUTTON, Material.POLISHED_BLACKSTONE_BUTTON, Material.OAK_BUTTON, Material.SPRUCE_BUTTON, Material.BIRCH_BUTTON,
-                Material.JUNGLE_BUTTON, Material.ACACIA_BUTTON, Material.CHERRY_BUTTON, Material.DARK_OAK_BUTTON, Material.MANGROVE_BUTTON, Material.BAMBOO_BUTTON,
-                Material.CRIMSON_BUTTON, Material.WARPED_BUTTON);
+                ItemUtil.getItemKey(ItemType.MANGROVE_SIGN),
+                ItemUtil.getItemKey(ItemType.BAMBOO_SIGN),
+                ItemUtil.getItemKey(ItemType.CRIMSON_SIGN),
+                ItemUtil.getItemKey(ItemType.WARPED_SIGN),
+                ItemUtil.getItemKey(ItemType.OAK_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.SPRUCE_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.BIRCH_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.JUNGLE_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.ACACIA_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.CHERRY_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.DARK_OAK_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.MANGROVE_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.BAMBOO_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.CRIMSON_HANGING_SIGN),
+                ItemUtil.getItemKey(ItemType.WARPED_HANGING_SIGN),
+
+                ItemUtil.getItemKey(ItemType.STONE_BUTTON),
+                ItemUtil.getItemKey(ItemType.POLISHED_BLACKSTONE_BUTTON),
+                ItemUtil.getItemKey(ItemType.OAK_BUTTON),
+                ItemUtil.getItemKey(ItemType.SPRUCE_BUTTON),
+                ItemUtil.getItemKey(ItemType.BIRCH_BUTTON),
+                ItemUtil.getItemKey(ItemType.JUNGLE_BUTTON),
+                ItemUtil.getItemKey(ItemType.ACACIA_BUTTON),
+                ItemUtil.getItemKey(ItemType.CHERRY_BUTTON),
+                ItemUtil.getItemKey(ItemType.DARK_OAK_BUTTON),
+                ItemUtil.getItemKey(ItemType.MANGROVE_BUTTON),
+                ItemUtil.getItemKey(ItemType.BAMBOO_BUTTON),
+                ItemUtil.getItemKey(ItemType.CRIMSON_BUTTON),
+                ItemUtil.getItemKey(ItemType.WARPED_BUTTON)
+        );
     }
 
     @Override

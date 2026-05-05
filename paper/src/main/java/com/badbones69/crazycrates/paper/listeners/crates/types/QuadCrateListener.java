@@ -1,10 +1,11 @@
 package com.badbones69.crazycrates.paper.listeners.crates.types;
 
 import com.badbones69.crazycrates.paper.api.PrizeManager;
-import com.badbones69.crazycrates.paper.utils.ItemUtils;
-import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
+import com.badbones69.crazycrates.paper.utils.ItemUtil;
+import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Location;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -39,7 +40,7 @@ public class QuadCrateListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
+    private final FusionPaper fusion = this.plugin.getFusion();
 
     private final SessionManager sessionManager = new SessionManager();
 
@@ -85,7 +86,7 @@ public class QuadCrateListener implements Listener {
             display.editPersistentDataContainer(container -> container.set(ItemKeys.crate_prize.getNamespacedKey(), PersistentDataType.STRING, "1"));
 
             // Convert the item stack to item builder.
-            final ItemStack itemStack = ItemUtils.convertItemStack(display).asItemStack();
+            final ItemStack itemStack = ItemUtil.convertItemStack(display).asItemStack();
 
             final Location location = block.getLocation();
 
@@ -100,10 +101,7 @@ public class QuadCrateListener implements Listener {
                         final String crateName = prize.getCrateName();
                         final String prizeName = prize.getPrizeName();
 
-                        List.of(
-                                "A prize could not be given due to an invalid display item for this prize.",
-                                "Crate: %s Prize: %s"
-                        ).forEach(line -> logger.warn(String.format(line, crateName, prizeName), exception));
+                        fusion.log(Level.WARNING, "A prize could not be given due to an invalid display item for this prize. Crate: %s Prize: %s", exception, crateName, prizeName);
 
                         cancel();
 
