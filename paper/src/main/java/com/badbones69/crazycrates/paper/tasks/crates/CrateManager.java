@@ -1234,11 +1234,13 @@ public class CrateManager {
             }
         }
 
-        configuration.set("Locations." + id + ".Crate", crate.getFileName());
-        configuration.set("Locations." + id + ".World", location.getWorld().getName());
-        configuration.set("Locations." + id + ".X", location.getBlockX());
-        configuration.set("Locations." + id + ".Y", location.getBlockY());
-        configuration.set("Locations." + id + ".Z", location.getBlockZ());
+        final ConfigurationSection section = configuration.createSection("Locations." + id);
+
+        section.set("Crate", crate.getFileName());
+        section.set("World", location.getWorld().getName());
+        section.set("X", location.getBlockX());
+        section.set("Y", location.getBlockY());
+        section.set("Z", location.getBlockZ());
 
         FileKeys.locations.save();
 
