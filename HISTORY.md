@@ -257,10 +257,10 @@ An example of what a prize would look like with the `Max-Pulls` option
   - You can run /crazycrates migrate CratesDeprecated to migrate deprecated options.
 ```yml
 Crate:
-  # https://docs.crazycrew.us/docs/plugins/crazycrates/misc/crate-types
+  # https://docs.crazycrew.us/mods/crazycrates/faq/#5-what-are-the-crate-types
 
   # Make sure to check out the wiki for anything not explained here.
-  # https://docs.crazycrew.us/docs/category/crazycrates
+  # https://docs.crazycrew.us/mods/crazycrates/
 
   # See CosmicCrate.yml to see how the Cosmic CrateType works.
   CrateType: Casino
@@ -712,7 +712,7 @@ Items:
 ### Changes:
 - Updated to [2.2.0](https://modrinth.com/plugin/fancyholograms/version/2.2.0) FancyHolograms, they made a breaking change in the api so all previous versions of FancyHolograms will no longer work.
 - Command / General Permissions have been updated!
-  - You can find a list of permissions @ https://docs.crazycrew.us/docs/plugins/crazycrates/commands/permissions
+  - You can find a list of permissions @ https://docs.crazycrew.us/mods/crazycrates/reference/commands/
 - Update the order some if checks go in to prevent potentially unnecessarily heavy calls when not needed.
 - Removed unsupported-settings from the example config.yml
 - War/Cosmic Crate listeners for PlayerCloseEvent have been combined and had unnecessary method calls reduced.
@@ -983,7 +983,7 @@ Items:
 - Adjust the volume of sounds and the speed of the sounds.
 
 ### Changes:
-- Cosmic Crate configurations have new options, [click me!](https://docs.crazycrew.us/docs/1.20.4/plugins/crazycrates/guides/crates/examples/cosmiccrate-example)
+- Cosmic Crate configurations have new options, [click me!](https://docs.crazycrew.us/mods/crazycrates/faq/#5-what-are-the-crate-types)
 - `Color` has been replaced by `Item` as you could have always used any item, so it was misleading to name it `Color`.
 - If `Item` is not found, it will fall back to LIME_STAINED_GLASS_PANE.
 - You can choose between a pre-defined tier for each row or have it pick randomly between available tiers.

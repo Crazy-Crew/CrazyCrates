@@ -16,7 +16,7 @@
 CrazyCrates is a crates plugin for Paper based servers that lets you add unlimited crates. It allows you to bring something to the server to spice up your economy and to give your players something to brag about.
 
 ## Building
-CrazyCrates requires gradle 8.12 to build the plugin.
+CrazyCrates requires Gradle 8.12 to build the plugin.
 
 ### Requirements
 * Java 21 JDK or newer

@@ -20,12 +20,12 @@
 4) Restart the server.
 5) Create new files in the `crates` folder, and look at the existing files in there to help figure out how to use the plugin.
 6) Test prizes using `/crazycrates debug <crate>`.
-7) View the documentation @ https://docs.crazycrew.us/docs/plugins/crazycrates
+7) View the documentation @ https://docs.crazycrew.us/mods/crazycrates/
 
 ## Useful Information
 ### This plugin requires you to use [MiniMessage!](https://docs.papermc.io/adventure/minimessage/)
 
-Please make sure to [read our documentation](https://docs.crazycrew.us/docs/plugins/crazycrates) thoroughly, and if you notice something is lacking. You can create a pull request to update the information for that page by hitting "Edit this page" at the bottom.
+Please make sure to [read our documentation](https://docs.crazycrew.us/mods/crazycrates/) thoroughly, and if you notice something is lacking. You can create a pull request to update the information for that page by hitting "Edit this page" at the bottom.
 
 All support for the plugin is provided on [Discord](https://discord.gg/badbones-s-live-chat-182615261403283459). If a question cannot be answered on the wiki, The next best place is to ask it in the Discord.
 
