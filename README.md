@@ -21,7 +21,7 @@
 7) View the documentation @ https://docs.crazycrew.us/mods/crazycrates/
 
 ## Features
-- https://docs.crazycrew.us/mods/crazycrates/#current-features
+- https://docs.crazycrew.us/mods/crazycrates/#current-features/
 
 ## Contributing
 - https://docs.crazycrew.us/mods/crazycrates/contributing/
