@@ -19,6 +19,8 @@ hangarPublish {
 
         channel.set(rootProject.ext.get("release_type").toString().uppercaseFirstChar())
 
+        pages.resourcePage(rootProject.file("README.md").readText(Charsets.UTF_8))
+
         platforms {
             register(Platforms.PAPER) {
                 jar.set(tasks.named<Jar>("jar").flatMap { it.archiveFile })
