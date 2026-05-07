@@ -23,6 +23,9 @@
 ## Features
 - https://docs.crazycrew.us/mods/crazycrates/#current-features
 
+## Contributing
+- https://docs.crazycrew.us/mods/crazycrates/contributing/
+
 ## Support
 All support for the plugin is provided on Discord! If a question cannot be answered on the wiki, The next best place is to ask it in the Discord.
 
