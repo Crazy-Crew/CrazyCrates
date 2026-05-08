@@ -15,9 +15,10 @@ val commit = utils.getRemoteCommitMessage(hash, "%B")
 
 val isBeta: Boolean = branch == rootProject.property("beta_branch").toString()
 val isAlpha: Boolean = branch == rootProject.property("alpha_branch").toString()
+val isJenkins: Boolean = System.getenv("BUILD_NUMBER") != null
 
 val commitHash: String = hash.subSequence(0, 7).toString()
-val content: String = if (isBeta) {
+val content: String = if (isBeta || isJenkins) {
     "[$commitHash](https://github.com/${rootProject.property("repository_owner")}/${rootProject.name}/commit/$commitHash) $commit"
 } else rootProject.file("changelog.md").readText(Charsets.UTF_8)
 
@@ -29,6 +30,10 @@ rootProject.group = rootProject.property("project_group").toString()
 
 rootProject.ext {
     set("version_name", if (isBeta) "${rootProject.version}" else "${rootProject.name} ${rootProject.version}")
-    set("release_type", if (isBeta) "beta" else if (isAlpha) "alpha" else "release")
+    set("release_type", if (isBeta || isJenkins) "beta" else if (isAlpha) "alpha" else "release")
+
+    set("current_commit", commitHash)
+    set("previous_commit", if (isJenkins) System.getenv("GIT_PREVIOUS_SUCCESSFUL_COMMIT") else "N/A")
+
     set("mc_changelog", content)
 }

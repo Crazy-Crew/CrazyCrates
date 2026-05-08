@@ -111,6 +111,34 @@ feather {
 
         webhook {
             group(rootProject.name.lowercase())
+            task("jenkins-build")
+
+            if (System.getenv("BUILD_WEBHOOK") != null) {
+                post(System.getenv("BUILD_WEBHOOK"))
+            }
+
+            username(rootProject.property("mascot_name").toString())
+
+            avatar(rootProject.property("mascot_avatar").toString())
+
+            embeds {
+                embed {
+                    color(color)
+
+                    title("A new $releaseType version of ${rootProject.name} is ready!")
+
+                    fields {
+                        field(
+                            ":hammer: Changelog",
+                            rootProject.ext.get("mc_changelog").toString().updateMarkdown()
+                        )
+                    }
+                }
+            }
+        }
+
+        webhook {
+            group(rootProject.name.lowercase())
             task("failed-build")
 
             if (System.getenv("BUILD_WEBHOOK") != null) {
