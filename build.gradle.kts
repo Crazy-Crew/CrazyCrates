@@ -160,8 +160,7 @@ feather {
                     fields {
                         field(
                             "The build versioned ${rootProject.version} for project ${rootProject.name} failed.",
-                            "The developer is likely already aware, he is just getting drunk.",
-                            inline = true
+                            "The developer is likely already aware, he is just getting drunk."
                         )
                     }
                 }
