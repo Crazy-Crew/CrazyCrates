@@ -20,6 +20,9 @@
 6) Test prizes using `/crazycrates debug <crate>`.
 7) View the documentation @ https://docs.crazycrew.us/mods/crazycrates/
 
+## Quick Builds
+[![Build Status](https://ci.crazycrew.us/job/CrazyCrates/badge/icon)](https://ci.crazycrew.us/job/CrazyCrates/)
+
 ## Features
 - https://docs.crazycrew.us/mods/crazycrates/#current-features/
 
