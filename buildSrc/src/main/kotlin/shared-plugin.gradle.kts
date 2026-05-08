@@ -33,7 +33,7 @@ rootProject.ext {
     set("release_type", if (isBeta || isJenkins) "beta" else if (isAlpha) "alpha" else "release")
 
     set("current_commit", commitHash)
-    set("previous_commit", if (isJenkins) System.getenv("GIT_PREVIOUS_SUCCESSFUL_COMMIT") else "N/A")
+    set("previous_commit", System.getenv("GIT_PREVIOUS_SUCCESSFUL_COMMIT") ?: "N/A")
 
     set("mc_changelog", content)
 }

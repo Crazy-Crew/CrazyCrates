@@ -132,6 +132,11 @@ feather {
                             ":hammer: Changelog",
                             rootProject.ext.get("mc_changelog").toString().updateMarkdown()
                         )
+
+                        field(
+                            ":link: Build Link",
+                            System.getenv("BUILD_URL") ?: "N/A",
+                        )
                     }
                 }
             }
