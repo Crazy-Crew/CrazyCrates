@@ -109,7 +109,6 @@ feather {
             }
         }
 
-
         webhook {
             group(rootProject.name.lowercase())
             task("jenkins-build")
