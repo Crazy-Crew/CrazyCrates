@@ -8,9 +8,14 @@ import com.badbones69.common.config.impl.messages.CrateKeys;
 import com.badbones69.common.config.impl.messages.ErrorKeys;
 import com.badbones69.common.config.impl.messages.MiscKeys;
 import com.badbones69.common.config.impl.messages.PlayerKeys;
+import com.ryderbelserion.fusion.core.api.FusionProvider;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
@@ -122,6 +127,8 @@ public enum Property {
     per_crate(CommandKeys.per_crate, newProperty("Messages.Keys.Per-Crate", CommandKeys.per_crate.getDefaultValue())),
     help(CommandKeys.help, newListProperty("Messages.Help", CommandKeys.help.getDefaultValue()), Collections.emptyList()),
     admin_help(CommandKeys.admin_help, newListProperty("Messages.Admin-Help", CommandKeys.admin_help.getDefaultValue()), Collections.emptyList());
+
+    private final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
 
     private ch.jalu.configme.properties.Property<String> newString;
     private ch.jalu.configme.properties.Property<String> oldString;
@@ -253,21 +260,32 @@ public enum Property {
      * @return true or false
      */
     public boolean moveList(PropertyReader reader, ConfigurationData configuration) {
-        List<?> key = reader.getList(this.oldList.getPath());
+        final List<?> key = reader.getList(this.oldList.getPath());
 
         if (key == null) return false;
 
-        List<String> list = new ArrayList<>();
+        final List<String> list = new ArrayList<>();
 
         if (this.oldList.getPath().equalsIgnoreCase("Settings.GUI-Customizer")) {
-            this.oldList.determineValue(reader).getValue().forEach(line -> list.add(line.replaceAll("Item:", "item:")
-                    .replaceAll("Slot:", "slot:")
-                    .replaceAll("Name:", "name:")
-                    .replaceAll("Lore:", "lore:")
-                    .replaceAll("Glowing:", "glowing:")
-                    .replaceAll("Player:", "player:")
-                    .replaceAll("Unbreakable-Item", "unbreakable_item:")
-                    .replaceAll("Hide-Item-Flags", "hide_item_flags:")));
+            final List<String> lines = this.oldList.determineValue(reader).getValue();
+
+            for (final String line : lines) {
+                if (line.isBlank()) continue;
+
+                list.add(this.fusion.replacePlaceholders(
+                        line,
+                        Map.of(
+                                "Item:", "item:",
+                                "Slot:", "slot:",
+                                "Name:", "name:",
+                                "Lore:", "lore:",
+                                "Glowing:", "glowing:",
+                                "Player:", "player:",
+                                "Unbreakable-Item", "unbreakable_item:",
+                                "Hide-Item-Flags", "hide_item_flags:"
+                        )
+                ));
+            }
         } else {
             this.oldList.determineValue(reader).getValue().forEach(line -> list.add(replace(line)));
         }
@@ -283,22 +301,25 @@ public enum Property {
      * @param message the message to check
      * @return the finalized message to set
      */
-    private String replace(String message) {
-        return message.replaceAll("%page%", "{page}")
-                .replaceAll("%prefix%", "{prefix}")
-                .replaceAll("%world%", "{world}")
-                .replaceAll("%crate%", "{crate}")
-                .replaceAll("%key%", "{key}")
-                .replaceAll("%keys%", "{keys}")
-                .replaceAll("%cratetype%", "{cratetype}")
-                .replaceAll("%player%", "{player}")
-                .replaceAll("%prize%", "{prize}")
-                .replaceAll("%number%", "{number}")
-                .replaceAll("%keytype%", "{keytype}")
-                .replaceAll("%usage%", "{usage}")
-                .replaceAll("%key-amount%", "{key_amount}")
-                .replaceAll("%amount%", "{amount}")
-                .replaceAll("%id%", "{id}")
-                .replaceAll("%crates_opened%", "{crates_opened}");
+    private String replace(@NotNull final String message) {
+        final Map<String, String> placeholders = new HashMap<>();
+
+        placeholders.put("%page%", "{page}");
+        placeholders.put("%prefix%", "{prefix}");
+        placeholders.put("%world%", "{world}");
+        placeholders.put("%crate%", "{crate}");
+        placeholders.put("%key%", "{key}");
+        placeholders.put("%keys%", "{keys}");
+        placeholders.put("%cratetype%", "{cratetype}");
+        placeholders.put("%player%", "{player}");
+        placeholders.put("%prize%", "{prize}");
+        placeholders.put("%number%", "{number}");
+        placeholders.put("%keytype%", "{keytype}");
+        placeholders.put("%usage%", "{usage}");
+        placeholders.put("%key-amount%", "{amount}");
+        placeholders.put("%amount%", "{amount}");
+        placeholders.put("%id%", "{id}");
+
+        return this.fusion.replacePlaceholders(message, placeholders);
     }
 }
