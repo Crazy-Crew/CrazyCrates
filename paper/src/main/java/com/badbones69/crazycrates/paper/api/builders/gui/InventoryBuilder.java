@@ -13,14 +13,15 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.gui.GuiBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import java.text.NumberFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import static java.util.regex.Matcher.quoteReplacement;
 
@@ -90,13 +91,11 @@ public abstract class InventoryBuilder {
 
         final UUID uuid = this.player.getUniqueId();
 
-        final NumberFormat instance = NumberFormat.getInstance();
+        String safe = option;
 
-        String clone = option;
-
-        for (Crate crate : this.crateManager.getUsableCrates()) {
+        for (final Crate crate : this.crateManager.getUsableCrates()) {
             final String fileName = crate.getFileName();
-            final String lowerCase = fileName.toLowerCase();
+            final String crateName = fileName.toLowerCase();
 
             final int virtual = this.userManager.getVirtualKeys(uuid, fileName);
             final int physical = this.userManager.getPhysicalKeys(uuid, fileName);
@@ -105,16 +104,18 @@ public abstract class InventoryBuilder {
 
             final int opened = this.userManager.getCrateOpened(uuid, fileName);
 
-            clone = clone.replaceAll("%" + lowerCase + "%", instance.format(virtual))
-                    .replaceAll("%" + lowerCase + "_physical%", instance.format(physical))
-                    .replaceAll("%" + lowerCase + "_total%", instance.format(total))
-                    .replaceAll("%" + lowerCase + "_opened%", instance.format(opened))
-                    .replaceAll("%" + lowerCase + "_raw%", String.valueOf(virtual))
-                    .replaceAll("%" + lowerCase + "_raw_physical%", String.valueOf(physical))
-                    .replaceAll("%" + lowerCase + "_raw_total%", String.valueOf(total))
-                    .replaceAll("%" + lowerCase + "_raw_opened%", String.valueOf(opened));
+            safe = this.fusion.replacePlaceholders(option, Map.of(
+                    "%{}%".replace("{}", crateName), StringUtils.formatNumber(virtual),
+                    "%{}_physical%".replace("{}", crateName), StringUtils.format(physical),
+                    "%{}_total%", StringUtils.format(total),
+                    "%{}_opened%", StringUtils.format(opened),
+                    "%{}_raw%", String.valueOf(virtual),
+                    "%{}_raw_physical", String.valueOf(physical),
+                    "%{}_raw_total%", String.valueOf(total),
+                    "%{}_raw_opened%", String.valueOf(opened)
+            ));
         }
 
-        return clone;
+        return safe;
     }
 }

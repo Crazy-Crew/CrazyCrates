@@ -2,18 +2,16 @@ package com.badbones69.crazycrates.paper.support.placeholders;
 
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.items.PlayerBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
-import java.text.NumberFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -23,11 +21,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
     private final FusionPaper fusion = this.plugin.getFusion();
 
-    private final Server server = this.plugin.getServer();
-
     private final BukkitUserManager userManager = this.plugin.getUserManager();
-
-    private final NumberFormat instance = NumberFormat.getNumberInstance();
 
     @Override
     public @NotNull final String onPlaceholderRequest(final Player player, @NotNull final String identifier) {
@@ -40,7 +34,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         }
 
         if (identifier.equalsIgnoreCase("crates_opened")) {
-            return this.instance.format(this.userManager.getTotalCratesOpened(uuid.get()));
+            return StringUtils.formatNumber(this.userManager.getTotalCratesOpened(uuid.get()));
         }
 
         final List<String> values = new ArrayList<>(1);
@@ -50,7 +44,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         final String value = keys[0];
 
         if (identifier.equalsIgnoreCase(value)) {
-            values.add(this.instance.format(this.userManager.getVirtualKeys(uuid.get(), value)));
+            values.add(StringUtils.formatNumber(this.userManager.getVirtualKeys(uuid.get(), value)));
         }
 
         if (identifier.equalsIgnoreCase("%s_physical_raw".formatted(value))) {
@@ -58,7 +52,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         }
 
         if (identifier.equalsIgnoreCase("%s_physical".formatted(value))) {
-            values.add(this.instance.format(this.userManager.getPhysicalKeys(uuid.get(), value)));
+            values.add(StringUtils.formatNumber(this.userManager.getPhysicalKeys(uuid.get(), value)));
         }
 
         if (identifier.equalsIgnoreCase("%s_total_raw".formatted(value))) {
@@ -66,7 +60,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         }
 
         if (identifier.equalsIgnoreCase("%s_total".formatted(value))) {
-            values.add(this.instance.format(this.userManager.getTotalKeys(uuid.get(), value)));
+            values.add(StringUtils.formatNumber(this.userManager.getTotalKeys(uuid.get(), value)));
         }
 
         if (identifier.equalsIgnoreCase("%s_opened_raw".formatted(value))) {
@@ -74,7 +68,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         }
 
         if (identifier.equalsIgnoreCase("%s_opened".formatted(value))) {
-            values.add(this.instance.format(this.userManager.getCrateOpened(uuid.get(), value)));
+            values.add(StringUtils.formatNumber(this.userManager.getCrateOpened(uuid.get(), value)));
         }
 
         if (identifier.equalsIgnoreCase("%s_raw".formatted(value))) {
@@ -87,7 +81,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
         final int index = identifier.lastIndexOf("_");
 
-        final String playerName = PlaceholderAPI.setPlaceholders(player,"%" + StringUtils.substringBetween(identifier.substring(0, index), "{", "}") + "%");
+        final String playerName = PlaceholderAPI.setPlaceholders(player,"%" + org.apache.commons.lang3.StringUtils.substringBetween(identifier.substring(0, index), "{", "}") + "%");
 
         if (playerName.isBlank() || playerName.equalsIgnoreCase("%player_name%")) {
             this.fusion.log(Level.WARNING, "The player name using {}_{} cannot be blank, or %player%", "crazycrates", identifier);
@@ -124,7 +118,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         }
 
         if (parsed.equalsIgnoreCase("%s_%s_opened".formatted(playerName, crateName))) {
-            values.add(this.instance.format(this.userManager.getCrateOpened(id, crateName)));
+            values.add(StringUtils.formatNumber(this.userManager.getCrateOpened(id, crateName)));
         }
 
         if (parsed.equalsIgnoreCase("%s_%s_physical_raw".formatted(playerName, crateName))) {
@@ -132,7 +126,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         }
 
         if (parsed.equalsIgnoreCase("%s_%s_physical".formatted(playerName, crateName))) {
-            values.add(this.instance.format(this.userManager.getPhysicalKeys(id, crateName)));
+            values.add(StringUtils.formatNumber(this.userManager.getPhysicalKeys(id, crateName)));
         }
 
         if (parsed.equalsIgnoreCase("%s_%s_virtual_raw".formatted(playerName, crateName))) {
@@ -140,7 +134,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         }
 
         if (parsed.equalsIgnoreCase("%s_%s_virtual".formatted(playerName, crateName))) {
-            values.add(this.instance.format(this.userManager.getVirtualKeys(id, crateName)));
+            values.add(StringUtils.formatNumber(this.userManager.getVirtualKeys(id, crateName)));
         }
 
         if (parsed.equalsIgnoreCase("%s_%s_total_raw".formatted(playerName, crateName))) {
@@ -148,7 +142,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         }
 
         if (parsed.equalsIgnoreCase("%s_%s_total".formatted(playerName, crateName))) {
-            values.add(this.instance.format(this.userManager.getTotalKeys(id, crateName)));
+            values.add(StringUtils.formatNumber(this.userManager.getTotalKeys(id, crateName)));
         }
 
         if (parsed.equalsIgnoreCase("%s_opened_raw".formatted(playerName))) {
@@ -156,7 +150,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         }
 
         if (parsed.equalsIgnoreCase("%s_opened".formatted(playerName))) {
-            values.add(this.instance.format(this.userManager.getTotalCratesOpened(id)));
+            values.add(StringUtils.formatNumber(this.userManager.getTotalCratesOpened(id)));
         }
 
         return values.isEmpty() ? "N/A" : values.getFirst();

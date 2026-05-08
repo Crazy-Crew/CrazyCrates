@@ -8,6 +8,7 @@ import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
@@ -30,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import java.text.NumberFormat;
 import java.util.*;
 
 public class BukkitUserManager extends UserManager {
@@ -843,12 +843,10 @@ public class BukkitUserManager extends UserManager {
 
         final int openedCrates = getCrateOpened(uuid, fileName);
 
-        final NumberFormat instance = NumberFormat.getNumberInstance();
-
-        return itemBuilder.addPlaceholder("%keys%", instance.format(virtualKeys))
-                .addPlaceholder("%keys_physical%", instance.format(physicalKeys))
-                .addPlaceholder("%keys_total%", instance.format(totalKeys))
-                .addPlaceholder("%crate_opened%", instance.format(openedCrates))
+        return itemBuilder.addPlaceholder("%keys%", StringUtils.formatNumber(virtualKeys))
+                .addPlaceholder("%keys_physical%", StringUtils.formatNumber(physicalKeys))
+                .addPlaceholder("%keys_total%", StringUtils.formatNumber(totalKeys))
+                .addPlaceholder("%crate_opened%", StringUtils.formatNumber(openedCrates))
                 .addPlaceholder("%keys_raw%", String.valueOf(virtualKeys))
                 .addPlaceholder("%keys_physical_raw%", String.valueOf(physicalKeys))
                 .addPlaceholder("%keys_total_raw%", String.valueOf(totalKeys))
