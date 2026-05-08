@@ -318,6 +318,10 @@ public class CrateManager {
                     break;
                 }
 
+                if (Plugins.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
+                    this.holograms = new CMIHologramsSupport();
+                }
+
                 if (Plugins.fancy_holograms.isEnabled()) {
                     this.holograms = new FancyHologramsSupport();
                 }

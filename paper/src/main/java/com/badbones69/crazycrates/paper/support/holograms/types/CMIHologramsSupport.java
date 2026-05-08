@@ -3,6 +3,8 @@ package com.badbones69.crazycrates.paper.support.holograms.types;
 import com.Zrips.CMI.CMI;
 import com.Zrips.CMI.Modules.Display.CMIBillboard;
 import com.Zrips.CMI.Modules.Holograms.CMIHologram;
+import com.Zrips.CMI.Modules.Holograms.Settings.CMIHologramSettings;
+import com.Zrips.CMI.Modules.Holograms.Settings.CMIHologramTextSettings;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateHologram;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import net.Zrips.CMILib.Colors.CMIChatColor;
@@ -37,35 +39,40 @@ public class CMIHologramsSupport extends HologramManager {
 
         final CMIHologram hologram = new CMIHologram(name(id), new CMILocation(location.clone().add(getVector(crate))));
 
-        hologram.setNewDisplayMethod(true);
-        hologram.setBillboard(CMIBillboard.CENTER);
+        final CMIHologramSettings settings = hologram.getSettings();
+
+        settings.setBillboard(CMIBillboard.CENTER);
 
         final String color = crateHologram.getBackgroundColor();
 
+        final CMIHologramTextSettings textSettings = hologram.getTextSettings();
+
         if (color.equalsIgnoreCase("transparent")) {
-            hologram.setBackgroundAlpha(0);
+            textSettings.setBackgroundAlpha(0);
         } else {
-            hologram.setBackgroundColor(CMIChatColor.getClosest(color));
+            textSettings.setBackgroundColor(CMIChatColor.getClosest(color));
         }
 
-        hologram.setShowRange(crateHologram.getRange());
+        settings.setUpdateRange(crateHologram.getRange());
 
         final List<String> lines = new ArrayList<>();
 
         crateHologram.getMessages().forEach(line -> lines.add(CMIChatColor.colorize(line)));
 
-        hologram.setLines(lines);
+        hologram.getPages().setLines(lines);
 
         if (crateHologram.getUpdateInterval() != -1) {
-            hologram.setUpdateIntervalSec(crateHologram.getUpdateInterval());
+            settings.setUpdateIntervalTicks(crateHologram.getUpdateInterval());
         }
 
-        this.hologramManager.addHologram(hologram);
+        this.hologramManager.add(hologram);
 
         new FoliaScheduler(this.plugin, location) {
             @Override
             public void run() {
-                location.getNearbyEntitiesByType(Player.class, crateHologram.getRange()).forEach(player -> hologramManager.handleHoloUpdates(player, hologram.getLocation()));
+                location.getNearbyEntitiesByType(Player.class, crateHologram.getRange()).forEach(player -> {
+                    hologramManager.updatePlayer(player, hologram.getLocation());
+                });
             }
         }.runNow();
     }
