@@ -1,3 +1,5 @@
+import utils.convertList
+
 plugins {
     id("com.ryderbelserion.feather.core")
 
@@ -35,5 +37,5 @@ rootProject.ext {
     set("current_commit", commitHash)
     set("previous_commit", System.getenv("GIT_PREVIOUS_SUCCESSFUL_COMMIT") ?: "N/A")
 
-    set("mc_changelog", content)
+    set("mc_changelog", content.lines().convertList())
 }

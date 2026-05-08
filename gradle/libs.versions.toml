@@ -2,7 +2,7 @@
 ## Paper
 paperweight = "2.0.0-beta.21" # https://github.com/PaperMC/paperweight
 adventure = "5.0.0" # https://github.com/KyoriPowered/adventure
-paper = "26.1.2.build.5-alpha" # https://github.com/PaperMC/Paper
+paper = "26.1.2.build.+" # https://github.com/PaperMC/Paper
 
 ## Minecraft
 minecraft = "26.1.2" # https://minecraft.net
