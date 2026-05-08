@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.paper.commands;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
+import com.badbones69.crazycrates.paper.commands.crates.types.admin.CommandVersion;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.CommandAddItem;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.CommandClaim;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.CommandMigrate;
@@ -140,6 +141,7 @@ public class CommandManager {
                 new CommandTake(),
 
                 new CommandMigrate(),
+                new CommandVersion(),
                 new CommandReload(),
                 new CommandAdmin(),
 

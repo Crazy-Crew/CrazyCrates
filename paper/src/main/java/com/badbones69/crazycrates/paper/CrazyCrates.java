@@ -85,7 +85,8 @@ public class CrazyCrates extends JavaPlugin {
                 .addPaperFolder(path.resolve("crates"))
 
                 .addFolder(path.resolve("schematics"), FileType.NBT)
-                .addFolder(path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE));
+                .addFolder(path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE))
+                .addFile(path.resolve("version.json"), FileType.JSON);
 
         MiscUtils.janitor();
         MiscUtils.save();

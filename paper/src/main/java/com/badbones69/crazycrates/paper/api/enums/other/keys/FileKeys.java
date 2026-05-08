@@ -4,10 +4,13 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.types.LogCustomFile;
+import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.configurate.BasicConfigurationNode;
+
 import java.nio.file.Path;
 import java.util.Optional;
 
@@ -19,7 +22,9 @@ public enum FileKeys {
     key_log(FileType.LOG, "keys.log", "logs"),
 
     locations(FileType.PAPER_YAML, "locations.yml"),
-    data(FileType.PAPER_YAML, "data.yml");
+    data(FileType.PAPER_YAML, "data.yml"),
+
+    version(FileType.JSON, "version.json");
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
     private final PaperFileManager fileManager = this.plugin.getFileManager();
@@ -47,6 +52,20 @@ public enum FileKeys {
 
     public @NotNull final PaperCustomFile getPaperCustomFile() {
         final Optional<PaperCustomFile> customFile = this.fileManager.getPaperFile(this.location);
+
+        if (customFile.isEmpty()) {
+            throw new FusionException("Could not find custom file for " + this.location);
+        }
+
+        return customFile.get();
+    }
+
+    public @NotNull final BasicConfigurationNode getConfigurationNode() {
+        return getJsonCustomFile().getConfiguration();
+    }
+
+    public @NotNull final JsonCustomFile getJsonCustomFile() {
+        final Optional<JsonCustomFile> customFile = this.fileManager.getJsonFile(this.location);
 
         if (customFile.isEmpty()) {
             throw new FusionException("Could not find custom file for " + this.location);
