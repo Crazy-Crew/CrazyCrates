@@ -117,8 +117,6 @@ feather {
                 post(System.getenv("BUILD_WEBHOOK"))
             }
 
-            post("https://discord.com/api/webhooks/1376623792511516802/GsddNLpzy92wNVJKTx05dh2VHb9nZaSONZmBwVMgRjIb8dHokDc-DPB1yC7eYK7q-LXd")
-
             username(rootProject.property("mascot_name").toString())
 
             avatar(rootProject.property("mascot_avatar").toString())
