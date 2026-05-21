@@ -363,7 +363,7 @@ public class CrateManager {
                         }
                     });
                 } catch (final Exception exception) {
-                    this.fusion.log(Level.WARNING, "Failed to delete %s.", exception, exception);
+                    this.fusion.log(Level.WARNING, "Failed to delete %s.", exception, examples);
                 }
             }
 
