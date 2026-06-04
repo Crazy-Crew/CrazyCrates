@@ -11,6 +11,7 @@ folia-supported: true
 
 dependencies:
   server:
+    # Hologram plugins
     DecentHolograms:
       load: BEFORE
       required: false
@@ -23,10 +24,14 @@ dependencies:
       load: BEFORE
       required: false
       join-classpath: true
+
+    # Placeholder plugins
     PlaceholderAPI:
       load: BEFORE
       required: false
       join-classpath: true
+
+    # Custom item plugins
     ItemsAdder:
       load: BEFORE
       required: false
@@ -39,7 +44,15 @@ dependencies:
       load: BEFORE
       required: false
       join-classpath: true
+
+    # Skull plugins
     HeadDatabase:
+      load: BEFORE
+      required: false
+      join-classpath: true
+
+    # Cosmetic plugins
+    HMCWraps:
       load: BEFORE
       required: false
       join-classpath: true
