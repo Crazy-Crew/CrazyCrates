@@ -427,7 +427,7 @@ public class Prize {
             }
 
             if (this.section.contains("Player")) {
-                builder.asSkullBuilder().withName(this.section.getString("Player", ""));
+                builder.asSkullBuilder().withName(this.section.getString("Player", "")).build();
             }
 
             if (this.section.contains("DisplayTrim.Pattern") && this.section.contains("DisplayTrim.Material") && builder.isArmor()) {

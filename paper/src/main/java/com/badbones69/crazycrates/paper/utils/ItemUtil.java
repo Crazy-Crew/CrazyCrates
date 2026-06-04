@@ -214,9 +214,7 @@ public class ItemUtil {
         }
         
         if (section.contains("Player") && builder.isPlayerHead()) {
-            final SkullBuilder skull = builder.asSkullBuilder();
-
-            skull.withName(section.getString("Player", "")).build();
+            builder.asSkullBuilder().withName(section.getString("Player", "")).build();
         }
 
         final CustomBuilder custom = builder.asCustomBuilder();
@@ -410,7 +408,7 @@ public class ItemUtil {
                         itemBuilder.setItemDamage(amount.map(Number::intValue).orElse(0));
                     }
                     case "lore" -> itemBuilder.withDisplayLore(List.of(value.split(",")));
-                    case "player" -> itemBuilder.asSkullBuilder().withName(value);
+                    case "player" -> itemBuilder.asSkullBuilder().withName(value).build();
                     case "skull" -> itemBuilder.withSkull(value);
                     case "custom-model-data" -> itemBuilder.asCustomBuilder().setCustomModelData(value).build();
                     case "unbreakable-item" -> itemBuilder.setUnbreakable(value.isEmpty() || value.equalsIgnoreCase("true"));
