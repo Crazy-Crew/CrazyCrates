@@ -607,7 +607,7 @@ public class CrateManager {
                     continue;
                 }
 
-                final Location location = new Location(world, origin.getInt("Z"), origin.getInt("Y"), origin.getInt("Z"));
+                final Location location = new Location(world, x, y, z);
 
                 this.crateLocations.add(new CrateLocation(index, crate, location));
 
