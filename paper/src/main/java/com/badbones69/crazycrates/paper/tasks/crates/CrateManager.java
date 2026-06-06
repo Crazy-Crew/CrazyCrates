@@ -34,6 +34,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WonderCrate;
 import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
@@ -367,10 +368,10 @@ public class CrateManager {
                 }
             }
 
-            this.fileManager.extractFolder("guis", examples);
-            this.fileManager.extractFolder("logs", examples);
-            this.fileManager.extractFolder("crates", examples);
-            this.fileManager.extractFolder("schematics", examples);
+            this.fileManager.extractFolder("guis", FileType.YAML, examples);
+            this.fileManager.extractFolder("logs", FileType.YAML, examples);
+            this.fileManager.extractFolder("crates", FileType.YAML, examples);
+            this.fileManager.extractFolder("schematics", FileType.NBT, examples);
 
             List.of(
                     "config.yml",
