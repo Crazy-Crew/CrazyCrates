@@ -166,6 +166,6 @@ public class CommandKeys implements SettingsHolder {
             "<gold>/keys <gray>- <yellow>Shows how many keys you have.",
             "<gold>/crates <gray>- <yellow>Opens the menu.",
             "",
-            "<gray>You can find a list of permissions @ <yellow>https://docs.crazycrew.us/docs/plugins/crazycrates/commands/permissions"
+            "<gray>You can find a list of permissions @ <yellow>https://docs.crazycrew.us/mods/crazycrates/reference/commands/"
     ));
 }

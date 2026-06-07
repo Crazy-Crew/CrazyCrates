@@ -30,7 +30,7 @@ Date format: (YYYY-MM-DD)
 ### Breaking Changes:
 - The weight system has been merged in, which effectively replaces the Chance/Max Range system.
   - You must run the command /crazycrates migrate WeightMigration, which will convert your configurations.
-  - https://docs.crazycrew.us/docs/plugins/crazycrates/guides/crates/weight-system
+  - https://docs.crazycrew.us/mods/crazycrates/reference/prizes/weight-system/
 
 ### Additions:
 - Added the ability to log the plugin actions to file i.e. crates.log and keys.log... A list of events currently tracked

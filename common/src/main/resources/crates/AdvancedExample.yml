@@ -1,8 +1,8 @@
 Crate:
-  # https://docs.crazycrew.us/docs/plugins/crazycrates/misc/crate-types
+  # https://docs.crazycrew.us/mods/crazycrates/faq/#5-what-are-the-crate-types
 
   # Make sure to check out the wiki for anything not explained here.
-  # https://docs.crazycrew.us/docs/category/crazycrates
+  # https://docs.crazycrew.us/mods/crazycrates/
 
   # See CosmicCrate.yml or CasinoCrate.yml to see how the Cosmic/Casino CrateType works.
   CrateType: CSGO
@@ -201,7 +201,7 @@ Crate:
       DisplayEnchantments:
         - "protection:5"
         - "unbreaking:3"
-      # https://docs.crazycrew.us/docs/plugins/crazycrates/guides/prizes/items/armor-trim
+      # https://docs.crazycrew.us/mods/crazycrates/reference/prizes/items/tools/trim/
       DisplayTrim:
         # The list of materials to use can be found on the link above
         Material: "redstone"
