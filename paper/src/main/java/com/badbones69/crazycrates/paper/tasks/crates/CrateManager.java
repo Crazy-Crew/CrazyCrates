@@ -719,12 +719,13 @@ public class CrateManager {
             case wheel -> crateBuilder = new WheelCrate(crate, player, 54);
             case roulette -> crateBuilder = new RouletteCrate(crate, player, 27);
             case war -> crateBuilder = new WarCrate(crate, player, 9);
-            case cosmic -> crateBuilder = new CosmicCrate(crate, player, 27);
-            case quad_crate -> {
-                if (isVirtualCrate(player, crate, virtualCrate, fancyName)) return;
 
-                crateBuilder = new QuadCrate(crate, player, location);
-            }
+            //case cosmic -> crateBuilder = new CosmicCrate(crate, player, 27);
+            //case quad_crate -> {
+            //    if (isVirtualCrate(player, crate, virtualCrate, fancyName)) return;
+
+            //    crateBuilder = new QuadCrate(crate, player, location);
+            //}
 
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
