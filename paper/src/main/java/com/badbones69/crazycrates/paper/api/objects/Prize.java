@@ -438,7 +438,11 @@ public class Prize {
                 for (final String ench : this.section.getStringList("DisplayEnchantments")) {
                     String[] value = ench.split(":");
 
-                    builder.addEnchantment(value[0], Integer.parseInt(value[1]));
+                    final String enchant = value[0];
+                    final String key = value[1];
+
+                    StringUtils.tryParseInt(key).ifPresentOrElse(number -> builder.addEnchantment(enchant, number.intValue()),
+                            () -> this.fusion.log(Level.WARNING, "An invalid number was supplied(%s) for the enchant %s in prize %s", key, enchant, prizeName));
                 }
             }
 

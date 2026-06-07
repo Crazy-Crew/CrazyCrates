@@ -40,17 +40,19 @@ public class PrizeManager {
         final String format = "crazycrates.respin." + crate.getFileName() + ".";
         final String lowerCase = format.toLowerCase();
 
+        final int cycleCap = crate.getCyclePermissionCap();
+
         int cap = 0;
 
         for (final PermissionAttachmentInfo permission : player.getEffectivePermissions()) {
             String node = permission.getPermission();
 
             if (node.startsWith(lowerCase)) {
-                node = node.replace(lowerCase, "");
+                final Number origin = StringUtils.tryParseInt(node.replace(lowerCase, "")).orElseThrow();
 
-                int number = Integer.parseInt(node);
+                final int number = origin.intValue();
 
-                if (number > cap && cap < crate.getCyclePermissionCap()) {
+                if (number > cap && cap < cycleCap) {
                     cap = number;
                 }
             }

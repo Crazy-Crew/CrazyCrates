@@ -9,6 +9,8 @@ import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
+import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import net.kyori.adventure.sound.Sound;
@@ -95,10 +97,10 @@ public class WonderCrate extends CrateBuilder {
                     setItem(this.slot1, material);
                     setItem(this.slot2, material);
 
-                    for (String slot : slots) {
+                    for (final String slot : slots) {
                         this.prize = crate.pickPrize(player);
 
-                        setItem(Integer.parseInt(slot), this.prize.getDisplayItem(player, crate));
+                        StringUtils.tryParseInt(slot).ifPresentOrElse(number -> setItem(number.intValue(), this.prize.getDisplayItem(player, crate)), () -> fusion.log(Level.WARNING, "Failed to find parse slot %s for WonderCrate as it is not a number.", slot));
                     }
 
                     playSound("cycle-sound", Sound.Source.MASTER, "block.note_block.xylophone");
