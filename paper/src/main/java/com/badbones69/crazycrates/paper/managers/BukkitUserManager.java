@@ -24,7 +24,6 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -192,7 +191,7 @@ public class BukkitUserManager extends UserManager {
         int keys = 0;
 
         for (final ItemStack item : player.getOpenInventory().getBottomInventory().getContents()) {
-            if (item == null || item.getType() == Material.AIR) continue;
+            if (item == null || item.isEmpty()) continue;
 
             if (ItemUtil.isSimilar(item, crate)) keys += item.getAmount();
         }
@@ -220,99 +219,100 @@ public class BukkitUserManager extends UserManager {
 
         final Player player = getUser(uuid);
 
-        final CrateType crateType = crate.getCrateType();
+        //final CrateType crateType = crate.getCrateType();
+
+        int currentKeys = switch (keyType) {
+            case virtual_key -> getVirtualKeys(uuid, fileName);
+            case physical_key -> getPhysicalKeys(uuid, fileName);
+            default -> 1;
+        };
+
+        boolean isSafe = false;
 
         switch (keyType) {
             case physical_key -> {
-                int takeAmount = amount;
+                if (amount > currentKeys) {
+                    break;
+                }
 
-                final List<ItemStack> items = new ArrayList<>();
+                int copy = amount;
+
+                final List<ItemStack> origin = new ArrayList<>();
 
                 final EntityEquipment equipment = player.getEquipment();
 
-                if (checkHand) {
-                    items.add(equipment.getItemInMainHand());
-                    items.add(equipment.getItemInOffHand());
-                } else {
-                    items.addAll(Arrays.asList(player.getInventory().getContents()));
+                origin.add(equipment.getItemInMainHand());
+                origin.add(equipment.getItemInOffHand());
+
+                final PlayerInventory inventory = player.getInventory();
+
+                if (!checkHand) {
+                    origin.addAll(Arrays.asList(inventory.getContents()));
                 }
+
+                final List<ItemStack> items = origin.stream()
+                        .filter(Objects::nonNull)
+                        .filter(item -> !item.isEmpty())
+                        .filter(item -> ItemUtil.isSimilar(item, crate))
+                        .toList();
 
                 for (final ItemStack item : items) {
-                    if (item == null || !ItemUtil.isSimilar(item, crate)) {
-                        continue;
-                    }
+                    final int toDelete = item.getAmount();
 
-                    final int keyAmount = item.getAmount();
+                    if ((copy - toDelete) >= 0) {
+                        MiscUtils.recycle(inventory, item);
 
-                    if ((takeAmount - keyAmount) >= 0) {
-                        MiscUtils.removeMultipleItemStacks(player.getInventory(), item);
-
-                        if (crateType == CrateType.cosmic) addOpenedCrate(uuid, fileName, amount);
-
-                        takeAmount -= keyAmount;
+                        copy -= toDelete;
                     } else {
-                        item.setAmount(keyAmount - takeAmount);
+                        item.setAmount(toDelete - copy);
 
-                        if (crateType == CrateType.cosmic) addOpenedCrate(uuid, fileName, amount);
-
-                        takeAmount = 0;
+                        copy = 0;
                     }
 
-                    if (takeAmount <= 0) return true;
-                }
+                    if (copy <= 0) {
+                        isSafe = true;
 
-                // This needs to be done as player.getInventory().removeItem(ItemStack); does NOT remove from the offhand.
-                if (takeAmount > 0) {
-                    final ItemStack item = equipment.getItemInOffHand();
-
-                    if (ItemUtil.isSimilar(item, crate)) {
-                        final int keyAmount = item.getAmount();
-
-                        if ((takeAmount - keyAmount) >= 0) {
-                            equipment.setItemInOffHand(null);
-
-                            takeAmount -= keyAmount;
-
-                            if (crateType == CrateType.cosmic) addOpenedCrate(uuid, fileName, amount);
-                        } else {
-                            item.setAmount(keyAmount - takeAmount);
-
-                            if (crateType == CrateType.cosmic) addOpenedCrate(uuid, fileName, amount);
-
-                            takeAmount = 0;
-                        }
-
-                        if (takeAmount <= 0) return true;
+                        break;
                     }
                 }
             }
 
             case virtual_key -> {
-                final int keys = getVirtualKeys(uuid, fileName);
+                if (currentKeys < amount) {
+                    break;
+                }
 
                 final YamlConfiguration configuration = this.data.getConfiguration();
 
                 configuration.set("Players." + uuid + ".Name", player.getName());
 
-                final int newAmount = Math.max((keys - amount), 0);
+                final int newAmount = Math.max((currentKeys - amount), 0);
 
                 configuration.set("Players." + uuid + "." + fileName, newAmount < 1 ? null : newAmount);
 
-                if (crateType == CrateType.cosmic) addOpenedCrate(uuid, fileName, amount);
+                /*switch (crateType) {
+                   case cosmic, crate_on_the_go -> addOpenedCrate(uuid, fileName, amount);
+                }*/
 
                 this.data.save();
 
-                return true;
+                isSafe = true;
             }
 
-            case free_key -> {
-                return true;
-            }
+            case free_key -> isSafe = true;
         }
 
-        MiscUtils.failedToTakeKey(player, fileName);
+        if (!isSafe) {
+            Messages.not_enough_keys.sendMessage(player, Map.of(
+                    "{required_amount}", String.valueOf(amount),
+                    "{key_amount}", String.valueOf(amount),
+                    "{amount}", String.valueOf(currentKeys),
+                    "{crate}", crate.getCrateName(),
+                    "{key}", crate.getKeyName()
+            ));
+        }
 
-        return false;
+        return isSafe;
     }
 
     @Override

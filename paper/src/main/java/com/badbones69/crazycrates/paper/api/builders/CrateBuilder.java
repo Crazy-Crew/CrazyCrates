@@ -34,13 +34,13 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import java.util.List;
+import java.util.function.Consumer;
 
 public abstract class CrateBuilder extends FoliaScheduler {
 
@@ -163,7 +163,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param eventType {@link EventType}
      * @param isSilent true or false
      */
-    public abstract void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final EventType eventType);
+    public abstract void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final int amount, final EventType eventType);
 
     public void displayItem(final Prize prize) {
         final boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
@@ -379,13 +379,26 @@ public abstract class CrateBuilder extends FoliaScheduler {
     /**
      * Calls the crate open event and returns true/false if successful or not.
      *
-     * @param keyType virtual or physical key
+     * @param keyType   virtual or physical key
      * @param checkHand true or false
+     * @param amount the amount of times opened
      * @param eventType {@link EventType}
      * @return true if canceled otherwise false
      */
-    public final boolean isCrateEventValid(@NotNull final KeyType keyType, final boolean checkHand, final boolean isSilent, final EventType eventType) {
-        final CrateOpenEvent event = new CrateOpenEvent(this.player, this.crate, keyType, checkHand, this.crate.getSection(), isSilent, eventType);
+    public final boolean isCrateEventValid(
+            @NotNull final KeyType keyType,
+
+            final boolean checkHand,
+            final boolean isSilent,
+            final int amount,
+
+            final EventType eventType,
+
+            final Consumer<CrateOpenEvent> consumer
+    ) {
+        final CrateOpenEvent event = new CrateOpenEvent(this.player, this.crate, keyType, checkHand, this.crate.getSection(), isSilent, eventType, amount);
+
+        consumer.accept(event);
 
         event.callEvent();
 
@@ -406,6 +419,16 @@ public abstract class CrateBuilder extends FoliaScheduler {
         }
 
         return isCancelled;
+    }
+
+    public final boolean isCrateEventValid(
+            @NotNull final KeyType keyType,
+            final boolean checkHand,
+            final boolean isSilent,
+            final int amount,
+            final EventType eventType
+    ) {
+        return isCrateEventValid(keyType, checkHand, isSilent, amount, eventType, _ -> {});
     }
 
     protected boolean isCancelled = false;

@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.tasks.crates.types;
 
 import com.badbones69.crazycrates.paper.api.builders.types.features.CrateSpinMenu;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
@@ -16,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import java.util.Map;
 import java.util.UUID;
 
 public class QuickCrate extends CrateBuilder {
@@ -31,13 +29,19 @@ public class QuickCrate extends CrateBuilder {
     private final Crate crate = getCrate();
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, @NotNull final EventType eventType) {
+    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final int amount, @NotNull final EventType eventType) {
+        final String fileName = this.crate.getFileName();
+
         // Crate event failed, so we return.
-        if (isCrateEventValid(type, checkHand, isSilent, eventType)) {
+        if (isCrateEventValid(type, checkHand, isSilent, amount, eventType, event -> {
+            if (!this.userManager.takeKeys(this.uuid, fileName, type, amount, checkHand)) {
+                this.crateManager.endCrate(this.player);
+
+                event.setCancelled(true);
+            }
+        })) {
             return;
         }
-
-        final String fileName = this.crate.getFileName();
 
         int keys = switch (type) {
             case virtual_key -> this.userManager.getVirtualKeys(this.uuid, fileName);
@@ -45,50 +49,33 @@ public class QuickCrate extends CrateBuilder {
             default -> 1;
         };
 
-        if (this.crate.useRequiredKeys() && keys < this.crate.getRequiredKeys()) {
-            Messages.not_enough_keys.sendMessage(this.player, Map.of(
-                    "{required_amount}", String.valueOf(crate.getRequiredKeys()),
-                    "{key_amount}", String.valueOf(crate.getRequiredKeys()),
-                    "{amount}", String.valueOf(keys),
-                    "{crate}", crate.getCrateName(),
-                    "{key}", crate.getKeyName()
-            ));
-
-            // Remove from an opening list.
-            this.crateManager.removePlayerFromOpeningList(this.player);
-
-            return;
-        }
-
         this.crateManager.addCrateInUse(this.player, this.location);
 
-        if (this.player.isSneaking() && keys > 1) {
+        if (this.player.isSneaking() && keys > 1) { //todo() test this
             int used = 0;
 
-            for (;keys > 0; keys--) {
-                if (MiscUtils.isInventoryFull(this.player)) break;
+            for (;keys > 0; keys--) { // check keys first.
                 if (used >= this.crate.getMaxMassOpen()) break;
-
-                final Prize prize = this.crate.pickPrize(this.player);
-
-                PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, 0.5), this.crate, prize);
 
                 used++;
             }
 
-            final boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, used, false);
-
-            if (!keyCheck) {
-                // Send the message about failing to take the key.
-                MiscUtils.failedToTakeKey(this.player, fileName);
-
-                // Remove from an opening list.
-                this.crateManager.removePlayerFromOpeningList(this.player);
-
-                // Remove crates in use
-                this.crateManager.removeCrateInUse(this.player);
+            if (!this.userManager.takeKeys(this.uuid, fileName, type, used, false)) { // take keys first.
+                // End the crate.
+                this.crateManager.endCrate(this.player);
 
                 return;
+            }
+
+            // this ensures that keys are taken first BEFORE they get prizes.
+            for (;used > 0; used--) { // loop through used until it's 0, if the inventory is full... give them the remaining keys back.
+                if (MiscUtils.isInventoryFull(this.player)) {
+                    this.userManager.addVirtualKeys(this.uuid, fileName, used);
+
+                    break;
+                }
+
+                PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, 0.5), this.crate,  this.crate.pickPrize(this.player));
             }
 
             this.crateManager.endQuickCrate(this.player, this.location, this.crate, true);
@@ -96,17 +83,9 @@ public class QuickCrate extends CrateBuilder {
             return;
         }
 
-        final boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, true);
-
-        if (!keyCheck) {
-            // Send the message about failing to take the key.
-            MiscUtils.failedToTakeKey(this.player, fileName);
-
-            // Remove from opening list.
-            this.crateManager.removePlayerFromOpeningList(this.player);
-
-            // Remove crates in use
-            this.crateManager.removeCrateInUse(this.player);
+        if (!this.userManager.takeKeys(this.uuid, fileName, type, amount, false)) {
+            // End the crate.
+            this.crateManager.endCrate(this.player);
 
             return;
         }

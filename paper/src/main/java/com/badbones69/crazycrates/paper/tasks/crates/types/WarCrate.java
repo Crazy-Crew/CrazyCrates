@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import net.kyori.adventure.sound.Sound;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -34,24 +33,17 @@ public class WarCrate extends CrateBuilder {
     private final Crate crate = getCrate();
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, @Nullable final EventType eventType) {
-        // Crate event failed, so we return.
-        if (isCrateEventValid(type, checkHand, isSilent, eventType)) {
-            return;
-        }
-
+    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final int amount, @Nullable final EventType eventType) {
         final String fileName = this.crate.getFileName();
 
-        final boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, checkHand);
+        // Crate event failed, so we return.
+        if (isCrateEventValid(type, checkHand, isSilent, amount, eventType, event -> {
+            if (!this.userManager.takeKeys(this.uuid, fileName, type, amount, checkHand)) {
+                this.crateManager.endCrate(this.player);
 
-        if (!keyCheck) {
-            // Remove from an opening list.
-            this.crateManager.removePlayerFromOpeningList(this.player);
-
-            // Remove closer/picker
-            this.crateManager.removeCloser(this.player);
-            this.crateManager.removePicker(this.player);
-
+                event.setCancelled(true);
+            }
+        })) {
             return;
         }
 

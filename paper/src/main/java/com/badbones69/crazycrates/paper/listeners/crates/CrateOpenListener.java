@@ -45,12 +45,17 @@ public class CrateOpenListener implements Listener {
         final String fancyName = crate.getCrateName();
         final CrateType crateType = crate.getCrateType();
 
+        if (event.isCancelled()) { // if cancelled return.
+            this.crateManager.endCrate(player);
+
+            return;
+        }
+
         if (crateType != CrateType.menu) {
             if (crate.getPrizes().isEmpty() || !crate.canWinPrizes(player)) {
                 Messages.no_prizes_found.sendMessage(player, "{crate}", fancyName);
 
-                this.crateManager.removePlayerFromOpeningList(player);
-                this.crateManager.removePlayerKeyType(player);
+                this.crateManager.endCrate(player);
 
                 event.setCancelled(true);
 
@@ -61,8 +66,7 @@ public class CrateOpenListener implements Listener {
         if (!player.hasPermission("crazycrates.open." + fileName)) {
             Messages.no_crate_permission.sendMessage(player, "{crate}", fancyName);
 
-            this.crateManager.removePlayerFromOpeningList(player);
-            this.crateManager.removeCrateInUse(player);
+            this.crateManager.endCrate(player);
 
             event.setCancelled(true);
 
@@ -71,7 +75,11 @@ public class CrateOpenListener implements Listener {
 
         this.crateManager.addPlayerToOpeningList(player, crate);
 
-        if (crateType != CrateType.cosmic) this.userManager.addOpenedCrate(player.getUniqueId(), fileName);
+        final int amount = event.getAmount();
+
+        switch (crateType) {
+            case cosmic, crate_on_the_go -> this.userManager.addOpenedCrate(player.getUniqueId(), fileName, amount);
+        }
 
         final ConfigurationSection configuration = event.getConfiguration();
 
@@ -102,6 +110,6 @@ public class CrateOpenListener implements Listener {
             }
         }
 
-        EventManager.logEvent(event.getEventType(), playerName, player, crate, event.getKeyType(), 1);
+        EventManager.logEvent(event.getEventType(), playerName, player, crate, event.getKeyType(), amount);
     }
 }

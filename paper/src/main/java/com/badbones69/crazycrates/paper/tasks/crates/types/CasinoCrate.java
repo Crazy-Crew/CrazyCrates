@@ -96,46 +96,41 @@ public class CasinoCrate extends CrateBuilder {
     }
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, @NotNull final EventType eventType) {
-        // Crate event failed so we return.
-        if (isCrateEventValid(type, checkHand, isSilent, eventType)) {
-            return;
-        }
-
+    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final int amount, @NotNull final EventType eventType) {
         final String fileName = this.crate.getFileName();
 
-        final ConfigurationSection section = this.crate.getSection().getConfigurationSection("random");
+        // Crate event failed, so we return.
+        if (isCrateEventValid(type, checkHand, isSilent, amount, eventType, event -> {
+            final ConfigurationSection section = this.crate.getSection().getConfigurationSection("random");
 
-        if (section != null) {
-            final boolean isRandom = section.getBoolean("toggle", false);
+            if (section != null) {
+                final boolean isRandom = section.getBoolean("toggle", false);
 
-            if (!isRandom) {
-                final Tier tier_uno = this.crate.getTier(section.getString("types.row-3", ""));
-                final Tier tier_dos = this.crate.getTier(section.getString("types.row-2", ""));
-                final Tier tier_tres = this.crate.getTier(section.getString("types.row-1", ""));
+                if (!isRandom) {
+                    final Tier tier_uno = this.crate.getTier(section.getString("types.row-3", ""));
+                    final Tier tier_dos = this.crate.getTier(section.getString("types.row-2", ""));
+                    final Tier tier_tres = this.crate.getTier(section.getString("types.row-1", ""));
 
-                if (tier_uno == null || tier_dos == null || tier_tres == null) {
-                    this.fusion.log(Level.WARNING, "One of your tiers in %s could not be found, or is empty. Search for row-1, row-2 or row-3", fileName);
+                    if (tier_uno == null || tier_dos == null || tier_tres == null) {
+                        this.fusion.log(Level.WARNING, "One of your tiers in %s could not be found, or is empty. Search for row-1, row-2 or row-3", fileName);
 
-                    this.crateManager.endCrate(this.player);
+                        this.crateManager.endCrate(this.player);
 
-                    this.crateManager.removeCrateTask(this.player);
+                        this.player.closeInventory();
 
-                    this.crateManager.removePlayerFromOpeningList(this.player);
+                        event.setCancelled(true);
 
-                    this.player.closeInventory();
-
-                    return;
+                        return;
+                    }
                 }
             }
-        }
 
-        final boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, checkHand);
+            if (!this.userManager.takeKeys(this.uuid, fileName, type, amount, checkHand)) {
+                this.crateManager.endCrate(this.player);
 
-        if (!keyCheck) {
-            // Remove from an opening list.
-            this.crateManager.removePlayerFromOpeningList(this.player);
-
+                event.setCancelled(true);
+            }
+        })) {
             return;
         }
 

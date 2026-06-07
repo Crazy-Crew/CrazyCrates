@@ -775,7 +775,7 @@ public class CrateManager {
         }
 
         // Open the crate.
-        crateBuilder.open(keyType, checkHand, isSilent, eventType);
+        crateBuilder.open(keyType, checkHand, isSilent, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, eventType);
     }
 
     private boolean isVirtualCrate(@NotNull final Player player, @NotNull final Crate crate, final boolean virtualCrate, @NotNull final String fancyName) {

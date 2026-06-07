@@ -43,20 +43,17 @@ public class WonderCrate extends CrateBuilder {
     private final Crate crate = getCrate();
 
     @Override
-    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, @Nullable final EventType eventType) {
-        // Crate event failed, so we return.
-        if (isCrateEventValid(type, checkHand, isSilent, eventType)) {
-            return;
-        }
-
+    public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final int amount, @Nullable final EventType eventType) {
         final String fileName = this.crate.getFileName();
 
-        final boolean keyCheck = this.userManager.takeKeys(this.uuid, fileName, type, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, checkHand);
+        // Crate event failed, so we return.
+        if (isCrateEventValid(type, checkHand, isSilent, amount, eventType, event -> {
+            if (!this.userManager.takeKeys(this.uuid, fileName, type, amount, checkHand)) {
+                this.crateManager.endCrate(this.player);
 
-        if (!keyCheck) {
-            // Remove from an opening list.
-            this.crateManager.removePlayerFromOpeningList(getPlayer());
-
+                event.setCancelled(true);
+            }
+        })) {
             return;
         }
 

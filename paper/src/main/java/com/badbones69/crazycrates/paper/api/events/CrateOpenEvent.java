@@ -20,9 +20,20 @@ public class CrateOpenEvent extends Event implements Cancellable {
     private final EventType eventType;
     private final boolean isSilent;
 
+    private final int amount;
+
     private boolean isCancelled;
 
-    public CrateOpenEvent(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, final boolean checkHand, @NotNull final ConfigurationSection configuration, boolean isSilent, final EventType eventType) {
+    public CrateOpenEvent(
+            @NotNull final Player player,
+            @NotNull final Crate crate,
+            @NotNull final KeyType keyType,
+            final boolean checkHand,
+            @NotNull final ConfigurationSection configuration,
+            final boolean isSilent,
+            final EventType eventType,
+            final int amount
+    ) {
         this.player = player;
         this.crate = crate;
 
@@ -32,8 +43,22 @@ public class CrateOpenEvent extends Event implements Cancellable {
         this.configuration = configuration;
         this.eventType = eventType;
 
+        this.amount = amount;
+
         this.isCancelled = false;
         this.isSilent = isSilent;
+    }
+
+    public CrateOpenEvent(
+            @NotNull final Player player,
+            @NotNull final Crate crate,
+            @NotNull final KeyType keyType,
+            final boolean checkHand,
+            @NotNull final ConfigurationSection configuration,
+            final boolean isSilent,
+            final EventType eventType
+    ) {
+        this(player, crate, keyType, checkHand, configuration, isSilent, eventType, 1);
     }
 
     private static final HandlerList handlers = new HandlerList();
@@ -73,6 +98,10 @@ public class CrateOpenEvent extends Event implements Cancellable {
 
     public final EventType getEventType() {
         return this.eventType;
+    }
+
+    public final int getAmount() {
+        return this.amount;
     }
 
     @Override

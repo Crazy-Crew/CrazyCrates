@@ -12,6 +12,7 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemType;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
@@ -30,6 +31,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
+import org.jspecify.annotations.NonNull;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
@@ -231,65 +233,58 @@ public class MiscUtils {
     }
 
     // ElectronicBoy is the author.
-    public static @Nullable Map<Integer, ItemStack> removeMultipleItemStacks(@NotNull final Inventory inventory, @NotNull final ItemStack... items) {
-        if (items != null) {
-            Map<Integer, ItemStack> leftover = new HashMap<>();
-
-            // TODO: optimization
-
-            for (int i = 0; i < items.length; i++) {
-                ItemStack item = items[i];
-
-                int toDelete = item.getAmount();
-
-                while (true) {
-                    // Paper start - Allow searching entire contents
-                    ItemStack[] toSearch = inventory.getContents();
-
-                    int first = getFirstItem(item, false, toSearch);
-                    // Paper end
-
-                    // Drat! we don't have this type in the inventory
-                    if (first == -1) {
-                        item.setAmount(toDelete);
-
-                        leftover.put(i, item);
-
-                        break;
-                    } else {
-                        ItemStack itemStack = inventory.getItem(first);
-
-                        if (itemStack != null) {
-                            int amount = itemStack.getAmount();
-
-                            if (amount <= toDelete) {
-                                toDelete -= amount;
-                                // clear the slot, all used up
-                                inventory.clear(first);
-                            } else {
-                                // split the stack and store
-                                itemStack.setAmount(amount - toDelete);
-
-                                inventory.setItem(first, itemStack);
-
-                                toDelete = 0;
-                            }
-                        }
-                    }
-
-                    // Bail when done
-                    if (toDelete <= 0) {
-                        break;
-                    }
-                }
-            }
-
-            return leftover;
-        } else {
+    public static void recycle(@NonNull final PlayerInventory inventory, @NonNull final ItemStack... items) {
+        if (items == null) {
             fusion.log(Level.WARNING, "Items cannot be null!");
+
+            return;
         }
 
-        return null;
+        for (int i = 0; i < items.length; i++) {
+            final ItemStack item = items[i];
+
+            int toDelete = item.getAmount();
+
+            while (true) {
+                // Paper start - Allow searching entire contents
+                final ItemStack[] toSearch = inventory.getContents();
+
+                final int first = getFirstItem(item, false, toSearch);
+                // Paper end
+
+                // Drat! we don't have this type in the inventory
+                if (first == -1) {
+                    item.setAmount(toDelete);
+
+                    break;
+                } else {
+                    final ItemStack itemStack = inventory.getItem(first);
+
+                    if (itemStack != null) {
+                        int amount = itemStack.getAmount();
+
+                        if (amount <= toDelete) {
+                            toDelete -= amount;
+                            // clear the slot, all used up
+                            inventory.clear(first);
+                        } else {
+                            // split the stack and store
+                            itemStack.setAmount(amount - toDelete);
+
+                            inventory.setItem(first, itemStack);
+
+                            toDelete = 0;
+                        }
+                    }
+                }
+
+                // Bail when done
+                if (toDelete <= 0) {
+                    break;
+                }
+            }
+        }
+
     }
 
     /**
@@ -319,15 +314,7 @@ public class MiscUtils {
                     "Key: " + crateName
             ).forEach(logger::warn);
 
-            List.of(
-                    "=== === === === === === Crates === === === === === ===",
-                    "<red>An issue has occurred when trying to take a key.",
-                    "<red>A list of potential reasons",
-                    "",
-                    " <yellow>-> <light_purple>Not enough keys.",
-                    " <yellow>-> <light_purple>Key is in off hand.",
-                    "=== === === === === === Crates === === === === === ==="
-            ).forEach(player::sendRichMessage);
+            player.sendRichMessage("<red>An issue trying to take a key from you, Please take a look in your console, or notify your nearest admin.");
         }
     }
 
