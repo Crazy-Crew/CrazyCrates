@@ -27,6 +27,12 @@ public class CommandTake extends BaseCommand {
             return;
         }
 
+        if (amount <= 0) {
+            Messages.not_a_number.sendMessage(sender, "{amount}", String.valueOf(amount));
+
+            return;
+        }
+
         final Crate crate = getCrate(sender, crateName, false);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {

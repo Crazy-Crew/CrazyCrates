@@ -31,7 +31,7 @@ public class CommandTransfer extends BaseCommand {
         }
 
         if (amount <= 0) {
-            Messages.not_a_number.sendMessage(player);
+            Messages.not_a_number.sendMessage(player, "{amount}", String.valueOf(amount));
 
             return;
         }

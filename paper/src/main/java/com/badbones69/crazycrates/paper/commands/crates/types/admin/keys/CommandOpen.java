@@ -20,7 +20,6 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.Nullable;
@@ -209,6 +208,12 @@ public class CommandOpen extends BaseCommand {
     public void mass(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("key_type") @Suggestion("keys") String type, @ArgName("amount") @Suggestion("numbers") int amount) {
         // If the command is cancelled.
         if (isCancelled(player, crateName)) return;
+
+        if (amount <= 0) {
+            Messages.not_a_number.sendMessage(player, "{amount}", String.valueOf(amount));
+
+            return;
+        }
 
         // Get the crate.
         final Crate crate = getCrate(player, crateName, false);
