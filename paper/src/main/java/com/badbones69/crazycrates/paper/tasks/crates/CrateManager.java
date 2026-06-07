@@ -848,6 +848,19 @@ public class CrateManager {
 
             this.currentTasks.remove(uuid);
         }
+
+        removePlayerFromOpeningList(player);
+
+        removePlayerKeyType(player);
+
+        removeCrateInUse(player);
+
+        removeCrateTask(player);
+
+        removeReward(player);
+
+        removeCloser(player);
+        removePicker(player);
     }
 
     /**
@@ -1678,9 +1691,12 @@ public class CrateManager {
     }
 
     public void endQuickCrate(@NotNull final Player player, @NotNull final Location location, @Nullable final Crate crate, final boolean useQuickCrateAgain) {
-        if (hasCrateTask(player)) {
-            getCrateTask(player).cancel();
-            removeCrateTask(player);
+        final UUID uuid = player.getUniqueId();
+
+        if (this.currentTasks.containsKey(uuid)) {
+            this.currentTasks.get(uuid).cancel();
+
+            this.currentTasks.remove(uuid);
         }
 
         removeReward(player);
@@ -1692,8 +1708,8 @@ public class CrateManager {
             }
         }.runNow();
 
-        removeCrateInUse(player);
         removePlayerFromOpeningList(player);
+        removeCrateInUse(player);
 
         if (!useQuickCrateAgain) {
             if (this.holograms != null && crate != null && crate.getHologram().isEnabled()) {
