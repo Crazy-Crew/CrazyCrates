@@ -610,66 +610,36 @@ public class BukkitUserManager extends UserManager {
 
         final YamlConfiguration configuration = this.data.getConfiguration();
 
+        final ConfigurationSection section = configuration.getConfigurationSection("Players.%s".formatted(uuid));
+
+        if (section == null) return;
+
         final String fileName = crate.getFileName();
 
-        final boolean hasValue = configuration.contains("Players." + uuid + ".tracking." + fileName);
+        final ConfigurationSection trackingSection = section.contains("tracking") ? section.getConfigurationSection("tracking") : section.createSection("tracking");
 
-        int newAmount;
-
-        if (hasValue) {
-            newAmount = configuration.getInt("Players." + uuid + ".tracking." + fileName) + amount;
-
-            configuration.set("Players." + uuid + ".tracking." + fileName, newAmount);
-            configuration.set("Players." + uuid + ".tracking.total-crates", configuration.getInt("Players." + uuid + ".tracking.total-crates") + amount);
-
-            this.data.save();
-
+        if (trackingSection == null) {
             return;
         }
 
-        configuration.set("Players." + uuid + ".tracking.total-crates", configuration.getInt("Players." + uuid + ".tracking.total-crates", 0)+amount);
-        configuration.set("Players." + uuid + ".tracking." + fileName, amount);
+        final boolean hasValue = trackingSection.contains(fileName);
+
+        if (hasValue) { // it has a crate to track.
+            final int trackedAmount = trackingSection.getInt(fileName, 0);
+
+            final int newAmount = trackedAmount + amount;
+
+            trackingSection.set(fileName, newAmount);
+        }
+
+        trackingSection.set("total-crates", trackingSection.getInt("total-crates", 0) + amount);
 
         this.data.save();
     }
 
     @Override
     public void addOpenedCrate(@NotNull final UUID uuid, @NotNull final String crateName) {
-        final Crate crate = isCrateInvalid(crateName);
-
-        if (crate == null) {
-            this.fusion.log(Level.WARNING, "Crate %s does not exist.", crateName);
-
-            return;
-        }
-
-        if (!crate.isTrackingOpening()) return;
-
-        final String fileName = crate.getFileName();
-
-        final YamlConfiguration configuration = this.data.getConfiguration();
-
-        boolean hasValue = configuration.contains("Players." + uuid + ".tracking." + fileName);
-
-        int amount;
-
-        if (hasValue) {
-            amount = configuration.getInt("Players." + uuid + ".tracking." + fileName);
-
-            configuration.set("Players." + uuid + ".tracking." + fileName, amount + 1);
-            configuration.set("Players." + uuid + ".tracking.total-crates", configuration.getInt("Players." + uuid + ".tracking.total-crates") + 1);
-
-            this.data.save();
-
-            return;
-        }
-
-        amount = configuration.contains("Players." + uuid + ".tracking.total-crates") ? configuration.getInt("Players." + uuid + ".tracking.total-crates") + 1 : 1;
-
-        configuration.set("Players." + uuid + ".tracking.total-crates", amount);
-        configuration.set("Players." + uuid + ".tracking." + fileName, 1);
-
-        this.data.save();
+        addOpenedCrate(uuid, crateName, 1);
     }
 
     public int getCrateRespin(@NotNull final UUID uuid, @NotNull final String crateName) {
