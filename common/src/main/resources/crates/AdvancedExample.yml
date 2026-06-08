@@ -223,6 +223,8 @@ Crate:
       # The list of items to give.
       Items:
         "1":
+          # The name of the item.
+          name: "<bold><dark_red>Warlord's Helmet</bold>"
           # The item material.
           material: "netherite_helmet"
           # The amount of the item to give.
@@ -237,8 +239,6 @@ Crate:
               pattern: "sentry"
               # The trim material of the armor.
               material: "redstone"
-          # The name of the item.
-          name: "<bold><dark_red>Warlord's Helmet</bold>"
           # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
           # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
           # enchantment: amount
@@ -246,8 +246,10 @@ Crate:
             unbreaking: 3
             protection: 5
         "2":
+          # The name of the item.
+          name: "<bold><dark_red>Warlord's Chestplate</bold>"
           # The item material.
-          material: "netherite_chestplate"
+          material: "netherite_chestsplate"
           # The amount of the item to give.
           amount: 1
           # Per item settings.
@@ -260,8 +262,6 @@ Crate:
               pattern: "sentry"
               # The trim material of the armor.
               material: "redstone"
-          # The name of the item.
-          name: "<bold><dark_red>Warlord's Chestplate</bold>"
           # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
           # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
           # enchantment: amount
@@ -269,6 +269,8 @@ Crate:
             unbreaking: 3
             protection: 5
         "3":
+          # The name of the item.
+          name: "<bold><dark_red>Warlord's Leggings</bold>"
           # The item material.
           material: "netherite_leggings"
           # The amount of the item to give.
@@ -283,8 +285,6 @@ Crate:
               pattern: "sentry"
               # The trim material of the armor.
               material: "redstone"
-          # The name of the item.
-          name: "<bold><dark_red>Warlord's Leggings</bold>"
           # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
           # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
           # enchantment: amount
@@ -292,6 +292,8 @@ Crate:
             unbreaking: 3
             protection: 5
         "4":
+          # The name of the item.
+          name: "<bold><dark_red>Warlord's Boots</bold>"
           # The item material.
           material: "netherite_boots"
           # The amount of the item to give.
@@ -306,8 +308,6 @@ Crate:
               pattern: "sentry"
               # The trim material of the armor.
               material: "redstone"
-          # The name of the item.
-          name: "<bold><dark_red>Warlord's Boots</bold>"
           # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
           # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
           # enchantment: amount

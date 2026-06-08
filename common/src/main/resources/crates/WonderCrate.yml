@@ -209,6 +209,8 @@ Crate:
       # Skull: "7129"
       Items:
         "1":
+          # The name of the item.
+          name: "<gold>BadBones69"
           # The item material.
           material: "player_head"
           # Per item settings.
@@ -216,8 +218,6 @@ Crate:
             # The player name/texture to display.
             # https://minecraft-heads.com/
             player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
-          # The name of the item.
-          name: "<gold>BadBones69"
     "2":
       # The name of the item to display in the gui.
       DisplayName: "<red>Diamond Sword"
@@ -245,10 +245,10 @@ Crate:
       # The items to win.
       Items:
         "1":
-          # The item material.
-          material: "diamond_sword"
           # The name of the item.
           name: "<red>Diamond Sword"
+          # The item material.
+          material: "diamond_sword"
           # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
           # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
           # enchantment: amount
@@ -290,10 +290,10 @@ Crate:
       # The list of items to win.
       Items:
         "1":
-          # The item material.
-          material: "diamond_helmet"
           # The name of the item.
           name: "<red>Diamond Helmet"
+          # The item material.
+          material: "diamond_helmet"
           # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
           # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
           # enchantment: amount

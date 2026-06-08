@@ -309,6 +309,8 @@ Crate:
       # Skull: "7129"
       Items:
         "1":
+          # The name of the item.
+          name: "<gold>BadBones69"
           # The item material.
           material: "player_head"
           # Per item settings.
@@ -316,8 +318,6 @@ Crate:
             # The player name/texture to display.
             # https://minecraft-heads.com/
             player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
-          # The name of the item.
-          name: "<gold>BadBones69"
     "2":
       # The name of the item to display in the gui.
       DisplayName: "<bold><dark_red>Warlord's Set</bold>"
@@ -364,6 +364,8 @@ Crate:
       # The list of items to give.
       Items:
         "1":
+          # The name of the item.
+          name: "<bold><dark_red>Warlord's Helmet</bold>"
           # The item material.
           material: "netherite_helmet"
           # The amount of the item to give.
@@ -378,8 +380,6 @@ Crate:
               pattern: "sentry"
               # The trim material of the armor.
               material: "redstone"
-          # The name of the item.
-          name: "<bold><dark_red>Warlord's Helmet</bold>"
           # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
           # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
           # enchantment: amount
@@ -387,6 +387,8 @@ Crate:
             unbreaking: 3
             protection: 5
         "2":
+          # The name of the item.
+          name: "<bold><dark_red>Warlord's Chestplate</bold>"
           # The item material.
           material: "netherite_chestplate"
           # The amount of the item to give.
@@ -401,8 +403,6 @@ Crate:
               pattern: "sentry"
               # The trim material of the armor.
               material: "redstone"
-          # The name of the item.
-          name: "<bold><dark_red>Warlord's Chestplate</bold>"
           # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
           # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
           # enchantment: amount
@@ -410,6 +410,8 @@ Crate:
             unbreaking: 3
             protection: 5
         "3":
+          # The name of the item.
+          name: "<bold><dark_red>Warlord's Leggings</bold>"s
           # The item material.
           material: "netherite_leggings"
           # The amount of the item to give.
@@ -424,8 +426,6 @@ Crate:
               pattern: "sentry"
               # The trim material of the armor.
               material: "redstone"
-          # The name of the item.
-          name: "<bold><dark_red>Warlord's Leggings</bold>"
           # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
           # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
           # enchantment: amount
@@ -561,6 +561,8 @@ Crate:
       # The items to win.
       Items:
         "1":
+          # The name of the item.
+          name: "<bold><green>Fancy Pants</bold>"s
           # The item material.
           material: "chainmail_leggings"
           # The amount of the item to give.
@@ -575,8 +577,6 @@ Crate:
               pattern: "sentry"
               # The trim material of the armor.
               material: "lapis"
-          # The name of the item.
-          name: "<bold><green>Fancy Pants</bold>"
           # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
           # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
           # enchantment: amount
@@ -626,6 +626,8 @@ Crate:
       # The items to win.
       Items:
         "1":
+          # The name of the item.
+          name: "<bold><blue>Classic Sword</bold>"
           # The item material.
           material: "diamond_sword"
           # The amount of the item to give.
@@ -634,8 +636,6 @@ Crate:
           settings:
             # The damage to apply to the item.
             damage: 7
-          # The name of the item.
-          name: "<bold><blue>Classic Sword</bold>"
           # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
           # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
           # enchantment: amount

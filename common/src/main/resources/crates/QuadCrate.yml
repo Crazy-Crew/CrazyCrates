@@ -211,6 +211,8 @@ Crate:
       # Skull: "7129"
       Items:
         "1":
+          # The name of the item.
+          name: "<gold>BadBones69"
           # The item material.
           material: "player_head"
           # Per item settings.
@@ -218,8 +220,6 @@ Crate:
             # The player name/texture to display.
             # https://minecraft-heads.com/
             player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
-          # The name of the item.
-          name: "<gold>BadBones69"
     "2":
       # The name of the item to display in the gui.
       DisplayName: "<bold><green>Fancy Pants</bold>"
@@ -263,6 +263,8 @@ Crate:
       # The items to win.
       Items:
         "1":
+          # The name of the item.
+          name: "<bold><green>Fancy Pants</bold>"
           # The item material.
           material: "chainmail_leggings"
           # The amount of the item to give.
@@ -274,11 +276,9 @@ Crate:
             # Trim settings.
             trim:
               # The trim pattern for the armor.
-              pattern: sentry
+              pattern: "sentry"
               # The trim material of the armor.
-              material: lapis
-          # The name of the item.
-          name: <bold><green>Fancy Pants</bold>
+              material: "lapis"
           # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
           # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
           # enchantment: amount
@@ -322,6 +322,8 @@ Crate:
       # The items to win.
       Items:
         "1":
+          # The name of the item.
+          name: "<bold><blue>Classic Sword</bold>"
           # The material of the item.
           material: "diamond_sword"
           # The amount of the item to give.
@@ -330,8 +332,6 @@ Crate:
           settings:
             # The damage to apply to the item.
             damage: 7
-          # The name of the item.
-          name: "<bold><blue>Classic Sword</bold>"
           # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
           # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
           # enchantment: amount

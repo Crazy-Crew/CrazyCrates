@@ -335,6 +335,8 @@ Crate:
       # Skull: "7129"
       Items:
         "1":
+          # The name of the item.
+          name: "<gold>BadBones69"
           # The item material.
           material: "player_head"
           # Per item settings.
@@ -342,8 +344,6 @@ Crate:
             # The player name/texture to display.
             # https://minecraft-heads.com/
             player: "1ee3126ff2c343da525eef2b93272b9fed36273d0ea08c2616b80009948ad57e"
-          # The name of the item.
-          name: "<gold>BadBones69"
     "2":
       DisplayName: "<bold><blue>Cheap Helmet</bold>"
       DisplayItem: "golden_helmet"
@@ -387,6 +387,8 @@ Crate:
       # The items to win.
       Items:
         "1":
+          # The name of the item.
+          name: "<bold><blue>Cheap Helmet</bold>"
           # The item material.
           material: "golden_helmet"
           # The amount of the item to give.
@@ -401,8 +403,6 @@ Crate:
               pattern: "sentry"
               # The trim material of the armor.
               material: "diamond"
-          # The name of the item.
-          name: "<bold><blue>Cheap Helmet</bold>"
           # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
           # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
           # enchantment: amount
@@ -480,6 +480,8 @@ Crate:
       # The items to win.
       Items:
         "1":
+          # The name of the item.
+          name: "<bold><blue>Crazy <dark_red>Sword</bold>"
           # The item material.
           material: "golden_sword"
           # The amount of the item to give.
@@ -488,8 +490,6 @@ Crate:
           settings:
             # The damage to apply to the item.
             damage: 12
-          # The name of the item.
-          name: "<bold><blue>Crazy <dark_red>Sword</bold>"
           # The configuration section for enchantments, minecraft: is not needed in front of the enchantment.
           # A list of enchantments https://jd.papermc.io/paper/1.21.4/io/papermc/paper/registry/keys/EnchantmentKeys.html
           # enchantment: amount
