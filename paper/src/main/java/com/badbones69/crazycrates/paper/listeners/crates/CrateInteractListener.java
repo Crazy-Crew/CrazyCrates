@@ -157,7 +157,8 @@ public class CrateInteractListener implements Listener {
             return;
         }
 
-        if (!this.crateManager.isInOpeningList(player) && this.crateManager.getOpeningCrate(player).getCrateType() == CrateType.quick_crate && this.crateManager.isCrateInUse(player) && this.crateManager.getCrateInUseLocation(player).equals(crateLocation.getLocation())) { // wtf is this?
+        if (!this.crateManager.isInOpeningList(player) && (this.crateManager.hasOpeningCrate(player) && this.crateManager.getOpeningCrate(player).getCrateType() == CrateType.quick_crate)
+                && (this.crateManager.isCrateInUse(player) && this.crateManager.getCrateInUseLocation(player).equals(crateLocation.getLocation()))) { // wtf is this?
             if (this.crateManager.isInOpeningList(player)) {
                 Messages.already_opening_crate.sendMessage(player, "{crate}", fancyName);
 

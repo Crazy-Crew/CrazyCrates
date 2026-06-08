@@ -1091,6 +1091,10 @@ public class CrateManager {
         return this.playerOpeningCrates.get(player.getUniqueId());
     }
 
+    public final boolean hasOpeningCrate(@NotNull final Player player) {
+        return this.playerOpeningCrates.containsKey(player.getUniqueId());
+    }
+
     /**
      * Set the type of key the player is opening a crate for.
      * This is only used in the Cosmic CrateType currently.
