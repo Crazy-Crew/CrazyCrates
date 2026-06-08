@@ -17,6 +17,7 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class QuickCrate extends CrateBuilder {
 
@@ -33,8 +34,40 @@ public class QuickCrate extends CrateBuilder {
     public void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final int amount, @NotNull final EventType eventType) {
         final String fileName = this.crate.getFileName();
 
+        final boolean isSneaking = this.player.isSneaking();
+
+        final AtomicInteger reference = new AtomicInteger();
+
         // Crate event failed, so we return.
         if (isCrateEventValid(type, checkHand, isSilent, amount, eventType, event -> {
+            if (isSneaking) {
+                int keys = switch (type) {
+                    case virtual_key -> this.userManager.getVirtualKeys(this.uuid, fileName);
+                    case physical_key -> this.userManager.getPhysicalKeys(this.uuid, fileName);
+                    default -> 1;
+                };
+
+                if (keys > 1) {
+                    for (;keys > 0; keys--) { // check keys first.
+                        int currentAmount = reference.get();
+
+                        if (currentAmount >= this.crate.getMaxMassOpen()) break;
+
+                        reference.getAndIncrement();
+                    }
+
+                    if (!this.userManager.takeKeys(this.uuid, fileName, type, reference.get(), true)) { // take keys first.
+                        this.crateManager.endCrate(this.crate, this.player);
+
+                        event.setCancelled(true);
+
+                        return;
+                    }
+                }
+
+                return;
+            }
+
             if (!this.userManager.takeKeys(this.uuid, fileName, type, amount, checkHand)) {
                 this.crateManager.endCrate(this.crate, this.player);
 
@@ -44,36 +77,14 @@ public class QuickCrate extends CrateBuilder {
             return;
         }
 
-        int keys = switch (type) {
-            case virtual_key -> this.userManager.getVirtualKeys(this.uuid, fileName);
-            case physical_key -> this.userManager.getPhysicalKeys(this.uuid, fileName);
-            default -> 1;
-        };
-
         this.crateManager.addCrateInUse(this.player, this.location);
 
-        if (this.player.isSneaking() && keys > 1) { //todo() test this
-            int currentAmount = 0;
+        int currentAmount = reference.get();
 
-            for (;keys > 0; keys--) { // check keys first.
-                if (currentAmount >= this.crate.getMaxMassOpen()) break;
-
-                if (currentAmount >= amount) break;
-
-                currentAmount++;
-            }
-
-            if (!this.userManager.takeKeys(this.uuid, fileName, type, currentAmount, true)) { // take keys first.
-                // End the crate.
-                this.crateManager.endCrate(this.crate, this.player);
-
-                return;
-            }
-
+        if (currentAmount > 1) {
             int keysUsed = 0;
 
-            // this ensures that keys are taken first BEFORE they get prizes.
-            for (;currentAmount > 0; currentAmount--) { // loop through used until it's 0, if the inventory is full... give them the remaining keys back.
+            for (;currentAmount > 0; currentAmount--) {
                 if (MiscUtils.isInventoryFull(this.player)) {
                     this.userManager.addVirtualKeys(this.uuid, fileName, currentAmount);
 
@@ -93,13 +104,6 @@ public class QuickCrate extends CrateBuilder {
             EventManager.logEvent(EventType.event_key_taken, name, this.player, this.crate, type, keysUsed);
 
             this.userManager.addOpenedCrate(this.uuid, fileName, keysUsed);
-
-            return;
-        }
-
-        if (!this.userManager.takeKeys(this.uuid, fileName, type, amount, false)) {
-            // End the crate.
-            this.crateManager.endCrate(this.crate, this.player);
 
             return;
         }
