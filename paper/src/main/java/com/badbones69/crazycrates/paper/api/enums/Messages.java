@@ -205,6 +205,8 @@ public enum Messages {
 
         if (sender instanceof Player player) {
             player.sendActionBar(this.fusion.asComponent(value));
+        } else {
+            sender.sendMessage(this.fusion.asComponent(value));
         }
     }
 
