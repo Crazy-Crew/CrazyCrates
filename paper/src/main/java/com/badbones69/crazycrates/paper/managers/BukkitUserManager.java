@@ -241,12 +241,12 @@ public class BukkitUserManager extends UserManager {
 
                 final EntityEquipment equipment = player.getEquipment();
 
-                origin.add(equipment.getItemInMainHand());
-                origin.add(equipment.getItemInOffHand());
-
                 final PlayerInventory inventory = player.getInventory();
 
-                if (!checkHand) {
+                if (checkHand) {
+                    origin.add(equipment.getItemInMainHand());
+                    origin.add(equipment.getItemInOffHand());
+                } else {
                     origin.addAll(Arrays.asList(inventory.getContents()));
                 }
 

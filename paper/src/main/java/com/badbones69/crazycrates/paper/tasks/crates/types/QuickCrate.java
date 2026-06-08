@@ -60,7 +60,7 @@ public class QuickCrate extends CrateBuilder {
                 used++;
             }
 
-            if (!this.userManager.takeKeys(this.uuid, fileName, type, used, false)) { // take keys first.
+            if (!this.userManager.takeKeys(this.uuid, fileName, type, used, true)) { // take keys first.
                 // End the crate.
                 this.crateManager.endCrate(this.player);
 
