@@ -112,9 +112,8 @@ public class CrateInteractListener implements Listener {
 
         final Location location = crateLocation.getLocation();
 
-        boolean hasKey = false;
         boolean isPhysical = false;
-        boolean useQuickCrateAgain = false;
+        boolean hasKey = false;
 
         final int requiredKeys = crate.getRequiredKeys();
 
@@ -125,15 +124,7 @@ public class CrateInteractListener implements Listener {
         final String fancyName = crate.getCrateName();
 
         if (requiredKeys > 0 && totalKeys < requiredKeys) {
-            Messages.not_enough_keys.sendMessage(player, Map.of(
-                "{required_amount}", String.valueOf(requiredKeys),
-                "{key_amount}", String.valueOf(requiredKeys),
-                "{amount}", String.valueOf(totalKeys),
-                "{key}", crate.getKeyName(),
-                "{crate}", fancyName
-            ));
-
-            lackingKey(player, crate, location, false);
+            lackingKey(player, crate, location, totalKeys, requiredKeys, Messages.not_enough_keys);
 
             key.setCancelled(true);
 
@@ -149,54 +140,55 @@ public class CrateInteractListener implements Listener {
             hasKey = true;
         }
 
-        if (hasKey) {
-            // Checks if the player uses the quick crate again.
-            if (this.crateManager.isInOpeningList(player) && this.crateManager.getOpeningCrate(player).getCrateType() == CrateType.quick_crate && this.crateManager.isCrateInUse(player) && this.crateManager.getCrateInUseLocation(player).equals(crateLocation.getLocation())) {
-                useQuickCrateAgain = true;
-            }
+        final KeyType keyType = isPhysical ? KeyType.physical_key : KeyType.virtual_key;
 
-            if (!useQuickCrateAgain) {
-                if (this.crateManager.isInOpeningList(player)) {
-                    Messages.already_opening_crate.sendMessage(player, "{crate}", fancyName);
+        if (!hasKey) {
+            lackingKey(player, crate, location, totalKeys, requiredKeys, Messages.feature_disabled);
 
-                    return;
-                }
-
-                if (this.crateManager.getCratesInUse().containsValue(crateLocation.getLocation())) {
-                    Messages.crate_in_use.sendMessage(player, "{crate}", fancyName);
-
-                    return;
-                }
-            }
-
-            if (MiscUtils.isInventoryFull(player)) {
-                Messages.inventory_not_empty.sendMessage(player, "{crate}", fancyName);
-
-                return;
-            }
-
-            if (useQuickCrateAgain) this.crateManager.endQuickCrate(player, crateLocation.getLocation(), crate, true);
-
-            final KeyType keyType = isPhysical ? KeyType.physical_key : KeyType.virtual_key;
-
-            // Only cosmic crate type uses this method.
-            if (crate.getCrateType() == CrateType.cosmic) this.crateManager.addPlayerKeyType(player, keyType);
-
-            this.crateManager.addPlayerToOpeningList(player, crate);
-
-            this.crateManager.openCrate(player, crate, keyType, location, false, true, EventType.event_crate_opened);
+            key.setCancelled(true);
 
             return;
         }
 
-        lackingKey(player, crate, location, true);
+        if (MiscUtils.isInventoryFull(player)) {
+            Messages.inventory_not_empty.sendMessage(player, "{crate}", fancyName);
 
-        key.setCancelled(true);
+            this.crateManager.endCrate(player);
+
+            return;
+        }
+
+        if (!this.crateManager.isInOpeningList(player) && this.crateManager.getOpeningCrate(player).getCrateType() == CrateType.quick_crate && this.crateManager.isCrateInUse(player) && this.crateManager.getCrateInUseLocation(player).equals(crateLocation.getLocation())) { // wtf is this?
+            if (this.crateManager.isInOpeningList(player)) {
+                Messages.already_opening_crate.sendMessage(player, "{crate}", fancyName);
+
+                return;
+            }
+
+            if (this.crateManager.getCratesInUse().containsValue(crateLocation.getLocation())) {
+                Messages.crate_in_use.sendMessage(player, "{crate}", fancyName);
+
+                return;
+            }
+        } else {
+            this.crateManager.endQuickCrate(player, crateLocation.getLocation(), crate, true);
+        }
+
+        // Only cosmic crate type uses this method.
+        if (crate.getCrateType() == CrateType.cosmic) this.crateManager.addPlayerKeyType(player, keyType);
+
+        this.crateManager.openCrate(
+                player,
+                crate,
+                keyType,
+                location,
+                false,
+                true,
+                EventType.event_crate_opened
+        );
     }
 
-    private void lackingKey(@NotNull final Player player, @NotNull final Crate crate, @NotNull final Location location, final boolean sendMessage) {
-        final String keyName = crate.getKeyName();
-
+    private void lackingKey(@NotNull final Player player, @NotNull final Crate crate, @NotNull final Location location, final int currentKeys, final int amount, final Messages key) {
         if (crate.getCrateType() != CrateType.crate_on_the_go) {
             if (this.config.getProperty(ConfigKeys.knock_back)) {
                 knockback(player, location);
@@ -206,10 +198,17 @@ public class CrateInteractListener implements Listener {
                 player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
-            if (sendMessage) Messages.no_keys.sendMessage(player, Map.of(
-                "{crate}", crate.getCrateName(),
-                "{key}", keyName
-            ));
+            switch (key) {
+                case not_enough_keys -> key.sendMessage(player, Map.of(
+                        "{required_amount}", String.valueOf(amount),
+                        "{key_amount}", String.valueOf(amount),
+                        "{amount}", String.valueOf(currentKeys),
+                        "{crate}", crate.getCrateName(),
+                        "{key}", crate.getKeyName()
+                ));
+
+                case feature_disabled -> key.sendMessage(player);
+            }
         }
     }
 
