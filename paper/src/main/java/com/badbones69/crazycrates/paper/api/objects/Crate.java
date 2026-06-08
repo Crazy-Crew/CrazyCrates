@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class Crate {
 
@@ -467,16 +468,20 @@ public class Crate {
     /**
      * Checks the chances and returns usable prizes.
      *
-     * @param prizes The prizes to check
+     * @param origin The prizes to check
      * @return {@link Prize}
      */
-    private Prize getPrize(@NotNull final List<Prize> prizes) {
-        double totalWeight = this.crateType == CrateType.casino || this.crateType == CrateType.cosmic ? prizes.stream().filter(prize -> prize.getWeight() != -1).mapToDouble(Prize::getWeight).sum() : this.sum;
+    private Prize getPrize(@NotNull final List<Prize> origin) {
+        double totalWeight = this.crateType == CrateType.casino || this.crateType == CrateType.cosmic ? origin.stream().filter(prize -> prize.getWeight() > 0.0).mapToDouble(Prize::getWeight).sum() : this.sum;
+
+        final List<Prize> prizes = origin.stream().filter(prize -> prize.getWeight() > 0.0).toList();
 
         int index = 0;
 
         for (double value = MiscUtils.getRandom().nextDouble() * totalWeight; index < prizes.size() - 1; index++) {
-            value -= prizes.get(index).getWeight();
+            final double weight = prizes.get(index).getWeight();
+
+            value -= weight;
 
             if (value <= 0.0) break;
         }

@@ -260,8 +260,8 @@ public class Prize {
      * @return the weight
      */
     public final double getWeight() {
-        if (this.weight == -1) {
-            this.fusion.log(Level.WARNING, "Cannot fetch the weight as the option is not present for this prize: %s in the crate: %s", this.prizeName, this.crateName);
+        if (this.weight <= 0.0) {
+            this.fusion.log(Level.WARNING, "Cannot fetch the weight as the option is not present for this prize or is less than or equal to 0.0: %s in the crate: %s", this.sectionName, this.crateName);
         }
 
         return this.weight;
