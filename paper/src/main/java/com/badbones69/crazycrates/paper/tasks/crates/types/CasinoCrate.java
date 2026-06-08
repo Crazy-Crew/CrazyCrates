@@ -71,13 +71,11 @@ public class CasinoCrate extends CrateBuilder {
             if (this.time >= 60) { // When the crate task is finished.
                 playSound("stop-sound", Sound.Source.MASTER, "entity.player.levelup");
 
-                this.crateManager.endCrate(this.player);
-
                 PrizeManager.getPrize(this.crate, this.inventory, 11, this.player);
                 PrizeManager.getPrize(this.crate, this.inventory, 13, this.player);
                 PrizeManager.getPrize(this.crate, this.inventory, 15, this.player);
 
-                this.crateManager.removePlayerFromOpeningList(this.player);
+                this.crateManager.endCrate(this.crate, this.player);
 
                 new FoliaScheduler(this.plugin, null, this.player) {
                     @Override
@@ -114,7 +112,7 @@ public class CasinoCrate extends CrateBuilder {
                     if (tier_uno == null || tier_dos == null || tier_tres == null) {
                         this.fusion.log(Level.WARNING, "One of your tiers in %s could not be found, or is empty. Search for row-1, row-2 or row-3", fileName);
 
-                        this.crateManager.endCrate(this.player);
+                        this.crateManager.endCrate(this.crate, this.player);
 
                         this.player.closeInventory();
 
@@ -126,7 +124,7 @@ public class CasinoCrate extends CrateBuilder {
             }
 
             if (!this.userManager.takeKeys(this.uuid, fileName, type, amount, checkHand)) {
-                this.crateManager.endCrate(this.player);
+                this.crateManager.endCrate(this.crate, this.player);
 
                 event.setCancelled(true);
             }

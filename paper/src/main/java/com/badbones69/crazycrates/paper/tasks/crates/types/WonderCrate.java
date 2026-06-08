@@ -49,7 +49,7 @@ public class WonderCrate extends CrateBuilder {
         // Crate event failed, so we return.
         if (isCrateEventValid(type, checkHand, isSilent, amount, eventType, event -> {
             if (!this.userManager.takeKeys(this.uuid, fileName, type, amount, checkHand)) {
-                this.crateManager.endCrate(this.player);
+                this.crateManager.endCrate(this.crate, this.player);
 
                 event.setCancelled(true);
             }
@@ -119,7 +119,7 @@ public class WonderCrate extends CrateBuilder {
                 player.openInventory(getInventory());
 
                 if (this.full > 100) {
-                    crateManager.endCrate(player);
+                    crateManager.endCrate(crate, player);
 
                     player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
 

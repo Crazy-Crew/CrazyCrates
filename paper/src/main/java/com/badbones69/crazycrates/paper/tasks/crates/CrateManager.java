@@ -10,7 +10,9 @@ import com.badbones69.crazycrates.paper.listeners.items.OraxenInteractListener;
 import com.badbones69.crazycrates.paper.managers.BukkitKeyManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.support.holograms.types.CMIHologramsSupport;
+import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.QuadCrateManager;
+import com.badbones69.crazycrates.paper.tasks.crates.types.QuadCrate;
 import com.badbones69.crazycrates.paper.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateHologram;
 import com.badbones69.crazycrates.paper.api.objects.crates.quadcrates.CrateSchematic;
@@ -27,7 +29,6 @@ import com.badbones69.crazycrates.paper.tasks.crates.types.CosmicCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.CrateOnTheGo;
 import com.badbones69.crazycrates.paper.tasks.crates.types.CsgoCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.FireCrackerCrate;
-import com.badbones69.crazycrates.paper.tasks.crates.types.QuadCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.QuickCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.RouletteCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WarCrate;
@@ -720,12 +721,13 @@ public class CrateManager {
             case roulette -> crateBuilder = new RouletteCrate(crate, player, 27);
             case war -> crateBuilder = new WarCrate(crate, player, 9);
 
-            //case cosmic -> crateBuilder = new CosmicCrate(crate, player, 27);
-            //case quad_crate -> {
-            //    if (isVirtualCrate(player, crate, virtualCrate, fancyName)) return;
+            case cosmic -> crateBuilder = new CosmicCrate(crate, player, 27);
 
-            //    crateBuilder = new QuadCrate(crate, player, location);
-            //}
+            case quad_crate -> {
+                if (isVirtualCrate(player, crate, virtualCrate, fancyName)) return;
+
+                crateBuilder = new QuadCrate(crate, player, location);
+            }
 
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
@@ -840,7 +842,7 @@ public class CrateManager {
      *
      * @param player the player that the crate is being ended for.
      */
-    public void endCrate(@NotNull final Player player) {
+    public void endCrate(@Nullable final Crate crate, @NotNull final Player player, @Nullable final Location location, final boolean isRunning) {
         final UUID uuid = player.getUniqueId();
 
         if (this.currentTasks.containsKey(uuid)) {
@@ -849,9 +851,64 @@ public class CrateManager {
             this.currentTasks.remove(uuid);
         }
 
+        if (this.currentQuadTasks.containsKey(uuid)) {
+            final List<ScheduledTask> tasks = this.currentQuadTasks.remove(uuid);
+
+            for (final ScheduledTask task : tasks) {
+                task.cancel();
+            }
+        }
+
+        Optional.ofNullable(crate).ifPresent(index -> {
+            final CrateType crateType = index.getCrateType();
+
+            switch (crateType) {
+                case cosmic -> {
+                    final CosmicCrateManager crateManager = (CosmicCrateManager) index.getManager();
+
+                    crateManager.removePickedPlayer(player);
+                }
+
+                case quad_crate, fire_cracker -> {
+                    Optional.ofNullable(location).ifPresent(loc -> {
+                        if (this.holograms != null && crate.getHologram().isEnabled()) {
+                            final CrateLocation crateLocation = getCrateLocation(loc);
+
+                            if (crateLocation != null) {
+                                this.holograms.createHologram(loc, crate, crateLocation.getID());
+                            }
+                        }
+                    });
+                }
+
+                case quick_crate -> {
+                    Optional.ofNullable(location).ifPresent(loc -> {
+                        new FoliaScheduler(this.plugin, loc) {
+                            @Override
+                            public void run() {
+                                ChestManager.closeChest(loc.getBlock(), false);
+                            }
+                        }.runNow();
+
+                        if (!isRunning) {
+                            if (this.holograms != null && crate.getHologram().isEnabled()) {
+                                final CrateLocation crateLocation = getCrateLocation(loc);
+
+                                if (crateLocation != null) {
+                                    this.holograms.createHologram(loc, crate, crateLocation.getID());
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
         removePlayerFromOpeningList(player);
 
         removePlayerKeyType(player);
+
+        removeEditorCrate(player);
 
         removeCrateInUse(player);
 
@@ -861,6 +918,25 @@ public class CrateManager {
 
         removeCloser(player);
         removePicker(player);
+        removeHands(player);
+        removeSlot(player);
+        removeTier(player);
+    }
+
+    public void endQuickCrate(@NotNull final Player player, @NotNull final Location location, @Nullable final Crate crate, final boolean isRunning) {
+        endCrate(crate, player, location, isRunning);
+    }
+
+    public void endCrate(@Nullable final Crate crate, @NotNull final Player player, @NotNull final Location location) {
+        endCrate(crate, player, location, false);
+    }
+
+    public void endCrate(@Nullable final Crate crate, @NotNull final Player player) {
+        endCrate(crate, player, null, false);
+    }
+
+    public void endCrate(@NotNull final Player player) {
+        endCrate(null, player, null, false);
     }
 
     /**
@@ -1687,36 +1763,6 @@ public class CrateManager {
 
             this.rewards.get(uuid).remove();
             this.rewards.remove(uuid);
-        }
-    }
-
-    public void endQuickCrate(@NotNull final Player player, @NotNull final Location location, @Nullable final Crate crate, final boolean isRunning) {
-        final UUID uuid = player.getUniqueId();
-
-        if (this.currentTasks.containsKey(uuid)) {
-            this.currentTasks.get(uuid).cancel();
-
-            this.currentTasks.remove(uuid);
-        }
-
-        removeReward(player);
-
-        new FoliaScheduler(this.plugin, location) {
-            @Override
-            public void run() {
-                ChestManager.closeChest(location.getBlock(), false);
-            }
-        }.runNow();
-
-        removePlayerFromOpeningList(player);
-        removeCrateInUse(player);
-
-        if (!isRunning) {
-            if (this.holograms != null && crate != null && crate.getHologram().isEnabled()) {
-                final CrateLocation crateLocation = getCrateLocation(location);
-
-                if (crateLocation != null) this.holograms.createHologram(location, crate, crateLocation.getID());
-            }
         }
     }
 

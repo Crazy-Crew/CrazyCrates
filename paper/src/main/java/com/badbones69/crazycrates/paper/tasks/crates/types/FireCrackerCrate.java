@@ -40,7 +40,7 @@ public class FireCrackerCrate extends CrateBuilder {
         // Crate event failed, so we return.
         if (isCrateEventValid(type, checkHand, isSilent, amount, eventType, event -> {
             if (!this.userManager.takeKeys(this.uuid, fileName, type, amount, checkHand)) {
-                this.crateManager.endCrate(this.player);
+                this.crateManager.endCrate(this.crate, this.player);
 
                 event.setCancelled(true);
             }
@@ -75,9 +75,9 @@ public class FireCrackerCrate extends CrateBuilder {
                 this.length++;
 
                 if (this.length == 25) {
-                    crateManager.endCrate(player);
-
                     final Prize prize = crate.pickPrize(player);
+
+                    crateManager.endCrate(crate, player);
 
                     if (crate.isCyclePrize() && !PrizeManager.isCapped(crate, player)) { // re-open this menu
                         new CrateSpinMenu(player, new GuiSettings(crate, prize, FileKeys.respin_gui.getConfiguration())).open();
@@ -102,18 +102,7 @@ public class FireCrackerCrate extends CrateBuilder {
                     addCrateTask(new FoliaScheduler(plugin, null, player) {
                         @Override
                         public void run() {
-                            crateManager.removePlayerFromOpeningList(player);
-                            crateManager.removeCrateInUse(player);
-
-                            crateManager.removeReward(player);
-
-                            final HologramManager hologramManager = crateManager.getHolograms();
-
-                            if (hologramManager != null && crate.getHologram().isEnabled()) {
-                                final CrateLocation crateLocation = crateManager.getCrateLocation(location);
-
-                                if (crateLocation != null) hologramManager.createHologram(location, crate, crateLocation.getID());
-                            }
+                            crateManager.endCrate(crate, player, location);
                         }
                     }.runDelayed(40));
                 }

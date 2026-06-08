@@ -30,7 +30,7 @@ public class CrateOnTheGo extends CrateBuilder {
         // Crate event failed, so we return.
         if (isCrateEventValid(type, checkHand, isSilent, amount, eventType, event -> {
             if (!this.userManager.takeKeys(this.uuid, fileName, type, amount, checkHand)) {
-                this.crateManager.endCrate(this.player);
+                this.crateManager.endCrate(this.crate, this.player);
 
                 event.setCancelled(true);
             }
@@ -57,6 +57,8 @@ public class CrateOnTheGo extends CrateBuilder {
 
         PrizeManager.givePrize(this.player, this.crate, prize);
 
-        this.crateManager.removePlayerKeyType(this.player);
+        this.userManager.addOpenedCrate(this.uuid, fileName, amount);
+
+        this.crateManager.endCrate(this.crate, this.player);
     }
 }

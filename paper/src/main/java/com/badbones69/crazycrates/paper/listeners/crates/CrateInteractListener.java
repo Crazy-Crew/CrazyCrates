@@ -32,7 +32,6 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.Map;
-
 public class CrateInteractListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
@@ -153,7 +152,7 @@ public class CrateInteractListener implements Listener {
         if (MiscUtils.isInventoryFull(player)) {
             Messages.inventory_not_empty.sendMessage(player, "{crate}", fancyName);
 
-            this.crateManager.endCrate(player);
+            this.crateManager.endCrate(crate, player);
 
             return;
         }

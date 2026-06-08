@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.listeners;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
+import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -11,12 +12,15 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
+import java.util.UUID;
 
 public class CrateControlListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
+
+    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     @EventHandler
     public void onPistonPushCrate(BlockPistonExtendEvent event) {
@@ -51,11 +55,12 @@ public class CrateControlListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         final Player player = event.getPlayer();
+        final UUID uuid = player.getUniqueId();
 
-        if (this.crateManager.hasCrateTask(player)) this.crateManager.endCrate(player);
+        final Crate crate = this.crateManager.getOpeningCrate(player);
 
-        if (this.crateManager.hasQuadCrateTask(player)) this.crateManager.endQuadCrate(player);
+        this.inventoryManager.removePreviewViewer(uuid);
 
-        if (this.crateManager.isInOpeningList(player)) this.crateManager.removePlayerFromOpeningList(player);
+        this.crateManager.endCrate(crate, player);
     }
 }

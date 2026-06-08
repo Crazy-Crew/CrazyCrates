@@ -52,9 +52,12 @@ public class WarCrateListener implements Listener {
 
         inventory.setItem(slot, prize.getDisplayItem(player, crate));
 
-        if (this.crateManager.hasCrateTask(player)) this.crateManager.endCrate(player);
+        if (this.crateManager.hasCrateTask(player)) {
+            this.crateManager.endCrate(crate, player);
+        }
 
         this.crateManager.removePicker(player);
+
         this.crateManager.addCloser(player, true);
 
         PrizeManager.givePrize(player, crate, prize);
@@ -70,7 +73,9 @@ public class WarCrateListener implements Listener {
                     if (i != slot) inventory.setItem(i, crate.pickPrize(player).getDisplayItem(player, crate));
                 }
 
-                if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
+                if (crateManager.hasCrateTask(player)) {
+                    crateManager.endCrate(crate, player);
+                }
 
                 // Removing other items then the prize.
                 crateManager.addCrateTask(player, new FoliaScheduler(plugin, null, player) {
@@ -80,15 +85,15 @@ public class WarCrateListener implements Listener {
                             if (i != slot) inventory.setItem(i, null);
                         }
 
-                        if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
+                        if (crateManager.hasCrateTask(player)) {
+                            crateManager.endCrate(crate, player);
+                        }
 
                         // Closing the inventory when finished.
                         crateManager.addCrateTask(player, new FoliaScheduler(plugin, null, player) {
                             @Override
                             public void run() {
-                                if (crateManager.hasCrateTask(player)) crateManager.endCrate(player);
-
-                                crateManager.removePlayerFromOpeningList(player);
+                                crateManager.endCrate(crate, player);
 
                                 player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
                             }

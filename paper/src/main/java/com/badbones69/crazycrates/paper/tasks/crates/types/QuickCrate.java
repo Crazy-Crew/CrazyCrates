@@ -7,6 +7,7 @@ import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.ChestManager;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
+import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import org.bukkit.Location;
@@ -35,7 +36,7 @@ public class QuickCrate extends CrateBuilder {
         // Crate event failed, so we return.
         if (isCrateEventValid(type, checkHand, isSilent, amount, eventType, event -> {
             if (!this.userManager.takeKeys(this.uuid, fileName, type, amount, checkHand)) {
-                this.crateManager.endCrate(this.player);
+                this.crateManager.endCrate(this.crate, this.player);
 
                 event.setCancelled(true);
             }
@@ -52,40 +53,53 @@ public class QuickCrate extends CrateBuilder {
         this.crateManager.addCrateInUse(this.player, this.location);
 
         if (this.player.isSneaking() && keys > 1) { //todo() test this
-            int used = 0;
+            int currentAmount = 0;
 
             for (;keys > 0; keys--) { // check keys first.
-                if (used >= this.crate.getMaxMassOpen()) break;
+                if (currentAmount >= this.crate.getMaxMassOpen()) break;
 
-                used++;
+                if (currentAmount >= amount) break;
+
+                currentAmount++;
             }
 
-            if (!this.userManager.takeKeys(this.uuid, fileName, type, used, true)) { // take keys first.
+            if (!this.userManager.takeKeys(this.uuid, fileName, type, currentAmount, true)) { // take keys first.
                 // End the crate.
-                this.crateManager.endCrate(this.player);
+                this.crateManager.endCrate(this.crate, this.player);
 
                 return;
             }
 
+            int keysUsed = 0;
+
             // this ensures that keys are taken first BEFORE they get prizes.
-            for (;used > 0; used--) { // loop through used until it's 0, if the inventory is full... give them the remaining keys back.
+            for (;currentAmount > 0; currentAmount--) { // loop through used until it's 0, if the inventory is full... give them the remaining keys back.
                 if (MiscUtils.isInventoryFull(this.player)) {
-                    this.userManager.addVirtualKeys(this.uuid, fileName, used);
+                    this.userManager.addVirtualKeys(this.uuid, fileName, currentAmount);
 
                     break;
                 }
 
                 PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, 0.5), this.crate,  this.crate.pickPrize(this.player));
+
+                keysUsed++;
             }
 
             this.crateManager.endQuickCrate(this.player, this.location, this.crate, true);
+
+            final String name = this.player.getName();
+
+            EventManager.logEvent(EventType.event_crate_opened, name, this.player, this.crate, type, keysUsed);
+            EventManager.logEvent(EventType.event_key_taken, name, this.player, this.crate, type, keysUsed);
+
+            this.userManager.addOpenedCrate(this.uuid, fileName, keysUsed);
 
             return;
         }
 
         if (!this.userManager.takeKeys(this.uuid, fileName, type, amount, false)) {
             // End the crate.
-            this.crateManager.endCrate(this.player);
+            this.crateManager.endCrate(this.crate, this.player);
 
             return;
         }
@@ -102,8 +116,8 @@ public class QuickCrate extends CrateBuilder {
         } else {
             this.userManager.removeRespinPrize(this.uuid, fileName);
 
-            if (!crate.isCyclePersistRestart()) {
-                userManager.removeRespinCrate(uuid, fileName, userManager.getCrateRespin(uuid, fileName));
+            if (!this.crate.isCyclePersistRestart()) {
+                this.userManager.removeRespinCrate(this.uuid, fileName, this.userManager.getCrateRespin(this.uuid, fileName));
             }
         }
 
@@ -113,6 +127,8 @@ public class QuickCrate extends CrateBuilder {
         ChestManager.openChest(this.location.getBlock(), true);
 
         PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, 0.5), this.crate, prize);
+
+        this.userManager.addOpenedCrate(this.uuid, fileName, amount);
 
         addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
             @Override

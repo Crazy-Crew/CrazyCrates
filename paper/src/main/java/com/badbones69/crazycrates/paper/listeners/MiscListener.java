@@ -9,7 +9,6 @@ import com.badbones69.crazycrates.paper.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
-import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -17,7 +16,6 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerAttemptPickupItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,8 +34,6 @@ public class MiscListener implements Listener {
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
     private final BukkitUserManager userManager = this.plugin.getUserManager();
-
-    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -104,30 +100,6 @@ public class MiscListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        final Player player = event.getPlayer();
-
-        this.inventoryManager.removePreviewViewer(player.getUniqueId());
-
-        this.crateManager.removeTier(player);
-
-        this.crateManager.endQuickCrate(player, player.getLocation(), this.crateManager.getOpeningCrate(player), false);
-
-        // End just in case.
-        this.crateManager.endCrate(player);
-        this.crateManager.endQuadCrate(player);
-
-        this.crateManager.removeCloser(player);
-        this.crateManager.removeHands(player);
-        this.crateManager.removePicker(player);
-        this.crateManager.removePlayerKeyType(player);
-
-        this.crateManager.removeSlot(player);
-
-        this.crateManager.removeEditorCrate(player);
-    }
-
     @EventHandler
     public void onInventoryCloseEvent(InventoryCloseEvent event) {
         final Inventory inventory = event.getInventory();
@@ -141,16 +113,7 @@ public class MiscListener implements Listener {
         if (!this.crateManager.isInOpeningList(player) || crate == null) return;
 
         switch (crate.getCrateType()) {
-            case war -> {
-                if (this.crateManager.hasCrateTask(player)) {
-                    this.crateManager.removeCloser(player);
-
-                    this.crateManager.removePlayerFromOpeningList(player);
-                    this.crateManager.removePlayerKeyType(player);
-
-                    this.crateManager.endCrate(player);
-                }
-            }
+            case war -> this.crateManager.endCrate(crate, player);
 
             case cosmic -> {
                 final CosmicCrateManager crateManager = (CosmicCrateManager) crate.getManager();
@@ -174,24 +137,11 @@ public class MiscListener implements Listener {
                 }
 
                 // Play sound.
-                if (playSound) crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", Sound.Source.MASTER);
+                if (playSound) {
+                    crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", Sound.Source.MASTER);
+                }
 
-                // Remove opening stuff.
-                this.crateManager.removePlayerFromOpeningList(player);
-                this.crateManager.removePlayerKeyType(player);
-
-                this.crateManager.removeTier(player);
-
-                // Cancel crate task just in case.
-                this.crateManager.removeCrateTask(player);
-
-                // Remove hand checks.
-                this.crateManager.removeHands(player);
-
-                this.crateManager.removeSlot(player);
-
-                // Remove the player from the hashmap.
-                crateManager.removePickedPlayer(player);
+                this.crateManager.endCrate(crate, player);
             }
         }
     }

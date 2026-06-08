@@ -4,7 +4,6 @@ import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
@@ -31,8 +30,6 @@ public class CrateOpenListener implements Listener {
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
 
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
-
     private final SettingsManager config = ConfigManager.getConfig();
 
     @EventHandler
@@ -46,7 +43,7 @@ public class CrateOpenListener implements Listener {
         final CrateType crateType = crate.getCrateType();
 
         if (event.isCancelled()) { // if cancelled return.
-            this.crateManager.endCrate(player);
+            this.crateManager.endCrate(crate, player);
 
             return;
         }
@@ -55,7 +52,7 @@ public class CrateOpenListener implements Listener {
             if (crate.getPrizes().isEmpty() || !crate.canWinPrizes(player)) {
                 Messages.no_prizes_found.sendMessage(player, "{crate}", fancyName);
 
-                this.crateManager.endCrate(player);
+                this.crateManager.endCrate(crate, player);
 
                 event.setCancelled(true);
 
@@ -66,35 +63,37 @@ public class CrateOpenListener implements Listener {
         if (!player.hasPermission("crazycrates.open." + fileName)) {
             Messages.no_crate_permission.sendMessage(player, "{crate}", fancyName);
 
-            this.crateManager.endCrate(player);
+            this.crateManager.endCrate(crate, player);
 
             event.setCancelled(true);
 
             return;
         }
 
+        final ConfigurationSection configuration = event.getConfiguration();
+
+        switch (crateType) {
+            case cosmic -> {}
+
+            default -> {
+                final String broadcastMessage = configuration.getString("BroadCast", "");
+                final boolean broadcastToggle = configuration.getBoolean("OpeningBroadCast", false);
+
+                if (broadcastToggle && !event.isSilent()) {
+                    if (!broadcastMessage.isBlank()) {
+                        this.server.broadcast(this.fusion.asComponent(player, broadcastMessage, Map.of(
+                                "%crate%", fancyName,
+                                "%prefix%", this.config.getProperty(ConfigKeys.command_prefix),
+                                "%player%", playerName
+                        )));
+                    }
+                }
+            }
+        }
+
         this.crateManager.addPlayerToOpeningList(player, crate);
 
         final int amount = event.getAmount();
-
-        switch (crateType) {
-            case cosmic, crate_on_the_go -> this.userManager.addOpenedCrate(player.getUniqueId(), fileName, amount);
-        }
-
-        final ConfigurationSection configuration = event.getConfiguration();
-
-        final String broadcastMessage = configuration.getString("BroadCast", "");
-        final boolean broadcastToggle = configuration.getBoolean("OpeningBroadCast", false);
-
-        if (broadcastToggle && crateType != CrateType.cosmic && !event.isSilent()) { //todo() add a permission?
-            if (!broadcastMessage.isBlank()) {
-                this.server.broadcast(this.fusion.asComponent(player, broadcastMessage, Map.of(
-                        "%crate%", fancyName,
-                        "%prefix%", this.config.getProperty(ConfigKeys.command_prefix),
-                        "%player%", playerName
-                )));
-            }
-        }
 
         if (configuration.getBoolean("opening-command.toggle", false)) {
             final List<String> commands = configuration.getStringList("opening-command.commands");

@@ -38,7 +38,6 @@ import com.badbones69.crazycrates.paper.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimerTask;
@@ -247,11 +246,9 @@ public class CosmicCrateListener implements Listener {
 
             final KeyType type = playerType == null ? KeyType.virtual_key : playerType;
 
-            final boolean value = type == KeyType.physical_key && !this.userManager.hasPhysicalKey(uuid, fileName, this.crateManager.getHand(player));
-
             // If they don't have enough keys.
-            if (value) {
-                Map<String, String> placeholders = new HashMap<>();
+            if (type == KeyType.physical_key && !this.userManager.hasPhysicalKey(uuid, fileName, this.crateManager.getHand(player))) {
+                final Map<String, String> placeholders = new HashMap<>();
 
                 placeholders.put("{crate}", fancyName);
                 placeholders.put("{key}", crate.getKeyName());
@@ -260,16 +257,7 @@ public class CosmicCrateListener implements Listener {
                 Messages.no_keys.sendMessage(player, placeholders);
 
                 // Remove opening stuff.
-                this.crateManager.removePlayerFromOpeningList(player);
-                this.crateManager.removePlayerKeyType(player);
-
-                this.crateManager.removeTier(player);
-
-                // Remove hand checks.
-                this.crateManager.removeHands(player);
-
-                // Remove the player from the hashmap.
-                cosmicCrateManager.removePickedPlayer(player);
+                this.crateManager.endCrate(crate, player);
 
                 // Close inventory.
                 player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
@@ -278,23 +266,8 @@ public class CosmicCrateListener implements Listener {
                 return;
             }
 
-            final boolean cannotTakeKey = this.crateManager.hasPlayerKeyType(player) && !this.userManager.takeKeys(uuid, fileName, type, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, this.crateManager.getHand(player));
-
-            if (cannotTakeKey) {
-                // Notify player/console.
-                MiscUtils.failedToTakeKey(player, fileName); //todo() change this
-
-                // Remove opening stuff.
-                this.crateManager.removePlayerFromOpeningList(player);
-                this.crateManager.removePlayerKeyType(player);
-
-                this.crateManager.removeTier(player);
-
-                // Remove hand checks.
-                this.crateManager.removeHands(player);
-
-                // Remove the player from the hashmap.
-                cosmicCrateManager.removePickedPlayer(player);
+            if (this.crateManager.hasPlayerKeyType(player) && !this.userManager.takeKeys(uuid, fileName, type, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, this.crateManager.getHand(player))) {
+                this.crateManager.endCrate(crate, player);
 
                 // Close inventory.
                 player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
@@ -324,6 +297,8 @@ public class CosmicCrateListener implements Listener {
                 )));
             }
 
+            this.userManager.addOpenedCrate(uuid, fileName, 1);
+
             EventManager.logEvent(EventType.event_crate_opened, player.getName(), player, crate, type, 1);
 
             this.crateManager.addRepeatingCrateTask(player, new TimerTask() {
@@ -342,24 +317,11 @@ public class CosmicCrateListener implements Listener {
                                 pluginManager.callEvent(keyEvent);
 
                                 // Check if event is canceled.
-                                if (!event.isCancelled()) {
+                                if (!keyEvent.isCancelled()) {
                                     // Add the keys
                                     userManager.addKeys(uuid, fileName, type, 1);
 
-                                    // Remove opening stuff.
-                                    crateManager.removePlayerFromOpeningList(player);
-                                    crateManager.removePlayerKeyType(player);
-
-                                    crateManager.removeTier(player);
-
-                                    // Cancel crate task.
-                                    crateManager.removeCrateTask(player);
-
-                                    // Remove hand checks.
-                                    crateManager.removeHands(player);
-
-                                    // Remove the player from the hashmap.
-                                    cosmicCrateManager.removePickedPlayer(player);
+                                    crateManager.endCrate(crate, player);
 
                                     Messages.key_refund.sendMessage(player, "{crate}", fancyName);
 

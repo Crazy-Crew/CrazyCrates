@@ -233,7 +233,7 @@ public class CommandOpen extends BaseCommand {
         final KeyType keyType = getKeyType(type);
 
         int keys = keyType == KeyType.physical_key ? this.userManager.getPhysicalKeys(player.getUniqueId(), fileName) : this.userManager.getVirtualKeys(player.getUniqueId(), fileName);
-        int used = 0;
+        int currentAmount = 0; // amount of keys to use when rolling
 
         if (keys == 0) {
             Messages.no_keys.sendMessage(player, Map.of("{crate}", fancyName, "{key}", keyName));
@@ -259,12 +259,34 @@ public class CommandOpen extends BaseCommand {
 
         final ConfigurationSection configuration = crate.getSection();
 
-        for (;keys > 0; keys--) {
-            if (MiscUtils.isInventoryFull(player)) break;
+        for (;keys > 0; keys--) { // check keys first.
+            if (currentAmount >= crate.getMaxMassOpen()) break;
 
-            if (used >= amount) break;
+            if (currentAmount >= amount) break;
 
-            if (used >= crate.getMaxMassOpen()) break;
+            currentAmount++;
+        }
+
+        final UUID uuid = player.getUniqueId();
+
+        if (!this.userManager.takeKeys(uuid, fileName, keyType, currentAmount, true)) { // take keys first.
+            // End the crate.
+            this.crateManager.endCrate(player);
+
+            return;
+        }
+
+        int keysRefund = 0;
+        int keysUsed = 0;
+
+        boolean isLoopBroken = false;
+
+        for (;currentAmount > 0; currentAmount--) {
+            if (MiscUtils.isInventoryFull(player)) {
+                isLoopBroken = true;
+
+                break;
+            }
 
             switch (crateType) {
                 case casino -> {
@@ -298,7 +320,10 @@ public class CommandOpen extends BaseCommand {
                                     ).forEach(this.logger::warn);
                                 }
 
-                                used--;
+                                currentAmount--;
+                                keysRefund++;
+
+                                isLoopBroken = true;
 
                                 break;
                             }
@@ -314,7 +339,10 @@ public class CommandOpen extends BaseCommand {
                     final List<Tier> tiers = crate.getTiers();
 
                     if (tiers.isEmpty()) {
-                        used--;
+                        currentAmount--;
+                        keysRefund++;
+
+                        isLoopBroken = true;
 
                         break;
                     }
@@ -349,24 +377,19 @@ public class CommandOpen extends BaseCommand {
                 }
             }
 
-            used++;
+            keysUsed++;
         }
 
-        final UUID uuid = player.getUniqueId();
+        if (isLoopBroken) {
+            this.userManager.addVirtualKeys(uuid, fileName, currentAmount+keysRefund);
+        }
 
-        this.userManager.addOpenedCrate(uuid, fileName, used);
+        this.userManager.addOpenedCrate(uuid, fileName, keysUsed);
 
         final String name = player.getName();
 
-        EventManager.logEvent(EventType.event_crate_opened, name, player, crate, keyType, used);
-        EventManager.logEvent(EventType.event_key_taken, name, player, crate, keyType, used);
-
-        if (!this.userManager.takeKeys(uuid, fileName, keyType, used, false)) {
-            this.crateManager.removeCrateInUse(player);
-            this.crateManager.removePlayerFromOpeningList(player);
-
-            return;
-        }
+        EventManager.logEvent(EventType.event_crate_opened, name, player, crate, keyType, keysUsed);
+        EventManager.logEvent(EventType.event_key_taken, name, player, crate, keyType, keysUsed);
 
         this.crateManager.removePlayerFromOpeningList(player);
     }

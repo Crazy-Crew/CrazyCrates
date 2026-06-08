@@ -63,10 +63,7 @@ public class CrateButton extends GuiButton {
 
                     this.userManager.removeRespinPrize(uuid, crateName);
 
-                    this.crateManager.removePlayerFromOpeningList(clicker);
-                    this.crateManager.removeCrateInUse(clicker);
-                    this.crateManager.removeCrateTask(clicker);
-                    this.crateManager.endCrate(clicker);
+                    this.crateManager.endCrate(this.crate, clicker);
                 }
 
                 case "deny" -> {

@@ -81,6 +81,8 @@ public class QuadCrateManager {
     // Get the structure handler.
     private final StructureManager handler;
 
+    private final int amount;
+
     /**
      * A constructor to build the quad crate session.
      *
@@ -91,7 +93,16 @@ public class QuadCrateManager {
      * @param inHand checks the hand of the player.
      * @param handler the structure handler instance.
      */
-    public QuadCrateManager(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, @NotNull final Location spawnLocation, final boolean inHand, @NotNull final StructureManager handler) {
+    public QuadCrateManager(
+            @NotNull final Player player,
+            @NotNull final Crate crate,
+            @NotNull final KeyType keyType,
+            @NotNull final Location spawnLocation,
+            final boolean inHand,
+            @NotNull final StructureManager handler,
+
+            final int amount
+    ) {
         this.instance = this;
         this.player = player;
         this.crate = crate;
@@ -109,6 +120,8 @@ public class QuadCrateManager {
         this.particleColor = crate.getColor();
 
         this.crateManager.addQuadSession(this.instance);
+
+        this.amount = amount;
     }
 
     /**
@@ -116,8 +129,8 @@ public class QuadCrateManager {
      */
     public void startCrate() {
         // Check if it is on a block.
-        if (this.spawnLocation.clone().subtract(0, 1, 0).getBlock().getType() == Material.AIR) {
-            Messages.not_on_block.sendMessage(player);
+        if (this.spawnLocation.clone().subtract(0, 1, 0).getBlock().isEmpty()) {
+            Messages.not_on_block.sendMessage(this.player);
 
             this.crateManager.removePlayerFromOpeningList(player);
 
@@ -128,7 +141,7 @@ public class QuadCrateManager {
 
         // Check if schematic folder is empty.
         if (this.crateManager.getCrateSchematics().isEmpty()) {
-            Messages.no_schematics_found.sendMessage(player);
+            Messages.no_schematics_found.sendMessage(this.player);
 
             this.crateManager.removePlayerFromOpeningList(this.player);
 
@@ -148,7 +161,7 @@ public class QuadCrateManager {
             final Block block = loc.getBlock();
 
             if (blocks.contains(block.translationKey())) {
-                Messages.needs_more_room.sendMessage(player);
+                Messages.needs_more_room.sendMessage(this.player);
 
                 this.crateManager.removePlayerFromOpeningList(this.player);
 
@@ -164,7 +177,7 @@ public class QuadCrateManager {
 
         final List<Entity> shovePlayers = new ArrayList<>();
 
-        for (final Entity entity : player.getNearbyEntities(3, 3, 3)) {
+        for (final Entity entity : this.player.getNearbyEntities(3, 3, 3)) {
             if (entity instanceof Player entityPlayer) {
                 for (final QuadCrateManager ongoingCrate : this.crateManager.getQuadSessions()) {
                     if (entityPlayer.getUniqueId().equals(ongoingCrate.player.getUniqueId())) {
@@ -182,10 +195,10 @@ public class QuadCrateManager {
             }
         }
 
-        if (!this.userManager.takeKeys(this.player.getUniqueId(), this.crate.getFileName(), this.keyType, this.crate.useRequiredKeys() ? this.crate.getRequiredKeys() : 1, this.checkHand)) {
-            this.crateManager.removePlayerFromOpeningList(this.player);
-
+        if (!this.userManager.takeKeys(this.player.getUniqueId(), this.crate.getFileName(), this.keyType, this.amount, this.checkHand)) {
             this.crateManager.removeQuadSession(this.instance);
+
+            this.crateManager.endCrate(this.crate, this.player);
 
             return;
         }
@@ -242,11 +255,11 @@ public class QuadCrateManager {
                 } else {
                     crate.playSound(player, player.getLocation(), "cycle-sound", "block.stone.step", Sound.Source.MASTER);
 
-                    Block chest = crateLocations.get(crateNumber).getBlock();
+                    Block chest = crateLocations.get(this.crateNumber).getBlock();
 
                     chest.setType(Material.CHEST);
 
-                    ChestManager.rotateChest(chest, crateNumber);
+                    ChestManager.rotateChest(chest, this.crateNumber);
 
                     if (this.crateNumber == 3) { // Last crate has spawned.
                         crateManager.endQuadCrate(player); // Cancelled when method is called.
@@ -322,21 +335,8 @@ public class QuadCrateManager {
                     }.runNow();
                 });
 
-                final HologramManager manager = crateManager.getHolograms();
-
-                if (manager != null && crate.getHologram().isEnabled()) {
-                    CrateLocation crateLocation = crateManager.getCrateLocation(spawnLocation);
-
-                    if (crateLocation != null) {
-                        manager.createHologram(spawnLocation, crate, crateLocation.getID());
-                    }
-                }
-
                 // End the crate.
-                crateManager.endCrate(player);
-
-                // Remove the player from the list saying they are opening a crate.
-                crateManager.removePlayerFromOpeningList(player);
+                crateManager.endCrate(crate, player, spawnLocation);
 
                 // Remove the "instance" from the crate sessions.
                 crateManager.removeQuadSession(instance);

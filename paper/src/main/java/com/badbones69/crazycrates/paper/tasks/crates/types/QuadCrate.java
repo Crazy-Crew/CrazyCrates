@@ -51,7 +51,7 @@ public class QuadCrate extends CrateBuilder {
         final CrateLocation crateLocation = this.crateManager.getCrateLocation(this.location);
 
         if (crateLocation != null) {
-            final QuadCrateManager session = new QuadCrateManager(getPlayer(), getCrate(), type, crateLocation.getLocation(), checkHand, handler);
+            final QuadCrateManager session = new QuadCrateManager(getPlayer(), getCrate(), type, crateLocation.getLocation(), checkHand, handler, amount);
 
             session.startCrate();
         }

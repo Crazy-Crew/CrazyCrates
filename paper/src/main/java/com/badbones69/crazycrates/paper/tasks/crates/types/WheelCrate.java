@@ -45,7 +45,7 @@ public class WheelCrate extends CrateBuilder {
         // Crate event failed, so we return.
         if (isCrateEventValid(type, checkHand, isSilent, amount, eventType, event -> {
             if (!this.userManager.takeKeys(this.uuid, fileName, type, amount, checkHand)) {
-                this.crateManager.endCrate(this.player);
+                this.crateManager.endCrate(this.crate, this.player);
 
                 event.setCancelled(true);
             }
@@ -142,8 +142,7 @@ public class WheelCrate extends CrateBuilder {
 
                         player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
 
-                        crateManager.removePlayerFromOpeningList(player);
-                        crateManager.endCrate(player);
+                        crateManager.endCrate(crate, player);
 
                         // Clear it because why not.
                         rewards.clear();
