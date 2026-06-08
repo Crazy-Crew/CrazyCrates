@@ -280,10 +280,12 @@ public class CommandOpen extends BaseCommand {
         int keysUsed = 0;
 
         boolean isLoopBroken = false;
+        boolean isInventoryFull = false;
 
         for (;currentAmount > 0; currentAmount--) {
             if (MiscUtils.isInventoryFull(player)) {
                 isLoopBroken = true;
+                isInventoryFull = true;
 
                 break;
             }
@@ -381,7 +383,13 @@ public class CommandOpen extends BaseCommand {
         }
 
         if (isLoopBroken) {
-            this.userManager.addVirtualKeys(uuid, fileName, currentAmount+keysRefund);
+            final int newAmount = currentAmount+keysRefund;
+
+            if (isInventoryFull) {
+                this.userManager.addVirtualKeys(uuid, fileName, newAmount);
+            } else {
+                this.userManager.addKeys(uuid, fileName, keyType, newAmount);
+            }
         }
 
         this.userManager.addOpenedCrate(uuid, fileName, keysUsed);
