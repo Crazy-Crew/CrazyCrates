@@ -32,12 +32,6 @@ public class CommandGive extends BaseCommand {
             return;
         }
 
-        if (amount <= 0) {
-            Messages.not_a_number.sendMessage(sender, "{number}", String.valueOf(amount));
-
-            return;
-        }
-
         final Crate crate = getCrate(sender, crateName, false);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
@@ -74,12 +68,6 @@ public class CommandGive extends BaseCommand {
 
         if (crateName.isEmpty()) {
             Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
-
-            return;
-        }
-
-        if (amount <= 0) {
-            Messages.not_a_number.sendMessage(sender, "{amount}", String.valueOf(amount));
 
             return;
         }

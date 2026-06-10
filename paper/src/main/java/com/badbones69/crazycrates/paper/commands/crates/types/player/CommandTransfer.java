@@ -30,12 +30,6 @@ public class CommandTransfer extends BaseCommand {
             return;
         }
 
-        if (amount <= 0) {
-            Messages.not_a_number.sendMessage(player, "{amount}", String.valueOf(amount));
-
-            return;
-        }
-
         final Crate crate = this.crateManager.getCrateFromName(crateName);
 
         // If the crate is menu or null. we return
@@ -58,39 +52,43 @@ public class CommandTransfer extends BaseCommand {
         final String fancyName = crate.getCrateName();
         final String fileName = crate.getFileName();
 
+        final int clamp = Math.max(amount, 1);
+
         // If they don't have enough keys, we return.
-        if (this.userManager.getVirtualKeys(uuid, fileName) < amount) {
+        if (this.userManager.getVirtualKeys(uuid, fileName) < clamp) {
             Messages.transfer_not_enough_keys.sendMessage(player, "{crate}", fancyName);
 
             return;
         }
 
-        final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.TRANSFER, amount);
+        final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.TRANSFER, clamp);
 
         this.pluginManager.callEvent(event);
 
-        // If the event is canceled, We return.
-        if (event.isCancelled()) return;
+        if (event.isCancelled()) {
+            return;
+        }
 
-        this.userManager.takeKeys(uuid, fileName, KeyType.virtual_key, amount, false);
-        this.userManager.addKeys(receiver, fileName, KeyType.virtual_key, amount);
+        if (this.userManager.takeKeys(uuid, fileName, KeyType.virtual_key, clamp, false)) { // only add keys if successfully taken.
+            this.userManager.addVirtualKeys(receiver, fileName, clamp);
 
-        final String playerName = player.getName();
+            final String playerName = player.getName();
 
-        Messages.transfer_sent_keys.sendMessage(player, Map.of(
-            "{keytype}", KeyType.virtual_key.getFriendlyName(),
-            "{amount}", String.valueOf(amount),
-            "{player}", target.getName(),
-            "{crate}", fancyName
-        ));
+            Messages.transfer_sent_keys.sendMessage(player, Map.of(
+                    "{keytype}", KeyType.virtual_key.getFriendlyName(),
+                    "{amount}", String.valueOf(clamp),
+                    "{player}", target.getName(),
+                    "{crate}", fancyName
+            ));
 
-        Messages.transfer_received_keys.sendMessage(target, Map.of(
-                "{keytype}", KeyType.virtual_key.getFriendlyName(),
-                "{amount}", String.valueOf(amount),
-                "{player}", playerName,
-                "{crate}", fancyName
-        ));
+            Messages.transfer_received_keys.sendMessage(target, Map.of(
+                    "{keytype}", KeyType.virtual_key.getFriendlyName(),
+                    "{amount}", String.valueOf(clamp),
+                    "{player}", playerName,
+                    "{crate}", fancyName
+            ));
 
-        EventManager.logEvent(EventType.event_key_transferred, target.getName(), player, crate, KeyType.virtual_key, amount);
+            EventManager.logEvent(EventType.event_key_transferred, target.getName(), player, crate, KeyType.virtual_key, clamp);
+        }
     }
 }

@@ -76,13 +76,13 @@ public class BukkitUserManager extends UserManager {
 
         final Player player = getUser(uuid);
 
-        final int keys = getVirtualKeys(uuid, fileName);
-
         final YamlConfiguration configuration = this.data.getConfiguration();
 
         if (!configuration.contains("Players." + uuid + ".Name")) configuration.set("Players." + uuid + ".Name", player.getName());
 
-        configuration.set("Players." + uuid + "." + fileName, (Math.max((keys + amount), 0)));
+        final int clamp = getVirtualKeys(uuid, fileName) + Math.max(amount, 1);
+
+        configuration.set("Players." + uuid + "." + fileName, clamp);
 
         this.data.save();
     }
@@ -103,6 +103,8 @@ public class BukkitUserManager extends UserManager {
             return;
         }
 
+        final int clamp = Math.max(amount, 1);
+
         final String fileName = crate.getFileName();
 
         final Player player = getUser(uuid);
@@ -110,7 +112,7 @@ public class BukkitUserManager extends UserManager {
         final YamlConfiguration configuration = this.data.getConfiguration();
 
         configuration.set("Players." + uuid + ".Name", player.getName());
-        configuration.set("Players." + uuid + "." + fileName, amount);
+        configuration.set("Players." + uuid + "." + fileName, clamp);
 
         this.data.save();
     }
@@ -158,7 +160,9 @@ public class BukkitUserManager extends UserManager {
                     return;
                 }
 
-                MiscUtils.dropItem(player, crate.getKey(amount, player), player.getLocation(), true);
+                final int clamp = Math.max(amount, 1);
+
+                MiscUtils.dropItem(player, crate.getKey(clamp, player), player.getLocation(), true);
             }
 
             case virtual_key -> addVirtualKeys(uuid, fileName, amount);
@@ -368,23 +372,29 @@ public class BukkitUserManager extends UserManager {
         try {
             final YamlConfiguration configuration = this.data.getConfiguration();
 
-            if (keyType == KeyType.physical_key) {
-                if (configuration.contains("Offline-Players." + uuid + ".Physical." + fileName)) keys += configuration.getInt("Offline-Players." + uuid + ".Physical." + fileName);
+            return switch (keyType) {
+                case virtual_key -> {
+                    if (configuration.contains("Offline-Players." + uuid + "." + fileName)) keys += configuration.getInt("Offline-Players." + uuid + "." + fileName);
 
-                configuration.set("Offline-Players." + uuid + ".Physical." + fileName, keys);
+                    configuration.set("Offline-Players." + uuid + "." + fileName, keys);
 
-                this.data.save();
+                    this.data.save();
 
-                return true;
-            }
+                    yield true;
+                }
 
-            if (configuration.contains("Offline-Players." + uuid + "." + fileName)) keys += configuration.getInt("Offline-Players." + uuid + "." + fileName);
+                case physical_key -> {
+                    if (configuration.contains("Offline-Players." + uuid + ".Physical." + fileName)) keys += configuration.getInt("Offline-Players." + uuid + ".Physical." + fileName);
 
-            configuration.set("Offline-Players." + uuid + "." + fileName, keys);
+                    configuration.set("Offline-Players." + uuid + ".Physical." + fileName, keys);
 
-            this.data.save();
+                    this.data.save();
 
-            return true;
+                    yield true;
+                }
+
+                default -> false;
+            };
         } catch (final Exception exception) {
             this.fusion.log(Level.WARNING, "Could not add keys to offline player with uuid: %s", exception, uuid);
 

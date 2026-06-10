@@ -30,6 +30,7 @@ import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.config.impl.ConfigKeys;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Command(value = "crazycrates", alias = {"crates", "crate", "cc"})
@@ -162,9 +163,12 @@ public abstract class BaseCommand {
             final UUID uuid = player.getUniqueId();
             final String name = player.getName();
 
-            final int totalKeys = this.userManager.getTotalKeys(uuid, fileName);
+            final int keys = switch (type) {
+                case physical_key -> this.userManager.getPhysicalKeys(uuid, fileName);
+                case virtual_key, free_key -> this.userManager.getVirtualKeys(uuid, fileName);
+            };
 
-            if (totalKeys < 1) {
+            if (keys < 1) {
                 this.fusion.log(Level.WARNING, "The player %s does not have enough keys to take.", name);
 
                 Messages.cannot_take_keys.sendMessage(sender, "{player}", name);
@@ -172,39 +176,51 @@ public abstract class BaseCommand {
                 return;
             }
 
-            if (totalKeys < amount) {
-                amount = type == KeyType.physical_key ? this.userManager.getPhysicalKeys(uuid, fileName) : this.userManager.getVirtualKeys(uuid, fileName);
+            final int clamp = Math.clamp(amount, 1, keys);
+
+            if (this.userManager.takeKeys(uuid, fileName, type, clamp, false)) {
+                Messages.take_player_keys.sendMessage(sender, Map.of(
+                        "{keytype}", type.getFriendlyName(),
+                        "{amount}", String.valueOf(clamp),
+                        "{player}", name,
+                        "{key}", crate.getKeyName()
+                ));
+
+                EventManager.logEvent(EventType.event_key_removed, name, sender, crate, type, clamp);
             }
-
-            this.userManager.takeKeys(uuid, fileName, type, amount, false);
-
-            final int finalAmount = amount;
-
-            Messages.take_player_keys.sendMessage(sender, Map.of(
-                "{keytype}", type.getFriendlyName(),
-                "{amount}", String.valueOf(finalAmount),
-                "{player}", name,
-                "{key}", crate.getKeyName()
-            ));
-
-            EventManager.logEvent(EventType.event_key_removed, name, sender, crate, type, amount);
 
             return;
         }
 
         if (offlinePlayer != null) {
-            final String name = offlinePlayer.getName();
+            final UUID uuid = offlinePlayer.getUniqueId();
+            final String name = Optional.ofNullable(offlinePlayer.getName()).orElse("N/A");
 
-            Messages.take_offline_player_keys.sendMessage(sender, Map.of(
-                "{amount}", String.valueOf(amount),
-                "{keytype}", type.getFriendlyName(),
-                "{key}", crate.getKeyName(),
-                "{player}", name == null ? "N/A" : name)
-            );
+            final int keys = switch (type) {
+                case physical_key -> this.userManager.getPhysicalKeys(uuid, fileName);
+                case virtual_key, free_key -> this.userManager.getVirtualKeys(uuid, fileName);
+            };
 
-            this.userManager.takeOfflineKeys(offlinePlayer.getUniqueId(), fileName, type, amount);
+            if (keys < 1) {
+                this.fusion.log(Level.WARNING, "The player %s does not have enough keys to take.", name);
 
-            EventManager.logEvent(EventType.event_key_removed, name == null ? "N/A" : name, sender, crate, type, amount);
+                Messages.cannot_take_keys.sendMessage(sender, "{player}", name);
+
+                return;
+            }
+
+            final int clamp = Math.clamp(amount, 1, keys);
+
+            if (this.userManager.takeOfflineKeys(uuid, fileName, type, clamp)) {
+                Messages.take_offline_player_keys.sendMessage(sender, Map.of(
+                        "{amount}", String.valueOf(clamp),
+                        "{keytype}", type.getFriendlyName(),
+                        "{key}", crate.getKeyName(),
+                        "{player}", name)
+                );
+
+                EventManager.logEvent(EventType.event_key_removed, name, sender, crate, type, clamp);
+            }
         }
     }
 
@@ -212,9 +228,11 @@ public abstract class BaseCommand {
     private void addKey(@NotNull final CommandSender sender, @Nullable final Player player, @Nullable final OfflinePlayer offlinePlayer, @NotNull final Crate crate, @NotNull final KeyType type, final int amount, final boolean isSilent, final boolean isGiveAll) {
         final String fileName = crate.getFileName();
 
+        final int clamp = Math.max(amount, 1);
+
         if (player != null) {
             if (!isGiveAll) { // we already call the key event when doing give all. we do not need to call it twice.
-                final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
+                final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, clamp);
 
                 this.pluginManager.callEvent(event);
 
@@ -224,11 +242,11 @@ public abstract class BaseCommand {
             final UUID uuid = player.getUniqueId();
             final String name = player.getName();
 
-            this.userManager.addKeys(uuid, fileName, crate.getCrateType() == CrateType.crate_on_the_go ? KeyType.physical_key : type, amount);
+            this.userManager.addKeys(uuid, fileName, crate.getCrateType() == CrateType.crate_on_the_go ? KeyType.physical_key : type, clamp);
 
             final Map<String, String> placeholders = Map.of(
                 "{keytype}", type.getFriendlyName(),
-                "{amount}", String.valueOf(amount),
+                "{amount}", String.valueOf(clamp),
                 "{player}", name,
                 "{key}", crate.getKeyName()
             );
@@ -236,7 +254,7 @@ public abstract class BaseCommand {
             boolean fullMessage = this.config.getProperty(ConfigKeys.notify_player_when_inventory_full);
             boolean inventoryCheck = this.config.getProperty(ConfigKeys.give_virtual_keys_when_inventory_full);
 
-            EventManager.logEvent(EventType.event_key_given, name, sender, crate, type, amount);
+            EventManager.logEvent(EventType.event_key_given, name, sender, crate, type, clamp);
 
             if (!isGiveAll) Messages.gave_a_player_keys.sendMessage(sender, placeholders);
 
@@ -250,27 +268,27 @@ public abstract class BaseCommand {
         }
 
         if (offlinePlayer != null) {
-            final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(offlinePlayer, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, amount);
+            final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(offlinePlayer, crate, PlayerReceiveKeyEvent.KeyReceiveReason.GIVE_COMMAND, clamp);
 
             this.pluginManager.callEvent(event);
 
             if (event.isCancelled()) return;
 
-            if (!this.userManager.addOfflineKeys(offlinePlayer.getUniqueId(), fileName, type, amount)) {
+            if (!this.userManager.addOfflineKeys(offlinePlayer.getUniqueId(), fileName, type, clamp)) {
                 Messages.internal_error.sendMessage(sender);
             } else {
-                final String name = offlinePlayer.getName();
+                final String name = Optional.ofNullable(offlinePlayer.getName()).orElse("N/A");
 
                 final Map<String, String> placeholders = Map.of(
                     "{keytype}", type.getFriendlyName(),
-                    "{amount}", String.valueOf(amount),
+                    "{amount}", String.valueOf(clamp),
                     "{key}", crate.getKeyName(),
-                    "{player}", name == null ? "N/A" : name
+                    "{player}", name
                 );
 
                 Messages.given_offline_player_keys.sendMessage(sender, placeholders);
 
-                EventManager.logEvent(EventType.event_key_given, name == null ? "N/A" : name, sender, crate, type, amount);
+                EventManager.logEvent(EventType.event_key_given, name, sender, crate, type, clamp);
             }
         }
     }

@@ -71,7 +71,7 @@ public abstract class UserManager {
      * @param amount the amount of keys you are giving them
      * @since 0.1.0
      */
-    public abstract void addKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull KeyType keyType, final int amount);
+    public abstract void addKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull final KeyType keyType, final int amount);
 
     /**
      * Get the total amount of keys a player has.
@@ -104,7 +104,7 @@ public abstract class UserManager {
      * @return true if successfully taken keys and false if not
      * @since 0.1.0
      */
-    public abstract boolean takeKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull KeyType keyType, final int amount, final boolean checkHand);
+    public abstract boolean takeKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull final KeyType keyType, final int amount, final boolean checkHand);
 
     /**
      * Checks to see if the player has a physical key of the crate in their main hand or inventory.
@@ -127,7 +127,7 @@ public abstract class UserManager {
      * @return true if it successfully gave the offline player a key and false if there was an error
      * @since 0.1.0
      */
-    public abstract boolean addOfflineKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull KeyType keyType, int amount);
+    public abstract boolean addOfflineKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull final KeyType keyType, int amount);
 
     /**
      * Take keys from an offline player.
@@ -139,7 +139,7 @@ public abstract class UserManager {
      * @return returns true if it successfully took the key from the offline player and false if there was an error
      * @since 0.1.0
      */
-    public abstract boolean takeOfflineKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull KeyType keyType, int amount);
+    public abstract boolean takeOfflineKeys(@NotNull final UUID uuid, @NotNull final String crateName, @NotNull final KeyType keyType, int amount);
 
     /**
      * Gets the total amount of crates this player opened
