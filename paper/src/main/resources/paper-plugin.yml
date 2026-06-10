@@ -32,6 +32,10 @@ dependencies:
       join-classpath: true
 
     # Custom item plugins
+    CraftEngine:
+      load: BEFORE
+      required: false
+      join-classpath: true
     ItemsAdder:
       load: BEFORE
       required: false

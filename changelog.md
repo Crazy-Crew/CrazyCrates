@@ -52,11 +52,12 @@
 **Third Note: You can still use `emerald_helmet` as in direct ids as well**
 
 - Added support for HMCWraps.
-  - `DisplayItem: hmcwraps:<item_id>`
-- This introduces new formats for other plugins like Oraxen, Nexo, and ItemsAdder
-  - `DisplayItem: nexo:<item_id>`
-  - `DisplayItem: oraxen:<item_id>`
-  - `DisplayItem: itemsadder:<item_id>`
+  - `DisplayItem: hmcwraps@<item_id>`
+- This introduces new formats for other plugins like Oraxen, Nexo, CraftEngine, and ItemsAdder
+  - `DisplayItem: nexo@<item_id>`
+  - `DisplayItem: oraxen@<item_id>`
+  - `DisplayItem: itemsadder@<item_id>`
+  - `DisplayItem: craftengine@<item_id>`
 
 ### New Commands
 - Added /crates version which includes the git commit, previous git commit, and current version.
