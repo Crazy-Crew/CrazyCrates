@@ -38,7 +38,8 @@ public class EventManager {
         Path path = null;
 
         switch (type) {
-            case event_key_given, event_key_removed, event_key_received, event_key_sent, event_key_taken, event_key_taken_multiple -> {
+            case event_key_given, event_key_removed, event_key_received, event_key_sent, event_key_taken, event_key_taken_multiple,
+                 event_key_transferred -> {
                 message = "Player: %player% | Sender: %sender% | Key Name: %key_name%<reset> | Key Type: %key_type%"
                         .replace("%key_type%", keyType.getFriendlyName())
                         .replace("%player%", name)
