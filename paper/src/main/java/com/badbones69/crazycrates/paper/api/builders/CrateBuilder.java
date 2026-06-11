@@ -485,12 +485,12 @@ public abstract class CrateBuilder extends FoliaScheduler {
         final CosmicCrateManager manager = (CosmicCrateManager) this.crate.getManager();
         final ItemBuilder itemBuilder = manager.getMysteryCrate();
 
-        for (int slot = 0; slot <= this.size; slot++) {
-            itemBuilder.addPlaceholder("%Slot%", String.valueOf(slot)).setAmount(slot);
-
+        for (int slot = 0; slot <= this.size-1; slot++) {
             final Tier tier = PrizeManager.getTier(this.crate);
 
             if (tier != null) {
+                itemBuilder.addPlaceholder("%Slot%", String.valueOf(slot)).setAmount(slot);
+
                 final Inventory inventory = getInventory();
 
                 this.crateManager.addTier(this.player, slot, tier);

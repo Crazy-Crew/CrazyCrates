@@ -247,7 +247,7 @@ public class CosmicCrateListener implements Listener {
             final KeyType type = playerType == null ? KeyType.virtual_key : playerType;
 
             // If they don't have enough keys.
-            if (type == KeyType.physical_key && !this.userManager.hasPhysicalKey(uuid, fileName, this.crateManager.getHand(player))) {
+            if (type == KeyType.physical_key && !this.userManager.hasPhysicalKey(uuid, fileName, this.crateManager.getHand(player))) { //todo() make this better lmao
                 final Map<String, String> placeholders = new HashMap<>();
 
                 placeholders.put("{crate}", fancyName);
