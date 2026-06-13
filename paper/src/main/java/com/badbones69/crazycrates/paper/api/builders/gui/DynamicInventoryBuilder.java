@@ -90,7 +90,7 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
         this.gui.addSlotAction(safeRow, column, this.inventoryManager.getBackButton(this.player, this.gui), event -> {
             event.setCancelled(true);
 
-            this.gui.nextPage();
+            this.gui.previousPage();
 
             final int page = this.gui.getPageNumber();
 

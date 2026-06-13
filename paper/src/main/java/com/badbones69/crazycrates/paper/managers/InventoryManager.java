@@ -70,7 +70,7 @@ public class InventoryManager {
     }
 
     public final ItemStack getNextButton(@Nullable final Player player, @Nullable final Tier tier, @NotNull final PaginatedGui gui) {
-        final ItemBuilder button = ItemBuilder.from(this.nextButton.asItemStack(player));
+        final ItemBuilder button = this.nextButton;
 
         button.addPlaceholder("{page}", String.valueOf(gui.getPageNumber()));
 
@@ -86,7 +86,7 @@ public class InventoryManager {
     }
 
     public final ItemStack getBackButton(@Nullable final Player player, @Nullable final Tier tier, @NotNull final PaginatedGui gui) {
-        final ItemBuilder button = ItemBuilder.from(this.backButton.asItemStack(player));
+        final ItemBuilder button = this.backButton;
 
         button.addPlaceholder("{page}", String.valueOf(gui.getPageNumber()));
 
