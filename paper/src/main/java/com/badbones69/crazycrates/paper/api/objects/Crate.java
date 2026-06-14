@@ -42,7 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 public class Crate {
 
@@ -738,7 +737,7 @@ public class Crate {
      * @param weight the chance to add.
      */
     public void addEditorItem(@Nullable final ItemStack itemStack, @NotNull final String prizeName, @NotNull final String tier, final double weight) {
-        if (tier.isEmpty() || prizeName.isEmpty() || weight <= 0 || itemStack == null) return;
+        if (tier.isEmpty() || prizeName.isEmpty() || weight <= 0.0 || itemStack == null) return;
 
         final ConfigurationSection section = getPrizeSection();
 
@@ -765,7 +764,7 @@ public class Crate {
      * @param weight the chance of the prize.
      */
     private void setItem(@Nullable final ItemStack itemStack, @NotNull final String prizeName, @Nullable final ConfigurationSection section, final double weight, final String tier) {
-        if (prizeName.isEmpty() || section == null || weight <= 0 || itemStack == null) return;
+        if (prizeName.isEmpty() || section == null || weight <= 0.0 || itemStack == null) return;
 
         final String tiers = getPath(prizeName, "Tiers");
 
@@ -794,23 +793,19 @@ public class Crate {
         final String toBase64 = ItemUtils.toBase64(itemStack);
 
         if (!section.contains(path)) {
-            final boolean isNewLayout = ConfigManager.getConfig().getProperty(ConfigKeys.use_different_items_layout);
-
-            if (isNewLayout) {
-                section.createSection(path);
-            } else {
-                section.set(path, new ArrayList<>());
-            }
+            section.createSection(path);
         }
 
         section.set(getPath(prizeName, "DisplayData"), toBase64);
 
         final boolean isList = section.isList(path);
 
+        final int amount = itemStack.getAmount();
+
         if (isList) {
             final List<String> list = section.getStringList(path);
 
-            list.add("Data:" + toBase64);
+            list.add("Data:%s, Amount:%s".formatted(toBase64, amount));
 
             section.set(path, list);
         } else {
@@ -820,12 +815,15 @@ public class Crate {
                 items = section.createSection(path);
             }
 
-            items.set(MiscUtils.randomUUID() + ".data", toBase64);
+            final String uuid = MiscUtils.randomUUID();
+
+            items.set(uuid + ".data", toBase64);
+            items.set(uuid + ".amount", amount);
         }
 
         section.set(getPath(prizeName, "DisplayItem"), itemStack.getType().getKey().getKey());
 
-        section.set(getPath(prizeName, "DisplayAmount"), itemStack.getAmount());
+        section.set(getPath(prizeName, "DisplayAmount"), amount);
 
         List<String> enchantments = new ArrayList<>();
 
