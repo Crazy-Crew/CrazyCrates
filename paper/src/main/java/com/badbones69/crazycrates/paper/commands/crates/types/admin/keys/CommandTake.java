@@ -3,14 +3,13 @@ package com.badbones69.crazycrates.paper.commands.crates.types.admin.keys;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
-import com.badbones69.crazycrates.paper.api.PlayerBuilder;
+import com.ryderbelserion.fusion.paper.builders.items.PlayerBuilder;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.ArgName;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.Suggestion;
 import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -37,14 +36,6 @@ public class CommandTake extends BaseCommand {
 
         final KeyType keyType = getKeyType(type);
 
-        if (target.getPlayer() != null) {
-            final Player player = target.getPlayer();
-
-            takeKey(sender, player, crate, keyType, amount);
-
-            return;
-        }
-
-        takeKey(sender, target.getOfflinePlayer(), crate, keyType, amount);
+        target.getPlayer().ifPresentOrElse(player -> takeKey(sender, player, crate, keyType, amount), () -> target.getOfflinePlayer().ifPresent(player -> takeKey(sender, player, crate, keyType, amount)));
     }
 }

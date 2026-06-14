@@ -8,7 +8,6 @@ import com.ryderbelserion.fusion.paper.builders.items.PlayerBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
@@ -91,20 +90,12 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
         final PlayerBuilder builder = new PlayerBuilder(playerName);
 
-        final Player target = builder.getPlayer();
-
-        if (target == null) {
-            final OfflinePlayer offlineTarget = builder.getOfflinePlayer();
-
-            uuid.set(offlineTarget != null ? offlineTarget.getUniqueId() : null);
-        } else {
-            uuid.set(target.getUniqueId());
-        }
+        builder.getPlayer().ifPresentOrElse(target -> uuid.set(target.getUniqueId()), () -> builder.getOfflinePlayer().ifPresent(target -> uuid.set(target.getUniqueId())));
 
         final UUID id = uuid.get();
 
         if (id == null) {
-            this.fusion.log(Level.WARNING, "The player name using %s_%s (%s) cannot be null".formatted("crazycrates", identifier, playerName));
+            this.fusion.log(Level.WARNING, "The player name using %s_%s (%s) cannot be null", identifier, playerName);
 
             return "N/A";
         }

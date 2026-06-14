@@ -6,7 +6,7 @@ import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
-import com.badbones69.crazycrates.paper.api.PlayerBuilder;
+import com.ryderbelserion.fusion.paper.builders.items.PlayerBuilder;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.*;
 import dev.triumphteam.cmd.core.argument.keyed.Flags;
@@ -42,20 +42,14 @@ public class CommandGive extends BaseCommand {
 
         final KeyType keyType = getKeyType(type);
 
-        if (target.getPlayer() != null) {
-            addKey(sender, target.getPlayer(), crate, keyType, amount, isSilent);
-
-            return;
-        }
-
-        addKey(sender, target.getOfflinePlayer(), crate, keyType, amount, isSilent);
+        target.getPlayer().ifPresentOrElse(player -> addKey(sender, player, crate, keyType, amount, isSilent), () -> target.getOfflinePlayer().ifPresent(player -> addKey(sender, player, crate, keyType, amount, isSilent)));
     }
 
     @Command("give-random")
     @Flag(flag = "s", longFlag = "silent")
     @Permission(value = "crazycrates.giverandomkey", def = PermissionDefault.OP)
     @Syntax("/crazycrates give-random <key_type> <crate_name> <amount> <player_name> [-s/--silent]")
-    public void random(CommandSender sender, @Suggestion("keys") String type, @Suggestion("numbers") int amount, @Suggestion("players") PlayerBuilder target, Flags flags) {
+    public void random(CommandSender sender, @Suggestion("keys") String type, @Suggestion("numbers") int amount, @Suggestion("players") final PlayerBuilder target, Flags flags) {
         give(sender, type, this.crateManager.getUsableCrates().get((int) MiscUtils.pickNumber(0, (this.crateManager.getUsableCrates().size() - 2))).getFileName(), amount, target, flags);
     }
 
