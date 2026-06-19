@@ -30,5 +30,6 @@ modrinth {
         optional.project("DecentHolograms")
         optional.project("FancyHolograms")
         optional.project("PlaceholderAPI")
+        optional.project("CraftEngine")
     }
 }

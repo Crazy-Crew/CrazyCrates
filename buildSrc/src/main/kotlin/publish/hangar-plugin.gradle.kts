@@ -48,6 +48,14 @@ hangarPublish {
                         required = false
                     }
 
+                    url("HMCWraps", "https://www.spigotmc.org/resources/%E2%9C%85-1-20-4-1-21-%E2%9C%A8-hmcwraps-%E2%9A%99%EF%B8%8F-custom-skins-colors-for-tools-and-armor-%E2%AD%95-nexo-itemsadder-ready.107099/") {
+                        required = false
+                    }
+
+                    url("CraftEngine", "https://modrinth.com/plugin/craftengine") {
+                        required = false
+                    }
+
                     url("Oraxen", "https://polymart.org/product/629/oraxen") {
                         required = false
                     }
