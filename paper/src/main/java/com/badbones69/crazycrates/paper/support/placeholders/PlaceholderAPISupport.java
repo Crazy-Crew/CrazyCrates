@@ -95,7 +95,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         final UUID id = uuid.get();
 
         if (id == null) {
-            this.fusion.log(Level.WARNING, "The player name using %s_%s (%s) cannot be null", identifier, playerName);
+            this.fusion.log(Level.WARNING, "The player name using %s_%s (%s) cannot be null", identifier, playerName, player.getName());
 
             return "N/A";
         }
