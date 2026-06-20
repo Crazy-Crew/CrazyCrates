@@ -83,7 +83,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
         final String playerName = PlaceholderAPI.setPlaceholders(player,"%" + org.apache.commons.lang3.StringUtils.substringBetween(identifier.substring(0, index), "{", "}") + "%");
 
         if (playerName.isBlank() || playerName.equalsIgnoreCase("%player_name%")) {
-            this.fusion.log(Level.WARNING, "The player name using {}_{} cannot be blank, or %player%", "crazycrates", identifier);
+            this.fusion.log(Level.WARNING, "The player name using %s_%s cannot be blank, or %player%", "crazycrates", identifier);
 
             return "N/A";
         }
