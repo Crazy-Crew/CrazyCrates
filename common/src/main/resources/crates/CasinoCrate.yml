@@ -562,7 +562,7 @@ Crate:
       Items:
         "1":
           # The name of the item.
-          name: "<bold><green>Fancy Pants</bold>"s
+          name: "<bold><green>Fancy Pants</bold>"
           # The item material.
           material: "chainmail_leggings"
           # The amount of the item to give.
