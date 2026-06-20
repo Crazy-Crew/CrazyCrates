@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
@@ -29,6 +30,8 @@ public class CrateOpenListener implements Listener {
     private final Server server = this.plugin.getServer();
 
     private final CrateManager crateManager = this.plugin.getCrateManager();
+
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     private final SettingsManager config = ConfigManager.getConfig();
 
@@ -88,6 +91,8 @@ public class CrateOpenListener implements Listener {
                         )));
                     }
                 }
+
+                this.userManager.addOpenedCrate(player.getUniqueId(), fileName, event.getAmount());
             }
         }
 

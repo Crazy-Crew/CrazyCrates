@@ -57,8 +57,6 @@ public class CrateOnTheGo extends CrateBuilder {
 
         PrizeManager.givePrize(this.player, this.crate, prize);
 
-        this.userManager.addOpenedCrate(this.uuid, fileName, amount);
-
         this.crateManager.endCrate(this.crate, this.player);
     }
 }

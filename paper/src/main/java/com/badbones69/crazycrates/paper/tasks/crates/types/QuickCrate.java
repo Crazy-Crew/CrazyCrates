@@ -103,8 +103,6 @@ public class QuickCrate extends CrateBuilder {
             EventManager.logEvent(EventType.event_crate_opened, name, this.player, this.crate, type, keysUsed);
             EventManager.logEvent(EventType.event_key_taken, name, this.player, this.crate, type, keysUsed);
 
-            this.userManager.addOpenedCrate(this.uuid, fileName, keysUsed);
-
             return;
         }
 
@@ -131,8 +129,6 @@ public class QuickCrate extends CrateBuilder {
         ChestManager.openChest(this.location.getBlock(), true);
 
         PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, 0.5), this.crate, prize);
-
-        this.userManager.addOpenedCrate(this.uuid, fileName, amount);
 
         addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
             @Override
