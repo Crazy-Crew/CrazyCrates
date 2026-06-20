@@ -411,7 +411,7 @@ Crate:
             protection: 5
         "3":
           # The name of the item.
-          name: "<bold><dark_red>Warlord's Leggings</bold>"s
+          name: "<bold><dark_red>Warlord's Leggings</bold>"
           # The item material.
           material: "netherite_leggings"
           # The amount of the item to give.
