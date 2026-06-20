@@ -33,6 +33,8 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
@@ -79,6 +81,14 @@ public class CrazyCrates extends JavaPlugin {
         this.instance = new Server(this.fusion, path);
         this.instance.apply();
 
+        final Path version = path.resolve("version.json");
+
+        try {
+            Files.deleteIfExists(version);
+        } catch (final IOException exception) {
+            this.fusion.log(Level.WARNING, "Failed to delete version.json!", exception);
+        }
+
         this.fileManager.addPaperFile(path.resolve("locations.yml"))
                 .addPaperFile(path.resolve("data.yml"))
                 .addPaperFile(path.resolve("guis").resolve("respin-gui.yml"))
@@ -86,7 +96,7 @@ public class CrazyCrates extends JavaPlugin {
 
                 .addFolder(path.resolve("schematics"), FileType.NBT)
                 .addFolder(path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE))
-                .addFile(path.resolve("version.json"), FileType.JSON);
+                .addFile(version, FileType.JSON);
 
         MiscUtils.janitor();
         MiscUtils.save();

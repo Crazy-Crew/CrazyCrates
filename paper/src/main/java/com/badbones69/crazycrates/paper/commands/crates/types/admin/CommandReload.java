@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.paper.support.MetricsWrapper;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import com.badbones69.common.config.impl.ConfigKeys;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -13,6 +14,10 @@ import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class CommandReload extends BaseCommand {
 
@@ -26,9 +31,18 @@ public class CommandReload extends BaseCommand {
 
         this.plugin.getInstance().reload();
 
+        final Path version = this.path.resolve("version.json");
+
+        try {
+            Files.deleteIfExists(version);
+        } catch (final IOException exception) {
+            this.fusion.log(Level.WARNING, "Failed to delete version.json!", exception);
+        }
+
         this.fileManager.refresh(false)
                 .addFolder(this.path.resolve("schematics"), FileType.NBT)
-                .addFolder(path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE));
+                .addFolder(this.path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE))
+                .addFile(version, FileType.JSON);
 
         this.fileManager.addPaperFolder(this.path.resolve("crates"))
                 .addPaperFile(this.path.resolve("guis").resolve("respin-gui.yml"))
