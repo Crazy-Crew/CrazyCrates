@@ -632,15 +632,11 @@ public class BukkitUserManager extends UserManager {
             return;
         }
 
-        final boolean hasValue = trackingSection.contains(fileName);
+        final int trackedAmount = trackingSection.getInt(fileName, 0);
 
-        if (hasValue) { // it has a crate to track.
-            final int trackedAmount = trackingSection.getInt(fileName, 0);
+        final int newAmount = trackedAmount + amount;
 
-            final int newAmount = trackedAmount + amount;
-
-            trackingSection.set(fileName, newAmount);
-        }
+        trackingSection.set(fileName, newAmount);
 
         trackingSection.set("total-crates", trackingSection.getInt("total-crates", 0) + amount);
 
