@@ -35,6 +35,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.types.WarCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WheelCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.WonderCrate;
 import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
@@ -535,7 +536,7 @@ public class CrateManager {
                             fileName,
                             preview,
                             type,
-                            getKey(section),
+                            getKey(section, fileName),
                             section.getString("PhysicalKey.Name", "Crate.PhysicalKey.Name is missing from " + fileName),
                             prizes,
                             section,
@@ -1626,25 +1627,39 @@ public class CrateManager {
     }
 
     // Internal methods.
-    private ItemBuilder getKey(@NotNull final ConfigurationSection section) {
-        final String name = section.getString("PhysicalKey.Name", "");
-        final String customModelData = section.getString("PhysicalKey.Custom-Model-Data", "");
-        final String namespace = section.getString("PhysicalKey.Model.Namespace", "");
-        final String id = section.getString("PhysicalKey.Model.Id", "");
-        final List<String> lore = section.getStringList("PhysicalKey.Lore");
+    private ItemBuilder getKey(@NotNull final ConfigurationSection section, @NotNull final String crateName) {
+        final ConfigurationSection index = section.getConfigurationSection("PhysicalKey");
 
-        final ItemBuilder itemBuilder = ItemBuilder.from(section.getString("PhysicalKey.Item", "tripwire_hook").toLowerCase());
-
-        if (section.contains("PhysicalKey.Data")) {
-            itemBuilder.withBase64(section.getString("PhysicalKey.Data", ""));
+        if (index == null) {
+            throw new FusionException("Could not find PhysicalKey configuration section in %s".formatted(crateName));
         }
 
-        ItemUtil.addGlow(itemBuilder, section.getString("PhysicalKey.Glowing", "none"));
+        final String name = index.getString("Name", "");
+        final String customModelData = index.getString("Custom-Model-Data", "");
+        final String namespace = index.getString("Model.Namespace", "");
+        final String id = index.getString("Model.Id", "");
+        final List<String> lore = index.getStringList("Lore");
+
+        final ItemBuilder itemBuilder = ItemBuilder.from(index.getString("Item", "tripwire_hook").toLowerCase());
+
+        if (index.contains("Data")) {
+            itemBuilder.withBase64(index.getString("Data", ""));
+        }
+
+        final String rgb = index.getString("Settings.RGB", "");
+
+        final String color = index.getString("Settings.Color", "");
+
+        final String value = !color.isEmpty() ? color : !rgb.isEmpty() ? rgb : "";
+
+        itemBuilder.setColor(value);
+
+        ItemUtil.addGlow(itemBuilder, index.getString("Glowing", "none"));
 
         ItemUtil.addItemModel(itemBuilder, namespace, id);
         ItemUtil.addCustomModel(itemBuilder, customModelData);
 
-        return itemBuilder.withDisplayName(name).withDisplayLore(lore).hideComponents(section.getStringList("flags.components"));
+        return itemBuilder.withDisplayName(name).withDisplayLore(lore).hideComponents(index.getStringList("flags.components"));
     }
 
     // Cleans the data file.

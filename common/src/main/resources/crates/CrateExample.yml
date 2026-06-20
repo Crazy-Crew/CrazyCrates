@@ -221,6 +221,11 @@ Crate:
     # Should the item glow?
     # Available Types: add_glow, remove_glow, none
     Glowing: "add_glow"
+    # Settings related to item flags.
+    flags:
+      # A list of components to hide on the key! I've linked a more detailed explanation below!
+      # https://docs.crazycrew.us/mods/crazycrates/faq/#2-hideitemflags-no-longer-works-what-do-i-use-now
+      components: []
   # Settings for the holograms.
   Hologram:
     # Toggle on and off the holograms for the crates.
