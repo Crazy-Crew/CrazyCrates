@@ -54,10 +54,7 @@ public class CratePlatform extends CratesPlugin {
 
         post();
 
-        this.fusion.log(Level.INFO, "Done ({time})!", Map.of(
-                "{time}",
-                "%.3fs".formatted((double) (System.nanoTime() - this.time) / 1.0E9D))
-        );
+        this.fusion.log(Level.INFO, "Done (%s)!", "%.3fs".formatted((double) (System.nanoTime() - this.time) / 1.0E9D));
     }
 
     @Override

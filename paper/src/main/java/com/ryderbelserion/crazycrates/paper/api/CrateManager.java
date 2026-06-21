@@ -5,30 +5,28 @@ import com.ryderbelserion.crazycrates.paper.api.objects.crate.Crate;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class CrateManager {
+@NullMarked
+public final class CrateManager {
 
     private final FileManager fileManager;
     private final CratePlatform platform;
 
-    private final CrazyCrates plugin;
-
     private final FusionPaper fusion;
 
-    private final Map<String, Crate> crates = new HashMap<>();
-
-    public CrateManager(@NotNull final CrazyCrates plugin) {
-        this.plugin = plugin;
-
-        this.platform = this.plugin.getPlatform();
+    public CrateManager(final CrazyCrates plugin) {
+        this.platform = plugin.getPlatform();
 
         this.fileManager = this.platform.getFileManager();
         this.fusion = this.platform.getFusion();
     }
+
+    private final Map<String, Crate> crates = new ConcurrentHashMap<>();
 
     public void load() {
         final Path folder = this.platform.getCratesPath();
@@ -42,7 +40,9 @@ public class CrateManager {
                 continue;
             }
 
-            final CommentedConfigurationNode configuration = optional.get().getConfiguration();
+            final YamlCustomFile customFile = optional.get();
+
+            final CommentedConfigurationNode configuration = customFile.getConfiguration();
 
             if (!configuration.hasChild("crate")) {
                 continue;
@@ -50,23 +50,19 @@ public class CrateManager {
 
             final CommentedConfigurationNode child = configuration.node("crate");
 
-            final String cleanName = strip(path, ".yml");
+            final String name = customFile.getPrettyName();
 
-            final Crate crate = new Crate(child, cleanName);
+            final Crate crate = new Crate(child, name);
 
-            this.crates.put(cleanName, crate);
+            this.crates.put(name, crate);
         }
     }
 
-    public String strip(@NotNull final Path path, @NotNull final String extension) {
-        return path.getFileName().toString().replace(extension, "");
-    }
-
-    public @NotNull final Optional<Crate> getCrate(@NotNull final String name) {
+    public Optional<Crate> getCrate(final String name) {
         return Optional.ofNullable(this.crates.get(name));
     }
 
-    public @NotNull final Map<String, Crate> getCrates() {
+    public Map<String, Crate> getCrates() {
         return Collections.unmodifiableMap(this.crates);
     }
 }

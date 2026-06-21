@@ -16,14 +16,10 @@ public class PrizeManager {
     private final FileManager fileManager;
     private final CratePlatform platform;
 
-    private final CrazyCrates plugin;
-
     private final FusionPaper fusion;
 
     public PrizeManager(@NotNull final CrazyCrates plugin) {
-        this.plugin = plugin;
-
-        this.platform = this.plugin.getPlatform();
+        this.platform = plugin.getPlatform();
 
         this.fileManager = this.platform.getFileManager();
         this.fusion = this.platform.getFusion();
@@ -43,20 +39,18 @@ public class PrizeManager {
                 continue;
             }
 
-            final CommentedConfigurationNode configuration = optional.get().getConfiguration();
+            final YamlCustomFile customFile = optional.get();
+
+            final CommentedConfigurationNode configuration = customFile.getConfiguration();
 
             if (!configuration.hasChild("crate")) {
                 continue;
             }
 
-            final String cleanName = strip(path, ".yml");
+            final String name = customFile.getPrettyName();
 
-            this.prizes.put(cleanName, new Prize(configuration, cleanName));
+            this.prizes.put(name, new Prize(configuration, name));
         }
-    }
-
-    public String strip(@NotNull final Path path, @NotNull final String extension) {
-        return path.getFileName().toString().replace(extension, "");
     }
 
     public @NotNull final Optional<Prize> getPrize(@NotNull final String name) {

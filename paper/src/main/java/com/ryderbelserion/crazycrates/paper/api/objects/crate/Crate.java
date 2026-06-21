@@ -39,21 +39,25 @@ public class Crate {
 
     private final String crateName;
 
-    public Crate(@NotNull final CommentedConfigurationNode configuration, @NotNull final String crateName) {
-        this.crateType = CrateType.getFromName(configuration.node("type").getString("CSGO"));
+    private final CrateGui gui;
 
-        final CommentedConfigurationNode sound = configuration.node("sound");
+    public Crate(@NotNull final CommentedConfigurationNode configuration, @NotNull final String crateName) {
+        this.configuration = configuration;
+
+        this.crateType = CrateType.getFromName(this.configuration.node("type").getString("CSGO"));
+
+        final CommentedConfigurationNode sound = this.configuration.node("sound");
 
         this.sounds.put("cycle", new CrateSound(sound.node("cycle-sound")));
         this.sounds.put("click", new CrateSound(sound.node("click-sound")));
         this.sounds.put("stop", new CrateSound(sound.node("stop-sound")));
 
-        this.displayItem = new DisplayItem(configuration.node("display"));
+        this.displayItem = new DisplayItem(this.configuration.node("display"));
 
-        final CommentedConfigurationNode prizes = configuration.node("prizes");
+        final CommentedConfigurationNode prizes = this.configuration.node("prizes");
 
         for (final Object key : prizes.childrenMap().keySet()) {
-            final CommentedConfigurationNode prize = configuration.node(key);
+            final CommentedConfigurationNode prize = prizes.node(key);
 
             final String name = key.toString();
 
@@ -63,7 +67,8 @@ public class Crate {
             ));
         }
 
-        this.configuration = configuration;
+        this.gui = new CrateGui(this, this.configuration.node("gui"));
+
         this.crateName = crateName;
     }
 
@@ -93,5 +98,9 @@ public class Crate {
 
     public @NotNull final String getCrateName() {
         return this.crateName;
+    }
+
+    public @NotNull final CrateGui getGui() {
+        return this.gui;
     }
 }

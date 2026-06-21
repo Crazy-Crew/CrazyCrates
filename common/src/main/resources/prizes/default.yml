@@ -1,30 +1,36 @@
-# Settings related to the crate i.e. things like previews
+# Settings related to the crate i.e. things like the display item.
 crate:
-  # Preview related settings i.e. the look of the item.
-  preview:
-    # The name of the item.
-    name: "<yellow>Do you have protection?"
-    # The lore of the item.
-    lore:
-      - "<gradient:#8fcfa0:#32a852>I'm wearing my armor!"
-    # The item material.
-    item: "enchanted_book"
-    # The list of enchantments.
-    enchantments:
-      - "protection:5"
-      - "unbreaking:3"
-    # The amount to display.
-    amount: 1
-    # Other preview settings.
-    settings:
-      # The item model, which replaces Custom Model Data indefinitely now.
-      # This is much preferred over direct integration with plugins. It is less likely to break.
-      # If you wish to disable this, set the fields to blank as they are by default.
-      model:
-        # The namespace i.e. nexo.
-        namespace: ""
-        # The id i.e. emerald_helmet.
-        id: ""
+  # Display related settings i.e. the look of the item.
+  display:
+    # If the prize should be enabled, or not.
+    enabled: true
+    # The slot of the item.
+    slot: -1
+    # The item configuration.
+    item:
+      # The item material.
+      material: "enchanted_book"
+      # The name of the item.
+      name: "<yellow>Do you have protection?"
+      # The lore of the item.
+      lore:
+        - "<gradient:#8fcfa0:#32a852>I'm wearing my armor!"
+      # The amount to display.
+      amount: 1
+      # The list of enchantments.
+      enchantments:
+        - "protection:5"
+        - "unbreaking:3"
+      # Other display settings.
+      settings:
+        # The item model, which replaces Custom Model Data indefinitely now.
+        # This is much preferred over direct integration with plugins. It is less likely to break.
+        # If you wish to disable this, set the fields to blank as they are by default.
+        model:
+          # The namespace i.e. nexo.
+          namespace: ""
+          # The id i.e. emerald_helmet.
+          id: ""
   # Broadcast a message to the server.
   broadcast:
     # If the messages should be sent.

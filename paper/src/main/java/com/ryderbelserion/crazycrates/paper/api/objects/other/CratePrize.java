@@ -31,7 +31,9 @@ public class CratePrize {
     private final String prizeName;
 
     public CratePrize(@NotNull final String prizeName, @NotNull final CommentedConfigurationNode configuration) {
-        final List<String> keys = StringUtils.getStringList(configuration.node("keys"));
+        final CommentedConfigurationNode prizes = configuration.node("keys");
+
+        final List<String> keys = StringUtils.getStringList(prizes);
 
         for (final String key : keys) {
             if (key.isBlank()) continue;
@@ -49,12 +51,12 @@ public class CratePrize {
         this.prizeName = prizeName;
     }
 
-    public @NotNull final String getPrizeName() {
-        return this.prizeName;
-    }
-
     public @NotNull final List<Prize> getKeys() {
         return Collections.unmodifiableList(this.keys);
+    }
+
+    public @NotNull final String getPrizeName() {
+        return this.prizeName;
     }
 
     public final int getBulkPulls() {

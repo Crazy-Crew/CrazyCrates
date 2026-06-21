@@ -1,8 +1,40 @@
-# The default crate example
+# The default crate example.
 crate:
-  # The crate type
+  # The crate type.
   type: "CSGO"
-  # The display item for /crates
+  # The sound settings.
+  sound:
+    # The click sound.
+    click-sound:
+      # Should we send a sound?
+      toggle: true
+      # The type of sound to play.
+      value: "ui.button.click"
+      # The sound volume.
+      volume: 1.0
+      # The sound pitch i.e. direction
+      pitch: 1.0
+    # The cycle sound during animation.
+    cycle-sound:
+      # Should we send a sound?
+      toggle: false
+      # The type of sound to play.
+      value: "ui.button.click"
+      # The sound volume.
+      volume: 1.0
+      # The sound pitch i.e. direction
+      pitch: 1.0
+    # The stop sound when an animation ends.
+    stop-sound:
+      # Should we send a sound?
+      toggle: false
+      # The type of sound to play.
+      value: "ui.button.click"
+      # The sound volume.
+      volume: 1.0
+      # The sound pitch i.e. direction
+      pitch: 1.0
+  # The display item for /crates.
   display:
     # Should the item be displayed in /crates?
     enabled: true

@@ -35,6 +35,10 @@ public class DisplayItem {
         gui.addSlotAction(this.slot, ItemUtils.convertNode(this.configuration.node("item")).asItemStack(player), action);
     }
 
+    public void addItem(@NotNull final Player player, @NotNull final SimpleGui gui) {
+        addItem(player, gui, _ -> {});
+    }
+
     public void addItem(@NotNull final Player player, @NotNull final PaginatedGui gui, @NotNull final GuiAction<InventoryClickEvent> action) {
         if (!this.isEnabled) {
             return;
@@ -46,6 +50,10 @@ public class DisplayItem {
             return;
         }
 
-        gui.setPageItem(this.slot, ItemUtils.convertNode(this.configuration.node("item")).asItemStack(player), action);
+        gui.addSlotAction(this.slot, ItemUtils.convertNode(this.configuration.node("item")).asItemStack(player), action);
+    }
+
+    public void addItem(@NotNull final Player player, @NotNull final PaginatedGui gui) {
+        addItem(player, gui, _ -> {});
     }
 }

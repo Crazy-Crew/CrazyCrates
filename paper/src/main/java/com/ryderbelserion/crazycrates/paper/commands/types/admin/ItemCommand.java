@@ -11,7 +11,6 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
-import com.ryderbelserion.fusion.mojang.enums.SuggestionType;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -26,25 +25,21 @@ public class ItemCommand extends CratesCommand {
 
     @Override
     public void run(@NotNull final PaperCommandContext context) {
-        final String name = context.getStringArgument("name");
+        context.getStringArgument("name").ifPresent(name -> {
+            final CommandContext<CommandSourceStack> source = context.getContext();
 
-        if (name.isBlank()) {
-            return;
-        }
+            final ItemStack itemStack = source.getArgument("item", ItemStack.class);
 
-        final CommandContext<CommandSourceStack> source = context.getContext();
+            if (itemStack == null || itemStack.isEmpty()) {
+                return;
+            }
 
-        final ItemStack itemStack = source.getArgument("item", ItemStack.class);
+            final JsonCustomFile customFile = FileKeys.items.getJsonCustomFile();
 
-        if (itemStack == null || itemStack.isEmpty()) {
-            return;
-        }
+            ConfigUtils.setValue(customFile.getConfiguration().node("items"), ItemUtils.toBase64(itemStack), name);
 
-        final JsonCustomFile customFile = FileKeys.items.getJsonCustomFile();
-
-        ConfigUtils.setValue(customFile.getConfiguration().node("items"), ItemUtils.toBase64(itemStack), name);
-
-        customFile.save();
+            customFile.save();
+        });
     }
 
     @Override
@@ -52,7 +47,7 @@ public class ItemCommand extends CratesCommand {
         final LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("item").requires(this::requirement);
 
         final RequiredArgumentBuilder<CommandSourceStack, String> arg1 = argument("name", StringArgumentType.string())
-                .suggests((ctx, builder) -> suggestArgument(builder, SuggestionType.STRING_SUGGESTION, "", 5, 0));
+                .suggests((_, builder) -> suggestStringArgument(builder, "", 5));
 
         final RequiredArgumentBuilder<CommandSourceStack, ItemStack> arg2 = argument("item", ArgumentTypes.itemStack())
                 .executes(context -> {

@@ -35,14 +35,14 @@ public class Prize {
     private final boolean isBroadcasting;
     private final String broadcastLine;
 
-    private final DisplayItem item;
+    private final DisplayItem displayItem;
 
     private final String prizeName;
 
     public Prize(@NotNull final CommentedConfigurationNode configuration, @NotNull final String prizeName) {
         final CommentedConfigurationNode crate = configuration.node("crate");
 
-        this.item = new DisplayItem(crate.node("preview"));
+        this.displayItem = new DisplayItem(crate.node("display"));
 
         final CommentedConfigurationNode broadcast = crate.node("broadcast");
 
@@ -94,7 +94,7 @@ public class Prize {
         return this.prizeName;
     }
 
-    public @NotNull final DisplayItem getItem() {
-        return this.item;
+    public @NotNull final DisplayItem getDisplayItem() {
+        return this.displayItem;
     }
 }

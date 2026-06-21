@@ -3,6 +3,7 @@ package com.ryderbelserion.crazycrates.paper.commands;
 import com.ryderbelserion.common.api.enums.keys.FileKeys;
 import com.ryderbelserion.crazycrates.paper.api.commands.CratesCommand;
 import com.ryderbelserion.crazycrates.paper.api.objects.crate.Crate;
+import com.ryderbelserion.crazycrates.paper.api.objects.crate.CrateGui;
 import com.ryderbelserion.crazycrates.paper.api.objects.items.DisplayItem;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
@@ -10,9 +11,11 @@ import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
 import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiState;
+import com.ryderbelserion.fusion.paper.builders.gui.types.paginated.PaginatedGui;
 import com.ryderbelserion.fusion.paper.builders.gui.types.simple.SimpleGui;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -42,12 +45,20 @@ public class BaseCommand extends CratesCommand {
         for (final Crate crate : crates) {
             final DisplayItem item = crate.getDisplayItem();
 
-            item.addItem(player, gui, event -> crate.getSound("click").ifPresent(sound -> sound.play(event.getWhoClicked())));
+            final CrateGui index = crate.getGui();
+
+            item.addItem(player, gui, event -> {
+                if (!(event.getWhoClicked() instanceof Player entity)) return;
+
+                crate.getSound("click").ifPresent(sound -> sound.play(entity));
+
+                index.getGui(player).open(entity);
+            });
         }
 
         gui.addState(GuiState.block_all_interactions);
 
-        gui.build(player);
+        gui.open(player);
     }
 
     @Override
