@@ -11,12 +11,12 @@ In order to ensure the stability of my sanity when handling this repository, and
 ## Beta Builds
 * All pull requests should be made to the `dev` branch.
 * All work should be done in a properly labeled branch.
-    * If you find you are fixing a bug, label the branch as beta-fix/bug_desc
-    * If you find you are adding a feature, label the branch as beta-feat/feat_desc and so on.
+  * If you find you are fixing a bug, label the branch as beta-fix/bug_desc
+  * If you find you are adding a feature, label the branch as beta-feat/feat_desc and so on.
 
 ## Alpha Builds
 * `alpha` branch is meant for changes that are not for production servers!
 * If you would like contribute, The work you do should be done in a properly labeled branch based on `alpha` branch.
-    * If you find you are fixing a bug, label the branch as alpha-fix/bug_desc
-    * If you find you are adding a feature, label the branch as alpha-feat/feat_desc and so on.
+  * If you find you are fixing a bug, label the branch as alpha-fix/bug_desc
+  * If you find you are adding a feature, label the branch as alpha-feat/feat_desc and so on.
 * The build workflow for `alpha` branches is triggered manually.

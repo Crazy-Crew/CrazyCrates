@@ -2,56 +2,54 @@
 
 ![CrazyCrates](https://raw.githubusercontent.com/Crazy-Crew/Branding/main/crazycrates/banner/webp/banner.webp)
 
-[![][build-shield]][build-url]
+[![][jenkins-shield]][jenkins-url]
 [![][discord-shield]][discord-url]
 [![][contributors-shield]][contributors-url]
 [![][forks-shield]][forks-url]
 [![][stars-shield]][stars-url]
 [![][issues-shield]][issues-url]
 [![][license-shield]][license-url]
-[![][codefactor-shield]][codefactor-url]
 
 </div></center>
 
-CrazyCrates is a crates plugin for Paper based servers that lets you add unlimited crates. It allows you to bring something to the server to spice up your economy and to give your players something to brag about.
+## Installation
+1) Download the update from modrinth/hangar for your version of Minecraft.
+2) You must be using at least https://papermc.io
+3) The file you downloaded goes in the `plugins` folder.
+4) Restart the server.
+5) Create new files in the `crates` folder, and look at the existing files in there to help figure out how to use the plugin.
+6) Test prizes using `/crazycrates debug <crate>`.
+7) View the documentation @ https://docs.crazycrew.us/mods/crazycrates/
 
-## Building
-CrazyCrates requires gradle 8.12 to build the plugin.
+## Quick Builds
+Get the latest builds for every commit!
+- https://ci.crazycrew.us/job/CrazyCrates/
 
-### Requirements
-* Java 21 JDK or newer
-* Knowledge of Git
+## Features
+- https://docs.crazycrew.us/mods/crazycrates/#current-features/
 
-### Compiling from source
-```sh
-git clone https://github.com/Crazy-Crew/CrazyCrates.git
-cd CrazyCrates
-./gradlew assemble
-```
-You'll find the jar in the `jars` folder.
+## Contributing
+- https://docs.crazycrew.us/mods/crazycrates/contributing/
 
-### Contributing
-#### Pull Requests
-If you have made any changes or improvements which you think could be beneficial to others, please make a pull request, so that the plugin can be improved for everyone using it. (we especially like bug fixes \o/).
+## Support
+All support for the plugin is provided on Discord! If a question cannot be answered on the wiki, The next best place is to ask it in the Discord.
 
-##### A list of pointers when editing existing classes
-* Copy the style of code in the class you are editing.
-* No extra lines at the end of files.
-* No extra lines between imports.
-* No wildcard imports.
+<!--[![Discord](https://discord.com/api/guilds/182615261403283459/widget.png?style=banner2)](https://discord.gg/badbones-s-live-chat-182615261403283459)<br>-->
+[![Discord Invite Button](https://cdn.jsdelivr.net/npm/@intergrav/devins-badges@3/assets/cozy/social/discord-plural_vector.svg)](https://discord.gg/badbones-s-live-chat-182615261403283459)
 
-#### Project Structure
-The project has been separated into multiple modules for preemptively supporting other platforms.
-* Api Module - This module is the API used by other plugins that wish to properly integrate with our plugin, and receive data from CrazyCrates for use in their own plugins. No implementation details are in this module.
-* Core Module - This module handles a small portion of the implementation for CrazyCrates, mainly the configuration files. and independent enums or utilities.
-  * The module does not yet handle implementation details for each platform.
-* Paper Module - This module currently is what provides the implementation for the `API Module`, I have not written an exact abstract module to sit between, and reduce more duplicated code between platforms.
-  * Pull Requests that attempt to implement the remaining work of an abstract layer for multi-platform support will likely be ignored, I would like to handle that when the time comes.
+## Data Collection
+We collect anonymous statistics on how the plugin is used at https://bstats.org/plugin/bukkit/CrazyCrates/4514 and is visible to the public.
+If you do not want this anonymous data sent, You currently have to go to the `bStats` folder, and set that to false.
 
-#### License
-CrazyCrates is a proud user of the MIT license, You can take a little peak at [LICENSE](https://github.com/Crazy-Crew/CrazyCrates/blob/master/LICENSE)
+<hr>
 
-[contributors-shield]: https://img.shields.io/github/contributors/Crazy-Crew/CrazyCrates.svg?style=flat&logo=appveyor
+## Apex Hosting (ad)
+We're sponsored by Apex Hosting, Click [here](https://billing.apexminecrafthosting.com/aff.php?aff=5511) to get 25% off your first purchase with the code `APEX25` at checkout for Minecraft servers, Satisfactory servers, and more!
+
+[jenkins-shield]: https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fci.crazycrew.us%2Fjob%2FCrazyCrates%2F&style=flat&logo=jenkins
+[jenkins-url]: https://ci.crazycrew.us/job/CrazyCrates/
+
+[contributors-shield]: https://img.shields.io/github/contributors-anon/Crazy-Crew/CrazyCrates.svg?style=flat&logo=appveyor
 [contributors-url]: https://github.com/Crazy-Crew/CrazyCrates/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/Crazy-Crew/CrazyCrates.svg?style=flat&logo=appveyor
 [forks-url]: https://github.com/Crazy-Crew/CrazyCrates/network/members
@@ -61,9 +59,5 @@ CrazyCrates is a proud user of the MIT license, You can take a little peak at [L
 [issues-url]: https://github.com/Crazy-Crew/CrazyCrates/issues
 [license-shield]: https://img.shields.io/github/license/Crazy-Crew/CrazyCrates.svg?style=flat&logo=appveyor
 [license-url]: https://github.com/Crazy-Crew/CrazyCrates/blob/main/LICENSE
-[build-shield]: https://ci.crazycrew.us/job/CrazyCrates//badge/icon
-[build-url]: https://ci.crazycrew.us/job/CrazyCrates
 [discord-shield]: https://img.shields.io/discord/182615261403283459.svg?label=discord&logo=discord
 [discord-url]: https://discord.gg/badbones-s-live-chat-182615261403283459
-[codefactor-shield]: https://www.codefactor.io/repository/github/crazy-crew/crazycrates/badge
-[codefactor-url]: https://www.codefactor.io/repository/github/crazy-crew/crazycrates

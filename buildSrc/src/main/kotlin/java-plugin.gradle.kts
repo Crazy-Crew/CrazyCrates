@@ -12,23 +12,21 @@ repositories {
     maven("https://repo.triumphteam.dev/snapshots/")
 
     maven("https://repo.crazycrew.us/libraries/")
-    maven("https://repo.crazycrew.us/snapshots/")
     maven("https://repo.crazycrew.us/releases/")
 
     maven("https://jitpack.io/")
 
     mavenCentral()
-    mavenLocal()
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 tasks {
     compileJava {
         options.encoding = Charsets.UTF_8.name()
-        options.release.set(21)
+        options.release.set(25)
     }
 
     processResources {
@@ -42,11 +40,14 @@ tasks {
             "description" to rootProject.description.toString(),
             "minecraft" to libs.findVersion("minecraft").get(),
             "website" to "https://github.com/${rootProject.property("repository_owner")}/${rootProject.name}",
-            "group" to project.group
+            "group" to project.group,
+
+            "current_commit" to rootProject.ext.get("current_commit").toString(),
+            "previous_commit" to rootProject.ext.get("previous_commit").toString(),
         )
 
         with(copySpec {
-            include("*paper-plugin.yml", "*plugin.yml")
+            include("*paper-plugin.yml", "*version.json")
 
             from("src/main/resources") {
                 expand(inputs.properties)

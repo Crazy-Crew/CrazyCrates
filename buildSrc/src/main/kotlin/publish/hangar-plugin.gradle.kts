@@ -1,4 +1,3 @@
-import gradle.kotlin.dsl.accessors._bc702d41505d332776c95ae061891e6e.ext
 import io.papermc.hangarpublishplugin.model.Platforms
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 
@@ -19,6 +18,8 @@ hangarPublish {
         changelog.set(rootProject.ext.get("mc_changelog").toString())
 
         channel.set(rootProject.ext.get("release_type").toString().uppercaseFirstChar())
+
+        pages.resourcePage(rootProject.file("README.md").readText(Charsets.UTF_8))
 
         platforms {
             register(Platforms.PAPER) {
@@ -44,6 +45,14 @@ hangarPublish {
                     }
 
                     url("ItemsAdder", "https://polymart.org/product/1851/itemsadder") {
+                        required = false
+                    }
+
+                    url("HMCWraps", "https://www.spigotmc.org/resources/%E2%9C%85-1-20-4-1-21-%E2%9C%A8-hmcwraps-%E2%9A%99%EF%B8%8F-custom-skins-colors-for-tools-and-armor-%E2%AD%95-nexo-itemsadder-ready.107099/") {
+                        required = false
+                    }
+
+                    url("CraftEngine", "https://modrinth.com/plugin/craftengine") {
                         required = false
                     }
 

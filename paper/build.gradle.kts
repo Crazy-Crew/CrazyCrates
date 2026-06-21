@@ -7,6 +7,10 @@ project.group = "${rootProject.group}.paper"
 repositories {
     maven("https://repo.fancyinnovations.com/releases/")
 
+    maven("https://repo.momirealms.net/releases/")
+
+    maven("https://repo.hibiscusmc.com/releases/")
+
     maven("https://repo.nexomc.com/releases/")
 
     maven("https://repo.oraxen.com/releases/")
@@ -15,10 +19,16 @@ repositories {
 dependencies {
     implementation(project(":common"))
 
+    implementation(libs.triumph.cmds)
+
     implementation(libs.fusion.paper)
+
+    implementation(libs.metrics)
 
     compileOnly(libs.bundles.holograms)
     compileOnly(libs.bundles.shared)
+    compileOnly(libs.bundles.crates)
+    compileOnly(libs.bundles.cmi)
 }
 
 tasks {
