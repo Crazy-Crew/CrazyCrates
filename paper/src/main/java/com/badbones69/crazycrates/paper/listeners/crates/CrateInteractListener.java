@@ -142,7 +142,7 @@ public class CrateInteractListener implements Listener {
         final KeyType keyType = isPhysical ? KeyType.physical_key : KeyType.virtual_key;
 
         if (!hasKey) {
-            lackingKey(player, crate, location, totalKeys, requiredKeys, Messages.feature_disabled);
+            lackingKey(player, crate, location, totalKeys, requiredKeys, Messages.not_enough_keys);
 
             key.setCancelled(true);
 
