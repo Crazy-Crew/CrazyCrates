@@ -1,8 +1,8 @@
-package com.badbones69.crazycrates.core;
+package com.badbones69.common;
 
 import com.badbones69.common.config.ConfigManager;
-import com.badbones69.crazycrates.core.impl.Settings;
-import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.badbones69.common.impl.Settings;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.KeyManager;
@@ -14,11 +14,11 @@ import java.util.List;
 
 public class Server implements IServer {
 
-    private final FusionPaper fusion;
+    private final FusionKyori fusion;
     private final Path path;
     private final Path crates;
 
-    public Server(@NotNull final FusionPaper fusion, @NotNull final Path path) {
+    public Server(@NotNull final FusionKyori fusion, @NotNull final Path path) {
         this.fusion = fusion;
         this.path = path;
         this.crates = this.path.resolve("crates");
