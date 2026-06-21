@@ -1,13 +1,11 @@
-package com.ryderbelserion.crazycrates.paper.api.objects.prize;
+package com.ryderbelserion.crazycrates.paper.api.objects.buttons;
 
 import com.ryderbelserion.crazycrates.paper.CrazyCrates;
 import com.ryderbelserion.crazycrates.paper.api.CratePlatform;
 import com.ryderbelserion.crazycrates.paper.api.enums.DisplayType;
 import com.ryderbelserion.crazycrates.paper.api.objects.items.DisplayItem;
-import com.ryderbelserion.crazycrates.paper.utils.ItemUtils;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -17,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Prize {
+public class Button {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
@@ -27,36 +25,20 @@ public class Prize {
 
     private final Server server = this.plugin.getServer();
 
-    private final List<ItemBuilder> items = new ArrayList<>();
-
     private final List<String> commands = new ArrayList<>();
     private final List<String> messages = new ArrayList<>();
 
-    private final String broadcastPermission;
-    private final boolean isBroadcasting;
-    private final String broadcastLine;
-
     private final DisplayItem displayItem;
 
-    private final String prizeName;
+    private int slot = -1;
 
-    public Prize(@NotNull final CommentedConfigurationNode configuration, @NotNull final String prizeName) {
-        final CommentedConfigurationNode crate = configuration.node("prize");
+    public Button(@NotNull final CommentedConfigurationNode configuration) {
+        final CommentedConfigurationNode crate = configuration.node("button");
 
-        this.displayItem = new DisplayItem(crate.node("display"), DisplayType.PRIZE);
-
-        final CommentedConfigurationNode broadcast = crate.node("broadcast");
-
-        this.broadcastPermission = broadcast.node("permission").getString("");
-        this.isBroadcasting = broadcast.node("enabled").getBoolean(false);
-        this.broadcastLine = broadcast.node("messages").getString("");
-
-        this.items.addAll(ItemUtils.convertNodes(configuration.node("items")));
+        this.displayItem = new DisplayItem(crate.node("display"), DisplayType.BUTTON);
 
         this.commands.addAll(StringUtils.getStringList(configuration.node("commands")));
         this.messages.addAll(StringUtils.getStringList(configuration.node("messages")));
-
-        this.prizeName = prizeName;
     }
 
     public void execute(@NotNull final Player player, @NotNull final Map<String, String> placeholders) {
@@ -75,27 +57,15 @@ public class Prize {
         }
     }
 
-    public void broadcast(@NotNull final Player player, @NotNull final Map<String, String> placeholders) {
-        if (!this.isBroadcasting || this.broadcastLine.isBlank()) return;
-
-        if (this.broadcastPermission.isBlank()) {
-            this.server.broadcast(this.fusion.asComponent(player, this.broadcastLine, placeholders));
-
-            return;
-        }
-
-        this.server.broadcast(this.fusion.asComponent(player, this.broadcastLine, placeholders), this.broadcastPermission);
-    }
-
-    public @NotNull final List<ItemBuilder> getItems() {
-        return this.items;
-    }
-
     public @NotNull final DisplayItem getDisplayItem() {
         return this.displayItem;
     }
 
-    public @NotNull final String getPrizeName() {
-        return this.prizeName;
+    public void setSlot(final int slot) {
+        this.slot = slot;
+    }
+
+    public final int getSlot() {
+        return this.slot;
     }
 }

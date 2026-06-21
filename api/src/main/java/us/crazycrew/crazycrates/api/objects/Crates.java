@@ -23,6 +23,22 @@ public abstract class Crates {
         return getDataPath().resolve("crates");
     }
 
+    /**
+     * Gets the buttons path.
+     *
+     * @return {@link Path}
+     * @since 1.0.0
+     */
+    public @NotNull Path getButtonsPath() {
+        return getDataPath().resolve("buttons");
+    }
+
+    /**
+     * Gets the prizes path.
+     *
+     * @return {@link Path}
+     * @since 1.0.0
+     */
     public @NotNull Path getPrizesPath() {
         return getDataPath().resolve("prizes");
     }

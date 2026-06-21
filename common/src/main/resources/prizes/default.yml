@@ -1,11 +1,9 @@
 # Settings related to the crate i.e. things like the display item.
-crate:
+prize:
   # Display related settings i.e. the look of the item.
   display:
     # If the prize should be enabled, or not.
     enabled: true
-    # The slot of the item.
-    slot: -1
     # The item configuration.
     item:
       # The item material.

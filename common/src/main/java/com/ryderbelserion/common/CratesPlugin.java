@@ -36,7 +36,8 @@ public abstract class CratesPlugin extends Crates {
 
         this.fileManager.addFolder(this.path.resolve("crates"), FileType.YAML)
                 .addFolder(this.path.resolve("guis"), FileType.YAML)
-                .addFolder(this.path.resolve("prizes"), FileType.YAML);
+                .addFolder(this.path.resolve("prizes"), FileType.YAML)
+                .addFolder(this.path.resolve("buttons"), FileType.YAML);
 
         List.of(
                 FileKeys.crate_menu,
@@ -55,7 +56,8 @@ public abstract class CratesPlugin extends Crates {
     @Override
     public void reload() {
         this.fileManager.refresh(false).addFolder(this.path.resolve("crates"), FileType.YAML)
-                .addFolder(this.path.resolve("prizes"), FileType.YAML);
+                .addFolder(this.path.resolve("prizes"), FileType.YAML)
+                .addFolder(this.path.resolve("buttons"), FileType.YAML);
     }
 
     @Override

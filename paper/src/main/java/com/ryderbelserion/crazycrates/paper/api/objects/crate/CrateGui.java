@@ -1,6 +1,7 @@
 package com.ryderbelserion.crazycrates.paper.api.objects.crate;
 
 import com.ryderbelserion.crazycrates.paper.CrazyCrates;
+import com.ryderbelserion.crazycrates.paper.api.objects.buttons.Button;
 import com.ryderbelserion.crazycrates.paper.api.objects.other.CratePrize;
 import com.ryderbelserion.crazycrates.paper.api.objects.prize.Prize;
 import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiState;
@@ -10,6 +11,7 @@ import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @NullMarked
 public final class CrateGui {
@@ -33,6 +35,16 @@ public final class CrateGui {
                 this.name,
                 this.rows
         );
+
+        final Collection<Button> buttons = this.crate.getButtons().values();
+
+        final Map<String, String> placeholders = Map.of(
+                "{player}", entity.getName()
+        );
+
+        for (final Button button : buttons) {
+            button.getDisplayItem().setSlot(button.getSlot()).addItem(entity, gui, _ -> button.execute(entity, placeholders));
+        }
 
         final Collection<CratePrize> values = this.crate.getPrizes().values();
 

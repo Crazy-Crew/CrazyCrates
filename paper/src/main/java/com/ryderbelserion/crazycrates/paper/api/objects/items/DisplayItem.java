@@ -1,5 +1,6 @@
 package com.ryderbelserion.crazycrates.paper.api.objects.items;
 
+import com.ryderbelserion.crazycrates.paper.api.enums.DisplayType;
 import com.ryderbelserion.crazycrates.paper.utils.ItemUtils;
 import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiAction;
 import com.ryderbelserion.fusion.paper.builders.gui.objects.GuiItem;
@@ -13,13 +14,15 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 public class DisplayItem {
 
     private final CommentedConfigurationNode configuration;
+    private final DisplayType displayType;
     private final boolean isEnabled;
-    private final int slot;
+    private int slot;
 
-    public DisplayItem(@NotNull final CommentedConfigurationNode configuration) {
+    public DisplayItem(@NotNull final CommentedConfigurationNode configuration, @NotNull final DisplayType displayType) {
         this.isEnabled = configuration.node("enabled").getBoolean(true);
         this.slot = configuration.node("slot").getInt(-1);
 
+        this.displayType = displayType;
         this.configuration = configuration;
     }
 
@@ -28,7 +31,7 @@ public class DisplayItem {
             return;
         }
 
-        if (this.slot == -1) {
+        if (this.displayType == DisplayType.PRIZE) {
             return;
         }
 
@@ -44,7 +47,7 @@ public class DisplayItem {
             return;
         }
 
-        if (this.slot == -1) {
+        if (this.displayType == DisplayType.PRIZE) {
             gui.addPageItem(new GuiItem(ItemUtils.convertNode(this.configuration.node("item")).asItemStack(player), action));
 
             return;
@@ -55,5 +58,11 @@ public class DisplayItem {
 
     public void addItem(@NotNull final Player player, @NotNull final PaginatedGui gui) {
         addItem(player, gui, _ -> {});
+    }
+
+    public DisplayItem setSlot(final int slot) {
+        this.slot = slot;
+
+        return this;
     }
 }

@@ -2,6 +2,7 @@ package com.ryderbelserion.crazycrates.paper.api;
 
 import com.ryderbelserion.common.CratesPlugin;
 import com.ryderbelserion.crazycrates.paper.CrazyCrates;
+import com.ryderbelserion.crazycrates.paper.api.managers.ButtonManager;
 import com.ryderbelserion.crazycrates.paper.api.managers.ItemManager;
 import com.ryderbelserion.crazycrates.paper.api.managers.PrizeManager;
 import com.ryderbelserion.crazycrates.paper.commands.BaseCommand;
@@ -18,7 +19,6 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
-import java.util.Map;
 
 public class CratePlatform extends CratesPlugin {
 
@@ -35,6 +35,7 @@ public class CratePlatform extends CratesPlugin {
         this.time = System.nanoTime();
     }
 
+    private ButtonManager buttonManager;
     private CrateManager crateManager;
     private PrizeManager prizeManager;
     private ItemManager itemManager;
@@ -45,6 +46,9 @@ public class CratePlatform extends CratesPlugin {
 
         this.itemManager = new ItemManager(this.plugin);
         this.itemManager.load();
+
+        this.buttonManager = new ButtonManager(this.plugin);
+        this.buttonManager.load();
 
         this.prizeManager = new PrizeManager(this.plugin);
         this.prizeManager.load();
@@ -89,6 +93,10 @@ public class CratePlatform extends CratesPlugin {
         this.prizeManager.load();
 
         this.crateManager.load();
+    }
+
+    public @NotNull final ButtonManager getButtonManager() {
+        return this.buttonManager;
     }
 
     public @NotNull final CrateManager getCrateManager() {
