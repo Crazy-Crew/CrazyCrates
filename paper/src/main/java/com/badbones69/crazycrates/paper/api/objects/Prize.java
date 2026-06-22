@@ -1,14 +1,11 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
-import ch.jalu.configme.SettingsManager;
-import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.badbones69.common.config.ConfigManager;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
@@ -39,8 +36,6 @@ public class Prize {
     private final FusionPaper fusion = this.plugin.getFusion();
 
     private final ComponentLogger logger = this.plugin.getComponentLogger();
-
-    private final SettingsManager config = ConfigManager.getConfig();
 
     private final ConfigurationSection section;
     private final List<ItemBuilder> items;
@@ -165,7 +160,7 @@ public class Prize {
     /**
      * @return the display item that is shown for the preview and the winning prize.
      */
-    public @NotNull final ItemStack getDisplayItem(@Nullable final Audience audience, @NotNull final Crate crate) {
+    public @NotNull final ItemStack getDisplayItem(@NotNull final Audience audience, @NotNull final Crate crate) {
         final int pulls = PrizeManager.getCurrentPulls(this, crate);
         final int maxPulls = getMaxPulls();
         final String amount = String.valueOf(pulls);
