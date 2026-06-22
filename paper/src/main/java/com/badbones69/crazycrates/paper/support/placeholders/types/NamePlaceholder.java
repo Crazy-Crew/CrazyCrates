@@ -6,6 +6,7 @@ import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.items.PlayerBuilder;
+import org.bukkit.entity.Player;
 import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
 import java.util.Optional;
@@ -19,6 +20,12 @@ public final class NamePlaceholder implements AbstractPlaceholder {
     private final FusionPaper fusion = this.plugin.getFusion();
 
     private final UserManager userManager = this.plugin.getUserManager();
+
+    private final Player player;
+
+    public NamePlaceholder(@NonNull final Player player) {
+        this.player = player;
+    }
 
     @Override
     public @NonNull Optional<String> get(@NonNull final String placeholder) {
@@ -37,16 +44,19 @@ public final class NamePlaceholder implements AbstractPlaceholder {
                 return Optional.empty();
             }
 
-            final String playerName = splitter[0];
+            final String name = this.player.getName();
 
-            final PlayerBuilder playerBuilder = new PlayerBuilder(playerName);
+            String playerName = splitter[0];
 
-            final AtomicReference<UUID> atomic = new AtomicReference<>();
+            final AtomicReference<UUID> atomic = new AtomicReference<>(this.player.getUniqueId());
 
-            playerBuilder.getPlayer()
-                    .ifPresentOrElse(target -> atomic.set(target.getUniqueId()),
-                            () -> playerBuilder.getOfflinePlayer()
-                                    .ifPresent(target -> atomic.set(target.getUniqueId())));
+            if (!playerName.equals(name)) {
+                final PlayerBuilder playerBuilder = new PlayerBuilder(playerName);
+
+                playerBuilder.getPlayer().ifPresentOrElse(target -> atomic.set(target.getUniqueId()), () -> playerBuilder.getOfflinePlayer().ifPresent(target -> atomic.set(target.getUniqueId())));
+            } else {
+                playerName = name;
+            }
 
             final UUID uuid = atomic.get();
 

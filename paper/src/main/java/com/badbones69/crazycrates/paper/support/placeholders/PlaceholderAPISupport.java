@@ -32,7 +32,7 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
             }
         }
 
-        return new SimplePlaceholder(uuid).get(placeholder).orElseGet(() -> new NamePlaceholder().get(placeholder).orElse("N/A"));
+        return new SimplePlaceholder(uuid).get(placeholder).orElseGet(() -> new NamePlaceholder(player).get(placeholder).orElse("N/A"));
     }
     
     @Override
