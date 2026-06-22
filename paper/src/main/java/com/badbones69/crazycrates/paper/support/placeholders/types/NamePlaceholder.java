@@ -36,7 +36,7 @@ public final class NamePlaceholder implements AbstractPlaceholder {
         }
 
         try {
-            final String reference = placeholder.substring(0, placeholder.lastIndexOf("_"));
+            String reference = placeholder;
 
             final String[] splitter = reference.split("_");
 
@@ -49,6 +49,14 @@ public final class NamePlaceholder implements AbstractPlaceholder {
             String playerName = splitter[0];
 
             final AtomicReference<UUID> atomic = new AtomicReference<>(this.player.getUniqueId());
+
+            if (playerName.equalsIgnoreCase("{player}")) {
+                playerName = this.fusion.papi(this.player, playerName
+                        .replace("{", "%")
+                        .replace("}", "_name%"));
+
+                reference = reference.replace("{player}", playerName);
+            }
 
             if (!playerName.equals(name)) {
                 final PlayerBuilder playerBuilder = new PlayerBuilder(playerName);
@@ -64,11 +72,11 @@ public final class NamePlaceholder implements AbstractPlaceholder {
                 return Optional.empty();
             }
 
-            if (placeholder.equalsIgnoreCase("%s_opened_raw".formatted(playerName))) {
+            if (reference.equalsIgnoreCase("%s_opened_raw".formatted(playerName))) {
                 return Optional.of(String.valueOf(this.userManager.getTotalCratesOpened(uuid)));
             }
 
-            if (placeholder.equalsIgnoreCase("%s_opened".formatted(playerName))) {
+            if (reference.equalsIgnoreCase("%s_opened".formatted(playerName))) {
                 return Optional.of(StringUtils.formatNumber(this.userManager.getTotalCratesOpened(uuid)));
             }
 
@@ -78,35 +86,35 @@ public final class NamePlaceholder implements AbstractPlaceholder {
 
             final String crateName = splitter[1];
 
-            if (placeholder.equalsIgnoreCase("%s_%s_opened_raw".formatted(playerName, crateName))) {
+            if (reference.equalsIgnoreCase("%s_%s_opened_raw".formatted(playerName, crateName))) {
                 return Optional.of(String.valueOf(this.userManager.getCrateOpened(uuid, crateName)));
             }
 
-            if (placeholder.equalsIgnoreCase("%s_%s_opened".formatted(playerName, crateName))) {
+            if (reference.equalsIgnoreCase("%s_%s_opened".formatted(playerName, crateName))) {
                 return Optional.of(StringUtils.formatNumber(this.userManager.getCrateOpened(uuid, crateName)));
             }
 
-            if (placeholder.equalsIgnoreCase("%s_%s_physical_raw".formatted(playerName, crateName))) {
+            if (reference.equalsIgnoreCase("%s_%s_physical_raw".formatted(playerName, crateName))) {
                 return Optional.of(String.valueOf(this.userManager.getPhysicalKeys(uuid, crateName)));
             }
 
-            if (placeholder.equalsIgnoreCase("%s_%s_physical".formatted(playerName, crateName))) {
+            if (reference.equalsIgnoreCase("%s_%s_physical".formatted(playerName, crateName))) {
                 return Optional.of(StringUtils.formatNumber(this.userManager.getPhysicalKeys(uuid, crateName)));
             }
 
-            if (placeholder.equalsIgnoreCase("%s_%s_virtual_raw".formatted(playerName, crateName))) {
+            if (reference.equalsIgnoreCase("%s_%s_virtual_raw".formatted(playerName, crateName))) {
                 return Optional.of(String.valueOf(this.userManager.getVirtualKeys(uuid, crateName)));
             }
 
-            if (placeholder.equalsIgnoreCase("%s_%s_virtual".formatted(playerName, crateName))) {
+            if (reference.equalsIgnoreCase("%s_%s_virtual".formatted(playerName, crateName))) {
                 return Optional.of(StringUtils.formatNumber(this.userManager.getVirtualKeys(uuid, crateName)));
             }
 
-            if (placeholder.equalsIgnoreCase("%s_%s_total_raw".formatted(playerName, crateName))) {
+            if (reference.equalsIgnoreCase("%s_%s_total_raw".formatted(playerName, crateName))) {
                 return Optional.of(String.valueOf(this.userManager.getTotalKeys(uuid, crateName)));
             }
 
-            if (placeholder.equalsIgnoreCase("%s_%s_total".formatted(playerName, crateName))) {
+            if (reference.equalsIgnoreCase("%s_%s_total".formatted(playerName, crateName))) {
                 return Optional.of(StringUtils.formatNumber(this.userManager.getTotalKeys(uuid, crateName)));
             }
 
