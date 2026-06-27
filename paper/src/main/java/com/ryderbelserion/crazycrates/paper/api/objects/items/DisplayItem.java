@@ -11,12 +11,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 
-public class DisplayItem {
+public final class DisplayItem {
 
     private final CommentedConfigurationNode configuration;
     private final DisplayType displayType;
     private final boolean isEnabled;
-    private int slot;
+    private final int slot;
 
     public DisplayItem(@NotNull final CommentedConfigurationNode configuration, @NotNull final DisplayType displayType) {
         this.isEnabled = configuration.node("enabled").getBoolean(true);
@@ -26,7 +26,7 @@ public class DisplayItem {
         this.configuration = configuration;
     }
 
-    public void addItem(@NotNull final Player player, @NotNull final SimpleGui gui, @NotNull final GuiAction<InventoryClickEvent> action) {
+    public void addItem(@NotNull final Player player, @NotNull final SimpleGui gui, final int slot, @NotNull final GuiAction<InventoryClickEvent> action) {
         if (!this.isEnabled) {
             return;
         }
@@ -35,14 +35,14 @@ public class DisplayItem {
             return;
         }
 
-        gui.addSlotAction(this.slot, ItemUtils.convertNode(this.configuration.node("item")).asItemStack(player), action);
+        gui.addSlotAction(slot, ItemUtils.convertNode(this.configuration.node("item")).asItemStack(player), action);
     }
 
-    public void addItem(@NotNull final Player player, @NotNull final SimpleGui gui) {
-        addItem(player, gui, _ -> {});
+    public void addItem(@NotNull final Player player, @NotNull final SimpleGui gui, final int slot) {
+        addItem(player, gui, slot, _ -> {});
     }
 
-    public void addItem(@NotNull final Player player, @NotNull final PaginatedGui gui, @NotNull final GuiAction<InventoryClickEvent> action) {
+    public void addItem(@NotNull final Player player, @NotNull final PaginatedGui gui, final int slot, @NotNull final GuiAction<InventoryClickEvent> action) {
         if (!this.isEnabled) {
             return;
         }
@@ -53,16 +53,14 @@ public class DisplayItem {
             return;
         }
 
-        gui.addSlotAction(this.slot, ItemUtils.convertNode(this.configuration.node("item")).asItemStack(player), action);
+        gui.addSlotAction(slot, ItemUtils.convertNode(this.configuration.node("item")).asItemStack(player), action);
     }
 
-    public void addItem(@NotNull final Player player, @NotNull final PaginatedGui gui) {
-        addItem(player, gui, _ -> {});
+    public void addItem(@NotNull final Player player, @NotNull final PaginatedGui gui, final int slot) {
+        addItem(player, gui, slot, _ -> {});
     }
 
-    public DisplayItem setSlot(final int slot) {
-        this.slot = slot;
-
-        return this;
+    public int getSlot() {
+        return this.slot;
     }
 }

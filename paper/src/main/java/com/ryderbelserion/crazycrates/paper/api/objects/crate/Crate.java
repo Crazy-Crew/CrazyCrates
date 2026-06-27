@@ -35,7 +35,7 @@ public class Crate {
 
     private final Map<String, CrateSound> sounds = new HashMap<>();
     private final Map<String, CratePrize> prizes = new HashMap<>();
-    private final Map<String, Button> buttons = new HashMap<>();
+    private final Map<String, CrateButton> buttons = new HashMap<>();
 
     private final CommentedConfigurationNode configuration;
 
@@ -69,15 +69,15 @@ public class Crate {
 
             if (buttonKey.isBlank()) continue;
 
-            final @NotNull Optional<Button> index = this.buttonManager.getButton(buttonKey);
+            final int slot = node.node("slot").getInt(-1);
+
+            if (slot < 0) continue;
+
+            final Optional<Button> index = this.buttonManager.getButton(buttonKey);
 
             if (index.isEmpty()) continue;
 
-            final Button button = index.get();
-
-            button.setSlot(node.node("slot").getInt(-1)); //todo() this is storing the last slot 26 as the slot for everything.
-
-            this.buttons.put(key.toString(), button);
+            this.buttons.put(key.toString(), new CrateButton(index.get(), slot));
         }
 
         final CommentedConfigurationNode prizes = this.configuration.node("prizes");
@@ -106,7 +106,7 @@ public class Crate {
         return Optional.ofNullable(this.prizes.get(type));
     }
 
-    public final Optional<Button> getButton(@NotNull final String type) {
+    public final Optional<CrateButton> getButton(@NotNull final String type) {
         return Optional.ofNullable(this.buttons.get(type));
     }
 
@@ -114,7 +114,7 @@ public class Crate {
         return Collections.unmodifiableMap(this.prizes);
     }
 
-    public @NotNull final Map<String, Button> getButtons() {
+    public @NotNull final Map<String, CrateButton> getButtons() {
         return Collections.unmodifiableMap(this.buttons);
     }
 

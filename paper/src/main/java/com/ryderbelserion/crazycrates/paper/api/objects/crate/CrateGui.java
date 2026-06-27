@@ -36,14 +36,16 @@ public final class CrateGui {
                 this.rows
         );
 
-        final Collection<Button> buttons = this.crate.getButtons().values();
+        final Collection<CrateButton> buttons = this.crate.getButtons().values();
 
         final Map<String, String> placeholders = Map.of(
                 "{player}", entity.getName()
         );
 
-        for (final Button button : buttons) {
-            button.getDisplayItem().setSlot(button.getSlot()).addItem(entity, gui, _ -> button.execute(entity, placeholders));
+        for (final CrateButton crateButton : buttons) {
+            final Button button = crateButton.getButton();
+
+            button.getDisplayItem().addItem(entity, gui, crateButton.getSlot(), _ -> button.execute(entity, placeholders));
         }
 
         final Collection<CratePrize> values = this.crate.getPrizes().values();
@@ -52,7 +54,7 @@ public final class CrateGui {
             final List<Prize> prizes = value.getKeys();
 
             for (final Prize prize : prizes) {
-                prize.getDisplayItem().addItem(entity, gui);
+                prize.getDisplayItem().addItem(entity, gui, -1);
             }
         }
 

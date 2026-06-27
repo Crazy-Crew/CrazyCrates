@@ -5,23 +5,17 @@ import com.ryderbelserion.crazycrates.paper.api.CratePlatform;
 import com.ryderbelserion.crazycrates.paper.api.managers.PrizeManager;
 import com.ryderbelserion.crazycrates.paper.api.objects.prize.Prize;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
-import com.ryderbelserion.fusion.paper.FusionPaper;
-import org.bukkit.Server;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.*;
 
-public class CratePrize {
+public final class CratePrize {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CratePlatform platform = this.plugin.getPlatform();
 
     private final PrizeManager prizeManager = this.platform.getPrizeManager();
-
-    private final FusionPaper fusion = this.platform.getFusion();
-
-    private final Server server = this.plugin.getServer();
 
     private final List<Prize> keys = new ArrayList<>();
 
@@ -55,15 +49,15 @@ public class CratePrize {
         return Collections.unmodifiableList(this.keys);
     }
 
-    public @NotNull final String getPrizeName() {
+    public @NotNull String getPrizeName() {
         return this.prizeName;
     }
 
-    public final int getBulkPulls() {
+    public int getBulkPulls() {
         return this.bulkPulls;
     }
 
-    public final double getWeight() {
+    public double getWeight() {
         return this.weight;
     }
 }

@@ -11,11 +11,9 @@ import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
 import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiState;
-import com.ryderbelserion.fusion.paper.builders.gui.types.paginated.PaginatedGui;
 import com.ryderbelserion.fusion.paper.builders.gui.types.simple.SimpleGui;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -47,7 +45,7 @@ public class BaseCommand extends CratesCommand {
 
             final CrateGui index = crate.getGui();
 
-            item.addItem(player, gui, event -> {
+            item.addItem(player, gui, item.getSlot(), event -> {
                 if (!(event.getWhoClicked() instanceof Player entity)) return;
 
                 crate.getSound("click").ifPresent(sound -> sound.play(entity));

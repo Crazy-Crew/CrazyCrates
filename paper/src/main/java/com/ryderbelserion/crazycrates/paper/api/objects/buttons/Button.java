@@ -30,8 +30,6 @@ public class Button {
 
     private final DisplayItem displayItem;
 
-    private int slot = -1;
-
     public Button(@NotNull final CommentedConfigurationNode configuration) {
         final CommentedConfigurationNode crate = configuration.node("button");
 
@@ -59,13 +57,5 @@ public class Button {
 
     public @NotNull final DisplayItem getDisplayItem() {
         return this.displayItem;
-    }
-
-    public void setSlot(final int slot) {
-        this.slot = slot;
-    }
-
-    public final int getSlot() {
-        return this.slot;
     }
 }
