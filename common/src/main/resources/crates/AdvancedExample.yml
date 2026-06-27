@@ -249,7 +249,7 @@ Crate:
           # The name of the item.
           name: "<bold><dark_red>Warlord's Chestplate</bold>"
           # The item material.
-          material: "netherite_chestsplate"
+          material: "netherite_chestplate"
           # The amount of the item to give.
           amount: 1
           # Per item settings.
