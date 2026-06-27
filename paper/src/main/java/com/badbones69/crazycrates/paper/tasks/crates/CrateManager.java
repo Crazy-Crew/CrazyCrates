@@ -374,6 +374,7 @@ public class CrateManager {
             this.fileManager.extractFolder("logs", FileType.YAML, examples);
             this.fileManager.extractFolder("crates", FileType.YAML, examples);
             this.fileManager.extractFolder("schematics", FileType.NBT, examples);
+            this.fileManager.extractFolder("buttons", FileType.YAML, examples);
 
             List.of(
                     "config.yml",

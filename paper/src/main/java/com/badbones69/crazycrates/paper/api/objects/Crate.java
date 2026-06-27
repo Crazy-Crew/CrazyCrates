@@ -1,6 +1,9 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
 import com.badbones69.crazycrates.paper.api.PrizeManager;
+import com.badbones69.crazycrates.paper.api.objects.buttons.Button;
+import com.badbones69.crazycrates.paper.api.objects.crates.CrateButton;
+import com.badbones69.crazycrates.paper.managers.ButtonManager;
 import com.badbones69.crazycrates.paper.tasks.menus.CratePreviewMenu;
 import com.badbones69.crazycrates.paper.tasks.menus.CrateTierMenu;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateHologram;
@@ -39,11 +42,21 @@ import org.bukkit.inventory.ItemStack;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public class Crate {
+
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final ButtonManager buttonManager = this.plugin.getButtonManager();
+
+    private final CrateManager crateManager = this.plugin.getCrateManager();
+
+    private final BukkitUserManager userManager = this.plugin.getUserManager();
 
     private ItemBuilder previewTierBorderItem;
     private ItemBuilder borderItem;
@@ -89,11 +102,7 @@ public class Crate {
 
     private List<String> prizeCommands = new ArrayList<>();
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
-
-    private final CrateManager crateManager = this.plugin.getCrateManager();
-
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final Map<String, CrateButton> buttons = new HashMap<>();
 
     private boolean glassBorderToggle = true;
 
@@ -177,6 +186,30 @@ public class Crate {
 
         if (itemsSection != null) {
             this.animationBorderItems = ItemUtil.convertConfigurationSection(itemsSection);
+        }
+
+        final ConfigurationSection buttons = this.section.getConfigurationSection("buttons");
+
+        if (buttons != null) {
+            for (final String buttonKey : buttons.getKeys(false)) {
+                final ConfigurationSection node = buttons.getConfigurationSection(buttonKey);
+
+                if (node == null) continue;
+
+                final String id = node.getString("key", "");
+
+                if (id.isBlank()) continue;
+
+                final int slot = node.getInt("slot", -1);
+
+                if (slot < 0) continue;
+
+                final Optional<Button> index = this.buttonManager.getButton(id);
+
+                if (index.isEmpty()) continue;
+
+                this.buttons.put(buttonKey, new CrateButton(index.get(), slot));
+            }
         }
 
         this.broadcastToggle = this.section.getBoolean("Settings.Broadcast.Toggle", false);
@@ -930,7 +963,7 @@ public class Crate {
      * @param tier The tier to check
      * @return list of prizes
      */
-    public @NotNull final List<ItemStack> getPreviewItems(@Nullable final Player player, @Nullable final Tier tier) {
+    public @NotNull final List<ItemStack> getPreviewItems(@NotNull final Player player, @Nullable final Tier tier) {
         final List<ItemStack> prizes = new ArrayList<>();
 
         for (final Prize prize : getPrizes()) {
@@ -950,6 +983,14 @@ public class Crate {
         }
 
         return prizes;
+    }
+
+    public @NotNull final Map<String, CrateButton> getButtons() {
+        return Collections.unmodifiableMap(this.buttons);
+    }
+
+    public final Optional<CrateButton> getButton(@NotNull final String type) {
+        return Optional.ofNullable(this.buttons.get(type));
     }
 
     public final boolean isCyclePersistRestart() {

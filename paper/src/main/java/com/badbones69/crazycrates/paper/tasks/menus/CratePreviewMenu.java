@@ -3,6 +3,8 @@ package com.badbones69.crazycrates.paper.tasks.menus;
 import com.badbones69.crazycrates.paper.api.builders.gui.DynamicInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
+import com.badbones69.crazycrates.paper.api.objects.buttons.Button;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.builders.gui.objects.GuiItem;
 import com.ryderbelserion.fusion.paper.builders.gui.objects.border.GuiFiller;
 import com.ryderbelserion.fusion.paper.builders.gui.types.paginated.PaginatedGui;
@@ -10,6 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class CratePreviewMenu extends DynamicInventoryBuilder {
@@ -40,6 +45,17 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
         }
 
         final UUID uuid = this.player.getUniqueId();
+
+        final Map<String, String> placeholders = new HashMap<>();
+
+        placeholders.putIfAbsent("{player}", this.player.getName());
+        placeholders.putIfAbsent("{crate}", crate.getCrateName());
+
+        crate.getButtons().forEach((_, crateButton) -> {
+            final Button button = crateButton.getButton();
+
+            button.getDisplayItem().addItem(this.player, this.gui, crateButton.getSlot(), _ -> button.execute(this.player, placeholders));
+        });
 
         crate.getPreviewItems(this.player, this.tier).forEach(itemStack -> this.gui.addPageItem(new GuiItem(itemStack)));
 

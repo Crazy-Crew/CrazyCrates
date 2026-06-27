@@ -14,7 +14,6 @@ import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,12 +41,15 @@ public class CommandReload extends BaseCommand {
         this.fileManager.refresh(false)
                 .addFolder(this.path.resolve("schematics"), FileType.NBT)
                 .addFolder(this.path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE))
+                .addFolder(path.resolve("buttons"), FileType.YAML)
                 .addFile(version, FileType.JSON);
 
         this.fileManager.addPaperFolder(this.path.resolve("crates"))
                 .addPaperFile(this.path.resolve("guis").resolve("respin-gui.yml"))
                 .addPaperFile(this.path.resolve("data.yml"))
                 .addPaperFile(this.path.resolve("locations.yml"));
+
+        this.buttonManager.load();
 
         MiscUtils.save();
 

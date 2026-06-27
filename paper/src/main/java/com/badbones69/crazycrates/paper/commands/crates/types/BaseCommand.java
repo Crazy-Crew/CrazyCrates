@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
+import com.badbones69.crazycrates.paper.managers.ButtonManager;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
@@ -37,6 +38,8 @@ import java.util.UUID;
 public abstract class BaseCommand {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    protected final ButtonManager buttonManager = this.plugin.getButtonManager();
 
     protected final Path path = this.plugin.getDataPath();
 

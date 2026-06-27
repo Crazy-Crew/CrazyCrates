@@ -7,6 +7,7 @@ import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.listeners.crates.CrateInteractListener;
 import com.badbones69.crazycrates.paper.listeners.items.PaperInteractListener;
 import com.badbones69.crazycrates.paper.managers.BukkitKeyManager;
+import com.badbones69.crazycrates.paper.managers.ButtonManager;
 import com.badbones69.crazycrates.paper.support.MetricsWrapper;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.CommandManager;
@@ -33,6 +34,8 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -69,6 +72,8 @@ public class CrazyCrates extends JavaPlugin {
 
     private PaperFileManager fileManager;
 
+    private ButtonManager buttonManager;
+
     @Override
     public void onEnable() {
         this.fusion = new FusionPaper(this);
@@ -96,7 +101,11 @@ public class CrazyCrates extends JavaPlugin {
 
                 .addFolder(path.resolve("schematics"), FileType.NBT)
                 .addFolder(path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE))
+                .addFolder(path.resolve("buttons"), FileType.YAML)
                 .addFile(version, FileType.JSON);
+
+        this.buttonManager = new ButtonManager(this);
+        this.buttonManager.load();
 
         MiscUtils.janitor();
         MiscUtils.save();
@@ -200,6 +209,10 @@ public class CrazyCrates extends JavaPlugin {
         }
 
         MiscUtils.janitor();
+    }
+
+    public @NotNull final ButtonManager getButtonManager() {
+        return this.buttonManager;
     }
 
     public final InventoryManager getInventoryManager() {

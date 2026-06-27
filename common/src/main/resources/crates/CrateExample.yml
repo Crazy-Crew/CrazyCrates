@@ -245,6 +245,22 @@ Crate:
     # Note: MiniMessage or Color Codes being supported is depending on the 'holograms' plugin.
     Message:
       - "<bold><green>Basic Crate</bold>"
+  # The buttons section.
+  # All items here are *applied* before prizes, and count as static items.
+  buttons:
+    "1":
+      key: "redglass"
+      slot: 0
+    "2":
+      key: "redglass"
+      slot: 9
+
+    "3":
+      key: "redglass"
+      slot: 45
+    "4":
+      key: "redglass"
+      slot: 53
   # All the prizes that can be obtained in the Crate.
   # These prizes do not require any extra configuration
   # They will give the prizes based on what's already below.
