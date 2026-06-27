@@ -10,6 +10,7 @@ import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migra
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.deprecation.DeprecatedCrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.deprecation.LegacyColorMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.deprecation.WeightMigrator;
+import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.deprecation.gui.GuiMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.plugins.ExcellentCratesMigrator;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
@@ -80,6 +81,8 @@ public class CommandMigrate extends BaseCommand {
             case LEGACY_COLOR_ALL -> new LegacyColorMigrator(sender).run();
 
             case CRATES_DEPRECATED_ALL -> new DeprecatedCrateMigrator(sender).run();
+
+            case GUI_MIGRATION -> new GuiMigrator(sender).run();
 
             case SPECIALIZED_CRATES -> Messages.migration_not_available.sendMessage(sender);
 
