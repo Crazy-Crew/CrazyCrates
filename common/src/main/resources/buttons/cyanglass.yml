@@ -1,0 +1,24 @@
+# Settings related to the crate i.e. things like the display item.
+button:
+  # Display related settings i.e. the look of the item.
+  display:
+    # If the prize should be enabled, or not.
+    enabled: true
+    # The item configuration.
+    item:
+      # The item material.
+      material: "cyan_stained_glass_pane"
+      # The name of the item.
+      name: ""
+      # The lore of the item.
+      lore: []
+      # The amount to display.
+      amount: 1
+
+# The commands to execute when a prize is won, or an item is clicked.
+# Note: currently, this does not function as a Prize Item, but mainly filler items.
+commands: []
+
+# The messages to send when a prize is won, or an item is clicked.
+# Note: currently, this does not function as a Prize Item, but mainly filler items.
+messages: []

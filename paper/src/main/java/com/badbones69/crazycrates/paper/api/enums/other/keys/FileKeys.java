@@ -5,6 +5,7 @@ import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
+import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public enum FileKeys {
 
     respin_gui(FileType.PAPER_YAML, "respin-gui.yml", "guis"),
+    crate_gui(FileType.YAML, "crate-gui.yml", "guis"),
 
     crate_log(FileType.LOG, "crates.log", "logs"),
     key_log(FileType.LOG, "keys.log", "logs"),
@@ -62,6 +64,16 @@ public enum FileKeys {
 
     public @NotNull final BasicConfigurationNode getConfigurationNode() {
         return getJsonCustomFile().getConfiguration();
+    }
+
+    public @NotNull final YamlCustomFile getYamlCustomFile() {
+        final Optional<YamlCustomFile> customFile = this.fileManager.getYamlFile(this.location);
+
+        if (customFile.isEmpty()) {
+            throw new FusionException("Could not find custom file for " + this.location);
+        }
+
+        return customFile.get();
     }
 
     public @NotNull final JsonCustomFile getJsonCustomFile() {

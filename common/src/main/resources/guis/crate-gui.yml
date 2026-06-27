@@ -1,0 +1,103 @@
+gui:
+  # Should the menu button open?
+  # If you have a menu button in crate previews, it will not work.
+  toggle: true
+  # The name of the gui.
+  name: "<bold><gradient:#e91e63:blue>CrazyCrates</gradient></bold>"
+  # The size of the gui. Each row is 9 slots, so 3*9=27
+  rows: 5
+
+filler:
+  # Should the menu should be filled with one type of item?
+  toggle: false
+  # The item to fill the menu with.
+  item: "black_stained_glass_pane"
+  # The item model, Mojang introduced this in 1.21.4... this replaces custom model data!
+  # Set this to blank for it to do nothing.
+  model:
+    # The namespace i.e. nexo
+    namespace: ""
+    # The id i.e. emerald_helmet.
+    id: ""
+  # The name of the item.
+  name: " "
+  # The lore of the item.
+  lore: []
+
+# The buttons section.
+# All items here are *applied* before prizes, and count as static items.
+buttons:
+  "red0":
+    # The name of the file (excluding .yml) found in the buttons folder.
+    key: "redglass"
+    # The slots to apply the item at.
+    slot:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 36
+      - 37
+      - 38
+      - 39
+      - 40
+      - 41
+      - 42
+      - 43
+      - 44
+
+  "blue0":
+    # The name of the file (excluding .yml) found in the buttons folder.
+    key: "blueglass"
+    # The slots to apply the item at.
+    slot:
+      - 9
+      - 17
+      - 18
+      - 26
+      - 27
+      - 35
+
+  "cyan0":
+    # The name of the file (excluding .yml) found in the buttons folder.
+    key: "cyanglass"
+    # The slots to apply the item at.
+    slot:
+      - 10
+      - 12
+      - 14
+      - 16
+      - 19
+      - 20
+      - 21
+      - 22
+      - 23
+      - 24
+      - 25
+      - 28
+      - 30
+      - 31
+      - 32
+      - 33
+      - 34
+
+  "1":
+    # The name of the file (excluding .yml) found in the buttons folder.
+    key: "back_button"
+    # The slot to apply the item at.
+    slot: 48
+  "2":
+    # The name of the file (excluding .yml) found in the buttons folder.
+    key: "menu_button"
+    # The slot to apply the item at.
+    slot: 49
+  "3":
+    # The name of the file (excluding .yml) found in the buttons folder.
+    key: "next_button"
+    # The slot to apply the item at.
+    slot: 50

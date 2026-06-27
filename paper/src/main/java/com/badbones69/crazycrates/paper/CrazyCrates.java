@@ -97,11 +97,15 @@ public class CrazyCrates extends JavaPlugin {
         this.fileManager.addPaperFile(path.resolve("locations.yml"))
                 .addPaperFile(path.resolve("data.yml"))
                 .addPaperFile(path.resolve("guis").resolve("respin-gui.yml"))
+
                 .addPaperFolder(path.resolve("crates"))
 
                 .addFolder(path.resolve("schematics"), FileType.NBT)
                 .addFolder(path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE))
                 .addFolder(path.resolve("buttons"), FileType.YAML)
+
+                .addFile(path.resolve("guis").resolve("crate-gui.yml"), FileType.YAML)
+
                 .addFile(version, FileType.JSON);
 
         this.buttonManager = new ButtonManager(this);
