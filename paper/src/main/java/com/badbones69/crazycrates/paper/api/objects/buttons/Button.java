@@ -28,9 +28,9 @@ public class Button {
     private final DisplayItem displayItem;
 
     public Button(@NotNull final CommentedConfigurationNode configuration) {
-        final CommentedConfigurationNode crate = configuration.node("button");
+        final CommentedConfigurationNode display = configuration.node("display");
 
-        this.displayItem = new DisplayItem(crate.node("display"), DisplayType.BUTTON);
+        this.displayItem = new DisplayItem(display, DisplayType.BUTTON);
 
         this.commands.addAll(StringUtils.getStringList(configuration.node("commands")));
         this.messages.addAll(StringUtils.getStringList(configuration.node("messages")));

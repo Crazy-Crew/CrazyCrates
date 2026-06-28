@@ -7,7 +7,7 @@ button:
     # The item configuration.
     item:
       # The item material.
-      material: "red_stained_glass_pane"
+      material: "blue_stained_glass_pane"
       # The name of the item.
       name: ""
       # The lore of the item.

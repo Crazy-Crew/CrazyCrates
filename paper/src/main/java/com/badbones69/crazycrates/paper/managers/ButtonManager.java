@@ -48,7 +48,7 @@ public class ButtonManager {
 
             final String name = customFile.getPrettyName();
 
-            this.buttons.put(name, new Button(configuration));
+            this.buttons.put(name, new Button(configuration.node("button")));
         }
     }
 
