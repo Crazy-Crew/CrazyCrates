@@ -2,6 +2,7 @@ package us.crazycrew.crazycrates;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.api.CrazyCrates;
 import us.crazycrew.crazycrates.platform.IServer;
 
 /**
@@ -13,21 +14,7 @@ import us.crazycrew.crazycrates.platform.IServer;
  */
 public class CratesProvider {
 
-    private static IServer instance;
-
-    /**
-     * Gets the instance of IServer which lets you interact with our plugin.
-     *
-     * @return {@link IServer}
-     * @since 0.4.0
-     */
-    public static IServer get() {
-        if (instance == null) {
-            throw new IllegalStateException("CrazyCrates API is not loaded.");
-        }
-
-        return instance;
-    }
+    private static CrazyCrates crates;
 
     @ApiStatus.Internal
     private CratesProvider() {
@@ -35,25 +22,54 @@ public class CratesProvider {
     }
 
     /**
-     * Creates {@link IServer} instance.
+     * Gets the instance of IServer which lets you interact with our plugin.
      *
-     * @param instance the {@link IServer} instance
+     * @return {@link CrazyCrates}
      * @since 0.4.0
      */
-    @ApiStatus.Internal
-    public static void register(@NotNull final IServer instance) {
-        if (CratesProvider.instance != null) return;
+    public static CrazyCrates api() {
+        if (crates == null) {
+            throw new IllegalStateException("CrazyCrates API is not loaded.");
+        }
 
-        CratesProvider.instance = instance;
+        return crates;
     }
 
     /**
-     * Unregisters {@link IServer} instance.
+     * Gets the instance of IServer which lets you interact with our plugin.
+     *
+     * @return {@link IServer}
+     * @since 0.4.0
+     */
+    @Deprecated(forRemoval = true)
+    public static IServer get() {
+        if (crates == null) {
+            throw new IllegalStateException("CrazyCrates API is not loaded.");
+        }
+
+        return crates;
+    }
+
+    /**
+     * Creates {@link CrazyCrates} instance.
+     *
+     * @param instance the {@link CrazyCrates} instance
+     * @since 0.4.0
+     */
+    @ApiStatus.Internal
+    public static void register(@NotNull final CrazyCrates instance) {
+        if (CratesProvider.crates != null) return;
+
+        CratesProvider.crates = instance;
+    }
+
+    /**
+     * Unregisters {@link CrazyCrates} instance.
      *
      * @since 0.4.0
      */
     @ApiStatus.Internal
     public static void unregister() {
-        CratesProvider.instance = null;
+        CratesProvider.crates = null;
     }
 }

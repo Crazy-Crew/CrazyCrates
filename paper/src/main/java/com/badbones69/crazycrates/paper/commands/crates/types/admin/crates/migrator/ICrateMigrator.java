@@ -2,7 +2,9 @@ package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migr
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
+import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.common.config.ConfigManager;
@@ -23,19 +25,23 @@ public abstract class ICrateMigrator {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    protected final FusionPaper fusion = this.plugin.getFusion();
+    protected final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    protected final FusionPaper fusion = this.platform.getFusion();
 
     protected final ComponentLogger logger = this.plugin.getComponentLogger();
 
-    protected final Path dataPath = this.plugin.getDataPath();
+    protected final Path dataPath = this.platform.getDataPath();
 
-    protected final CrateManager crateManager = this.plugin.getCrateManager();
+    protected final CrateManager crateManager = this.platform.getCrateManager();
+
+    protected final BukkitUserManager userManager = this.platform.getUserManager();
 
     protected final SettingsManager config = ConfigManager.getConfig();
 
     protected final SettingsManager messages = ConfigManager.getMessages();
 
-    protected final PaperFileManager fileManager = this.plugin.getFileManager();
+    protected final PaperFileManager fileManager = this.platform.getFileManager();
 
     protected final CommandSender sender;
 

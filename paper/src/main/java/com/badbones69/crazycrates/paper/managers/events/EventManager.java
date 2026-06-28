@@ -2,11 +2,13 @@ package com.badbones69.crazycrates.paper.managers.events;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
+import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
@@ -24,6 +26,8 @@ import java.util.Optional;
 public class EventManager {
 
     private final static CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final static CrazyCratesPaper platform = plugin.getPlatform();
 
     private final static ComponentLogger logger = plugin.getComponentLogger();
 
@@ -99,9 +103,9 @@ public class EventManager {
         log(message, path, type);
     }
 
-    private static final PaperFileManager fileManager = plugin.getFileManager();
+    private static final PaperFileManager fileManager = platform.getFileManager();
 
-    private static final FusionPaper fusion = plugin.getFusion();
+    private static final FusionPaper fusion = platform.getFusion();
 
     private static void log(@NotNull final String message, @Nullable final Path path, @NotNull final EventType type) {
         final String time = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(System.currentTimeMillis()));

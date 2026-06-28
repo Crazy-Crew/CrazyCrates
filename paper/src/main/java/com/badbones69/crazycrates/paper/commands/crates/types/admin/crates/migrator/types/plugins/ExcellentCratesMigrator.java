@@ -24,7 +24,6 @@ import su.nightexpress.excellentcrates.crate.impl.Crate;
 import su.nightexpress.excellentcrates.data.impl.CrateUser;
 import su.nightexpress.excellentcrates.key.CrateKey;
 import su.nightexpress.nightcore.config.FileConfig;
-import us.crazycrew.crazycrates.api.users.UserManager;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -52,8 +51,6 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
         final List<String> success = new ArrayList<>();
 
         if (this.ignoreCrates) {
-            final UserManager userManager = this.plugin.getUserManager();
-
             for (final CrateUser user : CratesAPI.getUserManager().getAllUsers()) {
                 final String name = user.getName();
 
@@ -64,7 +61,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                         if (amount > 0) {
                             final YamlConfiguration data = FileKeys.data.getConfiguration();
 
-                            final int keys = userManager.getVirtualKeys(uuid, crateName);
+                            final int keys = this.userManager.getVirtualKeys(uuid, crateName);
 
                             if (!data.contains("Players." + uuid + ".Name")) data.set("Players." + uuid + ".Name", name);
 

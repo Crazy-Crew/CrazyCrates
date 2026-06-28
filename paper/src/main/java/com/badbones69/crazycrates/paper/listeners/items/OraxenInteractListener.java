@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.listeners.items;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.events.CrateInteractEvent;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import io.th0rgal.oraxen.api.events.furniture.OraxenFurnitureBreakEvent;
@@ -17,7 +18,9 @@ public class OraxenInteractListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final CrateManager crateManager = this.platform.getCrateManager();
 
     @EventHandler
     public void onFurnitureInteractEvent(OraxenFurnitureInteractEvent event) {

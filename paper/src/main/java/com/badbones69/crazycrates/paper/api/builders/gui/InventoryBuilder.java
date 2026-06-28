@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.paper.api.builders.gui;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.common.config.beans.inventories.ItemPlacement;
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
@@ -35,13 +36,15 @@ public abstract class InventoryBuilder {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    protected final FusionPaper fusion = this.plugin.getFusion();
+    protected final CrazyCratesPaper platform = this.plugin.getPlatform();
 
-    protected final CrateManager crateManager = this.plugin.getCrateManager();
+    protected final FusionPaper fusion = this.platform.getFusion();
 
-    protected final BukkitUserManager userManager = this.plugin.getUserManager();
+    protected final CrateManager crateManager = this.platform.getCrateManager();
 
-    protected final InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    protected final BukkitUserManager userManager = this.platform.getUserManager();
+
+    protected final InventoryManager inventoryManager = this.platform.getInventoryManager();
 
     protected final SettingsManager config = ConfigManager.getConfig();
 

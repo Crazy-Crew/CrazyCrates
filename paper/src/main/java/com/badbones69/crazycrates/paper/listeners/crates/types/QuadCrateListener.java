@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.listeners.crates.types;
 
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.ryderbelserion.fusion.core.api.enums.Level;
@@ -40,7 +41,9 @@ public class QuadCrateListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final FusionPaper fusion = this.plugin.getFusion();
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final FusionPaper fusion = this.platform.getFusion();
 
     private final SessionManager sessionManager = new SessionManager();
 

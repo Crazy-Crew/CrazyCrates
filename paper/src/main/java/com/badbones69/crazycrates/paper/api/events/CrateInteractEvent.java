@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.api.events;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
@@ -24,7 +25,9 @@ public class CrateInteractEvent extends Event implements Cancellable {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final CrateManager crateManager = this.platform.getCrateManager();
 
     private NexoFurnitureInteractEvent nexoInteractEvent;
     private NexoFurnitureBreakEvent nexoBreakEvent;
@@ -124,7 +127,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
      * @return true or false
      */
     public boolean isFurniture(@NotNull final Location location) {
-        final String pluginName = this.plugin.getFusion().getItemsPlugin().toLowerCase();
+        final String pluginName = this.platform.getFusion().getItemsPlugin().toLowerCase();
 
         boolean isFurniture = false;
 

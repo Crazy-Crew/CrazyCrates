@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.commands;
 
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.CommandVersion;
@@ -38,9 +39,10 @@ import java.util.List;
 public class CommandManager {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private static final CrazyCratesPaper platform = plugin.getPlatform();
     private static final Server server = plugin.getServer();
 
-    private static final CrateManager crateManager = plugin.getCrateManager();
+    private static final CrateManager crateManager = platform.getCrateManager();
 
     private static final BukkitCommandManager<CommandSender> commandManager = BukkitCommandManager.create(plugin);
 

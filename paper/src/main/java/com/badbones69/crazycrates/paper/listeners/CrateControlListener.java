@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.listeners;
 
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import org.bukkit.Location;
@@ -18,9 +19,11 @@ public class CrateControlListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
 
-    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    private final CrateManager crateManager = this.platform.getCrateManager();
+
+    private final InventoryManager inventoryManager = this.platform.getInventoryManager();
 
     @EventHandler
     public void onPistonPushCrate(BlockPistonExtendEvent event) {

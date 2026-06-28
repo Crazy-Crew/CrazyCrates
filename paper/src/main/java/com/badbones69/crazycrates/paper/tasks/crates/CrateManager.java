@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.paper.tasks.crates;
 
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.common.config.impl.EditorKeys;
@@ -59,6 +60,7 @@ import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.joml.Matrix4f;
+import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
@@ -86,17 +88,34 @@ import java.util.stream.Stream;
 
 public class CrateManager {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
-    private final BukkitKeyManager keyManager = this.plugin.getKeyManager();
-    private final Path dataPath = this.plugin.getDataPath();
-    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-    private final PaperFileManager fileManager = this.plugin.getFileManager();
-    private final com.badbones69.common.Server instance = this.plugin.getInstance();
-    private final FusionPaper fusion = this.plugin.getFusion();
+    private final InventoryManager inventoryManager;
+    private final BukkitKeyManager keyManager;
 
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
-    private final Server server = this.plugin.getServer();
-    private final PluginManager pluginManager = this.server.getPluginManager();
+    private final ComponentLogger logger;
+    private final PluginManager pluginManager;
+    private final CrazyCrates plugin;
+    private final Server server;
+
+    private final PaperFileManager fileManager;
+    private final CrazyCratesPaper platform;
+    private final FusionPaper fusion;
+    private final Path dataPath;
+
+    public CrateManager(@NonNull final CrazyCratesPaper platform, @NonNull final InventoryManager inventoryManager, @NonNull final BukkitKeyManager keyManager) {
+        this.platform = platform;
+
+        this.fileManager = this.platform.getFileManager();
+        this.dataPath = this.platform.getDataPath();
+        this.fusion = this.platform.getFusion();
+
+        this.plugin = this.platform.getPlugin();
+        this.logger = this.plugin.getComponentLogger();
+        this.server = this.plugin.getServer();
+        this.pluginManager = this.server.getPluginManager();
+
+        this.inventoryManager = inventoryManager;
+        this.keyManager = keyManager;
+    }
 
     private final List<QuadCrateManager> quadSessions = new ArrayList<>();
     private final List<CrateLocation> crateLocations = new ArrayList<>();
@@ -341,11 +360,11 @@ public class CrateManager {
     }
 
     public List<String> getCrateNames(final boolean keepExtension) {
-        return this.instance.getCrateFiles(keepExtension);
+        return this.platform.getCrateFiles(keepExtension);
     }
 
     public List<String> getCrateNames() {
-        return this.instance.getCrateFiles(false);
+        return this.platform.getCrateFiles(false);
     }
 
     private final SettingsManager config = ConfigManager.getConfig();
@@ -1005,7 +1024,7 @@ public class CrateManager {
     public void addRepeatingCrateTask(@NotNull final Player player, @NotNull final TimerTask task, final long delay, final long period) {
         this.timerTasks.put(player.getUniqueId(), task);
 
-        this.plugin.getTimer().scheduleAtFixedRate(task, delay, period);
+        this.platform.getTimer().scheduleAtFixedRate(task, delay, period);
     }
 
     /**
@@ -1031,7 +1050,7 @@ public class CrateManager {
     public void addCrateTask(@NotNull final Player player, @NotNull final TimerTask task, final long delay) {
         this.timerTasks.put(player.getUniqueId(), task);
 
-        this.plugin.getTimer().schedule(task, delay);
+        this.platform.getTimer().schedule(task, delay);
     }
 
     /**

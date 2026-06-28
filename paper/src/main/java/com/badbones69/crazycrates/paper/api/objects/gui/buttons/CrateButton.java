@@ -20,8 +20,8 @@ import java.util.UUID;
 
 public class CrateButton extends GuiButton {
 
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final BukkitUserManager userManager = this.platform.getUserManager();
+    private final CrateManager crateManager = this.platform.getCrateManager();
 
     private final Crate crate;
     private final Prize prize;

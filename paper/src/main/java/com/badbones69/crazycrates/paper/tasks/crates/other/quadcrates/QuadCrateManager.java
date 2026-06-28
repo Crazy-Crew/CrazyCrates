@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates;
 
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
@@ -31,9 +32,10 @@ import java.util.HashMap;
 public class QuadCrateManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
 
-    private final CrateManager crateManager = this.plugin.getCrateManager();
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final CrateManager crateManager = this.platform.getCrateManager();
+    private final BukkitUserManager userManager = this.platform.getUserManager();
 
     private final QuadCrateManager instance;
 

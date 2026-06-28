@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.api.objects.gui.buttons;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
@@ -18,7 +19,9 @@ public class GuiButton {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    protected final FusionPaper fusion = this.plugin.getFusion();
+    protected final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    protected final FusionPaper fusion = this.platform.getFusion();
 
     private final Map<String, String> placeholders;
     private final ConfigurationSection section;

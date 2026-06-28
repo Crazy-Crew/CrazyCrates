@@ -31,10 +31,11 @@ import java.util.Random;
 public class PrizeManager {
     
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
-    private static final FusionPaper fusion = plugin.getFusion();
+    private static final CrazyCratesPaper platform = plugin.getPlatform();
+    private static final FusionPaper fusion = platform.getFusion();
     private static final Server server = plugin.getServer();
     private static final PluginManager pluginManager = server.getPluginManager();
-    private static final BukkitUserManager userManager = plugin.getUserManager();
+    private static final BukkitUserManager userManager = platform.getUserManager();
 
     public static int getCap(@NotNull final Crate crate, @NotNull final Player player) {
         final String format = "crazycrates.respin." + crate.getFileName() + ".";

@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.paper.commands.crates.types;
 
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -39,11 +40,13 @@ public abstract class BaseCommand {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    protected final ButtonManager buttonManager = this.plugin.getButtonManager();
+    protected final CrazyCratesPaper platform = this.plugin.getPlatform();
 
-    protected final Path path = this.plugin.getDataPath();
+    protected final ButtonManager buttonManager = this.platform.getButtonManager();
 
-    protected final FusionPaper fusion = this.plugin.getFusion();
+    protected final Path path = this.platform.getDataPath();
+
+    protected final FusionPaper fusion = this.platform.getFusion();
 
     protected final Server server = this.plugin.getServer();
 
@@ -51,13 +54,13 @@ public abstract class BaseCommand {
 
     protected final ComponentLogger logger = this.plugin.getComponentLogger();
 
-    protected final InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    protected final InventoryManager inventoryManager = this.platform.getInventoryManager();
 
-    protected final BukkitUserManager userManager = this.plugin.getUserManager();
+    protected final BukkitUserManager userManager = this.platform.getUserManager();
 
-    protected final CrateManager crateManager = this.plugin.getCrateManager();
+    protected final CrateManager crateManager = this.platform.getCrateManager();
 
-    protected final PaperFileManager fileManager = this.plugin.getFileManager();
+    protected final PaperFileManager fileManager = this.platform.getFileManager();
 
     protected final SettingsManager config = ConfigManager.getConfig();
 

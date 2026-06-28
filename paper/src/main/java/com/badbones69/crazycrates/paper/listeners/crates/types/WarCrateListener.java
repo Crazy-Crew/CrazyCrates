@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.listeners.crates.types;
 
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
@@ -22,7 +23,9 @@ public class WarCrateListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final CrateManager crateManager = this.platform.getCrateManager();
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {

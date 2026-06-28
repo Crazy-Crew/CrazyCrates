@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
@@ -25,13 +26,15 @@ public class CrateOpenListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final FusionPaper fusion = this.plugin.getFusion();
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final FusionPaper fusion = this.platform.getFusion();
 
     private final Server server = this.plugin.getServer();
 
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.platform.getCrateManager();
 
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final BukkitUserManager userManager = this.platform.getUserManager();
 
     private final SettingsManager config = ConfigManager.getConfig();
 

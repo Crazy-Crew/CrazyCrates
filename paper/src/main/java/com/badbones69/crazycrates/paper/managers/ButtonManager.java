@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.managers;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.objects.buttons.Button;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
@@ -19,9 +20,9 @@ public class ButtonManager {
     private final FileManager fileManager;
     private final FusionPaper fusion;
 
-    public ButtonManager(@NotNull final CrazyCrates plugin) {
-        this.fileManager = plugin.getFileManager();
-        this.fusion = plugin.getFusion();
+    public ButtonManager(@NotNull final CrazyCratesPaper platform) {
+        this.fileManager = platform.getFileManager();
+        this.fusion = platform.getFusion();
     }
 
     private final Map<String, Button> buttons = new HashMap<>();

@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.player;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
@@ -20,8 +21,10 @@ public class CommandKey {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final BukkitUserManager userManager = this.platform.getUserManager();
+    private final CrateManager crateManager = this.platform.getCrateManager();
 
     @Command
     @Permission(value = "crazycrates.keys", def = PermissionDefault.TRUE)
