@@ -34,6 +34,7 @@ import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginManager;
 import org.jspecify.annotations.NonNull;
@@ -182,6 +183,12 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin {
         super.reload();
 
         this.fusion.reload();
+
+        if (this.metrics != null && !ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics)) {
+            final Metrics scheduler = this.metrics.getMetrics();
+
+            scheduler.shutdown();
+        }
     }
 
     @Override
