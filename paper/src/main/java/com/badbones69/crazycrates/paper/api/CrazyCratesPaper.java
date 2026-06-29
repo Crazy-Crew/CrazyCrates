@@ -214,6 +214,11 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin {
         return this.userManager;
     }
 
+    @Override
+    public @NonNull BukkitKeyManager getKeyManager() {
+        return this.keyManager;
+    }
+
     public @NonNull PaperFileManager getFileManager() {
         return this.fileManager;
     }
