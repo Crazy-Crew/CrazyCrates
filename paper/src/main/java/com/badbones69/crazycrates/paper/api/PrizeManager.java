@@ -1,12 +1,12 @@
 package com.badbones69.crazycrates.paper.api;
 
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
+import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
@@ -23,6 +23,7 @@ import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import org.jetbrains.annotations.Nullable;
+import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ public class PrizeManager {
     
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
     private static final CrazyCratesPaper platform = plugin.getPlatform();
+    private static final PaperSenderAdapter senderAdapter = platform.getSenderAdapter();
     private static final FusionPaper fusion = platform.getFusion();
     private static final Server server = plugin.getServer();
     private static final PluginManager pluginManager = server.getPluginManager();
@@ -112,7 +114,7 @@ public class PrizeManager {
         if (prize != null) {
             givePrize(player, player.getLocation().clone().add(0, 1, 0), crate, prize);
         } else {
-            Messages.prize_error.sendMessage(player, Map.of(
+            senderAdapter.sendMessage(player, MessageKeys.prize_error, Map.of(
                     "{crate}", crate.getCrateName(),
                     "{player}", player.getName()
             ));

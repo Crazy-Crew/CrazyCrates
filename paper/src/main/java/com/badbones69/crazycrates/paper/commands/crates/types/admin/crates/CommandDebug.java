@@ -10,8 +10,10 @@ import dev.triumphteam.cmd.core.annotations.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
+import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.List;
+import java.util.Map;
 
 public class CommandDebug extends BaseCommand {
 
@@ -20,7 +22,7 @@ public class CommandDebug extends BaseCommand {
     @Syntax("/crazycrates <crate> [player_name]")
     public void debug(CommandSender sender, @ArgName("crate") @Suggestion("crates") String crateName, @Optional @Suggestion("players") Player target) {
         if (crateName == null || crateName.isBlank()) {
-            Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
+            this.senderAdapter.sendMessage(sender, MessageKeys.cannot_be_empty, Map.of("{value}", "crate name"));
 
             return;
         }
@@ -38,7 +40,7 @@ public class CommandDebug extends BaseCommand {
         final List<Prize> items = prizes.stream().filter(Prize::isItemsEmpty).toList();
 
         if (prizes.isEmpty() || items.isEmpty()) {
-            Messages.no_prizes_found.sendMessage(sender, "{crate}", crateName);
+            this.senderAdapter.sendMessage(sender, MessageKeys.no_prizes_found, Map.of("{value}", crateName));
 
             return;
         }

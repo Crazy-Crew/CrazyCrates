@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
+import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
@@ -18,6 +19,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +29,8 @@ public class CrateOpenListener implements Listener {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final PaperSenderAdapter senderAdapter = this.platform.getSenderAdapter();
 
     private final FusionPaper fusion = this.platform.getFusion();
 
@@ -56,7 +60,7 @@ public class CrateOpenListener implements Listener {
 
         if (crateType != CrateType.menu) {
             if (crate.getPrizes().isEmpty() || !crate.canWinPrizes(player)) {
-                Messages.no_prizes_found.sendMessage(player, "{crate}", fancyName);
+                this.senderAdapter.sendMessage(player, MessageKeys.no_prizes_found, Map.of("{value}", fancyName));
 
                 this.crateManager.endCrate(crate, player);
 

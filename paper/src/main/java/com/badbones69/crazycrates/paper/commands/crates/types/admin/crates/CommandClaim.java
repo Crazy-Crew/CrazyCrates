@@ -12,6 +12,7 @@ import dev.triumphteam.cmd.core.annotations.Suggestion;
 import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
+import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.Map;
 import java.util.UUID;
@@ -23,7 +24,7 @@ public class CommandClaim extends BaseCommand {
     @Syntax("/crazycrates claim <crate_name>")
     public void add(Player player, @ArgName("crate") @Suggestion("crates") String crateName) {
         if (crateName == null || crateName.isBlank()) {
-            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
+            this.senderAdapter.sendMessage(player, MessageKeys.cannot_be_empty, Map.of("{value}", "crate name"));
 
             return;
         }
@@ -54,7 +55,7 @@ public class CommandClaim extends BaseCommand {
         final Prize prize = crate.getPrize(prizeName);
 
         if (prize == null) {
-            Messages.prize_not_found.sendMessage(player, "{prize}", prizeName);
+            this.senderAdapter.sendMessage(player, MessageKeys.prize_not_found, Map.of("{prize}", prizeName));
 
             if (!crate.isCyclePersistRestart()) {
                 this.userManager.removeRespinCrate(uuid, fileName, this.userManager.getCrateRespin(uuid, fileName));

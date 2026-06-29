@@ -11,6 +11,7 @@ import dev.triumphteam.cmd.core.annotations.Syntax;
 import dev.triumphteam.cmd.core.argument.keyed.Flags;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
+import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.Map;
 
@@ -42,7 +43,7 @@ public class CommandEditor extends BaseCommand {
         final String crateName = flags.getFlagValue("c").orElse("");
 
         if (crateName.isEmpty()) {
-            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
+            this.senderAdapter.sendMessage(player, MessageKeys.cannot_be_empty, Map.of("{value}", "crate name"));
 
             return;
         }

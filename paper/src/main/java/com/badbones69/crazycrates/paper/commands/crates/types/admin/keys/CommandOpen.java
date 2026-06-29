@@ -23,6 +23,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.Nullable;
+import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.common.config.impl.ConfigKeys;
@@ -35,7 +36,7 @@ public class CommandOpen extends BaseCommand {
 
     private boolean isCancelled(final Player player, final String crateName) {
         if (crateName == null || crateName.isBlank()) {
-            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
+            this.senderAdapter.sendMessage(player, MessageKeys.cannot_be_empty, Map.of("{value}", "crate name"));
 
             return true;
         }
@@ -75,7 +76,7 @@ public class CommandOpen extends BaseCommand {
         final CrateType crateType = crate.getCrateType();
 
         if (crateType == CrateType.menu) {
-            Messages.internal_error.sendMessage(player);
+            this.senderAdapter.sendMessage(player, MessageKeys.internal_error);
 
             this.fusion.log(Level.ERROR, "An error has occurred: The crate type is Menu for the crate named %s.", crateName);
 

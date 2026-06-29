@@ -42,14 +42,8 @@ public abstract class CrazyCratesPlugin extends CrazyCrates {
         CratesProvider.unregister();
     }
 
-    @Override
-    public @NonNull Path getCratesPath() {
-        return this.path.resolve("crates");
-    }
-
-    @Override
-    public @NonNull Path getDataPath() {
-        return this.path;
+    public @NonNull FusionKyori getFusion() {
+        return this.fusion;
     }
 
     @Override
@@ -58,7 +52,17 @@ public abstract class CrazyCratesPlugin extends CrazyCrates {
     }
 
     @Override
+    public @NonNull Path getCratesPath() {
+        return this.path.resolve("crates");
+    }
+
+    @Override
     public @NonNull Settings getSettings() {
         return this.settings;
+    }
+
+    @Override
+    public @NonNull Path getDataPath() {
+        return this.path;
     }
 }

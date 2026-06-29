@@ -7,6 +7,8 @@ import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migra
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import us.crazycrew.crazycrates.api.constants.MessageKeys;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +23,7 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
     @Override
     public void run() {
         if (this.crateName == null || this.crateName.isEmpty() || this.crateName.isBlank()) {
-            Messages.cannot_be_empty.sendMessage(this.sender, "{value}", "crate name");
+            this.senderAdapter.sendMessage(this.sender, MessageKeys.cannot_be_empty, Map.of("{value}", "crate name"));
 
             return;
         }

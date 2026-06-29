@@ -3,6 +3,7 @@ package com.badbones69.crazycrates.paper.listeners.crates.types;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
+import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.ryderbelserion.fusion.core.api.enums.Level;
@@ -32,6 +33,7 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.CrazyCrates;
@@ -49,6 +51,8 @@ public class CosmicCrateListener implements Listener {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final PaperSenderAdapter senderAdapter = this.platform.getSenderAdapter();
 
     private final FusionPaper fusion = this.platform.getFusion();
 
@@ -326,7 +330,7 @@ public class CosmicCrateListener implements Listener {
 
                                     crateManager.endCrate(crate, player);
 
-                                    Messages.key_refund.sendMessage(player, "{crate}", fancyName);
+                                    senderAdapter.sendMessage(player, MessageKeys.key_refund, Map.of("{crate}", fancyName));
 
                                     fusion.log(Level.ERROR, "An issue occurred when the user %s was using the %s crate and so they were issued a key refund.", exception, player.getName(), fileName);
 

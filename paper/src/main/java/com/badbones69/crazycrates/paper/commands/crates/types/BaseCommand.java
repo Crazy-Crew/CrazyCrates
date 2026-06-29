@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
+import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
 import com.badbones69.crazycrates.paper.managers.ButtonManager;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
@@ -14,6 +15,7 @@ import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import dev.triumphteam.cmd.core.annotations.Command;
@@ -26,6 +28,7 @@ import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.common.config.ConfigManager;
@@ -47,6 +50,10 @@ public abstract class BaseCommand {
     protected final Path path = this.platform.getDataPath();
 
     protected final FusionPaper fusion = this.platform.getFusion();
+
+    protected final MessageRegistry messageRegistry = this.fusion.getMessageRegistry();
+
+    protected final PaperSenderAdapter senderAdapter = this.platform.getSenderAdapter();
 
     protected final Server server = this.plugin.getServer();
 
@@ -281,7 +288,7 @@ public abstract class BaseCommand {
             if (event.isCancelled()) return;
 
             if (!this.userManager.addOfflineKeys(offlinePlayer.getUniqueId(), fileName, type, clamp)) {
-                Messages.internal_error.sendMessage(sender);
+                this.senderAdapter.sendMessage(sender, MessageKeys.internal_error);
             } else {
                 final String name = Optional.ofNullable(offlinePlayer.getName()).orElse("N/A");
 

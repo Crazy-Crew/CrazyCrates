@@ -4,10 +4,13 @@ import org.jspecify.annotations.NullMarked;
 import us.crazycrew.crazycrates.platform.IServer;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.UUID;
 
 @NullMarked
 public abstract class CrazyCrates implements IServer {
 
+    public static final UUID CONSOLE_UUID = new UUID(0, 0);
+    public static final String CONSOLE_NAME = "Console";
     public static final String namespace = "crazycrates";
 
     protected final Path path;

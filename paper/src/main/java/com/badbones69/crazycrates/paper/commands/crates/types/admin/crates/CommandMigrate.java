@@ -18,6 +18,8 @@ import dev.triumphteam.cmd.core.annotations.Syntax;
 import dev.triumphteam.cmd.core.argument.keyed.Flags;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
+import us.crazycrew.crazycrates.api.constants.MessageKeys;
+
 import java.util.Map;
 
 public class CommandMigrate extends BaseCommand {
@@ -65,7 +67,7 @@ public class CommandMigrate extends BaseCommand {
                 final String crateName = flags.getFlagValue("c").orElse(null);
 
                 if (crateName == null || crateName.isBlank() || crateName.equalsIgnoreCase("Menu")) {
-                    Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
+                    this.senderAdapter.sendMessage(sender, MessageKeys.cannot_be_empty, Map.of("{value}", "crate name"));
 
                     return;
                 }

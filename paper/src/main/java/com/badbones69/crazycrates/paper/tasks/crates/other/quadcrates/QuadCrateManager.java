@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates;
 
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
+import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.structures.StructureManager;
@@ -22,6 +23,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,7 @@ public class QuadCrateManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
+    private final PaperSenderAdapter senderAdapter = this.platform.getSenderAdapter();
 
     private final CrateManager crateManager = this.platform.getCrateManager();
     private final BukkitUserManager userManager = this.platform.getUserManager();
@@ -143,7 +146,7 @@ public class QuadCrateManager {
 
         // Check if schematic folder is empty.
         if (this.crateManager.getCrateSchematics().isEmpty()) {
-            Messages.no_schematics_found.sendMessage(this.player);
+            this.senderAdapter.sendMessage(this.player, MessageKeys.no_schematics_found);
 
             this.crateManager.removePlayerFromOpeningList(this.player);
 

@@ -5,7 +5,6 @@ import ch.jalu.configme.resource.PropertyReader;
 import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.common.config.impl.messages.CommandKeys;
 import com.badbones69.common.config.impl.messages.CrateKeys;
-import com.badbones69.common.config.impl.messages.ErrorKeys;
 import com.badbones69.common.config.impl.messages.MiscKeys;
 import com.badbones69.common.config.impl.messages.PlayerKeys;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
@@ -78,11 +77,11 @@ public enum Property {
     no_virtual_key(MiscKeys.no_virtual_key, newProperty("Messages.No-Virtual-Key", MiscKeys.no_virtual_key.getDefaultValue())),
     correct_usage(MiscKeys.correct_usage, newProperty("Messages.Correct-Usage", MiscKeys.correct_usage.getDefaultValue())),
     feature_disabled(MiscKeys.feature_disabled, newProperty("Messages.Feature-Disabled", MiscKeys.feature_disabled.getDefaultValue())),
-    no_prizes_found(ErrorKeys.no_prizes_found, newProperty("Messages.No-Prizes-Found", ErrorKeys.no_prizes_found.getDefaultValue())),
-    no_schematics_found(ErrorKeys.no_schematics_found, newProperty("Messages.No-Schematics-Found", ErrorKeys.no_schematics_found.getDefaultValue())),
-    internal_error(ErrorKeys.internal_error, newProperty("Messages.Internal-Error", ErrorKeys.internal_error.getDefaultValue())),
+    //no_prizes_found(ErrorKeys.no_prizes_found, newProperty("Messages.No-Prizes-Found", ErrorKeys.no_prizes_found.getDefaultValue())), //todo() update migration
+    //no_schematics_found(ErrorKeys.no_schematics_found, newProperty("Messages.No-Schematics-Found", ErrorKeys.no_schematics_found.getDefaultValue())), //todo() update migration
+    //internal_error(ErrorKeys.internal_error, newProperty("Messages.Internal-Error", ErrorKeys.internal_error.getDefaultValue())), //todo() update migration
     inventory_full(PlayerKeys.inventory_not_empty, newProperty("Messages.Inventory-Full", PlayerKeys.inventory_not_empty.getDefaultValue())),
-    prize_error(ErrorKeys.prize_error, newProperty("Messages.Prize-Error", ErrorKeys.prize_error.getDefaultValue())),
+    //prize_error(ErrorKeys.prize_error, newProperty("Messages.Prize-Error", ErrorKeys.prize_error.getDefaultValue())), //todo() update migration
     must_be_player(PlayerKeys.must_be_a_player, newProperty("Messages.Must-Be-A-Player", PlayerKeys.must_be_a_player.getDefaultValue())),
     must_be_console(PlayerKeys.must_be_console_sender, newProperty("Messages.Must-Be-A-Console-Sender", PlayerKeys.must_be_console_sender.getDefaultValue())),
     must_be_looking_at_block(PlayerKeys.must_be_looking_at_block, newProperty("Messages.Must-Be-Looking-At-A-Block", PlayerKeys.must_be_looking_at_block.getDefaultValue())),

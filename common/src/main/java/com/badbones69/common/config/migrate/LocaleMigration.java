@@ -21,11 +21,11 @@ public class LocaleMigration extends PlainMigrationService {
                 | Property.no_virtual_key.moveString(reader, configurationData)
                 | Property.correct_usage.moveString(reader, configurationData)
                 | Property.feature_disabled.moveString(reader, configurationData)
-                | Property.no_prizes_found.moveString(reader, configurationData)
-                | Property.no_schematics_found.moveString(reader, configurationData)
-                | Property.internal_error.moveString(reader, configurationData)
+                //| Property.no_prizes_found.moveString(reader, configurationData) //todo() update migration
+                //| Property.no_schematics_found.moveString(reader, configurationData) //todo() update migration
+                //| Property.internal_error.moveString(reader, configurationData) //todo() update migration
                 | Property.inventory_full.moveString(reader, configurationData)
-                | Property.prize_error.moveString(reader, configurationData)
+                //| Property.prize_error.moveString(reader, configurationData) //todo() update migration
                 | Property.must_be_player.moveString(reader, configurationData)
                 | Property.must_be_console.moveString(reader, configurationData)
                 | Property.must_be_looking_at_block.moveString(reader, configurationData)

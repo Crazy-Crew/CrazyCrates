@@ -6,6 +6,7 @@ import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
+import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
 import com.badbones69.crazycrates.paper.commands.CommandManager;
 import com.badbones69.crazycrates.paper.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
@@ -78,6 +79,8 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin {
     private ButtonManager buttonManager;
     private CrateManager crateManager;
 
+    private PaperSenderAdapter senderAdapter;
+
     private MetricsWrapper metrics;
 
     @Override
@@ -103,6 +106,8 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin {
                 .addFile(version, FileType.JSON);
 
         if (Plugins.placeholder_api.isEnabled()) new PlaceholderAPISupport().register();
+
+        this.senderAdapter = new PaperSenderAdapter(this);
 
         this.buttonManager = new ButtonManager(this);
         this.buttonManager.load();
@@ -214,6 +219,10 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin {
 
     public @NonNull InventoryManager getInventoryManager() {
         return this.inventoryManager;
+    }
+
+    public @NonNull PaperSenderAdapter getSenderAdapter() {
+        return this.senderAdapter;
     }
 
     @Override

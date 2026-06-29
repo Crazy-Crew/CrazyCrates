@@ -12,7 +12,6 @@ import net.kyori.adventure.audience.Audience;
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.config.impl.messages.CommandKeys;
 import com.badbones69.common.config.impl.messages.CrateKeys;
-import com.badbones69.common.config.impl.messages.ErrorKeys;
 import com.badbones69.common.config.impl.messages.MiscKeys;
 import com.badbones69.common.config.impl.messages.PlayerKeys;
 import org.bukkit.entity.Player;
@@ -32,14 +31,7 @@ public enum Messages {
     correct_usage(MiscKeys.correct_usage),
     no_keys(MiscKeys.no_keys),
     no_virtual_key(MiscKeys.no_virtual_key),
-    internal_error(ErrorKeys.internal_error),
-    key_refund(ErrorKeys.key_refund),
-    no_schematics_found(ErrorKeys.no_schematics_found),
-    no_prizes_found(ErrorKeys.no_prizes_found),
-    prize_not_found(ErrorKeys.prize_not_found),
-    prize_error(ErrorKeys.prize_error),
-    cannot_be_empty(ErrorKeys.cannot_be_empty),
-    cannot_be_air(ErrorKeys.cannot_be_air),
+
     not_online(PlayerKeys.not_online),
 
     no_permission(PlayerKeys.no_permission),

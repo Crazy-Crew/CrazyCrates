@@ -49,7 +49,7 @@ public class LegacyColorMigrator extends ICrateMigrator {
             failed.add("<red>⤷ config.yml");
         }
 
-        try {
+        /*try { //todo() update messages migrator
             for (final Messages message : Messages.values()) {
                 message.migrate();
             }
@@ -60,7 +60,7 @@ public class LegacyColorMigrator extends ICrateMigrator {
             this.messages.reload();
         } catch (Exception exception) {
             failed.add("<red>⤷ messages.yml");
-        }
+        }*/
 
         for (final Path path : this.fusion.getFilesByPath(this.dataPath.resolve("crates"), ".yml")) {
             final Optional<PaperCustomFile> origin = this.fileManager.getPaperFile(path);
