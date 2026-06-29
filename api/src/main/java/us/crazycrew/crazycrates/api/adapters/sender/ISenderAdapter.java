@@ -1,11 +1,13 @@
 package us.crazycrew.crazycrates.api.adapters.sender;
 
 import com.ryderbelserion.fusion.core.api.FusionKey;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@ApiStatus.Internal
 public abstract class ISenderAdapter<C, S> {
 
     public abstract UUID getUniqueId(@NotNull final S sender);

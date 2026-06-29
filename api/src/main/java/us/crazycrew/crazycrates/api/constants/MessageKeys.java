@@ -1,8 +1,11 @@
 package us.crazycrew.crazycrates.api.constants;
 
 import com.ryderbelserion.fusion.core.api.FusionKey;
+import org.jetbrains.annotations.ApiStatus;
+
 import static us.crazycrew.crazycrates.api.CrazyCrates.namespace;
 
+@ApiStatus.Internal
 public class MessageKeys {
 
     public static final FusionKey default_locale = FusionKey.key(namespace, "default");
