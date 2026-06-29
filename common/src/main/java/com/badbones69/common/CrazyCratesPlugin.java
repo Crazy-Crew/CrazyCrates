@@ -3,15 +3,12 @@ package com.badbones69.common;
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.impl.Settings;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
-import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.CrazyCrates;
-import us.crazycrew.crazycrates.api.KeyManager;
-import us.crazycrew.crazycrates.api.users.UserManager;
 import java.nio.file.Path;
 import java.util.List;
 
-@NullMarked
 public abstract class CrazyCratesPlugin extends CrazyCrates {
 
     private final FusionKyori fusion;
@@ -22,8 +19,6 @@ public abstract class CrazyCratesPlugin extends CrazyCrates {
         this.fusion = fusion;
     }
 
-    private UserManager userManager;
-    private KeyManager keyManager;
     private Settings settings;
 
     @Override
@@ -48,32 +43,22 @@ public abstract class CrazyCratesPlugin extends CrazyCrates {
     }
 
     @Override
-    public Path getCratesPath() {
+    public @NonNull Path getCratesPath() {
         return this.path.resolve("crates");
     }
 
     @Override
-    public Path getDataPath() {
+    public @NonNull Path getDataPath() {
         return this.path;
     }
 
     @Override
-    public List<String> getCrateFiles(boolean removeExtension) {
+    public @NonNull List<String> getCrateFiles(boolean removeExtension) {
         return this.fusion.getFilesByName("crates", this.path, ".yml", removeExtension);
     }
 
     @Override
-    public UserManager getUserManager() {
-        return this.userManager;
-    }
-
-    @Override
-    public KeyManager getKeyManager() {
-        return this.keyManager;
-    }
-
-    @Override
-    public Settings getSettings() {
+    public @NonNull Settings getSettings() {
         return this.settings;
     }
 }

@@ -44,7 +44,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
-
 import static com.badbones69.crazycrates.paper.utils.MiscUtils.registerPermissions;
 
 public final class CrazyCratesPaper extends CrazyCratesPlugin {
@@ -217,6 +216,7 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin {
         return this.inventoryManager;
     }
 
+    @Override
     public @NonNull BukkitUserManager getUserManager() {
         return this.userManager;
     }
