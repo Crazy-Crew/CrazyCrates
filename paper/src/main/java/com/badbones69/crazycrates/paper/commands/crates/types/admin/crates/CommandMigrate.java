@@ -34,7 +34,7 @@ public class CommandMigrate extends BaseCommand {
         final boolean hasFlag = flags.hasFlag("mt");
 
         if (!hasFlag) {
-            Messages.lacking_flag.sendMessage(sender, Map.of(
+            this.senderAdapter.sendMessage(sender, MessageKeys.lacking_flag, Map.of(
                     "{flag}", "-mt",
                     "{usage}", "/crazycrates migrate -mt <migration_type>"
             ));
@@ -56,7 +56,7 @@ public class CommandMigrate extends BaseCommand {
                 final boolean hasCrateFlag = flags.hasFlag("c");
 
                 if (!hasCrateFlag) {
-                    Messages.lacking_flag.sendMessage(sender, Map.of(
+                    this.senderAdapter.sendMessage(sender, MessageKeys.lacking_flag, Map.of(
                             "{flag}", "-mt",
                             "{usage}", "/crazycrates migrate -mt <migration_type> -c <crate>"
                     ));

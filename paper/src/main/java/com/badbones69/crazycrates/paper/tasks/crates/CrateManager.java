@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.common.config.impl.EditorKeys;
+import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
 import com.badbones69.crazycrates.paper.listeners.items.NexoInteractListener;
 import com.badbones69.crazycrates.paper.listeners.items.OraxenInteractListener;
 import com.badbones69.crazycrates.paper.managers.BukkitKeyManager;
@@ -61,6 +62,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.NonNull;
+import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
@@ -98,11 +100,13 @@ public class CrateManager {
 
     private final PaperFileManager fileManager;
     private final CrazyCratesPaper platform;
+    private final PaperSenderAdapter senderAdapter;
     private final FusionPaper fusion;
     private final Path dataPath;
 
     public CrateManager(@NonNull final CrazyCratesPaper platform, @NonNull final InventoryManager inventoryManager, @NonNull final BukkitKeyManager keyManager) {
         this.platform = platform;
+        this.senderAdapter = this.platform.getSenderAdapter();
 
         this.fileManager = this.platform.getFileManager();
         this.dataPath = this.platform.getDataPath();
@@ -725,7 +729,7 @@ public class CrateManager {
                 return;
             }
 
-            Messages.feature_disabled.sendMessage(player);
+            this.senderAdapter.sendMessage(player, MessageKeys.feature_disabled);
 
             return;
         }

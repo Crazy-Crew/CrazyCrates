@@ -14,17 +14,17 @@ public class LocaleMigration extends PlainMigrationService {
     }
 
     private boolean migrateConfig(@NotNull PropertyReader reader, @NotNull ConfigurationData configurationData) {
-        return Property.unknown_command.moveString(reader, configurationData)
-                | Property.no_teleporting.moveString(reader, configurationData)
-                | Property.no_commands_while_in_crate.moveString(reader, configurationData)
-                | Property.no_key.moveString(reader, configurationData)
-                | Property.no_virtual_key.moveString(reader, configurationData)
-                | Property.correct_usage.moveString(reader, configurationData)
-                | Property.feature_disabled.moveString(reader, configurationData)
+        return //Property.unknown_command.moveString(reader, configurationData)
+                //| Property.no_teleporting.moveString(reader, configurationData)
+                //| Property.no_commands_while_in_crate.moveString(reader, configurationData)
+                //| Property.no_key.moveString(reader, configurationData)
+                //| Property.no_virtual_key.moveString(reader, configurationData)
+                //| Property.correct_usage.moveString(reader, configurationData)
+                //| Property.feature_disabled.moveString(reader, configurationData)
                 //| Property.no_prizes_found.moveString(reader, configurationData) //todo() update migration
                 //| Property.no_schematics_found.moveString(reader, configurationData) //todo() update migration
                 //| Property.internal_error.moveString(reader, configurationData) //todo() update migration
-                | Property.inventory_full.moveString(reader, configurationData)
+                Property.inventory_full.moveString(reader, configurationData)
                 //| Property.prize_error.moveString(reader, configurationData) //todo() update migration
                 | Property.must_be_player.moveString(reader, configurationData)
                 | Property.must_be_console.moveString(reader, configurationData)

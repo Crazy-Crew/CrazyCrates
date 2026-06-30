@@ -25,6 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.text.NumberFormat;
 import java.util.Arrays;
@@ -221,7 +222,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                 this.player.playSound(sound);
             }
 
-            Messages.no_virtual_key.sendMessage(this.player, "{crate}", fancyName);
+            this.senderAdapter.sendMessage(this.player, MessageKeys.no_virtual_key, Map.of("{crate}", fancyName));
 
             return;
         }

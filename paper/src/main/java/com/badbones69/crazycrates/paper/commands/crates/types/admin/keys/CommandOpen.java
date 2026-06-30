@@ -106,7 +106,7 @@ public class CommandOpen extends BaseCommand {
                 player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
-            Messages.no_keys.sendMessage(player, Map.of("{key}", crate.getKeyName(), "{crate}", fancyName));
+            this.senderAdapter.sendMessage(player, MessageKeys.no_keys, Map.of("{key}", crate.getKeyName(), "{crate}", fancyName));
 
             return;
         }
@@ -157,8 +157,7 @@ public class CommandOpen extends BaseCommand {
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
                 player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
-
-            Messages.no_keys.sendMessage(sender, Map.of("{key}", crate.getKeyName(), "{crate}", fancyName));
+            this.senderAdapter.sendMessage(sender, MessageKeys.no_keys, Map.of("{key}", crate.getKeyName(), "{crate}", fancyName));
 
             return;
         }
@@ -235,7 +234,7 @@ public class CommandOpen extends BaseCommand {
         int currentAmount = 0; // amount of keys to use when rolling
 
         if (keys == 0) {
-            Messages.no_keys.sendMessage(player, Map.of("{crate}", fancyName, "{key}", keyName));
+            this.senderAdapter.sendMessage(player, MessageKeys.no_keys, Map.of("{crate}", fancyName, "{key}", keyName));
 
             return;
         }

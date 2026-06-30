@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.paper.listeners.crates.types;
 
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
+import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
 import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.FusionPaper;
@@ -19,7 +20,6 @@ import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.SessionMan
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.ChestManager;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -34,6 +34,7 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
+import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,8 @@ public class QuadCrateListener implements Listener {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final PaperSenderAdapter senderAdapter = this.platform.getSenderAdapter();
 
     private final FusionPaper fusion = this.platform.getFusion();
 
@@ -187,7 +190,7 @@ public class QuadCrateListener implements Listener {
 
             final Crate crate = session.getCrate();
 
-            Messages.no_commands_while_in_crate.sendMessage(player, Map.of(
+            this.senderAdapter.sendMessage(player, MessageKeys.no_commands_while_using_crate, Map.of(
                     "{crate}", crate.getCrateName(),
                     "{player}", player.getName()
             ));
@@ -205,7 +208,7 @@ public class QuadCrateListener implements Listener {
 
             final Crate crate = session.getCrate();
 
-            Messages.no_teleporting.sendMessage(player, Map.of(
+            this.senderAdapter.sendMessage(player, MessageKeys.no_teleporting, Map.of(
                     "{crate}", crate.getCrateName(),
                     "{player}", player.getName()
             ));

@@ -9,7 +9,6 @@ import com.badbones69.common.config.migrate.LocaleMigration;
 import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.common.config.impl.messages.CommandKeys;
 import com.badbones69.common.config.impl.messages.CrateKeys;
-import com.badbones69.common.config.impl.messages.MiscKeys;
 import com.badbones69.common.config.impl.messages.PlayerKeys;
 import java.nio.file.Path;
 
@@ -42,7 +41,7 @@ public class ConfigManager {
         messages = SettingsManagerBuilder
                 .withYamlFile(path.resolve("messages.yml"), builder)
                 .migrationService(new LocaleMigration())
-                .configurationData(MiscKeys.class, PlayerKeys.class, CrateKeys.class, CommandKeys.class)
+                .configurationData(PlayerKeys.class, CrateKeys.class, CommandKeys.class)
                 .create();
     }
 

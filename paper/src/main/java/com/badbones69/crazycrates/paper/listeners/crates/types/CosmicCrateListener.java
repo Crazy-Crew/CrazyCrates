@@ -261,7 +261,7 @@ public class CosmicCrateListener implements Listener {
                 placeholders.put("{key}", crate.getKeyName());
 
                 // Send no keys message.
-                Messages.no_keys.sendMessage(player, placeholders);
+                this.senderAdapter.sendMessage(player, MessageKeys.no_keys, placeholders);
 
                 // Remove opening stuff.
                 this.crateManager.endCrate(crate, player);

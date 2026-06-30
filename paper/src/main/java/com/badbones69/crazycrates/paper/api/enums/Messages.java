@@ -12,7 +12,6 @@ import net.kyori.adventure.audience.Audience;
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.config.impl.messages.CommandKeys;
 import com.badbones69.common.config.impl.messages.CrateKeys;
-import com.badbones69.common.config.impl.messages.MiscKeys;
 import com.badbones69.common.config.impl.messages.PlayerKeys;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -22,15 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 public enum Messages {
-
-    no_teleporting(MiscKeys.no_teleporting),
-    no_commands_while_in_crate(MiscKeys.no_commands_while_using_crate),
-    feature_disabled(MiscKeys.feature_disabled),
-    lacking_flag(MiscKeys.lacking_flag),
-    unknown_command(MiscKeys.unknown_command),
-    correct_usage(MiscKeys.correct_usage),
-    no_keys(MiscKeys.no_keys),
-    no_virtual_key(MiscKeys.no_virtual_key),
 
     not_online(PlayerKeys.not_online),
 

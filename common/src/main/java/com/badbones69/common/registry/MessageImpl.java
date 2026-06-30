@@ -93,6 +93,53 @@ public class MessageImpl {
                             "errors", "key-refund"
                     ));
 
+                    action.addKey(key, MessageKeys.no_teleporting, new YamlMessageAdapter(
+                            configuration,
+                            "{prefix}<red>You may not teleport away while opening a crate.",
+                            "misc", "no-teleporting"
+                    ));
+
+                    action.addKey(key, MessageKeys.no_commands_while_using_crate, new YamlMessageAdapter(
+                            configuration,
+                            "{prefix}<red>You are not allowed to use commands while opening crates.",
+                            "misc", "no-commands"
+                    ));
+
+                    action.addKey(key, MessageKeys.unknown_command, new YamlMessageAdapter(
+                            configuration,
+                            "{prefix}<red>{command} is not a known command.",
+                            "misc", "unknown-command"
+                    ));
+
+                    action.addKey(key, MessageKeys.no_virtual_key, new YamlMessageAdapter(
+                            configuration,
+                            "{prefix}<red>You need a virtual key to open <gold>{crate}.",
+                            "misc", "no-virtual-keys"
+                    ));
+
+                    action.addKey(key, MessageKeys.no_keys, new YamlMessageAdapter(
+                            configuration,
+                            "{prefix}<red>You must have a {key} <red>in your hand to use <gold>{crate}.",
+                            "misc", "no-keys"
+                    ));
+
+                    action.addKey(key, MessageKeys.correct_usage, new YamlMessageAdapter(
+                            configuration,
+                            "{prefix}<red>The correct usage for this command is <yellow>{usage}",
+                            "misc", "correct-usage"
+                    ));
+
+                    action.addKey(key, MessageKeys.feature_disabled, new YamlMessageAdapter(
+                            configuration,
+                            "{prefix}<red>This feature is disabled.",
+                            "misc", "correct-usage"
+                    ));
+
+                    action.addKey(key, MessageKeys.lacking_flag, new YamlMessageAdapter(
+                            configuration,
+                            "{prefix}<red>{flag} is not present in the command, expected format: {usage}",
+                            "misc", "lacking-flag"
+                    ));
                 }, () -> this.fusion.log(Level.INFO, "Path %s not found in cache.".formatted(path)));
             }
         });

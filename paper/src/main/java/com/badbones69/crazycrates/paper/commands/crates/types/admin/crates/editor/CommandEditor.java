@@ -32,7 +32,7 @@ public class CommandEditor extends BaseCommand {
         }
 
         if (!flags.hasFlag("c")) {
-            Messages.lacking_flag.sendMessage(player,            Map.of(
+            this.senderAdapter.sendMessage(player, MessageKeys.lacking_flag, Map.of(
                     "{flag}", "-c",
                     "{usage}", "/crazycrates editor -c <crate_name>"
             ));

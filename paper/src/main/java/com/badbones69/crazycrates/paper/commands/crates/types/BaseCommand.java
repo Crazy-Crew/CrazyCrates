@@ -15,7 +15,6 @@ import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.core.api.enums.Level;
-import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import dev.triumphteam.cmd.core.annotations.Command;
@@ -50,8 +49,6 @@ public abstract class BaseCommand {
     protected final Path path = this.platform.getDataPath();
 
     protected final FusionPaper fusion = this.platform.getFusion();
-
-    protected final MessageRegistry messageRegistry = this.fusion.getMessageRegistry();
 
     protected final PaperSenderAdapter senderAdapter = this.platform.getSenderAdapter();
 

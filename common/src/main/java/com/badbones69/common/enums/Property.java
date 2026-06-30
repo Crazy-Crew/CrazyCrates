@@ -5,7 +5,6 @@ import ch.jalu.configme.resource.PropertyReader;
 import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.common.config.impl.messages.CommandKeys;
 import com.badbones69.common.config.impl.messages.CrateKeys;
-import com.badbones69.common.config.impl.messages.MiscKeys;
 import com.badbones69.common.config.impl.messages.PlayerKeys;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
@@ -70,13 +69,13 @@ public enum Property {
     gui_customizer_toggle(ConfigKeys.gui_customizer_toggle, newProperty("Settings.GUI-Customizer-Toggle", ConfigKeys.gui_customizer_toggle.getDefaultValue()), false),
     gui_customizer_lore(ConfigKeys.gui_customizer, newListProperty("Settings.GUI-Customizer", ConfigKeys.gui_customizer.getDefaultValue()), Collections.emptyList()),
 
-    unknown_command(MiscKeys.unknown_command, newProperty("Messages.Unknown-Command", MiscKeys.unknown_command.getDefaultValue())),
-    no_teleporting(MiscKeys.no_teleporting, newProperty("Messages.No-Teleporting", MiscKeys.no_teleporting.getDefaultValue())),
-    no_commands_while_in_crate(MiscKeys.no_commands_while_using_crate, newProperty("Messages.No-Commands-While-In-Crate", MiscKeys.no_commands_while_using_crate.getDefaultValue())),
-    no_key(MiscKeys.no_keys, newProperty("Messages.No-Key", MiscKeys.no_keys.getDefaultValue())),
-    no_virtual_key(MiscKeys.no_virtual_key, newProperty("Messages.No-Virtual-Key", MiscKeys.no_virtual_key.getDefaultValue())),
-    correct_usage(MiscKeys.correct_usage, newProperty("Messages.Correct-Usage", MiscKeys.correct_usage.getDefaultValue())),
-    feature_disabled(MiscKeys.feature_disabled, newProperty("Messages.Feature-Disabled", MiscKeys.feature_disabled.getDefaultValue())),
+    //unknown_command(MiscKeys.unknown_command, newProperty("Messages.Unknown-Command", MiscKeys.unknown_command.getDefaultValue())),
+    //no_teleporting(MiscKeys.no_teleporting, newProperty("Messages.No-Teleporting", MiscKeys.no_teleporting.getDefaultValue())),
+    //no_commands_while_in_crate(MiscKeys.no_commands_while_using_crate, newProperty("Messages.No-Commands-While-In-Crate", MiscKeys.no_commands_while_using_crate.getDefaultValue())),
+    //no_key(MiscKeys.no_keys, newProperty("Messages.No-Key", MiscKeys.no_keys.getDefaultValue())),
+    //no_virtual_key(MiscKeys.no_virtual_key, newProperty("Messages.No-Virtual-Key", MiscKeys.no_virtual_key.getDefaultValue())),
+    //correct_usage(MiscKeys.correct_usage, newProperty("Messages.Correct-Usage", MiscKeys.correct_usage.getDefaultValue())),
+    //feature_disabled(MiscKeys.feature_disabled, newProperty("Messages.Feature-Disabled", MiscKeys.feature_disabled.getDefaultValue())),
     //no_prizes_found(ErrorKeys.no_prizes_found, newProperty("Messages.No-Prizes-Found", ErrorKeys.no_prizes_found.getDefaultValue())), //todo() update migration
     //no_schematics_found(ErrorKeys.no_schematics_found, newProperty("Messages.No-Schematics-Found", ErrorKeys.no_schematics_found.getDefaultValue())), //todo() update migration
     //internal_error(ErrorKeys.internal_error, newProperty("Messages.Internal-Error", ErrorKeys.internal_error.getDefaultValue())), //todo() update migration
