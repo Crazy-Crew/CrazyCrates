@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.api.builders;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
@@ -25,13 +26,15 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    protected final FusionPaper fusion = this.plugin.getFusion();
+    protected final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    protected final FusionPaper fusion = this.platform.getFusion();
   
-    protected final BukkitUserManager userManager = this.plugin.getUserManager();
+    protected final BukkitUserManager userManager = this.platform.getUserManager();
 
-    protected final InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    protected final InventoryManager inventoryManager = this.platform.getInventoryManager();
 
-    protected final CrateManager crateManager = this.plugin.getCrateManager();
+    protected final CrateManager crateManager = this.platform.getCrateManager();
 
     protected final ComponentLogger logger = this.plugin.getComponentLogger();
 

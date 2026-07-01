@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.objects.buttons.Button;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateButton;
@@ -52,11 +53,13 @@ public class Crate {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final ButtonManager buttonManager = this.plugin.getButtonManager();
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
 
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final ButtonManager buttonManager = this.platform.getButtonManager();
 
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final CrateManager crateManager = this.platform.getCrateManager();
+
+    private final BukkitUserManager userManager = this.platform.getUserManager();
 
     private ItemBuilder previewTierBorderItem;
     private ItemBuilder borderItem;
@@ -896,9 +899,9 @@ public class Crate {
         return section + "." + path;
     }
 
-    private final PaperFileManager fileManager = this.plugin.getFileManager();
+    private final PaperFileManager fileManager = this.platform.getFileManager();
 
-    private final Path dataPath = this.plugin.getDataPath();
+    private final Path dataPath = this.platform.getDataPath();
 
     /**
      * Saves item stacks to editor-items

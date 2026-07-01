@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.support.placeholders.types;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.support.placeholders.api.AbstractPlaceholder;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
@@ -17,9 +18,11 @@ public final class NamePlaceholder implements AbstractPlaceholder {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final FusionPaper fusion = this.plugin.getFusion();
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
 
-    private final UserManager userManager = this.plugin.getUserManager();
+    private final FusionPaper fusion = this.platform.getFusion();
+
+    private final UserManager userManager = this.platform.getUserManager();
 
     private final Player player;
 

@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.api;
 
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import com.badbones69.crazycrates.paper.CrazyCrates;
@@ -31,10 +31,11 @@ import java.util.Random;
 public class PrizeManager {
     
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
-    private static final FusionPaper fusion = plugin.getFusion();
+    private static final CrazyCratesPaper platform = plugin.getPlatform();
+    private static final FusionPaper fusion = platform.getFusion();
     private static final Server server = plugin.getServer();
     private static final PluginManager pluginManager = server.getPluginManager();
-    private static final BukkitUserManager userManager = plugin.getUserManager();
+    private static final BukkitUserManager userManager = platform.getUserManager();
 
     public static int getCap(@NotNull final Crate crate, @NotNull final Player player) {
         final String format = "crazycrates.respin." + crate.getFileName() + ".";
@@ -111,7 +112,7 @@ public class PrizeManager {
         if (prize != null) {
             givePrize(player, player.getLocation().clone().add(0, 1, 0), crate, prize);
         } else {
-            Messages.prize_error.sendMessage(player, Map.of(
+            Message.prize_error.sendMessage(player, Map.of(
                     "{crate}", crate.getCrateName(),
                     "{player}", player.getName()
             ));

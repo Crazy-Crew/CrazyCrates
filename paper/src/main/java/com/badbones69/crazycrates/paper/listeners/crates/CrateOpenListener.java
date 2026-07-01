@@ -1,13 +1,14 @@
 package com.badbones69.crazycrates.paper.listeners.crates;
 
 import ch.jalu.configme.SettingsManager;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
@@ -25,13 +26,15 @@ public class CrateOpenListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final FusionPaper fusion = this.plugin.getFusion();
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final FusionPaper fusion = this.platform.getFusion();
 
     private final Server server = this.plugin.getServer();
 
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.platform.getCrateManager();
 
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final BukkitUserManager userManager = this.platform.getUserManager();
 
     private final SettingsManager config = ConfigManager.getConfig();
 
@@ -53,7 +56,7 @@ public class CrateOpenListener implements Listener {
 
         if (crateType != CrateType.menu) {
             if (crate.getPrizes().isEmpty() || !crate.canWinPrizes(player)) {
-                Messages.no_prizes_found.sendMessage(player, "{crate}", fancyName);
+                Message.prizes_empty.sendMessage(player, "{value}", fancyName);
 
                 this.crateManager.endCrate(crate, player);
 
@@ -64,7 +67,7 @@ public class CrateOpenListener implements Listener {
         }
 
         if (!player.hasPermission("crazycrates.open." + fileName)) {
-            Messages.no_crate_permission.sendMessage(player, "{crate}", fancyName);
+            Message.crate_no_permission.sendMessage(player, "{crate}", fancyName);
 
             this.crateManager.endCrate(crate, player);
 

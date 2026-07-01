@@ -1,8 +1,10 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator;
 
 import ch.jalu.configme.SettingsManager;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
+import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.badbones69.common.config.ConfigManager;
@@ -23,19 +25,21 @@ public abstract class ICrateMigrator {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    protected final FusionPaper fusion = this.plugin.getFusion();
+    protected final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    protected final FusionPaper fusion = this.platform.getFusion();
 
     protected final ComponentLogger logger = this.plugin.getComponentLogger();
 
-    protected final Path dataPath = this.plugin.getDataPath();
+    protected final Path dataPath = this.platform.getDataPath();
 
-    protected final CrateManager crateManager = this.plugin.getCrateManager();
+    protected final CrateManager crateManager = this.platform.getCrateManager();
+
+    protected final BukkitUserManager userManager = this.platform.getUserManager();
 
     protected final SettingsManager config = ConfigManager.getConfig();
 
-    protected final SettingsManager messages = ConfigManager.getMessages();
-
-    protected final PaperFileManager fileManager = this.plugin.getFileManager();
+    protected final PaperFileManager fileManager = this.platform.getFileManager();
 
     protected final CommandSender sender;
 
@@ -67,7 +71,7 @@ public abstract class ICrateMigrator {
     }
 
     public void sendMessage(List<String> files, final int success, final int failed) {
-        Messages.successfully_migrated.sendMessage(this.sender, Map.of(
+        Message.command_migrate_success.sendMessage(this.sender, Map.of(
                 "{files}", files.size() > 1 ? StringUtils.toString(files) : files.isEmpty() ? "N/A" : files.getFirst(),
                 "{succeeded_amount}", String.valueOf(success),
                 "{failed_amount}", String.valueOf(failed),
@@ -82,9 +86,9 @@ public abstract class ICrateMigrator {
         final ConfigurationSection crate = configuration.getConfigurationSection("Crate");
 
         if (crate == null) {
-            Messages.error_migrating.sendMessage(sender,             Map.of(
+            Message.command_migrate_error.sendMessage(this.sender, Map.of(
                     "{file}", crateName.isEmpty() ? customFile.getPrettyName() : crateName,
-                    "{type}", type.getName(),
+                    "{type}", this.type.getName(),
                     "{reason}", "File could not be found in our data, likely invalid yml file that didn't load properly."
             ));
 

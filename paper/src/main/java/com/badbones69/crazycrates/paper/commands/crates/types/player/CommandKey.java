@@ -1,7 +1,8 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.player;
 
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
@@ -20,15 +21,17 @@ public class CommandKey {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final BukkitUserManager userManager = this.platform.getUserManager();
+    private final CrateManager crateManager = this.platform.getCrateManager();
 
     @Command
     @Permission(value = "crazycrates.keys", def = PermissionDefault.TRUE)
     @Syntax("/keys")
     public void personal(Player player) {
-        getKeys(player, player, Messages.virtual_keys_header.getMessage(player, "{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(player.getUniqueId()))
-        ), Messages.no_virtual_keys.getMessage(player));
+        getKeys(player, player, Message.command_keys_virtual_keys_header.getMessage(player, "{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(player.getUniqueId()))
+        ), Message.no_virtual_keys.getMessage(player));
     }
 
     @Command("view")
@@ -53,10 +56,10 @@ public class CommandKey {
             return;
         }
 
-        getKeys(target, sender, Messages.other_player_no_keys_header.getMessage(sender, Map.of(
+        getKeys(target, sender, Message.command_keys_target_player_header.getMessage(sender, Map.of(
                 "{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(target.getUniqueId())),
                 "{player}", targetName
-        )), Messages.other_player_no_keys.getMessage(sender, "{player}", targetName));
+        )), Message.command_keys_target_player_no_keys.getMessage(sender, "{player}", targetName));
     }
 
     /**
@@ -88,7 +91,7 @@ public class CommandKey {
             if (amount > 0) {
                 hasKeys = true;
 
-                message.add(Messages.per_crate.getMessage(player, Map.of(
+                message.add(Message.crate_list_per_crate.getMessage(player, Map.of(
                         "{crate_opened}", String.valueOf(userManager.getCrateOpened(uuid, crate.getFileName())),
                         "{keys}", String.valueOf(amount),
                         "{crate}", crate.getCrateName()

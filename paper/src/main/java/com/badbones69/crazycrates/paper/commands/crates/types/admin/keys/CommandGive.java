@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.keys;
 
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -27,7 +27,7 @@ public class CommandGive extends BaseCommand {
         final boolean isSilent = flags.hasFlag("s");
 
         if (crateName == null || crateName.isBlank()) {
-            Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
+            Message.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
 
             return;
         }
@@ -35,7 +35,7 @@ public class CommandGive extends BaseCommand {
         final Crate crate = getCrate(sender, crateName, false);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
+            Message.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }
@@ -61,7 +61,7 @@ public class CommandGive extends BaseCommand {
         final boolean isSilent = flags.hasFlag("s");
 
         if (crateName.isEmpty()) {
-            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
+            Message.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }
@@ -69,14 +69,14 @@ public class CommandGive extends BaseCommand {
         final Crate crate = getCrate(sender, crateName, false);
 
         if (crate == null) {
-            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
+            Message.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }
 
         final KeyType keyType = getKeyType(type);
 
-        Messages.given_everyone_keys.sendMessage(sender, Map.of(
+        Message.command_gave_everyone_keys.sendMessage(sender, Map.of(
                 "{keytype}", keyType.getFriendlyName(),
                 "{amount}", String.valueOf(amount),
                 "{key}", crate.getKeyName()

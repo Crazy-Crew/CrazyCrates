@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.tasks.menus;
 
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.builders.gui.DynamicInventoryBuilder;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.common.config.impl.ConfigKeys;
@@ -40,7 +40,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
 
         this.crateManager.getUsableCrates().forEach(crate -> this.gui.addPageItem(new GuiItem(crate.getKey(1), action -> {
             if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(this.player)) {
-                Messages.no_permission.sendMessage(this.player);
+                Message.lacking_permission.sendMessage(this.player);
 
                 this.gui.close(this.player, InventoryCloseEvent.Reason.CANT_USE, false);
 
@@ -73,7 +73,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
 
                         placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
 
-                        Messages.obtaining_keys.sendMessage(this.player, placeholders);
+                        Message.obtaining_keys.sendMessage(this.player, placeholders);
 
                         return;
                     }
@@ -95,7 +95,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
                         placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
                         placeholders.put("{amount}", "8");
 
-                        Messages.obtaining_keys.sendMessage(this.player, placeholders);
+                        Message.obtaining_keys.sendMessage(this.player, placeholders);
 
                         return;
                     }
@@ -110,7 +110,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
 
                     placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
 
-                    Messages.obtaining_keys.sendMessage(this.player, placeholders);
+                    Message.obtaining_keys.sendMessage(this.player, placeholders);
                 }
 
                 case SHIFT_RIGHT -> {
@@ -121,7 +121,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
                     placeholders.put("{keytype}", KeyType.physical_key.getFriendlyName());
                     placeholders.put("{amount}", "8");
 
-                    Messages.obtaining_keys.sendMessage(this.player, placeholders);
+                    Message.obtaining_keys.sendMessage(this.player, placeholders);
                 }
             }
         })));
@@ -144,7 +144,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
                             )
                     .asGuiItem(_ -> {
                         if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(this.player)) {
-                            Messages.no_permission.sendMessage(this.player);
+                            Message.lacking_permission.sendMessage(this.player);
 
                             gui.close(this.player, InventoryCloseEvent.Reason.CANT_USE, false);
 

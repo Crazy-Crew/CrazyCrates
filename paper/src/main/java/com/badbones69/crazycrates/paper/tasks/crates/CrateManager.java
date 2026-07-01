@@ -2,6 +2,8 @@ package com.badbones69.crazycrates.paper.tasks.crates;
 
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.common.config.impl.EditorKeys;
@@ -59,12 +61,12 @@ import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.joml.Matrix4f;
+import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
@@ -86,17 +88,34 @@ import java.util.stream.Stream;
 
 public class CrateManager {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
-    private final BukkitKeyManager keyManager = this.plugin.getKeyManager();
-    private final Path dataPath = this.plugin.getDataPath();
-    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
-    private final PaperFileManager fileManager = this.plugin.getFileManager();
-    private final com.badbones69.common.Server instance = this.plugin.getInstance();
-    private final FusionPaper fusion = this.plugin.getFusion();
+    private final InventoryManager inventoryManager;
+    private final BukkitKeyManager keyManager;
 
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
-    private final Server server = this.plugin.getServer();
-    private final PluginManager pluginManager = this.server.getPluginManager();
+    private final ComponentLogger logger;
+    private final PluginManager pluginManager;
+    private final CrazyCrates plugin;
+    private final Server server;
+
+    private final PaperFileManager fileManager;
+    private final CrazyCratesPaper platform;
+    private final FusionPaper fusion;
+    private final Path dataPath;
+
+    public CrateManager(@NonNull final CrazyCratesPaper platform, @NonNull final InventoryManager inventoryManager, @NonNull final BukkitKeyManager keyManager) {
+        this.platform = platform;
+
+        this.fileManager = this.platform.getFileManager();
+        this.dataPath = this.platform.getDataPath();
+        this.fusion = this.platform.getFusion();
+
+        this.plugin = this.platform.getPlugin();
+        this.logger = this.plugin.getComponentLogger();
+        this.server = this.plugin.getServer();
+        this.pluginManager = this.server.getPluginManager();
+
+        this.inventoryManager = inventoryManager;
+        this.keyManager = keyManager;
+    }
 
     private final List<QuadCrateManager> quadSessions = new ArrayList<>();
     private final List<CrateLocation> crateLocations = new ArrayList<>();
@@ -341,11 +360,11 @@ public class CrateManager {
     }
 
     public List<String> getCrateNames(final boolean keepExtension) {
-        return this.instance.getCrateFiles(keepExtension);
+        return this.platform.getCrateFiles(keepExtension);
     }
 
     public List<String> getCrateNames() {
-        return this.instance.getCrateFiles(false);
+        return this.platform.getCrateFiles(false);
     }
 
     private final SettingsManager config = ConfigManager.getConfig();
@@ -706,7 +725,7 @@ public class CrateManager {
                 return;
             }
 
-            Messages.feature_disabled.sendMessage(player);
+            Message.feature_disabled.sendMessage(player);
 
             return;
         }
@@ -733,7 +752,7 @@ public class CrateManager {
 
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    Messages.crate_in_use.sendMessage(player, "{crate}", fancyName);
+                    Message.crate_already_used.sendMessage(player, "{crate}", fancyName);
 
                     removePlayerFromOpeningList(player);
 
@@ -753,7 +772,7 @@ public class CrateManager {
 
             case quick_crate -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    Messages.crate_in_use.sendMessage(player, "{crate}", fancyName);
+                    Message.crate_already_used.sendMessage(player, "{crate}", fancyName);
 
                     removePlayerFromOpeningList(player);
 
@@ -784,7 +803,7 @@ public class CrateManager {
 
     private boolean isVirtualCrate(@NotNull final Player player, @NotNull final Crate crate, final boolean virtualCrate, @NotNull final String fancyName) {
         if (virtualCrate) {
-            Messages.cant_be_a_virtual_crate.sendMessage(player, Map.of(
+            Message.not_physical_crate.sendMessage(player, Map.of(
                     "{cratetype}", crate.getCrateType().getName(),
                     "{crate}", fancyName
             ));
@@ -1005,7 +1024,7 @@ public class CrateManager {
     public void addRepeatingCrateTask(@NotNull final Player player, @NotNull final TimerTask task, final long delay, final long period) {
         this.timerTasks.put(player.getUniqueId(), task);
 
-        this.plugin.getTimer().scheduleAtFixedRate(task, delay, period);
+        this.platform.getTimer().scheduleAtFixedRate(task, delay, period);
     }
 
     /**
@@ -1031,7 +1050,7 @@ public class CrateManager {
     public void addCrateTask(@NotNull final Player player, @NotNull final TimerTask task, final long delay) {
         this.timerTasks.put(player.getUniqueId(), task);
 
-        this.plugin.getTimer().schedule(task, delay);
+        this.platform.getTimer().schedule(task, delay);
     }
 
     /**
@@ -1208,7 +1227,7 @@ public class CrateManager {
         if (!player.hasPermission("crazycrates.editor")) {
             removeEditorCrate(player);
 
-            Messages.force_editor_exit.sendMessage(player, "{reason}", "lacking the permission crazycrates.editor");
+            Message.crate_editor_force_exit.sendMessage(player, "{reason}", "lacking the permission crazycrates.editor");
 
             return;
         }
@@ -1218,13 +1237,13 @@ public class CrateManager {
         if (crate == null) {
             removeEditorCrate(player);
 
-            Messages.force_editor_exit.sendMessage(player, "{reason}", "Crate does not exist.");
+            Message.crate_editor_force_exit.sendMessage(player, "{reason}", "Crate does not exist.");
 
             return;
         }
 
         if (crate.getCrateType() == CrateType.menu && !this.config.getProperty(ConfigKeys.enable_crate_menu)) {
-            Messages.cannot_set_type.sendMessage(player);
+            Message.crate_cannot_set_type.sendMessage(player);
 
             return;
         }
@@ -1239,7 +1258,7 @@ public class CrateManager {
 
                 addCrateLocation(location, crate); // add new location
 
-                Messages.physical_crate_overridden.sendMessage(player, Map.of(
+                Message.physical_crate_overwrite.sendMessage(player, Map.of(
                         "{id}", crateLocation.getID(),
                         "{crate}", crate.getCrateName()
                 ));
@@ -1251,9 +1270,9 @@ public class CrateManager {
 
             final CrateLocation crateLocation = getCrateLocation(location);
 
-            Messages.physical_crate_already_exists.sendMessage(player, Map.of(
-                "{id}", crateLocation != null ? crateLocation.getID() : "N/A",
-                "{crate}", crateLocation != null ? crateLocation.getCrate().getCrateName() : "N/A"
+            Message.physical_crate_exists.sendMessage(player, Map.of(
+                    "{id}", crateLocation != null ? crateLocation.getID() : "N/A",
+                    "{crate}", crateLocation != null ? crateLocation.getCrate().getCrateName() : "N/A"
             ));
 
             spawnItem(location, ItemType.REDSTONE.createItemStack());
@@ -1263,7 +1282,7 @@ public class CrateManager {
 
         addCrateLocation(location, crate);
 
-        Messages.created_physical_crate.sendMessage(player, "{crate}", crate.getCrateName());
+        Message.physical_crate_created.sendMessage(player, "{crate}", crate.getCrateName());
 
         spawnItem(location, ItemType.EMERALD.createItemStack());
     }
@@ -1790,7 +1809,7 @@ public class CrateManager {
         if (!player.hasPermission("crazycrates.editor")) {
             removeEditorCrate(player);
 
-            Messages.force_editor_exit.sendMessage(player, "{reason}", "lacking the permission crazycrates.editor");
+            Message.crate_editor_force_exit.sendMessage(player, "{reason}", "lacking the permission crazycrates.editor");
 
             return;
         }
@@ -1804,7 +1823,7 @@ public class CrateManager {
 
                 removeCrateLocation(id);
 
-                Messages.removed_physical_crate.sendMessage(player, "{id}", id);
+                Message.physical_crate_removed.sendMessage(player, "{id}", id);
             }
         }
     }

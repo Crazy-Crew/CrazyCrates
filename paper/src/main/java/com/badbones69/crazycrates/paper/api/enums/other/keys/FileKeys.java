@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.api.enums.other.keys;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.types.LogCustomFile;
@@ -24,11 +25,14 @@ public enum FileKeys {
     locations(FileType.PAPER_YAML, "locations.yml"),
     data(FileType.PAPER_YAML, "data.yml"),
 
-    version(FileType.JSON, "version.json");
+    version(FileType.JSON, "version.json"),
+
+    messages(FileType.YAML, "messages.yml");
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
-    private final PaperFileManager fileManager = this.plugin.getFileManager();
-    private final Path path = this.plugin.getDataPath();
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
+    private final PaperFileManager fileManager = this.platform.getFileManager();
+    private final Path path = this.platform.getDataPath();
 
     private final FileType fileType;
     private final Path location; // the file location

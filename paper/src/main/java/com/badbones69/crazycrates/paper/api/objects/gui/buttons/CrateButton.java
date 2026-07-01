@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.api.objects.gui.buttons;
 
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
@@ -20,8 +20,8 @@ import java.util.UUID;
 
 public class CrateButton extends GuiButton {
 
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final BukkitUserManager userManager = this.platform.getUserManager();
+    private final CrateManager crateManager = this.platform.getCrateManager();
 
     private final Crate crate;
     private final Prize prize;
@@ -81,9 +81,9 @@ public class CrateButton extends GuiButton {
 
                         final int cap = PrizeManager.getCap(this.crate, clicker);
 
-                        Messages.crate_prize_max_respins.sendMessage(clicker, Map.of("{status}", cap >= 1 ?
-                                Messages.crate_prize_max_respins_left.getMessage(clicker, Map.of("{respins_total}", String.valueOf(cap), "{respins_left}", "0")) :
-                                Messages.crate_prize_max_respins_none.getMessage(clicker)));
+                        Message.crate_respins_max.sendMessage(clicker, Map.of("{status}", cap >= 1 ?
+                                Message.crate_respins_format.getMessage(clicker, Map.of("{respins_total}", String.valueOf(cap), "{respins_left}", "0")) :
+                                Message.crate_respins_max_none.getMessage(clicker)));
 
                         return;
                     }

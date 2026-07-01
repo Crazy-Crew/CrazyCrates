@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.api.builders;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
@@ -46,13 +47,15 @@ public abstract class CrateBuilder extends FoliaScheduler {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    protected final FusionPaper fusion = this.plugin.getFusion();
+    protected final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    protected final FusionPaper fusion = this.platform.getFusion();
 
     protected final ComponentLogger logger = this.plugin.getComponentLogger();
 
-    protected final CrateManager crateManager = this.plugin.getCrateManager();
+    protected final CrateManager crateManager = this.platform.getCrateManager();
 
-    protected final BukkitUserManager userManager = this.plugin.getUserManager();
+    protected final BukkitUserManager userManager = this.platform.getUserManager();
 
     private final InventoryBuilder builder;
     private final Inventory inventory;

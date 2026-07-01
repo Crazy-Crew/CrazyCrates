@@ -1,8 +1,9 @@
 package com.badbones69.crazycrates.paper.listeners.crates;
 
 import ch.jalu.configme.SettingsManager;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.events.CrateInteractEvent;
 import com.badbones69.crazycrates.paper.api.events.KeyCheckEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -36,17 +37,19 @@ public class CrateInteractListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
     private final Server server = this.plugin.getServer();
 
     private final PluginManager pluginManager = this.server.getPluginManager();
 
-    private final InventoryManager inventoryManager = this.plugin.getInventoryManager();
+    private final InventoryManager inventoryManager = this.platform.getInventoryManager();
 
     private final SettingsManager config = ConfigManager.getConfig();
 
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.platform.getCrateManager();
 
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final BukkitUserManager userManager = this.platform.getUserManager();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCrateInteract(final CrateInteractEvent event) {
@@ -123,7 +126,7 @@ public class CrateInteractListener implements Listener {
         final String fancyName = crate.getCrateName();
 
         if (requiredKeys > 0 && totalKeys < requiredKeys) { //todo() this, and the checks below should be combined. this is weird lol
-            lackingKey(player, crate, location, totalKeys, requiredKeys, Messages.not_enough_keys);
+            lackingKey(player, crate, location, totalKeys, requiredKeys);
 
             key.setCancelled(true);
 
@@ -142,7 +145,7 @@ public class CrateInteractListener implements Listener {
         final KeyType keyType = isPhysical ? KeyType.physical_key : KeyType.virtual_key;
 
         if (!hasKey) {
-            lackingKey(player, crate, location, totalKeys, 1, Messages.not_enough_keys);
+            lackingKey(player, crate, location, totalKeys, 1);
 
             key.setCancelled(true);
 
@@ -150,7 +153,7 @@ public class CrateInteractListener implements Listener {
         }
 
         if (MiscUtils.isInventoryFull(player)) {
-            Messages.inventory_not_empty.sendMessage(player, "{crate}", fancyName);
+            Message.inventory_not_empty.sendMessage(player, "{crate}", fancyName);
 
             this.crateManager.endCrate(crate, player);
 
@@ -160,13 +163,13 @@ public class CrateInteractListener implements Listener {
         if (!this.crateManager.isInOpeningList(player) && (this.crateManager.hasOpeningCrate(player) && this.crateManager.getOpeningCrate(player).getCrateType() == CrateType.quick_crate)
                 && (this.crateManager.isCrateInUse(player) && this.crateManager.getCrateInUseLocation(player).equals(crateLocation.getLocation()))) { // wtf is this?
             if (this.crateManager.isInOpeningList(player)) {
-                Messages.already_opening_crate.sendMessage(player, "{crate}", fancyName);
+                Message.crate_already_opened.sendMessage(player, "{crate}", fancyName);
 
                 return;
             }
 
             if (this.crateManager.getCratesInUse().containsValue(crateLocation.getLocation())) {
-                Messages.crate_in_use.sendMessage(player, "{crate}", fancyName);
+                Message.crate_already_used.sendMessage(player, "{crate}", fancyName);
 
                 return;
             }
@@ -188,7 +191,7 @@ public class CrateInteractListener implements Listener {
         );
     }
 
-    private void lackingKey(@NotNull final Player player, @NotNull final Crate crate, @NotNull final Location location, final int currentKeys, final int amount, final Messages key) {
+    private void lackingKey(@NotNull final Player player, @NotNull final Crate crate, @NotNull final Location location, final int currentKeys, final int amount) {
         if (crate.getCrateType() != CrateType.crate_on_the_go) {
             if (this.config.getProperty(ConfigKeys.knock_back)) {
                 knockback(player, location);
@@ -198,17 +201,13 @@ public class CrateInteractListener implements Listener {
                 player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
-            switch (key) {
-                case not_enough_keys -> key.sendMessage(player, Map.of(
-                        "{required_amount}", String.valueOf(amount),
-                        "{key_amount}", String.valueOf(amount),
-                        "{amount}", String.valueOf(currentKeys),
-                        "{crate}", crate.getCrateName(),
-                        "{key}", crate.getKeyName()
-                ));
-
-                case feature_disabled -> key.sendMessage(player);
-            }
+            Message.not_enough_keys.sendMessage(player, Map.of(
+                    "{required_amount}", String.valueOf(amount),
+                    "{key_amount}", String.valueOf(amount),
+                    "{amount}", String.valueOf(currentKeys),
+                    "{crate}", crate.getCrateName(),
+                    "{key}", crate.getKeyName()
+            ));
         }
     }
 
@@ -234,13 +233,13 @@ public class CrateInteractListener implements Listener {
                         this.config.getProperty(ConfigKeys.inventory_rows)
                 ).open();
             } else {
-                Messages.feature_disabled.sendMessage(player);
+                Message.feature_disabled.sendMessage(player);
             }
         } else {
             if (crate.isPreviewEnabled()) {
                 this.inventoryManager.openNewCratePreview(player, crate);
             } else {
-                Messages.preview_disabled.sendMessage(player, "{crate}", crate.getCrateName());
+                Message.preview_disabled.sendMessage(player, "{crate}", crate.getCrateName());
             }
         }
     }

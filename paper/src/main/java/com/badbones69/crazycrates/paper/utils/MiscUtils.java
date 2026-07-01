@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.utils;
 
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.ryderbelserion.fusion.core.api.enums.Level;
@@ -49,13 +50,15 @@ public class MiscUtils {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private static final FusionPaper fusion = plugin.getFusion();
+    private static final CrazyCratesPaper platform = plugin.getPlatform();
+
+    private static final FusionPaper fusion = platform.getFusion();
 
     private static final Server server = plugin.getServer();
 
     private static final PluginManager pluginManager = server.getPluginManager();
 
-    private static final Path dataPath = plugin.getDataPath();
+    private static final Path dataPath = platform.getDataPath();
 
     private static final ComponentLogger logger = plugin.getComponentLogger();
 

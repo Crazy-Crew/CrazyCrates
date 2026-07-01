@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.support.placeholders;
 
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.support.placeholders.types.NamePlaceholder;
 import com.badbones69.crazycrates.paper.support.placeholders.types.SimplePlaceholder;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
@@ -14,7 +15,9 @@ public class PlaceholderAPISupport extends PlaceholderExpansion {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final BukkitUserManager userManager = this.platform.getUserManager();
 
     @Override
     public @NotNull final String onPlaceholderRequest(final Player player, @NotNull final String placeholder) {

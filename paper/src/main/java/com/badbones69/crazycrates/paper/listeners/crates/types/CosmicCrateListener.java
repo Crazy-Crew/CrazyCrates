@@ -1,6 +1,8 @@
 package com.badbones69.crazycrates.paper.listeners.crates.types;
 
 import ch.jalu.configme.SettingsManager;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
@@ -36,7 +38,6 @@ import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,15 +48,17 @@ public class CosmicCrateListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final FusionPaper fusion = this.plugin.getFusion();
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final FusionPaper fusion = this.platform.getFusion();
 
     private final Server server = this.plugin.getServer();
 
     private final PluginManager pluginManager = this.server.getPluginManager();
 
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager = this.platform.getCrateManager();
 
-    private final BukkitUserManager userManager = this.plugin.getUserManager();
+    private final BukkitUserManager userManager = this.platform.getUserManager();
 
     private final SettingsManager config = ConfigManager.getConfig();
 
@@ -86,7 +89,7 @@ public class CosmicCrateListener implements Listener {
         final int slot = event.getRawSlot();
 
         if (this.crateManager.containsSlot(player) && this.crateManager.getSlots(player).contains(slot)) {
-            Messages.already_redeemed_prize.sendMessage(player);
+            Message.crate_prize_redeemed.sendMessage(player);
 
             return;
         }
@@ -254,7 +257,7 @@ public class CosmicCrateListener implements Listener {
                 placeholders.put("{key}", crate.getKeyName());
 
                 // Send no keys message.
-                Messages.no_keys.sendMessage(player, placeholders);
+                Message.no_keys.sendMessage(player, placeholders);
 
                 // Remove opening stuff.
                 this.crateManager.endCrate(crate, player);
@@ -323,7 +326,7 @@ public class CosmicCrateListener implements Listener {
 
                                     crateManager.endCrate(crate, player);
 
-                                    Messages.key_refund.sendMessage(player, "{crate}", fancyName);
+                                    Message.command_key_refund.sendMessage(player, "{crate}", fancyName);
 
                                     fusion.log(Level.ERROR, "An issue occurred when the user %s was using the %s crate and so they were issued a key refund.", exception, player.getName(), fileName);
 

@@ -1,6 +1,8 @@
 package com.badbones69.crazycrates.paper.managers;
 
 import ch.jalu.configme.SettingsManager;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.utils.ItemUtil;
@@ -20,6 +22,7 @@ import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.CrazyCrates;
@@ -28,23 +31,30 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import java.util.*;
 
 public class BukkitUserManager extends UserManager {
 
-    private final CrazyCrates plugin = CrazyCrates.getPlugin();
+    private final PluginManager pluginManager;
+    private final CrazyCrates plugin;
+    private final Server server;
 
-    private final FusionPaper fusion = this.plugin.getFusion();
-
-    private final Server server = this.plugin.getServer();
-
-    private final PluginManager pluginManager = this.server.getPluginManager();
-
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrateManager crateManager;
 
     private final FileKeys data = FileKeys.data;
+
+    private final FusionPaper fusion;
+
+    public BukkitUserManager(@NonNull final CrazyCratesPaper platform, @NonNull final CrateManager crateManager) {
+        this.plugin = platform.getPlugin();
+        this.server = this.plugin.getServer();
+        this.pluginManager = this.server.getPluginManager();
+
+        this.fusion = platform.getFusion();
+
+        this.crateManager = crateManager;
+    }
 
     @Override
     public Player getUser(@NotNull final UUID uuid) {
@@ -149,7 +159,7 @@ public class BukkitUserManager extends UserManager {
                     addVirtualKeys(uuid, fileName, amount);
 
                     if (config.getProperty(ConfigKeys.notify_player_when_inventory_full)) {
-                        Messages.cannot_give_player_keys.sendMessage(player, Map.of(
+                        Message.command_cannot_give_player_keys.sendMessage(player, Map.of(
                                 "{keytype}", keyType.getFriendlyName(),
                                 "{amount}", String.valueOf(amount),
                                 "{player}", player.getName(),
@@ -307,7 +317,7 @@ public class BukkitUserManager extends UserManager {
         }
 
         if (!isSafe) {
-            Messages.not_enough_keys.sendMessage(player, Map.of(
+            Message.not_enough_keys.sendMessage(player, Map.of(
                     "{required_amount}", String.valueOf(amount),
                     "{key_amount}", String.valueOf(amount),
                     "{amount}", String.valueOf(currentKeys),

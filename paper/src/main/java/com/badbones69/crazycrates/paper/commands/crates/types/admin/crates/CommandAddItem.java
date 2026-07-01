@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates;
 
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -18,7 +18,7 @@ public class CommandAddItem extends BaseCommand {
     @Syntax("/crazycrates additem <crate_name> <prize_number> <weight> [tier]")
     public void add(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("prize") @Suggestion("prizes") String prizeName, @ArgName("weight") @Suggestion("doubles") double weight, @ArgName("tier") @Suggestion("tiers") @Optional String tier) {
         if (crateName == null || crateName.isBlank()) {
-            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
+            Message.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
             return;
         }
@@ -26,7 +26,7 @@ public class CommandAddItem extends BaseCommand {
         final ItemStack item = player.getInventory().getItemInMainHand();
 
         if (item.getType().isAir()) {
-            Messages.cannot_be_air.sendMessage(player);
+            Message.cannot_be_air.sendMessage(player);
 
             return;
         }
@@ -34,7 +34,7 @@ public class CommandAddItem extends BaseCommand {
         final Crate crate = getCrate(player, crateName, false);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            Messages.not_a_crate.sendMessage(player, "{crate}", crateName);
+            Message.not_a_crate.sendMessage(player, "{crate}", crateName);
 
             return;
         }
@@ -44,7 +44,7 @@ public class CommandAddItem extends BaseCommand {
         if (tier != null) {
             crate.addEditorItem(item, prizeName, tier, weight);
 
-            Messages.added_item_with_editor.sendMessage(player, Map.of(
+            Message.command_editor_item_added.sendMessage(player, Map.of(
                     "{crate}", fancyName,
                     "{prize}", prizeName
             ));
@@ -54,7 +54,7 @@ public class CommandAddItem extends BaseCommand {
 
         crate.addEditorItem(item, prizeName, weight);
 
-        Messages.added_item_with_editor.sendMessage(player, Map.of(
+        Message.command_editor_item_added.sendMessage(player, Map.of(
                 "{crate}", fancyName,
                 "{prize}", prizeName
         ));

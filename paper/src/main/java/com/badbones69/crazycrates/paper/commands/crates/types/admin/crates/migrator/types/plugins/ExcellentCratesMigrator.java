@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.plugins;
 
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
@@ -24,7 +24,6 @@ import su.nightexpress.excellentcrates.crate.impl.Crate;
 import su.nightexpress.excellentcrates.data.impl.CrateUser;
 import su.nightexpress.excellentcrates.key.CrateKey;
 import su.nightexpress.nightcore.config.FileConfig;
-import us.crazycrew.crazycrates.api.users.UserManager;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -52,8 +51,6 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
         final List<String> success = new ArrayList<>();
 
         if (this.ignoreCrates) {
-            final UserManager userManager = this.plugin.getUserManager();
-
             for (final CrateUser user : CratesAPI.getUserManager().getAllUsers()) {
                 final String name = user.getName();
 
@@ -64,7 +61,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                         if (amount > 0) {
                             final YamlConfiguration data = FileKeys.data.getConfiguration();
 
-                            final int keys = userManager.getVirtualKeys(uuid, crateName);
+                            final int keys = this.userManager.getVirtualKeys(uuid, crateName);
 
                             if (!data.contains("Players." + uuid + ".Name")) data.set("Players." + uuid + ".Name", name);
 
@@ -80,7 +77,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                 }
             }
 
-            Messages.successfully_migrated_users.sendMessage(this.sender, Map.of(
+            Message.command_migrate_users_success.sendMessage(this.sender, Map.of(
                     "{succeeded_amount}", String.valueOf(success.size()),
                     "{failed_amount}", String.valueOf(failed.size()),
                     "{type}", type.getName(),
@@ -107,7 +104,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
         final Collection<Crate> crates = CratesAPI.getCrateManager().getCrates();
 
         if (crates.isEmpty()) {
-            Messages.migration_no_crates_available.sendMessage(sender);
+            Message.command_migrate_no_crates_present.sendMessage(sender);
 
             return;
         }

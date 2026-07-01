@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.utils;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
@@ -31,9 +32,11 @@ public class ItemUtil {
 
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private static final FusionPaper fusion = plugin.getFusion();
+    private static final CrazyCratesPaper platform = plugin.getPlatform();
 
-    private static final CrateManager crateManager = plugin.getCrateManager();
+    private static final FusionPaper fusion = platform.getFusion();
+
+    private static final CrateManager crateManager = platform.getCrateManager();
 
     public static void addItemModel(@NotNull final ItemBuilder builder, @NotNull final String namespace, @NotNull final String id) {
         final CustomBuilder custom = builder.asCustomBuilder();

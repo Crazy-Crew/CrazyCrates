@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates;
 
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
@@ -20,7 +20,7 @@ public class CommandDebug extends BaseCommand {
     @Syntax("/crazycrates <crate> [player_name]")
     public void debug(CommandSender sender, @ArgName("crate") @Suggestion("crates") String crateName, @Optional @Suggestion("players") Player target) {
         if (crateName == null || crateName.isBlank()) {
-            Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
+            Message.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
 
             return;
         }
@@ -28,7 +28,7 @@ public class CommandDebug extends BaseCommand {
         final Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
+            Message.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }
@@ -38,7 +38,7 @@ public class CommandDebug extends BaseCommand {
         final List<Prize> items = prizes.stream().filter(Prize::isItemsEmpty).toList();
 
         if (prizes.isEmpty() || items.isEmpty()) {
-            Messages.no_prizes_found.sendMessage(sender, "{crate}", crateName);
+            Message.prizes_empty.sendMessage(sender, "{value}", crateName);
 
             return;
         }

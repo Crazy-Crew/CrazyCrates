@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.keys;
 
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
@@ -35,20 +35,20 @@ public class CommandOpen extends BaseCommand {
 
     private boolean isCancelled(final Player player, final String crateName) {
         if (crateName == null || crateName.isBlank()) {
-            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
+            Message.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
             return true;
         }
 
         // Check if player is in opening list first.
         if (this.crateManager.isInOpeningList(player)) {
-            Messages.already_opening_crate.sendMessage(player, "{crate}", crateName);
+            Message.crate_already_opened.sendMessage(player, "{crate}", crateName);
 
             return true;
         }
 
         if (MiscUtils.isInventoryFull(player)) {
-            Messages.inventory_not_empty.sendMessage(player, "{crate}", crateName);
+            Message.inventory_not_empty.sendMessage(player, "{crate}", crateName);
 
             return true;
         }
@@ -67,7 +67,7 @@ public class CommandOpen extends BaseCommand {
 
         // If crate is null, return.
         if (crate == null) {
-            Messages.not_a_crate.sendMessage(player, "{crate}", crateName);
+            Message.not_a_crate.sendMessage(player, "{crate}", crateName);
 
             return;
         }
@@ -75,7 +75,7 @@ public class CommandOpen extends BaseCommand {
         final CrateType crateType = crate.getCrateType();
 
         if (crateType == CrateType.menu) {
-            Messages.internal_error.sendMessage(player);
+            Message.internal_error.sendMessage(player);
 
             this.fusion.log(Level.ERROR, "An error has occurred: The crate type is Menu for the crate named %s.", crateName);
 
@@ -87,7 +87,7 @@ public class CommandOpen extends BaseCommand {
 
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
-            Messages.cant_be_a_virtual_crate.sendMessage(player, Map.of(
+            Message.not_physical_crate.sendMessage(player, Map.of(
                     "{cratetype}", crateType.getName(),
                     "{crate}", fancyName
             ));
@@ -105,7 +105,10 @@ public class CommandOpen extends BaseCommand {
                 player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
-            Messages.no_keys.sendMessage(player, Map.of("{key}", crate.getKeyName(), "{crate}", fancyName));
+            Message.no_keys.sendMessage(player, Map.of(
+                    "{key}", crate.getKeyName(),
+                    "{crate}", fancyName
+            ));
 
             return;
         }
@@ -126,7 +129,7 @@ public class CommandOpen extends BaseCommand {
 
         // If crate is null, return.
         if (crate == null) {
-            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
+            Message.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }
@@ -137,7 +140,10 @@ public class CommandOpen extends BaseCommand {
 
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
-            Messages.cant_be_a_virtual_crate.sendMessage(sender, Map.of("{cratetype}", crateType.getName(), "{crate}", fancyName));
+            Message.not_physical_crate.sendMessage(sender, Map.of(
+                    "{cratetype}", crateType.getName(),
+                    "{crate}", fancyName
+            ));
 
             return;
         }
@@ -157,14 +163,20 @@ public class CommandOpen extends BaseCommand {
                 player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
-            Messages.no_keys.sendMessage(sender, Map.of("{key}", crate.getKeyName(), "{crate}", fancyName));
+            Message.no_keys.sendMessage(sender, Map.of(
+                    "{key}", crate.getKeyName(),
+                    "{crate}", fancyName
+            ));
 
             return;
         }
 
         this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false, EventType.event_crate_opened);
 
-        Messages.opened_a_crate.sendMessage(sender, Map.of("{player}", player.getName(), "{crate}", fancyName));
+        Message.command_opened_crate.sendMessage(sender, Map.of(
+                "{player}", player.getName(),
+                "{crate}", fancyName
+        ));
     }
 
 
@@ -180,7 +192,7 @@ public class CommandOpen extends BaseCommand {
 
         // If crate is null, return.
         if (crate == null) {
-            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
+            Message.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }
@@ -190,14 +202,20 @@ public class CommandOpen extends BaseCommand {
 
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
-            Messages.cant_be_a_virtual_crate.sendMessage(sender, Map.of("{cratetype}", crateType.getName(), "{crate}", fancyName));
+            Message.not_physical_crate.sendMessage(sender, Map.of(
+                    "{cratetype}", crateType.getName(),
+                    "{crate}", fancyName
+            ));
 
             return;
         }
 
         this.crateManager.openCrate(player, crate, KeyType.free_key, player.getLocation(), true, false, EventType.event_crate_force_opened);
 
-        Messages.opened_a_crate.sendMessage(sender, Map.of("{player}", player.getName(), "{crate}", fancyName));
+        Message.command_opened_crate.sendMessage(sender, Map.of(
+                "{player}", player.getName(),
+                "{crate}", fancyName
+        ));
     }
 
     @Command("mass-open")
@@ -208,7 +226,7 @@ public class CommandOpen extends BaseCommand {
         if (isCancelled(player, crateName)) return;
 
         if (amount <= 0) {
-            Messages.not_a_number.sendMessage(player, "{amount}", String.valueOf(amount));
+            Message.not_a_number.sendMessage(player, "{amount}", String.valueOf(amount));
 
             return;
         }
@@ -218,7 +236,7 @@ public class CommandOpen extends BaseCommand {
 
         // If crate is null, return.
         if (crate == null) {
-            Messages.not_a_crate.sendMessage(player, "{crate}", crateName);
+            Message.not_a_crate.sendMessage(player, "{crate}", crateName);
 
             return;
         }
@@ -234,7 +252,10 @@ public class CommandOpen extends BaseCommand {
         int currentAmount = 0; // amount of keys to use when rolling
 
         if (keys == 0) {
-            Messages.no_keys.sendMessage(player, Map.of("{crate}", fancyName, "{key}", keyName));
+            Message.no_keys.sendMessage(player, Map.of(
+                    "{crate}", fancyName,
+                    "{key}", keyName
+            ));
 
             return;
         }
@@ -242,7 +263,7 @@ public class CommandOpen extends BaseCommand {
         final int requiredKeys = crate.getRequiredKeys();
 
         if (crate.useRequiredKeys() && keys < requiredKeys) {
-            Messages.not_enough_keys.sendMessage(player, Map.of(
+            Message.not_enough_keys.sendMessage(player, Map.of(
                     "{required_amount}", String.valueOf(requiredKeys),
                     "{key_amount}", String.valueOf(requiredKeys),
                     "{amount}", String.valueOf(keys),

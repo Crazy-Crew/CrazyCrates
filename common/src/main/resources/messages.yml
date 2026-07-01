@@ -38,7 +38,7 @@ errors:
   # A list of available placeholders: {value}
   cannot-be-empty: "{prefix}<red>{value} cannot be empty!"
   # A list of available placeholders: {prefix}
-  cannot-be-air: "{prefix}<red>You can""t use air silly!~"
+  cannot-be-air: "{prefix}<red>You cannot use air silly!~"
   # A list of available placeholders: {crate}
   prize-error: "{prefix}<red>An error has occurred while trying to give you the prize in crate called <gold>{crate}<red>. Please contact the server owner and show them this error."
 # All messages related to players.
@@ -262,7 +262,7 @@ command:
       no-virtual-keys: "{prefix}<bold><dark_gray>(<dark_red>!<dark_gray>)</bold> <gray>The player {player} does not have any keys."
       # A list of available placeholders: {player}, {crates_opened}
       virtual-keys-header:
-        - "<bold><dark_gray>(<gold>!<dark_gray>)</bold> <gray>List of {player}""s current number of keys."
+        - "<bold><dark_gray>(<gold>!<dark_gray>)</bold> <gray>List of {player}'s current number of keys."
         - " <yellow> -> Total Crates Opened: <red>{crates_opened}"
         - ""
     # A list of available placeholders: {crate}, {keys}, {crate_opened}

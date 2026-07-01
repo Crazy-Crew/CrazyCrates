@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +13,9 @@ public class SessionManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final CrateManager crateManager = this.plugin.getCrateManager();
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final CrateManager crateManager = this.platform.getCrateManager();
 
     /**
      * Check if player is in session.

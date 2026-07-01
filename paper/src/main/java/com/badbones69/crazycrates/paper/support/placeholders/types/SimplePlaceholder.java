@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.support.placeholders.types;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.support.placeholders.api.AbstractPlaceholder;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import org.jspecify.annotations.NonNull;
@@ -11,8 +12,10 @@ import java.util.UUID;
 public final class SimplePlaceholder implements AbstractPlaceholder {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
     
-    private final UserManager userManager = this.plugin.getUserManager();
+    private final UserManager userManager = this.platform.getUserManager();
 
     private final UUID uuid;
 

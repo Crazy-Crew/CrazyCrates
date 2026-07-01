@@ -3,11 +3,6 @@ package com.badbones69.common.enums;
 import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.resource.PropertyReader;
 import com.badbones69.common.config.impl.ConfigKeys;
-import com.badbones69.common.config.impl.messages.CommandKeys;
-import com.badbones69.common.config.impl.messages.CrateKeys;
-import com.badbones69.common.config.impl.messages.ErrorKeys;
-import com.badbones69.common.config.impl.messages.MiscKeys;
-import com.badbones69.common.config.impl.messages.PlayerKeys;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
@@ -69,64 +64,7 @@ public enum Property {
     filler_lore(ConfigKeys.filler_lore, newListProperty("Settings.Filler.Lore", ConfigKeys.filler_lore.getDefaultValue()), Collections.emptyList()),
 
     gui_customizer_toggle(ConfigKeys.gui_customizer_toggle, newProperty("Settings.GUI-Customizer-Toggle", ConfigKeys.gui_customizer_toggle.getDefaultValue()), false),
-    gui_customizer_lore(ConfigKeys.gui_customizer, newListProperty("Settings.GUI-Customizer", ConfigKeys.gui_customizer.getDefaultValue()), Collections.emptyList()),
-
-    unknown_command(MiscKeys.unknown_command, newProperty("Messages.Unknown-Command", MiscKeys.unknown_command.getDefaultValue())),
-    no_teleporting(MiscKeys.no_teleporting, newProperty("Messages.No-Teleporting", MiscKeys.no_teleporting.getDefaultValue())),
-    no_commands_while_in_crate(MiscKeys.no_commands_while_using_crate, newProperty("Messages.No-Commands-While-In-Crate", MiscKeys.no_commands_while_using_crate.getDefaultValue())),
-    no_key(MiscKeys.no_keys, newProperty("Messages.No-Key", MiscKeys.no_keys.getDefaultValue())),
-    no_virtual_key(MiscKeys.no_virtual_key, newProperty("Messages.No-Virtual-Key", MiscKeys.no_virtual_key.getDefaultValue())),
-    correct_usage(MiscKeys.correct_usage, newProperty("Messages.Correct-Usage", MiscKeys.correct_usage.getDefaultValue())),
-    feature_disabled(MiscKeys.feature_disabled, newProperty("Messages.Feature-Disabled", MiscKeys.feature_disabled.getDefaultValue())),
-    no_prizes_found(ErrorKeys.no_prizes_found, newProperty("Messages.No-Prizes-Found", ErrorKeys.no_prizes_found.getDefaultValue())),
-    no_schematics_found(ErrorKeys.no_schematics_found, newProperty("Messages.No-Schematics-Found", ErrorKeys.no_schematics_found.getDefaultValue())),
-    internal_error(ErrorKeys.internal_error, newProperty("Messages.Internal-Error", ErrorKeys.internal_error.getDefaultValue())),
-    inventory_full(PlayerKeys.inventory_not_empty, newProperty("Messages.Inventory-Full", PlayerKeys.inventory_not_empty.getDefaultValue())),
-    prize_error(ErrorKeys.prize_error, newProperty("Messages.Prize-Error", ErrorKeys.prize_error.getDefaultValue())),
-    must_be_player(PlayerKeys.must_be_a_player, newProperty("Messages.Must-Be-A-Player", PlayerKeys.must_be_a_player.getDefaultValue())),
-    must_be_console(PlayerKeys.must_be_console_sender, newProperty("Messages.Must-Be-A-Console-Sender", PlayerKeys.must_be_console_sender.getDefaultValue())),
-    must_be_looking_at_block(PlayerKeys.must_be_looking_at_block, newProperty("Messages.Must-Be-Looking-At-A-Block", PlayerKeys.must_be_looking_at_block.getDefaultValue())),
-    not_online(PlayerKeys.not_online, newProperty("Messages.Not-Online", PlayerKeys.not_online.getDefaultValue())),
-    same_player(PlayerKeys.same_player, newProperty("Messages.Same-Player", PlayerKeys.same_player.getDefaultValue())),
-    no_permission(PlayerKeys.no_permission, newProperty("Messages.No-Permission", PlayerKeys.no_permission.getDefaultValue())),
-    obtaining_keys(PlayerKeys.obtaining_keys, newProperty("Messages.Obtaining-Keys", PlayerKeys.obtaining_keys.getDefaultValue())),
-    too_close_to_another_player(PlayerKeys.too_close_to_another_player, newProperty("Messages.To-Close-To-Another-Player", PlayerKeys.too_close_to_another_player.getDefaultValue())),
-    not_a_crate(CrateKeys.not_a_crate, newProperty("Messages.Not-A-Crate", CrateKeys.not_a_crate.getDefaultValue())),
-    not_a_number(CrateKeys.not_a_number, newProperty("Messages.Not-A-Number", CrateKeys.not_a_number.getDefaultValue())),
-    required_keys(CrateKeys.not_enough_keys, newProperty("Messages.Required-Keys", CrateKeys.not_enough_keys.getDefaultValue())),
-    not_on_block(CrateKeys.not_on_block, newProperty("Messages.Not-On-Block", CrateKeys.not_on_block.getDefaultValue())),
-    out_of_time(CrateKeys.out_of_time, newProperty("Messages.Out-Of-Time", CrateKeys.out_of_time.getDefaultValue())),
-    reloaded_forced_out_of_preview(CrateKeys.reloaded_forced_out_of_preview, newProperty("Messages.Forced-Out-Of-Preview", CrateKeys.reloaded_forced_out_of_preview.getDefaultValue())),
-    cannot_set_type(CrateKeys.cannot_set_type, newProperty("Messages.Cannot-Set-Menu-Type", CrateKeys.cannot_set_type.getDefaultValue())),
-    no_crate_permission(CrateKeys.no_crate_permission, newProperty("Messages.No-Crate-Permission", CrateKeys.no_crate_permission.getDefaultValue())),
-    preview_disabled(CrateKeys.preview_disabled, newProperty("Messages.Preview-Disabled", CrateKeys.preview_disabled.getDefaultValue())),
-    already_opening_crate(CrateKeys.already_opening_crate, newProperty("Messages.Already-Opening-Crate", CrateKeys.already_opening_crate.getDefaultValue())),
-    crate_in_use(CrateKeys.crate_in_use, newProperty("Messages.Quick-Crate-In-Use", CrateKeys.crate_in_use.getDefaultValue())),
-    cant_be_a_virtual_crate(CrateKeys.cant_be_a_virtual_crate, newProperty("Messages.Cant-Be-A-Virtual-Crate", CrateKeys.cant_be_a_virtual_crate.getDefaultValue())),
-    needs_more_room(CrateKeys.needs_more_room, newProperty("Messages.Needs-More-Room", CrateKeys.needs_more_room.getDefaultValue())),
-    world_disabled(CrateKeys.world_disabled, newProperty("Messages.World-Disabled", CrateKeys.world_disabled.getDefaultValue())),
-    created_physical_crate(CrateKeys.created_physical_crate, newListProperty("Messages.Created-Physical-Crate", CrateKeys.created_physical_crate.getDefaultValue()), Collections.emptyList()),
-    opened_a_crate(CommandKeys.opened_a_crate, newProperty("Messages.Opened-A-Crate", CommandKeys.opened_a_crate.getDefaultValue())),
-    gave_a_player_keys(CommandKeys.gave_a_player_keys, newProperty("Messages.Given-A-Player-Keys", CommandKeys.gave_a_player_keys.getDefaultValue())),
-    cannot_give_player_keys(CommandKeys.cannot_give_player_keys, newProperty("Messages.Cannot-Give-Player-Keys", CommandKeys.cannot_give_player_keys.getDefaultValue())),
-    given_everyone_keys(CommandKeys.given_everyone_keys, newProperty("Messages.Given-Everyone-Keys", CommandKeys.given_everyone_keys.getDefaultValue())),
-    given_offline_player_keys(CommandKeys.given_offline_player_keys, newProperty("Messages.Given-Offline-Player-Keys", CommandKeys.given_offline_player_keys.getDefaultValue())),
-    take_player_keys(CommandKeys.take_players_keys, newProperty("Messages.Take-A-Player-Keys", CommandKeys.take_players_keys.getDefaultValue())),
-    cannot_take_keys(CommandKeys.cannot_take_keys, newProperty("Messages.Cannot-Take-Keys", CommandKeys.cannot_take_keys.getDefaultValue())),
-    take_offline_player_keys(CommandKeys.take_offline_player_keys, newProperty("Messages.Take-Offline-Player-Keys", CommandKeys.take_offline_player_keys.getDefaultValue())),
-    no_item_in_hand(CommandKeys.no_item_in_hand, newProperty("Messages.No-Item-In-Hand", CommandKeys.no_item_in_hand.getDefaultValue())),
-    added_item_with_editor(CommandKeys.added_item_with_editor, newProperty("Messages.Added-Item-With-Editor", CommandKeys.added_item_with_editor.getDefaultValue())),
-    reloaded_plugin(CommandKeys.reloaded_plugin, newProperty("Messages.Reload", CommandKeys.reloaded_plugin.getDefaultValue())),
-    transfer_not_enough_keys(CommandKeys.transfer_not_enough_keys, newProperty("Messages.Transfer-Keys.Not-Enough-Keys", CommandKeys.transfer_not_enough_keys.getDefaultValue())),
-    transfer_sent_keys(CommandKeys.transfer_sent_keys, newProperty("Messages.Transfer-Keys.Transferred-Keys", CommandKeys.transfer_sent_keys.getDefaultValue())),
-    transfer_received_keys(CommandKeys.transfer_received_keys, newProperty("Messages.Transfer-Keys.Received-Transferred-Keys", CommandKeys.transfer_received_keys.getDefaultValue())),
-    personal_no_virtual_keys(CommandKeys.no_virtual_keys, newProperty("Messages.Keys.Personal.No-Virtual-Keys", CommandKeys.no_virtual_keys.getDefaultValue())),
-    personal_header(CommandKeys.virtual_keys_header, newListProperty("Messages.Keys.Personal.Header", CommandKeys.virtual_keys_header.getDefaultValue()), Collections.emptyList()),
-    other_no_virtual_keys(CommandKeys.other_player_no_keys, newProperty("Messages.Keys.Other-Player.No-Virtual-Keys", CommandKeys.other_player_no_keys.getDefaultValue())),
-    other_header(CommandKeys.other_player_header, newListProperty("Messages.Keys.Other-Player.Header", CommandKeys.other_player_header.getDefaultValue()), Collections.emptyList()),
-    per_crate(CommandKeys.per_crate, newProperty("Messages.Keys.Per-Crate", CommandKeys.per_crate.getDefaultValue())),
-    help(CommandKeys.help, newListProperty("Messages.Help", CommandKeys.help.getDefaultValue()), Collections.emptyList()),
-    admin_help(CommandKeys.admin_help, newListProperty("Messages.Admin-Help", CommandKeys.admin_help.getDefaultValue()), Collections.emptyList());
+    gui_customizer_lore(ConfigKeys.gui_customizer, newListProperty("Settings.GUI-Customizer", ConfigKeys.gui_customizer.getDefaultValue()), Collections.emptyList());
 
     private final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
 
