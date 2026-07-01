@@ -30,7 +30,6 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
-import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.paper.FusionPaper;
@@ -54,7 +53,6 @@ import static com.badbones69.crazycrates.paper.utils.MiscUtils.registerPermissio
 
 public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
-    private final MessageRegistry messageRegistry;
     private final PaperFileManager fileManager;
     private final CrazyCrates plugin;
     private final FusionPaper fusion;
@@ -70,7 +68,6 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
     ) {
         super(this.fusion = fusion, path);
 
-        this.messageRegistry = this.fusion.getMessageRegistry();
         this.fileManager = this.fusion.getFileManager();
 
         this.plugin = plugin;
@@ -115,13 +112,13 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
                 .addFile(this.path.resolve("messages.yml"), FileType.YAML)
                 .addFile(version, FileType.JSON);
 
-        loadMessages();
-
         if (Plugins.placeholder_api.isEnabled()) {
             new PlaceholderAPISupport().register();
         }
 
         this.senderAdapter = new PaperSenderAdapter(this);
+
+        loadMessages();
 
         this.buttonManager = new ButtonManager(this);
         this.buttonManager.load();
@@ -260,7 +257,7 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
         paths.add(this.path.resolve("messages.yml")); // add to list
 
-        this.messageRegistry.init(action -> {
+        this.fusion.getMessageRegistry().init(action -> {
             for (final Path path : paths) {
                 this.fileManager.getYamlFile(path).ifPresentOrElse(file -> {
                     final String fileName = file.getFileName();

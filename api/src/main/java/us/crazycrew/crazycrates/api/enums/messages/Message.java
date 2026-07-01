@@ -63,7 +63,7 @@ public enum Message {
 
     command_key_refund("", "command.key.refund", "{prefix}<red>An error has occurred with the crate {crate} that you were opening, A refund for your key has been given.", "errors", "key-refund"),
 
-    command_reload("Messages.Reload", "{prefix}<dark_aqua>You have reloaded the Config and Data Files.", "command", "reload", "completed"),
+    command_reload("Messages.Reload", "command.reload", "{prefix}<dark_aqua>You have reloaded the Config and Data Files.", "command", "reload", "completed"),
 
     command_transfer_not_enough_keys("Messages.Transfer-Keys.Not-Enough-Keys", "command.transfer.not.enough.keys", "{prefix}<red>You do not have enough keys to transfer.", "command", "transfer", "not-enough-keys"),
     command_transfer_sent_keys("Messages.Transfer-Keys.Transferred-Keys", "command.transfer.sent.keys", "{prefix}<gray>You have transferred {amount} {crate} keys to {player}.", "command", "transfer", "transferred-keys"),
@@ -235,31 +235,23 @@ public enum Message {
     private final String defaultValue;
     private final FusionKey id;
     private final Object[] path;
-    private String oldPath;
-
-    Message(final String id, final String defaultValue, final Object... path) {
-        this.id = FusionKey.key(namespace, id);
-        this.defaultValue = defaultValue;
-        this.path = path;
-
-        this.oldPath = "";
-    }
+    //private String oldPath;
 
     Message(final String oldPath, final String id, final String defaultValue, final Object... path) {
-        this(id, defaultValue, path);
+        this.defaultValue = defaultValue;
+        this.id = FusionKey.key(namespace, id);
+        this.path = path;
 
-        this.oldPath = oldPath;
+        //this.oldPath = oldPath;
     }
 
     public void addKey(final MessageRegistry registry, final CommentedConfigurationNode configuration, final FusionKey id) {
+        final YamlMessageAdapter adapter = new YamlMessageAdapter(configuration, this.defaultValue, this.path);
+
         registry.addKey(
                 id,
                 this.id,
-                new YamlMessageAdapter(
-                        configuration,
-                        this.defaultValue,
-                        this.path
-                )
+                adapter
         );
     }
 
