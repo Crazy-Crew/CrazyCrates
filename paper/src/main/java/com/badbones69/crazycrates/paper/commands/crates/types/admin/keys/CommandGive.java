@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.keys;
 
+import com.badbones69.common.api.enums.PluginMessages;
 import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
@@ -13,7 +14,6 @@ import dev.triumphteam.cmd.core.argument.keyed.Flags;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
-import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.Map;
@@ -28,7 +28,7 @@ public class CommandGive extends BaseCommand {
         final boolean isSilent = flags.hasFlag("s");
 
         if (crateName == null || crateName.isBlank()) {
-            this.senderAdapter.sendMessage(sender, MessageKeys.cannot_be_empty, Map.of("{value}", "crate name"));
+            PluginMessages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
 
             return;
         }
@@ -36,7 +36,7 @@ public class CommandGive extends BaseCommand {
         final Crate crate = getCrate(sender, crateName, false);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
+            //Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }
@@ -62,7 +62,7 @@ public class CommandGive extends BaseCommand {
         final boolean isSilent = flags.hasFlag("s");
 
         if (crateName.isEmpty()) {
-            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
+            //Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }
@@ -70,7 +70,7 @@ public class CommandGive extends BaseCommand {
         final Crate crate = getCrate(sender, crateName, false);
 
         if (crate == null) {
-            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
+            //Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }

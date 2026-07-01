@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.paper.tasks.crates;
 
 import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
+import com.badbones69.common.api.enums.PluginMessages;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
@@ -62,7 +63,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.NonNull;
-import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
@@ -729,7 +729,7 @@ public class CrateManager {
                 return;
             }
 
-            this.senderAdapter.sendMessage(player, MessageKeys.feature_disabled);
+            PluginMessages.feature_disabled.sendMessage(player);
 
             return;
         }
@@ -756,7 +756,7 @@ public class CrateManager {
 
             case fire_cracker -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    Messages.crate_in_use.sendMessage(player, "{crate}", fancyName);
+                    //this.senderAdapter.sendMessage(player, MessageKeys.crate_in_use, Map.of("{crate}", fancyName));
 
                     removePlayerFromOpeningList(player);
 
@@ -776,7 +776,7 @@ public class CrateManager {
 
             case quick_crate -> {
                 if (this.cratesInUse.containsValue(location)) {
-                    Messages.crate_in_use.sendMessage(player, "{crate}", fancyName);
+                    //this.senderAdapter.sendMessage(player, MessageKeys.crate_in_use, Map.of("{crate}", fancyName));
 
                     removePlayerFromOpeningList(player);
 
@@ -807,10 +807,10 @@ public class CrateManager {
 
     private boolean isVirtualCrate(@NotNull final Player player, @NotNull final Crate crate, final boolean virtualCrate, @NotNull final String fancyName) {
         if (virtualCrate) {
-            Messages.cant_be_a_virtual_crate.sendMessage(player, Map.of(
+            /*this.senderAdapter.sendMessage(player, MessageKeys.cant_be_a_virtual_crate, Map.of(
                     "{cratetype}", crate.getCrateType().getName(),
                     "{crate}", fancyName
-            ));
+            ));*/
 
             removePlayerFromOpeningList(player);
 
@@ -1231,7 +1231,7 @@ public class CrateManager {
         if (!player.hasPermission("crazycrates.editor")) {
             removeEditorCrate(player);
 
-            Messages.force_editor_exit.sendMessage(player, "{reason}", "lacking the permission crazycrates.editor");
+            //this.senderAdapter.sendMessage(player, MessageKeys.force_editor_exit, Map.of("{reason}", "lacking the permission crazycrates.editor"));
 
             return;
         }
@@ -1241,13 +1241,13 @@ public class CrateManager {
         if (crate == null) {
             removeEditorCrate(player);
 
-            Messages.force_editor_exit.sendMessage(player, "{reason}", "Crate does not exist.");
+            //this.senderAdapter.sendMessage(player, MessageKeys.force_editor_exit, Map.of("{reason}", "Crate does not exist."));
 
             return;
         }
 
         if (crate.getCrateType() == CrateType.menu && !this.config.getProperty(ConfigKeys.enable_crate_menu)) {
-            Messages.cannot_set_type.sendMessage(player);
+            //this.senderAdapter.sendMessage(player, MessageKeys.cannot_set_type);
 
             return;
         }
@@ -1262,10 +1262,10 @@ public class CrateManager {
 
                 addCrateLocation(location, crate); // add new location
 
-                Messages.physical_crate_overridden.sendMessage(player, Map.of(
+                /*this.senderAdapter.sendMessage(player, MessageKeys.physical_crate_overridden, Map.of(
                         "{id}", crateLocation.getID(),
                         "{crate}", crate.getCrateName()
-                ));
+                ));*/
 
                 spawnItem(location, ItemType.EMERALD.createItemStack());
 
@@ -1274,10 +1274,10 @@ public class CrateManager {
 
             final CrateLocation crateLocation = getCrateLocation(location);
 
-            Messages.physical_crate_already_exists.sendMessage(player, Map.of(
-                "{id}", crateLocation != null ? crateLocation.getID() : "N/A",
-                "{crate}", crateLocation != null ? crateLocation.getCrate().getCrateName() : "N/A"
-            ));
+//            this.senderAdapter.sendMessage(player, MessageKeys.physical_crate_already_exists, Map.of(
+//                    "{id}", crateLocation != null ? crateLocation.getID() : "N/A",
+//                    "{crate}", crateLocation != null ? crateLocation.getCrate().getCrateName() : "N/A"
+//            ));
 
             spawnItem(location, ItemType.REDSTONE.createItemStack());
 
@@ -1286,7 +1286,9 @@ public class CrateManager {
 
         addCrateLocation(location, crate);
 
-        Messages.created_physical_crate.sendMessage(player, "{crate}", crate.getCrateName());
+        //this.senderAdapter.sendMessage(player, MessageKeys.created_physical_crate, Map.of(
+        //        "{crate}", crate.getCrateName()
+        //));
 
         spawnItem(location, ItemType.EMERALD.createItemStack());
     }
@@ -1813,7 +1815,7 @@ public class CrateManager {
         if (!player.hasPermission("crazycrates.editor")) {
             removeEditorCrate(player);
 
-            Messages.force_editor_exit.sendMessage(player, "{reason}", "lacking the permission crazycrates.editor");
+            //Messages.force_editor_exit.sendMessage(player, "{reason}", "lacking the permission crazycrates.editor");
 
             return;
         }
@@ -1827,7 +1829,9 @@ public class CrateManager {
 
                 removeCrateLocation(id);
 
-                Messages.removed_physical_crate.sendMessage(player, "{id}", id);
+                //Messages.removed_physical_crate.sendMessage(player, "{id}", id);
+
+               // this.senderAdapter.sendMessage(player, MessageKeys.removed_physical_crate, Map.of("{id}", id));
             }
         }
     }

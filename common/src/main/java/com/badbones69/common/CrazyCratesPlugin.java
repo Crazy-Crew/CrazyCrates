@@ -3,13 +3,14 @@ package com.badbones69.common;
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.impl.Settings;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
+import net.kyori.adventure.text.Component;
 import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.CrazyCrates;
 import java.nio.file.Path;
 import java.util.List;
 
-public abstract class CrazyCratesPlugin extends CrazyCrates {
+public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
 
     private final FusionKyori fusion;
 

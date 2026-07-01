@@ -37,6 +37,7 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Server;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.jspecify.annotations.NonNull;
 import java.io.IOException;
@@ -47,7 +48,7 @@ import java.util.Locale;
 import java.util.Timer;
 import static com.badbones69.crazycrates.paper.utils.MiscUtils.registerPermissions;
 
-public final class CrazyCratesPaper extends CrazyCratesPlugin {
+public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
     private final PaperFileManager fileManager;
     private final CrazyCrates plugin;
@@ -221,6 +222,7 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin {
         return this.inventoryManager;
     }
 
+    @Override
     public @NonNull PaperSenderAdapter getSenderAdapter() {
         return this.senderAdapter;
     }

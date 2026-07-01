@@ -27,7 +27,6 @@ import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.common.config.ConfigManager;
@@ -156,7 +155,7 @@ public abstract class BaseCommand {
 
         if (ignoreChecks) {
             if (crate == null || crate.getCrateType() == CrateType.menu) {
-                Messages.not_a_crate.sendMessage(sender, "{crate}", name);
+                //Messages.not_a_crate.sendMessage(sender, "{crate}", name);
 
                 return null;
             }
@@ -285,7 +284,7 @@ public abstract class BaseCommand {
             if (event.isCancelled()) return;
 
             if (!this.userManager.addOfflineKeys(offlinePlayer.getUniqueId(), fileName, type, clamp)) {
-                this.senderAdapter.sendMessage(sender, MessageKeys.internal_error);
+                //this.senderAdapter.sendMessage(sender, MessageKeys.internal_error);
             } else {
                 final String name = Optional.ofNullable(offlinePlayer.getName()).orElse("N/A");
 

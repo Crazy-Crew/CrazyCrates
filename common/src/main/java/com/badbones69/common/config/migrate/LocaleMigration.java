@@ -34,7 +34,7 @@ public class LocaleMigration extends PlainMigrationService {
                 | Property.no_permission.moveString(reader, configurationData)
                 | Property.obtaining_keys.moveString(reader, configurationData)
                 | Property.too_close_to_another_player.moveString(reader, configurationData)
-                | Property.not_a_crate.moveString(reader, configurationData)
+                /*| Property.not_a_crate.moveString(reader, configurationData)
                 | Property.not_a_number.moveString(reader, configurationData)
                 | Property.required_keys.moveString(reader, configurationData)
                 | Property.not_on_block.moveString(reader, configurationData)
@@ -48,7 +48,7 @@ public class LocaleMigration extends PlainMigrationService {
                 | Property.cant_be_a_virtual_crate.moveString(reader, configurationData)
                 | Property.needs_more_room.moveString(reader, configurationData)
                 | Property.world_disabled.moveString(reader, configurationData)
-                | Property.created_physical_crate.moveList(reader, configurationData)
+                | Property.created_physical_crate.moveList(reader, configurationData)*/
                 | Property.opened_a_crate.moveString(reader, configurationData)
                 | Property.gave_a_player_keys.moveString(reader, configurationData)
                 | Property.cannot_give_player_keys.moveString(reader, configurationData)

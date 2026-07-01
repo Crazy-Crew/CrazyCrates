@@ -23,7 +23,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.ArrayList;
 import java.util.List;
@@ -135,7 +134,7 @@ public class QuadCrateManager {
     public void startCrate() {
         // Check if it is on a block.
         if (this.spawnLocation.clone().subtract(0, 1, 0).getBlock().isEmpty()) {
-            Messages.not_on_block.sendMessage(this.player);
+            //Messages.not_on_block.sendMessage(this.player);
 
             this.crateManager.removePlayerFromOpeningList(player);
 
@@ -146,7 +145,7 @@ public class QuadCrateManager {
 
         // Check if schematic folder is empty.
         if (this.crateManager.getCrateSchematics().isEmpty()) {
-            this.senderAdapter.sendMessage(this.player, MessageKeys.no_schematics_found);
+            //this.senderAdapter.sendMessage(this.player, MessageKeys.no_schematics_found);
 
             this.crateManager.removePlayerFromOpeningList(this.player);
 
@@ -166,7 +165,7 @@ public class QuadCrateManager {
             final Block block = loc.getBlock();
 
             if (blocks.contains(block.translationKey())) {
-                Messages.needs_more_room.sendMessage(this.player);
+                //Messages.needs_more_room.sendMessage(this.player);
 
                 this.crateManager.removePlayerFromOpeningList(this.player);
 
@@ -285,7 +284,7 @@ public class QuadCrateManager {
             public void run() {
                 endCrate(true);
 
-                Messages.out_of_time.sendMessage(player, "{crate}", crate.getCrateName());
+                //Messages.out_of_time.sendMessage(player, "{crate}", crate.getCrateName());
 
                 crate.playSound(player, player.getLocation(), "stop-sound", "entity.player.levelup", Sound.Source.MASTER);
             }

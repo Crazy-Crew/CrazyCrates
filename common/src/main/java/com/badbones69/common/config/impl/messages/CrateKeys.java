@@ -61,7 +61,7 @@ public class CrateKeys implements SettingsHolder {
     public static final Property<String> needs_more_room = newProperty("crates.need-more-room", "{prefix}<red>There is not enough space to open that here");
 
     @Comment("A list of available placeholders: {world}")
-    public static final Property<String> world_disabled = newProperty("crates.world-disabled", "{prefix}<red>I am sorry but Crates are disabled in {world}.");
+    public static final Property<String> world_disabled = newProperty("crates.world-disabled", "{prefix}<red>I am sorry, but crates are disabled in {world}.");
 
     @Comment("A list of available placeholders: {crate}")
     public static final Property<String> editor_enter = newProperty("crates.editor.enter", "{prefix}<red>You are now in editor mode.");
@@ -111,36 +111,6 @@ public class CrateKeys implements SettingsHolder {
 
     @Comment("A list of available placeholders: {id}")
     public static final Property<String> crate_cannot_teleport = newProperty("crates.teleport.failed", "{prefix}<red>There is no location with the name: <gold>{id}.");
-
-    @Comment({
-            "This will add a notice to a prize, if the prize has reached max pulls.",
-            "If this message is empty, it will not add the lore to prizes.",
-            "",
-            "A list of available placeholders: {maxpulls}, {pulls}"
-    })
-    public static final Property<String> crate_prize_max_pulls = newProperty("crates.pulls.max", "{prefix}<red>This prize can no longer be obtained, {pulls}/{maxpulls}");
-
-    @Comment("A list of available placeholders: {status}")
-    public static final Property<String> crate_prize_max_respins = newProperty("crates.respins.max", "{prefix}<red>You can no longer respin, Status: {status}");
-
-    @Comment({
-            "This will be sent on join, with an accurate count of how many prizes they have claimed.",
-            "",
-            "If they have multiple prizes unclaimed, and they pass the max cap. The amount will grow",
-            "If a prize is found, and they do not have a max cap reached, the loop will break to avoid multiple gui's opening.",
-            "",
-            "A list of available placeholders: {amount}"
-    })
-    public static final Property<String> crate_prize_respins_claimed = newProperty("crates.respins.claimed", "{prefix}<red>You have claimed {amount} prizes from your respins!");
-
-    @Comment({
-            "This is sent, when a player runs /crazycrates claim <crate>",
-            "",
-            "The command will act as a way to get their latest respin prize before they open a respin menu",
-            "",
-            "A list of available placeholders: {prize}, {crate}, {crate_pretty}"
-    })
-    public static final Property<String> crate_prize_respins_redeemed = newProperty("crates.respins.redeemed", "{prefix}<red>You have redeemed your prize with the name {prize} from the crate named {crate}!");
 
     @Comment("A list of available placeholders: {prize}, {crate}, {crate_pretty}")
     public static final Property<String> crate_prize_respin_not_claimed = newProperty("crates.respins.not-claimed", "{prefix}<red>If you didn't get your prize, please run /crazycrates claim {crate}");

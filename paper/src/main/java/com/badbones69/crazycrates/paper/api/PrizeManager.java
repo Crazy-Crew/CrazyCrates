@@ -23,7 +23,6 @@ import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import org.jetbrains.annotations.Nullable;
-import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.List;
 import java.util.Map;
@@ -114,10 +113,10 @@ public class PrizeManager {
         if (prize != null) {
             givePrize(player, player.getLocation().clone().add(0, 1, 0), crate, prize);
         } else {
-            senderAdapter.sendMessage(player, MessageKeys.prize_error, Map.of(
-                    "{crate}", crate.getCrateName(),
-                    "{player}", player.getName()
-            ));
+//            senderAdapter.sendMessage(player, MessageKeys.prize_error, Map.of(
+//                    "{crate}", crate.getCrateName(),
+//                    "{player}", player.getName()
+//            ));
         }
     }
 

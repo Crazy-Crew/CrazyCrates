@@ -33,7 +33,7 @@ public enum Messages {
     must_be_looking_at_block(PlayerKeys.must_be_looking_at_block),
     obtaining_keys(PlayerKeys.obtaining_keys),
 
-    cannot_set_type(CrateKeys.cannot_set_type),
+    /*cannot_set_type(CrateKeys.cannot_set_type),
     not_on_block(CrateKeys.not_on_block),
     already_opening_crate(CrateKeys.already_opening_crate),
     crate_in_use(CrateKeys.crate_in_use),
@@ -69,7 +69,7 @@ public enum Messages {
 
     crate_prize_respins_redeemed(CrateKeys.crate_prize_respins_redeemed),
     crate_prize_respins_empty(CrateKeys.crate_prize_respins_empty),
-    crate_prize_respin_not_claimed(CrateKeys.crate_prize_respin_not_claimed),
+    crate_prize_respin_not_claimed(CrateKeys.crate_prize_respin_not_claimed),*/
 
     gave_a_player_keys(CommandKeys.gave_a_player_keys),
     cannot_give_player_keys(CommandKeys.cannot_give_player_keys),

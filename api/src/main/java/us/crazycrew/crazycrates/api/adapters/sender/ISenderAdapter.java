@@ -14,12 +14,18 @@ public abstract class ISenderAdapter<C, S> {
 
     public abstract String getName(@NotNull final S sender);
 
+    public abstract void sendActionBar(@NotNull final S sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders);
+
     public abstract void sendMessage(@NotNull final S sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders);
 
     public abstract C getComponent(@NotNull final S sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders);
 
     public C getComponent(@NotNull final S sender, @NotNull final FusionKey id) {
         return getComponent(sender, id, new HashMap<>());
+    }
+
+    public void sendActionBar(@NotNull final S sender, @NotNull final FusionKey id) {
+        sendActionBar(sender, id, new HashMap<>());
     }
 
     public void sendMessage(@NotNull final S sender, @NotNull final FusionKey id) {

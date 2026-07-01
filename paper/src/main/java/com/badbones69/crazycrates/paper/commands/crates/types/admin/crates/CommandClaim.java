@@ -12,7 +12,6 @@ import dev.triumphteam.cmd.core.annotations.Suggestion;
 import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
-import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.Map;
 import java.util.UUID;
@@ -24,7 +23,7 @@ public class CommandClaim extends BaseCommand {
     @Syntax("/crazycrates claim <crate_name>")
     public void add(Player player, @ArgName("crate") @Suggestion("crates") String crateName) {
         if (crateName == null || crateName.isBlank()) {
-            this.senderAdapter.sendMessage(player, MessageKeys.cannot_be_empty, Map.of("{value}", "crate name"));
+            //this.senderAdapter.sendMessage(player, MessageKeys.cannot_be_empty, Map.of("{value}", "crate name"));
 
             return;
         }
@@ -32,7 +31,7 @@ public class CommandClaim extends BaseCommand {
         final Crate crate = getCrate(player, crateName, false);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            Messages.not_a_crate.sendMessage(player, "{crate}", crateName);
+            //Messages.not_a_crate.sendMessage(player, "{crate}", crateName);
 
             return;
         }
@@ -41,7 +40,7 @@ public class CommandClaim extends BaseCommand {
         final String fileName = crate.getFileName();
 
         if (!this.userManager.hasRespinPrize(uuid, fileName)) {
-            Messages.crate_prize_respins_empty.sendMessage(player, Map.of("{crate_pretty}", crate.getCrateName(), "{crate}", fileName));
+            //Messages.crate_prize_respins_empty.sendMessage(player, Map.of("{crate_pretty}", crate.getCrateName(), "{crate}", fileName));
 
             if (!crate.isCyclePersistRestart()) {
                 this.userManager.removeRespinCrate(uuid, fileName, this.userManager.getCrateRespin(uuid, fileName));
@@ -55,7 +54,7 @@ public class CommandClaim extends BaseCommand {
         final Prize prize = crate.getPrize(prizeName);
 
         if (prize == null) {
-            this.senderAdapter.sendMessage(player, MessageKeys.prize_not_found, Map.of("{prize}", prizeName));
+            //this.senderAdapter.sendMessage(player, MessageKeys.prize_not_found, Map.of("{prize}", prizeName));
 
             if (!crate.isCyclePersistRestart()) {
                 this.userManager.removeRespinCrate(uuid, fileName, this.userManager.getCrateRespin(uuid, fileName));
@@ -68,7 +67,7 @@ public class CommandClaim extends BaseCommand {
 
         PrizeManager.givePrize(player, crate, prize);
 
-        Messages.crate_prize_respins_redeemed.sendMessage(player, Map.of("{crate_pretty}", crate.getCrateName(), "{crate}", fileName, "{prize}", prize.getPrizeName()));
+        //Messages.crate_prize_respins_redeemed.sendMessage(player, Map.of("{crate_pretty}", crate.getCrateName(), "{crate}", fileName, "{prize}", prize.getPrizeName()));
 
         if (!crate.isCyclePersistRestart()) {
             this.userManager.removeRespinCrate(uuid, fileName, this.userManager.getCrateRespin(uuid, fileName));

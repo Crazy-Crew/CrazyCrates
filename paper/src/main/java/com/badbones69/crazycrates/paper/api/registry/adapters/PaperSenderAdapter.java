@@ -50,6 +50,17 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
     }
 
     @Override
+    public void sendActionBar(@NotNull final CommandSender sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
+        final Component component = getComponent(sender, id, placeholders);
+
+        if (component.equals(Component.empty())) {
+            return;
+        }
+
+        sender.sendActionBar(component);
+    }
+
+    @Override
     public void sendMessage(@NotNull final CommandSender sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
         final Component component = getComponent(sender, id, placeholders);
 
