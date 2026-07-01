@@ -1,0 +1,20 @@
+# Settings related to the crate i.e. things like the display item.
+button:
+  # Display related settings i.e. the look of the item.
+  display:
+    # If the item should be displayed in the gui, or not.
+    enabled: true
+    # The item configuration.
+    item:
+      # The item material.
+      material: "red_stained_glass_pane"
+      # The name of the item.
+      name: ""
+      # The lore of the item.
+      lore: []
+      # The amount to display.
+      amount: 1
+  # The commands to execute when an item is clicked.
+  commands: []
+  # The commands to execute when an item is clicked.
+  messages: []

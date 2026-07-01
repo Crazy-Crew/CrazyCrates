@@ -3,6 +3,7 @@ package com.ryderbelserion.crazycrates.paper.api.managers;
 import com.ryderbelserion.crazycrates.paper.CrazyCrates;
 import com.ryderbelserion.crazycrates.paper.api.CratePlatform;
 import com.ryderbelserion.crazycrates.paper.api.objects.buttons.Button;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import com.ryderbelserion.fusion.paper.FusionPaper;
@@ -53,7 +54,7 @@ public class ButtonManager {
 
             final String name = customFile.getPrettyName();
 
-            this.buttons.put(name, new Button(configuration));
+            this.buttons.put(name, new Button(configuration.node("button")));
         }
     }
 
@@ -64,5 +65,4 @@ public class ButtonManager {
     public @NotNull final Map<String, Button> getButtons() {
         return Collections.unmodifiableMap(this.buttons);
     }
-
 }

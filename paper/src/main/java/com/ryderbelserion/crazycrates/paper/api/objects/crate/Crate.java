@@ -11,7 +11,7 @@ import com.ryderbelserion.crazycrates.paper.api.objects.other.CrateSound;
 import com.ryderbelserion.crazycrates.paper.api.CratePlatform;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import org.bukkit.Server;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import us.crazycrew.crazycrates.api.enums.CrateType;
 import java.util.Collections;
@@ -19,7 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class Crate {
+@NullMarked
+public final class Crate {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
@@ -47,7 +48,7 @@ public class Crate {
 
     private final CrateGui gui;
 
-    public Crate(@NotNull final CommentedConfigurationNode configuration, @NotNull final String crateName) {
+    public Crate(final CommentedConfigurationNode configuration, final String crateName) {
         this.configuration = configuration;
 
         this.crateType = CrateType.getFromName(this.configuration.node("type").getString("CSGO"));
@@ -75,9 +76,15 @@ public class Crate {
 
             final Optional<Button> index = this.buttonManager.getButton(buttonKey);
 
-            if (index.isEmpty()) continue;
+            final String asString = key.toString();
 
-            this.buttons.put(key.toString(), new CrateButton(index.get(), slot));
+            if (index.isPresent()) {
+                this.buttons.put(asString, new CrateButton(index.get(), slot));
+
+                continue;
+            }
+
+            this.buttons.put(asString, new CrateButton(new Button(node), slot));
         }
 
         final CommentedConfigurationNode prizes = this.configuration.node("prizes");
@@ -98,43 +105,43 @@ public class Crate {
         this.crateName = crateName;
     }
 
-    public final Optional<CrateSound> getSound(@NotNull final String type) {
+    public Optional<CrateSound> getSound(final String type) {
         return Optional.ofNullable(this.sounds.get(type));
     }
 
-    public final Optional<CratePrize> getPrize(@NotNull final String type) {
+    public final Optional<CratePrize> getPrize(final String type) {
         return Optional.ofNullable(this.prizes.get(type));
     }
 
-    public final Optional<CrateButton> getButton(@NotNull final String type) {
+    public final Optional<CrateButton> getButton(final String type) {
         return Optional.ofNullable(this.buttons.get(type));
     }
 
-    public @NotNull final Map<String, CratePrize> getPrizes() {
+    public Map<String, CratePrize> getPrizes() {
         return Collections.unmodifiableMap(this.prizes);
     }
 
-    public @NotNull final Map<String, CrateButton> getButtons() {
+    public Map<String, CrateButton> getButtons() {
         return Collections.unmodifiableMap(this.buttons);
     }
 
-    public @NotNull final CommentedConfigurationNode getConfiguration() {
+    public CommentedConfigurationNode getConfiguration() {
         return this.configuration;
     }
 
-    public @NotNull final DisplayItem getDisplayItem() {
+    public DisplayItem getDisplayItem() {
         return this.displayItem;
     }
 
-    public @NotNull final CrateType getCrateType() {
+    public CrateType getCrateType() {
         return this.crateType;
     }
 
-    public @NotNull final String getCrateName() {
+    public String getCrateName() {
         return this.crateName;
     }
 
-    public @NotNull final CrateGui getGui() {
+    public CrateGui getGui() {
         return this.gui;
     }
 }

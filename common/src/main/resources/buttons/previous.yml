@@ -7,17 +7,16 @@ button:
     # The item configuration.
     item:
       # The item material.
-      material: "red_stained_glass_pane"
+      material: "feather"
       # The name of the item.
-      name: ""
+      name: "<red>Previous Page"
       # The lore of the item.
       lore: []
       # The amount to display.
       amount: 1
-
-# Commands to send, when a prize is selected.
-commands:
-  - "msg {player} <red>You won the prize <yellow>{reward}."
-
-# Messages to send, when a prize is selected.
-messages: []
+  # The action to execute on the button, i.e. going to the previous page.
+  action: previous_page
+  # The commands to execute when an item is clicked.
+  commands: []
+  # The commands to execute when an item is clicked.
+  messages: []

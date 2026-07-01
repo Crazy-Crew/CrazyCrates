@@ -20,7 +20,7 @@ import java.util.Optional;
 public enum FileKeys {
 
     // gui files
-    crate_menu("crate-menu.yml", "guis", FileType.YAML),
+    crate_menu("crate-gui.yml", "guis", FileType.YAML),
 
     // static files
     messages("messages.yml", FileType.YAML),
