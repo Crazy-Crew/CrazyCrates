@@ -70,6 +70,7 @@ public class Crate {
     private String previewName;
     private boolean previewToggle;
     private boolean borderToggle;
+    private boolean airToggle;
 
     private boolean previewTierToggle;
     private boolean previewTierBorderToggle;
@@ -245,6 +246,7 @@ public class Crate {
         this.crateType = crateType;
         this.previewToggle = this.section.getBoolean("Preview.Toggle", false);
         this.borderToggle = this.section.getBoolean("Preview.Glass.Toggle", false);
+        this.airToggle = this.section.getBoolean("Settings.Border.Glass-Border.Air", true);
 
         this.previewTierToggle = this.section.getBoolean("tier-preview.toggle", false);
         this.previewTierBorderToggle = this.section.getBoolean("tier-preview.glass.toggle", false);
@@ -600,7 +602,11 @@ public class Crate {
     public final boolean isBorderToggle() {
         return this.borderToggle;
     }
-    
+
+    public boolean isAirEnabled() {
+        return this.airToggle;
+    }
+
     /**
      * Get the item that shows as the preview border if enabled.
      *

@@ -19,6 +19,7 @@ import com.ryderbelserion.fusion.paper.builders.gui.GuiBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +58,13 @@ public abstract class InventoryBuilder {
 
         final int safeRow = Math.min(row == -1 ? rows : row, rows);
 
-        gui.addSlotAction(safeRow, column, this.inventoryManager.getMenuButton(player), _ -> {
+        final ItemStack itemStack = this.inventoryManager.getMenuButton(player);
+
+        if (itemStack.isEmpty()) {
+            return;
+        }
+
+        gui.addSlotAction(safeRow, column, itemStack, _ -> {
             if (this.config.getProperty(ConfigKeys.menu_button_override)) {
                 final List<String> commands = this.config.getProperty(ConfigKeys.menu_button_command_list);
 

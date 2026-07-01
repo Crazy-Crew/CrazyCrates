@@ -40,7 +40,7 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
 
         if (crate.isBorderToggle()) {
             guiFiller.fillBoth(crate.getBorderItem().asItemStack());
-        } else {
+        } else if (crate.isAirEnabled()) {
             guiFiller.fillBottom(ItemType.AIR.createItemStack());
         }
 
@@ -67,7 +67,7 @@ public class CratePreviewMenu extends DynamicInventoryBuilder {
             addBackButton(true);
             addNextButton(true);
 
-            addMenuButton(this.player, crate, this.gui);
+            addMenuButton(this.player, crate, gui);
         });
     }
 }
