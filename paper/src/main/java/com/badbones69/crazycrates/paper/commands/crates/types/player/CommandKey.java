@@ -1,8 +1,8 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.player;
 
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
@@ -30,7 +30,7 @@ public class CommandKey {
     @Permission(value = "crazycrates.keys", def = PermissionDefault.TRUE)
     @Syntax("/keys")
     public void personal(Player player) {
-        getKeys(player, player, Messages.virtual_keys_header.getMessage(player, "{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(player.getUniqueId()))
+        getKeys(player, player, Messages.command_keys_virtual_keys_header.getMessage(player, "{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(player.getUniqueId()))
         ), Messages.no_virtual_keys.getMessage(player));
     }
 
@@ -56,10 +56,10 @@ public class CommandKey {
             return;
         }
 
-        getKeys(target, sender, Messages.other_player_no_keys_header.getMessage(sender, Map.of(
+        getKeys(target, sender, Messages.command_keys_target_player_header.getMessage(sender, Map.of(
                 "{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(target.getUniqueId())),
                 "{player}", targetName
-        )), Messages.other_player_no_keys.getMessage(sender, "{player}", targetName));
+        )), Messages.command_keys_target_player_no_keys.getMessage(sender, "{player}", targetName));
     }
 
     /**
@@ -91,7 +91,7 @@ public class CommandKey {
             if (amount > 0) {
                 hasKeys = true;
 
-                message.add(Messages.per_crate.getMessage(player, Map.of(
+                message.add(Messages.crate_list_per_crate.getMessage(player, Map.of(
                         "{crate_opened}", String.valueOf(userManager.getCrateOpened(uuid, crate.getFileName())),
                         "{keys}", String.valueOf(amount),
                         "{crate}", crate.getCrateName()

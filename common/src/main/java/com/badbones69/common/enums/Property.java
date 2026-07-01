@@ -3,9 +3,6 @@ package com.badbones69.common.enums;
 import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.resource.PropertyReader;
 import com.badbones69.common.config.impl.ConfigKeys;
-import com.badbones69.common.config.impl.messages.CommandKeys;
-import com.badbones69.common.config.impl.messages.CrateKeys;
-import com.badbones69.common.config.impl.messages.PlayerKeys;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
@@ -67,9 +64,9 @@ public enum Property {
     filler_lore(ConfigKeys.filler_lore, newListProperty("Settings.Filler.Lore", ConfigKeys.filler_lore.getDefaultValue()), Collections.emptyList()),
 
     gui_customizer_toggle(ConfigKeys.gui_customizer_toggle, newProperty("Settings.GUI-Customizer-Toggle", ConfigKeys.gui_customizer_toggle.getDefaultValue()), false),
-    gui_customizer_lore(ConfigKeys.gui_customizer, newListProperty("Settings.GUI-Customizer", ConfigKeys.gui_customizer.getDefaultValue()), Collections.emptyList()),
+    gui_customizer_lore(ConfigKeys.gui_customizer, newListProperty("Settings.GUI-Customizer", ConfigKeys.gui_customizer.getDefaultValue()), Collections.emptyList());
 
-    //unknown_command(MiscKeys.unknown_command, newProperty("Messages.Unknown-Command", MiscKeys.unknown_command.getDefaultValue())),
+    /*//unknown_command(MiscKeys.unknown_command, newProperty("Messages.Unknown-Command", MiscKeys.unknown_command.getDefaultValue())),
     //no_teleporting(MiscKeys.no_teleporting, newProperty("Messages.No-Teleporting", MiscKeys.no_teleporting.getDefaultValue())),
     //no_commands_while_in_crate(MiscKeys.no_commands_while_using_crate, newProperty("Messages.No-Commands-While-In-Crate", MiscKeys.no_commands_while_using_crate.getDefaultValue())),
     //no_key(MiscKeys.no_keys, newProperty("Messages.No-Key", MiscKeys.no_keys.getDefaultValue())),
@@ -90,7 +87,7 @@ public enum Property {
     obtaining_keys(PlayerKeys.obtaining_keys, newProperty("Messages.Obtaining-Keys", PlayerKeys.obtaining_keys.getDefaultValue())),
     too_close_to_another_player(PlayerKeys.too_close_to_another_player, newProperty("Messages.To-Close-To-Another-Player", PlayerKeys.too_close_to_another_player.getDefaultValue())),
 
-    /*not_a_crate(CrateKeys.not_a_crate, newProperty("Messages.Not-A-Crate", CrateKeys.not_a_crate.getDefaultValue())),
+    not_a_crate(CrateKeys.not_a_crate, newProperty("Messages.Not-A-Crate", CrateKeys.not_a_crate.getDefaultValue())),
     not_a_number(CrateKeys.not_a_number, newProperty("Messages.Not-A-Number", CrateKeys.not_a_number.getDefaultValue())),
     required_keys(CrateKeys.not_enough_keys, newProperty("Messages.Required-Keys", CrateKeys.not_enough_keys.getDefaultValue())),
     not_on_block(CrateKeys.not_on_block, newProperty("Messages.Not-On-Block", CrateKeys.not_on_block.getDefaultValue())),
@@ -104,7 +101,7 @@ public enum Property {
     cant_be_a_virtual_crate(CrateKeys.cant_be_a_virtual_crate, newProperty("Messages.Cant-Be-A-Virtual-Crate", CrateKeys.cant_be_a_virtual_crate.getDefaultValue())),
     needs_more_room(CrateKeys.needs_more_room, newProperty("Messages.Needs-More-Room", CrateKeys.needs_more_room.getDefaultValue())),
     world_disabled(CrateKeys.world_disabled, newProperty("Messages.World-Disabled", CrateKeys.world_disabled.getDefaultValue())),
-    created_physical_crate(CrateKeys.created_physical_crate, newListProperty("Messages.Created-Physical-Crate", CrateKeys.created_physical_crate.getDefaultValue()), Collections.emptyList()),*/
+    created_physical_crate(CrateKeys.created_physical_crate, newListProperty("Messages.Created-Physical-Crate", CrateKeys.created_physical_crate.getDefaultValue()), Collections.emptyList()),
 
     opened_a_crate(CommandKeys.opened_a_crate, newProperty("Messages.Opened-A-Crate", CommandKeys.opened_a_crate.getDefaultValue())),
     gave_a_player_keys(CommandKeys.gave_a_player_keys, newProperty("Messages.Given-A-Player-Keys", CommandKeys.gave_a_player_keys.getDefaultValue())),
@@ -126,7 +123,7 @@ public enum Property {
     other_header(CommandKeys.other_player_header, newListProperty("Messages.Keys.Other-Player.Header", CommandKeys.other_player_header.getDefaultValue()), Collections.emptyList()),
     per_crate(CommandKeys.per_crate, newProperty("Messages.Keys.Per-Crate", CommandKeys.per_crate.getDefaultValue())),
     help(CommandKeys.help, newListProperty("Messages.Help", CommandKeys.help.getDefaultValue()), Collections.emptyList()),
-    admin_help(CommandKeys.admin_help, newListProperty("Messages.Admin-Help", CommandKeys.admin_help.getDefaultValue()), Collections.emptyList());
+    admin_help(CommandKeys.admin_help, newListProperty("Messages.Admin-Help", CommandKeys.admin_help.getDefaultValue()), Collections.emptyList());*/
 
     private final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
 

@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates;
 
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.deprecation.NewItemMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
@@ -18,8 +18,6 @@ import dev.triumphteam.cmd.core.annotations.Syntax;
 import dev.triumphteam.cmd.core.argument.keyed.Flags;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
-import us.crazycrew.crazycrates.api.constants.MessageKeys;
-
 import java.util.Map;
 
 public class CommandMigrate extends BaseCommand {
@@ -34,7 +32,7 @@ public class CommandMigrate extends BaseCommand {
         final boolean hasFlag = flags.hasFlag("mt");
 
         if (!hasFlag) {
-            this.senderAdapter.sendMessage(sender, MessageKeys.lacking_flag, Map.of(
+            Messages.command_lacking_flag.sendMessage(sender, Map.of(
                     "{flag}", "-mt",
                     "{usage}", "/crazycrates migrate -mt <migration_type>"
             ));
@@ -45,7 +43,7 @@ public class CommandMigrate extends BaseCommand {
         final MigrationType type = MigrationType.fromName(flags.getFlagValue("mt").orElse(null));
 
         if (type == null) {
-            Messages.migration_not_available.sendMessage(sender);
+            Messages.command_migrate_not_available.sendMessage(sender);
 
             return;
         }
@@ -56,7 +54,7 @@ public class CommandMigrate extends BaseCommand {
                 final boolean hasCrateFlag = flags.hasFlag("c");
 
                 if (!hasCrateFlag) {
-                    this.senderAdapter.sendMessage(sender, MessageKeys.lacking_flag, Map.of(
+                    Messages.command_lacking_flag.sendMessage(sender, Map.of(
                             "{flag}", "-mt",
                             "{usage}", "/crazycrates migrate -mt <migration_type> -c <crate>"
                     ));
@@ -67,7 +65,7 @@ public class CommandMigrate extends BaseCommand {
                 final String crateName = flags.getFlagValue("c").orElse(null);
 
                 if (crateName == null || crateName.isBlank() || crateName.equalsIgnoreCase("Menu")) {
-                    this.senderAdapter.sendMessage(sender, MessageKeys.cannot_be_empty, Map.of("{value}", "crate name"));
+                    Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
 
                     return;
                 }
@@ -83,11 +81,11 @@ public class CommandMigrate extends BaseCommand {
 
             case CRATES_DEPRECATED_ALL -> new DeprecatedCrateMigrator(sender).run();
 
-            case SPECIALIZED_CRATES -> Messages.migration_not_available.sendMessage(sender);
+            case SPECIALIZED_CRATES -> Messages.command_migrate_not_available.sendMessage(sender);
 
             case EXCELLENT_CRATES -> {
                 if (!Plugins.excellent_crates.isEnabled()) {
-                    Messages.migration_plugin_not_enabled.sendMessage(sender, "{name}", type.getName());
+                    Messages.command_migrate_plugin_disabled.sendMessage(sender, "{name}", type.getName());
 
                     return;
                 }

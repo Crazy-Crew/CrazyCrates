@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates;
 
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.*;
@@ -11,9 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import us.crazycrew.crazycrates.api.constants.MessageKeys;
-
-import java.util.Map;
 
 public class CommandTeleport extends BaseCommand {
 
@@ -22,7 +19,7 @@ public class CommandTeleport extends BaseCommand {
     @Syntax("/crazycrates teleport <crate_id>")
     public void teleport(Player player, @ArgName("crate_id") @Optional @Suggestion("locations") String id) {
         if (id == null || id.isBlank()) {
-            this.senderAdapter.sendMessage(player, MessageKeys.cannot_be_empty, Map.of("{value}", "crate location id"));
+            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate location id");
 
             return;
         }
@@ -52,9 +49,9 @@ public class CommandTeleport extends BaseCommand {
 
             player.teleport(new Location(world, origin.getInt("Z"), origin.getInt("Y"), origin.getInt("Z")).add(.5, 0, .5));
 
-            Messages.crate_teleported.sendMessage(player, "{name}", name);
+            Messages.crate_teleport_success.sendMessage(player, "{name}", name);
         }
 
-        Messages.crate_cannot_teleport.sendMessage(player, "{id}", id);
+        Messages.crate_teleport_failed.sendMessage(player, "{id}", id);
     }
 }

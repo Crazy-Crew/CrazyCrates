@@ -33,13 +33,11 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import java.util.HashMap;
 import java.util.Map;
@@ -93,7 +91,7 @@ public class CosmicCrateListener implements Listener {
         final int slot = event.getRawSlot();
 
         if (this.crateManager.containsSlot(player) && this.crateManager.getSlots(player).contains(slot)) {
-            Messages.already_redeemed_prize.sendMessage(player);
+            //Messages.already_redeemed_prize.sendMessage(player);
 
             return;
         }
@@ -261,7 +259,7 @@ public class CosmicCrateListener implements Listener {
                 placeholders.put("{key}", crate.getKeyName());
 
                 // Send no keys message.
-                this.senderAdapter.sendMessage(player, MessageKeys.no_keys, placeholders);
+                //this.senderAdapter.sendMessage(player, MessageKeys.no_keys, placeholders);
 
                 // Remove opening stuff.
                 this.crateManager.endCrate(crate, player);
@@ -330,7 +328,7 @@ public class CosmicCrateListener implements Listener {
 
                                     crateManager.endCrate(crate, player);
 
-                                    senderAdapter.sendMessage(player, MessageKeys.key_refund, Map.of("{crate}", fancyName));
+                                    //senderAdapter.sendMessage(player, MessageKeys.key_refund, Map.of("{crate}", fancyName));
 
                                     fusion.log(Level.ERROR, "An issue occurred when the user %s was using the %s crate and so they were issued a key refund.", exception, player.getName(), fileName);
 

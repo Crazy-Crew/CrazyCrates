@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.managers;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
@@ -30,7 +31,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import java.util.*;
 
@@ -159,7 +159,7 @@ public class BukkitUserManager extends UserManager {
                     addVirtualKeys(uuid, fileName, amount);
 
                     if (config.getProperty(ConfigKeys.notify_player_when_inventory_full)) {
-                        Messages.cannot_give_player_keys.sendMessage(player, Map.of(
+                        Messages.command_cannot_give_player_keys.sendMessage(player, Map.of(
                                 "{keytype}", keyType.getFriendlyName(),
                                 "{amount}", String.valueOf(amount),
                                 "{player}", player.getName(),

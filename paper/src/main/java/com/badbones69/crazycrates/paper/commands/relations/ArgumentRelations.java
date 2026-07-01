@@ -3,8 +3,6 @@ package com.badbones69.crazycrates.paper.commands.relations;
 import com.badbones69.crazycrates.paper.commands.MessageManager;
 import dev.triumphteam.cmd.bukkit.message.BukkitMessageKey;
 import dev.triumphteam.cmd.core.message.MessageKey;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
-import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import java.util.Map;
 
 public class ArgumentRelations extends MessageManager {
@@ -12,39 +10,39 @@ public class ArgumentRelations extends MessageManager {
     @Override
     public void build() {
         this.commandManager.registerMessage(BukkitMessageKey.UNKNOWN_COMMAND, (sender, context) -> {
-            this.senderAdapter.sendMessage(sender, MessageKeys.unknown_command, Map.of(
-                    "{command}", context.getInvalidInput()
-            ));
+            //this.senderAdapter.sendMessage(sender, MessageKeys.unknown_command, Map.of(
+            //        "{command}", context.getInvalidInput()
+            //));
         });
 
         this.commandManager.registerMessage(MessageKey.TOO_MANY_ARGUMENTS, (sender, context) -> {
-            this.senderAdapter.sendMessage(sender, MessageKeys.correct_usage, Map.of(
-                    "{usage}", context.getSyntax()
-            ));
+            //this.senderAdapter.sendMessage(sender, MessageKeys.correct_usage, Map.of(
+            //        "{usage}", context.getSyntax()
+            //));
         });
 
         this.commandManager.registerMessage(MessageKey.NOT_ENOUGH_ARGUMENTS, (sender, context) -> {
-            this.senderAdapter.sendMessage(sender, MessageKeys.correct_usage, Map.of(
-                    "{usage}", context.getSyntax()
-            ));
+            //this.senderAdapter.sendMessage(sender, MessageKeys.correct_usage, Map.of(
+            //        "{usage}", context.getSyntax()
+            //));
         });
 
         this.commandManager.registerMessage(MessageKey.INVALID_ARGUMENT, (sender, context) -> {
-            this.senderAdapter.sendMessage(sender, MessageKeys.correct_usage, Map.of(
-                    "{usage}", context.getSyntax()
-            ));
+            //this.senderAdapter.sendMessage(sender, MessageKeys.correct_usage, Map.of(
+            //        "{usage}", context.getSyntax()
+            //));
         });
 
         this.commandManager.registerMessage(BukkitMessageKey.NO_PERMISSION, (sender, context) -> {
-            Messages.no_permission.sendMessage(sender, "{permission}", context.getPermission().toString());
+            //Messages.no_permission.sendMessage(sender, "{permission}", context.getPermission().toString());
         });
 
         this.commandManager.registerMessage(BukkitMessageKey.PLAYER_ONLY, (sender, context) -> {
-            Messages.must_be_a_player.sendMessage(sender);
+            //Messages.must_be_a_player.sendMessage(sender);
         });
 
         this.commandManager.registerMessage(BukkitMessageKey.CONSOLE_ONLY, (sender, context) -> {
-            Messages.must_be_console_sender.sendMessage(sender);
+            //Messages.must_be_console_sender.sendMessage(sender);
         });
     }
 }

@@ -34,7 +34,6 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
-import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import java.util.List;
 import java.util.Map;
 
@@ -190,10 +189,10 @@ public class QuadCrateListener implements Listener {
 
             final Crate crate = session.getCrate();
 
-            this.senderAdapter.sendMessage(player, MessageKeys.no_commands_while_using_crate, Map.of(
-                    "{crate}", crate.getCrateName(),
-                    "{player}", player.getName()
-            ));
+//            this.senderAdapter.sendMessage(player, MessageKeys.no_commands_while_using_crate, Map.of(
+//                    "{crate}", crate.getCrateName(),
+//                    "{player}", player.getName()
+//            ));
         }
     }
 
@@ -208,10 +207,10 @@ public class QuadCrateListener implements Listener {
 
             final Crate crate = session.getCrate();
 
-            this.senderAdapter.sendMessage(player, MessageKeys.no_teleporting, Map.of(
-                    "{crate}", crate.getCrateName(),
-                    "{player}", player.getName()
-            ));
+//            this.senderAdapter.sendMessage(player, MessageKeys.no_teleporting, Map.of(
+//                    "{crate}", crate.getCrateName(),
+//                    "{player}", player.getName()
+//            ));
         }
     }
 

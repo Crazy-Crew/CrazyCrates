@@ -1,9 +1,9 @@
 package com.badbones69.crazycrates.paper.commands.crates.types;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
@@ -180,7 +180,7 @@ public abstract class BaseCommand {
             if (keys < 1) {
                 this.fusion.log(Level.WARNING, "The player %s does not have enough keys to take.", name);
 
-                Messages.cannot_take_keys.sendMessage(sender, "{player}", name);
+                Messages.command_cant_take_keys.sendMessage(sender, "{player}", name);
 
                 return;
             }
@@ -188,7 +188,7 @@ public abstract class BaseCommand {
             final int clamp = Math.clamp(amount, 1, keys);
 
             if (this.userManager.takeKeys(uuid, fileName, type, clamp, false)) {
-                Messages.take_player_keys.sendMessage(sender, Map.of(
+                Messages.command_take_player_keys.sendMessage(sender, Map.of(
                         "{keytype}", type.getFriendlyName(),
                         "{amount}", String.valueOf(clamp),
                         "{player}", name,
@@ -213,7 +213,7 @@ public abstract class BaseCommand {
             if (keys < 1) {
                 this.fusion.log(Level.WARNING, "The player %s does not have enough keys to take.", name);
 
-                Messages.cannot_take_keys.sendMessage(sender, "{player}", name);
+                Messages.command_cant_take_keys.sendMessage(sender, "{player}", name);
 
                 return;
             }
@@ -221,7 +221,7 @@ public abstract class BaseCommand {
             final int clamp = Math.clamp(amount, 1, keys);
 
             if (this.userManager.takeOfflineKeys(uuid, fileName, type, clamp)) {
-                Messages.take_offline_player_keys.sendMessage(sender, Map.of(
+                Messages.command_take_offline_player_keys.sendMessage(sender, Map.of(
                         "{amount}", String.valueOf(clamp),
                         "{keytype}", type.getFriendlyName(),
                         "{key}", crate.getKeyName(),
@@ -265,7 +265,7 @@ public abstract class BaseCommand {
 
             EventManager.logEvent(EventType.event_key_given, name, sender, crate, type, clamp);
 
-            if (!isGiveAll) Messages.gave_a_player_keys.sendMessage(sender, placeholders);
+            if (!isGiveAll) Messages.command_gave_player_keys.sendMessage(sender, placeholders);
 
             if (isSilent) return;
 
@@ -295,7 +295,7 @@ public abstract class BaseCommand {
                     "{player}", name
                 );
 
-                Messages.given_offline_player_keys.sendMessage(sender, placeholders);
+                Messages.command_gave_offline_player_keys.sendMessage(sender, placeholders);
 
                 EventManager.logEvent(EventType.event_key_given, name, sender, crate, type, clamp);
             }

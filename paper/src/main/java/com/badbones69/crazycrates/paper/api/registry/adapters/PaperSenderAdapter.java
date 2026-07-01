@@ -12,9 +12,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.api.CrazyCrates;
 import us.crazycrew.crazycrates.api.adapters.sender.ISenderAdapter;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -73,6 +77,14 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
 
     @Override
     public Component getComponent(@NotNull final CommandSender sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
+        final List<String> values = new ArrayList<>();
+
+        this.messageRegistry.getMessage(id).ifPresent(value -> values.add(value.getValue()));
+
+        if (values.isEmpty()) {
+            return Component.empty();
+        }
+
         final Map<String, String> map = new HashMap<>(placeholders);
 
         final String prefix = this.config.getProperty(ConfigKeys.command_prefix);
@@ -81,17 +93,28 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
             map.putIfAbsent("{prefix}", prefix);
         }
 
-        final AtomicReference<String> reference = new AtomicReference<>("");
+        return this.fusion.asComponent(sender, values.getFirst(), map);
+    }
 
-        if (!(sender instanceof Player player)) {
-            this.messageRegistry.getMessage(id).ifPresent(value -> reference.set(value.getValue()));
+    @Override
+    public String getMessage(@NotNull final CommandSender sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders) {
+        final List<String> values = new ArrayList<>();
 
-            return this.fusion.asComponent(sender, reference.get(), map);
+        this.messageRegistry.getMessage(id).ifPresent(value -> values.add(value.getValue()));
+
+        if (values.isEmpty()) {
+            return "";
         }
 
-        this.messageRegistry.getMessage(id).ifPresent(value -> reference.set(value.getValue()));
+        final Map<String, String> map = new HashMap<>(placeholders);
 
-        return this.fusion.asComponent(player, reference.get(), map);
+        final String prefix = this.config.getProperty(ConfigKeys.command_prefix);
+
+        if (!prefix.isEmpty()) {
+            map.putIfAbsent("{prefix}", prefix);
+        }
+
+        return this.fusion.replacePlaceholders(this.fusion.papi(sender, values.getFirst()), map);
     }
 
     @Override

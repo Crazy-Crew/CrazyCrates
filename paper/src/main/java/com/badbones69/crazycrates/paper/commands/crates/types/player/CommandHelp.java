@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.player;
 
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.tasks.menus.CrateMainMenu;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
@@ -35,13 +35,11 @@ public class CommandHelp extends BaseCommand {
     @Syntax("/crazycrates help")
     public void help(CommandSender sender) {
         if (sender.hasPermission("crazycrates.admin")) {
-            // this has to use sendRichMessage as it is a list.
-            Messages.admin_help.sendRichMessage(sender);
+            Messages.command_admin_help.sendMessage(sender);
 
             return;
         }
 
-        // this has to use sendRichMessage as it is a list.
-        Messages.help.sendRichMessage(sender);
+        Messages.command_help.sendMessage(sender);
     }
 }

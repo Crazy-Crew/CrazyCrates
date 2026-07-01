@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.keys;
 
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import com.ryderbelserion.fusion.paper.builders.items.PlayerBuilder;
@@ -11,11 +10,8 @@ import dev.triumphteam.cmd.core.annotations.Suggestion;
 import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
-import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-
-import java.util.Map;
 
 public class CommandTake extends BaseCommand {
 
@@ -24,7 +20,7 @@ public class CommandTake extends BaseCommand {
     @Syntax("/crazycrates take <key_type> <crate_name> <amount> <player_name>")
     public void take(CommandSender sender, @ArgName("key_type") @Suggestion("keys") String type, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("amount") @Suggestion("numbers") int amount, @ArgName("player") @Suggestion("players") PlayerBuilder target) {
         if (crateName == null || crateName.isBlank()) {
-            this.senderAdapter.sendMessage(sender, MessageKeys.cannot_be_empty, Map.of("{value}", "crate name"));
+            //this.senderAdapter.sendMessage(sender, MessageKeys.cannot_be_empty, Map.of("{value}", "crate name")); //todo()
 
             return;
         }
@@ -32,7 +28,7 @@ public class CommandTake extends BaseCommand {
         final Crate crate = getCrate(sender, crateName, false);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
+            //Messages.not_a_crate.sendMessage(sender, "{crate}", crateName); //todo()
 
             return;
         }

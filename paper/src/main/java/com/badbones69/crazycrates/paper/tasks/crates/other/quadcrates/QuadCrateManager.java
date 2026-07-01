@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates;
 
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
@@ -15,7 +16,6 @@ import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.SpiralManager;
 import com.badbones69.crazycrates.paper.api.ChestManager;
 import org.bukkit.block.Block;
@@ -185,7 +185,7 @@ public class QuadCrateManager {
             if (entity instanceof Player entityPlayer) {
                 for (final QuadCrateManager ongoingCrate : this.crateManager.getQuadSessions()) {
                     if (entityPlayer.getUniqueId().equals(ongoingCrate.player.getUniqueId())) {
-                        Messages.too_close_to_another_player.sendMessage(this.player, "{player}", entityPlayer.getName());
+                        Messages.must_not_be_next_to_player.sendMessage(this.player, "{player}", entityPlayer.getName());
 
                         this.crateManager.removePlayerFromOpeningList(this.player);
 

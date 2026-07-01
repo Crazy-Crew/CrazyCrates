@@ -9,7 +9,6 @@ import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.events.CrateOpenEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
@@ -19,7 +18,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +58,7 @@ public class CrateOpenListener implements Listener {
 
         if (crateType != CrateType.menu) {
             if (crate.getPrizes().isEmpty() || !crate.canWinPrizes(player)) {
-                this.senderAdapter.sendMessage(player, MessageKeys.no_prizes_found, Map.of("{value}", fancyName));
+                //this.senderAdapter.sendMessage(player, MessageKeys.no_prizes_found, Map.of("{value}", fancyName));
 
                 this.crateManager.endCrate(crate, player);
 
@@ -71,7 +69,7 @@ public class CrateOpenListener implements Listener {
         }
 
         if (!player.hasPermission("crazycrates.open." + fileName)) {
-            Messages.no_crate_permission.sendMessage(player, "{crate}", fancyName);
+            //Messages.no_crate_permission.sendMessage(player, "{crate}", fancyName);
 
             this.crateManager.endCrate(crate, player);
 

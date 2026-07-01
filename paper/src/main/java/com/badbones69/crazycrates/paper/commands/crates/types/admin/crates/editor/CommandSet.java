@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.editor;
 
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.common.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
@@ -14,7 +14,6 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
-import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.Map;
 
@@ -25,7 +24,7 @@ public class CommandSet extends BaseCommand {
     @Syntax("/crazycrates set <crate_name>")
     public void set(Player player, @ArgName("crate") @Suggestion("crates") String crateName) {
         if (crateName == null || crateName.isBlank()) {
-            this.senderAdapter.sendMessage(player, MessageKeys.cannot_be_empty, Map.of("{value}", "crate name"));
+            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
             return;
         }
@@ -39,7 +38,7 @@ public class CommandSet extends BaseCommand {
         }
 
         if (crate.getCrateType() == CrateType.menu && !this.config.getProperty(ConfigKeys.enable_crate_menu)) {
-            Messages.cannot_set_type.sendMessage(player);
+            Messages.crate_cannot_set_type.sendMessage(player);
 
             return;
         }
@@ -57,7 +56,7 @@ public class CommandSet extends BaseCommand {
         if (this.crateManager.isCrateLocation(location)) {
             final CrateLocation crateLocation = crateManager.getCrateLocation(location);
 
-            Messages.physical_crate_already_exists.sendMessage(player, Map.of(
+            Messages.physical_crate_exists.sendMessage(player, Map.of(
                     "{id}", crateLocation != null ? crateLocation.getID() : "N/A",
                     "{crate}", crateLocation != null ? crateLocation.getCrate().getCrateName() : "N/A"
             ));
@@ -67,9 +66,6 @@ public class CommandSet extends BaseCommand {
 
         this.crateManager.addCrateLocation(location, crate);
 
-        // this has to use sendRichMessage as it is a list.
-        Messages.created_physical_crate.sendRichMessage(player, Map.of(
-                "{crate}", crate.getCrateName()
-        ));
+        Messages.physical_crate_created.sendMessage(player, "{crate}", crate.getCrateName());
     }
 }

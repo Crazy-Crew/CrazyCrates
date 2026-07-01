@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.keys;
 
-import com.badbones69.common.api.enums.PluginMessages;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -28,7 +27,7 @@ public class CommandGive extends BaseCommand {
         final boolean isSilent = flags.hasFlag("s");
 
         if (crateName == null || crateName.isBlank()) {
-            PluginMessages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
+            Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
 
             return;
         }
@@ -77,7 +76,7 @@ public class CommandGive extends BaseCommand {
 
         final KeyType keyType = getKeyType(type);
 
-        Messages.given_everyone_keys.sendMessage(sender, Map.of(
+        Messages.command_gave_everyone_keys.sendMessage(sender, Map.of(
                 "{keytype}", keyType.getFriendlyName(),
                 "{amount}", String.valueOf(amount),
                 "{key}", crate.getKeyName()

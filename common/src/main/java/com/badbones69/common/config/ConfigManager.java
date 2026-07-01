@@ -5,11 +5,7 @@ import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.badbones69.common.config.impl.EditorKeys;
 import com.badbones69.common.config.migrate.ConfigMigration;
-import com.badbones69.common.config.migrate.LocaleMigration;
 import com.badbones69.common.config.impl.ConfigKeys;
-import com.badbones69.common.config.impl.messages.CommandKeys;
-import com.badbones69.common.config.impl.messages.CrateKeys;
-import com.badbones69.common.config.impl.messages.PlayerKeys;
 import java.nio.file.Path;
 
 public class ConfigManager {
@@ -17,8 +13,6 @@ public class ConfigManager {
     private static SettingsManager config;
 
     private static SettingsManager editor;
-
-    private static SettingsManager messages;
 
     /**
      * Loads configuration files.
@@ -37,12 +31,6 @@ public class ConfigManager {
                 .migrationService(new ConfigMigration())
                 .configurationData(EditorKeys.class)
                 .create();
-
-        messages = SettingsManagerBuilder
-                .withYamlFile(path.resolve("messages.yml"), builder)
-                .migrationService(new LocaleMigration())
-                .configurationData(PlayerKeys.class, CrateKeys.class, CommandKeys.class)
-                .create();
     }
 
     /**
@@ -51,7 +39,6 @@ public class ConfigManager {
     public static void refresh() {
         config.reload();
         editor.reload();
-        messages.reload();
     }
 
     /**
@@ -66,12 +53,5 @@ public class ConfigManager {
      */
     public static SettingsManager getEditor() {
         return editor;
-    }
-
-    /**
-     * @return gets messages.yml
-     */
-    public static SettingsManager getMessages() {
-        return messages;
     }
 }

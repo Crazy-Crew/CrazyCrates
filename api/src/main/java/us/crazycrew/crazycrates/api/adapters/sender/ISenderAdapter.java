@@ -20,6 +20,12 @@ public abstract class ISenderAdapter<C, S> {
 
     public abstract C getComponent(@NotNull final S sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders);
 
+    public abstract String getMessage(@NotNull final S sender, @NotNull final FusionKey id, @NotNull final Map<String, String> placeholders);
+
+    public String getMessage(@NotNull final S sender, @NotNull final FusionKey id) {
+        return getMessage(sender, id, Map.of());
+    }
+
     public C getComponent(@NotNull final S sender, @NotNull final FusionKey id) {
         return getComponent(sender, id, new HashMap<>());
     }

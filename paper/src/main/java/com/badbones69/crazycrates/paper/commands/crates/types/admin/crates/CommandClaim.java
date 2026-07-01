@@ -1,7 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates;
 
 import com.badbones69.crazycrates.paper.api.PrizeManager;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
@@ -13,7 +12,7 @@ import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import java.util.Map;
+
 import java.util.UUID;
 
 public class CommandClaim extends BaseCommand {

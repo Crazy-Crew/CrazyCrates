@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.keys;
 
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
@@ -23,7 +23,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.Nullable;
-import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.common.config.impl.ConfigKeys;
@@ -36,14 +35,14 @@ public class CommandOpen extends BaseCommand {
 
     private boolean isCancelled(final Player player, final String crateName) {
         if (crateName == null || crateName.isBlank()) {
-            this.senderAdapter.sendMessage(player, MessageKeys.cannot_be_empty, Map.of("{value}", "crate name"));
+            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
             return true;
         }
 
         // Check if player is in opening list first.
         if (this.crateManager.isInOpeningList(player)) {
-            Messages.already_opening_crate.sendMessage(player, "{crate}", crateName);
+            Messages.crate_already_opened.sendMessage(player, "{crate}", crateName);
 
             return true;
         }
@@ -76,7 +75,7 @@ public class CommandOpen extends BaseCommand {
         final CrateType crateType = crate.getCrateType();
 
         if (crateType == CrateType.menu) {
-            this.senderAdapter.sendMessage(player, MessageKeys.internal_error);
+            Messages.internal_error.sendMessage(player);
 
             this.fusion.log(Level.ERROR, "An error has occurred: The crate type is Menu for the crate named %s.", crateName);
 
@@ -88,7 +87,7 @@ public class CommandOpen extends BaseCommand {
 
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
-            Messages.cant_be_a_virtual_crate.sendMessage(player, Map.of(
+            Messages.not_physical_crate.sendMessage(player, Map.of(
                     "{cratetype}", crateType.getName(),
                     "{crate}", fancyName
             ));
@@ -106,7 +105,8 @@ public class CommandOpen extends BaseCommand {
                 player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
-            this.senderAdapter.sendMessage(player, MessageKeys.no_keys, Map.of("{key}", crate.getKeyName(), "{crate}", fancyName));
+            //this.senderAdapter.sendMessage(player, MessageKeys.no_keys, Map.of("{key}", crate.getKeyName(), "{crate}", fancyName)); //todo()
+            //Messages.no_key
 
             return;
         }
@@ -138,7 +138,7 @@ public class CommandOpen extends BaseCommand {
 
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
-            Messages.cant_be_a_virtual_crate.sendMessage(sender, Map.of("{cratetype}", crateType.getName(), "{crate}", fancyName));
+            //Messages.cant_be_a_virtual_crate.sendMessage(sender, Map.of("{cratetype}", crateType.getName(), "{crate}", fancyName)); //todo()
 
             return;
         }
@@ -157,14 +157,15 @@ public class CommandOpen extends BaseCommand {
             if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
                 player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
-            this.senderAdapter.sendMessage(sender, MessageKeys.no_keys, Map.of("{key}", crate.getKeyName(), "{crate}", fancyName));
+
+            //this.senderAdapter.sendMessage(sender, MessageKeys.no_keys, Map.of("{key}", crate.getKeyName(), "{crate}", fancyName)); //todo()
 
             return;
         }
 
         this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false, EventType.event_crate_opened);
 
-        Messages.opened_a_crate.sendMessage(sender, Map.of("{player}", player.getName(), "{crate}", fancyName));
+        //Messages.opened_a_crate.sendMessage(sender, Map.of("{player}", player.getName(), "{crate}", fancyName)); //todo()
     }
 
 
@@ -190,14 +191,14 @@ public class CommandOpen extends BaseCommand {
 
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
-            Messages.cant_be_a_virtual_crate.sendMessage(sender, Map.of("{cratetype}", crateType.getName(), "{crate}", fancyName));
+            //Messages.cant_be_a_virtual_crate.sendMessage(sender, Map.of("{cratetype}", crateType.getName(), "{crate}", fancyName)); //todo()
 
             return;
         }
 
         this.crateManager.openCrate(player, crate, KeyType.free_key, player.getLocation(), true, false, EventType.event_crate_force_opened);
 
-        Messages.opened_a_crate.sendMessage(sender, Map.of("{player}", player.getName(), "{crate}", fancyName));
+        //Messages.opened_a_crate.sendMessage(sender, Map.of("{player}", player.getName(), "{crate}", fancyName)); //todo()
     }
 
     @Command("mass-open")
@@ -234,7 +235,7 @@ public class CommandOpen extends BaseCommand {
         int currentAmount = 0; // amount of keys to use when rolling
 
         if (keys == 0) {
-            this.senderAdapter.sendMessage(player, MessageKeys.no_keys, Map.of("{crate}", fancyName, "{key}", keyName));
+            //this.senderAdapter.sendMessage(player, MessageKeys.no_keys, Map.of("{crate}", fancyName, "{key}", keyName)); //todo()
 
             return;
         }

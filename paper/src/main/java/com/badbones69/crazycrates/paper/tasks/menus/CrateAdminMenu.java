@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.tasks.menus;
 
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.builders.gui.DynamicInventoryBuilder;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.common.config.impl.ConfigKeys;
@@ -40,7 +40,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
 
         this.crateManager.getUsableCrates().forEach(crate -> this.gui.addPageItem(new GuiItem(crate.getKey(1), action -> {
             if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(this.player)) {
-                Messages.no_permission.sendMessage(this.player);
+                Messages.lacking_permission.sendMessage(this.player);
 
                 this.gui.close(this.player, InventoryCloseEvent.Reason.CANT_USE, false);
 
@@ -144,7 +144,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
                             )
                     .asGuiItem(_ -> {
                         if (!Permissions.CRAZYCRATES_ACCESS.hasPermission(this.player)) {
-                            Messages.no_permission.sendMessage(this.player);
+                            Messages.lacking_permission.sendMessage(this.player);
 
                             gui.close(this.player, InventoryCloseEvent.Reason.CANT_USE, false);
 

@@ -1,14 +1,12 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types;
 
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import us.crazycrew.crazycrates.api.constants.MessageKeys;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +21,7 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
     @Override
     public void run() {
         if (this.crateName == null || this.crateName.isEmpty() || this.crateName.isBlank()) {
-            this.senderAdapter.sendMessage(this.sender, MessageKeys.cannot_be_empty, Map.of("{value}", "crate name"));
+            Messages.cannot_be_empty.sendMessage(this.sender, "{value}", "crate name");
 
             return;
         }
@@ -31,7 +29,7 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
         final Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(this.dataPath.resolve("crates").resolve(this.crateName));
 
         if (optional.isEmpty()) {
-            Messages.error_migrating.sendMessage(this.sender, Map.of(
+            Messages.command_migrate_error.sendMessage(this.sender, Map.of(
                     "{file}", crateName,
                     "{type}", type.getName(),
                     "{reason}", "File was not loaded properly."

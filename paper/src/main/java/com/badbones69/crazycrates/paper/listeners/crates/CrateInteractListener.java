@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.paper.listeners.crates;
 import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.events.CrateInteractEvent;
 import com.badbones69.crazycrates.paper.api.events.KeyCheckEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -31,7 +30,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.constants.MessageKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.Map;
@@ -157,7 +155,7 @@ public class CrateInteractListener implements Listener {
         }
 
         if (MiscUtils.isInventoryFull(player)) {
-            Messages.inventory_not_empty.sendMessage(player, "{crate}", fancyName);
+            //Messages.inventory_not_empty.sendMessage(player, "{crate}", fancyName);
 
             this.crateManager.endCrate(crate, player);
 
@@ -167,13 +165,13 @@ public class CrateInteractListener implements Listener {
         if (!this.crateManager.isInOpeningList(player) && (this.crateManager.hasOpeningCrate(player) && this.crateManager.getOpeningCrate(player).getCrateType() == CrateType.quick_crate)
                 && (this.crateManager.isCrateInUse(player) && this.crateManager.getCrateInUseLocation(player).equals(crateLocation.getLocation()))) { // wtf is this?
             if (this.crateManager.isInOpeningList(player)) {
-                Messages.already_opening_crate.sendMessage(player, "{crate}", fancyName);
+                //Messages.already_opening_crate.sendMessage(player, "{crate}", fancyName);
 
                 return;
             }
 
             if (this.crateManager.getCratesInUse().containsValue(crateLocation.getLocation())) {
-                Messages.crate_in_use.sendMessage(player, "{crate}", fancyName);
+                //Messages.crate_in_use.sendMessage(player, "{crate}", fancyName);
 
                 return;
             }
@@ -205,13 +203,13 @@ public class CrateInteractListener implements Listener {
                 player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
-            Messages.not_enough_keys.sendMessage(player, Map.of(
-                    "{required_amount}", String.valueOf(amount),
-                    "{key_amount}", String.valueOf(amount),
-                    "{amount}", String.valueOf(currentKeys),
-                    "{crate}", crate.getCrateName(),
-                    "{key}", crate.getKeyName()
-            ));
+//            Messages.not_enough_keys.sendMessage(player, Map.of(
+//                    "{required_amount}", String.valueOf(amount),
+//                    "{key_amount}", String.valueOf(amount),
+//                    "{amount}", String.valueOf(currentKeys),
+//                    "{crate}", crate.getCrateName(),
+//                    "{key}", crate.getKeyName()
+//            ));
         }
     }
 
@@ -237,13 +235,13 @@ public class CrateInteractListener implements Listener {
                         this.config.getProperty(ConfigKeys.inventory_rows)
                 ).open();
             } else {
-                this.senderAdapter.sendMessage(player, MessageKeys.feature_disabled);
+                //this.senderAdapter.sendMessage(player, MessageKeys.feature_disabled);
             }
         } else {
             if (crate.isPreviewEnabled()) {
                 this.inventoryManager.openNewCratePreview(player, crate);
             } else {
-                Messages.preview_disabled.sendMessage(player, "{crate}", crate.getCrateName());
+                //Messages.preview_disabled.sendMessage(player, "{crate}", crate.getCrateName());
             }
         }
     }

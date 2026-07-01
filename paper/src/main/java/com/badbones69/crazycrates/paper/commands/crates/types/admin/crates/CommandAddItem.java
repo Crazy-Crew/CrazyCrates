@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates;
 
-import com.badbones69.crazycrates.paper.api.enums.Messages;
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -44,7 +44,7 @@ public class CommandAddItem extends BaseCommand {
         if (tier != null) {
             crate.addEditorItem(item, prizeName, tier, weight);
 
-            Messages.added_item_with_editor.sendMessage(player, Map.of(
+            Messages.command_editor_item_added.sendMessage(player, Map.of(
                     "{crate}", fancyName,
                     "{prize}", prizeName
             ));
@@ -54,7 +54,7 @@ public class CommandAddItem extends BaseCommand {
 
         crate.addEditorItem(item, prizeName, weight);
 
-        Messages.added_item_with_editor.sendMessage(player, Map.of(
+        Messages.command_editor_item_added.sendMessage(player, Map.of(
                 "{crate}", fancyName,
                 "{prize}", prizeName
         ));

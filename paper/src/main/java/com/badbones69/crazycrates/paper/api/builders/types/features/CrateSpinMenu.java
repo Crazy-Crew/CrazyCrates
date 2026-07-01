@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.api.builders.types.features;
 
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.builders.gui.StaticInventoryBuilder;
-import com.badbones69.crazycrates.paper.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
@@ -55,7 +55,7 @@ public class CrateSpinMenu extends StaticInventoryBuilder {
                 @Override
                 public void run() {
                     if (userManager.hasRespinPrize(uuid, fileName)) { // if they have a respin prize, add it.
-                        Messages.crate_prize_respin_not_claimed.sendMessage(player, Map.of(
+                        Messages.crate_respins_not_claimed.sendMessage(player, Map.of(
                                 "{crate_pretty}", crate.getCrateName(),
                                 "{crate}", fileName,
                                 "{prize}", userManager.getRespinPrize(uuid, fileName)
