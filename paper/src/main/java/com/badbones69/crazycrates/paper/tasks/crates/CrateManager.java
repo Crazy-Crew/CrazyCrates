@@ -7,7 +7,6 @@ import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.common.config.impl.EditorKeys;
-import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
 import com.badbones69.crazycrates.paper.listeners.items.NexoInteractListener;
 import com.badbones69.crazycrates.paper.listeners.items.OraxenInteractListener;
 import com.badbones69.crazycrates.paper.managers.BukkitKeyManager;
@@ -99,13 +98,11 @@ public class CrateManager {
 
     private final PaperFileManager fileManager;
     private final CrazyCratesPaper platform;
-    private final PaperSenderAdapter senderAdapter;
     private final FusionPaper fusion;
     private final Path dataPath;
 
     public CrateManager(@NonNull final CrazyCratesPaper platform, @NonNull final InventoryManager inventoryManager, @NonNull final BukkitKeyManager keyManager) {
         this.platform = platform;
-        this.senderAdapter = this.platform.getSenderAdapter();
 
         this.fileManager = this.platform.getFileManager();
         this.dataPath = this.platform.getDataPath();

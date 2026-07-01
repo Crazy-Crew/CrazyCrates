@@ -35,7 +35,7 @@ public class CommandGive extends BaseCommand {
         final Crate crate = getCrate(sender, crateName, false);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            //Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
+            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }
@@ -61,7 +61,7 @@ public class CommandGive extends BaseCommand {
         final boolean isSilent = flags.hasFlag("s");
 
         if (crateName.isEmpty()) {
-            //Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
+            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }
@@ -69,7 +69,7 @@ public class CommandGive extends BaseCommand {
         final Crate crate = getCrate(sender, crateName, false);
 
         if (crate == null) {
-            //Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
+            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }

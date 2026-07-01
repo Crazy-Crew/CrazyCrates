@@ -105,8 +105,10 @@ public class CommandOpen extends BaseCommand {
                 player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
-            //this.senderAdapter.sendMessage(player, MessageKeys.no_keys, Map.of("{key}", crate.getKeyName(), "{crate}", fancyName)); //todo()
-            //Messages.no_key
+            Messages.no_keys.sendMessage(player, Map.of(
+                    "{key}", crate.getKeyName(),
+                    "{crate}", fancyName
+            ));
 
             return;
         }
@@ -138,7 +140,10 @@ public class CommandOpen extends BaseCommand {
 
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
-            //Messages.cant_be_a_virtual_crate.sendMessage(sender, Map.of("{cratetype}", crateType.getName(), "{crate}", fancyName)); //todo()
+            Messages.not_physical_crate.sendMessage(sender, Map.of(
+                    "{cratetype}", crateType.getName(),
+                    "{crate}", fancyName
+            ));
 
             return;
         }
@@ -158,14 +163,20 @@ public class CommandOpen extends BaseCommand {
                 player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
-            //this.senderAdapter.sendMessage(sender, MessageKeys.no_keys, Map.of("{key}", crate.getKeyName(), "{crate}", fancyName)); //todo()
+            Messages.no_keys.sendMessage(sender, Map.of(
+                    "{key}", crate.getKeyName(),
+                    "{crate}", fancyName
+            ));
 
             return;
         }
 
         this.crateManager.openCrate(player, crate, keyType, player.getLocation(), true, false, EventType.event_crate_opened);
 
-        //Messages.opened_a_crate.sendMessage(sender, Map.of("{player}", player.getName(), "{crate}", fancyName)); //todo()
+        Messages.command_opened_crate.sendMessage(sender, Map.of(
+                "{player}", player.getName(),
+                "{crate}", fancyName
+        ));
     }
 
 
@@ -191,14 +202,20 @@ public class CommandOpen extends BaseCommand {
 
         // Prevent it from working with these crate types.
         if (crateType == CrateType.crate_on_the_go || crateType == CrateType.quick_crate || crateType == CrateType.fire_cracker || crateType == CrateType.quad_crate) {
-            //Messages.cant_be_a_virtual_crate.sendMessage(sender, Map.of("{cratetype}", crateType.getName(), "{crate}", fancyName)); //todo()
+            Messages.not_physical_crate.sendMessage(sender, Map.of(
+                    "{cratetype}", crateType.getName(),
+                    "{crate}", fancyName
+            ));
 
             return;
         }
 
         this.crateManager.openCrate(player, crate, KeyType.free_key, player.getLocation(), true, false, EventType.event_crate_force_opened);
 
-        //Messages.opened_a_crate.sendMessage(sender, Map.of("{player}", player.getName(), "{crate}", fancyName)); //todo()
+        Messages.command_opened_crate.sendMessage(sender, Map.of(
+                "{player}", player.getName(),
+                "{crate}", fancyName
+        ));
     }
 
     @Command("mass-open")
@@ -235,7 +252,10 @@ public class CommandOpen extends BaseCommand {
         int currentAmount = 0; // amount of keys to use when rolling
 
         if (keys == 0) {
-            //this.senderAdapter.sendMessage(player, MessageKeys.no_keys, Map.of("{crate}", fancyName, "{key}", keyName)); //todo()
+            Messages.no_keys.sendMessage(player, Map.of(
+                    "{crate}", fancyName,
+                    "{key}", keyName
+            ));
 
             return;
         }

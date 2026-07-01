@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.keys;
 
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import com.ryderbelserion.fusion.paper.builders.items.PlayerBuilder;
@@ -20,7 +21,7 @@ public class CommandTake extends BaseCommand {
     @Syntax("/crazycrates take <key_type> <crate_name> <amount> <player_name>")
     public void take(CommandSender sender, @ArgName("key_type") @Suggestion("keys") String type, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("amount") @Suggestion("numbers") int amount, @ArgName("player") @Suggestion("players") PlayerBuilder target) {
         if (crateName == null || crateName.isBlank()) {
-            //this.senderAdapter.sendMessage(sender, MessageKeys.cannot_be_empty, Map.of("{value}", "crate name")); //todo()
+            Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
 
             return;
         }
@@ -28,7 +29,7 @@ public class CommandTake extends BaseCommand {
         final Crate crate = getCrate(sender, crateName, false);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            //Messages.not_a_crate.sendMessage(sender, "{crate}", crateName); //todo()
+            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }

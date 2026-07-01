@@ -18,7 +18,7 @@ public class CommandAddItem extends BaseCommand {
     @Syntax("/crazycrates additem <crate_name> <prize_number> <weight> [tier]")
     public void add(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("prize") @Suggestion("prizes") String prizeName, @ArgName("weight") @Suggestion("doubles") double weight, @ArgName("tier") @Suggestion("tiers") @Optional String tier) {
         if (crateName == null || crateName.isBlank()) {
-            //this.senderAdapter.sendMessage(player, MessageKeys.cannot_be_empty, Map.of("{value}", "crate name"));
+            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
             return;
         }
@@ -26,7 +26,7 @@ public class CommandAddItem extends BaseCommand {
         final ItemStack item = player.getInventory().getItemInMainHand();
 
         if (item.getType().isAir()) {
-            //this.senderAdapter.sendMessage(player, MessageKeys.cannot_be_air);
+            Messages.cannot_be_air.sendMessage(player);
 
             return;
         }
@@ -34,7 +34,7 @@ public class CommandAddItem extends BaseCommand {
         final Crate crate = getCrate(player, crateName, false);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            //Messages.not_a_crate.sendMessage(player, "{crate}", crateName);
+            Messages.not_a_crate.sendMessage(player, "{crate}", crateName);
 
             return;
         }

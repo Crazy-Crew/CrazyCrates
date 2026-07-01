@@ -6,7 +6,6 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
 import com.badbones69.crazycrates.paper.managers.ButtonManager;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
@@ -48,8 +47,6 @@ public abstract class BaseCommand {
     protected final Path path = this.platform.getDataPath();
 
     protected final FusionPaper fusion = this.platform.getFusion();
-
-    protected final PaperSenderAdapter senderAdapter = this.platform.getSenderAdapter();
 
     protected final Server server = this.plugin.getServer();
 
@@ -155,7 +152,7 @@ public abstract class BaseCommand {
 
         if (ignoreChecks) {
             if (crate == null || crate.getCrateType() == CrateType.menu) {
-                //Messages.not_a_crate.sendMessage(sender, "{crate}", name);
+                Messages.not_a_crate.sendMessage(sender, "{crate}", name);
 
                 return null;
             }
@@ -284,7 +281,7 @@ public abstract class BaseCommand {
             if (event.isCancelled()) return;
 
             if (!this.userManager.addOfflineKeys(offlinePlayer.getUniqueId(), fileName, type, clamp)) {
-                //this.senderAdapter.sendMessage(sender, MessageKeys.internal_error);
+                Messages.internal_error.sendMessage(sender);
             } else {
                 final String name = Optional.ofNullable(offlinePlayer.getName()).orElse("N/A");
 

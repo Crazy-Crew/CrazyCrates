@@ -1,12 +1,12 @@
 package com.badbones69.crazycrates.paper.api;
 
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.events.PlayerPrizeEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
-import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
@@ -32,7 +32,6 @@ public class PrizeManager {
     
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
     private static final CrazyCratesPaper platform = plugin.getPlatform();
-    private static final PaperSenderAdapter senderAdapter = platform.getSenderAdapter();
     private static final FusionPaper fusion = platform.getFusion();
     private static final Server server = plugin.getServer();
     private static final PluginManager pluginManager = server.getPluginManager();
@@ -113,10 +112,10 @@ public class PrizeManager {
         if (prize != null) {
             givePrize(player, player.getLocation().clone().add(0, 1, 0), crate, prize);
         } else {
-//            senderAdapter.sendMessage(player, MessageKeys.prize_error, Map.of(
-//                    "{crate}", crate.getCrateName(),
-//                    "{player}", player.getName()
-//            ));
+            Messages.prize_error.sendMessage(player, Map.of(
+                    "{crate}", crate.getCrateName(),
+                    "{player}", player.getName()
+            ));
         }
     }
 

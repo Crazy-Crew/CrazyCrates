@@ -1,11 +1,11 @@
 package com.badbones69.crazycrates.paper.listeners.crates;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.common.config.ConfigManager;
 import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
-import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
@@ -27,8 +27,6 @@ public class CrateOpenListener implements Listener {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
-
-    private final PaperSenderAdapter senderAdapter = this.platform.getSenderAdapter();
 
     private final FusionPaper fusion = this.platform.getFusion();
 
@@ -58,7 +56,7 @@ public class CrateOpenListener implements Listener {
 
         if (crateType != CrateType.menu) {
             if (crate.getPrizes().isEmpty() || !crate.canWinPrizes(player)) {
-                //this.senderAdapter.sendMessage(player, MessageKeys.no_prizes_found, Map.of("{value}", fancyName));
+                Messages.prizes_empty.sendMessage(player, "{value}", fancyName);
 
                 this.crateManager.endCrate(crate, player);
 
@@ -69,7 +67,7 @@ public class CrateOpenListener implements Listener {
         }
 
         if (!player.hasPermission("crazycrates.open." + fileName)) {
-            //Messages.no_crate_permission.sendMessage(player, "{crate}", fancyName);
+            Messages.crate_no_permission.sendMessage(player, "{crate}", fancyName);
 
             this.crateManager.endCrate(crate, player);
 

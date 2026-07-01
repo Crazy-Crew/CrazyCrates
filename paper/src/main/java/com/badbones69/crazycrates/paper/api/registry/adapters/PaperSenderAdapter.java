@@ -12,16 +12,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.api.CrazyCrates;
 import us.crazycrew.crazycrates.api.adapters.sender.ISenderAdapter;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender> {
 

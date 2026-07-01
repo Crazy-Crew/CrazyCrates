@@ -4,7 +4,6 @@ import ch.jalu.configme.SettingsManager;
 import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
-import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
@@ -27,8 +26,6 @@ public abstract class ICrateMigrator {
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     protected final CrazyCratesPaper platform = this.plugin.getPlatform();
-
-    protected final PaperSenderAdapter senderAdapter = this.platform.getSenderAdapter();
 
     protected final FusionPaper fusion = this.platform.getFusion();
 

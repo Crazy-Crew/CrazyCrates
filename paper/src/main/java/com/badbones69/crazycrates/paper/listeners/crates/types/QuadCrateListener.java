@@ -1,8 +1,8 @@
 package com.badbones69.crazycrates.paper.listeners.crates.types;
 
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
-import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
 import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.FusionPaper;
@@ -42,8 +42,6 @@ public class QuadCrateListener implements Listener {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
-
-    private final PaperSenderAdapter senderAdapter = this.platform.getSenderAdapter();
 
     private final FusionPaper fusion = this.platform.getFusion();
 
@@ -189,10 +187,10 @@ public class QuadCrateListener implements Listener {
 
             final Crate crate = session.getCrate();
 
-//            this.senderAdapter.sendMessage(player, MessageKeys.no_commands_while_using_crate, Map.of(
-//                    "{crate}", crate.getCrateName(),
-//                    "{player}", player.getName()
-//            ));
+            Messages.no_command_in_crate.sendMessage(player, Map.of(
+                    "{crate}", crate.getCrateName(),
+                    "{player}", player.getName()
+            ));
         }
     }
 
@@ -207,10 +205,10 @@ public class QuadCrateListener implements Listener {
 
             final Crate crate = session.getCrate();
 
-//            this.senderAdapter.sendMessage(player, MessageKeys.no_teleporting, Map.of(
-//                    "{crate}", crate.getCrateName(),
-//                    "{player}", player.getName()
-//            ));
+            Messages.no_teleporting_in_crate.sendMessage(player, Map.of(
+                    "{crate}", crate.getCrateName(),
+                    "{player}", player.getName()
+            ));
         }
     }
 

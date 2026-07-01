@@ -1,9 +1,9 @@
 package com.badbones69.crazycrates.paper.listeners.crates.types;
 
 import ch.jalu.configme.SettingsManager;
+import com.badbones69.common.api.enums.Messages;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
-import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.ryderbelserion.fusion.core.api.enums.Level;
@@ -50,8 +50,6 @@ public class CosmicCrateListener implements Listener {
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
 
-    private final PaperSenderAdapter senderAdapter = this.platform.getSenderAdapter();
-
     private final FusionPaper fusion = this.platform.getFusion();
 
     private final Server server = this.plugin.getServer();
@@ -91,7 +89,7 @@ public class CosmicCrateListener implements Listener {
         final int slot = event.getRawSlot();
 
         if (this.crateManager.containsSlot(player) && this.crateManager.getSlots(player).contains(slot)) {
-            //Messages.already_redeemed_prize.sendMessage(player);
+            Messages.crate_prize_redeemed.sendMessage(player);
 
             return;
         }
@@ -259,7 +257,7 @@ public class CosmicCrateListener implements Listener {
                 placeholders.put("{key}", crate.getKeyName());
 
                 // Send no keys message.
-                //this.senderAdapter.sendMessage(player, MessageKeys.no_keys, placeholders);
+                Messages.no_keys.sendMessage(player, placeholders);
 
                 // Remove opening stuff.
                 this.crateManager.endCrate(crate, player);
@@ -328,7 +326,7 @@ public class CosmicCrateListener implements Listener {
 
                                     crateManager.endCrate(crate, player);
 
-                                    //senderAdapter.sendMessage(player, MessageKeys.key_refund, Map.of("{crate}", fancyName));
+                                    Messages.command_key_refund.sendMessage(player, "{crate}", fancyName);
 
                                     fusion.log(Level.ERROR, "An issue occurred when the user %s was using the %s crate and so they were issued a key refund.", exception, player.getName(), fileName);
 
