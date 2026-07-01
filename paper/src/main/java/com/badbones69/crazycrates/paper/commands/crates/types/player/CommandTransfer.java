@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.player;
 
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
@@ -25,7 +25,7 @@ public class CommandTransfer extends BaseCommand {
     @Syntax("/crazycrates transfer <crate_name> <player_name> <amount>")
     public void transfer(Player player, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("player") @Suggestion("players") Player target, @ArgName("amount") @Suggestion("numbers") int amount) {
         if (crateName.isBlank()) {
-            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
+            Message.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
             return;
         }
@@ -34,7 +34,7 @@ public class CommandTransfer extends BaseCommand {
 
         // If the crate is menu or null. we return
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            Messages.not_a_crate.sendMessage(player, "{crate}", crateName);
+            Message.not_a_crate.sendMessage(player, "{crate}", crateName);
 
             return;
         }
@@ -44,7 +44,7 @@ public class CommandTransfer extends BaseCommand {
 
         // If it's the same player, we return.
         if (uuid.toString().equalsIgnoreCase(receiver.toString())) {
-            Messages.must_not_be_same_player.sendMessage(player);
+            Message.must_not_be_same_player.sendMessage(player);
 
             return;
         }
@@ -56,7 +56,7 @@ public class CommandTransfer extends BaseCommand {
 
         // If they don't have enough keys, we return.
         if (this.userManager.getVirtualKeys(uuid, fileName) < clamp) {
-            Messages.command_transfer_not_enough_keys.sendMessage(player, "{crate}", fancyName);
+            Message.command_transfer_not_enough_keys.sendMessage(player, "{crate}", fancyName);
 
             return;
         }
@@ -74,14 +74,14 @@ public class CommandTransfer extends BaseCommand {
 
             final String playerName = player.getName();
 
-            Messages.command_transfer_sent_keys.sendMessage(player, Map.of(
+            Message.command_transfer_sent_keys.sendMessage(player, Map.of(
                     "{keytype}", KeyType.virtual_key.getFriendlyName(),
                     "{amount}", String.valueOf(clamp),
                     "{player}", target.getName(),
                     "{crate}", fancyName
             ));
 
-            Messages.command_transfer_received_keys.sendMessage(target, Map.of(
+            Message.command_transfer_received_keys.sendMessage(target, Map.of(
                     "{keytype}", KeyType.virtual_key.getFriendlyName(),
                     "{amount}", String.valueOf(clamp),
                     "{player}", playerName,

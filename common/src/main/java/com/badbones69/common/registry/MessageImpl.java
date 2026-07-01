@@ -1,7 +1,7 @@
 package com.badbones69.common.registry;
 
 import com.badbones69.common.CrazyCratesPlugin;
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
@@ -43,7 +43,7 @@ public class MessageImpl {
 
                     final CommentedConfigurationNode configuration = file.getConfiguration();
 
-                    for (final Messages message : Messages.values()) {
+                    for (final Message message : Message.values()) {
                         message.addKey(action, configuration, key);
                     }
 

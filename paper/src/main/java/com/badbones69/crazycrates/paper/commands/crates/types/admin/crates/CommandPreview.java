@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates;
 
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -27,7 +27,7 @@ public class CommandPreview extends BaseCommand {
     @Syntax("/crazycrates preview <crate_name> <player_name>")
     public void others(CommandSender sender, @ArgName("crate") @Suggestion("crates") String crateName, @ArgName("player") @Suggestion("players") Player player) {
         if (crateName == null || crateName.isBlank()) {
-            Messages.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
+            Message.cannot_be_empty.sendMessage(sender, "{value}", "crate name");
 
             return;
         }
@@ -35,7 +35,7 @@ public class CommandPreview extends BaseCommand {
         final Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            Messages.not_a_crate.sendMessage(sender, "{crate}", crateName);
+            Message.not_a_crate.sendMessage(sender, "{crate}", crateName);
 
             return;
         }
@@ -43,7 +43,7 @@ public class CommandPreview extends BaseCommand {
         final String fancyName = crate.getCrateName();
 
         if (!crate.isPreviewEnabled()) {
-            Messages.preview_disabled.sendMessage(sender, "{crate}", fancyName);
+            Message.preview_disabled.sendMessage(sender, "{crate}", fancyName);
 
             return;
         }

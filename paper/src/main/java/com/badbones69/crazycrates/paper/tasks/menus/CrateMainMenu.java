@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.tasks.menus;
 
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.common.config.beans.ModelData;
 import com.badbones69.crazycrates.paper.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
@@ -196,7 +196,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
     private void openCrate(@NotNull final UUID uuid, @NotNull final Crate crate, @NotNull final String fileName, @NotNull final String fancyName) {
         if (this.crateManager.isInOpeningList(this.player)) {
-            Messages.crate_already_opened.sendMessage(this.player, "{crate}", fancyName);
+            Message.crate_already_opened.sendMessage(this.player, "{crate}", fancyName);
 
             return;
         }
@@ -221,21 +221,21 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                 this.player.playSound(sound);
             }
 
-            Messages.no_virtual_keys.sendMessage(this.player, "{crate}", fancyName);
+            Message.no_virtual_keys.sendMessage(this.player, "{crate}", fancyName);
 
             return;
         }
 
         for (String world : this.config.getProperty(ConfigKeys.disabled_worlds)) {
             if (world.equalsIgnoreCase(this.player.getWorld().getName())) {
-                Messages.world_disabled.sendMessage(this.player, "{world}", this.player.getWorld().getName());
+                Message.world_disabled.sendMessage(this.player, "{world}", this.player.getWorld().getName());
 
                 return;
             }
         }
 
         if (MiscUtils.isInventoryFull(this.player)) {
-            Messages.inventory_not_empty.sendMessage(this.player, "{crate}", fancyName);
+            Message.inventory_not_empty.sendMessage(this.player, "{crate}", fancyName);
 
             return;
         }
@@ -254,6 +254,6 @@ public class CrateMainMenu extends StaticInventoryBuilder {
             return;
         }
 
-        Messages.preview_disabled.sendMessage(this.player, "{crate}", fancyName);
+        Message.preview_disabled.sendMessage(this.player, "{crate}", fancyName);
     }
 }

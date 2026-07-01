@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.listeners.crates.types;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
@@ -89,7 +89,7 @@ public class CosmicCrateListener implements Listener {
         final int slot = event.getRawSlot();
 
         if (this.crateManager.containsSlot(player) && this.crateManager.getSlots(player).contains(slot)) {
-            Messages.crate_prize_redeemed.sendMessage(player);
+            Message.crate_prize_redeemed.sendMessage(player);
 
             return;
         }
@@ -257,7 +257,7 @@ public class CosmicCrateListener implements Listener {
                 placeholders.put("{key}", crate.getKeyName());
 
                 // Send no keys message.
-                Messages.no_keys.sendMessage(player, placeholders);
+                Message.no_keys.sendMessage(player, placeholders);
 
                 // Remove opening stuff.
                 this.crateManager.endCrate(crate, player);
@@ -326,7 +326,7 @@ public class CosmicCrateListener implements Listener {
 
                                     crateManager.endCrate(crate, player);
 
-                                    Messages.command_key_refund.sendMessage(player, "{crate}", fancyName);
+                                    Message.command_key_refund.sendMessage(player, "{crate}", fancyName);
 
                                     fusion.log(Level.ERROR, "An issue occurred when the user %s was using the %s crate and so they were issued a key refund.", exception, player.getName(), fileName);
 

@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates;
 
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -19,7 +19,7 @@ public class CommandTeleport extends BaseCommand {
     @Syntax("/crazycrates teleport <crate_id>")
     public void teleport(Player player, @ArgName("crate_id") @Optional @Suggestion("locations") String id) {
         if (id == null || id.isBlank()) {
-            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate location id");
+            Message.cannot_be_empty.sendMessage(player, "{value}", "crate location id");
 
             return;
         }
@@ -49,9 +49,9 @@ public class CommandTeleport extends BaseCommand {
 
             player.teleport(new Location(world, origin.getInt("Z"), origin.getInt("Y"), origin.getInt("Z")).add(.5, 0, .5));
 
-            Messages.crate_teleport_success.sendMessage(player, "{name}", name);
+            Message.crate_teleport_success.sendMessage(player, "{name}", name);
         }
 
-        Messages.crate_teleport_failed.sendMessage(player, "{id}", id);
+        Message.crate_teleport_failed.sendMessage(player, "{id}", id);
     }
 }

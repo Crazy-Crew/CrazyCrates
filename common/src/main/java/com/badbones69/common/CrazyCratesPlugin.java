@@ -1,12 +1,14 @@
 package com.badbones69.common;
 
 import com.badbones69.common.config.ConfigManager;
+import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.common.impl.Settings;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.kyori.adventure.text.Component;
 import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.CrazyCrates;
+import us.crazycrew.crazycrates.api.enums.messages.State;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -65,5 +67,10 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
     @Override
     public @NonNull Path getDataPath() {
         return this.path;
+    }
+
+    @Override
+    public @NonNull State getMessageState() {
+        return ConfigManager.getConfig().getProperty(ConfigKeys.message_state);
     }
 }

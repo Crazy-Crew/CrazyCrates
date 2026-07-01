@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin;
 
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import com.badbones69.common.config.impl.ConfigKeys;
@@ -57,6 +57,6 @@ public class CommandReload extends BaseCommand {
 
         this.crateManager.loadCrates();
 
-        Messages.command_reload.sendMessage(sender);
+        Message.command_reload.sendMessage(sender);
     }
 }

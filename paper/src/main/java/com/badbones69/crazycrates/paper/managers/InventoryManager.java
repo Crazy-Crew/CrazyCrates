@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.managers;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.common.config.beans.ModelData;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
@@ -164,7 +164,7 @@ public class InventoryManager {
             player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
 
             if (this.config.getProperty(ConfigKeys.send_preview_taken_out_message)) {
-                Messages.preview_force_exit.sendMessage(player);
+                Message.preview_force_exit.sendMessage(player);
             }
         }
     }

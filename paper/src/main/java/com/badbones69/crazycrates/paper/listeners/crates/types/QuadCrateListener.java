@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.listeners.crates.types;
 
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.utils.ItemUtil;
@@ -187,7 +187,7 @@ public class QuadCrateListener implements Listener {
 
             final Crate crate = session.getCrate();
 
-            Messages.no_command_in_crate.sendMessage(player, Map.of(
+            Message.no_command_in_crate.sendMessage(player, Map.of(
                     "{crate}", crate.getCrateName(),
                     "{player}", player.getName()
             ));
@@ -205,7 +205,7 @@ public class QuadCrateListener implements Listener {
 
             final Crate crate = session.getCrate();
 
-            Messages.no_teleporting_in_crate.sendMessage(player, Map.of(
+            Message.no_teleporting_in_crate.sendMessage(player, Map.of(
                     "{crate}", crate.getCrateName(),
                     "{player}", player.getName()
             ));

@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.listeners;
 
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.builders.types.features.CrateSpinMenu;
@@ -80,7 +80,7 @@ public class MiscListener implements Listener {
         }
 
         if (count > 0) {
-            Messages.crate_respins_claimed.sendMessage(player, "{amount}", String.valueOf(count));
+            Message.crate_respins_claimed.sendMessage(player, "{amount}", String.valueOf(count));
         }
     }
 

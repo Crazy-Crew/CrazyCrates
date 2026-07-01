@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.editor;
 
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import com.badbones69.common.config.impl.ConfigKeys;
@@ -25,13 +25,13 @@ public class CommandEditor extends BaseCommand {
         if (flags.hasFlag("e")) {
             this.crateManager.removeEditorCrate(player);
 
-            Messages.crate_editor_exit.sendMessage(player, "{reason}", "you asked.");
+            Message.crate_editor_exit.sendMessage(player, "{reason}", "you asked.");
 
             return;
         }
 
         if (!flags.hasFlag("c")) {
-            Messages.command_lacking_flag.sendMessage(player, Map.of(
+            Message.command_lacking_flag.sendMessage(player, Map.of(
                     "{flag}", "-c",
                     "{usage}", "/crazycrates editor -c <crate_name>"
             ));
@@ -42,13 +42,13 @@ public class CommandEditor extends BaseCommand {
         final String crateName = flags.getFlagValue("c").orElse("");
 
         if (crateName.isEmpty()) {
-            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
+            Message.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
             return;
         }
 
         if (this.crateManager.hasEditorCrate(player)) {
-            Messages.crate_editor_enabled.sendMessage(player);
+            Message.crate_editor_enabled.sendMessage(player);
 
             return;
         }
@@ -56,19 +56,19 @@ public class CommandEditor extends BaseCommand {
         final Crate crate = this.crateManager.getCrateFromName(crateName);
 
         if (crate == null) {
-            Messages.not_a_crate.sendMessage(player, "{crate}", crateName);
+            Message.not_a_crate.sendMessage(player, "{crate}", crateName);
 
             return;
         }
 
         if (crate.getCrateType() == CrateType.menu && !this.config.getProperty(ConfigKeys.enable_crate_menu)) {
-            Messages.crate_cannot_set_type.sendMessage(player);
+            Message.crate_cannot_set_type.sendMessage(player);
 
             return;
         }
 
         this.crateManager.addEditorCrate(player, crate);
 
-        Messages.crate_editor_enter.sendMessage(player, "{crate}", crateName);
+        Message.crate_editor_enter.sendMessage(player, "{crate}", crateName);
     }
 }

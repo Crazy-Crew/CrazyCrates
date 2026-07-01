@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates;
 
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
@@ -27,7 +27,7 @@ public class CommandList extends BaseCommand {
             final Location location = crateLocation.getLocation();
             final Crate crate = crateLocation.getCrate();
 
-            crates.add(Messages.crate_list_per_crate.getMessage(sender, Map.of(
+            crates.add(Message.crate_list_per_crate.getMessage(sender, Map.of(
                     "{crate_name}", crate.getCrateName(),
                     "{id}", crateLocation.getID(),
                     "{x}", String.valueOf(location.getBlockX()),
@@ -41,7 +41,7 @@ public class CommandList extends BaseCommand {
         final List<Crate> validCrates = crateManager.getUsableCrates();
         final List<CrateLocation> locations = crateManager.getCrateLocations();
 
-        Messages.crate_list_format.sendMessage(sender, Map.of(
+        Message.crate_list_format.sendMessage(sender, Map.of(
                 "{active_crates}", String.valueOf(validCrates.size()),
                 "{broken_crates}", String.valueOf(brokenCrates.size()),
                 "{active_locations}", String.valueOf(locations.size()),

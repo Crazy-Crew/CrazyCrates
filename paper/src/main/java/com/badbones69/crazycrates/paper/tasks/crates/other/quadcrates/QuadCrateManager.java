@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates;
 
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
@@ -132,7 +132,7 @@ public class QuadCrateManager {
     public void startCrate() {
         // Check if it is on a block.
         if (this.spawnLocation.clone().subtract(0, 1, 0).getBlock().isEmpty()) {
-            Messages.not_on_block.sendMessage(this.player);
+            Message.not_on_block.sendMessage(this.player);
 
             this.crateManager.removePlayerFromOpeningList(player);
 
@@ -143,7 +143,7 @@ public class QuadCrateManager {
 
         // Check if schematic folder is empty.
         if (this.crateManager.getCrateSchematics().isEmpty()) {
-            Messages.schematics_empty.sendMessage(this.player);
+            Message.schematics_empty.sendMessage(this.player);
 
             this.crateManager.removePlayerFromOpeningList(this.player);
 
@@ -163,7 +163,7 @@ public class QuadCrateManager {
             final Block block = loc.getBlock();
 
             if (blocks.contains(block.translationKey())) {
-                Messages.not_enough_room.sendMessage(this.player);
+                Message.not_enough_room.sendMessage(this.player);
 
                 this.crateManager.removePlayerFromOpeningList(this.player);
 
@@ -183,7 +183,7 @@ public class QuadCrateManager {
             if (entity instanceof Player entityPlayer) {
                 for (final QuadCrateManager ongoingCrate : this.crateManager.getQuadSessions()) {
                     if (entityPlayer.getUniqueId().equals(ongoingCrate.player.getUniqueId())) {
-                        Messages.must_not_be_next_to_player.sendMessage(this.player, "{player}", entityPlayer.getName());
+                        Message.must_not_be_next_to_player.sendMessage(this.player, "{player}", entityPlayer.getName());
 
                         this.crateManager.removePlayerFromOpeningList(this.player);
 
@@ -282,7 +282,7 @@ public class QuadCrateManager {
             public void run() {
                 endCrate(true);
 
-                Messages.out_of_time.sendMessage(player, "{crate}", crate.getCrateName());
+                Message.out_of_time.sendMessage(player, "{crate}", crate.getCrateName());
 
                 crate.playSound(player, player.getLocation(), "stop-sound", "entity.player.levelup", Sound.Source.MASTER);
             }

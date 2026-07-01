@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.listeners.crates;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.events.CrateInteractEvent;
@@ -153,7 +153,7 @@ public class CrateInteractListener implements Listener {
         }
 
         if (MiscUtils.isInventoryFull(player)) {
-            Messages.inventory_not_empty.sendMessage(player, "{crate}", fancyName);
+            Message.inventory_not_empty.sendMessage(player, "{crate}", fancyName);
 
             this.crateManager.endCrate(crate, player);
 
@@ -163,13 +163,13 @@ public class CrateInteractListener implements Listener {
         if (!this.crateManager.isInOpeningList(player) && (this.crateManager.hasOpeningCrate(player) && this.crateManager.getOpeningCrate(player).getCrateType() == CrateType.quick_crate)
                 && (this.crateManager.isCrateInUse(player) && this.crateManager.getCrateInUseLocation(player).equals(crateLocation.getLocation()))) { // wtf is this?
             if (this.crateManager.isInOpeningList(player)) {
-                Messages.crate_already_opened.sendMessage(player, "{crate}", fancyName);
+                Message.crate_already_opened.sendMessage(player, "{crate}", fancyName);
 
                 return;
             }
 
             if (this.crateManager.getCratesInUse().containsValue(crateLocation.getLocation())) {
-                Messages.crate_already_used.sendMessage(player, "{crate}", fancyName);
+                Message.crate_already_used.sendMessage(player, "{crate}", fancyName);
 
                 return;
             }
@@ -201,7 +201,7 @@ public class CrateInteractListener implements Listener {
                 player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
-            Messages.not_enough_keys.sendMessage(player, Map.of(
+            Message.not_enough_keys.sendMessage(player, Map.of(
                     "{required_amount}", String.valueOf(amount),
                     "{key_amount}", String.valueOf(amount),
                     "{amount}", String.valueOf(currentKeys),
@@ -233,13 +233,13 @@ public class CrateInteractListener implements Listener {
                         this.config.getProperty(ConfigKeys.inventory_rows)
                 ).open();
             } else {
-                Messages.feature_disabled.sendMessage(player);
+                Message.feature_disabled.sendMessage(player);
             }
         } else {
             if (crate.isPreviewEnabled()) {
                 this.inventoryManager.openNewCratePreview(player, crate);
             } else {
-                Messages.preview_disabled.sendMessage(player, "{crate}", crate.getCrateName());
+                Message.preview_disabled.sendMessage(player, "{crate}", crate.getCrateName());
             }
         }
     }

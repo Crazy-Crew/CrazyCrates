@@ -1,10 +1,6 @@
-package com.badbones69.common.api.enums;
+package us.crazycrew.crazycrates.api.enums.messages;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.common.CrazyCratesPlugin;
-import com.badbones69.common.config.ConfigManager;
-import com.badbones69.common.config.impl.ConfigKeys;
-import com.badbones69.common.enums.State;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.api.registry.message.adapter.YamlMessageAdapter;
@@ -13,13 +9,14 @@ import net.kyori.adventure.audience.Audience;
 import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import us.crazycrew.crazycrates.CratesProvider;
+import us.crazycrew.crazycrates.api.CrazyCrates;
 import us.crazycrew.crazycrates.api.adapters.sender.ISenderAdapter;
 import java.util.List;
 import java.util.Map;
 import static us.crazycrew.crazycrates.api.CrazyCrates.namespace;
 
 @NullMarked
-public enum Messages {
+public enum Message {
 
     command_opened_crate("Messages.Opened-A-Crate", "command.open.opened-a-crate", "{prefix}<gray>You have opened the {crate} <gray>for <gold>{player}.", "command", "open", "opened-a-crate"),
     command_gave_player_keys("Messages.Given-A-Player-Keys", "command.give.given-player-keys", "{prefix}<gray>You have given <gold>{player} {amount} <gray>key(s).", "command", "give", "given-player-keys"),
@@ -230,18 +227,18 @@ public enum Messages {
 
     feature_disabled("Messages.Feature-Disabled", "misc.feature.disabled", "{prefix}<red>This feature is disabled.", "misc", "feature-disabled");
 
-    private final CrazyCratesPlugin platform = (CrazyCratesPlugin) CratesProvider.api();
+    private final CrazyCrates platform = CratesProvider.api();
 
     private final ISenderAdapter senderAdapter = this.platform.getSenderAdapter();
 
-    private final SettingsManager config = ConfigManager.getConfig();
+    private final State state = this.platform.getMessageState();
 
     private final String defaultValue;
     private final FusionKey id;
     private final Object[] path;
     private String oldPath;
 
-    Messages(final String id, final String defaultValue, final Object... path) {
+    Message(final String id, final String defaultValue, final Object... path) {
         this.id = FusionKey.key(namespace, id);
         this.defaultValue = defaultValue;
         this.path = path;
@@ -249,7 +246,7 @@ public enum Messages {
         this.oldPath = "";
     }
 
-    Messages(final String oldPath, final String id, final String defaultValue, final Object... path) {
+    Message(final String oldPath, final String id, final String defaultValue, final Object... path) {
         this(id, defaultValue, path);
 
         this.oldPath = oldPath;
@@ -268,11 +265,8 @@ public enum Messages {
     }
 
     public void sendMessage(final Audience audience, final Map<String, String> placeholders) {
-        final State state = this.config.getProperty(ConfigKeys.message_state);
-
-        switch (state) {
+        switch (this.state) {
             case send_message -> this.senderAdapter.sendMessage(audience, this.id, placeholders);
-
             case send_actionbar -> this.senderAdapter.sendActionBar(audience, this.id, placeholders);
         }
     }

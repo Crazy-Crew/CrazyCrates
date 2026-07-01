@@ -6,7 +6,8 @@ import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
 import com.badbones69.common.config.beans.ModelData;
 import com.badbones69.common.config.beans.inventories.ItemPlacement;
-import com.badbones69.common.enums.State;
+import us.crazycrew.crazycrates.api.enums.messages.State;
+
 import java.util.List;
 import static ch.jalu.configme.properties.PropertyInitializer.newBeanProperty;
 import static ch.jalu.configme.properties.PropertyInitializer.newListProperty;

@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.api;
 
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
 import com.badbones69.crazycrates.paper.CrazyCrates;
@@ -112,7 +112,7 @@ public class PrizeManager {
         if (prize != null) {
             givePrize(player, player.getLocation().clone().add(0, 1, 0), crate, prize);
         } else {
-            Messages.prize_error.sendMessage(player, Map.of(
+            Message.prize_error.sendMessage(player, Map.of(
                     "{crate}", crate.getCrateName(),
                     "{player}", player.getName()
             ));

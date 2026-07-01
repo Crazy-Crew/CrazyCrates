@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates;
 
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
@@ -24,7 +24,7 @@ public class CommandClaim extends BaseCommand {
     @Syntax("/crazycrates claim <crate_name>")
     public void add(Player player, @ArgName("crate") @Suggestion("crates") String crateName) {
         if (crateName == null || crateName.isBlank()) {
-            Messages.cannot_be_empty.sendMessage(player, "{value}", "crate name");
+            Message.cannot_be_empty.sendMessage(player, "{value}", "crate name");
 
             return;
         }
@@ -32,7 +32,7 @@ public class CommandClaim extends BaseCommand {
         final Crate crate = getCrate(player, crateName, false);
 
         if (crate == null || crate.getCrateType() == CrateType.menu) {
-            Messages.not_a_crate.sendMessage(player, "{crate}", crateName);
+            Message.not_a_crate.sendMessage(player, "{crate}", crateName);
 
             return;
         }
@@ -41,7 +41,7 @@ public class CommandClaim extends BaseCommand {
         final String fileName = crate.getFileName();
 
         if (!this.userManager.hasRespinPrize(uuid, fileName)) {
-            Messages.crate_respins_empty.sendMessage(player, Map.of(
+            Message.crate_respins_empty.sendMessage(player, Map.of(
                     "{crate_pretty}", crate.getCrateName(),
                     "{crate}", fileName
             ));
@@ -58,7 +58,7 @@ public class CommandClaim extends BaseCommand {
         final Prize prize = crate.getPrize(prizeName);
 
         if (prize == null) {
-            Messages.prize_not_found.sendMessage(player, "{prize}", prizeName);
+            Message.prize_not_found.sendMessage(player, "{prize}", prizeName);
 
             if (!crate.isCyclePersistRestart()) {
                 this.userManager.removeRespinCrate(uuid, fileName, this.userManager.getCrateRespin(uuid, fileName));
@@ -71,7 +71,7 @@ public class CommandClaim extends BaseCommand {
 
         PrizeManager.givePrize(player, crate, prize);
 
-        Messages.crate_respins_redeemed.sendMessage(player, Map.of(
+        Message.crate_respins_redeemed.sendMessage(player, Map.of(
                 "{crate_pretty}", crate.getCrateName(),
                 "{crate}", fileName,
                 "{prize}", prize.getPrizeName()

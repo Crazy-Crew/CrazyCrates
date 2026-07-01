@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
@@ -71,7 +71,7 @@ public abstract class ICrateMigrator {
     }
 
     public void sendMessage(List<String> files, final int success, final int failed) {
-        Messages.command_migrate_success.sendMessage(this.sender, Map.of(
+        Message.command_migrate_success.sendMessage(this.sender, Map.of(
                 "{files}", files.size() > 1 ? StringUtils.toString(files) : files.isEmpty() ? "N/A" : files.getFirst(),
                 "{succeeded_amount}", String.valueOf(success),
                 "{failed_amount}", String.valueOf(failed),
@@ -86,7 +86,7 @@ public abstract class ICrateMigrator {
         final ConfigurationSection crate = configuration.getConfigurationSection("Crate");
 
         if (crate == null) {
-            Messages.command_migrate_error.sendMessage(this.sender, Map.of(
+            Message.command_migrate_error.sendMessage(this.sender, Map.of(
                     "{file}", crateName.isEmpty() ? customFile.getPrettyName() : crateName,
                     "{type}", this.type.getName(),
                     "{reason}", "File could not be found in our data, likely invalid yml file that didn't load properly."

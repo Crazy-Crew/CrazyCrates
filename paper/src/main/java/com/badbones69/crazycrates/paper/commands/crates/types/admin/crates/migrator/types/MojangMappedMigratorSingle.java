@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types;
 
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
@@ -21,7 +21,7 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
     @Override
     public void run() {
         if (this.crateName == null || this.crateName.isEmpty() || this.crateName.isBlank()) {
-            Messages.cannot_be_empty.sendMessage(this.sender, "{value}", "crate name");
+            Message.cannot_be_empty.sendMessage(this.sender, "{value}", "crate name");
 
             return;
         }
@@ -29,7 +29,7 @@ public class MojangMappedMigratorSingle extends ICrateMigrator {
         final Optional<PaperCustomFile> optional = this.fileManager.getPaperFile(this.dataPath.resolve("crates").resolve(this.crateName));
 
         if (optional.isEmpty()) {
-            Messages.command_migrate_error.sendMessage(this.sender, Map.of(
+            Message.command_migrate_error.sendMessage(this.sender, Map.of(
                     "{file}", crateName,
                     "{type}", type.getName(),
                     "{reason}", "File was not loaded properly."

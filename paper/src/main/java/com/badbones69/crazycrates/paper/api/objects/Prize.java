@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
@@ -189,7 +189,7 @@ public class Prize {
         }
 
         if (maxPulls != 0 && pulls != 0 && pulls >= maxPulls) {
-            lore.add(Messages.crate_pulls_max.getMessage(audience, Map.of(
+            lore.add(Message.crate_pulls_max.getMessage(audience, Map.of(
                     "{maxpulls}", String.valueOf(maxPulls),
                     "{pulls}", amount
             )));

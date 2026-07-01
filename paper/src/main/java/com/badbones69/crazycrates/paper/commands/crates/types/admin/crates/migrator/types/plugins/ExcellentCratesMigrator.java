@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.plugins;
 
-import com.badbones69.common.api.enums.Messages;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
@@ -77,7 +77,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                 }
             }
 
-            Messages.command_migrate_users_success.sendMessage(this.sender, Map.of(
+            Message.command_migrate_users_success.sendMessage(this.sender, Map.of(
                     "{succeeded_amount}", String.valueOf(success.size()),
                     "{failed_amount}", String.valueOf(failed.size()),
                     "{type}", type.getName(),
@@ -104,7 +104,7 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
         final Collection<Crate> crates = CratesAPI.getCrateManager().getCrates();
 
         if (crates.isEmpty()) {
-            Messages.command_migrate_no_crates_present.sendMessage(sender);
+            Message.command_migrate_no_crates_present.sendMessage(sender);
 
             return;
         }
