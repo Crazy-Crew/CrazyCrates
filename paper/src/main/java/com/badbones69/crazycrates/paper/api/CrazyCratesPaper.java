@@ -28,7 +28,9 @@ import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
 import com.badbones69.crazycrates.paper.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
+import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.paper.FusionPaper;
@@ -40,6 +42,8 @@ import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.jspecify.annotations.NonNull;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -50,6 +54,7 @@ import static com.badbones69.crazycrates.paper.utils.MiscUtils.registerPermissio
 
 public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
+    private final MessageRegistry messageRegistry;
     private final PaperFileManager fileManager;
     private final CrazyCrates plugin;
     private final FusionPaper fusion;
@@ -65,6 +70,7 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
     ) {
         super(this.fusion = fusion, path);
 
+        this.messageRegistry = this.fusion.getMessageRegistry();
         this.fileManager = this.fusion.getFileManager();
 
         this.plugin = plugin;
@@ -99,14 +105,21 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
         this.fileManager.addPaperFile(this.path.resolve("locations.yml"))
                 .addPaperFile(this.path.resolve("data.yml"))
                 .addPaperFile(this.path.resolve("guis").resolve("respin-gui.yml"))
+
                 .addPaperFolder(this.path.resolve("crates"))
 
                 .addFolder(this.path.resolve("schematics"), FileType.NBT)
                 .addFolder(this.path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE))
                 .addFolder(this.path.resolve("buttons"), FileType.YAML)
+
+                .addFile(this.path.resolve("messages.yml"), FileType.YAML)
                 .addFile(version, FileType.JSON);
 
-        if (Plugins.placeholder_api.isEnabled()) new PlaceholderAPISupport().register();
+        loadMessages();
+
+        if (Plugins.placeholder_api.isEnabled()) {
+            new PlaceholderAPISupport().register();
+        }
 
         this.senderAdapter = new PaperSenderAdapter(this);
 
@@ -189,6 +202,20 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
         this.fusion.reload();
 
+        this.fileManager.addPaperFile(this.path.resolve("locations.yml"))
+                .addPaperFile(this.path.resolve("data.yml"))
+                .addPaperFile(this.path.resolve("guis").resolve("respin-gui.yml"))
+
+                .addPaperFolder(this.path.resolve("crates"))
+
+                .addFolder(this.path.resolve("schematics"), FileType.NBT)
+                .addFolder(this.path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE))
+                .addFolder(this.path.resolve("buttons"), FileType.YAML)
+
+                .addFile(this.path.resolve("messages.yml"), FileType.YAML);
+
+        loadMessages();
+
         if (this.metrics != null && !ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics)) {
             final Metrics scheduler = this.metrics.getMetrics();
 
@@ -225,6 +252,29 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
     @Override
     public @NonNull PaperSenderAdapter getSenderAdapter() {
         return this.senderAdapter;
+    }
+
+    @Override
+    public void loadMessages() {
+        final List<Path> paths = this.fileManager.getFilesByPath(this.path.resolve("locale"), ".yml", this.fileManager.getDepth());
+
+        paths.add(this.path.resolve("messages.yml")); // add to list
+
+        this.messageRegistry.init(action -> {
+            for (final Path path : paths) {
+                this.fileManager.getYamlFile(path).ifPresentOrElse(file -> {
+                    final String fileName = file.getFileName();
+
+                    final FusionKey key = FusionKey.key(us.crazycrew.crazycrates.api.CrazyCrates.namespace, fileName.equalsIgnoreCase("messages.yml") ? "default" : fileName.toLowerCase());
+
+                    final CommentedConfigurationNode configuration = file.getConfiguration();
+
+                    for (final Message message : Message.values()) {
+                        message.addKey(action, configuration, key);
+                    }
+                }, () -> this.fusion.log(Level.INFO, "Path %s not found in cache.".formatted(path)));
+            }
+        });
     }
 
     @Override

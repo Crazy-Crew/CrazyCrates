@@ -1,6 +1,5 @@
 package us.crazycrew.crazycrates.api.enums.messages;
 
-import ch.jalu.configme.SettingsManager;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.api.registry.message.adapter.YamlMessageAdapter;

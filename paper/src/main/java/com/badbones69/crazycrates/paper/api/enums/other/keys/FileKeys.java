@@ -25,7 +25,9 @@ public enum FileKeys {
     locations(FileType.PAPER_YAML, "locations.yml"),
     data(FileType.PAPER_YAML, "data.yml"),
 
-    version(FileType.JSON, "version.json");
+    version(FileType.JSON, "version.json"),
+
+    messages(FileType.YAML, "messages.yml");
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
     private final CrazyCratesPaper platform = this.plugin.getPlatform();

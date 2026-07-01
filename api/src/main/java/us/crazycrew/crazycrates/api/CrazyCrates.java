@@ -35,6 +35,8 @@ public abstract class CrazyCrates<C, S> implements IServer {
 
     public abstract Path getDataPath();
 
+    public abstract void loadMessages();
+
     public abstract void disable();
 
     public abstract void reload();
