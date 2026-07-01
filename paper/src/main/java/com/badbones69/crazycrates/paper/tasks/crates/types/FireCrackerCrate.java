@@ -68,10 +68,6 @@ public class FireCrackerCrate extends CrateBuilder {
 
             @Override
             public void run() {
-                this.clonedLocation.subtract(0, 1, 0);
-
-                MiscUtils.spawnFirework(this.clonedLocation, colors.get(this.random));
-
                 this.length++;
 
                 if (this.length == 25) {
@@ -105,7 +101,13 @@ public class FireCrackerCrate extends CrateBuilder {
                             crateManager.endCrate(crate, player, location);
                         }
                     }.runDelayed(40));
+
+                    return;
                 }
+
+                this.clonedLocation.subtract(0, 1, 0);
+
+                MiscUtils.spawnFirework(this.clonedLocation, colors.get(this.random));
             }
         }.runAtFixedRate(0, 2));
     }
