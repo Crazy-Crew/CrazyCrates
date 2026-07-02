@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class PrizeManager {
     
@@ -286,7 +286,7 @@ public class PrizeManager {
 
         if (tiers.isEmpty()) return null;
 
-        final Random random = MiscUtils.getRandom();
+        final ThreadLocalRandom random = ThreadLocalRandom.current();
 
         double weight = 0.0;
 

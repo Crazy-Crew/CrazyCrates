@@ -48,6 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Crate {
 
@@ -515,7 +516,7 @@ public class Crate {
 
         int index = 0;
 
-        for (double value = MiscUtils.getRandom().nextDouble() * totalWeight; index < prizes.size() - 1; index++) {
+        for (double value = ThreadLocalRandom.current().nextDouble() * totalWeight; index < prizes.size() - 1; index++) {
             final double weight = prizes.get(index).getWeight();
 
             value -= weight;

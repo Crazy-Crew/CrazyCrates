@@ -42,7 +42,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -325,22 +324,18 @@ public class MiscUtils {
         max++;
 
         try {
-            return min + getRandom().nextLong(max - min);
+            return min + ThreadLocalRandom.current().nextLong(max - min);
         } catch (IllegalArgumentException exception) {
             return min;
         }
     }
 
     public static int randomNumber(final int min, final int max) {
-        return min + getRandom().nextInt(max - min);
+        return min + ThreadLocalRandom.current().nextInt(max - min);
     }
 
     public static String randomUUID() {
         return UUID.randomUUID().toString().replace("-", "").substring(0, 8);
-    }
-
-    public static Random getRandom() {
-        return useDifferentRandom() ? ThreadLocalRandom.current() : new Random();
     }
 
     public static ItemBuilder getRandomPaneColor() {
@@ -387,10 +382,6 @@ public class MiscUtils {
         }
 
         return slow;
-    }
-
-    public static boolean useDifferentRandom() {
-        return ConfigManager.getConfig().getProperty(ConfigKeys.use_different_random);
     }
 
     public static void registerPermission(@NotNull final String permission, @NotNull final String description, final boolean isDefault) {
