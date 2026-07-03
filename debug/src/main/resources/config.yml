@@ -1,0 +1,12 @@
+root:
+  use-different-items-layout: true
+  use-new-editor: false
+  toggle-metrics: true
+  message-state: "send_message"
+  update-examples-folder: true
+  command_prefix: " <gradient:#e91e63:blue>CrazyCrates</gradient> | "
+  test-message: "<blue>not the default value."
+  example-integer: 3
+  messages:
+    - "this is a value"
+    - "another value"
