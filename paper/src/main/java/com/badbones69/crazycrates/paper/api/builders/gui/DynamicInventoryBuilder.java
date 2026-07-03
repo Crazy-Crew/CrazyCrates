@@ -1,7 +1,5 @@
 package com.badbones69.crazycrates.paper.api.builders.gui;
 
-import com.badbones69.common.config.beans.inventories.ItemPlacement;
-import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiState;
 import com.ryderbelserion.fusion.paper.builders.gui.types.paginated.PaginatedGui;
@@ -9,6 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import us.crazycrew.crazycrates.api.config.types.plugin.types.ButtonConfig;
+import us.crazycrew.crazycrates.api.config.types.plugin.types.GuiConfig;
 import java.util.function.Consumer;
 
 public abstract class DynamicInventoryBuilder extends InventoryBuilder {
@@ -74,9 +74,12 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
     }
 
     public void addBackButton(final boolean isPreview) {
-        final ItemPlacement backButtonPlacement = this.config.getProperty(ConfigKeys.back_button_placement);
-        final int column = backButtonPlacement.getColumn();
-        final int row = backButtonPlacement.getRow();
+        final GuiConfig guiConfig = this.pluginConfig.getGuiConfig();
+
+        final ButtonConfig buttonConfig = guiConfig.getBackButton();
+
+        final int column = buttonConfig.getColumn();
+        final int row = buttonConfig.getRow();
         final int rows = this.gui.getRows();
 
         final int safeRow = Math.min(row == -1 ? rows : row, rows);
@@ -113,9 +116,13 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
             return;
         }
 
-        final ItemPlacement nextButtonPlacement = this.config.getProperty(ConfigKeys.next_button_placement);
-        final int column = nextButtonPlacement.getColumn();
-        final int row = nextButtonPlacement.getRow();
+        final GuiConfig guiConfig = this.pluginConfig.getGuiConfig();
+
+        final ButtonConfig buttonConfig = guiConfig.getNextButton();
+
+        final int column = buttonConfig.getColumn();
+        final int row = buttonConfig.getRow();
+
         final int rows = this.gui.getRows();
 
         final int safeRow = Math.min(row == -1 ? rows : row, rows);

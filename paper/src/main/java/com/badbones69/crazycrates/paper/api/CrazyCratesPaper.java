@@ -1,9 +1,6 @@
 package com.badbones69.crazycrates.paper.api;
 
-import ch.jalu.configme.SettingsManager;
 import com.badbones69.common.CrazyCratesPlugin;
-import com.badbones69.common.config.ConfigManager;
-import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
@@ -42,7 +39,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
+import us.crazycrew.crazycrates.api.config.types.plugin.PluginConfig;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -77,13 +76,13 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
         this.timer = new Timer();
     }
 
+    private PaperSenderAdapter senderAdapter;
+
     private InventoryManager inventoryManager;
     private BukkitUserManager userManager;
     private BukkitKeyManager keyManager;
     private ButtonManager buttonManager;
     private CrateManager crateManager;
-
-    private PaperSenderAdapter senderAdapter;
 
     private MetricsWrapper metrics;
 
@@ -109,25 +108,23 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
                 .addFolder(this.path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE))
                 .addFolder(this.path.resolve("buttons"), FileType.YAML)
 
-                .addFile(this.path.resolve("messages.yml"), FileType.YAML)
                 .addFile(version, FileType.JSON);
 
         if (Plugins.placeholder_api.isEnabled()) {
             new PlaceholderAPISupport().register();
         }
 
-        this.senderAdapter = new PaperSenderAdapter(this);
+        this.senderAdapter = new PaperSenderAdapter();
 
         loadMessages();
 
         this.buttonManager = new ButtonManager(this);
         this.buttonManager.load();
 
-        this.crateManager = new CrateManager(
-                this,
-                this.inventoryManager = new InventoryManager(),
-                this.keyManager = new BukkitKeyManager()
-        );
+        this.inventoryManager = new InventoryManager();
+        this.keyManager = new BukkitKeyManager();
+
+        this.crateManager = new CrateManager();
 
         this.userManager = new BukkitUserManager(
                 this,
@@ -166,9 +163,9 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
                 new PaperInteractListener()
         ).forEach(listener -> pluginManager.registerEvents(listener, this.plugin));
 
-        final SettingsManager config = ConfigManager.getConfig();
+        final PluginConfig pluginConfig = this.configManager.getPluginConfig();
 
-        if (config.getProperty(ConfigKeys.toggle_metrics)) {
+        if (pluginConfig.isMetricsEnabled()) {
             this.metrics = new MetricsWrapper(4514);
             this.metrics.start();
         }
@@ -207,13 +204,15 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
                 .addFolder(this.path.resolve("schematics"), FileType.NBT)
                 .addFolder(this.path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE))
-                .addFolder(this.path.resolve("buttons"), FileType.YAML)
+                .addFolder(this.path.resolve("buttons"), FileType.YAML);
 
-                .addFile(this.path.resolve("messages.yml"), FileType.YAML);
+        this.configManager.reload();
 
         loadMessages();
 
-        if (this.metrics != null && !ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics)) {
+        final PluginConfig pluginConfig = this.configManager.getPluginConfig();
+
+        if (this.metrics != null && !pluginConfig.isMetricsEnabled()) {
             final Metrics scheduler = this.metrics.getMetrics();
 
             scheduler.shutdown();

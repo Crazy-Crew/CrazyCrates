@@ -1,7 +1,10 @@
-package com.badbones69.common.enums;
+package us.crazycrew.crazycrates.api.enums;
+
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
 
+@ApiStatus.Internal
 public enum Comments {
 
     name(List.of(

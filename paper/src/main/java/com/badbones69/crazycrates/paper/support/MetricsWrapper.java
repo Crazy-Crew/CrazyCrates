@@ -3,12 +3,12 @@ package com.badbones69.crazycrates.paper.support;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.common.config.ConfigManager;
-import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.api.config.ConfigManager;
+import us.crazycrew.crazycrates.api.config.types.plugin.PluginConfig;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,9 @@ public class MetricsWrapper{
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final ConfigManager configManager = this.platform.getConfigManager();
+    private final PluginConfig pluginConfig = this.configManager.getPluginConfig();
 
     private final CrateManager crateManager = this.platform.getCrateManager();
 
@@ -27,7 +30,7 @@ public class MetricsWrapper{
     }
 
     public void start() {
-        if (!ConfigManager.getConfig().getProperty(ConfigKeys.toggle_metrics)) return;
+        if (!this.pluginConfig.isMetricsEnabled()) return;
 
         final List<Crate> crates = new ArrayList<>(this.crateManager.getCrates());
 

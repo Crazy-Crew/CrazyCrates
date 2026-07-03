@@ -18,8 +18,6 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.Nullable;
-import com.badbones69.common.config.ConfigManager;
-import com.badbones69.common.config.impl.ConfigKeys;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -33,6 +31,9 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import org.jspecify.annotations.NonNull;
+import us.crazycrew.crazycrates.api.config.ConfigManager;
+import us.crazycrew.crazycrates.api.config.types.plugin.PluginConfig;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
@@ -50,6 +51,10 @@ public class MiscUtils {
     private static final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private static final CrazyCratesPaper platform = plugin.getPlatform();
+
+    private static final ConfigManager configManager = platform.getConfigManager();
+
+    private static final PluginConfig pluginConfig = configManager.getPluginConfig();
 
     private static final FusionPaper fusion = platform.getFusion();
 
@@ -139,7 +144,7 @@ public class MiscUtils {
     }
 
     public static void janitor() {
-        if  (!Files.exists(dataPath.resolve("logs")) || !ConfigManager.getConfig().getProperty(ConfigKeys.log_to_file)) {
+        if  (!pluginConfig.isLoggingFile() || !Files.exists(dataPath.resolve("logs"))) {
             return;
         }
 

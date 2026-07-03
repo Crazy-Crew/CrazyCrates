@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.editor;
 
+import us.crazycrew.crazycrates.api.config.types.plugin.types.GuiConfig;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
-import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
@@ -37,7 +37,9 @@ public class CommandSet extends BaseCommand {
             return;
         }
 
-        if (crate.getCrateType() == CrateType.menu && !this.config.getProperty(ConfigKeys.enable_crate_menu)) {
+        final GuiConfig guiConfig = this.pluginConfig.getGuiConfig();
+
+        if (crate.getCrateType() == CrateType.menu && !guiConfig.isCrateMenuEnabled()) {
             Message.crate_cannot_set_type.sendMessage(player);
 
             return;

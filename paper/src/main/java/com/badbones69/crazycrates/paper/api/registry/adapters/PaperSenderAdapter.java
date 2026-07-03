@@ -1,8 +1,6 @@
 package com.badbones69.crazycrates.paper.api.registry.adapters;
 
-import ch.jalu.configme.SettingsManager;
-import com.badbones69.common.config.ConfigManager;
-import com.badbones69.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
@@ -12,8 +10,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import us.crazycrew.crazycrates.api.CrazyCrates;
 import us.crazycrew.crazycrates.api.adapters.sender.ISenderAdapter;
+import us.crazycrew.crazycrates.api.config.ConfigManager;
+import us.crazycrew.crazycrates.api.config.types.plugin.PluginConfig;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,15 +22,17 @@ import java.util.UUID;
 
 public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender> {
 
-    private final SettingsManager config = ConfigManager.getConfig();
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final MessageRegistry messageRegistry;
-    private final FusionPaper fusion;
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
 
-    public PaperSenderAdapter(@NotNull final CrazyCratesPaper platform) {
-        this.fusion = platform.getFusion();
-        this.messageRegistry = this.fusion.getMessageRegistry();
-    }
+    private final FusionPaper fusion = this.platform.getFusion();
+
+    private final MessageRegistry messageRegistry = this.fusion.getMessageRegistry();
+
+    private final ConfigManager configManager = this.platform.getConfigManager();
+
+    private final PluginConfig pluginConfig = this.configManager.getPluginConfig();
 
     @Override
     public UUID getUniqueId(@NotNull final CommandSender sender) {
@@ -90,7 +92,7 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
 
         final Map<String, String> map = new HashMap<>(placeholders);
 
-        final String prefix = this.config.getProperty(ConfigKeys.command_prefix);
+        final String prefix = this.pluginConfig.getPrefix();
 
         if (!prefix.isEmpty()) {
             map.putIfAbsent("{prefix}", prefix);
@@ -111,7 +113,7 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
 
         final Map<String, String> map = new HashMap<>(placeholders);
 
-        final String prefix = this.config.getProperty(ConfigKeys.command_prefix);
+        final String prefix = this.pluginConfig.getPrefix();
 
         if (!prefix.isEmpty()) {
             map.putIfAbsent("{prefix}", prefix);

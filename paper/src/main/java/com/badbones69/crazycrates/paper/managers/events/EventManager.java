@@ -1,14 +1,10 @@
 package com.badbones69.crazycrates.paper.managers.events;
 
-import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.common.config.ConfigManager;
-import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
-import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
@@ -17,6 +13,8 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import us.crazycrew.crazycrates.api.config.ConfigManager;
+import us.crazycrew.crazycrates.api.config.types.plugin.PluginConfig;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
@@ -31,7 +29,9 @@ public class EventManager {
 
     private final static ComponentLogger logger = plugin.getComponentLogger();
 
-    private final static SettingsManager config = ConfigManager.getConfig();
+    private final static ConfigManager configManager = platform.getConfigManager();
+
+    private final static PluginConfig pluginConfig = configManager.getPluginConfig();
 
     public static void logEvent(@NotNull final EventType type, @NotNull final String name, @NotNull final CommandSender sender, @NotNull final Crate crate, @NotNull final KeyType keyType, final int amount) {
         handle(type, name, sender, crate, keyType, amount);
@@ -110,7 +110,7 @@ public class EventManager {
     private static void log(@NotNull final String message, @Nullable final Path path, @NotNull final EventType type) {
         final String time = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(System.currentTimeMillis()));
 
-        if (path != null && config.getProperty(ConfigKeys.log_to_file)) {
+        if (path != null && pluginConfig.isLoggingFile()) {
             final @NotNull Optional<LogCustomFile> optional = fileManager.getLogFile(path);
 
             if (optional.isEmpty()) {
@@ -122,9 +122,7 @@ public class EventManager {
             customFile.save("[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(fusion.asComponent(message)));
         }
 
-        final boolean log_to_console = config.getProperty(ConfigKeys.log_to_console);
-
-        if (log_to_console) {
+        if (pluginConfig.isLoggingConsole()) {
             logger.info("[{} {}]: {}", time, type.getEvent(), fusion.asComponent(message));
         }
     }

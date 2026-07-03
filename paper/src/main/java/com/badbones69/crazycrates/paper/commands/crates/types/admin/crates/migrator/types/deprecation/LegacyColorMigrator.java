@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migr
 
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.badbones69.common.config.impl.ConfigKeys;
 import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
@@ -25,25 +24,25 @@ public class LegacyColorMigrator extends ICrateMigrator {
         final List<String> success = new ArrayList<>();
 
         try {
-            this.config.setProperty(ConfigKeys.command_prefix, AdvUtils.convert(this.config.getProperty(ConfigKeys.command_prefix), true));
-            this.config.setProperty(ConfigKeys.inventory_name, AdvUtils.convert(this.config.getProperty(ConfigKeys.inventory_name), true));
+            //this.config.setProperty(ConfigKeys.command_prefix, AdvUtils.convert(this.config.getProperty(ConfigKeys.command_prefix), true));
+            //this.config.setProperty(ConfigKeys.inventory_name, AdvUtils.convert(this.config.getProperty(ConfigKeys.inventory_name), true));
 
-            this.config.setProperty(ConfigKeys.menu_button_name, AdvUtils.convert(this.config.getProperty(ConfigKeys.menu_button_name), true));
-            this.config.setProperty(ConfigKeys.menu_button_lore, AdvUtils.convert(this.config.getProperty(ConfigKeys.menu_button_lore), true));
+            //this.config.setProperty(ConfigKeys.menu_button_name, AdvUtils.convert(this.config.getProperty(ConfigKeys.menu_button_name), true));
+            //this.config.setProperty(ConfigKeys.menu_button_lore, AdvUtils.convert(this.config.getProperty(ConfigKeys.menu_button_lore), true));
 
-            this.config.setProperty(ConfigKeys.next_button_name, AdvUtils.convert(this.config.getProperty(ConfigKeys.next_button_name), true));
-            this.config.setProperty(ConfigKeys.next_button_lore, AdvUtils.convert(this.config.getProperty(ConfigKeys.next_button_lore), true));
+            //this.config.setProperty(ConfigKeys.next_button_name, AdvUtils.convert(this.config.getProperty(ConfigKeys.next_button_name), true));
+            //this.config.setProperty(ConfigKeys.next_button_lore, AdvUtils.convert(this.config.getProperty(ConfigKeys.next_button_lore), true));
 
-            this.config.setProperty(ConfigKeys.back_button_name, AdvUtils.convert(this.config.getProperty(ConfigKeys.back_button_name), true));
-            this.config.setProperty(ConfigKeys.back_button_lore, AdvUtils.convert(this.config.getProperty(ConfigKeys.back_button_lore), true));
+            //this.config.setProperty(ConfigKeys.back_button_name, AdvUtils.convert(this.config.getProperty(ConfigKeys.back_button_name), true));
+            //this.config.setProperty(ConfigKeys.back_button_lore, AdvUtils.convert(this.config.getProperty(ConfigKeys.back_button_lore), true));
 
-            this.config.setProperty(ConfigKeys.filler_name, AdvUtils.convert(this.config.getProperty(ConfigKeys.filler_name), true));
-            this.config.setProperty(ConfigKeys.filler_lore, AdvUtils.convert(this.config.getProperty(ConfigKeys.filler_lore), true));
+            //this.config.setProperty(ConfigKeys.filler_name, AdvUtils.convert(this.config.getProperty(ConfigKeys.filler_name), true));
+            //this.config.setProperty(ConfigKeys.filler_lore, AdvUtils.convert(this.config.getProperty(ConfigKeys.filler_lore), true));
 
             success.add("<green>⤷ config.yml");
 
-            this.config.save();
-            this.config.reload();
+            //this.config.save();
+            //this.config.reload();
         } catch (Exception exception) {
             failed.add("<red>⤷ config.yml");
         }

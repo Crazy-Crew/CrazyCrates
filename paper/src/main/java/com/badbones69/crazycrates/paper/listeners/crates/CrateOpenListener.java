@@ -1,10 +1,9 @@
 package com.badbones69.crazycrates.paper.listeners.crates;
 
-import ch.jalu.configme.SettingsManager;
+import us.crazycrew.crazycrates.api.config.ConfigManager;
+import us.crazycrew.crazycrates.api.config.types.plugin.PluginConfig;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.common.config.ConfigManager;
-import com.badbones69.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
@@ -28,6 +27,10 @@ public class CrateOpenListener implements Listener {
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
 
+    private final ConfigManager configManager = this.platform.getConfigManager();
+
+    private final PluginConfig pluginConfig = this.configManager.getPluginConfig();
+
     private final FusionPaper fusion = this.platform.getFusion();
 
     private final Server server = this.plugin.getServer();
@@ -35,8 +38,6 @@ public class CrateOpenListener implements Listener {
     private final CrateManager crateManager = this.platform.getCrateManager();
 
     private final BukkitUserManager userManager = this.platform.getUserManager();
-
-    private final SettingsManager config = ConfigManager.getConfig();
 
     @EventHandler
     public void onCrateOpen(CrateOpenEvent event) {
@@ -89,7 +90,7 @@ public class CrateOpenListener implements Listener {
                     if (!broadcastMessage.isBlank()) {
                         this.server.broadcast(this.fusion.asComponent(player, broadcastMessage, Map.of(
                                 "%crate%", fancyName,
-                                "%prefix%", this.config.getProperty(ConfigKeys.command_prefix),
+                                "%prefix%", this.pluginConfig.getPrefix(),
                                 "%player%", playerName
                         )));
                     }
@@ -110,7 +111,7 @@ public class CrateOpenListener implements Listener {
                 if (line.isBlank()) continue;
 
                 MiscUtils.sendCommand(player, line, Map.of(
-                        "%prefix%", this.config.getProperty(ConfigKeys.command_prefix),
+                        "%prefix%", this.pluginConfig.getPrefix(),
                         "%player%", playerName,
                         "%crate%", fileName
                 ));

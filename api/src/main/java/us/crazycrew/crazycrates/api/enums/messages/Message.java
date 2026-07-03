@@ -5,15 +5,19 @@ import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.api.registry.message.adapter.YamlMessageAdapter;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import net.kyori.adventure.audience.Audience;
+import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.CrazyCrates;
 import us.crazycrew.crazycrates.api.adapters.sender.ISenderAdapter;
+import us.crazycrew.crazycrates.api.config.ConfigManager;
+import us.crazycrew.crazycrates.api.config.types.plugin.PluginConfig;
 import java.util.List;
 import java.util.Map;
 import static us.crazycrew.crazycrates.api.CrazyCrates.namespace;
 
+@ApiStatus.Internal
 @NullMarked
 public enum Message {
 
@@ -230,19 +234,18 @@ public enum Message {
 
     private final ISenderAdapter senderAdapter = this.platform.getSenderAdapter();
 
-    private final State state = this.platform.getMessageState();
+    private final ConfigManager configManager = this.platform.getConfigManager();
+
+    private final PluginConfig pluginConfig = this.configManager.getPluginConfig();
 
     private final String defaultValue;
     private final FusionKey id;
     private final Object[] path;
-    //private String oldPath;
 
     Message(final String oldPath, final String id, final String defaultValue, final Object... path) {
         this.defaultValue = defaultValue;
         this.id = FusionKey.key(namespace, id);
         this.path = path;
-
-        //this.oldPath = oldPath;
     }
 
     public void addKey(final MessageRegistry registry, final CommentedConfigurationNode configuration, final FusionKey id) {
@@ -256,7 +259,7 @@ public enum Message {
     }
 
     public void sendMessage(final Audience audience, final Map<String, String> placeholders) {
-        switch (this.state) {
+        switch (this.pluginConfig.getMessageState()) {
             case send_message -> this.senderAdapter.sendMessage(audience, this.id, placeholders);
             case send_actionbar -> this.senderAdapter.sendActionBar(audience, this.id, placeholders);
         }
