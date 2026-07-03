@@ -226,9 +226,11 @@ public class CrateMainMenu extends StaticInventoryBuilder {
             return;
         }
 
+        final String worldName = this.player.getWorld().getName();
+
         for (String world : this.config.getProperty(ConfigKeys.disabled_worlds)) {
-            if (world.equalsIgnoreCase(this.player.getWorld().getName())) {
-                Message.world_disabled.sendMessage(this.player, "{world}", this.player.getWorld().getName());
+            if (world.equalsIgnoreCase(worldName)) {
+                Message.world_disabled.sendMessage(this.player, "{world}", worldName);
 
                 return;
             }

@@ -712,7 +712,15 @@ public class CrateManager {
      * @param isSilent true or false, this decides on sending the broadcast messages etc.
      */
     public void openCrate(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, @NotNull final Location location, final boolean virtualCrate, final boolean checkHand, final boolean isSilent, final EventType eventType) {
-        final SettingsManager config = ConfigManager.getConfig();
+        final String worldName = player.getWorld().getName();
+
+        for (String world : this.config.getProperty(ConfigKeys.disabled_worlds)) {
+            if (world.equalsIgnoreCase(worldName)) {
+                Message.world_disabled.sendMessage(player, "{world}", worldName);
+
+                return;
+            }
+        }
 
         if (crate.getCrateType() == CrateType.menu) {
             if (config.getProperty(ConfigKeys.enable_crate_menu)) {
