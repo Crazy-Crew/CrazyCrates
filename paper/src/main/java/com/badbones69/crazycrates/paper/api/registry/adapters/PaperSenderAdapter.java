@@ -38,7 +38,7 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
             return player.getUniqueId();
         }
 
-        return CrazyCrates.CONSOLE_UUID;
+        return us.crazycrew.crazycrates.api.CrazyCrates.CONSOLE_UUID;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
             return player.getName();
         }
 
-        return CrazyCrates.CONSOLE_NAME;
+        return us.crazycrew.crazycrates.api.CrazyCrates.CONSOLE_NAME;
     }
 
     @Override
@@ -55,6 +55,12 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
         final Component component = getComponent(sender, id, placeholders);
 
         if (component.equals(Component.empty())) {
+            return;
+        }
+
+        if (sender instanceof ConsoleCommandSender) {
+            sender.sendMessage(component);
+
             return;
         }
 
