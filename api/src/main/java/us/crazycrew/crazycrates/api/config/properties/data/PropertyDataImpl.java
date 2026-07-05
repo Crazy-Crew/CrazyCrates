@@ -20,10 +20,10 @@ public final class PropertyDataImpl implements IPropertyData {
 
     private final FileManager fileManager = this.fusion.getFileManager();
 
-    private final Map<String, Property<?>> properties;
+    private final Map<Object[], Property<?>> properties;
     private final PropertyDataBuilder builder;
 
-    public PropertyDataImpl(final PropertyDataBuilder builder, final Map<String, Property<?>> properties) {
+    public PropertyDataImpl(final PropertyDataBuilder builder, final Map<Object[], Property<?>> properties) {
         this.properties = properties;
         this.builder = builder;
     }
@@ -32,10 +32,8 @@ public final class PropertyDataImpl implements IPropertyData {
     public <T> T getProperty(final CommentedConfigurationNode configuration, final Property<T> property) {
         final Object[] path = property.getPath();
 
-        final String id = this.builder.parse(path);
-
-        if (!this.properties.containsKey(id)) {
-            throw new IllegalStateException("The property %s is not present with this builder for %s! Perhaps wrong config!".formatted(id, this.builder.getPath()));
+        if (!this.properties.containsKey(path)) {
+            throw new IllegalStateException("The property %s is not present with this builder for %s! Perhaps wrong config!".formatted(path, this.builder.getPath()));
         }
 
         final PropertyType propertyType = property.getPropertyType();
@@ -65,16 +63,34 @@ public final class PropertyDataImpl implements IPropertyData {
 
         try {
             configuration.node(property.getPath()).set(type, value);
-
-            this.fileManager.saveFile(this.builder.getPath());
         } catch (final SerializationException exception) {
             throw new IllegalStateException(exception);
         }
+
+        this.fileManager.saveFile(this.builder.getPath());
     }
 
     @Override
     public void setComment(final CommentedConfigurationNode configuration, final String value, final Object... path) {
         configuration.node(path).commentIfAbsent(value);
+
+        this.fileManager.saveFile(this.builder.getPath());
+    }
+
+    @Override
+    public void populate(final CommentedConfigurationNode configuration) {
+        for (final Map.Entry<Object[], Property<?>> properties : this.properties.entrySet()) {
+            final Property<?> property = properties.getValue();
+            final Object[] id = property.getPath();
+
+            if (configuration.hasChild(id)) continue;
+
+            try {
+                configuration.node(id).set(property.getType(), property.getDefaultValue());
+            } catch (final SerializationException exception) {
+                throw new IllegalStateException(exception);
+            }
+        }
 
         this.fileManager.saveFile(this.builder.getPath());
     }

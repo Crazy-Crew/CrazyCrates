@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @NullMarked
 public final class PropertyDataBuilder {
 
-    private final Map<String, Property<?>> properties = new HashMap<>();
+    private final Map<Object[], Property<?>> properties = new HashMap<>();
 
     private final Path path;
 
@@ -43,7 +43,7 @@ public final class PropertyDataBuilder {
                 final Property<?> property = (Property<?>) field.get(null);
 
                 if (property != null) {
-                    this.properties.putIfAbsent(parse(property.getPath()), property);
+                    this.properties.putIfAbsent(property.getPath(), property);
                 }
             } catch (final IllegalAccessException exception) {
                 exception.printStackTrace();

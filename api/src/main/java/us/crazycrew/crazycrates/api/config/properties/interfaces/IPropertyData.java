@@ -13,4 +13,6 @@ public interface IPropertyData {
 
     void setComment(final CommentedConfigurationNode configuration, final String value, final Object... path);
 
+    void populate(final CommentedConfigurationNode configuration);
+
 }

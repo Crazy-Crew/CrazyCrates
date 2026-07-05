@@ -58,6 +58,12 @@ public final class PropertyManager {
         return this;
     }
 
+    public PropertyManager populate() {
+        this.propertyData.populate(getConfiguration());
+
+        return this;
+    }
+
     public CommentedConfigurationNode getConfiguration() {
         final Optional<YamlCustomFile> customFile = this.fileManager.getYamlFile(this.path);
 
@@ -82,6 +88,8 @@ public final class PropertyManager {
             consumer.withIndent(this.builder.getIndent());
             consumer.setOptions(this.options);
         });
+
+        populate();
     }
 
     public void save() {
