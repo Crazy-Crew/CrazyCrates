@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import us.crazycrew.crazycrates.api.config.types.plugin.types.ButtonConfig;
-import us.crazycrew.crazycrates.api.config.types.plugin.types.GuiConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.plugin.types.ButtonConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.plugin.types.GuiConfig;
 import java.util.function.Consumer;
 
 public abstract class DynamicInventoryBuilder extends InventoryBuilder {

@@ -31,8 +31,8 @@ import org.jetbrains.annotations.NotNull;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import org.jspecify.annotations.NonNull;
-import us.crazycrew.crazycrates.api.config.ConfigManager;
-import us.crazycrew.crazycrates.api.config.types.plugin.PluginConfig;
+import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
+import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

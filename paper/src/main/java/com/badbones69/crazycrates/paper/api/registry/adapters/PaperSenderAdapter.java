@@ -11,8 +11,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.adapters.sender.ISenderAdapter;
-import us.crazycrew.crazycrates.api.config.ConfigManager;
-import us.crazycrew.crazycrates.api.config.types.plugin.PluginConfig;
+import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
+import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
 
 import java.util.ArrayList;
 import java.util.HashMap;

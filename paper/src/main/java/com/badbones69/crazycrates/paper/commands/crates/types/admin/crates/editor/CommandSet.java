@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.editor;
 
-import us.crazycrew.crazycrates.api.config.types.plugin.types.GuiConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.plugin.types.GuiConfig;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;

@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.listeners.crates.types;
 
-import us.crazycrew.crazycrates.api.config.ConfigManager;
-import us.crazycrew.crazycrates.api.config.types.plugin.PluginConfig;
+import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
+import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;

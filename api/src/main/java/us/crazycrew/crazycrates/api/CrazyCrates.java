@@ -2,7 +2,7 @@ package us.crazycrew.crazycrates.api;
 
 import org.jspecify.annotations.NullMarked;
 import us.crazycrew.crazycrates.api.adapters.sender.ISenderAdapter;
-import us.crazycrew.crazycrates.api.config.ConfigManager;
+import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
 import us.crazycrew.crazycrates.platform.IServer;
 import java.nio.file.Path;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.api;
 
-import com.badbones69.common.CrazyCratesPlugin;
+import com.ryderbelserion.common.CrazyCratesPlugin;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
@@ -39,7 +39,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
-import us.crazycrew.crazycrates.api.config.types.plugin.PluginConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 
 import java.io.IOException;

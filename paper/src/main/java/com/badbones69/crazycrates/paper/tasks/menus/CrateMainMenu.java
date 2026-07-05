@@ -2,7 +2,7 @@ package com.badbones69.crazycrates.paper.tasks.menus;
 
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiBorder;
-import us.crazycrew.crazycrates.api.config.types.plugin.types.GuiConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.plugin.types.GuiConfig;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
