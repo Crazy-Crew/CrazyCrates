@@ -1,6 +1,5 @@
 package us.crazycrew.crazycrates.api.config.properties;
 
-import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
@@ -16,6 +15,7 @@ import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.function.UnaryOperator;
 
 public final class PropertyManager {
 
@@ -23,14 +23,14 @@ public final class PropertyManager {
 
     private final FileManager fileManager = this.fusion.getFileManager();
 
-    private final ConfigurationOptions options;
+    private final UnaryOperator<ConfigurationOptions> options;
     private final IPropertyData propertyData;
     private final ConfigBuilder builder;
     private final FileType fileType;
     private final Path path;
 
     public PropertyManager(@NonNull final IPropertyData propertyData,
-                           @NonNull final ConfigurationOptions options,
+                           @NonNull final UnaryOperator<ConfigurationOptions> options,
                            @NonNull final ConfigBuilder builder,
                            @NonNull final FileType fileType,
                            @NonNull final Path path

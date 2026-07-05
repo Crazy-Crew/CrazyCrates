@@ -1,7 +1,6 @@
 package com.ryderbelserion.common.config;
 
 import com.ryderbelserion.fusion.core.utils.StringUtils;
-import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.loader.HeaderMode;
 import org.spongepowered.configurate.yaml.NodeStyle;
 import us.crazycrew.crazycrates.api.config.ConfigBuilder;
@@ -18,7 +17,7 @@ public final class ConfigManager {
     public void init(@NonNull final Path path) {
         this.config = ConfigBuilder.withYamlPath(path)
                 .configuration(EditorKeys.class)
-                .withOptions(ConfigurationOptions.defaults().header(StringUtils.toString(List.of(
+                .withOptions(options -> options.shouldCopyDefaults(true).header(StringUtils.toString(List.of(
                         "Support: https://discord.gg/badbones-s-live-chat-182615261403283459",
                         "Github: https://github.com/Crazy-Crew",
                         "",
@@ -29,8 +28,8 @@ public final class ConfigManager {
                 ))))
                 .withNodeStyle(NodeStyle.BLOCK)
                 .withHeaderMode(HeaderMode.PRESERVE)
-                .withIndent(1)
-                .create().setComment("test", "editor", "overwrite-old-crate-locations");
+                .withIndent(2)
+                .create();
     }
 
     public @NonNull PropertyManager getConfig() {

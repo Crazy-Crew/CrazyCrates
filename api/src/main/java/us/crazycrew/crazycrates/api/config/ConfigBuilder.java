@@ -11,6 +11,7 @@ import com.ryderbelserion.fusion.files.enums.FileType;
 import org.jspecify.annotations.NonNull;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.function.UnaryOperator;
 
 public final class ConfigBuilder {
 
@@ -31,7 +32,7 @@ public final class ConfigBuilder {
     private boolean isLenient = true;
     private int indent = 4;
 
-    private ConfigurationOptions options;
+    private UnaryOperator<ConfigurationOptions> options;
     private IPropertyData propertyData;
 
     @SafeVarargs
@@ -41,7 +42,7 @@ public final class ConfigBuilder {
         return this;
     }
 
-    public @NonNull ConfigBuilder withOptions(final ConfigurationOptions options) {
+    public @NonNull ConfigBuilder withOptions(final UnaryOperator<ConfigurationOptions> options) {
         this.options = options;
 
         return this;
