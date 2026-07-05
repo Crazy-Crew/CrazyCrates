@@ -101,8 +101,8 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
         this.fileManager.addPaperFile(this.path.resolve("locations.yml"))
                 .addPaperFile(this.path.resolve("data.yml"))
-                .addPaperFile(this.path.resolve("guis").resolve("respin-gui.yml"))
 
+                .addPaperFolder(this.path.resolve("guis"))
                 .addPaperFolder(this.path.resolve("crates"))
 
                 .addFolder(this.path.resolve("schematics"), FileType.NBT)
@@ -201,8 +201,8 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
         this.fileManager.addPaperFile(this.path.resolve("locations.yml"))
                 .addPaperFile(this.path.resolve("data.yml"))
-                .addPaperFile(this.path.resolve("guis").resolve("respin-gui.yml"))
 
+                .addPaperFolder(this.path.resolve("guis"))
                 .addPaperFolder(this.path.resolve("crates"))
 
                 .addFolder(this.path.resolve("schematics"), FileType.NBT)

@@ -262,8 +262,15 @@ Crate:
 
     "3":
       key: "redglass"
-      slot: 45
+      slot: 8
     "4":
+      key: "redglass"
+      slot: 17
+
+    "5":
+      key: "redglass"
+      slot: 45
+    "6":
       key: "redglass"
       slot: 53
   # All the prizes that can be obtained in the Crate.
