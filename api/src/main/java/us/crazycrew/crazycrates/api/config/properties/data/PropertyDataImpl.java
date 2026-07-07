@@ -21,10 +21,12 @@ public final class PropertyDataImpl implements IPropertyData {
     private final FileManager fileManager = this.fusion.getFileManager();
 
     private final Map<Object[], Property<?>> properties;
+    private final Map<Object[], List<String>> comments;
     private final PropertyDataBuilder builder;
 
-    public PropertyDataImpl(final PropertyDataBuilder builder, final Map<Object[], Property<?>> properties) {
+    public PropertyDataImpl(final PropertyDataBuilder builder, final Map<Object[], Property<?>> properties, Map<Object[], List<String>> comments) {
         this.properties = properties;
+        this.comments = comments;
         this.builder = builder;
     }
 
@@ -79,8 +81,8 @@ public final class PropertyDataImpl implements IPropertyData {
 
     @Override
     public void populate(final CommentedConfigurationNode configuration) {
-        for (final Map.Entry<Object[], Property<?>> properties : this.properties.entrySet()) {
-            final Property<?> property = properties.getValue();
+        for (final Map.Entry<Object[], Property<?>> parent : this.properties.entrySet()) {
+            final Property<?> property = parent.getValue();
             final Object[] id = property.getPath();
 
             if (configuration.hasChild(id)) continue;
@@ -90,6 +92,20 @@ public final class PropertyDataImpl implements IPropertyData {
             } catch (final SerializationException exception) {
                 throw new IllegalStateException(exception);
             }
+        }
+
+        for (final Map.Entry<Object[], List<String>> parent : this.comments.entrySet()) {
+            final List<String> list = parent.getValue();
+
+            if (list.isEmpty()) continue;
+
+            final Object[] id = parent.getKey();
+
+            if (!configuration.hasChild(id)) continue;
+
+            final CommentedConfigurationNode section = configuration.node(id);
+
+            section.commentIfAbsent(StringUtils.toString(list));
         }
 
         this.fileManager.saveFile(this.builder.getPath());

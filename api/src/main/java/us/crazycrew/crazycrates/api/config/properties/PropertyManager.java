@@ -3,6 +3,7 @@ package us.crazycrew.crazycrates.api.config.properties;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationOptions;
 import us.crazycrew.crazycrates.api.config.ConfigBuilder;
 import us.crazycrew.crazycrates.api.config.properties.interfaces.IPropertyData;
@@ -30,7 +31,7 @@ public final class PropertyManager {
     private final Path path;
 
     public PropertyManager(@NonNull final IPropertyData propertyData,
-                           @NonNull final UnaryOperator<ConfigurationOptions> options,
+                           @Nullable final UnaryOperator<ConfigurationOptions> options,
                            @NonNull final ConfigBuilder builder,
                            @NonNull final FileType fileType,
                            @NonNull final Path path
@@ -86,7 +87,10 @@ public final class PropertyManager {
             consumer.withNodeStyle(this.builder.getNodeStyle());
             consumer.withLenient(this.builder.isLenient());
             consumer.withIndent(this.builder.getIndent());
-            consumer.setOptions(this.options);
+
+            if (this.options != null) {
+                consumer.setOptions(this.options);
+            }
         });
 
         populate();

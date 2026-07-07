@@ -28,6 +28,7 @@ public final class ConfigBuilder {
     }
 
     private HeaderMode headerMode = HeaderMode.PRESERVE;
+
     private NodeStyle nodeStyle = NodeStyle.BLOCK;
     private boolean isLenient = true;
     private int indent = 4;

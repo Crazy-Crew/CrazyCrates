@@ -39,7 +39,13 @@ tasks {
     shadowJar {
         listOf(
             "com.ryderbelserion.fusion",
-            "org.bstats"
+            "io.leangen.geantyref",
+            "org.spongepowered",
+            "com.google.gson",
+            "org.jspecify",
+            "org.bstats",
+            "org.yaml",
+            "ch.jalu",
         ).forEach {
             relocate(it, "libs.$it")
         }

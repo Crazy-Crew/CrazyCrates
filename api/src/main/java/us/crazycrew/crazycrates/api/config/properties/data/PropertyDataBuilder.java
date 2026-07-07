@@ -1,10 +1,14 @@
 package us.crazycrew.crazycrates.api.config.properties.data;
 
+import us.crazycrew.crazycrates.api.config.annotations.Comment;
+import us.crazycrew.crazycrates.api.config.properties.comments.CommentsBuilder;
 import us.crazycrew.crazycrates.api.config.properties.interfaces.IPropertyData;
 import us.crazycrew.crazycrates.api.config.properties.interfaces.IPropertyHolder;
 import us.crazycrew.crazycrates.api.config.properties.objects.interfaces.Property;
 import org.jspecify.annotations.NullMarked;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -18,9 +22,11 @@ public final class PropertyDataBuilder {
 
     private final Map<Object[], Property<?>> properties = new HashMap<>();
 
+    private final CommentsBuilder commentsBuilder;
     private final Path path;
 
     public PropertyDataBuilder(final Path path) {
+        this.commentsBuilder = new CommentsBuilder();
         this.path = path;
     }
 
@@ -30,27 +36,55 @@ public final class PropertyDataBuilder {
         return builder.collect(classes);
     }
 
+    public IPropertyHolder getInstance(final Class<? extends IPropertyHolder> declaringClass) {
+        try {
+            final Constructor<? extends IPropertyHolder> constructor = declaringClass.getDeclaredConstructor();
+
+            constructor.trySetAccessible();
+
+            return constructor.newInstance();
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
     public PropertyDataImpl collect(final List<Class<? extends IPropertyHolder>> classes) {
-        final List<Field> fields = classes.stream().map(Class::getDeclaredFields).flatMap(Arrays::stream).toList();
+        for (final Class<? extends IPropertyHolder> parent : classes) {
+            final List<Field> fields = List.of(parent.getDeclaredFields());
 
-        for (final Field field : fields) {
-            if (!Modifier.isStatic(field.getModifiers())) continue;
-            if (!Property.class.isAssignableFrom(field.getType())) continue;
+            getInstance(parent).registerComments(this.commentsBuilder);
 
-            if (!field.trySetAccessible()) continue;
+            for (final Field field : fields) {
+                if (!Modifier.isStatic(field.getModifiers())) continue;
+                if (!Property.class.isAssignableFrom(field.getType())) continue;
 
-            try {
-                final Property<?> property = (Property<?>) field.get(null);
+                if (!field.trySetAccessible()) continue;
 
-                if (property != null) {
-                    this.properties.putIfAbsent(property.getPath(), property);
+                try {
+                    final Property<?> property = (Property<?>) field.get(null);
+
+                    if (property != null) {
+                        final Object[] path = property.getPath();
+
+                        this.properties.putIfAbsent(path, property);
+
+                        if (field.isAnnotationPresent(Comment.class)) {
+                            final Comment comment = field.getDeclaredAnnotation(Comment.class);
+
+                            final List<String> values = Arrays.asList(comment.value());
+
+                            if (!values.isEmpty()) {
+                                this.commentsBuilder.setComment(values, path);
+                            }
+                        }
+                    }
+                } catch (final IllegalAccessException exception) {
+                    exception.printStackTrace();
                 }
-            } catch (final IllegalAccessException exception) {
-                exception.printStackTrace();
             }
         }
 
-        return new PropertyDataImpl(this, this.properties);
+        return new PropertyDataImpl(this, this.properties, this.commentsBuilder.getComments());
     }
 
     public String parse(final Object[] path) {
