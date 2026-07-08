@@ -1,7 +1,8 @@
 package com.badbones69.crazycrates.paper.managers;
 
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
@@ -153,14 +154,14 @@ public class BukkitUserManager extends UserManager {
 
         final Player player = getUser(uuid);
 
-        final PluginConfig pluginConfig = this.configManager.getPluginConfig();
+        final PropertyManager pluginConfig = this.configManager.getConfig();
 
         switch (keyType) {
             case physical_key -> {
-                if (pluginConfig.isGiveVirtualKeysIfInventoryFull() && MiscUtils.isInventoryFull(player) && crate.getCrateType() != CrateType.crate_on_the_go) {
+                if (pluginConfig.getProperty(CrateKeys.give_virtual_keys_when_inventory_full) && MiscUtils.isInventoryFull(player) && crate.getCrateType() != CrateType.crate_on_the_go) {
                     addVirtualKeys(uuid, fileName, amount);
 
-                    if (pluginConfig.isNotifyPlayerWhenInventoryFull()) {
+                    if (pluginConfig.getProperty(CrateKeys.notify_player_when_inventory_full)) {
                         Message.command_cannot_give_player_keys.sendMessage(player, Map.of(
                                 "{keytype}", keyType.getFriendlyName(),
                                 "{amount}", String.valueOf(amount),

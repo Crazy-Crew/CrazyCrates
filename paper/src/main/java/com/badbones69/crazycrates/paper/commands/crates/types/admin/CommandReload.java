@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin;
 
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
@@ -48,7 +49,7 @@ public class CommandReload extends BaseCommand {
 
         MiscUtils.save();
 
-        if (this.pluginConfig.isPreviewForceExit()) {
+        if (this.pluginConfig.getProperty(CrateKeys.take_out_of_preview)) {
             this.inventoryManager.closePreview();
         }
 

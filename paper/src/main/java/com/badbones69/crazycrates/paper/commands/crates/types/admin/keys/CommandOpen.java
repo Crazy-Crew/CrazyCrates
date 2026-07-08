@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.keys;
 
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -96,12 +97,12 @@ public class CommandOpen extends BaseCommand {
 
         final KeyType keyType = getKeyType(type);
 
-        final boolean hasKey = this.pluginConfig.isVirtualAcceptsPhysical() && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), fileName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1;
+        final boolean hasKey = this.pluginConfig.getProperty(CrateKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), fileName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1;
 
         // If no key, run this.
         if (!hasKey) {
-            if (this.pluginConfig.isKeySoundEnabled()) {
-                player.playSound(Sound.sound(Key.key(this.pluginConfig.getKeySound()), Sound.Source.MASTER, 1f, 1f));
+            if (this.pluginConfig.getProperty(CrateKeys.need_key_sound_toggle)) {
+                player.playSound(Sound.sound(Key.key(this.pluginConfig.getProperty(CrateKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
             Message.no_keys.sendMessage(player, Map.of(
@@ -155,11 +156,11 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
-        final boolean hasKey = this.pluginConfig.isVirtualAcceptsPhysical() && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), fileName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1;
+        final boolean hasKey = this.pluginConfig.getProperty(CrateKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), fileName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1;
 
         if (!hasKey) {
-            if (this.pluginConfig.isKeySoundEnabled()) {
-                player.playSound(Sound.sound(Key.key(this.pluginConfig.getKeySound()), Sound.Source.MASTER, 1f, 1f));
+            if (this.pluginConfig.getProperty(CrateKeys.need_key_sound_toggle)) {
+                player.playSound(Sound.sound(Key.key(this.pluginConfig.getProperty(CrateKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
             Message.no_keys.sendMessage(sender, Map.of(

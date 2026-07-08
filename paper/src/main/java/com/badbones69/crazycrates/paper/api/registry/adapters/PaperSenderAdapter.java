@@ -12,7 +12,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.adapters.sender.ISenderAdapter;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
 
     private final ConfigManager configManager = this.platform.getConfigManager();
 
-    private final PluginConfig pluginConfig = this.configManager.getPluginConfig();
+    private final PropertyManager pluginConfig = this.configManager.getConfig();
 
     @Override
     public UUID getUniqueId(@NotNull final CommandSender sender) {
@@ -92,7 +93,7 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
 
         final Map<String, String> map = new HashMap<>(placeholders);
 
-        final String prefix = this.pluginConfig.getPrefix();
+        final String prefix = this.pluginConfig.getProperty(RootKeys.get_command_prefix);
 
         if (!prefix.isEmpty()) {
             map.putIfAbsent("{prefix}", prefix);
@@ -113,7 +114,7 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
 
         final Map<String, String> map = new HashMap<>(placeholders);
 
-        final String prefix = this.pluginConfig.getPrefix();
+        final String prefix = this.pluginConfig.getProperty(RootKeys.get_command_prefix);
 
         if (!prefix.isEmpty()) {
             map.putIfAbsent("{prefix}", prefix);

@@ -8,7 +8,8 @@ import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class MetricsWrapper{
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
 
     private final ConfigManager configManager = this.platform.getConfigManager();
-    private final PluginConfig pluginConfig = this.configManager.getPluginConfig();
+    private final PropertyManager pluginConfig = this.configManager.getConfig();
 
     private final CrateManager crateManager = this.platform.getCrateManager();
 
@@ -30,7 +31,7 @@ public class MetricsWrapper{
     }
 
     public void start() {
-        if (!this.pluginConfig.isMetricsEnabled()) return;
+        if (!this.pluginConfig.getProperty(RootKeys.is_metrics_enabled)) return;
 
         final List<Crate> crates = new ArrayList<>(this.crateManager.getCrates());
 

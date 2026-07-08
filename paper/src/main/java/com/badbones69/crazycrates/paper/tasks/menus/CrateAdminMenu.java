@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.tasks.menus;
 
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.types.GuiConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.builders.gui.DynamicInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
@@ -151,12 +151,10 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
                             return;
                         }
 
-                        final GuiConfig guiConfig = this.pluginConfig.getGuiConfig();
-
-                        if (guiConfig.isCrateMenuEnabled()) {
+                        if (this.pluginConfig.getProperty(GuiKeys.is_crate_menu_enabled)) {
                             this.player.playSound(this.player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
 
-                            new CrateMainMenu(this.player, guiConfig.getCrateMenuName(), guiConfig.getCrateMenuRows()).open();
+                            new CrateMainMenu(this.player, this.pluginConfig.getProperty(GuiKeys.crate_menu_inventory_name), this.pluginConfig.getProperty(GuiKeys.crate_menu_inventory_rows)).open();
                         }
                     }));
 

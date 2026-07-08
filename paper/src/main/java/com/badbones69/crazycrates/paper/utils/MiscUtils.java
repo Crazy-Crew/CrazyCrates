@@ -32,8 +32,8 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
-
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
@@ -54,7 +54,7 @@ public class MiscUtils {
 
     private static final ConfigManager configManager = platform.getConfigManager();
 
-    private static final PluginConfig pluginConfig = configManager.getPluginConfig();
+    private static final PropertyManager config = configManager.getConfig();
 
     private static final FusionPaper fusion = platform.getFusion();
 
@@ -144,7 +144,7 @@ public class MiscUtils {
     }
 
     public static void janitor() {
-        if  (!pluginConfig.isLoggingFile() || !Files.exists(dataPath.resolve("logs"))) {
+        if  (!config.getProperty(CrateKeys.log_to_file) || !Files.exists(dataPath.resolve("logs"))) {
             return;
         }
 

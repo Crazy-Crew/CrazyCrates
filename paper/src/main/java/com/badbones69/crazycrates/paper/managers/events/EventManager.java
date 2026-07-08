@@ -14,7 +14,8 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
@@ -31,7 +32,7 @@ public class EventManager {
 
     private final static ConfigManager configManager = platform.getConfigManager();
 
-    private final static PluginConfig pluginConfig = configManager.getPluginConfig();
+    private final static PropertyManager pluginConfig = configManager.getConfig();
 
     public static void logEvent(@NotNull final EventType type, @NotNull final String name, @NotNull final CommandSender sender, @NotNull final Crate crate, @NotNull final KeyType keyType, final int amount) {
         handle(type, name, sender, crate, keyType, amount);
@@ -110,7 +111,7 @@ public class EventManager {
     private static void log(@NotNull final String message, @Nullable final Path path, @NotNull final EventType type) {
         final String time = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(System.currentTimeMillis()));
 
-        if (path != null && pluginConfig.isLoggingFile()) {
+        if (path != null && pluginConfig.getProperty(CrateKeys.log_to_file)) {
             final @NotNull Optional<LogCustomFile> optional = fileManager.getLogFile(path);
 
             if (optional.isEmpty()) {
@@ -122,7 +123,7 @@ public class EventManager {
             customFile.save("[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(fusion.asComponent(message)));
         }
 
-        if (pluginConfig.isLoggingConsole()) {
+        if (pluginConfig.getProperty(CrateKeys.log_to_console)) {
             logger.info("[{} {}]: {}", time, type.getEvent(), fusion.asComponent(message));
         }
     }

@@ -2,7 +2,8 @@ package com.badbones69.crazycrates.paper.tasks.menus;
 
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiBorder;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.types.GuiConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
@@ -44,16 +45,14 @@ public class CrateMainMenu extends StaticInventoryBuilder {
     public void open() {
         final UUID uuid = this.player.getUniqueId();
 
-        final GuiConfig guiConfig = this.pluginConfig.getGuiConfig();
-
         this.inventoryManager.getFillerButton(this.player).ifPresent(itemStack -> {
             this.fusion.log(Level.WARNING, "Are we here?");
 
             this.gui.getFiller().fill(GuiBorder.REMAINING_SLOTS, itemStack);
         });
 
-        if (guiConfig.isGuiCustomizerEnabled()) {
-            for (String custom : guiConfig.getGuiCustomizer()) {
+        if (this.pluginConfig.getProperty(GuiKeys.is_gui_customizer_enabled)) {
+            for (final String custom : this.pluginConfig.getProperty(GuiKeys.gui_customizer)) {
                 ItemBuilder item = ItemBuilder.from(ItemType.STONE);
 
                 int slot = 0;
@@ -161,7 +160,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                 switch (event.getClick()) {
                     case ClickType.LEFT -> {
-                        if (this.pluginConfig.isVirtualInteractionSwapped()) {
+                        if (this.pluginConfig.getProperty(CrateKeys.crate_virtual_interaction)) {
                             openPreview(crate, fancyName);
                         } else {
                             openCrate(uuid, crate, fileName, fancyName);
@@ -169,7 +168,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                     }
 
                     case ClickType.RIGHT -> {
-                        if (this.pluginConfig.isVirtualInteractionSwapped()) {
+                        if (this.pluginConfig.getProperty(CrateKeys.crate_virtual_interaction)) {
                             openCrate(uuid, crate, fileName, fancyName);
                         } else {
                             openPreview(crate, fancyName);
@@ -195,15 +194,15 @@ public class CrateMainMenu extends StaticInventoryBuilder {
         if (this.userManager.getVirtualKeys(uuid, fileName) >= 1) {
             hasKey = true;
         } else {
-            if (this.pluginConfig.isVirtualAcceptsPhysical() && this.userManager.hasPhysicalKey(uuid, fileName, false)) {
+            if (this.pluginConfig.getProperty(CrateKeys.virtual_accepts_physical_keys) && this.userManager.hasPhysicalKey(uuid, fileName, false)) {
                 hasKey = true;
                 keyType = KeyType.physical_key;
             }
         }
 
         if (!hasKey) {
-            if (this.pluginConfig.isKeySoundEnabled()) {
-                this.player.playSound(Sound.sound(Key.key(this.pluginConfig.getKeySound()), Sound.Source.MASTER, 1f, 1f));
+            if (this.pluginConfig.getProperty(CrateKeys.need_key_sound_toggle)) {
+                this.player.playSound(Sound.sound(Key.key(this.pluginConfig.getProperty(CrateKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
             Message.no_virtual_keys.sendMessage(this.player, "{crate}", fancyName);
@@ -213,7 +212,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
         final String worldName = this.player.getWorld().getName();
 
-        for (final String world : this.pluginConfig.getDisabledWorlds()) {
+        for (final String world : this.pluginConfig.getProperty(CrateKeys.disabled_worlds)) {
             if (world.equalsIgnoreCase(worldName)) {
                 Message.world_disabled.sendMessage(this.player, "{world}", worldName);
 

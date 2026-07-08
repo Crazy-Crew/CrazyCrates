@@ -1,7 +1,8 @@
 package com.badbones69.crazycrates.paper.commands.crates.types;
 
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
@@ -43,7 +44,7 @@ public abstract class BaseCommand {
 
     protected final ConfigManager configManager = this.platform.getConfigManager();
 
-    protected final PluginConfig pluginConfig = this.configManager.getPluginConfig();
+    protected final PropertyManager pluginConfig = this.configManager.getConfig();
 
     protected final ButtonManager buttonManager = this.platform.getButtonManager();
 
@@ -268,7 +269,7 @@ public abstract class BaseCommand {
                 return;
             }
 
-            if (!this.pluginConfig.isGiveVirtualKeysIfInventoryFull() || !this.pluginConfig.isNotifyPlayerWhenInventoryFull() && !MiscUtils.isInventoryFull(player) && player.isOnline()) {
+            if (!this.pluginConfig.getProperty(CrateKeys.give_virtual_keys_when_inventory_full) || !this.pluginConfig.getProperty(CrateKeys.notify_player_when_inventory_full) && !MiscUtils.isInventoryFull(player) && player.isOnline()) {
                 Message.obtaining_keys.sendMessage(player, placeholders);
             }
 

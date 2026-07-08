@@ -26,8 +26,6 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
     public void init() {
         this.fusion.init();
 
-        new com.ryderbelserion.common.config.ConfigManager().init(this.path.resolve("test.yml"));
-
         this.configManager = new ConfigManager();
         this.configManager.init();
 
@@ -60,7 +58,7 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
 
     @Override
     public @NonNull ISettings getSettings() {
-        return this.configManager.getPluginConfig();
+        return null;
     }
 
     @Override

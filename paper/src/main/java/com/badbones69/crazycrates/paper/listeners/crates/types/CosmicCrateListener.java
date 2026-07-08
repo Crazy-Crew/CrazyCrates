@@ -1,7 +1,9 @@
 package com.badbones69.crazycrates.paper.listeners.crates.types;
 
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
@@ -51,7 +53,7 @@ public class CosmicCrateListener implements Listener {
 
     private final ConfigManager configManager = this.platform.getConfigManager();
 
-    private final PluginConfig pluginConfig = this.configManager.getPluginConfig();
+    private final PropertyManager pluginConfig = this.configManager.getConfig();
 
     private final FusionPaper fusion = this.platform.getFusion();
 
@@ -296,7 +298,7 @@ public class CosmicCrateListener implements Listener {
 
             if (broadcastToggle && !broadcastMessage.isBlank()) { //todo() add a permission?
                 this.server.broadcast(this.fusion.asComponent(player, broadcastMessage, Map.of(
-                        "%prefix%", this.pluginConfig.getPrefix(),
+                        "%prefix%", this.pluginConfig.getProperty(RootKeys.get_command_prefix),
                         "%player%", player.getName()
                 )));
             }
@@ -393,7 +395,7 @@ public class CosmicCrateListener implements Listener {
 
         player.updateInventory();
 
-        if (this.pluginConfig.isCosmicTimeoutEnabled()) {
+        if (this.pluginConfig.getProperty(CrateKeys.cosmic_crate_timeout)) {
             this.crateManager.addCrateTask(player, new TimerTask() {
                 @Override
                 public void run() {

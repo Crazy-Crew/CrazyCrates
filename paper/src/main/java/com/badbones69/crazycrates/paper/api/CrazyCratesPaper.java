@@ -39,9 +39,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -163,9 +162,7 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
                 new PaperInteractListener()
         ).forEach(listener -> pluginManager.registerEvents(listener, this.plugin));
 
-        final PluginConfig pluginConfig = this.configManager.getPluginConfig();
-
-        if (pluginConfig.isMetricsEnabled()) {
+        if (this.configManager.getConfig().getProperty(RootKeys.is_metrics_enabled)) {
             this.metrics = new MetricsWrapper(4514);
             this.metrics.start();
         }
@@ -210,9 +207,7 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
         loadMessages();
 
-        final PluginConfig pluginConfig = this.configManager.getPluginConfig();
-
-        if (this.metrics != null && !pluginConfig.isMetricsEnabled()) {
+        if (this.metrics != null && !this.configManager.getConfig().getProperty(RootKeys.is_metrics_enabled)) {
             final Metrics scheduler = this.metrics.getMetrics();
 
             scheduler.shutdown();

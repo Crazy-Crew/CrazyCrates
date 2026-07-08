@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator;
 
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
@@ -29,7 +29,7 @@ public abstract class ICrateMigrator {
 
     protected final ConfigManager configManager = this.platform.getConfigManager();
 
-    protected final PluginConfig pluginConfig = this.configManager.getPluginConfig();
+    protected final PropertyManager pluginConfig = this.configManager.getConfig();
 
     protected final FusionPaper fusion = this.platform.getFusion();
 

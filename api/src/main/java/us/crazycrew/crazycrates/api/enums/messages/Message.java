@@ -12,7 +12,9 @@ import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.CrazyCrates;
 import us.crazycrew.crazycrates.api.adapters.sender.ISenderAdapter;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
+
 import java.util.List;
 import java.util.Map;
 import static us.crazycrew.crazycrates.api.CrazyCrates.namespace;
@@ -236,7 +238,7 @@ public enum Message {
 
     private final ConfigManager configManager = this.platform.getConfigManager();
 
-    private final PluginConfig pluginConfig = this.configManager.getPluginConfig();
+    private final PropertyManager pluginConfig = this.configManager.getConfig();
 
     private final String defaultValue;
     private final FusionKey id;
@@ -259,7 +261,7 @@ public enum Message {
     }
 
     public void sendMessage(final Audience audience, final Map<String, String> placeholders) {
-        switch (this.pluginConfig.getMessageState()) {
+        switch (this.pluginConfig.getProperty(RootKeys.get_message_state)) {
             case send_message -> this.senderAdapter.sendMessage(audience, this.id, placeholders);
             case send_actionbar -> this.senderAdapter.sendActionBar(audience, this.id, placeholders);
         }

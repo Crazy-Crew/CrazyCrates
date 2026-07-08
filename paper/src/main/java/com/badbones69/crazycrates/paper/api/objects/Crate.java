@@ -31,7 +31,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
@@ -58,7 +59,7 @@ public class Crate {
 
     private final ConfigManager configManager = this.platform.getConfigManager();
 
-    private final PluginConfig pluginConfig = this.configManager.getPluginConfig();
+    private final PropertyManager pluginConfig = this.configManager.getConfig();
 
     private final ButtonManager buttonManager = this.platform.getButtonManager();
 
@@ -1016,7 +1017,7 @@ public class Crate {
     }
 
     public final boolean useRequiredKeys() {
-        return this.pluginConfig.isUsingRequiredKeys() && this.requiredKeys > 0;
+        return this.pluginConfig.getProperty(CrateKeys.use_required_keys) && this.requiredKeys > 0;
     }
 
     public final boolean isTrackingOpening() {

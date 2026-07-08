@@ -1,8 +1,9 @@
 package com.badbones69.crazycrates.paper.listeners.crates;
 
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.types.GuiConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
@@ -42,7 +43,7 @@ public class CrateInteractListener implements Listener {
 
     private final ConfigManager configManager = this.platform.getConfigManager();
 
-    private final PluginConfig pluginConfig = this.configManager.getPluginConfig();
+    private final PropertyManager pluginConfig = this.configManager.getConfig();
 
     private final Server server = this.plugin.getServer();
 
@@ -75,7 +76,7 @@ public class CrateInteractListener implements Listener {
                     return;
                 }
 
-                if (this.configManager.getPluginConfig().isPhysicalInteractionSwapped()) { // left click to preview
+                if (this.pluginConfig.getProperty(CrateKeys.crate_physical_interaction)) { // left click to preview
                     preview(player, crate, false);
 
                     return;
@@ -92,7 +93,7 @@ public class CrateInteractListener implements Listener {
                     return;
                 }
 
-                if (this.configManager.getPluginConfig().isPhysicalInteractionSwapped()) { // right click to open
+                if (this.pluginConfig.getProperty(CrateKeys.crate_physical_interaction)) { // right click to open
                     openCrate(player, crateLocation, crate);
 
                     return;
@@ -134,10 +135,10 @@ public class CrateInteractListener implements Listener {
 
         final ItemStack itemStack = player.getInventory().getItemInMainHand();
 
-        if (this.pluginConfig.isPhysicalAcceptsPhysical() && crate.getCrateType() != CrateType.crate_on_the_go && ItemUtil.isSimilar(itemStack, crate)) {
+        if (this.pluginConfig.getProperty(CrateKeys.physical_accepts_physical_keys) && crate.getCrateType() != CrateType.crate_on_the_go && ItemUtil.isSimilar(itemStack, crate)) {
             hasKey = true;
             isPhysical = true;
-        } else if (this.pluginConfig.isPhysicalAcceptsVirtual() && this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1) {
+        } else if (this.pluginConfig.getProperty(CrateKeys.physical_accepts_virtual_keys) && this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1) {
             hasKey = true;
         }
 
@@ -192,12 +193,12 @@ public class CrateInteractListener implements Listener {
 
     private void lackingKey(@NotNull final Player player, @NotNull final Crate crate, @NotNull final Location location, final int currentKeys, final int amount) {
         if (crate.getCrateType() != CrateType.crate_on_the_go) {
-            if (this.pluginConfig.hasKnockback()) {
+            if (this.pluginConfig.getProperty(CrateKeys.is_knock_back_enabled)) {
                 knockback(player, location);
             }
 
-            if (this.pluginConfig.isKeySoundEnabled()) {
-                player.playSound(Sound.sound(Key.key(this.pluginConfig.getKeySound()), Sound.Source.MASTER, 1f, 1f));
+            if (this.pluginConfig.getProperty(CrateKeys.need_key_sound_toggle)) {
+                player.playSound(Sound.sound(Key.key(this.pluginConfig.getProperty(CrateKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
             Message.not_enough_keys.sendMessage(player, Map.of(
@@ -224,14 +225,13 @@ public class CrateInteractListener implements Listener {
 
     private void preview(@NotNull final Player player, @NotNull final Crate crate, final boolean skipTypeCheck) {
         if (skipTypeCheck || crate.getCrateType() == CrateType.menu) {
-            final GuiConfig guiConfig = this.pluginConfig.getGuiConfig();
 
             // this is to stop players in QuadCrate to not be able to try and open a crate set to a menu.
-            if (!this.crateManager.isInOpeningList(player) && guiConfig.isCrateMenuEnabled()) {
+            if (!this.crateManager.isInOpeningList(player) && this.pluginConfig.getProperty(GuiKeys.is_crate_menu_enabled)) {
                 new CrateMainMenu(
                         player,
-                        guiConfig.getCrateMenuName(),
-                        guiConfig.getCrateMenuRows()
+                        this.pluginConfig.getProperty(GuiKeys.crate_menu_inventory_name),
+                        this.pluginConfig.getProperty(GuiKeys.crate_menu_inventory_rows)
                 ).open();
             } else {
                 Message.feature_disabled.sendMessage(player);

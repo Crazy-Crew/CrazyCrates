@@ -1,10 +1,9 @@
 package com.badbones69.crazycrates.paper.managers;
 
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
-import com.ryderbelserion.fusion.paper.builders.items.types.custom.CustomBuilder;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.types.GuiConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,7 +33,7 @@ public class InventoryManager {
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
 
     private final ConfigManager configManager = this.platform.getConfigManager();
-    private final PluginConfig pluginConfig = this.configManager.getPluginConfig();
+    private final PropertyManager pluginConfig = this.configManager.getConfig();
 
     private final Server server = this.plugin.getServer();
 
@@ -45,13 +43,11 @@ public class InventoryManager {
     private ItemBuilder backButton;
 
     public void loadButtons() {
-        final GuiConfig guiConfig = this.pluginConfig.getGuiConfig();
-
-        Map.of(
-                "menu-button", guiConfig.getMenuButton(),
-                "back-button", guiConfig.getBackButton(),
-                "next-button", guiConfig.getNextButton(),
-                "filler-button", guiConfig.getFillerButton()
+        /*Map.of( //todo() bean properties
+                //"menu-button", guiConfig.getMenuButton(),
+                //"back-button", guiConfig.getBackButton(),
+                //"next-button", guiConfig.getNextButton(),
+                //"filler-button", guiConfig.getFillerButton()
         ).forEach((name, button) -> {
             final ItemBuilder builder = ItemBuilder.from(button.getItem())
                     .withDisplayName(button.getName())
@@ -59,22 +55,22 @@ public class InventoryManager {
 
             final CustomBuilder customBuilder = builder.asCustomBuilder();
 
-            customBuilder.setItemModel(button.getModelNamespace(), button.getModelId());
-            customBuilder.setCustomModelData(button.getCustomModelData());
+            //customBuilder.setItemModel(button.getModelNamespace(), button.getModelId());
+            //customBuilder.setCustomModelData(button.getCustomModelData());
 
             customBuilder.build();
 
             switch (name) {
                 case "filler-button" -> {
-                    if (button.isEnabled()) {
-                        this.fillerButton = builder;
-                    }
+                    //if (button.isEnabled()) {
+                    //    this.fillerButton = builder;
+                    //}
                 }
                 case "menu-button" -> this.menuButton = builder;
                 case "back-button" -> this.backButton = builder;
                 case "next-button" -> this.nextButton = builder;
             }
-        });
+        });*/
     }
 
     public final ItemStack getMenuButton(@NotNull final Player player) {
@@ -170,7 +166,7 @@ public class InventoryManager {
     public void closePreview() {
         final Iterator<UUID> viewers = getPreviewViewers().iterator();
 
-        final boolean isPreviewExitMessageSent = this.pluginConfig.isPreviewExitMessageSent();
+        final boolean isPreviewExitMessageSent = this.pluginConfig.getProperty(CrateKeys.send_preview_taken_out_message);
 
         while (viewers.hasNext()) {
             final UUID uuid = viewers.next();

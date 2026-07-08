@@ -1,7 +1,8 @@
 package com.badbones69.crazycrates.paper.listeners.crates;
 
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
@@ -29,7 +30,7 @@ public class CrateOpenListener implements Listener {
 
     private final ConfigManager configManager = this.platform.getConfigManager();
 
-    private final PluginConfig pluginConfig = this.configManager.getPluginConfig();
+    private final PropertyManager pluginConfig = this.configManager.getConfig();
 
     private final FusionPaper fusion = this.platform.getFusion();
 
@@ -88,9 +89,11 @@ public class CrateOpenListener implements Listener {
 
                 if (broadcastToggle && !event.isSilent()) {
                     if (!broadcastMessage.isBlank()) {
+                        final String prefix = this.pluginConfig.getProperty(RootKeys.get_command_prefix);
+
                         this.server.broadcast(this.fusion.asComponent(player, broadcastMessage, Map.of(
                                 "%crate%", fancyName,
-                                "%prefix%", this.pluginConfig.getPrefix(),
+                                "%prefix%", prefix,
                                 "%player%", playerName
                         )));
                     }
@@ -107,11 +110,13 @@ public class CrateOpenListener implements Listener {
         if (configuration.getBoolean("opening-command.toggle", false)) {
             final List<String> commands = configuration.getStringList("opening-command.commands");
 
+            final String prefix = this.pluginConfig.getProperty(RootKeys.get_command_prefix);
+
             for (final String line : commands) {
                 if (line.isBlank()) continue;
 
                 MiscUtils.sendCommand(player, line, Map.of(
-                        "%prefix%", this.pluginConfig.getPrefix(),
+                        "%prefix%", prefix,
                         "%player%", playerName,
                         "%crate%", fileName
                 ));

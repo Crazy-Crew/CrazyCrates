@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.types.ButtonConfig;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.types.GuiConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import java.util.function.Consumer;
 
 public abstract class DynamicInventoryBuilder extends InventoryBuilder {
@@ -74,12 +74,10 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
     }
 
     public void addBackButton(final boolean isPreview) {
-        final GuiConfig guiConfig = this.pluginConfig.getGuiConfig();
+        final PropertyManager pluginConfig = this.configManager.getConfig();
 
-        final ButtonConfig buttonConfig = guiConfig.getBackButton();
-
-        final int column = buttonConfig.getColumn();
-        final int row = buttonConfig.getRow();
+        final int column = pluginConfig.getProperty(GuiKeys.back_button_column);
+        final int row = pluginConfig.getProperty(GuiKeys.back_button_row);
         final int rows = this.gui.getRows();
 
         final int safeRow = Math.min(row == -1 ? rows : row, rows);
@@ -116,12 +114,10 @@ public abstract class DynamicInventoryBuilder extends InventoryBuilder {
             return;
         }
 
-        final GuiConfig guiConfig = this.pluginConfig.getGuiConfig();
+        final PropertyManager pluginConfig = this.configManager.getConfig();
 
-        final ButtonConfig buttonConfig = guiConfig.getNextButton();
-
-        final int column = buttonConfig.getColumn();
-        final int row = buttonConfig.getRow();
+        final int column = pluginConfig.getProperty(GuiKeys.next_button_column);
+        final int row = pluginConfig.getProperty(GuiKeys.next_button_row);
 
         final int rows = this.gui.getRows();
 

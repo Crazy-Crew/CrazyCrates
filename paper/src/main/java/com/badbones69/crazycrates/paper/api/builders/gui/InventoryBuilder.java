@@ -19,9 +19,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.types.ButtonConfig;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.types.GuiConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -41,7 +40,7 @@ public abstract class InventoryBuilder {
 
     protected final ConfigManager configManager = this.platform.getConfigManager();
 
-    protected final PluginConfig pluginConfig = this.configManager.getPluginConfig();
+    protected final PropertyManager pluginConfig = this.configManager.getConfig();
 
     protected final FusionPaper fusion = this.platform.getFusion();
 
@@ -52,14 +51,10 @@ public abstract class InventoryBuilder {
     protected final InventoryManager inventoryManager = this.platform.getInventoryManager();
 
     public void addMenuButton(@NotNull final Player player, @NotNull final Crate crate, @NotNull final GuiBuilder gui) {
-        final GuiConfig guiConfig = this.pluginConfig.getGuiConfig();
+        if (!this.pluginConfig.getProperty(GuiKeys.is_crate_menu_enabled)) return;
 
-        if (!guiConfig.isCrateMenuEnabled()) return;
-
-        final ButtonConfig buttonConfig = guiConfig.getMenuButton();
-
-        final int row = buttonConfig.getRow();
-        final int column = buttonConfig.getColumn();
+        final int row = this.pluginConfig.getProperty(GuiKeys.menu_button_row);
+        final int column = this.pluginConfig.getProperty(GuiKeys.menu_button_column);
 
         final int rows = gui.getRows();
 
@@ -72,8 +67,8 @@ public abstract class InventoryBuilder {
         }
 
         gui.addSlotAction(safeRow, column, itemStack, _ -> {
-            if (buttonConfig.isOverrideEnabled()) {
-                final List<String> commands = buttonConfig.getCommands();
+            if (this.pluginConfig.getProperty(GuiKeys.menu_button_override)) {
+                final List<String> commands = this.pluginConfig.getProperty(GuiKeys.menu_button_command_list);
 
                 if (!commands.isEmpty()) {
                     commands.forEach(value -> {
@@ -92,7 +87,7 @@ public abstract class InventoryBuilder {
 
             crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", Sound.Source.MASTER);
 
-            new CrateMainMenu(player, guiConfig.getCrateMenuName(), guiConfig.getCrateMenuRows()).open();
+            new CrateMainMenu(player, this.pluginConfig.getProperty(GuiKeys.crate_menu_inventory_name), this.pluginConfig.getProperty(GuiKeys.crate_menu_inventory_rows)).open();
         });
     }
 

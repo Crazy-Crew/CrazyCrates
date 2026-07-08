@@ -33,7 +33,8 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.CrazyCrates;
@@ -50,7 +51,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
 
     protected final ConfigManager configManager = this.platform.getConfigManager();
 
-    protected final PluginConfig pluginConfig = this.configManager.getPluginConfig();
+    protected final PropertyManager pluginConfig = this.configManager.getConfig();
 
     protected final FusionPaper fusion = this.platform.getFusion();
 
@@ -173,7 +174,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
 
     public void displayItem(final Prize prize) {
         // Only related to the item above the crate.
-        if (this.pluginConfig.isDisplayItemVisible()) {
+        if (this.pluginConfig.getProperty(CrateKeys.show_quickcrate_item)) {
             final HologramManager manager = this.crateManager.getHolograms();
 
             if (manager != null && this.crate.getHologram().isEnabled()) {

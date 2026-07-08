@@ -2,9 +2,10 @@ package com.badbones69.crazycrates.paper.tasks.crates;
 
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
+import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
 import us.crazycrew.crazycrates.api.config.impl.types.editor.EditorKeys;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.types.GuiConfig;
 import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
@@ -94,7 +95,7 @@ public class CrateManager {
 
     private final ConfigManager configManager = this.platform.getConfigManager();
 
-    private final PluginConfig pluginConfig = this.configManager.getPluginConfig();
+    private final PropertyManager pluginConfig = this.configManager.getConfig();
 
     private final PropertyManager editorConfig = this.configManager.getEditorConfig();
 
@@ -296,9 +297,7 @@ public class CrateManager {
      * Load the holograms.
      */
     public void loadHolograms() {
-        final String pluginName = this.pluginConfig.getHologramPlugin();
-
-        switch (pluginName) {
+        switch (this.pluginConfig.getProperty(RootKeys.get_hologram_plugin)) {
             case "decentholograms" -> {
                 if (!Plugins.decent_holograms.isEnabled()) return;
 
@@ -360,7 +359,7 @@ public class CrateManager {
     }
 
     public void loadExamples() {
-        if (this.pluginConfig.isUpdatingExampleFolders()) {
+        if (this.pluginConfig.getProperty(RootKeys.is_update_examples_folder)) {
             final Path examples = this.dataPath.resolve("examples");
 
             if (Files.exists(examples)) {
@@ -704,7 +703,7 @@ public class CrateManager {
     public void openCrate(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, @NotNull final Location location, final boolean virtualCrate, final boolean checkHand, final boolean isSilent, final EventType eventType) {
         final String worldName = player.getWorld().getName();
 
-        for (final String world : this.pluginConfig.getDisabledWorlds()) {
+        for (final String world : this.pluginConfig.getProperty(CrateKeys.disabled_worlds)) {
             if (world.equalsIgnoreCase(worldName)) {
                 Message.world_disabled.sendMessage(player, "{world}", worldName);
 
@@ -713,13 +712,11 @@ public class CrateManager {
         }
 
         if (crate.getCrateType() == CrateType.menu) {
-            final GuiConfig guiConfig = this.pluginConfig.getGuiConfig();
-
-            if (guiConfig.isCrateMenuEnabled()) {
+            if (this.pluginConfig.getProperty(GuiKeys.is_crate_menu_enabled)) {
                 new CrateMainMenu(
                         player,
-                        guiConfig.getCrateMenuName(),
-                        guiConfig.getCrateMenuRows()
+                        this.pluginConfig.getProperty(GuiKeys.crate_menu_inventory_name),
+                        this.pluginConfig.getProperty(GuiKeys.crate_menu_inventory_rows)
                 ).open();
 
                 return;
@@ -1240,7 +1237,7 @@ public class CrateManager {
             return;
         }
 
-        if (crate.getCrateType() == CrateType.menu && !this.pluginConfig.getGuiConfig().isCrateMenuEnabled()) {
+        if (crate.getCrateType() == CrateType.menu && !this.pluginConfig.getProperty(GuiKeys.is_crate_menu_enabled)) {
             Message.crate_cannot_set_type.sendMessage(player);
 
             return;
