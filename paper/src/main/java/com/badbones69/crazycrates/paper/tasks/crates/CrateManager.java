@@ -2,9 +2,10 @@ package com.badbones69.crazycrates.paper.tasks.crates;
 
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.api.config.impl.types.editor.EditorConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.editor.EditorKeys;
 import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
 import us.crazycrew.crazycrates.api.config.impl.types.plugin.types.GuiConfig;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
@@ -95,7 +96,7 @@ public class CrateManager {
 
     private final PluginConfig pluginConfig = this.configManager.getPluginConfig();
 
-    private final EditorConfig editorConfig = this.configManager.getEditorConfig();
+    private final PropertyManager editorConfig = this.configManager.getEditorConfig();
 
     private final PaperFileManager fileManager = this.platform.getFileManager();
     private final FusionPaper fusion = this.platform.getFusion();
@@ -1246,7 +1247,7 @@ public class CrateManager {
         }
 
         if (isCrateLocation(location)) {
-            if (this.editorConfig.isUpdatingOldLocations()) {
+            if (this.editorConfig.getProperty(EditorKeys.overwrite_old_crate_locations)) {
                 final CrateLocation crateLocation = getCrateLocation(location);
 
                 if (crateLocation == null) return;
