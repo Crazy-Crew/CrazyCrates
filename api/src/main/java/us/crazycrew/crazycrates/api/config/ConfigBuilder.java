@@ -4,7 +4,7 @@ import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.loader.HeaderMode;
 import org.spongepowered.configurate.yaml.NodeStyle;
 import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
-import us.crazycrew.crazycrates.api.config.properties.data.PropertyDataBuilder;
+import us.crazycrew.crazycrates.api.config.properties.PropertyDataBuilder;
 import us.crazycrew.crazycrates.api.config.properties.interfaces.IPropertyData;
 import us.crazycrew.crazycrates.api.config.properties.interfaces.IPropertyHolder;
 import com.ryderbelserion.fusion.files.enums.FileType;

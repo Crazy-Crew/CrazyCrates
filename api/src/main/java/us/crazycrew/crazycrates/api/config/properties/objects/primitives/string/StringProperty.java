@@ -5,14 +5,13 @@ import us.crazycrew.crazycrates.api.config.properties.objects.enums.PropertyType
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-public final class StringProperty extends BaseProperty<String> {
+public final class StringProperty extends BaseProperty {
 
-    public StringProperty(final String defaultValue, final Object... path) {
-        super(defaultValue, PropertyType.STRING, path);
+    public StringProperty(final String defaultValue, final String alias, final Object... path) {
+        super(String.class, defaultValue, alias, PropertyType.STRING, path);
     }
 
-    @Override
-    public Class<?> getType() {
-        return String.class;
+    public StringProperty(final String defaultValue, final Object... path) {
+        this(defaultValue, "", path);
     }
 }

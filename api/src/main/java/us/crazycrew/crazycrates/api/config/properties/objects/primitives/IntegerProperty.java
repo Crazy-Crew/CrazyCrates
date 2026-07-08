@@ -5,14 +5,13 @@ import us.crazycrew.crazycrates.api.config.properties.objects.enums.PropertyType
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-public final class IntegerProperty extends BaseProperty<Integer> {
+public final class IntegerProperty extends BaseProperty {
 
-    public IntegerProperty(final int defaultValue, final Object... path) {
-        super(defaultValue, PropertyType.INTEGER, path);
+    public IntegerProperty(final int defaultValue, final String alias, final Object... path) {
+        super(Integer.class, defaultValue, alias, PropertyType.INTEGER, path);
     }
 
-    @Override
-    public Class<?> getType() {
-        return Integer.class;
+    public IntegerProperty(final int defaultValue, final Object... path) {
+        this(defaultValue, "", path);
     }
 }

@@ -10,6 +10,8 @@ public interface Property<T> {
 
     Object[] getPath();
 
+    String getAlias();
+
     Class<?> getType();
 
 }

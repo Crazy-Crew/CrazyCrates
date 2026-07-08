@@ -6,14 +6,13 @@ import org.jspecify.annotations.NullMarked;
 import java.util.List;
 
 @NullMarked
-public final class ListProperty extends BaseProperty<List<String>> {
+public final class ListProperty extends BaseProperty {
 
-    public ListProperty(final List<String> defaultValue, final Object... path) {
-        super(defaultValue, PropertyType.STRING_LIST, path);
+    public ListProperty(final List<String> defaultValue, final String alias, final Object... path) {
+        super(List.class, defaultValue, alias, PropertyType.LIST, path);
     }
 
-    @Override
-    public Class<?> getType() {
-        return List.class;
+    public ListProperty(final List<String> defaultValue, final Object... path) {
+        this(defaultValue, "", path);
     }
 }

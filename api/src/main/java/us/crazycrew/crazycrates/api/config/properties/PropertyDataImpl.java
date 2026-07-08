@@ -1,5 +1,6 @@
-package us.crazycrew.crazycrates.api.config.properties.data;
+package us.crazycrew.crazycrates.api.config.properties;
 
+import us.crazycrew.crazycrates.api.config.properties.builders.AliasBuilder;
 import us.crazycrew.crazycrates.api.config.properties.interfaces.IPropertyData;
 import us.crazycrew.crazycrates.api.config.properties.objects.enums.PropertyType;
 import us.crazycrew.crazycrates.api.config.properties.objects.interfaces.Property;
@@ -20,14 +21,16 @@ public final class PropertyDataImpl implements IPropertyData {
 
     private final FileManager fileManager = this.fusion.getFileManager();
 
+    private final PropertyDataBuilder propertyDataBuilder;
     private final Map<Object[], Property<?>> properties;
     private final Map<Object[], List<String>> comments;
-    private final PropertyDataBuilder builder;
+    private final AliasBuilder aliasBuilder;
 
-    public PropertyDataImpl(final PropertyDataBuilder builder, final Map<Object[], Property<?>> properties, Map<Object[], List<String>> comments) {
+    public PropertyDataImpl(final PropertyDataBuilder propertyDataBuilder, final AliasBuilder aliasBuilder, final Map<Object[], Property<?>> properties, Map<Object[], List<String>> comments) {
+        this.propertyDataBuilder = propertyDataBuilder;
+        this.aliasBuilder = aliasBuilder;
         this.properties = properties;
         this.comments = comments;
-        this.builder = builder;
     }
 
     @Override
@@ -35,7 +38,7 @@ public final class PropertyDataImpl implements IPropertyData {
         final Object[] path = property.getPath();
 
         if (!this.properties.containsKey(path)) {
-            throw new IllegalStateException("The property %s is not present with this builder for %s! Perhaps wrong config!".formatted(path, this.builder.getPath()));
+            throw new IllegalStateException("The property %s is not present with this builder for %s! Perhaps wrong config!".formatted(path, this.propertyDataBuilder.getPath()));
         }
 
         final PropertyType propertyType = property.getPropertyType();
@@ -43,7 +46,7 @@ public final class PropertyDataImpl implements IPropertyData {
         final Object[] propertyPath = property.getPath();
 
         return switch (propertyType) {
-            case BOOLEAN, INTEGER, STRING -> {
+            case BOOLEAN, INTEGER, STRING, BEAN_PROPERTY -> {
                 try {
                     yield (T) configuration.node(propertyPath).get(property.getType(), propertyValue);
                 } catch (final SerializationException exception) {
@@ -51,8 +54,12 @@ public final class PropertyDataImpl implements IPropertyData {
                 }
             }
 
-            case STRING_LIST -> (T) StringUtils.getStringList(configuration.node(propertyPath), List.of(propertyValue.toString()));
+            case LIST -> (T) StringUtils.getStringList(configuration.node(propertyPath), List.of(propertyValue.toString()));
         };
+    }
+
+    public List<Object[]> combineArrays(final Object[] start, final Object[] end) {
+        return List.of(start, end);
     }
 
     @Override
@@ -69,14 +76,14 @@ public final class PropertyDataImpl implements IPropertyData {
             throw new IllegalStateException(exception);
         }
 
-        this.fileManager.saveFile(this.builder.getPath());
+        this.fileManager.saveFile(this.propertyDataBuilder.getPath());
     }
 
     @Override
     public void setComment(final CommentedConfigurationNode configuration, final String value, final Object... path) {
         configuration.node(path).commentIfAbsent(value);
 
-        this.fileManager.saveFile(this.builder.getPath());
+        this.fileManager.saveFile(this.propertyDataBuilder.getPath());
     }
 
     @Override
@@ -108,6 +115,6 @@ public final class PropertyDataImpl implements IPropertyData {
             section.commentIfAbsent(StringUtils.toString(list));
         }
 
-        this.fileManager.saveFile(this.builder.getPath());
+        this.fileManager.saveFile(this.propertyDataBuilder.getPath());
     }
 }

@@ -10,11 +10,19 @@ public abstract class BaseProperty<T> implements Property<T> {
     private final PropertyType propertyType;
     private final T defaultValue;
     private final Object[] path;
+    private final Class<T> type;
+    private final String alias;
 
-    public BaseProperty(final T defaultValue, final PropertyType propertyType, final Object[] path) {
+    public BaseProperty(final Class<T> type, final T defaultValue, final String alias, final PropertyType propertyType, final Object[] path) {
         this.propertyType = propertyType;
         this.defaultValue = defaultValue;
+        this.alias = alias;
+        this.type = type;
         this.path = path;
+    }
+
+    public BaseProperty(final Class<T> type, final T defaultValue, final PropertyType propertyType, final Object[] path) {
+        this(type, defaultValue, "", propertyType, path);
     }
 
     @Override
@@ -28,7 +36,17 @@ public abstract class BaseProperty<T> implements Property<T> {
     }
 
     @Override
+    public String getAlias() {
+        return this.alias;
+    }
+
+    @Override
     public Object[] getPath() {
         return this.path;
+    }
+
+    @Override
+    public Class<T> getType() {
+        return this.type;
     }
 }

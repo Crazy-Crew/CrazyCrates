@@ -1,7 +1,9 @@
-package us.crazycrew.crazycrates.api.config.properties.data;
+package us.crazycrew.crazycrates.api.config.properties;
 
+import us.crazycrew.crazycrates.api.config.annotations.Alias;
 import us.crazycrew.crazycrates.api.config.annotations.Comment;
-import us.crazycrew.crazycrates.api.config.properties.comments.CommentsBuilder;
+import us.crazycrew.crazycrates.api.config.properties.builders.AliasBuilder;
+import us.crazycrew.crazycrates.api.config.properties.builders.CommentsBuilder;
 import us.crazycrew.crazycrates.api.config.properties.interfaces.IPropertyData;
 import us.crazycrew.crazycrates.api.config.properties.interfaces.IPropertyHolder;
 import us.crazycrew.crazycrates.api.config.properties.objects.interfaces.Property;
@@ -23,10 +25,12 @@ public final class PropertyDataBuilder {
     private final Map<Object[], Property<?>> properties = new HashMap<>();
 
     private final CommentsBuilder commentsBuilder;
+    private final AliasBuilder aliasBuilder;
     private final Path path;
 
     public PropertyDataBuilder(final Path path) {
         this.commentsBuilder = new CommentsBuilder();
+        this.aliasBuilder = new AliasBuilder();
         this.path = path;
     }
 
@@ -52,7 +56,10 @@ public final class PropertyDataBuilder {
         for (final Class<? extends IPropertyHolder> parent : classes) {
             final List<Field> fields = List.of(parent.getDeclaredFields());
 
-            getInstance(parent).registerComments(this.commentsBuilder);
+            final IPropertyHolder holder = getInstance(parent);
+
+            holder.registerComments(this.commentsBuilder);
+            holder.registerAliases(this.aliasBuilder);
 
             for (final Field field : fields) {
                 if (!Modifier.isStatic(field.getModifiers())) continue;
@@ -77,6 +84,16 @@ public final class PropertyDataBuilder {
                                 this.commentsBuilder.setComment(values, path);
                             }
                         }
+
+                        if (field.isAnnotationPresent(Alias.class)) {
+                            final Alias alias = field.getDeclaredAnnotation(Alias.class);
+
+                            final String value = alias.value();
+
+                            if (!value.isEmpty()) {
+                                this.aliasBuilder.addAlias(value, path);
+                            }
+                        }
                     }
                 } catch (final IllegalAccessException exception) {
                     exception.printStackTrace();
@@ -84,7 +101,7 @@ public final class PropertyDataBuilder {
             }
         }
 
-        return new PropertyDataImpl(this, this.properties, this.commentsBuilder.getComments());
+        return new PropertyDataImpl(this, this.aliasBuilder, this.properties, this.commentsBuilder.getComments());
     }
 
     public String parse(final Object[] path) {

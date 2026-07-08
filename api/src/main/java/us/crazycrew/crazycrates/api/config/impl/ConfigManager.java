@@ -2,8 +2,11 @@ package us.crazycrew.crazycrates.api.config.impl;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NonNull;
-import us.crazycrew.crazycrates.api.config.impl.types.editor.EditorConfig;
-import us.crazycrew.crazycrates.api.config.impl.types.plugin.PluginConfig;
+import org.spongepowered.configurate.loader.HeaderMode;
+import org.spongepowered.configurate.yaml.NodeStyle;
+import us.crazycrew.crazycrates.api.config.ConfigBuilder;
+import us.crazycrew.crazycrates.api.config.impl.types.editor.EditorKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.Files;
 
 @ApiStatus.Internal

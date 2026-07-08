@@ -2,7 +2,7 @@ package us.crazycrew.crazycrates.api.config.impl.types.editor;
 
 import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.api.config.annotations.Comment;
-import us.crazycrew.crazycrates.api.config.properties.comments.CommentsBuilder;
+import us.crazycrew.crazycrates.api.config.properties.builders.CommentsBuilder;
 import us.crazycrew.crazycrates.api.config.properties.interfaces.IPropertyHolder;
 import us.crazycrew.crazycrates.api.config.properties.objects.interfaces.Property;
 import java.util.List;
