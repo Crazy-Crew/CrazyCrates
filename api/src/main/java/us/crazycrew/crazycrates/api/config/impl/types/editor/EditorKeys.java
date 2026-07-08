@@ -19,7 +19,7 @@ public class EditorKeys implements IPropertyHolder {
                 "Issues: https://github.com/Crazy-Crew/CrazyCrates/issues",
                 "Features: https://github.com/Crazy-Crew/CrazyCrates/issues",
                 "",
-                "List of all sounds: https://minecraft.wiki/w/Sounds.json#Java_Edition_values"
+                "Sounds: https://mudkipdev.github.io/minecraft-sound-explorer/"
         ), "editor");
     }
 
