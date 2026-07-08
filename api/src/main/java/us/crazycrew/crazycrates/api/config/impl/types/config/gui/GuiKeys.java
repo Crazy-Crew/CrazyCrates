@@ -29,9 +29,9 @@ public class GuiKeys implements IPropertyHolder {
         configuration.setComment("The next button.", "gui", "inventory", "buttons", "next");
         configuration.setComment("gui.inventory.buttons.back", "The back button.", "gui", "inventory", "buttons", "back");
 
-        configuration.setComment("gui.inventory.filler", "Allows you to fill the gui with a singular item.", "gui", "inventory", "filler");
+        configuration.setComment("gui.inventory.filler", "Allows you to fill the gui with a singular item.", "gui", "inventory", "buttons", "filler");
 
-        configuration.setComment("Allows you to configure items per slot.", "gui", "inventory", "customizer");
+        configuration.setComment("Allows you to configure items per slot.", "gui", "inventory", "buttons", "customizer");
     }
 
     @Override
