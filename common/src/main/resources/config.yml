@@ -11,12 +11,6 @@ root:
   #
   # Take a backup before you run the migration as there may be bugs.
   use-different-items-layout: true
-  # This option defines what in-game editor format is used in CrazyCrates.
-  #
-  # true -> uses the new editor
-  # false -> uses the old editor
-  #
-  use-new-editor: false
   # Sends anonymous statistics to https://bstats.org/plugin/bukkit/CrazyCrates/4514
   toggle-metrics: true
   # This option will tell the plugin to send all messages as action bars or messages in chat.
