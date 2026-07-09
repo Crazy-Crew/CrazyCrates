@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.paper.tasks.menus;
 
-import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiBorder;
 import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
 import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
@@ -45,11 +44,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
     public void open() {
         final UUID uuid = this.player.getUniqueId();
 
-        this.inventoryManager.getFillerButton(this.player).ifPresent(itemStack -> {
-            this.fusion.log(Level.WARNING, "Are we here?");
-
-            this.gui.getFiller().fill(GuiBorder.REMAINING_SLOTS, itemStack);
-        });
+        this.inventoryManager.getFillerButton(this.player).ifPresent(itemStack -> this.gui.getFiller().fill(GuiBorder.REMAINING_SLOTS, itemStack));
 
         if (this.pluginConfig.getProperty(GuiKeys.is_gui_customizer_enabled)) {
             for (final String custom : this.pluginConfig.getProperty(GuiKeys.gui_customizer)) {
