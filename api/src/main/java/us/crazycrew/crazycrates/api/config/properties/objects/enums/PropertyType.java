@@ -6,7 +6,8 @@ public enum PropertyType {
 
     INTEGER,
     BOOLEAN,
+
+    STRING_LIST,
     STRING,
-    LIST
 
 }

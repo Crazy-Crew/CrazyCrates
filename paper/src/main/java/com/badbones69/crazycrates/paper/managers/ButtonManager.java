@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.paper.managers;
 
-import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.objects.buttons.Button;
 import com.ryderbelserion.fusion.files.FileManager;
@@ -60,5 +59,4 @@ public class ButtonManager {
     public @NotNull final Map<String, Button> getButtons() {
         return Collections.unmodifiableMap(this.buttons);
     }
-
 }

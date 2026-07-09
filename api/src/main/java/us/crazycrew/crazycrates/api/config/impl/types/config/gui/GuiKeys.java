@@ -1,13 +1,14 @@
 package us.crazycrew.crazycrates.api.config.impl.types.config.gui;
 
 import org.jspecify.annotations.NonNull;
-import us.crazycrew.crazycrates.api.config.annotations.Alias;
 import us.crazycrew.crazycrates.api.config.annotations.Comment;
+import us.crazycrew.crazycrates.api.config.impl.types.config.gui.beans.ButtonConfig;
 import us.crazycrew.crazycrates.api.config.properties.builders.AliasBuilder;
 import us.crazycrew.crazycrates.api.config.properties.builders.CommentsBuilder;
 import us.crazycrew.crazycrates.api.config.properties.interfaces.IPropertyHolder;
 import us.crazycrew.crazycrates.api.config.properties.objects.interfaces.Property;
 import java.util.List;
+import static us.crazycrew.crazycrates.api.config.properties.PropertyBuilder.newBeanProperty;
 import static us.crazycrew.crazycrates.api.config.properties.PropertyBuilder.newProperty;
 
 public class GuiKeys implements IPropertyHolder {
@@ -29,8 +30,6 @@ public class GuiKeys implements IPropertyHolder {
         configuration.setComment("The next button.", "gui", "inventory", "buttons", "next");
         configuration.setComment("The back button.", "gui", "inventory", "buttons", "back");
 
-        configuration.setComment("Allows you to fill the gui with a singular item.", "gui", "inventory", "buttons", "filler");
-
         configuration.setComment("Allows you to configure items per slot.", "gui", "inventory", "buttons", "customizer");
     }
 
@@ -48,25 +47,8 @@ public class GuiKeys implements IPropertyHolder {
     @Comment("The amount of rows for a gui.")
     public static final Property<Integer> crate_menu_inventory_rows = newProperty(5, "gui", "inventory", "rows");
 
-    public static final Property<Boolean> gui_filler_toggle = newProperty(false, "gui", "inventory", "buttons", "filler", "toggle");
-
-    @Comment("The name of the item.")
-    public static final Property<String> gui_filler_name = newProperty(" ", "gui", "inventory", "buttons", "filler", "name");
-
-    @Comment("The lore of the item.")
-    public static final Property<List<String>> gui_filler_lore = newProperty(List.of(), "gui", "inventory", "buttons", "filler", "lore");
-
-    @Comment("The custom model data for the item, -1 or blank is disabled.")
-    public static final Property<String> gui_filler_model_data = newProperty("-1", "gui", "inventory", "buttons", "filler", "custom-model-data");
-
-    @Comment("The namespace i.e. nexo")
-    public static final Property<String> gui_filler_namespace = newProperty("", "gui", "inventory", "buttons", "filler", "model", "namespace");
-
-    @Comment("The id i.e. emerald_helmet")
-    public static final Property<String> gui_filler_id = newProperty("", "gui", "inventory", "buttons", "filler", "model", "id");
-
-    @Comment("The item to fill the menu with.")
-    public static final Property<String> gui_filler_item = newProperty("black_stained_glass_pane", "gui", "inventory", "buttons", "filler", "item");
+    @Comment("Allows you to fill the gui with a singular item.")
+    public static final Property<ButtonConfig> gui_filler_button = newBeanProperty(ButtonConfig.class, new ButtonConfig().initialize(" ", List.of(), "black_stained_glass_pane", -1, -1), "gui", "inventory", "buttons", "filler");
 
     @Comment("The item the button should be.")
     public static final Property<String> menu_button_item = newProperty("compass", "gui", "inventory", "buttons", "menu", "item");

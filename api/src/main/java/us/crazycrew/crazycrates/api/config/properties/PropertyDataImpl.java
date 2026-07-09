@@ -1,5 +1,6 @@
 package us.crazycrew.crazycrates.api.config.properties;
 
+import io.leangen.geantyref.TypeToken;
 import us.crazycrew.crazycrates.api.config.properties.builders.AliasBuilder;
 import us.crazycrew.crazycrates.api.config.properties.interfaces.IPropertyData;
 import us.crazycrew.crazycrates.api.config.properties.objects.enums.PropertyType;
@@ -54,12 +55,8 @@ public final class PropertyDataImpl implements IPropertyData {
                 }
             }
 
-            case LIST -> (T) StringUtils.getStringList(configuration.node(propertyPath), List.of(propertyValue.toString()));
+            case STRING_LIST -> (T) StringUtils.getStringList(configuration.node(propertyPath), List.of(propertyValue.toString()));
         };
-    }
-
-    public List<Object[]> combineArrays(final Object[] start, final Object[] end) {
-        return List.of(start, end);
     }
 
     @Override
@@ -70,10 +67,22 @@ public final class PropertyDataImpl implements IPropertyData {
             return;
         }
 
-        try {
-            configuration.node(property.getPath()).set(type, value);
-        } catch (final SerializationException exception) {
-            throw new IllegalStateException(exception);
+        switch (property.getPropertyType()) {
+            case STRING_LIST -> {
+                try {
+                    configuration.node(property.getPath()).setList(TypeToken.get(String.class), List.of(value.toString()));
+                } catch (final SerializationException exception) {
+                    throw new IllegalStateException(exception);
+                }
+            }
+
+            default -> {
+                try {
+                    configuration.node(property.getPath()).set(type, value);
+                } catch (final SerializationException exception) {
+                    throw new IllegalStateException(exception);
+                }
+            }
         }
 
         this.fileManager.saveFile(this.propertyDataBuilder.getPath());
@@ -94,10 +103,25 @@ public final class PropertyDataImpl implements IPropertyData {
 
             if (configuration.hasChild(id)) continue;
 
-            try {
-                configuration.node(id).set(property.getType(), property.getDefaultValue());
-            } catch (final SerializationException exception) {
-                throw new IllegalStateException(exception);
+            final Object value = property.getDefaultValue();
+            final Class<?> type = property.getType();
+
+            switch (property.getPropertyType()) {
+                case STRING_LIST -> {
+                    try {
+                        configuration.node(property.getPath()).setList(TypeToken.get(String.class), List.of(value.toString()));
+                    } catch (final SerializationException exception) {
+                        throw new IllegalStateException(exception);
+                    }
+                }
+
+                default -> {
+                    try {
+                        configuration.node(property.getPath()).set(type, value);
+                    } catch (final SerializationException exception) {
+                        throw new IllegalStateException(exception);
+                    }
+                }
             }
         }
 

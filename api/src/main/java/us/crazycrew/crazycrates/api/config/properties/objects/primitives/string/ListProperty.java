@@ -9,7 +9,7 @@ import java.util.List;
 public final class ListProperty extends BaseProperty {
 
     public ListProperty(final List<String> defaultValue, final String alias, final Object... path) {
-        super(List.class, defaultValue, alias, PropertyType.LIST, path);
+        super(String.class, defaultValue, alias, PropertyType.STRING_LIST, path);
     }
 
     public ListProperty(final List<String> defaultValue, final Object... path) {
