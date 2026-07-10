@@ -1,8 +1,10 @@
 package com.badbones69.crazycrates.paper.managers;
 
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
+import com.ryderbelserion.fusion.paper.builders.items.types.custom.CustomBuilder;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
 import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
 import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,11 +46,11 @@ public class InventoryManager {
     private ItemBuilder backButton;
 
     public void loadButtons() {
-        /*Map.of( //todo() bean properties
-                //"menu-button", guiConfig.getMenuButton(),
-                //"back-button", guiConfig.getBackButton(),
-                //"next-button", guiConfig.getNextButton(),
-                //"filler-button", guiConfig.getFillerButton()
+        Map.of(
+                "menu-button", this.pluginConfig.getProperty(GuiKeys.gui_menu_button),
+                "back-button", this.pluginConfig.getProperty(GuiKeys.gui_back_button),
+                "next-button", this.pluginConfig.getProperty(GuiKeys.gui_next_button),
+                "filler-button", this.pluginConfig.getProperty(GuiKeys.gui_filler_button)
         ).forEach((name, button) -> {
             final ItemBuilder builder = ItemBuilder.from(button.getItem())
                     .withDisplayName(button.getName())
@@ -55,22 +58,22 @@ public class InventoryManager {
 
             final CustomBuilder customBuilder = builder.asCustomBuilder();
 
-            //customBuilder.setItemModel(button.getModelNamespace(), button.getModelId());
-            //customBuilder.setCustomModelData(button.getCustomModelData());
+            customBuilder.setItemModel(button.getNamespace(), button.getId());
+            customBuilder.setCustomModelData(button.getModelData());
 
             customBuilder.build();
 
             switch (name) {
                 case "filler-button" -> {
-                    //if (button.isEnabled()) {
-                    //    this.fillerButton = builder;
-                    //}
+                    if (button.isEnabled()) {
+                        this.fillerButton = builder;
+                    }
                 }
                 case "menu-button" -> this.menuButton = builder;
                 case "back-button" -> this.backButton = builder;
                 case "next-button" -> this.nextButton = builder;
             }
-        });*/
+        });
     }
 
     public final ItemStack getMenuButton(@NotNull final Player player) {

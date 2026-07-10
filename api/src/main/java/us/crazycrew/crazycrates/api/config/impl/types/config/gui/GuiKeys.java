@@ -26,10 +26,6 @@ public class GuiKeys implements IPropertyHolder {
         configuration.setComment("Inventory settings like size.", "gui", "inventory");
         configuration.setComment("The buttons in the gui.", "gui", "inventory", "buttons");
 
-        configuration.setComment("The main menu button.", "gui", "inventory", "buttons", "menu");
-        configuration.setComment("The next button.", "gui", "inventory", "buttons", "next");
-        configuration.setComment("The back button.", "gui", "inventory", "buttons", "back");
-
         configuration.setComment("Allows you to configure items per slot.", "gui", "inventory", "buttons", "customizer");
     }
 
@@ -50,29 +46,8 @@ public class GuiKeys implements IPropertyHolder {
     @Comment("Allows you to fill the gui with a singular item.")
     public static final Property<ButtonConfig> gui_filler_button = newBeanProperty(ButtonConfig.class, new ButtonConfig().initialize(" ", List.of(), "black_stained_glass_pane", -1, -1), "gui", "inventory", "buttons", "filler");
 
-    @Comment("The item the button should be.")
-    public static final Property<String> menu_button_item = newProperty("compass", "gui", "inventory", "buttons", "menu", "item");
-
-    @Comment("The custom model data for the item, -1 or blank is disabled.")
-    public static final Property<String> menu_button_model_data = newProperty("-1", "gui", "inventory", "buttons", "menu", "custom-model-data");
-
-    @Comment("The name of the item.")
-    public static final Property<String> menu_button_name = newProperty("<bold><gray>» <red>Menu <gray>«</bold>", "gui", "inventory", "buttons", "menu", "name");
-
-    @Comment("The lore of the item.")
-    public static final Property<List<String>> menu_button_lore = newProperty(List.of("<gray>Return to the menu."), "gui", "inventory", "buttons", "menu", "lore");
-
-    @Comment("The namespace i.e. nexo")
-    public static final Property<String> menu_button_namespace = newProperty("", "gui", "inventory", "buttons", "menu", "model", "namespace");
-
-    @Comment("The id i.e. emerald_helmet")
-    public static final Property<String> menu_button_id = newProperty("", "gui", "inventory", "buttons", "menu", "model", "id");
-
-    @Comment("The slot for the item. -1 uses a fallback value.")
-    public static final Property<Integer> menu_button_column = newProperty(5, "gui", "inventory", "buttons", "menu", "placement", "column");
-
-    @Comment("The row for the item. You cannot use a number greater than the available rows of the inventory, -1 uses a fallback value.")
-    public static final Property<Integer> menu_button_row = newProperty(5, "gui", "inventory", "buttons", "menu", "placement", "row");
+    @Comment("The main menu button.")
+    public static final Property<ButtonConfig> gui_menu_button = newBeanProperty(ButtonConfig.class, new ButtonConfig().initialize(" ", List.of(), "compass", -1, -1), "gui", "inventory", "buttons", "menu");
 
     @Comment({
             "This will disable our current functionality of our main menu button in crate previews.",
@@ -83,53 +58,11 @@ public class GuiKeys implements IPropertyHolder {
     @Comment("Commands to run when the main menu button is clicked. The override option above has to be set to true.")
     public static final Property<List<String>> menu_button_command_list = newProperty(List.of("see {player}"), "gui", "inventory", "buttons", "menu", "override", "list");
 
-    @Comment("The item the button should be.")
-    public static final Property<String> next_button_item = newProperty("feather", "gui", "inventory", "buttons", "next", "item");
+    @Comment("The next button.")
+    public static final Property<ButtonConfig> gui_next_button = newBeanProperty(ButtonConfig.class, new ButtonConfig().initialize(" ", List.of(), "compass", -1, -1), "gui", "inventory", "buttons", "next");
 
-    @Comment("The custom model data for the item, -1 or blank is disabled.")
-    public static final Property<String> next_button_model_data = newProperty("-1", "gui", "inventory", "buttons", "next", "custom-model-data");
-
-    @Comment("The name of the item.")
-    public static final Property<String> next_button_name = newProperty("<bold><gold>Next »</bold>", "gui", "inventory", "buttons", "next", "name");
-
-    @Comment("The lore of the item.")
-    public static final Property<List<String>> next_button_lore = newProperty(List.of("<bold><gray>Page:</bold> <blue>{page}"), "gui", "inventory", "buttons", "next", "lore");
-
-    @Comment("The namespace i.e. nexo")
-    public static final Property<String> next_button_namespace = newProperty("", "gui", "inventory", "buttons", "next", "model", "namespace");
-
-    @Comment("The id i.e. emerald_helmet")
-    public static final Property<String> next_button_id = newProperty("", "gui", "inventory", "buttons", "next", "model", "id");
-
-    @Comment("The slot for the item. -1 uses a fallback value.")
-    public static final Property<Integer> next_button_column = newProperty(6, "gui", "inventory", "buttons", "next", "placement", "column");
-
-    @Comment("The row for the item. You cannot use a number greater than the available rows of the inventory, -1 uses a fallback value.")
-    public static final Property<Integer> next_button_row = newProperty(5, "gui", "inventory", "buttons", "next", "placement", "row");
-
-    @Comment("The item the button should be.")
-    public static final Property<String> back_button_item = newProperty("feather", "gui", "inventory", "buttons", "back", "item");
-
-    @Comment("The custom model data for the item, -1 or blank is disabled.")
-    public static final Property<String> back_button_model_data = newProperty("-1", "gui", "inventory", "buttons", "back", "custom-model-data");
-
-    @Comment("The name of the item.")
-    public static final Property<String> back_button_name = newProperty("<bold><gold>« Back</bold>", "gui", "inventory", "buttons", "back", "name");
-
-    @Comment("The lore of the item.")
-    public static final Property<List<String>> back_button_lore = newProperty(List.of("<bold><gray>Page:</bold> <blue>{page}"), "gui", "inventory", "buttons", "back", "lore");
-
-    @Comment("The namespace i.e. nexo")
-    public static final Property<String> back_button_namespace = newProperty("", "gui", "inventory", "buttons", "back", "model", "namespace");
-
-    @Comment("The id i.e. emerald_helmet")
-    public static final Property<String> back_button_id = newProperty("", "gui", "inventory", "buttons", "back", "model", "id");
-
-    @Comment("The slot for the item. -1 uses a fallback value.")
-    public static final Property<Integer> back_button_column = newProperty(4, "gui", "inventory", "buttons", "back", "placement", "column");
-
-    @Comment("The row for the item. You cannot use a number greater than the available rows of the inventory, -1 uses a fallback value.")
-    public static final Property<Integer> back_button_row = newProperty(5, "gui", "inventory", "buttons", "back", "placement", "row");
+    @Comment("The back button.")
+    public static final Property<ButtonConfig> gui_back_button = newBeanProperty(ButtonConfig.class, new ButtonConfig().initialize(" ", List.of(), "compass", -1, -1), "gui", "inventory", "buttons", "back");
 
     @Comment("Should the customizer should be enabled?")
     public static final Property<Boolean> is_gui_customizer_enabled = newProperty(true, "gui", "inventory", "buttons", "customizer", "toggle");
