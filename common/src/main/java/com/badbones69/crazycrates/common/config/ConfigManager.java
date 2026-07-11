@@ -1,11 +1,11 @@
-package com.badbones69.common.config;
+package com.badbones69.crazycrates.common.config;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
-import com.badbones69.common.config.impl.EditorKeys;
-import com.badbones69.common.config.migrate.ConfigMigration;
-import com.badbones69.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.common.config.impl.EditorKeys;
+import com.badbones69.crazycrates.common.config.migrate.ConfigMigration;
+import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import java.nio.file.Path;
 
 public class ConfigManager {

@@ -1,7 +1,7 @@
 package com.badbones69.crazycrates.paper.api.builders.gui;
 
-import com.badbones69.common.config.beans.inventories.ItemPlacement;
-import com.badbones69.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.common.config.beans.inventories.ItemPlacement;
+import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiState;
 import com.ryderbelserion.fusion.paper.builders.gui.types.paginated.PaginatedGui;

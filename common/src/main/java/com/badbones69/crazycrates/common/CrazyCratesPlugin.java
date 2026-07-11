@@ -1,8 +1,8 @@
-package com.badbones69.common;
+package com.badbones69.crazycrates.common;
 
-import com.badbones69.common.config.ConfigManager;
-import com.badbones69.common.config.impl.ConfigKeys;
-import com.badbones69.common.impl.Settings;
+import com.badbones69.crazycrates.common.config.ConfigManager;
+import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.common.impl.Settings;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.kyori.adventure.text.Component;
 import org.jspecify.annotations.NonNull;

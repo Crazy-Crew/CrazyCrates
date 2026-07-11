@@ -1,9 +1,9 @@
-package com.badbones69.common.config.migrate;
+package com.badbones69.crazycrates.common.config.migrate;
 
 import ch.jalu.configme.configurationdata.ConfigurationData;
 import ch.jalu.configme.migration.PlainMigrationService;
 import ch.jalu.configme.resource.PropertyReader;
-import com.badbones69.common.enums.Property;
+import com.badbones69.crazycrates.common.enums.Property;
 import org.jetbrains.annotations.NotNull;
 
 public class ConfigMigration extends PlainMigrationService {

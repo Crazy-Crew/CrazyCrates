@@ -1,9 +1,9 @@
 package com.badbones69.crazycrates.paper.api;
 
 import ch.jalu.configme.SettingsManager;
-import com.badbones69.common.CrazyCratesPlugin;
-import com.badbones69.common.config.ConfigManager;
-import com.badbones69.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.common.CrazyCratesPlugin;
+import com.badbones69.crazycrates.common.config.ConfigManager;
+import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
@@ -42,6 +42,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.loader.HeaderMode;
+import org.spongepowered.configurate.yaml.NodeStyle;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -109,7 +111,12 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
                 .addFolder(this.path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE))
                 .addFolder(this.path.resolve("buttons"), FileType.YAML)
 
-                .addFile(this.path.resolve("messages.yml"), FileType.YAML)
+                .addFile(this.path.resolve("messages.yml"), FileType.YAML, action -> {
+                    action.withHeaderMode(HeaderMode.PRESERVE);
+                    action.withNodeStyle(NodeStyle.BLOCK);
+                    action.withComments(true);
+                    action.withIndent(1);
+                })
                 .addFile(version, FileType.JSON);
 
         if (Plugins.placeholder_api.isEnabled()) {

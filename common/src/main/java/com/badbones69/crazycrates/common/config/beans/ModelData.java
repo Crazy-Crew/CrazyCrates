@@ -1,4 +1,4 @@
-package com.badbones69.common.config.beans;
+package com.badbones69.crazycrates.common.config.beans;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.beanmapper.ExportName;

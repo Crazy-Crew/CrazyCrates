@@ -1,14 +1,14 @@
 package com.badbones69.crazycrates.paper.tasks.menus;
 
 import us.crazycrew.crazycrates.api.enums.messages.Message;
-import com.badbones69.common.config.beans.ModelData;
+import com.badbones69.crazycrates.common.config.beans.ModelData;
 import com.badbones69.crazycrates.paper.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.badbones69.common.config.impl.ConfigKeys;
+import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiBorder;
 import com.ryderbelserion.fusion.paper.builders.gui.objects.border.GuiFiller;

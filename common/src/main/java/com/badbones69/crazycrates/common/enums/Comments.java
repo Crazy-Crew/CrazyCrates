@@ -1,4 +1,4 @@
-package com.badbones69.common.enums;
+package com.badbones69.crazycrates.common.enums;
 
 import java.util.List;
 
