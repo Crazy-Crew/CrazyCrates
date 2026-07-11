@@ -7,4 +7,5 @@ dependencies {
     compileOnly(libs.fusion.kyori)
 
     api(project(":api"))
+    api(libs.jalu)
 }
