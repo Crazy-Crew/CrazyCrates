@@ -123,6 +123,7 @@ gui:
         # The lore of the item.
         lore:
           - "<bold><gray>Page:</bold> <blue>{page}"
+      # Allows you to fill the gui with a singular item.
       filler:
         # Should the menu should be filled with one type of item?
         toggle: false
@@ -141,6 +142,7 @@ gui:
         name: " "
         # The lore of the item.
         lore: []
+      # Allows you to configure items per slot.
       customizer:
         # Should the customizer should be enabled?
         toggle: true
@@ -188,9 +190,6 @@ gui:
           - "slot:32, item:cyan_stained_glass_pane, name: "
           - "slot:33, item:cyan_stained_glass_pane, name: "
           - "slot:34, item:cyan_stained_glass_pane, name: "
-          # A list of components to hide.
-          # https://jd.papermc.io/paper/io/papermc/paper/registry/keys/DataComponentTypeKeys.html, Grab the value from the description without minecraft:
-          #- "slot:34, item:cyan_stained_glass_pane, name: , components:enchantments,profile"
 # Settings related to crates.
 crate:
   # Settings related to how keys function.
@@ -204,9 +203,14 @@ crate:
     key-sound:
       # Should a sound should be played if they have no key?
       toggle: true
-      # The type of sound to use.
-      # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+      # https://mudkipdev.github.io/minecraft-sound-explorer/
       name: "entity.villager.no"
+    # Should a virtual crate accept physical keys?
+    virtual-crate-accepts-physical-keys: true
+    # Should a physical crate accept physical keys?
+    physical-crate-accepts-physical-keys: true
+    # Should a physical crate accept virtual keys?
+    physical-crate-accepts-virtual-keys: true
   # Settings related to QuadCrate
   quad-crate:
     # How long should the quad crate be active?
@@ -231,3 +235,28 @@ crate:
   log-to-console: false
   # Logs all crate/key actions to individual files, on plugin reload and shutdown. the files will zip to avoid size errors.
   log-to-file: false
+  # The crate interaction settings.
+  interaction:
+    # This will switch how previews/opening the virtual crates are handled.
+    #  true -> Right click to open, Left click to preview
+    #  false -> Left click to open, Right click to preview
+    virtual: false
+    # This will switch how previews/opening the physical crates are handled.
+    #  true -> Right click to open, Left click to preview
+    #  false -> Left click to open, Right click to preview
+    physical: false
+  # The preview settings.
+  preview:
+    # If players should be forced to exit out of the preview during /crates reload
+    force-exit: true
+    # Send a message if they were forced out of the preview.
+    send-message: true
+  # If a player gets to the menu related to the Prizes gui, Should they be timed out?
+  # It will wait 10 seconds and if they already collected 3 prizes, It will only give one prize.
+  cosmic-crate-timeout: true
+  # What worlds do you want Crates to be disabled in?
+  disabled-worlds: []
+  # If crates should knock you back if you have no keys.
+  crate.knock-back: true
+  # Whether to show the display item when opening QuickCrate
+  quickcrate-display-item: true

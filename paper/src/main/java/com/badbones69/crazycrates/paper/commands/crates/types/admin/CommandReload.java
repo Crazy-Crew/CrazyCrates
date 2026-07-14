@@ -41,7 +41,7 @@ public class CommandReload extends BaseCommand {
                 .addFile(version, FileType.JSON);
 
         this.fileManager.addPaperFolder(this.path.resolve("crates"))
-                .addPaperFile(this.path.resolve("guis").resolve("respin-gui.yml"))
+                .addPaperFolder(this.path.resolve("guis"))
                 .addPaperFile(this.path.resolve("data.yml"))
                 .addPaperFile(this.path.resolve("locations.yml"));
 

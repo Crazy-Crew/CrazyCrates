@@ -45,7 +45,7 @@ public class CrateKeys implements IPropertyHolder {
             " false -> Left click to open, Right click to preview"
     })
     public static final Property<Boolean> crate_physical_interaction =
-            newProperty(true, "crate", "interaction", "physical");
+            newProperty(false, "crate", "interaction", "physical");
 
     @Comment({
             "This will switch how previews/opening the virtual crates are handled.",
@@ -54,7 +54,7 @@ public class CrateKeys implements IPropertyHolder {
             " false -> Left click to open, Right click to preview"
     })
     public static final Property<Boolean> crate_virtual_interaction =
-            newProperty(true, "crate", "interaction", "virtual");
+            newProperty(false, "crate", "interaction", "virtual");
 
     @Comment("Whether to show the display item when opening QuickCrate")
     public static final Property<Boolean> show_quickcrate_item =
@@ -104,12 +104,9 @@ public class CrateKeys implements IPropertyHolder {
     public static final Property<Boolean> need_key_sound_toggle =
             newProperty(true, "crate", "keys", "key-sound", "toggle");
 
-    @Comment({
-            "The type of sound to use.",
-            "https://minecraft.wiki/w/Sounds.json#Java_Edition_values"
-    })
+    @Comment("https://mudkipdev.github.io/minecraft-sound-explorer/")
     public static final Property<String> need_key_sound =
-            newProperty(true, "crate", "keys", "key-sound", "name");
+            newProperty("entity.villager.no", "crate", "keys", "key-sound", "name");
 
     @Comment("How long should the quad crate be active?")
     public static final Property<Integer> quad_crate_timer =

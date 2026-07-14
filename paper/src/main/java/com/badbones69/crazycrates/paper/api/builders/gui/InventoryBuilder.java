@@ -20,6 +20,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
 import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
+import us.crazycrew.crazycrates.api.config.impl.types.config.gui.beans.ButtonConfig;
+import us.crazycrew.crazycrates.api.config.impl.types.config.gui.beans.ButtonPlacement;
 import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import java.util.List;
 import java.util.Map;
@@ -53,8 +55,11 @@ public abstract class InventoryBuilder {
     public void addMenuButton(@NotNull final Player player, @NotNull final Crate crate, @NotNull final GuiBuilder gui) {
         if (!this.pluginConfig.getProperty(GuiKeys.is_crate_menu_enabled)) return;
 
-        final int row = this.pluginConfig.getProperty(GuiKeys.menu_button_row);
-        final int column = this.pluginConfig.getProperty(GuiKeys.menu_button_column);
+        final ButtonConfig config = this.pluginConfig.getProperty(GuiKeys.gui_menu_button);
+        final ButtonPlacement placement = config.getPlacement();
+
+        final int row = placement.getRow();
+        final int column = placement.getColumn();
 
         final int rows = gui.getRows();
 

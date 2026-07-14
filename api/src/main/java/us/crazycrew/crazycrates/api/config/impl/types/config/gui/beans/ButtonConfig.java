@@ -40,6 +40,10 @@ public class ButtonConfig {
         return this;
     }
 
+    public ButtonPlacement getPlacement() {
+        return this.placement;
+    }
+
     public List<String> getLore() {
         return this.lore;
     }
