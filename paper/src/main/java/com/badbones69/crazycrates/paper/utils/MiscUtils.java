@@ -148,8 +148,8 @@ public class MiscUtils {
             return;
         }
 
-        FileKeys.crate_log.save();
-        FileKeys.key_log.save();
+        us.crazycrew.crazycrates.api.enums.Files.crate_log.save();
+        us.crazycrew.crazycrates.api.enums.Files.key_log.save();
     }
 
     public static double calculateWeight(final int chance, final int maxRange) {

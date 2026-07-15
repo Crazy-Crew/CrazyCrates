@@ -2,12 +2,9 @@ package com.badbones69.crazycrates.paper.managers.events;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
-import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
-import com.ryderbelserion.fusion.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.command.CommandSender;
@@ -16,11 +13,10 @@ import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
 import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
 import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
+import us.crazycrew.crazycrates.api.enums.Files;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Optional;
 
 public class EventManager {
 
@@ -34,13 +30,15 @@ public class EventManager {
 
     private final static PropertyManager pluginConfig = configManager.getConfig();
 
+    private final static FusionPaper fusion = platform.getFusion();
+
     public static void logEvent(@NotNull final EventType type, @NotNull final String name, @NotNull final CommandSender sender, @NotNull final Crate crate, @NotNull final KeyType keyType, final int amount) {
         handle(type, name, sender, crate, keyType, amount);
     }
 
     private static void handle(@NotNull final EventType type, @NotNull final String name, @NotNull final CommandSender sender, @NotNull final Crate crate, @NotNull final KeyType keyType, final int amount) {
         String message = "";
-        Path path = null;
+        Files key = null;
 
         switch (type) {
             case event_key_given, event_key_removed, event_key_received, event_key_sent, event_key_taken, event_key_taken_multiple,
@@ -55,7 +53,7 @@ public class EventManager {
                     message = message + " | Amount: %amount%".replace("%amount%", String.valueOf(amount));
                 }
 
-                path = FileKeys.key_log.getPath();
+                key = Files.key_log;
             }
 
             /*case event_command_sent -> {
@@ -80,7 +78,7 @@ public class EventManager {
                     message = message + " | Amount: %amount%".replace("%amount%", String.valueOf(amount));
                 }
 
-                path = FileKeys.crate_log.getPath();
+                key = Files.crate_log;
             }
 
             case event_crate_force_opened -> {
@@ -97,30 +95,18 @@ public class EventManager {
                     message = message + " | Amount: %amount%".replace("%amount%", String.valueOf(amount));
                 }
 
-                path = FileKeys.crate_log.getPath();
+                key = Files.crate_log;
             }
         }
 
-        log(message, path, type);
+        log(message, key, type);
     }
 
-    private static final PaperFileManager fileManager = platform.getFileManager();
-
-    private static final FusionPaper fusion = platform.getFusion();
-
-    private static void log(@NotNull final String message, @Nullable final Path path, @NotNull final EventType type) {
+    private static void log(@NotNull final String message, @Nullable final Files key, @NotNull final EventType type) {
         final String time = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new Date(System.currentTimeMillis()));
 
-        if (path != null && pluginConfig.getProperty(CrateKeys.log_to_file)) {
-            final @NotNull Optional<LogCustomFile> optional = fileManager.getLogFile(path);
-
-            if (optional.isEmpty()) {
-                return;
-            }
-
-            final LogCustomFile customFile = optional.get();
-
-            customFile.save("[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(fusion.asComponent(message)));
+        if (key != null && pluginConfig.getProperty(CrateKeys.log_to_file)) {
+            key.getLogCustomFile().save("[" + time + " " + type.getEvent() + "]: " + PlainTextComponentSerializer.plainText().serialize(fusion.asComponent(message)));
         }
 
         if (pluginConfig.getProperty(CrateKeys.log_to_console)) {

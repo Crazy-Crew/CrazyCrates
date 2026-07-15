@@ -11,7 +11,6 @@ import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
-
 import java.nio.file.Path;
 import java.util.Optional;
 
@@ -19,15 +18,8 @@ public enum FileKeys {
 
     respin_gui(FileType.PAPER_YAML, "respin-gui.yml", "guis"),
 
-    crate_log(FileType.LOG, "crates.log", "logs"),
-    key_log(FileType.LOG, "keys.log", "logs"),
-
     locations(FileType.PAPER_YAML, "locations.yml"),
-    data(FileType.PAPER_YAML, "data.yml"),
-
-    version(FileType.JSON, "version.json"),
-
-    messages(FileType.YAML, "messages.yml");
+    data(FileType.PAPER_YAML, "data.yml");
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
