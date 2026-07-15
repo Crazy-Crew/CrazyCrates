@@ -71,6 +71,22 @@ Crate:
   Prize-Commands: []
   # Global Settings
   Settings:
+    # This defines whether we should track how many times players opened this crate
+    # True means track, False means don't track.
+    Tracking-Crate-Opening: false
+    # Should players be knocked back if they don't have keys?
+    Knock-Back: true
+    # Handles settings related to the border
+    Border:
+      # Settings related to the glass border
+      Glass-Border:
+        # Should the glass border be enabled?
+        Toggle: true
+        # Should AIR be set to these slots?
+        # This makes sure that items do not overflow to the navigation row.
+        # If you set this to false, pagination will not function properly if you still want pagination.
+        # Default: True
+        Air: True
     # Broadcast a message to the server
     Broadcast:
       # If the messages should be sent.
@@ -80,6 +96,20 @@ Crate:
         - "<red>%player% won the prize <yellow>%reward%."
       # If the player has this permission, they don't get the broadcast.
       Permission: ""
+    # Settings related to rewards.
+    Rewards:
+      # Should a yes/no popup be made, to ask if they want to keep the prize?
+      Re-Roll-Spin: false
+      # Should there be a limit to how many times they can re-roll?
+      Permission:
+        # Should this be enabled?
+        Toggle: false
+        # Should this persist restarts? i.e. writes to disk the amount of respins, and reads the amount of respins.
+        Persist: false
+        # This will define how many permissions will be registered to the server per crate.
+        # i.e. crazycrates.respin.<crate_name>.1-20
+        # It will simply register multiple permissions, so it shows up in things like LuckPerms.
+        Max-Cap: 20
   # Item the crate is in the GUI
   Item: "ender_chest"
   # The custom model data of the item, -1 is disabled.

@@ -80,7 +80,8 @@ Crate:
     Border:
       # Settings related to the glass border
       Glass-Border:
-        Toggle: true # Should the glass border be enabled?
+        # Should the glass border be enabled?
+        Toggle: true
         # Should AIR be set to these slots?
         # This makes sure that items do not overflow to the navigation row.
         # If you set this to false, pagination will not function properly if you still want pagination.
