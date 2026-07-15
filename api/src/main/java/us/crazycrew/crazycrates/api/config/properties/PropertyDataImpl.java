@@ -23,11 +23,11 @@ public final class PropertyDataImpl implements IPropertyData {
     private final FileManager fileManager = this.fusion.getFileManager();
 
     private final PropertyDataBuilder propertyDataBuilder;
-    private final Map<Object[], Property<?>> properties;
+    private final Map<Object[], PropertyHolder> properties;
     private final Map<Object[], List<String>> comments;
     private final AliasBuilder aliasBuilder;
 
-    public PropertyDataImpl(final PropertyDataBuilder propertyDataBuilder, final AliasBuilder aliasBuilder, final Map<Object[], Property<?>> properties, Map<Object[], List<String>> comments) {
+    public PropertyDataImpl(final PropertyDataBuilder propertyDataBuilder, final AliasBuilder aliasBuilder, final Map<Object[], PropertyHolder> properties, final Map<Object[], List<String>> comments) {
         this.propertyDataBuilder = propertyDataBuilder;
         this.aliasBuilder = aliasBuilder;
         this.properties = properties;
@@ -89,6 +89,11 @@ public final class PropertyDataImpl implements IPropertyData {
     }
 
     @Override
+    public <T> boolean hasProperty(final CommentedConfigurationNode configuration, final Property<T> property) {
+        return configuration.hasChild(property.getPath());
+    }
+
+    @Override
     public void setComment(final CommentedConfigurationNode configuration, final String value, final Object... path) {
         configuration.node(path).commentIfAbsent(value);
 
@@ -97,11 +102,25 @@ public final class PropertyDataImpl implements IPropertyData {
 
     @Override
     public void populate(final CommentedConfigurationNode configuration) {
-        for (final Map.Entry<Object[], Property<?>> parent : this.properties.entrySet()) {
-            final Property<?> property = parent.getValue();
+        for (final Map.Entry<Object[], PropertyHolder> parent : this.properties.entrySet()) {
+            final PropertyHolder holder = parent.getValue();
+            final Property<?> property = holder.getProperty();
+
+            if (holder.isDisabled()) continue;
+
             final Object[] id = property.getPath();
 
-            if (configuration.hasChild(id)) continue;
+            final CommentedConfigurationNode node = configuration.node(id);
+
+            if (holder.hasComments() && configuration.hasChild(id)) {
+                final List<String> comments = holder.getComments();
+
+                if (comments.isEmpty()) continue;
+
+                node.commentIfAbsent(StringUtils.toString(comments));
+
+                continue;
+            }
 
             final Object value = property.getDefaultValue();
             final Class<?> type = property.getType();
@@ -109,7 +128,7 @@ public final class PropertyDataImpl implements IPropertyData {
             switch (property.getPropertyType()) {
                 case STRING_LIST -> {
                     try {
-                        configuration.node(property.getPath()).setList(TypeToken.get(String.class), List.of(value.toString()));
+                        node.setList(TypeToken.get(String.class), List.of(value.toString()));
                     } catch (final SerializationException exception) {
                         throw new IllegalStateException(exception);
                     }
@@ -117,7 +136,7 @@ public final class PropertyDataImpl implements IPropertyData {
 
                 default -> {
                     try {
-                        configuration.node(property.getPath()).set(type, value);
+                        node.set(type, value);
                     } catch (final SerializationException exception) {
                         throw new IllegalStateException(exception);
                     }

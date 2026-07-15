@@ -47,6 +47,10 @@ public final class PropertyManager {
         return this.propertyData.getProperty(getConfiguration(), property);
     }
 
+    public <T> boolean hasProperty(@NonNull final Property<T> property) {
+        return this.propertyData.hasProperty(getConfiguration(), property);
+    }
+
     public <T> PropertyManager setProperty(@NonNull final Property<T> property, @NonNull final T value) {
         this.propertyData.setProperty(getConfiguration(), property, value);
 

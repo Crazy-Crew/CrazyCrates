@@ -11,6 +11,8 @@ public interface IPropertyData {
 
     <T> void setProperty(final CommentedConfigurationNode configuration, final Property<T> property, final T value);
 
+    <T> boolean hasProperty(final CommentedConfigurationNode configuration, final Property<T> property);
+
     void setComment(final CommentedConfigurationNode configuration, final String value, final Object... path);
 
     void populate(final CommentedConfigurationNode configuration);

@@ -1,7 +1,5 @@
 package us.crazycrew.crazycrates.api.config.properties;
 
-import us.crazycrew.crazycrates.api.config.annotations.Alias;
-import us.crazycrew.crazycrates.api.config.annotations.Comment;
 import us.crazycrew.crazycrates.api.config.properties.builders.AliasBuilder;
 import us.crazycrew.crazycrates.api.config.properties.builders.CommentsBuilder;
 import us.crazycrew.crazycrates.api.config.properties.interfaces.IPropertyData;
@@ -22,7 +20,7 @@ import java.util.stream.Collectors;
 @NullMarked
 public final class PropertyDataBuilder {
 
-    private final Map<Object[], Property<?>> properties = new HashMap<>();
+    private final Map<Object[], PropertyHolder> properties = new HashMap<>();
 
     private final CommentsBuilder commentsBuilder;
     private final AliasBuilder aliasBuilder;
@@ -58,7 +56,7 @@ public final class PropertyDataBuilder {
 
             final IPropertyHolder holder = getInstance(parent);
 
-            holder.registerComments(this.commentsBuilder);
+            holder.registerComments(this.commentsBuilder); // register section level comments, although we could move this to field based annotations...
             holder.registerAliases(this.aliasBuilder);
 
             for (final Field field : fields) {
@@ -73,9 +71,13 @@ public final class PropertyDataBuilder {
                     if (property != null) {
                         final Object[] path = property.getPath();
 
-                        this.properties.putIfAbsent(path, property);
+                        this.properties.putIfAbsent(path, new PropertyHolder(
+                                property,
+                                field,
+                                path
+                        ));
 
-                        if (field.isAnnotationPresent(Comment.class)) {
+                        /*if (field.isAnnotationPresent(Comment.class)) {
                             final Comment comment = field.getDeclaredAnnotation(Comment.class);
 
                             final List<String> values = Arrays.asList(comment.value());
@@ -83,9 +85,9 @@ public final class PropertyDataBuilder {
                             if (!values.isEmpty()) {
                                 this.commentsBuilder.setComment(values, path);
                             }
-                        }
+                        }*/
 
-                        if (field.isAnnotationPresent(Alias.class)) {
+                        /*if (field.isAnnotationPresent(Alias.class)) {
                             final Alias alias = field.getDeclaredAnnotation(Alias.class);
 
                             final String value = alias.value();
@@ -93,7 +95,7 @@ public final class PropertyDataBuilder {
                             if (!value.isEmpty()) {
                                 this.aliasBuilder.addAlias(value, path);
                             }
-                        }
+                        }*/
                     }
                 } catch (final IllegalAccessException exception) {
                     exception.printStackTrace();
