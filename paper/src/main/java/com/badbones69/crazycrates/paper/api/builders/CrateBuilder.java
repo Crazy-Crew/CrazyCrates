@@ -1,6 +1,5 @@
 package com.badbones69.crazycrates.paper.api.builders;
 
-import ch.jalu.configme.SettingsManager;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
@@ -11,8 +10,6 @@ import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
 import com.badbones69.crazycrates.paper.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
@@ -35,6 +32,9 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.configuration.ConfigurationSection;
+import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.CrazyCrates;
@@ -48,6 +48,10 @@ public abstract class CrateBuilder extends FoliaScheduler {
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     protected final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    protected final ConfigManager configManager = this.platform.getConfigManager();
+
+    protected final PropertyManager pluginConfig = this.configManager.getConfig();
 
     protected final FusionPaper fusion = this.platform.getFusion();
 
@@ -169,10 +173,8 @@ public abstract class CrateBuilder extends FoliaScheduler {
     public abstract void open(@NotNull final KeyType type, final boolean checkHand, final boolean isSilent, final int amount, final EventType eventType);
 
     public void displayItem(final Prize prize) {
-        final boolean showQuickCrateItem = ConfigManager.getConfig().getProperty(ConfigKeys.show_quickcrate_item);
-
         // Only related to the item above the crate.
-        if (showQuickCrateItem) {
+        if (this.pluginConfig.getProperty(CrateKeys.show_quickcrate_item)) {
             final HologramManager manager = this.crateManager.getHolograms();
 
             if (manager != null && this.crate.getHologram().isEnabled()) {
@@ -376,8 +378,6 @@ public abstract class CrateBuilder extends FoliaScheduler {
     public @NotNull final ItemStack getRandomGlassPane() {
         return MiscUtils.getRandomPaneColor().withDisplayName(" ").asItemStack();
     }
-
-    protected final SettingsManager config = ConfigManager.getConfig();
 
     /**
      * Calls the crate open event and returns true/false if successful or not.

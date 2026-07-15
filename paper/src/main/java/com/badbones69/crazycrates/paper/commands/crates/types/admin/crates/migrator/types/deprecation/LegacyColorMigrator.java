@@ -2,15 +2,18 @@ package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migr
 
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.enums.MigrationType;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
+import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class LegacyColorMigrator extends ICrateMigrator {
@@ -25,25 +28,29 @@ public class LegacyColorMigrator extends ICrateMigrator {
         final List<String> success = new ArrayList<>();
 
         try {
-            this.config.setProperty(ConfigKeys.command_prefix, AdvUtils.convert(this.config.getProperty(ConfigKeys.command_prefix), true));
-            this.config.setProperty(ConfigKeys.inventory_name, AdvUtils.convert(this.config.getProperty(ConfigKeys.inventory_name), true));
+            this.pluginConfig.setProperty(RootKeys.get_command_prefix, AdvUtils.convert(this.pluginConfig.getProperty(RootKeys.get_command_prefix), true));
+            this.pluginConfig.setProperty(GuiKeys.crate_menu_inventory_name, AdvUtils.convert(this.pluginConfig.getProperty(GuiKeys.crate_menu_inventory_name), true));
 
-            this.config.setProperty(ConfigKeys.menu_button_name, AdvUtils.convert(this.config.getProperty(ConfigKeys.menu_button_name), true));
-            this.config.setProperty(ConfigKeys.menu_button_lore, AdvUtils.convert(this.config.getProperty(ConfigKeys.menu_button_lore), true));
+            final CommentedConfigurationNode configuration = this.pluginConfig.getConfiguration();
 
-            this.config.setProperty(ConfigKeys.next_button_name, AdvUtils.convert(this.config.getProperty(ConfigKeys.next_button_name), true));
-            this.config.setProperty(ConfigKeys.next_button_lore, AdvUtils.convert(this.config.getProperty(ConfigKeys.next_button_lore), true));
+            configuration.node("gui", "buttons", "menu");
 
-            this.config.setProperty(ConfigKeys.back_button_name, AdvUtils.convert(this.config.getProperty(ConfigKeys.back_button_name), true));
-            this.config.setProperty(ConfigKeys.back_button_lore, AdvUtils.convert(this.config.getProperty(ConfigKeys.back_button_lore), true));
+            Map.of(
+                    GuiKeys.gui_filler_button, this.pluginConfig.getProperty(GuiKeys.gui_filler_button),
+                    GuiKeys.gui_menu_button, this.pluginConfig.getProperty(GuiKeys.gui_menu_button),
+                    GuiKeys.gui_next_button, this.pluginConfig.getProperty(GuiKeys.gui_next_button),
+                    GuiKeys.gui_back_button, this.pluginConfig.getProperty(GuiKeys.gui_back_button)
+            ).forEach((key, button) -> {
+                button.setName(AdvUtils.convert(button.getName()));
+                button.setLore(AdvUtils.convert(button.getLore()));
 
-            this.config.setProperty(ConfigKeys.filler_name, AdvUtils.convert(this.config.getProperty(ConfigKeys.filler_name), true));
-            this.config.setProperty(ConfigKeys.filler_lore, AdvUtils.convert(this.config.getProperty(ConfigKeys.filler_lore), true));
+                this.pluginConfig.setProperty(key, button);
+            });
 
             success.add("<green>⤷ config.yml");
 
-            this.config.save();
-            this.config.reload();
+            this.pluginConfig.save();
+            this.pluginConfig.load();
         } catch (Exception exception) {
             failed.add("<red>⤷ config.yml");
         }

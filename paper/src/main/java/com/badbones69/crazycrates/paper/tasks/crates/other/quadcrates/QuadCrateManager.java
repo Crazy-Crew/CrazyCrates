@@ -1,5 +1,8 @@
 package com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates;
 
+import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
@@ -10,8 +13,6 @@ import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
 import net.kyori.adventure.sound.Sound;
 import org.bukkit.*;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
@@ -33,6 +34,10 @@ public class QuadCrateManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final ConfigManager configManager = this.platform.getConfigManager();
+
+    private final PropertyManager pluginConfig = this.configManager.getConfig();
 
     private final CrateManager crateManager = this.platform.getCrateManager();
     private final BukkitUserManager userManager = this.platform.getUserManager();
@@ -286,7 +291,7 @@ public class QuadCrateManager {
 
                 crate.playSound(player, player.getLocation(), "stop-sound", "entity.player.levelup", Sound.Source.MASTER);
             }
-        }.runDelayed(ConfigManager.getConfig().getProperty(ConfigKeys.quad_crate_timer) * 20L));
+        }.runDelayed(this.pluginConfig.getProperty(CrateKeys.quad_crate_timer) * 20L));
     }
 
     /**

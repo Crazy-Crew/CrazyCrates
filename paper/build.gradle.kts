@@ -40,7 +40,6 @@ tasks {
         listOf(
             "com.ryderbelserion.fusion",
             "io.leangen.geantyref",
-            "dev.triumphteam.cmd",
             "org.spongepowered",
             "com.google.gson",
             "org.jspecify",

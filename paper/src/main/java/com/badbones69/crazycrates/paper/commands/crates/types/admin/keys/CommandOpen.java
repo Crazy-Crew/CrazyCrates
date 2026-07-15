@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.keys;
 
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -25,7 +26,6 @@ import org.bukkit.permissions.PermissionDefault;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -97,12 +97,12 @@ public class CommandOpen extends BaseCommand {
 
         final KeyType keyType = getKeyType(type);
 
-        final boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), fileName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1;
+        final boolean hasKey = this.pluginConfig.getProperty(CrateKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), fileName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1;
 
         // If no key, run this.
         if (!hasKey) {
-            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
+            if (this.pluginConfig.getProperty(CrateKeys.need_key_sound_toggle)) {
+                player.playSound(Sound.sound(Key.key(this.pluginConfig.getProperty(CrateKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
             Message.no_keys.sendMessage(player, Map.of(
@@ -156,11 +156,11 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
-        final boolean hasKey = this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), fileName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1;
+        final boolean hasKey = this.pluginConfig.getProperty(CrateKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), fileName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1;
 
         if (!hasKey) {
-            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                player.playSound(Sound.sound(Key.key(this.config.getProperty(ConfigKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
+            if (this.pluginConfig.getProperty(CrateKeys.need_key_sound_toggle)) {
+                player.playSound(Sound.sound(Key.key(this.pluginConfig.getProperty(CrateKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
             Message.no_keys.sendMessage(sender, Map.of(

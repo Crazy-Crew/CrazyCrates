@@ -1,14 +1,12 @@
-package com.badbones69.crazycrates.common;
+package com.ryderbelserion.crazycrates.common;
 
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
-import com.badbones69.crazycrates.common.impl.Settings;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.kyori.adventure.text.Component;
 import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.CrazyCrates;
-import us.crazycrew.crazycrates.api.enums.messages.State;
+import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
+import us.crazycrew.crazycrates.platform.ISettings;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -22,31 +20,26 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
         this.fusion = fusion;
     }
 
-    private Settings settings;
+    protected ConfigManager configManager;
 
     @Override
     public void init() {
         this.fusion.init();
 
-        ConfigManager.load(this.path);
-
-        this.settings = new Settings();
+        this.configManager = new ConfigManager();
+        this.configManager.init();
 
         CratesProvider.register(this);
     }
 
     @Override
     public void reload() {
-        ConfigManager.refresh();
+
     }
 
     @Override
     public void disable() {
         CratesProvider.unregister();
-    }
-
-    public @NonNull FusionKyori getFusion() {
-        return this.fusion;
     }
 
     @Override
@@ -55,22 +48,26 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
     }
 
     @Override
+    public @NonNull ConfigManager getConfigManager() {
+        return this.configManager;
+    }
+
+    public @NonNull FusionKyori getFusion() {
+        return this.fusion;
+    }
+
+    @Override
+    public @NonNull ISettings getSettings() {
+        return null;
+    }
+
+    @Override
     public @NonNull Path getCratesPath() {
         return this.path.resolve("crates");
     }
 
     @Override
-    public @NonNull Settings getSettings() {
-        return this.settings;
-    }
-
-    @Override
     public @NonNull Path getDataPath() {
         return this.path;
-    }
-
-    @Override
-    public @NonNull State getMessageState() {
-        return ConfigManager.getConfig().getProperty(ConfigKeys.message_state);
     }
 }

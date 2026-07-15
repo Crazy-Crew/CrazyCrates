@@ -9,8 +9,6 @@ import com.badbones69.crazycrates.paper.tasks.menus.CratePreviewMenu;
 import com.badbones69.crazycrates.paper.tasks.menus.CrateTierMenu;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateHologram;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.tasks.crates.effects.SoundEffect;
@@ -32,6 +30,9 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
+import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
@@ -55,6 +56,10 @@ public class Crate {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final ConfigManager configManager = this.platform.getConfigManager();
+
+    private final PropertyManager pluginConfig = this.configManager.getConfig();
 
     private final ButtonManager buttonManager = this.platform.getButtonManager();
 
@@ -1012,7 +1017,7 @@ public class Crate {
     }
 
     public final boolean useRequiredKeys() {
-        return ConfigManager.getConfig().getProperty(ConfigKeys.crate_use_required_keys) && this.requiredKeys > 0;
+        return this.pluginConfig.getProperty(CrateKeys.use_required_keys) && this.requiredKeys > 0;
     }
 
     public final boolean isTrackingOpening() {

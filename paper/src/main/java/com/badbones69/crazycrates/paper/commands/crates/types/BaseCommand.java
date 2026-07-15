@@ -1,6 +1,8 @@
 package com.badbones69.crazycrates.paper.commands.crates.types;
 
-import ch.jalu.configme.SettingsManager;
+import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
@@ -28,8 +30,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
@@ -41,6 +41,10 @@ public abstract class BaseCommand {
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     protected final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    protected final ConfigManager configManager = this.platform.getConfigManager();
+
+    protected final PropertyManager pluginConfig = this.configManager.getConfig();
 
     protected final ButtonManager buttonManager = this.platform.getButtonManager();
 
@@ -61,8 +65,6 @@ public abstract class BaseCommand {
     protected final CrateManager crateManager = this.platform.getCrateManager();
 
     protected final PaperFileManager fileManager = this.platform.getFileManager();
-
-    protected final SettingsManager config = ConfigManager.getConfig();
 
     protected void addKey(@NotNull final CommandSender sender, @NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType type, final int amount, final boolean isSilent, final boolean isGiveAll) {
         addKey(sender, player, null, crate, type, amount, isSilent, isGiveAll);
@@ -257,16 +259,17 @@ public abstract class BaseCommand {
                 "{key}", crate.getKeyName()
             );
 
-            boolean fullMessage = this.config.getProperty(ConfigKeys.notify_player_when_inventory_full);
-            boolean inventoryCheck = this.config.getProperty(ConfigKeys.give_virtual_keys_when_inventory_full);
-
             EventManager.logEvent(EventType.event_key_given, name, sender, crate, type, clamp);
 
-            if (!isGiveAll) Message.command_gave_player_keys.sendMessage(sender, placeholders);
+            if (!isGiveAll) {
+                Message.command_gave_player_keys.sendMessage(sender, placeholders);
+            }
 
-            if (isSilent) return;
+            if (isSilent) {
+                return;
+            }
 
-            if (!inventoryCheck || !fullMessage && !MiscUtils.isInventoryFull(player) && player.isOnline()) {
+            if (!this.pluginConfig.getProperty(CrateKeys.give_virtual_keys_when_inventory_full) || !this.pluginConfig.getProperty(CrateKeys.notify_player_when_inventory_full) && !MiscUtils.isInventoryFull(player) && player.isOnline()) {
                 Message.obtaining_keys.sendMessage(player, placeholders);
             }
 

@@ -1,10 +1,10 @@
 package com.badbones69.crazycrates.paper.listeners.crates;
 
-import ch.jalu.configme.SettingsManager;
+import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
+import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
@@ -28,6 +28,10 @@ public class CrateOpenListener implements Listener {
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
 
+    private final ConfigManager configManager = this.platform.getConfigManager();
+
+    private final PropertyManager pluginConfig = this.configManager.getConfig();
+
     private final FusionPaper fusion = this.platform.getFusion();
 
     private final Server server = this.plugin.getServer();
@@ -35,8 +39,6 @@ public class CrateOpenListener implements Listener {
     private final CrateManager crateManager = this.platform.getCrateManager();
 
     private final BukkitUserManager userManager = this.platform.getUserManager();
-
-    private final SettingsManager config = ConfigManager.getConfig();
 
     @EventHandler
     public void onCrateOpen(CrateOpenEvent event) {
@@ -87,9 +89,11 @@ public class CrateOpenListener implements Listener {
 
                 if (broadcastToggle && !event.isSilent()) {
                     if (!broadcastMessage.isBlank()) {
+                        final String prefix = this.pluginConfig.getProperty(RootKeys.get_command_prefix);
+
                         this.server.broadcast(this.fusion.asComponent(player, broadcastMessage, Map.of(
                                 "%crate%", fancyName,
-                                "%prefix%", this.config.getProperty(ConfigKeys.command_prefix),
+                                "%prefix%", prefix,
                                 "%player%", playerName
                         )));
                     }
@@ -106,11 +110,13 @@ public class CrateOpenListener implements Listener {
         if (configuration.getBoolean("opening-command.toggle", false)) {
             final List<String> commands = configuration.getStringList("opening-command.commands");
 
+            final String prefix = this.pluginConfig.getProperty(RootKeys.get_command_prefix);
+
             for (final String line : commands) {
                 if (line.isBlank()) continue;
 
                 MiscUtils.sendCommand(player, line, Map.of(
-                        "%prefix%", this.config.getProperty(ConfigKeys.command_prefix),
+                        "%prefix%", prefix,
                         "%player%", playerName,
                         "%crate%", fileName
                 ));

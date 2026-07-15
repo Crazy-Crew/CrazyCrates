@@ -1,6 +1,9 @@
 package com.badbones69.crazycrates.paper.listeners.crates.types;
 
-import ch.jalu.configme.SettingsManager;
+import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
+import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
@@ -12,8 +15,6 @@ import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.other.CosmicCrateManager;
@@ -50,6 +51,10 @@ public class CosmicCrateListener implements Listener {
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
 
+    private final ConfigManager configManager = this.platform.getConfigManager();
+
+    private final PropertyManager pluginConfig = this.configManager.getConfig();
+
     private final FusionPaper fusion = this.platform.getFusion();
 
     private final Server server = this.plugin.getServer();
@@ -59,8 +64,6 @@ public class CosmicCrateListener implements Listener {
     private final CrateManager crateManager = this.platform.getCrateManager();
 
     private final BukkitUserManager userManager = this.platform.getUserManager();
-
-    private final SettingsManager config = ConfigManager.getConfig();
 
     @EventHandler
     public void onPrizeReceive(InventoryClickEvent event) {
@@ -295,7 +298,7 @@ public class CosmicCrateListener implements Listener {
 
             if (broadcastToggle && !broadcastMessage.isBlank()) { //todo() add a permission?
                 this.server.broadcast(this.fusion.asComponent(player, broadcastMessage, Map.of(
-                        "%prefix%", this.config.getProperty(ConfigKeys.command_prefix),
+                        "%prefix%", this.pluginConfig.getProperty(RootKeys.get_command_prefix),
                         "%player%", player.getName()
                 )));
             }
@@ -392,7 +395,7 @@ public class CosmicCrateListener implements Listener {
 
         player.updateInventory();
 
-        if (ConfigManager.getConfig().getProperty(ConfigKeys.cosmic_crate_timeout)) {
+        if (this.pluginConfig.getProperty(CrateKeys.cosmic_crate_timeout)) {
             this.crateManager.addCrateTask(player, new TimerTask() {
                 @Override
                 public void run() {

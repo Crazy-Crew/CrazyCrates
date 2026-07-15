@@ -1,10 +1,10 @@
 package com.badbones69.crazycrates.paper.tasks.menus;
 
+import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.builders.gui.DynamicInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.enums.Permissions;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.gui.objects.GuiItem;
 import com.ryderbelserion.fusion.paper.builders.gui.objects.border.GuiFiller;
@@ -151,10 +151,10 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
                             return;
                         }
 
-                        if (this.config.getProperty(ConfigKeys.enable_crate_menu)) {
+                        if (this.pluginConfig.getProperty(GuiKeys.is_crate_menu_enabled)) {
                             this.player.playSound(this.player.getLocation(), Sound.UI_BUTTON_CLICK, 1f, 1f);
 
-                            new CrateMainMenu(this.player, this.config.getProperty(ConfigKeys.inventory_name), this.config.getProperty(ConfigKeys.inventory_rows)).open();
+                            new CrateMainMenu(this.player, this.pluginConfig.getProperty(GuiKeys.crate_menu_inventory_name), this.pluginConfig.getProperty(GuiKeys.crate_menu_inventory_rows)).open();
                         }
                     }));
 

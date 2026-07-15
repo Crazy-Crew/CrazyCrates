@@ -1,13 +1,13 @@
 package com.badbones69.crazycrates.paper.managers;
 
-import ch.jalu.configme.SettingsManager;
+import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.events.PlayerReceiveKeyEvent;
 import com.badbones69.crazycrates.paper.utils.ItemUtil;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
@@ -46,11 +46,14 @@ public class BukkitUserManager extends UserManager {
 
     private final FusionPaper fusion;
 
+    private final ConfigManager configManager;
+
     public BukkitUserManager(@NonNull final CrazyCratesPaper platform, @NonNull final CrateManager crateManager) {
         this.plugin = platform.getPlugin();
         this.server = this.plugin.getServer();
         this.pluginManager = this.server.getPluginManager();
 
+        this.configManager = platform.getConfigManager();
         this.fusion = platform.getFusion();
 
         this.crateManager = crateManager;
@@ -151,14 +154,14 @@ public class BukkitUserManager extends UserManager {
 
         final Player player = getUser(uuid);
 
-        final SettingsManager config = ConfigManager.getConfig();
+        final PropertyManager pluginConfig = this.configManager.getConfig();
 
         switch (keyType) {
             case physical_key -> {
-                if (config.getProperty(ConfigKeys.give_virtual_keys_when_inventory_full) && MiscUtils.isInventoryFull(player) && crate.getCrateType() != CrateType.crate_on_the_go) {
+                if (pluginConfig.getProperty(CrateKeys.give_virtual_keys_when_inventory_full) && MiscUtils.isInventoryFull(player) && crate.getCrateType() != CrateType.crate_on_the_go) {
                     addVirtualKeys(uuid, fileName, amount);
 
-                    if (config.getProperty(ConfigKeys.notify_player_when_inventory_full)) {
+                    if (pluginConfig.getProperty(CrateKeys.notify_player_when_inventory_full)) {
                         Message.command_cannot_give_player_keys.sendMessage(player, Map.of(
                                 "{keytype}", keyType.getFriendlyName(),
                                 "{amount}", String.valueOf(amount),

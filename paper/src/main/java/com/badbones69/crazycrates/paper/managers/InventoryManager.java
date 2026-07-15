@@ -1,13 +1,16 @@
 package com.badbones69.crazycrates.paper.managers;
 
-import ch.jalu.configme.SettingsManager;
+import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
+import com.ryderbelserion.fusion.paper.builders.items.types.custom.CustomBuilder;
+import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
-import com.badbones69.crazycrates.common.config.beans.ModelData;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Tier;
-import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.ryderbelserion.fusion.paper.builders.gui.types.paginated.PaginatedGui;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import org.bukkit.Server;
@@ -16,57 +19,73 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @SuppressWarnings("WhileLoopReplaceableByForEach")
 public class InventoryManager {
 
-    private final SettingsManager config = ConfigManager.getConfig();
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final ConfigManager configManager = this.platform.getConfigManager();
+    private final PropertyManager pluginConfig = this.configManager.getConfig();
+
     private final Server server = this.plugin.getServer();
 
+    private ItemBuilder fillerButton;
     private ItemBuilder menuButton;
     private ItemBuilder nextButton;
     private ItemBuilder backButton;
 
     public void loadButtons() {
-        final ModelData menuModelData = this.config.getProperty(ConfigKeys.menu_button_item_model);
+        Map.of(
+                "menu-button", this.pluginConfig.getProperty(GuiKeys.gui_menu_button),
+                "back-button", this.pluginConfig.getProperty(GuiKeys.gui_back_button),
+                "next-button", this.pluginConfig.getProperty(GuiKeys.gui_next_button),
+                "filler-button", this.pluginConfig.getProperty(GuiKeys.gui_filler_button)
+        ).forEach((name, button) -> {
+            final ItemBuilder builder = ItemBuilder.from(button.getItem())
+                    .withDisplayName(button.getName())
+                    .withDisplayLore(button.getLore());
 
-        this.menuButton = ItemBuilder.from(this.config.getProperty(ConfigKeys.menu_button_item).toLowerCase())
-                .withDisplayName(this.config.getProperty(ConfigKeys.menu_button_name))
-                .withDisplayLore(this.config.getProperty(ConfigKeys.menu_button_lore));
+            final CustomBuilder customBuilder = builder.asCustomBuilder();
 
-        ItemUtil.addCustomModel(this.menuButton, this.config.getProperty(ConfigKeys.menu_button_model_data));
-        ItemUtil.addItemModel(this.menuButton, menuModelData.getNamespace(), menuModelData.getId());
+            customBuilder.setItemModel(button.getNamespace(), button.getId());
+            customBuilder.setCustomModelData(button.getModelData());
 
-        final ModelData nextModelData = this.config.getProperty(ConfigKeys.next_button_item_model);
+            customBuilder.build();
 
-        this.nextButton = ItemBuilder.from(this.config.getProperty(ConfigKeys.next_button_item).toLowerCase())
-                .withDisplayName(this.config.getProperty(ConfigKeys.next_button_name))
-                .withDisplayLore(this.config.getProperty(ConfigKeys.next_button_lore));
-
-        ItemUtil.addCustomModel(this.nextButton, this.config.getProperty(ConfigKeys.next_button_model_data));
-        ItemUtil.addItemModel(this.nextButton, nextModelData.getNamespace(), nextModelData.getId());
-
-        final ModelData backModelData = this.config.getProperty(ConfigKeys.back_button_item_model);
-
-        this.backButton = ItemBuilder.from(this.config.getProperty(ConfigKeys.back_button_item).toLowerCase())
-                .withDisplayName(this.config.getProperty(ConfigKeys.back_button_name))
-                .withDisplayLore(this.config.getProperty(ConfigKeys.back_button_lore));
-
-        ItemUtil.addCustomModel(this.backButton, this.config.getProperty(ConfigKeys.back_button_model_data));
-        ItemUtil.addItemModel(this.backButton, backModelData.getNamespace(), backModelData.getId());
+            switch (name) {
+                case "filler-button" -> {
+                    if (button.isEnabled()) {
+                        this.fillerButton = builder;
+                    }
+                }
+                case "menu-button" -> this.menuButton = builder;
+                case "back-button" -> this.backButton = builder;
+                case "next-button" -> this.nextButton = builder;
+            }
+        });
     }
 
     public final ItemStack getMenuButton(@NotNull final Player player) {
         return this.menuButton.asItemStack(player);
+    }
+
+    public final Optional<ItemStack> getFillerButton(@NotNull final Player player) {
+        if (this.fillerButton == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(this.fillerButton.asItemStack(player));
     }
 
     public final ItemStack getNextButton(@Nullable final Player player, @Nullable final Tier tier, @NotNull final PaginatedGui gui) {
@@ -150,6 +169,8 @@ public class InventoryManager {
     public void closePreview() {
         final Iterator<UUID> viewers = getPreviewViewers().iterator();
 
+        final boolean isPreviewExitMessageSent = this.pluginConfig.getProperty(CrateKeys.send_preview_taken_out_message);
+
         while (viewers.hasNext()) {
             final UUID uuid = viewers.next();
 
@@ -163,7 +184,7 @@ public class InventoryManager {
 
             player.closeInventory(InventoryCloseEvent.Reason.UNLOADED);
 
-            if (this.config.getProperty(ConfigKeys.send_preview_taken_out_message)) {
+            if (isPreviewExitMessageSent) {
                 Message.preview_force_exit.sendMessage(player);
             }
         }

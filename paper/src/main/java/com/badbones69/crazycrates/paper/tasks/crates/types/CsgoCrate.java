@@ -6,7 +6,6 @@ import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
@@ -18,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
@@ -99,7 +99,7 @@ public class CsgoCrate extends CrateBuilder {
 
                         crateManager.endCrate(crate, player);
 
-                        final String material = config.getProperty(ConfigKeys.crate_csgo_finished_material);
+                        final String material = pluginConfig.getProperty(CrateKeys.csgo_finished_material);
 
                         final ItemStack itemStack = ItemBuilder.from(material.isEmpty() ? Material.GRAY_STAINED_GLASS.getKey().getKey() : material).withDisplayName(" ").asItemStack();
 
@@ -147,7 +147,7 @@ public class CsgoCrate extends CrateBuilder {
     private void populate() {
         handleAnimation(true);
 
-        final String material = this.config.getProperty(ConfigKeys.crate_csgo_cycling_material);
+        final String material = this.pluginConfig.getProperty(CrateKeys.csgo_cycle_material);
 
         if (!material.isEmpty()) {
             final ItemStack itemStack = ItemBuilder.from(material).withDisplayName(" ").asItemStack();
@@ -207,7 +207,7 @@ public class CsgoCrate extends CrateBuilder {
     }
 
     private List<Integer> getBorder() {
-        final String material = this.config.getProperty(ConfigKeys.crate_csgo_cycling_material);
+        final String material = this.pluginConfig.getProperty(CrateKeys.csgo_cycle_material);
 
         if (!material.isEmpty()) {
             return Arrays.asList(0, 1, 2, 3, 5, 6, 7, 8, 18, 19, 20, 21, 23, 24, 25, 26);

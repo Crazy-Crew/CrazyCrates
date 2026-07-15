@@ -14,6 +14,7 @@ import java.util.List;
  * @version 0.7.0
  * @since 0.5.0
  */
+@Deprecated(forRemoval = true)
 public interface IServer {
 
     /**
@@ -105,6 +106,7 @@ public interface IServer {
      * @return {@link ISettings}
      * @since 0.5.0
      */
+    @Deprecated(forRemoval = true)
     @NotNull ISettings getSettings();
 
 }

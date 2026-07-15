@@ -1,9 +1,9 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin;
 
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
@@ -37,7 +37,7 @@ public class CommandReload extends BaseCommand {
         this.fileManager.refresh(false)
                 .addFolder(this.path.resolve("schematics"), FileType.NBT)
                 .addFolder(this.path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE))
-                .addFolder(this.path.resolve("buttons"), FileType.YAML)
+                .addFolder(path.resolve("buttons"), FileType.YAML)
                 .addFile(version, FileType.JSON);
 
         this.fileManager.addPaperFolder(this.path.resolve("crates"))
@@ -49,7 +49,7 @@ public class CommandReload extends BaseCommand {
 
         MiscUtils.save();
 
-        if (this.config.getProperty(ConfigKeys.take_out_of_preview)) {
+        if (this.pluginConfig.getProperty(CrateKeys.take_out_of_preview)) {
             this.inventoryManager.closePreview();
         }
 

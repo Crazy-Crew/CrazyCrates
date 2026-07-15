@@ -1,12 +1,16 @@
 package com.badbones69.crazycrates.paper.tasks.crates;
 
-import ch.jalu.configme.SettingsManager;
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
+import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
+import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
+import us.crazycrew.crazycrates.api.config.impl.types.editor.EditorKeys;
+import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
-import com.badbones69.crazycrates.common.config.impl.EditorKeys;
 import com.badbones69.crazycrates.paper.listeners.items.NexoInteractListener;
 import com.badbones69.crazycrates.paper.listeners.items.OraxenInteractListener;
 import com.badbones69.crazycrates.paper.managers.BukkitKeyManager;
@@ -61,12 +65,9 @@ import org.jetbrains.annotations.Nullable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.joml.Matrix4f;
-import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
-import com.badbones69.crazycrates.common.config.ConfigManager;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
@@ -88,34 +89,26 @@ import java.util.stream.Stream;
 
 public class CrateManager {
 
-    private final InventoryManager inventoryManager;
-    private final BukkitKeyManager keyManager;
+    private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
-    private final ComponentLogger logger;
-    private final PluginManager pluginManager;
-    private final CrazyCrates plugin;
-    private final Server server;
+    private final CrazyCratesPaper platform = this.plugin.getPlatform();
 
-    private final PaperFileManager fileManager;
-    private final CrazyCratesPaper platform;
-    private final FusionPaper fusion;
-    private final Path dataPath;
+    private final ConfigManager configManager = this.platform.getConfigManager();
 
-    public CrateManager(@NonNull final CrazyCratesPaper platform, @NonNull final InventoryManager inventoryManager, @NonNull final BukkitKeyManager keyManager) {
-        this.platform = platform;
+    private final PropertyManager pluginConfig = this.configManager.getConfig();
 
-        this.fileManager = this.platform.getFileManager();
-        this.dataPath = this.platform.getDataPath();
-        this.fusion = this.platform.getFusion();
+    private final PropertyManager editorConfig = this.configManager.getEditorConfig();
 
-        this.plugin = this.platform.getPlugin();
-        this.logger = this.plugin.getComponentLogger();
-        this.server = this.plugin.getServer();
-        this.pluginManager = this.server.getPluginManager();
+    private final PaperFileManager fileManager = this.platform.getFileManager();
+    private final FusionPaper fusion = this.platform.getFusion();
+    private final Path dataPath = this.platform.getDataPath();
 
-        this.inventoryManager = inventoryManager;
-        this.keyManager = keyManager;
-    }
+    private final ComponentLogger logger = this.plugin.getComponentLogger();
+    private final Server server = this.plugin.getServer();
+    private final PluginManager pluginManager = this.server.getPluginManager();
+
+    private final InventoryManager inventoryManager = this.platform.getInventoryManager();
+    private final BukkitKeyManager keyManager = this.platform.getKeyManager();
 
     private final List<QuadCrateManager> quadSessions = new ArrayList<>();
     private final List<CrateLocation> crateLocations = new ArrayList<>();
@@ -304,9 +297,7 @@ public class CrateManager {
      * Load the holograms.
      */
     public void loadHolograms() {
-        final String pluginName = this.config.getProperty(ConfigKeys.hologram_plugin).toLowerCase();
-
-        switch (pluginName) {
+        switch (this.pluginConfig.getProperty(RootKeys.get_hologram_plugin)) {
             case "decentholograms" -> {
                 if (!Plugins.decent_holograms.isEnabled()) return;
 
@@ -367,10 +358,8 @@ public class CrateManager {
         return this.platform.getCrateFiles(false);
     }
 
-    private final SettingsManager config = ConfigManager.getConfig();
-
     public void loadExamples() {
-        if (this.config.getProperty(ConfigKeys.update_examples_folder)) {
+        if (this.pluginConfig.getProperty(RootKeys.is_update_examples_folder)) {
             final Path examples = this.dataPath.resolve("examples");
 
             if (Files.exists(examples)) {
@@ -714,7 +703,7 @@ public class CrateManager {
     public void openCrate(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, @NotNull final Location location, final boolean virtualCrate, final boolean checkHand, final boolean isSilent, final EventType eventType) {
         final String worldName = player.getWorld().getName();
 
-        for (String world : this.config.getProperty(ConfigKeys.disabled_worlds)) {
+        for (final String world : this.pluginConfig.getProperty(CrateKeys.disabled_worlds)) {
             if (world.equalsIgnoreCase(worldName)) {
                 Message.world_disabled.sendMessage(player, "{world}", worldName);
 
@@ -723,11 +712,11 @@ public class CrateManager {
         }
 
         if (crate.getCrateType() == CrateType.menu) {
-            if (config.getProperty(ConfigKeys.enable_crate_menu)) {
+            if (this.pluginConfig.getProperty(GuiKeys.is_crate_menu_enabled)) {
                 new CrateMainMenu(
                         player,
-                        this.config.getProperty(ConfigKeys.inventory_name),
-                        this.config.getProperty(ConfigKeys.inventory_rows)
+                        this.pluginConfig.getProperty(GuiKeys.crate_menu_inventory_name),
+                        this.pluginConfig.getProperty(GuiKeys.crate_menu_inventory_rows)
                 ).open();
 
                 return;
@@ -1229,8 +1218,6 @@ public class CrateManager {
         return this.crates.contains(crate);
     }
 
-    private final SettingsManager editor = ConfigManager.getEditor();
-
     public void addCrateByLocation(@NotNull final Player player, @NotNull final Location location) {
         if (!player.hasPermission("crazycrates.editor")) {
             removeEditorCrate(player);
@@ -1250,14 +1237,14 @@ public class CrateManager {
             return;
         }
 
-        if (crate.getCrateType() == CrateType.menu && !this.config.getProperty(ConfigKeys.enable_crate_menu)) {
+        if (crate.getCrateType() == CrateType.menu && !this.pluginConfig.getProperty(GuiKeys.is_crate_menu_enabled)) {
             Message.crate_cannot_set_type.sendMessage(player);
 
             return;
         }
 
         if (isCrateLocation(location)) {
-            if (this.editor.getProperty(EditorKeys.overwrite_old_crate_locations)) {
+            if (this.editorConfig.getProperty(EditorKeys.overwrite_old_crate_locations)) {
                 final CrateLocation crateLocation = getCrateLocation(location);
 
                 if (crateLocation == null) return;

@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.player;
 
+import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
@@ -9,7 +10,6 @@ import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 
 public class CommandHelp extends BaseCommand {
 
@@ -17,11 +17,11 @@ public class CommandHelp extends BaseCommand {
     @Permission("crazycrates.gui")
     @Syntax("/crazycrates")
     public void gui(Player player) {
-        if (this.config.getProperty(ConfigKeys.enable_crate_menu)) {
+        if (this.pluginConfig.getProperty(GuiKeys.is_crate_menu_enabled)) {
             new CrateMainMenu(
                     player,
-                    this.config.getProperty(ConfigKeys.inventory_name),
-                    this.config.getProperty(ConfigKeys.inventory_rows)
+                    this.pluginConfig.getProperty(GuiKeys.crate_menu_inventory_name),
+                    this.pluginConfig.getProperty(GuiKeys.crate_menu_inventory_rows)
             ).open();
 
             return;

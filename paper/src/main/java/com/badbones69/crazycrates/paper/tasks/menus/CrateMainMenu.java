@@ -1,17 +1,16 @@
 package com.badbones69.crazycrates.paper.tasks.menus;
 
+import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiBorder;
+import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
+import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
-import com.badbones69.crazycrates.common.config.beans.ModelData;
 import com.badbones69.crazycrates.paper.api.builders.gui.StaticInventoryBuilder;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
-import com.badbones69.crazycrates.common.config.impl.ConfigKeys;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
-import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiBorder;
-import com.ryderbelserion.fusion.paper.builders.gui.objects.border.GuiFiller;
 import com.ryderbelserion.fusion.paper.builders.gui.types.simple.SimpleGui;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import io.papermc.paper.persistence.PersistentDataContainerView;
@@ -45,23 +44,10 @@ public class CrateMainMenu extends StaticInventoryBuilder {
     public void open() {
         final UUID uuid = this.player.getUniqueId();
 
-        if (this.config.getProperty(ConfigKeys.filler_toggle)) {
-            final GuiFiller guiFiller = this.gui.getFiller();
+        this.inventoryManager.getFillerButton(this.player).ifPresent(itemStack -> this.gui.getFiller().fill(GuiBorder.REMAINING_SLOTS, itemStack));
 
-            final ModelData fillerModel = this.config.getProperty(ConfigKeys.filler_item_model);
-
-            final ItemBuilder builder = ItemBuilder.from(this.config.getProperty(ConfigKeys.filler_item))
-                    .withDisplayName(this.config.getProperty(ConfigKeys.filler_name))
-                    .withDisplayLore(this.config.getProperty(ConfigKeys.filler_lore));
-
-            ItemUtil.addItemModel(builder, fillerModel.getNamespace(), fillerModel.getId());
-            ItemUtil.addCustomModel(builder, this.config.getProperty(ConfigKeys.filler_model_data));
-
-            guiFiller.fill(GuiBorder.REMAINING_SLOTS, builder.asItemStack(player));
-        }
-
-        if (this.config.getProperty(ConfigKeys.gui_customizer_toggle)) {
-            for (String custom : this.config.getProperty(ConfigKeys.gui_customizer)) {
+        if (this.pluginConfig.getProperty(GuiKeys.is_gui_customizer_enabled)) {
+            for (final String custom : this.pluginConfig.getProperty(GuiKeys.gui_customizer)) {
                 ItemBuilder item = ItemBuilder.from(ItemType.STONE);
 
                 int slot = 0;
@@ -169,9 +155,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
                 switch (event.getClick()) {
                     case ClickType.LEFT -> {
-                        final boolean isLeftClickToPreview = this.config.getProperty(ConfigKeys.crate_virtual_interaction);
-
-                        if (isLeftClickToPreview) {
+                        if (this.pluginConfig.getProperty(CrateKeys.crate_virtual_interaction)) {
                             openPreview(crate, fancyName);
                         } else {
                             openCrate(uuid, crate, fileName, fancyName);
@@ -179,9 +163,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
                     }
 
                     case ClickType.RIGHT -> {
-                        final boolean isRightClickToOpen = this.config.getProperty(ConfigKeys.crate_virtual_interaction);
-
-                        if (isRightClickToOpen) {
+                        if (this.pluginConfig.getProperty(CrateKeys.crate_virtual_interaction)) {
                             openCrate(uuid, crate, fileName, fancyName);
                         } else {
                             openPreview(crate, fancyName);
@@ -207,18 +189,15 @@ public class CrateMainMenu extends StaticInventoryBuilder {
         if (this.userManager.getVirtualKeys(uuid, fileName) >= 1) {
             hasKey = true;
         } else {
-            if (this.config.getProperty(ConfigKeys.virtual_accepts_physical_keys) && this.userManager.hasPhysicalKey(uuid, fileName, false)) {
+            if (this.pluginConfig.getProperty(CrateKeys.virtual_accepts_physical_keys) && this.userManager.hasPhysicalKey(uuid, fileName, false)) {
                 hasKey = true;
                 keyType = KeyType.physical_key;
             }
         }
 
         if (!hasKey) {
-            if (this.config.getProperty(ConfigKeys.need_key_sound_toggle)) {
-                final String property = this.config.getProperty(ConfigKeys.need_key_sound);
-                final Sound sound = Sound.sound(Key.key(property), Sound.Source.MASTER, 1f, 1f);
-
-                this.player.playSound(sound);
+            if (this.pluginConfig.getProperty(CrateKeys.need_key_sound_toggle)) {
+                this.player.playSound(Sound.sound(Key.key(this.pluginConfig.getProperty(CrateKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
             }
 
             Message.no_virtual_keys.sendMessage(this.player, "{crate}", fancyName);
@@ -228,7 +207,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
 
         final String worldName = this.player.getWorld().getName();
 
-        for (String world : this.config.getProperty(ConfigKeys.disabled_worlds)) {
+        for (final String world : this.pluginConfig.getProperty(CrateKeys.disabled_worlds)) {
             if (world.equalsIgnoreCase(worldName)) {
                 Message.world_disabled.sendMessage(this.player, "{world}", worldName);
 
