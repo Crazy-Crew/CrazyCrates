@@ -111,6 +111,7 @@ public class CrateKeys implements IPropertyHolder {
             newProperty("entity.villager.no", "crate", "keys", "key-sound", "name");
 
     @Comment("How long should the quad crate be active?")
+    @Disabled("This option has been moved to be per crate file.")
     public static final Property<Integer> quad_crate_timer =
             newProperty(300, "crate", "quad-crate", "timer");
 

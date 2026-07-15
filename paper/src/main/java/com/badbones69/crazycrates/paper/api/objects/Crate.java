@@ -133,6 +133,9 @@ public class Crate {
     private boolean isKnockBackEnabled;
 
     private final List<String> disabledWorlds = new ArrayList<>();
+
+    private int quadCrateTimer = -1;
+
     /**
      * @param name The name of the crate.
      * @param crateType The crate type of the crate.
@@ -316,6 +319,8 @@ public class Crate {
                 this.tierSum = this.tiers.stream().filter(tier -> tier.getWeight() != -1).mapToDouble(Tier::getWeight).sum();
             }
 
+            case quad_crate -> this.quadCrateTimer = config.hasProperty(CrateKeys.quad_crate_timer) ? config.getProperty(CrateKeys.quad_crate_timer) : this.section.getInt("Settings.Quad-Crate.Timer", 300);
+
             case casino -> this.tierSum = this.tiers.stream().filter(tier -> tier.getWeight() != -1).mapToDouble(Tier::getWeight).sum();
         }
     }
@@ -342,6 +347,9 @@ public class Crate {
         return this.disabledWorlds;
     }
 
+    public final int getQuadCrateTimer() {
+        return this.quadCrateTimer;
+    }
 
     public final boolean isKnockBackEnabled() {
         return this.isKnockBackEnabled;

@@ -84,6 +84,10 @@ Crate:
     Knock-Back: true
     # A list of worlds the crate can't work in.
     Disabled-Worlds: []
+    # Crate type specific settings.
+    Quad-Crate:
+      # How long should the quad crate be active?
+      Timer: 300
     # Handles settings related to the border
     Border:
       # Settings related to the glass border

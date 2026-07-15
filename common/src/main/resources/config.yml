@@ -211,10 +211,6 @@ crate:
     physical-crate-accepts-physical-keys: true
     # Should a physical crate accept virtual keys?
     physical-crate-accepts-virtual-keys: true
-  # Settings related to QuadCrate
-  quad-crate:
-    # How long should the quad crate be active?
-    timer: 300
   # This option if set to true will force the crate to take the required keys set in the crate file
   use-required-keys: false
   # This section contains settings related to different crate types.
