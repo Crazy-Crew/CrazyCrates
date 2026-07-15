@@ -130,6 +130,8 @@ public class Crate {
 
     private String animationName;
 
+    private boolean isKnockBackEnabled;
+
     /**
      * @param name The name of the crate.
      * @param crateType The crate type of the crate.
@@ -281,11 +283,9 @@ public class Crate {
         ItemUtil.addItemModel(this.borderItem, this.section.getString("Preview.Glass.Model.Namespace", ""), this.section.getString("Preview.Glass.Model.Id", ""));
         ItemUtil.addCustomModel(this.borderItem, this.section.getString("Preview.Glass.Custom-Model-Data", ""));
 
-        @NotNull final String previewTierBorderName = this.section.getString("tier-preview.glass.name", " ");
-
         this.previewTierBorderItem = ItemBuilder.from(this.section.getString("tier-preview.glass.item", "gray_stained_glass_pane").toLowerCase())
                 .hideComponents(this.section.getStringList("tier-preview.glass.flags.components"))
-                .withDisplayName(previewTierBorderName);
+                .withDisplayName(this.section.getString("tier-preview.glass.name", " "));
 
         ItemUtil.addItemModel(this.previewTierBorderItem, this.section.getString("tier-preview.glass.model.namespace", ""), this.section.getString("tier-preview.glass.model.id", ""));
         ItemUtil.addCustomModel(this.previewTierBorderItem, this.section.getString("tier-preview.glass.custom-model-data", ""));
@@ -297,6 +297,10 @@ public class Crate {
 
             this.color = ColorUtils.getColor(this.section.getString("particles.color", "235,64,52"));
         }
+
+        final PropertyManager config = this.configManager.getConfig();
+
+        this.isKnockBackEnabled = config.hasProperty(CrateKeys.is_knock_back_enabled) ? config.getProperty(CrateKeys.is_knock_back_enabled) : this.section.getBoolean("Settings.Knock-Back", true);
 
         this.hologram = hologram;
 
@@ -329,6 +333,10 @@ public class Crate {
 
     public @Nullable Particle getParticle() {
         return this.particle;
+    }
+
+    public final boolean isKnockBackEnabled() {
+        return this.isKnockBackEnabled;
     }
 
     /**

@@ -2,6 +2,7 @@ package us.crazycrew.crazycrates.api.config.impl.types.config.crate;
 
 import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.api.config.annotations.Comment;
+import us.crazycrew.crazycrates.api.config.annotations.Disabled;
 import us.crazycrew.crazycrates.api.config.properties.builders.AliasBuilder;
 import us.crazycrew.crazycrates.api.config.properties.builders.CommentsBuilder;
 import us.crazycrew.crazycrates.api.config.properties.interfaces.IPropertyHolder;
@@ -61,6 +62,7 @@ public class CrateKeys implements IPropertyHolder {
             newProperty(true, "crate", "quickcrate-display-item");
 
     @Comment("If crates should knock you back if you have no keys.")
+    @Disabled("This option has been moved to be per crate file.")
     public static final Property<Boolean> is_knock_back_enabled =
             newProperty(true, "crate", "knock-back");
 

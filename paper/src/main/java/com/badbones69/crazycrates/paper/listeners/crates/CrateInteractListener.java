@@ -193,7 +193,7 @@ public class CrateInteractListener implements Listener {
 
     private void lackingKey(@NotNull final Player player, @NotNull final Crate crate, @NotNull final Location location, final int currentKeys, final int amount) {
         if (crate.getCrateType() != CrateType.crate_on_the_go) {
-            if (this.pluginConfig.getProperty(CrateKeys.is_knock_back_enabled)) {
+            if (crate.isKnockBackEnabled()) {
                 knockback(player, location);
             }
 

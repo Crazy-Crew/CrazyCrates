@@ -74,6 +74,8 @@ Crate:
     # This defines whether we should track how many times players opened this crate
     # True means track, False means don't track.
     Tracking-Crate-Opening: false
+    # Should players be knocked back if they don't have keys?
+    Knock-Back: true
     # Handles settings related to the border
     Border:
       # Settings related to the glass border
