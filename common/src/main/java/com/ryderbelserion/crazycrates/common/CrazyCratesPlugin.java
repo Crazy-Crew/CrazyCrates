@@ -6,7 +6,6 @@ import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.CrazyCrates;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.platform.ISettings;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -54,11 +53,6 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
 
     public @NonNull FusionKyori getFusion() {
         return this.fusion;
-    }
-
-    @Override
-    public @NonNull ISettings getSettings() {
-        return null;
     }
 
     @Override

@@ -100,13 +100,4 @@ public interface IServer {
      */
     @NotNull KeyManager getKeyManager();
 
-    /**
-     * Gets available config options in a friendly way.
-     *
-     * @return {@link ISettings}
-     * @since 0.5.0
-     */
-    @Deprecated(forRemoval = true)
-    @NotNull ISettings getSettings();
-
 }
