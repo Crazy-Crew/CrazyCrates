@@ -282,6 +282,8 @@ public class QuadCrateManager {
             }
         }.runAtFixedRate(0,1));
 
+        final int timer = this.crate.getQuadCrateTimer();
+
         this.crateManager.addCrateTask(this.player, new FoliaScheduler(this.plugin, null, this.player) {
             @Override
             public void run() {
@@ -291,7 +293,7 @@ public class QuadCrateManager {
 
                 crate.playSound(player, player.getLocation(), "stop-sound", "entity.player.levelup", Sound.Source.MASTER);
             }
-        }.runDelayed(this.crate.getQuadCrateTimer() * 20L));
+        }.runDelayed(timer <= 0 ? 300 : timer * 20L));
     }
 
     /**
