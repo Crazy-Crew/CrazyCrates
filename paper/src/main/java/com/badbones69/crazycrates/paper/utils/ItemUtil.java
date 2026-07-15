@@ -185,7 +185,7 @@ public class ItemUtil {
     public static @NotNull ItemBuilder getItem(@NotNull final ConfigurationSection section, @NotNull final ItemBuilder builder) {
         ItemUtil.addGlow(builder, section.getString("Glowing", "none"));
         
-        builder.setItemDamage(section.getInt("DisplayDamage", 0));
+        builder.setItemDamage(section.getInt("DisplayDamage", -1));
 
         builder.withDisplayLore(section.getStringList("Lore"));
 
@@ -319,7 +319,7 @@ public class ItemUtil {
                 itemBuilder.asSkullBuilder().withName(player).build();
             }
 
-            itemBuilder.setItemDamage(item.getInt("settings.damage", 0));
+            itemBuilder.setItemDamage(item.getInt("settings.damage", -1));
 
             itemBuilder.withSkull(item.getString("settings.skull", ""));
 
@@ -407,7 +407,7 @@ public class ItemUtil {
                     }
                     case "damage" -> {
                         final Optional<Number> amount = StringUtils.tryParseInt(value);
-                        itemBuilder.setItemDamage(amount.map(Number::intValue).orElse(0));
+                        itemBuilder.setItemDamage(amount.map(Number::intValue).orElse(-1));
                     }
                     case "lore" -> itemBuilder.withDisplayLore(List.of(value.split(",")));
                     case "player" -> itemBuilder.asSkullBuilder().withName(value).build();

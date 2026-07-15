@@ -83,7 +83,7 @@ public class NodeUtils {
             }
         }
 
-        builder.setItemDamage(settings.node("damage").getInt(0));
+        builder.setItemDamage(settings.node("damage").getInt(-1));
 
         builder.withSkull(settings.node("skull").getString(""));
 

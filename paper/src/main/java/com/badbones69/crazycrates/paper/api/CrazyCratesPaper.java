@@ -1,6 +1,6 @@
 package com.badbones69.crazycrates.paper.api;
 
-import com.ryderbelserion.common.CrazyCratesPlugin;
+import com.ryderbelserion.crazycrates.common.CrazyCratesPlugin;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;

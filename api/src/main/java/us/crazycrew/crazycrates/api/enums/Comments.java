@@ -1,7 +1,6 @@
 package us.crazycrew.crazycrates.api.enums;
 
 import org.jetbrains.annotations.ApiStatus;
-
 import java.util.List;
 
 @ApiStatus.Internal

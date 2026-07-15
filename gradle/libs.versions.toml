@@ -4,6 +4,8 @@ paperweight = "2.0.0-beta.21" # https://github.com/PaperMC/paperweight
 adventure = "5.0.0" # https://github.com/KyoriPowered/adventure
 paper = "26.1.2.build.+" # https://github.com/PaperMC/Paper
 
+jalu = "1.4.3" # https://github.com/AuthMe/ConfigMe
+
 ## Minecraft
 minecraft = "26.1.2" # https://minecraft.net
 
@@ -108,6 +110,9 @@ fusion-kyori = { module = "com.ryderbelserion.fusion:fusion-kyori", version.ref 
 
 # https://github.com/Bastian/bStats
 metrics = { module = "org.bstats:bstats-bukkit", version.ref = "bStats" }
+
+# https://github.com/AuthMe/ConfigMe
+jalu = { module = "ch.jalu:configme", version.ref = "jalu" }
 
 [bundles]
 adventure = [

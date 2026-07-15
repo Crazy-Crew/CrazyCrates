@@ -1,4 +1,4 @@
-package com.ryderbelserion.common;
+package com.ryderbelserion.crazycrates.common;
 
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.kyori.adventure.text.Component;
