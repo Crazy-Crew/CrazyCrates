@@ -117,7 +117,7 @@ public class Crate {
     private boolean glassBorderToggle = true;
 
     private boolean isAnimationBorderRandom = true;
-    private List<ItemBuilder> animationBorderItems = List.of();
+    private List<ItemBuilder> animationBorderItems = new ArrayList<>();
 
     private boolean broadcastToggle = false;
     private List<String> broadcastMessages = new ArrayList<>();
@@ -132,6 +132,7 @@ public class Crate {
 
     private boolean isKnockBackEnabled;
 
+    private final List<String> disabledWorlds = new ArrayList<>();
     /**
      * @param name The name of the crate.
      * @param crateType The crate type of the crate.
@@ -302,6 +303,8 @@ public class Crate {
 
         this.isKnockBackEnabled = config.hasProperty(CrateKeys.is_knock_back_enabled) ? config.getProperty(CrateKeys.is_knock_back_enabled) : this.section.getBoolean("Settings.Knock-Back", true);
 
+        this.disabledWorlds.addAll(config.hasProperty(CrateKeys.disabled_worlds) ? config.getProperty(CrateKeys.disabled_worlds) : this.section.getStringList("Settings.Disabled-Worlds"));
+
         this.hologram = hologram;
 
         switch (this.crateType) {
@@ -334,6 +337,11 @@ public class Crate {
     public @Nullable Particle getParticle() {
         return this.particle;
     }
+
+    public List<String> getDisabledWorlds() {
+        return this.disabledWorlds;
+    }
+
 
     public final boolean isKnockBackEnabled() {
         return this.isKnockBackEnabled;

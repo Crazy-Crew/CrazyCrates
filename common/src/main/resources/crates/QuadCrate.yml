@@ -82,6 +82,8 @@ Crate:
     Tracking-Crate-Opening: false
     # Should players be knocked back if they don't have keys?
     Knock-Back: true
+    # A list of worlds the crate can't work in.
+    Disabled-Worlds: []
     # Handles settings related to the border
     Border:
       # Settings related to the glass border

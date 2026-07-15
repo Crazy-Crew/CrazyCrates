@@ -254,9 +254,5 @@ crate:
   # If a player gets to the menu related to the Prizes gui, Should they be timed out?
   # It will wait 10 seconds and if they already collected 3 prizes, It will only give one prize.
   cosmic-crate-timeout: true
-  # What worlds do you want Crates to be disabled in?
-  disabled-worlds: []
-  # If crates should knock you back if you have no keys.
-  knock-back: true
   # Whether to show the display item when opening QuickCrate
   quickcrate-display-item: true

@@ -115,6 +115,7 @@ public class CrateKeys implements IPropertyHolder {
             newProperty(300, "crate", "quad-crate", "timer");
 
     @Comment("What worlds do you want Crates to be disabled in?")
+    @Disabled("This option has been moved to be per crate file.")
     public static final Property<List<String>> disabled_worlds = newProperty(List.of(), "crate", "disabled-worlds");
 
     @Comment("This option if set to true will force the crate to take the required keys set in the crate file")

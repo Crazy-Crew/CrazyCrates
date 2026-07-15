@@ -703,7 +703,7 @@ public class CrateManager {
     public void openCrate(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, @NotNull final Location location, final boolean virtualCrate, final boolean checkHand, final boolean isSilent, final EventType eventType) {
         final String worldName = player.getWorld().getName();
 
-        for (final String world : this.pluginConfig.getProperty(CrateKeys.disabled_worlds)) {
+        for (final String world : crate.getDisabledWorlds()) {
             if (world.equalsIgnoreCase(worldName)) {
                 Message.world_disabled.sendMessage(player, "{world}", worldName);
 
