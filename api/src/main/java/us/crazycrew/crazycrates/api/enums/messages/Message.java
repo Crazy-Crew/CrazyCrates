@@ -1,12 +1,9 @@
 package us.crazycrew.crazycrates.api.enums.messages;
 
 import com.ryderbelserion.fusion.core.api.FusionKey;
-import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.api.registry.message.adapter.YamlMessageAdapter;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
-import com.ryderbelserion.fusion.files.FileManager;
-import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
@@ -236,10 +233,6 @@ public enum Message {
     feature_disabled("Messages.Feature-Disabled", "misc.feature.disabled", "{prefix}<red>This feature is disabled.", "misc", "feature-disabled");
 
     private final CrazyCrates platform = CratesProvider.api();
-
-    private final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
-
-    private final FileManager fileManager = this.fusion.getFileManager();
 
     private final ISenderAdapter senderAdapter = this.platform.getSenderAdapter();
 
