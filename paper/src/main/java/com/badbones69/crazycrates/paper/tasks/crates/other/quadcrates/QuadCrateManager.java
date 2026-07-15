@@ -293,7 +293,7 @@ public class QuadCrateManager {
 
                 crate.playSound(player, player.getLocation(), "stop-sound", "entity.player.levelup", Sound.Source.MASTER);
             }
-        }.runDelayed(timer <= 0 ? 300 : timer * 20L));
+        }.runDelayed(timer <= 0 ? 300 * 20L : timer * 20L));
     }
 
     /**
