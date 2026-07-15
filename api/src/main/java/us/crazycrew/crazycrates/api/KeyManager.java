@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
  * A class for the KeyManager, It handles checking physical keys, and anything else we might need soon.
  *
  * @author Ryder Belserion
- * @version 0.9.0
+ * @version 1.0.0
  * @since 0.9.0
  */
 public abstract class KeyManager<I> {

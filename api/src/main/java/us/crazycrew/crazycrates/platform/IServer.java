@@ -11,10 +11,10 @@ import java.util.List;
  * A class containing available methods to use.
  *
  * @author Ryder Belserion
- * @version 0.7.0
+ * @version 1.0.0
  * @since 0.5.0
  */
-@Deprecated(forRemoval = true)
+@Deprecated(since = "1.0.0", forRemoval = true)
 public interface IServer {
 
     /**
