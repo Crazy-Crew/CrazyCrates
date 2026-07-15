@@ -257,6 +257,6 @@ crate:
   # What worlds do you want Crates to be disabled in?
   disabled-worlds: []
   # If crates should knock you back if you have no keys.
-  crate.knock-back: true
+  knock-back: true
   # Whether to show the display item when opening QuickCrate
   quickcrate-display-item: true

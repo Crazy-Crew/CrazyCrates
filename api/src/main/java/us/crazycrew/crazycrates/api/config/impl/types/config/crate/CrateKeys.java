@@ -62,7 +62,7 @@ public class CrateKeys implements IPropertyHolder {
 
     @Comment("If crates should knock you back if you have no keys.")
     public static final Property<Boolean> is_knock_back_enabled =
-            newProperty(true, "crate", "crate.knock-back");
+            newProperty(true, "crate", "knock-back");
 
     @Comment("If players should be forced to exit out of the preview during /crates reload")
     public static final Property<Boolean> take_out_of_preview =
