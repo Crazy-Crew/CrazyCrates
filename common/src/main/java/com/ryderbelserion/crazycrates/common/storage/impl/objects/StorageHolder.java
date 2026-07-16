@@ -85,6 +85,10 @@ public final class StorageHolder extends IStorageHolder<CrateLocation, CrateWorl
             return;
         }
 
+        if (tableExists("crate_worlds")) { // table already exists.
+            return;
+        }
+
         CompletableFuture.runAsync(() -> {
             try (final Connection connection = this.connectionFactory.getConnection(); final PreparedStatement statement =
                     connection.prepareStatement("insert into crate_worlds(world, name) values(?, ?)")) {
