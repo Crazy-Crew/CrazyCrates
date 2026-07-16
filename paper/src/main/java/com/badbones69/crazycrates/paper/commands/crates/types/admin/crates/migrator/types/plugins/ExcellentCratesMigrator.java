@@ -99,8 +99,6 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
         final File crateDirectory = CratesAPI.PLUGIN.getDataFolder();
 
-        final YamlConfiguration locationData = FileKeys.locations.getConfiguration();
-
         final Collection<Crate> crates = CratesAPI.getCrateManager().getCrates();
 
         if (crates.isEmpty()) {
@@ -149,12 +147,6 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             if (!locations.isEmpty()) {
                 crateConfig.getStringList("Block.Locations").forEach(location -> {
-                    String id = "1"; // Location ID
-
-                    for (int i = 1; locationData.contains("Locations." + i); i++) {
-                        id = (i + 1) + "";
-                    }
-
                     String[] splitter = location.split(",");
 
                     String arg5 = splitter[5];
@@ -162,13 +154,13 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
                     String arg1 = splitter[1];
                     String arg2 = splitter[2];
 
-                    locationData.set("Locations." + id + ".Crate", strippedName);
-                    locationData.set("Locations." + id + ".World", arg5);
-                    locationData.set("Locations." + id + ".X", (int) Double.parseDouble(arg0));
-                    locationData.set("Locations." + id + ".Y", (int) Double.parseDouble(arg1));
-                    locationData.set("Locations." + id + ".Z", (int) Double.parseDouble(arg2));
-
-                    FileKeys.locations.save();
+                    this.storageHolder.addCrateLocation(
+                            strippedName,
+                            arg5,
+                            (int) Double.parseDouble(arg0),
+                            (int) Double.parseDouble(arg1),
+                            (int) Double.parseDouble(arg2)
+                    );
                 });
             }
 

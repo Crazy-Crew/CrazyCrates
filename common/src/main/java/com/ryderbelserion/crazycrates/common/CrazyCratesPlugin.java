@@ -1,5 +1,7 @@
 package com.ryderbelserion.crazycrates.common;
 
+import com.ryderbelserion.crazycrates.common.storage.StorageManager;
+import com.ryderbelserion.crazycrates.common.storage.holder.StorageHolder;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.kyori.adventure.text.Component;
 import org.jspecify.annotations.NonNull;
@@ -20,7 +22,13 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
         this.fusion = fusion;
     }
 
+    protected StorageManager storageManager;
+    protected StorageHolder storageHolder;
     protected ConfigManager configManager;
+
+    public final StorageHolder getStorageHolder() {
+        return this.storageHolder;
+    }
 
     @Override
     public void init() {
@@ -32,6 +40,11 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
         for (final Files key : Files.values()) {
             key.load();
         }
+
+        this.storageManager = new StorageManager();
+
+        this.storageHolder = this.storageManager.init();
+        this.storageHolder.save();
 
         CratesProvider.register(this);
     }
@@ -45,6 +58,8 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
         for (final Files key : Files.values()) {
             key.reload();
         }
+
+        this.storageHolder.save();
 
         loadMessages();
     }
@@ -64,6 +79,7 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
         return this.configManager;
     }
 
+    @Override
     public @NonNull FusionKyori getFusion() {
         return this.fusion;
     }

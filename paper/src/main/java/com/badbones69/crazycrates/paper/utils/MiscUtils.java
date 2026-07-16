@@ -212,15 +212,8 @@ public class MiscUtils {
 
     public static void save() {
         final YamlConfiguration data = FileKeys.data.getConfiguration();
-        final YamlConfiguration location = FileKeys.locations.getConfiguration();
 
         boolean isSave = false;
-
-        if (!location.contains("Locations")) {
-            location.set("Locations.Clear", null);
-
-            isSave = true;
-        }
 
         if (!data.contains("Players")) {
             data.set("Players.Clear", null);

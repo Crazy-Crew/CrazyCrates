@@ -86,8 +86,7 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
     public void init() {
         super.init();
 
-        this.fileManager.addPaperFile(this.path.resolve("locations.yml"))
-                .addPaperFile(this.path.resolve("data.yml"))
+        this.fileManager.addPaperFile(this.path.resolve("data.yml"))
 
                 .addPaperFolder(this.path.resolve("guis"))
                 .addPaperFolder(this.path.resolve("crates"))
@@ -174,8 +173,7 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
     public void reload() {
         super.reload();
 
-        this.fileManager.addPaperFile(this.path.resolve("locations.yml"))
-                .addPaperFile(this.path.resolve("data.yml"))
+        this.fileManager.addPaperFile(this.path.resolve("data.yml"))
 
                 .addPaperFolder(this.path.resolve("guis"))
                 .addPaperFolder(this.path.resolve("crates"))

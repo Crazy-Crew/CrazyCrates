@@ -1,6 +1,9 @@
 package com.badbones69.crazycrates.paper.tasks.crates;
 
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
+import com.ryderbelserion.crazycrates.common.storage.holder.StorageHolder;
+import org.spongepowered.configurate.BasicConfigurationNode;
+import org.spongepowered.configurate.CommentedConfigurationNode;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
 import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
 import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
@@ -92,6 +95,8 @@ public class CrateManager {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final StorageHolder storageHolder = this.platform.getStorageHolder();
 
     private final ConfigManager configManager = this.platform.getConfigManager();
 
@@ -575,44 +580,52 @@ public class CrateManager {
 
         this.fusion.log(Level.WARNING, "All crate information has been loaded, Loading physical crate locations!");
 
-        final YamlConfiguration locations = FileKeys.locations.getConfiguration();
+        final CommentedConfigurationNode locations = us.crazycrew.crazycrates.api.enums.Files.locations.getConfiguration();
 
         int loadedAmount = 0;
         int brokeAmount = 0;
 
-        final ConfigurationSection section = locations.getConfigurationSection("Locations");
+        final CommentedConfigurationNode section = locations.node("Locations");
 
         if (section != null) {
-            for (final String index : section.getKeys(false)) {
-                if (index.isBlank()) continue;
-
-                final ConfigurationSection origin = section.getConfigurationSection(index);
+            for (final Object index : section.childrenMap().keySet()) {
+                final CommentedConfigurationNode origin = section.node(index);
 
                 if (origin == null) continue;
 
-                final String worldName = origin.getString("World", "");
+                final String worldName = origin.node("World").getString("");
 
                 // If the name is empty or blank, we return.
                 if (worldName.isBlank()) continue;
 
+                final String asString = index.toString();
+
                 final World world = this.server.getWorld(worldName);
 
-                final int x = origin.getInt("X");
-                final int y = origin.getInt("Y");
-                final int z = origin.getInt("Z");
-
-                if (world == null) {
-                    this.brokeLocations.add(new BrokeLocation(index, null, x, y, z, worldName));
+                if (!origin.hasChild("X") || !origin.hasChild("Y") || !origin.hasChild("Z")) {
+                    this.brokeLocations.add(new BrokeLocation(asString, null, -1, -1, -1, worldName));
 
                     brokeAmount++;
 
                     continue;
                 }
 
-                final Crate crate = getCrateFromName(origin.getString("Crate", ""));
+                final int x = origin.node("X").getInt();
+                final int y = origin.node("Y").getInt();
+                final int z = origin.node("Z").getInt();
+
+                if (world == null) {
+                    this.brokeLocations.add(new BrokeLocation(asString, null, x, y, z, worldName));
+
+                    brokeAmount++;
+
+                    continue;
+                }
+
+                final Crate crate = getCrateFromName(origin.node("Crate").getString(""));
 
                 if (crate == null) {
-                    this.brokeLocations.add(new BrokeLocation(index, null, x, y, z, worldName));
+                    this.brokeLocations.add(new BrokeLocation(asString, null, x, y, z, worldName));
 
                     brokeAmount++;
 
@@ -621,10 +634,10 @@ public class CrateManager {
 
                 final Location location = new Location(world, x, y, z);
 
-                this.crateLocations.add(new CrateLocation(index, crate, location));
+                this.crateLocations.add(new CrateLocation(asString, crate, location));
 
                 if (this.holograms != null) {
-                    this.holograms.createHologram(location, crate, index);
+                    this.holograms.createHologram(location, crate, asString);
                 }
 
                 loadedAmount++;
@@ -1333,35 +1346,33 @@ public class CrateManager {
     public void addCrateLocation(@NotNull final Location location, @Nullable final Crate crate) {
         if (crate == null) return;
 
-        final YamlConfiguration configuration = FileKeys.locations.getConfiguration();
+        String id = this.storageHolder.addCrateLocation(
+                crate.getFileName(),
+                location.getWorld().getName(),
+                location.getBlockX(),
+                location.getBlockY(),
+                location.getBlockZ()
+        );
 
-        String id = "1"; // Location ID
-
-        for (int i = 1; configuration.contains("Locations." + i); i++) {
-            id = (i + 1) + "";
-        }
+        final String arg1 = MiscUtils.location(location);
 
         for (final CrateLocation crateLocation : getCrateLocations()) {
-            if (crateLocation.getLocation().equals(location)) {
+            final String arg2 = MiscUtils.location(crateLocation.getLocation());
+
+            if (arg1.equals(arg2)) {
                 id = crateLocation.getID();
 
                 break;
             }
         }
 
-        final ConfigurationSection section = configuration.createSection("Locations." + id);
-
-        section.set("Crate", crate.getFileName());
-        section.set("World", location.getWorld().getName());
-        section.set("X", location.getBlockX());
-        section.set("Y", location.getBlockY());
-        section.set("Z", location.getBlockZ());
-
-        FileKeys.locations.save();
+        this.fusion.log(Level.WARNING, "<gold>Location Identifier: %s", id);
 
         addLocation(new CrateLocation(id, crate, location));
 
-        if (this.holograms != null) this.holograms.createHologram(location, crate, id);
+        if (this.holograms != null) {
+            this.holograms.createHologram(location, crate, id);
+        }
     }
 
     /**
@@ -1370,9 +1381,7 @@ public class CrateManager {
      * @param id the id of the location.
      */
     public void removeCrateLocation(@NotNull final String id) {
-        FileKeys.locations.getConfiguration().set("Locations." + id, null);
-
-        FileKeys.locations.save();
+        this.storageHolder.removeCrateLocation(id);
 
         CrateLocation location = null;
 
@@ -1387,7 +1396,9 @@ public class CrateManager {
         if (location != null) {
             removeLocation(location);
 
-            if (this.holograms != null && location.getCrate().getHologram().isEnabled()) this.holograms.removeHologram(location.getID());
+            if (this.holograms != null && location.getCrate().getHologram().isEnabled()) {
+                this.holograms.removeHologram(location.getID());
+            }
         }
     }
 

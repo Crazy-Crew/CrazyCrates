@@ -34,12 +34,18 @@ public enum Files {
     editor_config("editor.yml", FileType.YAML, List.of(
             FileAction.EXTRACT_FILE
     )),
+
     config("config.yml", FileType.YAML, List.of(
             FileAction.EXTRACT_FILE
     )),
     messages("messages.yml", FileType.YAML, List.of(
             FileAction.EXTRACT_FILE
     )),
+
+    locations("locations.yml", FileType.YAML, List.of(
+            FileAction.EXTRACT_FILE
+    )),
+
     version("version.json", FileType.JSON, List.of(
             FileAction.DELETE_FILE,
             FileAction.EXTRACT_FILE

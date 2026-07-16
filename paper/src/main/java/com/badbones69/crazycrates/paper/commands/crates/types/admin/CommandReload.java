@@ -27,8 +27,7 @@ public class CommandReload extends BaseCommand {
 
         this.fileManager.addPaperFolder(this.path.resolve("crates"))
                 .addPaperFolder(this.path.resolve("guis"))
-                .addPaperFile(this.path.resolve("data.yml"))
-                .addPaperFile(this.path.resolve("locations.yml"));
+                .addPaperFile(this.path.resolve("data.yml"));
 
         this.buttonManager.load();
 
