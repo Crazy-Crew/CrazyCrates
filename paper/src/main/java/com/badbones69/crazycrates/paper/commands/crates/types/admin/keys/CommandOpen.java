@@ -101,8 +101,8 @@ public class CommandOpen extends BaseCommand {
 
         // If no key, run this.
         if (!hasKey) {
-            if (this.pluginConfig.getProperty(CrateKeys.need_key_sound_toggle)) {
-                player.playSound(Sound.sound(Key.key(this.pluginConfig.getProperty(CrateKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
+            if (crate.isPlaySound()) {
+                player.playSound(Sound.sound(Key.key(crate.getSound()), Sound.Source.MASTER, 1f, 1f));
             }
 
             Message.no_keys.sendMessage(player, Map.of(
@@ -159,8 +159,8 @@ public class CommandOpen extends BaseCommand {
         final boolean hasKey = this.pluginConfig.getProperty(CrateKeys.virtual_accepts_physical_keys) && keyType == KeyType.physical_key ? this.userManager.getTotalKeys(player.getUniqueId(), fileName) >= 1 : this.userManager.getVirtualKeys(player.getUniqueId(), fileName) >= 1;
 
         if (!hasKey) {
-            if (this.pluginConfig.getProperty(CrateKeys.need_key_sound_toggle)) {
-                player.playSound(Sound.sound(Key.key(this.pluginConfig.getProperty(CrateKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
+            if (crate.isPlaySound()) {
+                player.playSound(Sound.sound(Key.key(crate.getSound()), Sound.Source.MASTER, 1f, 1f));
             }
 
             Message.no_keys.sendMessage(sender, Map.of(

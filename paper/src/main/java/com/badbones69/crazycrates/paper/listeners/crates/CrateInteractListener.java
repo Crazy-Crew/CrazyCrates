@@ -197,8 +197,8 @@ public class CrateInteractListener implements Listener {
                 knockback(player, location);
             }
 
-            if (this.pluginConfig.getProperty(CrateKeys.need_key_sound_toggle)) {
-                player.playSound(Sound.sound(Key.key(this.pluginConfig.getProperty(CrateKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
+            if (crate.isPlaySound()) {
+                player.playSound(Sound.sound(Key.key(crate.getSound()), Sound.Source.MASTER, 1f, 1f));
             }
 
             Message.not_enough_keys.sendMessage(player, Map.of(

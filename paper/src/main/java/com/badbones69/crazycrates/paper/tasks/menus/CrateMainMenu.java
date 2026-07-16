@@ -196,8 +196,8 @@ public class CrateMainMenu extends StaticInventoryBuilder {
         }
 
         if (!hasKey) {
-            if (this.pluginConfig.getProperty(CrateKeys.need_key_sound_toggle)) {
-                this.player.playSound(Sound.sound(Key.key(this.pluginConfig.getProperty(CrateKeys.need_key_sound)), Sound.Source.MASTER, 1f, 1f));
+            if (crate.isPlaySound()) {
+                this.player.playSound(Sound.sound(Key.key(crate.getSound()), Sound.Source.MASTER, 1f, 1f));
             }
 
             Message.no_virtual_keys.sendMessage(this.player, "{crate}", fancyName);

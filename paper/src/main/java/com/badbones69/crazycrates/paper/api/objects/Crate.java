@@ -361,6 +361,14 @@ public class Crate {
         return this.disabledWorlds;
     }
 
+    public boolean isPlaySound() {
+        return this.playSound;
+    }
+
+    public String getSound() {
+        return this.sound;
+    }
+
     public final String getCycleFinishedMaterial() {
         return this.cycleFinishedMaterial;
     }
