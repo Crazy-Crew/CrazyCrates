@@ -27,7 +27,6 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
-import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
@@ -104,10 +103,7 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
                 .addPaperFolder(this.path.resolve("crates"))
 
                 .addFolder(this.path.resolve("schematics"), FileType.NBT)
-                .addFolder(this.path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE))
-                .addFolder(this.path.resolve("buttons"), FileType.YAML)
-
-                .addFile(version, FileType.JSON);
+                .addFolder(this.path.resolve("buttons"), FileType.YAML);
 
         if (Plugins.placeholder_api.isEnabled()) {
             new PlaceholderAPISupport().register();
@@ -200,7 +196,6 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
                 .addPaperFolder(this.path.resolve("crates"))
 
                 .addFolder(this.path.resolve("schematics"), FileType.NBT)
-                .addFolder(this.path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE))
                 .addFolder(this.path.resolve("buttons"), FileType.YAML);
 
         this.configManager.reload();

@@ -6,6 +6,7 @@ import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.CrazyCrates;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
+import us.crazycrew.crazycrates.api.enums.Files;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -27,6 +28,10 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
 
         this.configManager = new ConfigManager();
         this.configManager.init();
+
+        for (final Files key : Files.values()) {
+            key.load();
+        }
 
         CratesProvider.register(this);
     }
