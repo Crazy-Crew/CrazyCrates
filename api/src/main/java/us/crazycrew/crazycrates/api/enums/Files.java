@@ -40,10 +40,6 @@ public enum Files {
     messages("messages.yml", FileType.YAML, List.of(
             FileAction.EXTRACT_FILE
     )),
-
-    //crates("crates.json", "cache", FileType.JSON, List.of(
-    //        FileAction.EXTRACT_FROM_FOLDER
-    //)),
     version("version.json", FileType.JSON, List.of(
             FileAction.DELETE_FILE,
             FileAction.EXTRACT_FILE

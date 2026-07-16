@@ -136,6 +136,9 @@ public class Crate {
 
     private int quadCrateTimer = -1;
 
+    private String cycleFinishedMaterial = "";
+    private String cycleRollingMaterial = "";
+
     /**
      * @param name The name of the crate.
      * @param crateType The crate type of the crate.
@@ -321,6 +324,11 @@ public class Crate {
 
             case quad_crate -> this.quadCrateTimer = config.hasProperty(CrateKeys.quad_crate_timer) ? config.getProperty(CrateKeys.quad_crate_timer) : this.section.getInt("Settings.Quad-Crate.Timer", 300);
 
+            case csgo -> {
+                this.cycleFinishedMaterial = config.hasProperty(CrateKeys.csgo_finished_material) ? config.getProperty(CrateKeys.csgo_finished_material) : this.section.getString("Settings.CSGO.Finished-Material", "iron_ingot");
+                this.cycleRollingMaterial = config.hasProperty(CrateKeys.csgo_cycle_material) ? config.getProperty(CrateKeys.csgo_cycle_material) : this.section.getString("Settings.CSGO.Cycle-Material", "gold_ingot");
+            }
+
             case casino -> this.tierSum = this.tiers.stream().filter(tier -> tier.getWeight() != -1).mapToDouble(Tier::getWeight).sum();
         }
     }
@@ -345,6 +353,14 @@ public class Crate {
 
     public List<String> getDisabledWorlds() {
         return this.disabledWorlds;
+    }
+
+    public final String getCycleFinishedMaterial() {
+        return this.cycleFinishedMaterial;
+    }
+
+    public final String getCycleRollingMaterial() {
+        return this.cycleRollingMaterial;
     }
 
     public final int getQuadCrateTimer() {

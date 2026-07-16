@@ -128,6 +128,7 @@ public class CrateKeys implements IPropertyHolder {
             "",
             "Set this to blank to have it populate with glass."
     })
+    @Disabled("This option has been moved to be per crate file.")
     public static final Property<String> csgo_cycle_material = newProperty("gold_ingot", "crate", "types", "csgo", "cycling-material");
 
     @Comment({
@@ -136,6 +137,7 @@ public class CrateKeys implements IPropertyHolder {
             "",
             "Set this to blank to have it populate with glass."
     })
+    @Disabled("This option has been moved to be per crate file.")
     public static final Property<String> csgo_finished_material = newProperty("iron_ingot", "crate", "types", "csgo", "finished-material");
 
     @Comment("Logs all crate actions to console if enabled.")

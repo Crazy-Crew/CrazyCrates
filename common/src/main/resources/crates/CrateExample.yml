@@ -89,6 +89,17 @@ Crate:
         # If you set this to false, pagination will not function properly if you still want pagination.
         # Default: True
         Air: True
+    CSGO:
+      # Sets a static material in the csgo crate in slot 4 and 22
+      # This is above and below the prize and only shows up when the crate ends.
+      #
+      # Set this to blank to have it populate with glass.
+      Finished-Material: "iron_ingot"
+      # Sets a static material in the csgo crate in slot 4 and 22
+      # This is above and below the prize.
+      #
+      # Set this to blank to have it populate with glass.
+      Cycle-Material: "gold_ingot"
     # Broadcast a message to the server
     Broadcast:
       # If the messages should be sent.
