@@ -1366,8 +1366,6 @@ public class CrateManager {
             }
         }
 
-        this.fusion.log(Level.WARNING, "<gold>Location Identifier: %s", id);
-
         addLocation(new CrateLocation(id, crate, location));
 
         if (this.holograms != null) {

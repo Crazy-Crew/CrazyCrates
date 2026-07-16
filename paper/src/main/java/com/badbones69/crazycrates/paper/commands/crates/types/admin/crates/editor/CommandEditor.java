@@ -23,9 +23,11 @@ public class CommandEditor extends BaseCommand {
     @Syntax("/crazycrates editor [-c/--crate] [-e/--exit]")
     public void editor(final Player player, final Flags flags) {
         if (flags.hasFlag("e")) {
-            this.crateManager.removeEditorCrate(player);
+            if (this.crateManager.hasEditorCrate(player)) {
+                this.crateManager.removeEditorCrate(player);
 
-            Message.crate_editor_exit.sendMessage(player, "{reason}", "you asked.");
+                Message.crate_editor_exit.sendMessage(player, "{reason}", "you asked.");
+            }
 
             return;
         }
