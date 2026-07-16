@@ -23,22 +23,22 @@ import static us.crazycrew.crazycrates.api.CrazyCrates.namespace;
 @NullMarked
 public enum Message {
 
-    command_opened_crate("Messages.Opened-A-Crate", "command.open.opened-a-crate", "{prefix}<gray>You have opened the {crate} <gray>for <gold>{player}.", "open", "opened-a-crate"),
-    command_gave_player_keys("Messages.Given-A-Player-Keys", "command.give.given-player-keys", "{prefix}<gray>You have given <gold>{player} {amount} <gray>key(s).", "give", "given-player-keys"),
-    command_cannot_give_player_keys("Messages.Cannot-Give-Player-Keys", "command.give.full-inventory", "{prefix}<gray>You have been given <gold>{amount} {key} <gray>virtual key(s) because your inventory was full.", "give", "full-inventory"),
-    command_gave_everyone_keys("Messages.Given-Everyone-Keys", "command.give.given-everyone-keys", "{prefix}<gray>You have given everyone <gold>{amount} <gray>key(s).", "give", "given-everyone-keys"),
-    command_gave_offline_player_keys("Messages.Given-Offline-Player-Keys", "command.give.given-offline-player-keys", "{prefix}<gray>You have given <gold>{amount} <gray>key(s) to the offline player <gold>{player}.", "give", "given-offline-player-keys"),
-    command_take_player_keys("Messages.Take-A-Player-Keys", "command.take.take-player-keys", "{prefix}<gray>You have taken <gold>{amount} <gray>key(s) from <gold>{player}.", "take", "take-player-keys"),
-    command_cant_take_keys("Messages.Cannot-Take-Keys", "command.take.cannot-take-keys", "{prefix}<gray>You cannot take key(s) from <gold>{player} <gray>as they are poor.", "take", "cannot-take-keys"),
-    command_take_offline_player_keys("Messages.Take-Offline-Player-Keys", "command.take.take-offline-player-keys", "{prefix}<gray>You have taken <gold>{amount} <gray>key(s) from the offline player <gold>{player}.", "take", "take-offline-player-keys"),
+    command_opened_crate("Messages.Opened-A-Crate", "command.open.opened-a-crate", "{prefix}<gray>You have opened the {crate} <gray>for <gold>{player}.", "command", "open", "opened-a-crate"),
+    command_gave_player_keys("Messages.Given-A-Player-Keys", "command.give.given-player-keys", "{prefix}<gray>You have given <gold>{player} {amount} <gray>key(s).", "command", "give", "given-player-keys"),
+    command_cannot_give_player_keys("Messages.Cannot-Give-Player-Keys", "command.give.full-inventory", "{prefix}<gray>You have been given <gold>{amount} {key} <gray>virtual key(s) because your inventory was full.", "command", "give", "full-inventory"),
+    command_gave_everyone_keys("Messages.Given-Everyone-Keys", "command.give.given-everyone-keys", "{prefix}<gray>You have given everyone <gold>{amount} <gray>key(s).", "command", "give", "given-everyone-keys"),
+    command_gave_offline_player_keys("Messages.Given-Offline-Player-Keys", "command.give.given-offline-player-keys", "{prefix}<gray>You have given <gold>{amount} <gray>key(s) to the offline player <gold>{player}.", "command", "give", "given-offline-player-keys"),
+    command_take_player_keys("Messages.Take-A-Player-Keys", "command.take.take-player-keys", "{prefix}<gray>You have taken <gold>{amount} <gray>key(s) from <gold>{player}.", "command", "take", "take-player-keys"),
+    command_cant_take_keys("Messages.Cannot-Take-Keys", "command.take.cannot-take-keys", "{prefix}<gray>You cannot take key(s) from <gold>{player} <gray>as they are poor.", "command", "take", "cannot-take-keys"),
+    command_take_offline_player_keys("Messages.Take-Offline-Player-Keys", "command.take.take-offline-player-keys", "{prefix}<gray>You have taken <gold>{amount} <gray>key(s) from the offline player <gold>{player}.", "command", "take", "take-offline-player-keys"),
 
-    command_editor_item_not_in_hand("Messages.No-Item-In-Hand", "command.additem.no-item-in-hand", "{prefix}<red>You need to have an item in your hand to add it {crate}.", "additem", "no-item-in-hand"),
-    command_editor_item_added("Messages.Added-Item-With-Editor", "command.additem.add-item-from-hand", "{prefix}<gray>The item has been added to the {crate} in prize #{prize}.", "additem", "add-item-from-hand"),
+    command_editor_item_not_in_hand("Messages.No-Item-In-Hand", "command.additem.no-item-in-hand", "{prefix}<red>You need to have an item in your hand to add it {crate}.", "command", "additem", "no-item-in-hand"),
+    command_editor_item_added("Messages.Added-Item-With-Editor", "command.additem.add-item-from-hand", "{prefix}<gray>The item has been added to the {crate} in prize #{prize}.", "command", "additem", "add-item-from-hand"),
 
-    command_migrate_error("", "command.migrate.error", "{prefix}<red>We could not migrate <green>{file} <red>using <green>{type} <red>migration for <green>{reason}.", "migrate", "error"),
+    command_migrate_error("", "command.migrate.error", "{prefix}<red>We could not migrate <green>{file} <red>using <green>{type} <red>migration for <green>{reason}.", "command", "migrate", "error"),
     command_migrate_not_available("", "command.migrate.not.available", "{prefix}<green>This migration type is not available.", "migrate", "not-available"),
-    command_migrate_plugin_disabled("", "command.migrate.plugin.disabled", "{prefix}<green>The plugin <red>{name} <green>is not enabled. Cannot use as migration!", "migrate", "plugin-not-available"),
-    command_migrate_no_crates_present("", "command.migrate.no.crates.present", "{prefix}<green>There is no crates available for migration!", "migrate", "no-crates-available"),
+    command_migrate_plugin_disabled("", "command.migrate.plugin.disabled", "{prefix}<green>The plugin <red>{name} <green>is not enabled. Cannot use as migration!", "command", "migrate", "plugin-not-available"),
+    command_migrate_no_crates_present("", "command.migrate.no.crates.present", "{prefix}<green>There is no crates available for migration!", "command", "migrate", "no-crates-available"),
     command_migrate_users_success("", "command.migrate.users.succcess", List.of(
             "<bold><gold>━━━━━━━━━━━━━━━━━━━ Migration Stats ━━━━━━━━━━━━━━━━━━━</gold></bold>",
             "<dark_gray>»</dark_gray> <green>Successful Conversions: ",
@@ -69,13 +69,13 @@ public enum Message {
 
     command_key_refund("", "command.key.refund", "{prefix}<red>An error has occurred with the crate {crate} that you were opening, A refund for your key has been given.", "errors", "key-refund"),
 
-    command_reload("Messages.Reload", "command.reload", "{prefix}<dark_aqua>You have reloaded the Config and Data Files.", "reload", "completed"),
+    command_reload("Messages.Reload", "command.reload", "{prefix}<dark_aqua>You have reloaded the Config and Data Files.", "command", "reload", "completed"),
 
-    command_transfer_not_enough_keys("Messages.Transfer-Keys.Not-Enough-Keys", "command.transfer.not.enough.keys", "{prefix}<red>You do not have enough keys to transfer.", "transfer", "not-enough-keys"),
-    command_transfer_sent_keys("Messages.Transfer-Keys.Transferred-Keys", "command.transfer.sent.keys", "{prefix}<gray>You have transferred {amount} {crate} keys to {player}.", "transfer", "transferred-keys"),
-    command_transfer_received_keys("Messages.Transfer-Keys.Received-Transferred-Keys", "command.transfer.received.keys", "{prefix}<gray>You have received {amount} {crate} keys from {player}.", "transfer", "transferred-keys-received"),
+    command_transfer_not_enough_keys("Messages.Transfer-Keys.Not-Enough-Keys", "command.transfer.not.enough.keys", "{prefix}<red>You do not have enough keys to transfer.", "command", "transfer", "not-enough-keys"),
+    command_transfer_sent_keys("Messages.Transfer-Keys.Transferred-Keys", "command.transfer.sent.keys", "{prefix}<gray>You have transferred {amount} {crate} keys to {player}.", "command", "transfer", "transferred-keys"),
+    command_transfer_received_keys("Messages.Transfer-Keys.Received-Transferred-Keys", "command.transfer.received.keys", "{prefix}<gray>You have received {amount} {crate} keys from {player}.", "command", "transfer", "transferred-keys-received"),
 
-    command_keys_no_virtual_keys("Messages.Keys.Personal.No-Virtual-Keys", "command.keys.no.virtual.keys", "{prefix}<bold><dark_gray>(<dark_red>!<dark_gray>)</bold> <gray>You currently do not have any virtual keys.", "keys", "personal", "no-virtual-keys"),
+    command_keys_no_virtual_keys("Messages.Keys.Personal.No-Virtual-Keys", "command.keys.no.virtual.keys", "{prefix}<bold><dark_gray>(<dark_red>!<dark_gray>)</bold> <gray>You currently do not have any virtual keys.", "command", "keys", "personal", "no-virtual-keys"),
 
     command_keys_virtual_keys_header("Messages.Keys.Personal.Header", "command.keys.no.virtual.keys.header", List.of(
             "<bold><dark_gray>(<gold>!<dark_gray>)</bold> <gray>List of your current number of keys.",
@@ -83,14 +83,14 @@ public enum Message {
             ""
     ), "command", "keys", "personal", "virtual-keys-header"),
 
-    command_keys_target_player_no_keys("Messages.Keys.Other-Player.No-Virtual-Keys", "command.keys.target.player.no.keys", "{prefix}<bold><dark_gray>(<dark_red>!<dark_gray>)</bold> <gray>The player {player} does not have any keys.", "keys", "other-player", "no-virtual-keys"),
+    command_keys_target_player_no_keys("Messages.Keys.Other-Player.No-Virtual-Keys", "command.keys.target.player.no.keys", "{prefix}<bold><dark_gray>(<dark_red>!<dark_gray>)</bold> <gray>The player {player} does not have any keys.", "command", "keys", "other-player", "no-virtual-keys"),
     command_keys_target_player_header("Messages.Keys.Other-Player.Header", "command.keys.target.player.header", List.of(
             "<bold><dark_gray>(<gold>!<dark_gray>)</bold> <gray>List of {player}''s current number of keys.",
             " <yellow> -> Total Crates Opened: <red>{crates_opened}",
             ""
     ), "command", "keys", "other-player", "virtual-keys-header"),
 
-    command_keys_crate_format("Messages.Keys.Per-Crate", "command.keys.crate.format", "{crate} <bold><gray>><dark_gray>></bold> <gold>{keys} keys <gray>: Opened <gold>{crate_opened} times", "keys", "crate-format"),
+    command_keys_crate_format("Messages.Keys.Per-Crate", "command.keys.crate.format", "{crate} <bold><gray>><dark_gray>></bold> <gold>{keys} keys <gray>: Opened <gold>{crate_opened} times", "command", "keys", "crate-format"),
 
     command_admin_help("Messages.Admin-Help", "command.admin.help", List.of(
             "<bold><red>Crazy Crates Admin Help</bold>",
@@ -150,9 +150,9 @@ public enum Message {
     command_usage("Messages.Correct-Usage", "misc.correct.command.usage", "{prefix}<red>The correct usage for this command is <yellow>{usage}.", "misc", "correct-usage"),
     command_lacking_flag("", "misc.lacking.flag", "prefix}<red>{flag} is not present in the command, expected format: {usage}", "misc", "lacking-flag"),
 
-    must_be_player("Messages.Must-Be-A-Player", "player.must.be.player", "{prefix}<red>You must be a player to use this command.", "requirements", "must-be-player"),
-    must_be_console_sender("Messages.Must-Be-A-Console-Sender", "player.must.be.console.sender", "{prefix}<red>You must be using console to use this command.", "requirements", "must-be-console-sender"),
-    must_be_looking_at_block("Messages.Must-Be-Looking-At-A-Block", "player.must.be.looking.at.block", "{prefix}<red>You must be looking at a block.", "requirements", "must-be-looking-at-block"),
+    must_be_player("Messages.Must-Be-A-Player", "player.must.be.player", "{prefix}<red>You must be a player to use this command.", "player", "requirements", "must-be-player"),
+    must_be_console_sender("Messages.Must-Be-A-Console-Sender", "player.must.be.console.sender", "{prefix}<red>You must be using console to use this command.", "player", "requirements", "must-be-console-sender"),
+    must_be_looking_at_block("Messages.Must-Be-Looking-At-A-Block", "player.must.be.looking.at.block", "{prefix}<red>You must be looking at a block.", "player", "requirements", "must-be-looking-at-block"),
 
     must_not_be_same_player("Messages.Same-Player", "player.must.not.be.same.player", "{prefix}<red>You cannot use this command on yourself.", "player", "target-same-player"),
 
@@ -164,10 +164,10 @@ public enum Message {
     obtaining_keys("Messages.Obtaining-Keys", "player.obtaining.keys", "{prefix}<gray>You have been given <gold>{amount} {key} <gray>key(s).", "player", "obtaining-keys"),
 
     not_online("Messages.Not-Online", "player.not.online", "{prefix}<red>{player} <gray>is not online.", "player", "target-not-online"),
-    not_a_crate("Messages.Not-A-Crate", "crates.not.a.crate", "{prefix}<red>There is no crate called <gold>{crate}.", "requirements", "not-a-crate"),
-    not_a_key("", "crates.not.a.key", "{prefix}<red>There is no key called <gold>{key}.", "requirements", "not-a-key"),
-    not_a_number("Messages.Not-A-Number", "crates.not.a.number", "{prefix}<gold>{number} <red>is not a number.", "requirements", "not-a-number"),
-    not_enough_keys("Messages.Required-Keys", "crates.not.enough.keys", "{prefix}<gray>You need <red>{key_amount} <gray>keys to open <red>{crate}. <gray>You have <red>{amount}.", "requirements", "not-enough-keys"),
+    not_a_crate("Messages.Not-A-Crate", "crates.not.a.crate", "{prefix}<red>There is no crate called <gold>{crate}.", "crates", "requirements", "not-a-crate"),
+    not_a_key("", "crates.not.a.key", "{prefix}<red>There is no key called <gold>{key}.", "crates", "requirements", "not-a-key"),
+    not_a_number("Messages.Not-A-Number", "crates.not.a.number", "{prefix}<gold>{number} <red>is not a number.", "crates", "requirements", "not-a-number"),
+    not_enough_keys("Messages.Required-Keys", "crates.not.enough.keys", "{prefix}<gray>You need <red>{key_amount} <gray>keys to open <red>{crate}. <gray>You have <red>{amount}.", "crates", "requirements", "not-enough-keys"),
     not_on_block("Messages.Not-On-Block", "crates.not.on.block", "{prefix}<red>You must be standing on a block to use <gold>{crate}.", "crates", "not-a-block"),
     not_physical_crate("Messages.Cant-Be-A-Virtual-Crate", "crates.not.physical.crate", "{prefix}<gold>{crate} <red>cannot be used as a Virtual Crate.", "crates", "cannot-be-a-virtual-crate"),
     not_enough_room("Messages.Needs-More-Room", "crates.not.enough.room", "{prefix}<red>There is not enough space to open that here", "crates", "needs-more-room"),
@@ -192,21 +192,25 @@ public enum Message {
     crate_editor_exit("", "crates.editor.exit", "{prefix}<red>You are no longer in editor mode.", "editor", "exit"),
     crate_editor_enabled("", "crates.editor.enabled", "{prefix}<red>You are already in the editor mode.", "editor", "already-in"),
     crate_editor_force_exit("", "crates.editor.force-exit", "{prefix}<red>You have been forced out of the editor mode for {reason}.", "editor", "force-exit"),
+    crate_editor_enter("", "crates.editor.enter", "{prefix}<red>You are now in editor mode.", "crates", "editor", "enter"),
+    crate_editor_exit("", "crates.editor.exit", "{prefix}<red>You are no longer in editor mode.", "crates", "editor", "exit"),
+    crate_editor_enabled("", "crates.editor.enabled", "{prefix}<red>You are already in the editor mode.", "crates", "editor", "already-in"),
+    crate_editor_force_exit("", "crates.editor.force-exit", "{prefix}<red>You have been forced out of the editor mode for {reason}.", "crates", "editor", "force-exit"),
 
     physical_crate_created("Messages.Created-Physical-Crate", "crates.physical.crate.created", List.of(
             "{prefix}<gray>You have set that block to {crate}.",
             "<gray>To remove the crate shift break in creative to remove."
     ), "crates", "physical-crate", "created"),
-    physical_crate_overwrite("", "crates.physical.crate.overwrite", "{prefix}<gray>You have overridden the crate's location with id <gold>{id} with {new_crate}.", "physical-crate", "override"),
-    physical_crate_exists("", "crates.physical.crate.exists", "{prefix}<gray>This location already has a crate named <gold>{crate} <gray>with id: <gold>{id}.", "physical-crate", "exists"),
+    physical_crate_overwrite("", "crates.physical.crate.overwrite", "{prefix}<gray>You have overridden the crate's location with id <gold>{id} with {new_crate}.", "crates", "physical-crate", "override"),
+    physical_crate_exists("", "crates.physical.crate.exists", "{prefix}<gray>This location already has a crate named <gold>{crate} <gray>with id: <gold>{id}.", "crates", "physical-crate", "exists"),
     physical_crate_removed("", "crates.physical.crate.removed", "{prefix}<gray>You have removed <gold>{id}.", "crates", "physical-crate", "removed"),
 
     crate_respins_max_none("", "crates.respins.max.none", "N/A", "crates", "respins", "none"),
     crate_respins_max("", "crates.respins.max", "{prefix}<red>You can no longer respin, Status: {status}", "crates", "respins", "max"),
 
-    crate_respins_claimed("", "crates.respins.claimed", "{prefix}<red>You have claimed {amount} prizes from your respins!", "respins", "claimed"),
-    crate_respins_redeemed("", "crates.respins.redeemed", "{prefix}<red>You have redeemed your prize with the name {prize} from the crate named {crate}!", "respins", "redeemed"),
-    crate_respins_not_claimed("", "crates.respins.not.claimed", "{prefix}<red>If you didn't get your prize, please run /crazycrates claim {crate}", "respins", "not-claimed"),
+    crate_respins_claimed("", "crates.respins.claimed", "{prefix}<red>You have claimed {amount} prizes from your respins!", "crates", "respins", "claimed"),
+    crate_respins_redeemed("", "crates.respins.redeemed", "{prefix}<red>You have redeemed your prize with the name {prize} from the crate named {crate}!", "crates", "respins", "redeemed"),
+    crate_respins_not_claimed("", "crates.respins.not.claimed", "{prefix}<red>If you didn't get your prize, please run /crazycrates claim {crate}", "crates", "respins", "not-claimed"),
     crate_respins_empty("", "crates.respins.empty", "{prefix}There is no prize to claim from the crate {crate}.", "crates", "respins", "empty"),
     crate_respins_format("", "crates.respins.format", "{respins_left}/{respins_total}", "crates", "respins", "format"),
 
@@ -226,7 +230,7 @@ public enum Message {
             "{locations}",
             "",
             "<bold><gold>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</gold></bold>"
-    ), "list", "format"),
+    ), "crates", "list", "format"),
 
     crate_pulls_max("", "crates.pulls.max", "{prefix}<red>This prize can no longer be obtained, {pulls}/{maxpulls}", "crates", "pulls", "max"),
 
