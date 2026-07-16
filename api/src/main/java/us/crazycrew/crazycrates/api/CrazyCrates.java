@@ -3,6 +3,7 @@ package us.crazycrew.crazycrates.api;
 import org.jspecify.annotations.NullMarked;
 import us.crazycrew.crazycrates.api.adapters.sender.ISenderAdapter;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
+import us.crazycrew.crazycrates.api.interfaces.registry.ICrateRegistry;
 import us.crazycrew.crazycrates.platform.IServer;
 import java.nio.file.Path;
 import java.util.List;
@@ -30,6 +31,8 @@ public abstract class CrazyCrates<C, S> implements IServer {
     public abstract ISenderAdapter<C, S> getSenderAdapter();
 
     public abstract ConfigManager getConfigManager();
+
+    public abstract ICrateRegistry getCrateRegistry();
 
     public abstract Path getCratesPath();
 

@@ -25,6 +25,7 @@ import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
 import com.badbones69.crazycrates.paper.support.placeholders.PlaceholderAPISupport;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
+import com.ryderbelserion.crazycrates.common.objects.crates.CrateLocation;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.files.enums.FileType;
@@ -33,6 +34,7 @@ import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
@@ -44,9 +46,11 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
+import java.util.UUID;
+
 import static com.badbones69.crazycrates.paper.utils.MiscUtils.registerPermissions;
 
-public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
+public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender, Location> {
 
     private final PaperFileManager fileManager;
     private final CrazyCrates plugin;
@@ -210,6 +214,11 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
         }
 
         MiscUtils.janitor();
+    }
+
+    @Override
+    public @NonNull CrateLocation map(@NonNull final Location location) {
+        return new CrateLocation(UUID.randomUUID(), (int) location.x(), (int) location.y(), (int) location.z());
     }
 
     public @NonNull InventoryManager getInventoryManager() {

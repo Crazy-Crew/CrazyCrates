@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Crate {
@@ -92,6 +93,7 @@ public class Crate {
     private ConfigurationSection section;
     private List<Prize> prizes;
     private String crateName;
+    private UUID crateUUID;
     private boolean giveNewPlayerKeys;
     private int newPlayerKeys;
     private int rows;
@@ -281,6 +283,7 @@ public class Crate {
         this.maxSlots = this.rows * 9;
 
         this.crateName = this.section.getString("Name", " ");
+        this.crateUUID = UUID.fromString(this.section.getString("Internal.UUID", ""));
 
         this.animationName = this.section.getString("Animation.Name", this.crateName);
 
@@ -687,7 +690,11 @@ public class Crate {
     public @NotNull final String getCrateName() {
         return this.crateName;
     }
-    
+
+    public @NotNull final UUID getCrateUUID() {
+        return this.crateUUID;
+    }
+
     /**
      * Gets the inventory of prizes for the crate.
      *

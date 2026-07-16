@@ -1,5 +1,9 @@
 package com.badbones69.crazycrates.paper.listeners;
 
+import com.ryderbelserion.crazycrates.common.objects.crates.CrateWorld;
+import com.ryderbelserion.crazycrates.common.storage.impl.objects.StorageHolder;
+import org.bukkit.World;
+import org.bukkit.event.world.WorldLoadEvent;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
@@ -37,6 +41,18 @@ public class MiscListener implements Listener {
     private final CrateManager crateManager = this.platform.getCrateManager();
 
     private final BukkitUserManager userManager = this.platform.getUserManager();
+
+    private final StorageHolder storageHolder = this.platform.getStorageHolder();
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onWorldLoad(WorldLoadEvent event) {
+        final World world = event.getWorld();
+
+        this.storageHolder.addWorld(new CrateWorld(
+                world.getUID(),
+                world.getName()
+        ));
+    }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {

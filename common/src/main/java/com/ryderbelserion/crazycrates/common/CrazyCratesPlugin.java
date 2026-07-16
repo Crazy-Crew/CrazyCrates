@@ -1,5 +1,10 @@
 package com.ryderbelserion.crazycrates.common;
 
+import com.ryderbelserion.crazycrates.common.objects.crates.CrateLocation;
+import com.ryderbelserion.crazycrates.common.registry.CrateRegistry;
+import com.ryderbelserion.crazycrates.common.storage.StorageManager;
+import com.ryderbelserion.crazycrates.common.storage.impl.objects.StorageHolder;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.kyori.adventure.text.Component;
 import org.jspecify.annotations.NonNull;
@@ -10,7 +15,7 @@ import us.crazycrew.crazycrates.api.enums.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
+public abstract class CrazyCratesPlugin<S, L> extends CrazyCrates<Component, S> {
 
     private final FusionKyori fusion;
 
@@ -20,7 +25,11 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
         this.fusion = fusion;
     }
 
+    public abstract CrateLocation map(@NonNull final L location);
+
     protected ConfigManager configManager;
+    protected StorageHolder storageHolder;
+    protected CrateRegistry crateRegistry;
 
     @Override
     public void init() {
@@ -31,6 +40,14 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
 
         for (final Files key : Files.values()) {
             key.load();
+        }
+
+        this.crateRegistry = new CrateRegistry();
+
+        try {
+            this.storageHolder = new StorageManager(this).init();
+        } catch (final Exception exception) {
+            this.fusion.log(Level.ERROR, "Failed to initialize storage impl", exception);
         }
 
         CratesProvider.register(this);
@@ -60,6 +77,11 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
     }
 
     @Override
+    public @NonNull CrateRegistry getCrateRegistry() {
+        return this.crateRegistry;
+    }
+
+    @Override
     public @NonNull ConfigManager getConfigManager() {
         return this.configManager;
     }
@@ -76,5 +98,9 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
     @Override
     public @NonNull Path getDataPath() {
         return this.path;
+    }
+
+    public @NonNull StorageHolder getStorageHolder() {
+        return this.storageHolder;
     }
 }

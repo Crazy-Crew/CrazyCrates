@@ -1,9 +1,10 @@
 package com.badbones69.crazycrates.paper.tasks.crates;
 
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
+import com.ryderbelserion.crazycrates.common.objects.crates.CrateWorld;
+import com.ryderbelserion.crazycrates.common.storage.impl.objects.StorageHolder;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
 import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
-import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
 import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
 import us.crazycrew.crazycrates.api.config.impl.types.editor.EditorKeys;
 import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
@@ -93,6 +94,8 @@ public class CrateManager {
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
 
+    private final StorageHolder storageHolder = this.platform.getStorageHolder();
+
     private final ConfigManager configManager = this.platform.getConfigManager();
 
     private final PropertyManager pluginConfig = this.configManager.getConfig();
@@ -132,8 +135,8 @@ public class CrateManager {
         return this.crateEditors.containsKey(player.getUniqueId());
     }
 
-    public @Nullable Crate getEditorCrate(@NotNull final Player player) {
-        return this.crateEditors.getOrDefault(player.getUniqueId(), null);
+    public Optional<Crate> getEditorCrate(@NotNull final Player player) {
+        return Optional.ofNullable(this.crateEditors.getOrDefault(player.getUniqueId(), null));
     }
 
     public void addQuadSession(@NotNull final QuadCrateManager session) {
@@ -471,6 +474,24 @@ public class CrateManager {
 
                     continue;
                 }
+            }
+
+            if (!section.isSet("Internal.UUID")) {
+                section.set("Internal.UUID", UUID.randomUUID().toString());
+
+                customFile.save();
+            }
+
+            if (section.getString("Internal.UUID", "").isEmpty()) {
+                section.set("Internal.UUID", UUID.randomUUID().toString());
+
+                customFile.save();
+            }
+
+            if (section.getComments("Internal.UUID").isEmpty()) {
+                section.setComments("Internal.UUID", List.of("Do not touch this! If you touch this after running the server in production. You may brick your crate."));
+
+                customFile.save();
             }
 
             for (final String prize : prizesSection.getKeys(false)) {
@@ -1227,59 +1248,65 @@ public class CrateManager {
             return;
         }
 
-        final Crate crate = getEditorCrate(player);
-
-        if (crate == null) {
-            removeEditorCrate(player);
-
-            Message.crate_editor_force_exit.sendMessage(player, "{reason}", "Crate does not exist.");
-
-            return;
-        }
-
-        if (crate.getCrateType() == CrateType.menu && !this.pluginConfig.getProperty(GuiKeys.is_crate_menu_enabled)) {
-            Message.crate_cannot_set_type.sendMessage(player);
-
-            return;
-        }
-
-        if (isCrateLocation(location)) {
-            if (this.editorConfig.getProperty(EditorKeys.overwrite_old_crate_locations)) {
-                final CrateLocation crateLocation = getCrateLocation(location);
-
-                if (crateLocation == null) return;
-
-                removeLocation(crateLocation); // remove old location
-
-                addCrateLocation(location, crate); // add new location
-
-                Message.physical_crate_overwrite.sendMessage(player, Map.of(
-                        "{id}", crateLocation.getID(),
-                        "{crate}", crate.getCrateName()
-                ));
-
-                spawnItem(location, ItemType.EMERALD.createItemStack());
+        getEditorCrate(player).ifPresentOrElse(crate -> {
+            if (crate.getCrateType() == CrateType.menu && !this.pluginConfig.getProperty(GuiKeys.is_crate_menu_enabled)) {
+                Message.crate_cannot_set_type.sendMessage(player);
 
                 return;
             }
 
-            final CrateLocation crateLocation = getCrateLocation(location);
+            /**if (isCrateLocation(location)) {
+                if (this.editorConfig.getProperty(EditorKeys.overwrite_old_crate_locations)) {
+                    final CrateLocation crateLocation = getCrateLocation(location);
 
-            Message.physical_crate_exists.sendMessage(player, Map.of(
-                    "{id}", crateLocation != null ? crateLocation.getID() : "N/A",
-                    "{crate}", crateLocation != null ? crateLocation.getCrate().getCrateName() : "N/A"
-            ));
+                    if (crateLocation == null) return;
 
-            spawnItem(location, ItemType.REDSTONE.createItemStack());
+                    removeLocation(crateLocation); // remove old location
 
-            return;
-        }
+                    addCrateLocation(location, crate); // add new location
 
-        addCrateLocation(location, crate);
+                    Message.physical_crate_overwrite.sendMessage(player, Map.of(
+                            "{id}", crateLocation.getID(),
+                            "{crate}", crate.getCrateName()
+                    ));
 
-        Message.physical_crate_created.sendMessage(player, "{crate}", crate.getCrateName());
+                    spawnItem(location, ItemType.EMERALD.createItemStack());
 
-        spawnItem(location, ItemType.EMERALD.createItemStack());
+                    return;
+                }
+
+                final CrateLocation crateLocation = getCrateLocation(location);
+
+                Message.physical_crate_exists.sendMessage(player, Map.of(
+                        "{id}", crateLocation != null ? crateLocation.getID() : "N/A",
+                        "{crate}", crateLocation != null ? crateLocation.getCrate().getCrateName() : "N/A"
+                ));
+
+                spawnItem(location, ItemType.REDSTONE.createItemStack());
+
+                return;
+            }*/
+
+            final World world = location.getWorld();
+
+            this.storageHolder.addWorld(new CrateWorld(world.getUID(), world.getName()));
+
+            this.storageHolder.addLocation(
+                    world.getUID(),
+                    crate.getCrateUUID(),
+                    (int) location.x(),
+                    (int) location.y(),
+                    (int) location.z()
+            );
+
+            Message.physical_crate_created.sendMessage(player, "{crate}", crate.getCrateName());
+
+            spawnItem(location, ItemType.EMERALD.createItemStack());
+        }, () -> {
+            removeEditorCrate(player);
+
+            Message.crate_editor_force_exit.sendMessage(player, "{reason}", "Crate does not exist.");
+        });
     }
 
     private void spawnItem(@NotNull final Location location, @NotNull final ItemStack itemStack) {

@@ -1,4 +1,8 @@
 Crate:
+  # This is for internal use only!
+  Internal:
+    # Do not touch this! If you touch this after running the server in production. You may brick your crate.
+    UUID: ""
   # https://docs.crazycrew.us/mods/crazycrates/faq/#5-what-are-the-crate-types
 
   # Make sure to check out the wiki for anything not explained here.
