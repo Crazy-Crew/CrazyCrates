@@ -69,6 +69,16 @@ Crate:
   # A list of commands to run by default on every prize.
   # If you do not want these commands to run, set this to []
   Prize-Commands: []
+  # Crate requirements.
+  Requirements:
+    # Key requirements.
+    Key:
+      # Should a sound be played if they have no key?
+      Toggle: true
+      # The sound section.
+      Sound:
+        # https://mudkipdev.github.io/minecraft-sound-explorer/
+        Name: "entity.villager.no"
   # Global Settings
   Settings:
     # This defines whether we should track how many times players opened this crate

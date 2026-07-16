@@ -139,6 +139,9 @@ public class Crate {
     private String cycleFinishedMaterial = "";
     private String cycleRollingMaterial = "";
 
+    private boolean playSound = true;
+    private String sound = "entity.villager.no";
+
     /**
      * @param name The name of the crate.
      * @param crateType The crate type of the crate.
@@ -310,6 +313,9 @@ public class Crate {
         this.isKnockBackEnabled = config.hasProperty(CrateKeys.is_knock_back_enabled) ? config.getProperty(CrateKeys.is_knock_back_enabled) : this.section.getBoolean("Settings.Knock-Back", true);
 
         this.disabledWorlds.addAll(config.hasProperty(CrateKeys.disabled_worlds) ? config.getProperty(CrateKeys.disabled_worlds) : this.section.getStringList("Settings.Disabled-Worlds"));
+
+        this.playSound = config.hasProperty(CrateKeys.need_key_sound_toggle) ? config.getProperty(CrateKeys.need_key_sound_toggle) : this.section.getBoolean("Settings.Requirements.Key.Toggle", true);
+        this.sound = config.hasProperty(CrateKeys.need_key_sound) ? config.getProperty(CrateKeys.need_key_sound) : this.section.getString("Settings.Requirements.Key.Sound.Name", "entity.villager.no");
 
         this.hologram = hologram;
 

@@ -103,10 +103,12 @@ public class CrateKeys implements IPropertyHolder {
             newProperty(true, "crate", "keys", "inventory-settings", "send-message");
 
     @Comment("Should a sound should be played if they have no key?")
+    @Disabled("This option has been moved to be per crate file.")
     public static final Property<Boolean> need_key_sound_toggle =
             newProperty(true, "crate", "keys", "key-sound", "toggle");
 
     @Comment("https://mudkipdev.github.io/minecraft-sound-explorer/")
+    @Disabled("This option has been moved to be per crate file.")
     public static final Property<String> need_key_sound =
             newProperty("entity.villager.no", "crate", "keys", "key-sound", "name");
 

@@ -78,6 +78,16 @@ Crate:
     Knock-Back: true
     # A list of worlds the crate can't work in.
     Disabled-Worlds: []
+    # Crate requirements.
+    Requirements:
+      # Key requirements.
+      Key:
+        # Should a sound be played if they have no key?
+        Toggle: true
+        # The sound section.
+        Sound:
+          # https://mudkipdev.github.io/minecraft-sound-explorer/
+          Name: "entity.villager.no"
     # Handles settings related to the border
     Border:
       # Settings related to the glass border
