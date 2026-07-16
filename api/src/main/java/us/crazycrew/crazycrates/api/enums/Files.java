@@ -1,6 +1,7 @@
 package us.crazycrew.crazycrates.api.enums;
 
 import com.ryderbelserion.fusion.core.api.FusionProvider;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
@@ -123,11 +124,27 @@ public enum Files {
     }
 
     public final void load() {
+        if (this.actions.contains(FileAction.DELETE_FILE)) {
+            try {
+                java.nio.file.Files.deleteIfExists(this.path);
+            } catch (final IOException exception) {
+                this.fusion.log(Level.ERROR, "Failed to delete: %s", exception, this.path);
+            }
+        }
+
         this.fileManager.addFile(this.path, this.fileType, action -> action.addActions(this.actions));
     }
 
     public final void reload() {
-        this.fileManager.addFile(this.path, this.fileType, action -> action.addAction(FileAction.RELOAD_FILE));
+        if (this.actions.contains(FileAction.DELETE_FILE)) {
+            try {
+                java.nio.file.Files.deleteIfExists(this.path);
+            } catch (final IOException exception) {
+                this.fusion.log(Level.ERROR, "Failed to delete: %s", exception, this.path);
+            }
+        }
+
+        this.fileManager.addFile(this.path, this.fileType, action -> action.addActions(this.actions).addAction(FileAction.RELOAD_FILE));
     }
 
     public final void save() {

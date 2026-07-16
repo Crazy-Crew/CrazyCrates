@@ -40,8 +40,6 @@ import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
@@ -87,14 +85,6 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
     @Override
     public void init() {
         super.init();
-
-        final Path version = this.path.resolve("version.json");
-
-        try {
-            Files.deleteIfExists(version);
-        } catch (final IOException exception) {
-            this.fusion.log(Level.WARNING, "Failed to delete version.json!", exception);
-        }
 
         this.fileManager.addPaperFile(this.path.resolve("locations.yml"))
                 .addPaperFile(this.path.resolve("data.yml"))
