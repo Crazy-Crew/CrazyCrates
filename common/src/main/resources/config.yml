@@ -213,20 +213,6 @@ crate:
     physical-crate-accepts-virtual-keys: true
   # This option if set to true will force the crate to take the required keys set in the crate file
   use-required-keys: false
-  # This section contains settings related to different crate types.
-  types:
-    # This section is related to settings with the csgo crate type.
-    csgo:
-      # Sets a static material in the csgo crate in slot 4 and 22
-      # This is above and below the prize.
-      #
-      # Set this to blank to have it populate with glass.
-      cycling-material: "gold_ingot"
-      # Sets a static material in the csgo crate in slot 4 and 22
-      # This is above and below the prize and only shows up when the crate ends.
-      #
-      # Set this to blank to have it populate with glass.
-      finished-material: "iron_ingot"
   # Logs all crate actions to console if enabled.
   log-to-console: false
   # Logs all crate/key actions to individual files, on plugin reload and shutdown. the files will zip to avoid size errors.
