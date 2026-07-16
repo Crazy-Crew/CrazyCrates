@@ -5,7 +5,6 @@ import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import com.ryderbelserion.fusion.core.api.enums.Level;
-import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
@@ -36,9 +35,7 @@ public class CommandReload extends BaseCommand {
 
         this.fileManager.refresh(false)
                 .addFolder(this.path.resolve("schematics"), FileType.NBT)
-                .addFolder(this.path.resolve("logs"), FileType.LOG, action -> action.addAction(FileAction.STATIC_FILE))
-                .addFolder(path.resolve("buttons"), FileType.YAML)
-                .addFile(version, FileType.JSON);
+                .addFolder(this.path.resolve("buttons"), FileType.YAML);
 
         this.fileManager.addPaperFolder(this.path.resolve("crates"))
                 .addPaperFolder(this.path.resolve("guis"))

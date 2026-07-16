@@ -121,10 +121,7 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
         this.crateManager = new CrateManager();
 
-        this.userManager = new BukkitUserManager(
-                this,
-                this.crateManager
-        );
+        this.userManager = new BukkitUserManager(this, this.crateManager);
 
         this.inventoryManager.loadButtons();
 
@@ -187,8 +184,6 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
     public void reload() {
         super.reload();
 
-        this.fusion.reload();
-
         this.fileManager.addPaperFile(this.path.resolve("locations.yml"))
                 .addPaperFile(this.path.resolve("data.yml"))
 
@@ -197,10 +192,6 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
                 .addFolder(this.path.resolve("schematics"), FileType.NBT)
                 .addFolder(this.path.resolve("buttons"), FileType.YAML);
-
-        this.configManager.reload();
-
-        loadMessages();
 
         if (this.metrics != null && !this.configManager.getConfig().getProperty(RootKeys.is_metrics_enabled)) {
             final Metrics scheduler = this.metrics.getMetrics();

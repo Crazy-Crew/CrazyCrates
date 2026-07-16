@@ -38,7 +38,15 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
 
     @Override
     public void reload() {
+        this.fusion.reload();
 
+        this.configManager.reload();
+
+        for (final Files key : Files.values()) {
+            key.reload();
+        }
+
+        loadMessages();
     }
 
     @Override

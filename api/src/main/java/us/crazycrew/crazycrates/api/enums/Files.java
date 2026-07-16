@@ -14,6 +14,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,9 @@ public enum Files {
             FileAction.EXTRACT_FILE
     )),
     config("config.yml", FileType.YAML, List.of(
+            FileAction.EXTRACT_FILE
+    )),
+    messages("messages.yml", FileType.YAML, List.of(
             FileAction.EXTRACT_FILE
     )),
 
