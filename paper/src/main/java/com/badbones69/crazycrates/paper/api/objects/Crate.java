@@ -314,7 +314,7 @@ public class Crate {
 
         this.disabledWorlds.addAll(config.hasProperty(CrateKeys.disabled_worlds) ? config.getProperty(CrateKeys.disabled_worlds) : this.section.getStringList("Settings.Disabled-Worlds"));
 
-        this.playSound = config.hasProperty(CrateKeys.need_key_sound_toggle) ? config.getProperty(CrateKeys.need_key_sound_toggle) : this.section.getBoolean("Settings.Requirements.Key.Toggle", true);
+        this.playSound = config.hasProperty(CrateKeys.need_key_sound_toggle) ? config.getProperty(CrateKeys.need_key_sound_toggle) : this.section.getBoolean("Settings.Requirements.Key.Sound.Toggle", true);
         this.sound = config.hasProperty(CrateKeys.need_key_sound) ? config.getProperty(CrateKeys.need_key_sound) : this.section.getString("Settings.Requirements.Key.Sound.Name", "entity.villager.no");
 
         this.hologram = hologram;

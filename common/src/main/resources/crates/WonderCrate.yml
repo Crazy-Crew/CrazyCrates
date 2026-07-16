@@ -82,10 +82,10 @@ Crate:
     Requirements:
       # Key requirements.
       Key:
-        # Should a sound be played if they have no key?
-        Toggle: true
         # The sound section.
         Sound:
+          # Should a sound be played if they have no key?
+          Toggle: true
           # https://mudkipdev.github.io/minecraft-sound-explorer/
           Name: "entity.villager.no"
     # Handles settings related to the border
