@@ -6,6 +6,8 @@ import com.ryderbelserion.crazycrates.common.registry.CrateRegistry;
 import com.ryderbelserion.crazycrates.common.storage.impl.ConnectionFactory;
 import org.jspecify.annotations.NullMarked;
 import us.crazycrew.crazycrates.api.storage.IStorageHolder;
+import us.crazycrew.crazycrates.api.storage.enums.DataState;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -104,13 +106,27 @@ public final class StorageHolder extends IStorageHolder<CrateLocation, CrateWorl
         });
     }
 
-    public void removeLocation(final UUID id, final int x, final int y, final int z) {
+    @Override
+    public DataState removeLocation(final UUID location) {
+        return CompletableFuture.supplyAsync(() -> {
+            try (final Connection connection = this.connectionFactory.getConnection(); final PreparedStatement statement =
+                    connection.prepareStatement("delete from crate_locations where id=?")) {
 
+                statement.setString(1, location.toString());
+                statement.executeUpdate();
+
+                return DataState.SUCCESS;
+            } catch (final SQLException exception) {
+                exception.printStackTrace();
+
+                return DataState.FAILED;
+            }
+        }).join();
     }
 
     @Override
-    public void addLocation(final UUID world, final UUID crate, final int x, final int y, final int z) {
-        CompletableFuture.runAsync(() -> {
+    public DataState addLocation(final UUID world, final UUID crate, final int x, final int y, final int z) {
+        return CompletableFuture.supplyAsync(() -> {
             try (final Connection connection = this.connectionFactory.getConnection(); final PreparedStatement statement =
                     connection.prepareStatement("insert into crate_locations(id, world_id, crate_id, x, y, z) values(?, ?, ?, ?, ?, ?)")) {
                 final UUID location = UUID.randomUUID();
@@ -125,10 +141,14 @@ public final class StorageHolder extends IStorageHolder<CrateLocation, CrateWorl
                 statement.executeUpdate();
 
                 this.crateRegistry.getWorld(world).ifPresent(value -> value.addLocation(crate, location, x, y, z));
+
+                return DataState.SUCCESS;
             } catch (final SQLException exception) {
                 exception.printStackTrace();
+
+                return DataState.FAILED;
             }
-        });
+        }).join();
     }
 
     @Override

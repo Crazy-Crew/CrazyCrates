@@ -3,6 +3,7 @@ package us.crazycrew.crazycrates.api.storage;
 import org.jspecify.annotations.NullMarked;
 import us.crazycrew.crazycrates.api.interfaces.ICrateLocation;
 import us.crazycrew.crazycrates.api.interfaces.ICrateWorld;
+import us.crazycrew.crazycrates.api.storage.enums.DataState;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -19,7 +20,9 @@ public abstract class IStorageHolder<CL extends ICrateLocation, W extends ICrate
 
     public abstract boolean tableExists(final String table);
 
-    public abstract void addLocation(final UUID world, final UUID crate, final int x, final int y, final int z);
+    public abstract DataState addLocation(final UUID world, final UUID crate, final int x, final int y, final int z);
+
+    public abstract DataState removeLocation(final UUID location);
 
     public abstract boolean hasWorld(final W world);
 

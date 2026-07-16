@@ -1289,19 +1289,24 @@ public class CrateManager {
 
             final World world = location.getWorld();
 
-            this.storageHolder.addWorld(new CrateWorld(world.getUID(), world.getName()));
+            this.storageHolder.addWorld(new CrateWorld(world.getUID(), world.getName())); //todo() move elsewhere, as we don't need to checck this every time a block is clicked.
 
-            this.storageHolder.addLocation(
-                    world.getUID(),
+            switch (this.storageHolder.addLocation(world.getUID(),
                     crate.getCrateUUID(),
                     (int) location.x(),
                     (int) location.y(),
                     (int) location.z()
-            );
+            )) {
+                case SUCCESS -> {
+                    Message.physical_crate_created.sendMessage(player, "{crate}", crate.getCrateName());
 
-            Message.physical_crate_created.sendMessage(player, "{crate}", crate.getCrateName());
+                    spawnItem(location, ItemType.EMERALD.createItemStack());
+                }
 
-            spawnItem(location, ItemType.EMERALD.createItemStack());
+                case FAILED -> {
+                    //todo() failed
+                }
+            }
         }, () -> {
             removeEditorCrate(player);
 
