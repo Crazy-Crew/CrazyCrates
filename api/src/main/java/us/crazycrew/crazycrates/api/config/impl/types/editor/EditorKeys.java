@@ -1,5 +1,6 @@
 package us.crazycrew.crazycrates.api.config.impl.types.editor;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.api.config.annotations.Comment;
 import us.crazycrew.crazycrates.api.config.properties.builders.CommentsBuilder;
@@ -8,6 +9,7 @@ import us.crazycrew.crazycrates.api.config.properties.objects.interfaces.Propert
 import java.util.List;
 import static us.crazycrew.crazycrates.api.config.properties.PropertyBuilder.newProperty;
 
+@ApiStatus.Internal
 public class EditorKeys implements IPropertyHolder {
 
     @Override

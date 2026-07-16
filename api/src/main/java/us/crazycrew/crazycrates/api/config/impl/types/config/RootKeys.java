@@ -1,5 +1,6 @@
 package us.crazycrew.crazycrates.api.config.impl.types.config;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.api.config.annotations.Comment;
 import us.crazycrew.crazycrates.api.config.properties.builders.CommentsBuilder;
@@ -10,6 +11,7 @@ import java.util.List;
 import static us.crazycrew.crazycrates.api.config.properties.PropertyBuilder.newBeanProperty;
 import static us.crazycrew.crazycrates.api.config.properties.PropertyBuilder.newProperty;
 
+@ApiStatus.Internal
 public class RootKeys implements IPropertyHolder {
 
     @Override
