@@ -1,6 +1,5 @@
 package us.crazycrew.crazycrates.api.config.impl.types.config.crate;
 
-import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.api.config.annotations.Comment;
 import us.crazycrew.crazycrates.api.config.annotations.Disabled;
@@ -11,7 +10,6 @@ import us.crazycrew.crazycrates.api.config.properties.objects.interfaces.Propert
 import java.util.List;
 import static us.crazycrew.crazycrates.api.config.properties.PropertyBuilder.newProperty;
 
-@ApiStatus.Internal
 public class CrateKeys implements IPropertyHolder {
 
     @Override

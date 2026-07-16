@@ -1,11 +1,9 @@
 package us.crazycrew.crazycrates.api.config.impl.types.config.gui.beans;
 
-import org.jetbrains.annotations.ApiStatus;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Setting;
 
 @ConfigSerializable
-@ApiStatus.Internal
 public class ButtonPlacement {
 
     @Setting("column")

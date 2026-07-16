@@ -12,7 +12,6 @@ import us.crazycrew.crazycrates.api.config.impl.types.editor.EditorKeys;
 import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.Files;
 
-@ApiStatus.Internal
 public final class ConfigManager {
 
     private PropertyManager editor;
