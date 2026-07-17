@@ -5,6 +5,9 @@ import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 
+//todo() move this to the commons module
+//todo() add a mapper to create a Location object for Bukkit servers
+//todo() add a basic interface that Crate can extend.
 public class CrateLocation {
     
     private final String id;

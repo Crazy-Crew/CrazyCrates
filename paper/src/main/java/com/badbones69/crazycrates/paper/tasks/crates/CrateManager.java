@@ -1350,7 +1350,7 @@ public class CrateManager {
 
         final String arg1 = MiscUtils.location(location);
 
-        for (final CrateLocation crateLocation : getCrateLocations()) {
+        for (final CrateLocation crateLocation : getCrateLocations()) { //todo() get rid of this, we move the cache somewhere else only *after* a successful insertion is made to the database.
             final String arg2 = MiscUtils.location(crateLocation.getLocation());
 
             if (arg1.equals(arg2)) {
@@ -1377,7 +1377,7 @@ public class CrateManager {
 
         CrateLocation location = null;
 
-        for (final CrateLocation crateLocation : getCrateLocations()) {
+        for (final CrateLocation crateLocation : getCrateLocations()) { //todo() get rid of this, we move the cache somewhere else only *after* a successful insertion is made to the database.
             if (crateLocation.getID().equalsIgnoreCase(id)) {
                 location = crateLocation;
 
