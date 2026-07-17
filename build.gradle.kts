@@ -82,10 +82,7 @@ feather {
                     title("A new $releaseType version of ${rootProject.name} is ready!")
 
                     if (isRelease) {
-                        //content("<@&${rootProject.property("discord_role_id").toString()}>")
-                        content("This is a release")
-                    } else {
-                        content("This is a snapshot")
+                        content("<@&${rootProject.property("discord_role_id").toString()}>")
                     }
 
                     fields {
@@ -96,7 +93,7 @@ feather {
                                 "<:modrinth:1115307870473420800> [Modrinth](https://modrinth.com/plugin/${rootProject.name.lowercase()}/version/${rootProject.version})",
                                 "<:hangar:1139326635313733652> [Hangar](https://hangar.papermc.io/${rootProject.property("repository_owner").toString().replace("-", "")}/${rootProject.name.lowercase()}/versions/${rootProject.version})",
                                 "",
-                                ":hammer: [Jenkins](https://ci.crazycrew.us/job/${rootProject.name}/)"
+                                "<:business:1527739792358637598> [Jenkins](https://ci.crazycrew.us/job/${rootProject.name}/)"
                             ).convertList()
                         )
 
