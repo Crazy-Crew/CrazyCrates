@@ -268,11 +268,6 @@ crate:
       give-virtual-keys: false
       # Should the player should be notified when their inventory is not empty?
       send-message: false
-    key-sound:
-      # Should a sound should be played if they have no key?
-      toggle: true
-      # https://mudkipdev.github.io/minecraft-sound-explorer/
-      name: "entity.villager.no"
     # Should a virtual crate accept physical keys?
     virtual-crate-accepts-physical-keys: true
     # Should a physical crate accept physical keys?
