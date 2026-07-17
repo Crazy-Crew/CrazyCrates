@@ -45,11 +45,11 @@ tasks {
             "group" to project.group,
 
             "current_commit" to rootProject.ext.get("current_commit").toString(),
-            "previous_commit" to rootProject.ext.get("previous_commit").toString(),
+            "previous_commit" to rootProject.ext.get("previous_commit").toString()
         )
 
         with(copySpec {
-            include("*paper-plugin.yml", "*version.json")
+            include("*paper-plugin.yml", "*plugin.yml", "*version.json")
 
             from("src/main/resources") {
                 expand(inputs.properties)
