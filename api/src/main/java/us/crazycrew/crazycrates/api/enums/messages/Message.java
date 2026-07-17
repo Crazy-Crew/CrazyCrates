@@ -4,6 +4,7 @@ import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.api.registry.message.adapter.YamlMessageAdapter;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
@@ -188,13 +189,10 @@ public enum Message {
 
     crate_prize_redeemed("", "crates.prize.redeemed", "{prefix}<red>You have already redeemed this prize!", "crates", "already-redeemed-prize"),
 
-    crate_editor_enter("", "crates.editor.enter", "{prefix}<red>You are now in editor mode.", "editor", "enter"),
-    crate_editor_exit("", "crates.editor.exit", "{prefix}<red>You are no longer in editor mode.", "editor", "exit"),
-    crate_editor_enabled("", "crates.editor.enabled", "{prefix}<red>You are already in the editor mode.", "editor", "already-in"),
-    crate_editor_force_exit("", "crates.editor.force-exit", "{prefix}<red>You have been forced out of the editor mode for {reason}.", "editor", "force-exit"),
     crate_editor_enter("", "crates.editor.enter", "{prefix}<red>You are now in editor mode.", "crates", "editor", "enter"),
     crate_editor_exit("", "crates.editor.exit", "{prefix}<red>You are no longer in editor mode.", "crates", "editor", "exit"),
     crate_editor_enabled("", "crates.editor.enabled", "{prefix}<red>You are already in the editor mode.", "crates", "editor", "already-in"),
+    crate_editor_not_enabled("", "crates.editor.not-enabled", "{prefix}<red>You are not in editor mode.", "crates", "editor", "not-enabled"),
     crate_editor_force_exit("", "crates.editor.force-exit", "{prefix}<red>You have been forced out of the editor mode for {reason}.", "crates", "editor", "force-exit"),
 
     physical_crate_created("Messages.Created-Physical-Crate", "crates.physical.crate.created", List.of(
@@ -263,14 +261,44 @@ public enum Message {
         this.path = path;
     }
 
-    public void addKey(final MessageRegistry registry, final CommentedConfigurationNode configuration, final FusionKey id) {
+    public void addKey(final MessageRegistry registry, final YamlCustomFile customFile, final CommentedConfigurationNode configuration, final FusionKey id) {
         final YamlMessageAdapter adapter = new YamlMessageAdapter(configuration, this.defaultValue, this.path);
+
+        /*if (!configuration.hasChild(this.path)) {
+            final CommentedConfigurationNode section = configuration.node(this.path);
+
+            switch (this.type) {
+                case STRING_LIST -> {
+                    try {
+                        section.set(toList(this.defaultValue));
+
+                        customFile.save();
+                    } catch (final SerializationException exception) {
+                        exception.printStackTrace();
+                    }
+                }
+
+                case STRING -> {
+                    try {
+                        section.set(this.defaultValue);
+
+                        customFile.save();
+                    } catch (final SerializationException exception) {
+                        exception.printStackTrace();
+                    }
+                }
+            }
+        }*/
 
         registry.addKey(
                 id,
                 this.id,
                 adapter
         );
+    }
+
+    public List<String> toList(final String value) {
+        return value.lines().toList();
     }
 
     public void sendMessage(final Audience audience, final Map<String, String> placeholders) {

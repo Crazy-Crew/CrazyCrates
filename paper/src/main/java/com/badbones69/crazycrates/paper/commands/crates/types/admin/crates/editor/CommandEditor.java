@@ -29,6 +29,8 @@ public class CommandEditor extends BaseCommand {
                 Message.crate_editor_exit.sendMessage(player, "{reason}", "you asked.");
             }
 
+            Message.crate_editor_not_enabled.sendMessage(player);
+
             return;
         }
 

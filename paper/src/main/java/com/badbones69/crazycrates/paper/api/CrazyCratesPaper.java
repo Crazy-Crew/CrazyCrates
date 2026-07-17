@@ -227,15 +227,15 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
         this.fusion.getMessageRegistry().init(action -> {
             for (final Path path : paths) {
-                this.fileManager.getYamlFile(path).ifPresentOrElse(file -> {
-                    final String fileName = file.getFileName();
+                this.fileManager.getYamlFile(path).ifPresentOrElse(customFile -> {
+                    final String fileName = customFile.getFileName();
 
                     final FusionKey key = FusionKey.key(us.crazycrew.crazycrates.api.CrazyCrates.namespace, fileName.equalsIgnoreCase("messages.yml") ? "default" : fileName.toLowerCase());
 
-                    final CommentedConfigurationNode configuration = file.getConfiguration();
+                    final CommentedConfigurationNode configuration = customFile.getConfiguration();
 
                     for (final Message message : Message.values()) {
-                        message.addKey(action, configuration, key);
+                        message.addKey(action, customFile, configuration, key);
                     }
                 }, () -> this.fusion.log(Level.INFO, "Path %s not found in cache.".formatted(path)));
             }
