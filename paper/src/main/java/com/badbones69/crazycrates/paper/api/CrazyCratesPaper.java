@@ -133,7 +133,6 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
         List.of(
                 // Other listeners.
-                //new BrokeLocationsListener(),
                 new EntityDamageListener(),
                 new MobileCrateListener(),
                 new CosmicCrateListener(),

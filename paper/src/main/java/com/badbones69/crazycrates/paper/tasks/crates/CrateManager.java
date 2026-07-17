@@ -4,6 +4,7 @@ import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
 import com.ryderbelserion.crazycrates.common.enums.CrateStatus;
 import com.ryderbelserion.crazycrates.common.objects.CrazyLocation;
 import com.ryderbelserion.crazycrates.common.storage.holder.StorageHolder;
+import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
 import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
 import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
@@ -809,6 +810,14 @@ public class CrateManager {
         }
 
         return false;
+    }
+
+    public void removeBrokenCrateLocation(@NonNull final CrazyLocation location) {
+        this.brokenLocations.remove(location);
+    }
+
+    public final List<CrazyLocation> getBrokenLocations() {
+        return this.brokenLocations;
     }
 
     /**

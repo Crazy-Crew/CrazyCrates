@@ -6,6 +6,7 @@ import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.CommandVersion;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.CommandAddItem;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.CommandClaim;
+import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.CommandFix;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.CommandMigrate;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.editor.CommandEditor;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.editor.CommandSet;
@@ -137,6 +138,8 @@ public class CommandManager {
                 new CommandList(),
                 new CommandEditor(),
                 new CommandSet(),
+
+                new CommandFix(),
 
                 new CommandGive(),
                 new CommandOpen(),
