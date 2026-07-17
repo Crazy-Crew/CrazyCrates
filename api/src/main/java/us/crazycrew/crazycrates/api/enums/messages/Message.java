@@ -213,7 +213,7 @@ public enum Message {
     crate_respins_format("", "crates.respins.format", "{respins_left}/{respins_total}", "crates", "respins", "format"),
 
     crate_teleport_failed("", "crates.teleport.failed", "{prefix}<red>There is no location with the name: <gold>{id}.", "crates", "teleport", "failed"),
-    crate_teleport_success("", "crates.teleport.success", "red>You have been teleported to the location with the name: <gold>{name}.", "crates", "teleport", "success"),
+    crate_teleport_success("", "crates.teleport.success", "{prefix}<red>You have been teleported to the location with the name: <gold>{name}.", "crates", "teleport", "success"),
 
     crate_list_per_crate("Messages.Keys.Per-Crate", "crates.list.per-crate", "<dark_gray>[<blue>{id}<dark_gray>]: <red>{crate_name}<dark_gray>, <red>{world}<dark_gray>, <red>{x}<dark_gray>, <red>{y}<dark_gray>, <red>{z}", "crates", "list", "per-crate"),
     crate_list_format("", "crates.list.format", List.of(

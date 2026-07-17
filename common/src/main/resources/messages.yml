@@ -137,7 +137,7 @@ crates:
   # Teleport messages.
   teleport:
     # A list of available placeholders: {name}
-    success: "<red>You have been teleported to the location with the name: <gold>{name}."
+    success: "{prefix}<red>You have been teleported to the location with the name: <gold>{name}."
     # A list of available placeholders: {id}
     failed: "{prefix}<red>There is no location with the name: <gold>{id}."
   # Pull messages.
