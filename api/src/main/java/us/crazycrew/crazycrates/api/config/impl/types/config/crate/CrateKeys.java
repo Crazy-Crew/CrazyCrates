@@ -15,10 +15,10 @@ public class CrateKeys implements IPropertyHolder {
     @Override
     public void registerComments(@NonNull CommentsBuilder configuration) {
         final List<String> deprecation = List.of(
-                "",
+                " ",
                 "Warning: This section is subject to change so it is considered deprecated.",
                 "This is your warning before the change happens. Please read the latest changelogs",
-                ""
+                " "
         );
 
         configuration.setComment("Settings related to crates.", "crate");
@@ -41,7 +41,7 @@ public class CrateKeys implements IPropertyHolder {
 
     @Comment({
             "This will switch how previews/opening the physical crates are handled.",
-            "",
+            " ",
             " true -> Right click to open, Left click to preview",
             " false -> Left click to open, Right click to preview"
     })
@@ -50,7 +50,7 @@ public class CrateKeys implements IPropertyHolder {
 
     @Comment({
             "This will switch how previews/opening the virtual crates are handled.",
-            "",
+            " ",
             " true -> Right click to open, Left click to preview",
             " false -> Left click to open, Right click to preview"
     })
@@ -76,7 +76,7 @@ public class CrateKeys implements IPropertyHolder {
 
     @Comment({
             "If a player gets to the menu related to the Prizes gui, Should they be timed out?",
-            "",
+            " ",
             "It will wait 10 seconds and if they already collected 3 prizes, It will only give one prize."
     })
     public static final Property<Boolean> cosmic_crate_timeout =
@@ -127,7 +127,7 @@ public class CrateKeys implements IPropertyHolder {
     @Comment({
             "Sets a static material in the csgo crate in slot 4 and 22",
             "This is above and below the prize.",
-            "",
+            " ",
             "Set this to blank to have it populate with glass."
     })
     @Disabled("This option has been moved to be per crate file.")
@@ -136,7 +136,7 @@ public class CrateKeys implements IPropertyHolder {
     @Comment({
             "Sets a static material in the csgo crate in slot 4 and 22",
             "This is above and below the prize and only shows up when the crate ends.",
-            "",
+            " ",
             "Set this to blank to have it populate with glass."
     })
     @Disabled("This option has been moved to be per crate file.")

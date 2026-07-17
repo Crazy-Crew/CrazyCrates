@@ -17,7 +17,6 @@ root:
   #
   # send_message -> sends messages in chat.
   # send_actionbar -> sends messages in actionbar.
-  #
   message-state: "send_message"
   # A list of available hologram plugins:
   #  -> DecentHolograms
@@ -54,6 +53,7 @@ gui:
           row: -1
           # The column for the item. -1 uses a fallback value.
           column: 5
+        # Overrides the menu button.
         override:
           # This will disable our current functionality of our main menu button in crate previews.
           # It allows you to override and use a menu of your choice from your plugin using a command.
@@ -190,6 +190,7 @@ gui:
           - "slot:32, item:cyan_stained_glass_pane, name: "
           - "slot:33, item:cyan_stained_glass_pane, name: "
           - "slot:34, item:cyan_stained_glass_pane, name: "
+
 # Settings related to crates.
 crate:
   # Settings related to how keys function.

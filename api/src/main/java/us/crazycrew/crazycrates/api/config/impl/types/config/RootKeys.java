@@ -15,19 +15,19 @@ public class RootKeys implements IPropertyHolder {
     @Override
     public void registerComments(@NonNull CommentsBuilder configuration) {
         final List<String> deprecation = List.of(
-                "",
+                " ",
                 "Warning: This section is subject to change so it is considered deprecated.",
                 "This is your warning before the change happens. Please read the latest changelogs",
-                ""
+                " "
         );
 
         configuration.setComment(List.of(
                 "Support: https://discord.gg/badbones-s-live-chat-182615261403283459",
                 "Github: https://github.com/Crazy-Crew",
-                "",
+                " ",
                 "Issues: https://github.com/Crazy-Crew/CrazyCrates/issues",
                 "Features: https://github.com/Crazy-Crew/CrazyCrates/issues",
-                "",
+                " ",
                 "Sounds: https://mudkipdev.github.io/minecraft-sound-explorer/"
         ), "root");
     }
@@ -40,10 +40,10 @@ public class RootKeys implements IPropertyHolder {
 
     @Comment({
             "This option will tell the plugin to send all messages as action bars or messages in chat.",
-            "",
+            " ",
             "send_message -> sends messages in chat.",
             "send_actionbar -> sends messages in actionbar.",
-            ""
+            " "
     })
     public static final Property<State> get_message_state = newBeanProperty(State.class, State.send_message, "root", "message-state");
 
@@ -56,7 +56,7 @@ public class RootKeys implements IPropertyHolder {
             " -> FancyHolograms",
             " -> CMI",
             " -> None",
-            "",
+            " ",
             "If the option is set to blank, it'll pick whatever plugin it feels like picking.",
             "Set the value to None if you do not want any."
     })

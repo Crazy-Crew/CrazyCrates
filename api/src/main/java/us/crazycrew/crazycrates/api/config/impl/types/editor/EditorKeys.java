@@ -15,10 +15,10 @@ public class EditorKeys implements IPropertyHolder {
         configuration.setComment(List.of(
                 "Support: https://discord.gg/badbones-s-live-chat-182615261403283459",
                 "Github: https://github.com/Crazy-Crew",
-                "",
+                " ",
                 "Issues: https://github.com/Crazy-Crew/CrazyCrates/issues",
                 "Features: https://github.com/Crazy-Crew/CrazyCrates/issues",
-                "",
+                " ",
                 "Sounds: https://mudkipdev.github.io/minecraft-sound-explorer/"
         ), "editor");
     }

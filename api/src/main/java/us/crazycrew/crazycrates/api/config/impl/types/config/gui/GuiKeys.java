@@ -16,10 +16,10 @@ public class GuiKeys implements IPropertyHolder {
     @Override
     public void registerComments(@NonNull final CommentsBuilder configuration) {
         final List<String> deprecation = List.of(
-                "",
+                " ",
                 "Warning: This section is subject to change so it is considered deprecated.",
                 "This is your warning before the change happens. Please read the latest changelogs",
-                ""
+                " "
         );
 
         configuration.setComment("Settings related to guis.", "gui");
