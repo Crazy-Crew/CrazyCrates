@@ -1,7 +1,7 @@
 [versions]
 ## Paper
 paperweight = "2.0.0-beta.21" # https://github.com/PaperMC/paperweight
-adventure = "5.0.0" # https://github.com/KyoriPowered/adventure
+adventure = "5.2.0" # https://github.com/KyoriPowered/adventure
 paper = "26.1.2.build.+" # https://github.com/PaperMC/Paper
 
 ## Minecraft
@@ -41,7 +41,7 @@ run-paper = "3.0.2" # https://github.com/jpenilla/run-task
 minotaur = "2.9.0" # https://github.com/modrinth/minotaur
 feather = "0.6.1" # https://github.com/ryderbelserion/Feather
 hangar = "0.1.4" # https://github.com/HangarMC/hangar-publish-plugin
-shadow = "9.4.1" # https://github.com/GradleUp/shadow
+shadow = "9.6.0" # https://github.com/GradleUp/shadow
 
 [plugins]
 # https://github.com/mfnalex/gradle-fix-javadoc-plugin
