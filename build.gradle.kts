@@ -84,6 +84,8 @@ feather {
                     if (isRelease) {
                         //content("<@&${rootProject.property("discord_role_id").toString()}>")
                         content("This is a release")
+                    } else {
+                        content("This is a snapshot")
                     }
 
                     fields {
