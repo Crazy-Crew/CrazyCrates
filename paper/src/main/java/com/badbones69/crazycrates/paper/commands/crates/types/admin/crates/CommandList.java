@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates;
 
+import com.ryderbelserion.crazycrates.common.objects.CrazyLocation;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
@@ -23,7 +24,9 @@ public class CommandList extends BaseCommand {
     public void list(CommandSender sender) {
         final List<String> crates = new ArrayList<>();
 
-        for (final CrateLocation crateLocation : this.crateManager.getCrateLocations()) {
+        final List<CrateLocation> locations = this.crateManager.getCrateLocations();
+
+        for (final CrateLocation crateLocation : locations) {
             final Location location = crateLocation.getLocation();
             final Crate crate = crateLocation.getCrate();
 
@@ -37,14 +40,15 @@ public class CommandList extends BaseCommand {
             )));
         }
 
-        final List<String> brokenCrates = crateManager.getBrokeCrates();
-        final List<Crate> validCrates = crateManager.getUsableCrates();
-        final List<CrateLocation> locations = crateManager.getCrateLocations();
+        final List<String> brokenCrates = this.crateManager.getBrokeCrates();
+        final List<Crate> validCrates = this.crateManager.getUsableCrates();
+        final List<CrazyLocation> brokenLocations = this.crateManager.getBrokenLocations();
 
         Message.crate_list_format.sendMessage(sender, Map.of(
                 "{active_crates}", String.valueOf(validCrates.size()),
                 "{broken_crates}", String.valueOf(brokenCrates.size()),
                 "{active_locations}", String.valueOf(locations.size()),
+                "{broken_locations}", String.valueOf(brokenLocations.size()),
                 "{locations}", locations.isEmpty() ? "N/A" : StringUtils.toString(crates)
         ));
     }
