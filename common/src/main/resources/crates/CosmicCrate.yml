@@ -34,7 +34,7 @@ Crate:
       # If sound should be enabled or not.
       toggle: true
       # The type of sound to use. Custom sounds from texture packs are supported!
-      # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+      # https://mudkipdev.github.io/minecraft-sound-explorer/
       value: "block.note_block.xylophone"
       # The volume of the pitch.
       volume: 1.0
@@ -45,7 +45,7 @@ Crate:
       # If sound should be enabled or not.
       toggle: true
       # The type of sound to use. Custom sounds from texture packs are supported!
-      # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+      # https://mudkipdev.github.io/minecraft-sound-explorer/
       value: "ui.button.click"
       # The volume of the pitch.
       volume: 1.0
@@ -56,7 +56,7 @@ Crate:
       # If sound should be enabled or not.
       toggle: true
       # The type of sound to use. Custom sounds from texture packs are supported!
-      # https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+      # https://mudkipdev.github.io/minecraft-sound-explorer/
       value: "entity.player.levelup"
       # The volume of the pitch.
       volume: 1.0

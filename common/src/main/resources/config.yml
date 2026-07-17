@@ -4,7 +4,7 @@
 # Issues: https://github.com/Crazy-Crew/CrazyCrates/issues
 # Features: https://github.com/Crazy-Crew/CrazyCrates/issues
 #
-# List of all sounds: https://minecraft.wiki/w/Sounds.json#Java_Edition_values
+# List of all sounds: https://mudkipdev.github.io/minecraft-sound-explorer/
 root:
   # This will allow you to use a new items layout for Prizes which should be much more straight forward, less prone to errors.
   # You can run /crazycrates migrate -mt NewItemFormat which should migrate all existing prizes after you set this to true
