@@ -41,6 +41,7 @@ tasks {
             "com.ryderbelserion.fusion",
             "io.leangen.geantyref",
             "dev.triumphteam.cmd",
+            "com.zaxxer.hikari",
             "org.spongepowered",
             "com.google.gson",
             "org.jspecify",

@@ -1,10 +1,10 @@
 package us.crazycrew.crazycrates.api.config.impl;
 
-import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.loader.HeaderMode;
 import org.spongepowered.configurate.yaml.NodeStyle;
 import us.crazycrew.crazycrates.api.config.ConfigBuilder;
+import us.crazycrew.crazycrates.api.config.impl.types.config.DatabaseKeys;
 import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
 import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
 import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
@@ -26,7 +26,7 @@ public final class ConfigManager {
                 .create();
 
         this.config = ConfigBuilder.withYamlPath(Files.config.getPath())
-                .configuration(RootKeys.class, GuiKeys.class, CrateKeys.class)
+                .configuration(RootKeys.class, DatabaseKeys.class, GuiKeys.class, CrateKeys.class)
                 .withNodeStyle(NodeStyle.BLOCK)
                 .withHeaderMode(HeaderMode.PRESERVE)
                 .withIndent(1)
