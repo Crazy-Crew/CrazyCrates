@@ -8,8 +8,6 @@ import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemType;
@@ -63,8 +61,6 @@ public class MiscUtils {
     private static final PluginManager pluginManager = server.getPluginManager();
 
     private static final Path dataPath = platform.getDataPath();
-
-    private static final ComponentLogger logger = plugin.getComponentLogger();
 
     public static void sendCommand(@Nullable final CommandSender sender, @NotNull final String command, @NotNull final Map<String, String> placeholders) {
         if (command.isEmpty()) return;
@@ -137,10 +133,6 @@ public class MiscUtils {
 
     public static void sendCommand(@NotNull final String command) {
         sendCommand(command, new HashMap<>());
-    }
-
-    public static String populatePlaceholders(@Nullable final CommandSender sender, @NotNull final String line, @NotNull final Map<String, String> placeholders) {
-        return fusion.parse(sender == null ? Audience.empty() : sender, line, placeholders);
     }
 
     public static void janitor() {
@@ -304,18 +296,6 @@ public class MiscUtils {
         }
 
         return -1;
-    }
-
-    public static void failedToTakeKey(@NotNull final CommandSender player, @NotNull final String crateName) {
-        if (fusion.isVerbose()) {
-            List.of(
-                    "An error has occurred while trying to take a key from a player.",
-                    "Player: " + player.getName(),
-                    "Key: " + crateName
-            ).forEach(logger::warn);
-
-            player.sendRichMessage("<red>An issue trying to take a key from you, Please take a look in your console, or notify your nearest admin.");
-        }
     }
 
     public static long pickNumber(final long min, long max) {

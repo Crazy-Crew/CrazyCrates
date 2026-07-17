@@ -54,9 +54,9 @@ public class SessionManager {
 
         final List<QuadCrateManager> sessions = this.crateManager.getQuadSessions();
 
-        QuadCrateManager instance = null;
+        if (sessions.isEmpty()) return null;
 
-        if (sessions.isEmpty()) return instance;
+        QuadCrateManager instance = null;
 
         for (final QuadCrateManager session : sessions) {
             if (session.getPlayer().getUniqueId().equals(uuid)) {

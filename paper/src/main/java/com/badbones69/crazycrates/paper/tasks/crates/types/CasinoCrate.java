@@ -38,7 +38,7 @@ public class CasinoCrate extends CrateBuilder {
 
     @Override
     public void run() {
-        // If cancelled, we return.
+        // If canceled, we return.
         if (this.isCancelled) {
             return;
         }

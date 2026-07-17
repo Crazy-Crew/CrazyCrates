@@ -359,10 +359,6 @@ public class CrateManager {
         return this.platform.getCrateFiles(keepExtension);
     }
 
-    public List<String> getCrateNames() {
-        return this.platform.getCrateFiles(false);
-    }
-
     public void loadExamples() {
         if (this.pluginConfig.getProperty(RootKeys.is_update_examples_folder)) {
             final Path examples = this.dataPath.resolve("examples");
@@ -894,8 +890,25 @@ public class CrateManager {
                     crateManager.removePickedPlayer(player);
                 }
 
-                case quad_crate, fire_cracker -> {
-                    Optional.ofNullable(location).ifPresent(loc -> {
+                case quad_crate, fire_cracker -> Optional.ofNullable(location).ifPresent(loc -> {
+                    if (this.holograms != null && crate.getHologram().isEnabled()) {
+                        final CrateLocation crateLocation = getCrateLocation(loc);
+
+                        if (crateLocation != null) {
+                            this.holograms.createHologram(loc, crate, crateLocation.getID());
+                        }
+                    }
+                });
+
+                case quick_crate -> Optional.ofNullable(location).ifPresent(loc -> {
+                    new FoliaScheduler(this.plugin, loc) {
+                        @Override
+                        public void run() {
+                            ChestManager.closeChest(loc.getBlock(), false);
+                        }
+                    }.runNow();
+
+                    if (!isRunning) {
                         if (this.holograms != null && crate.getHologram().isEnabled()) {
                             final CrateLocation crateLocation = getCrateLocation(loc);
 
@@ -903,29 +916,8 @@ public class CrateManager {
                                 this.holograms.createHologram(loc, crate, crateLocation.getID());
                             }
                         }
-                    });
-                }
-
-                case quick_crate -> {
-                    Optional.ofNullable(location).ifPresent(loc -> {
-                        new FoliaScheduler(this.plugin, loc) {
-                            @Override
-                            public void run() {
-                                ChestManager.closeChest(loc.getBlock(), false);
-                            }
-                        }.runNow();
-
-                        if (!isRunning) {
-                            if (this.holograms != null && crate.getHologram().isEnabled()) {
-                                final CrateLocation crateLocation = getCrateLocation(loc);
-
-                                if (crateLocation != null) {
-                                    this.holograms.createHologram(loc, crate, crateLocation.getID());
-                                }
-                            }
-                        }
-                    });
-                }
+                    }
+                });
             }
         });
 
@@ -990,7 +982,7 @@ public class CrateManager {
     public void addQuadCrateTask(@NotNull final Player player, @NotNull final ScheduledTask task) {
         final UUID uuid = player.getUniqueId();
 
-        if (!this.currentQuadTasks.containsKey(uuid)) {
+        if (!hasQuadCrateTask(player)) {
             this.currentQuadTasks.put(uuid, new ArrayList<>());
         }
 

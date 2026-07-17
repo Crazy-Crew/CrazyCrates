@@ -13,10 +13,8 @@ import com.ryderbelserion.fusion.paper.builders.items.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.custom.CustomBuilder;
 import io.papermc.paper.persistence.PersistentDataContainerView;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
@@ -63,20 +61,6 @@ public class ItemUtil {
         custom.setCustomModelData(id);
 
         custom.build();
-    }
-
-    public static void removeItem(@NotNull final ItemStack item, @NotNull final Player player) {
-        final int amount = item.getAmount();
-
-        final PlayerInventory inventory = player.getInventory();
-
-        if (amount <= 1 && !inventory.isEmpty()) {
-            inventory.removeItem(item);
-
-            return;
-        }
-
-        item.setAmount(amount - 1);
     }
 
     public static String getEnchant(@NotNull final String enchant) {
@@ -167,10 +151,6 @@ public class ItemUtil {
                 return enchant.toLowerCase();
             }
         }
-    }
-
-    public static String getPotion(@NotNull final String potion) {
-        return potion.isEmpty() ? "" : potion.toLowerCase();
     }
 
     public static boolean isSimilar(@NotNull final ItemStack itemStack, @NotNull final Crate crate) {
@@ -395,9 +375,7 @@ public class ItemUtil {
                 String value = optionString.replace(option + ":", "").replace(option, "");
 
                 switch (option.toLowerCase()) {
-                    case "item" -> {
-                        itemBuilder = ItemBuilder.from(value.toLowerCase());
-                    }
+                    case "item" -> itemBuilder = ItemBuilder.from(value.toLowerCase());
                     case "data" -> itemBuilder.withBase64(value);
                     case "name" -> itemBuilder.withDisplayName(value);
                     case "glowing" -> ItemUtil.addGlow(itemBuilder, value);

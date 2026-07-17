@@ -1,8 +1,5 @@
 package com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates;
 
-import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
-import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
-import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
@@ -34,10 +31,6 @@ public class QuadCrateManager {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
-
-    private final ConfigManager configManager = this.platform.getConfigManager();
-
-    private final PropertyManager pluginConfig = this.configManager.getConfig();
 
     private final CrateManager crateManager = this.platform.getCrateManager();
     private final BukkitUserManager userManager = this.platform.getUserManager();
@@ -304,14 +297,12 @@ public class QuadCrateManager {
             @Override
             public void run() {
                 // Update spawned crate block states that remove them.
-                crateLocations.forEach(location -> {
-                    new FoliaScheduler(plugin, location) {
-                        @Override
-                        public void run() {
-                            quadCrateChests.get(location).update(true, false);
-                        }
-                    }.runNow();
-                });
+                crateLocations.forEach(location -> new FoliaScheduler(plugin, location) {
+                    @Override
+                    public void run() {
+                        quadCrateChests.get(location).update(true, false);
+                    }
+                }.runNow());
 
                 // Remove displayed rewards.
                 for (final Entity entity : displayedRewards) {
@@ -335,14 +326,12 @@ public class QuadCrateManager {
                 }.runNow();
 
                 // Restore the old blocks.
-                oldBlocks.keySet().forEach(location -> {
-                    new FoliaScheduler(plugin, location) {
-                        @Override
-                        public void run() {
-                            oldBlocks.get(location).update(true, false);
-                        }
-                    }.runNow();
-                });
+                oldBlocks.keySet().forEach(location -> new FoliaScheduler(plugin, location) {
+                    @Override
+                    public void run() {
+                        oldBlocks.get(location).update(true, false);
+                    }
+                }.runNow());
 
                 // End the crate.
                 crateManager.endCrate(crate, player, spawnLocation);

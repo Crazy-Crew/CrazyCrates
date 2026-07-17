@@ -3,7 +3,6 @@ package com.badbones69.crazycrates.paper.api.builders;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.crazycrates.paper.api.objects.Tier;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
@@ -19,7 +18,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
 import org.jetbrains.annotations.NotNull;
-import java.util.List;
 import java.util.Map;
 
 public abstract class InventoryBuilder implements InventoryHolder, Listener {
@@ -40,21 +38,12 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
     protected final Server server = this.plugin.getServer();
 
-    private Inventory inventory;
-    private Player player;
+    private final Inventory inventory;
+    private final Player player;
+    private final Crate crate;
     private String title;
-    private Crate crate;
     private int size;
     private int page;
-    private List<Tier> tiers;
-
-    public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size) {
-        this.player = player;
-        this.title = title;
-        this.size = size;
-
-        this.inventory = this.server.createInventory(this, this.size, this.fusion.asComponent(this.player, this.title, Map.of()));
-    }
 
     public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, @NotNull final Crate crate) {
         this.player = player;
@@ -65,30 +54,6 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
         this.inventory = this.server.createInventory(this, this.size, this.fusion.asComponent(this.player, this.title, Map.of()));
     }
-
-    public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, final int page, @NotNull final Crate crate) {
-        this.player = player;
-        this.title = title;
-        this.size = size;
-        this.page = page;
-
-        this.crate = crate;
-
-        this.inventory = this.server.createInventory(this, this.size, this.fusion.asComponent(this.player, this.title, Map.of()));
-    }
-
-    public InventoryBuilder(@NotNull final Player player, @NotNull final String title, final int size, @NotNull final Crate crate, @NotNull final List<Tier> tiers) {
-        this.player = player;
-        this.title = title;
-        this.size = size;
-
-        this.crate = crate;
-        this.tiers = tiers;
-
-        this.inventory = this.server.createInventory(this, this.size, this.fusion.asComponent(this.player, this.title, Map.of()));
-    }
-
-    public InventoryBuilder() {}
 
     public abstract InventoryBuilder build();
 
@@ -133,10 +98,6 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
 
     public @NotNull final Player getPlayer() {
         return this.player;
-    }
-
-    public @NotNull final List<Tier> getTiers() {
-        return this.tiers;
     }
 
     public @NotNull final InventoryView getView() {

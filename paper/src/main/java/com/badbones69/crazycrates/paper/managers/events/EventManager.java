@@ -56,14 +56,6 @@ public class EventManager {
                 key = Files.key_log;
             }
 
-            /*case event_command_sent -> {
-
-            }
-
-            case event_command_failed -> {
-
-            }*/
-
             case event_crate_opened -> {
                 message = "Player: %player% | Crate Name: %crate_name%<reset> | Force Opened: %force_opened% | Crate Type: %crate_type% | Key Name: %key_name%<reset> | Key Type: %key_type% | Key Item: %key_item%"
                         .replace("%player%", name)
