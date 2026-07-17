@@ -5,7 +5,6 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.registry.adapters.PaperSenderAdapter;
 import com.badbones69.crazycrates.paper.commands.CommandManager;
-import com.badbones69.crazycrates.paper.listeners.BrokeLocationsListener;
 import com.badbones69.crazycrates.paper.listeners.CrateControlListener;
 import com.badbones69.crazycrates.paper.listeners.MiscListener;
 import com.badbones69.crazycrates.paper.listeners.crates.CrateInteractListener;
@@ -83,6 +82,11 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
     private MetricsWrapper metrics;
 
     @Override
+    public boolean isCrateAvailable(final String name) {
+        return this.crateManager.getCrateFromName(name) != null;
+    }
+
+    @Override
     public void init() {
         super.init();
 
@@ -129,7 +133,7 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
         List.of(
                 // Other listeners.
-                new BrokeLocationsListener(),
+                //new BrokeLocationsListener(),
                 new EntityDamageListener(),
                 new MobileCrateListener(),
                 new CosmicCrateListener(),

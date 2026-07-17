@@ -1,7 +1,5 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates;
 
-import org.spongepowered.configurate.CommentedConfigurationNode;
-import us.crazycrew.crazycrates.api.enums.Files;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.commands.crates.types.BaseCommand;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
@@ -23,36 +21,25 @@ public class CommandTeleport extends BaseCommand {
             return;
         }
 
-        final CommentedConfigurationNode locations = Files.locations.getConfiguration();
+        this.storageHolder.getCrateLocation(id).ifPresentOrElse(index -> {
+            final World world = this.server.getWorld(index.getWorldName());
 
-        final CommentedConfigurationNode section = locations.node("Locations");
+            if (world == null) {
+                Message.crate_teleport_failed.sendMessage(player, "{id}", id);
 
-        boolean isFailed = true;
-
-        for (final Object object : section.childrenMap().keySet()) {
-            final String asString = object.toString();
-
-            if (!asString.equalsIgnoreCase(id)) continue;
-
-            final CommentedConfigurationNode origin = section.node(asString);
-
-            if (origin == null) continue;
-
-            final World world = this.server.getWorld(origin.node("World").getString(""));
-
-            if (world == null) continue;
-
-            if (!origin.hasChild("X") || !origin.hasChild("Y") || !origin.hasChild("Z")) continue;
-
-            if (player.teleport(new Location(world, origin.node("X").getInt(), origin.node("Y").getInt(), origin.node("Z").getInt()).add(.5, 0, .5))) {
-                Message.crate_teleport_success.sendMessage(player, "{name}", asString);
-
-                isFailed = false;
+                return;
             }
-        }
 
-        if (isFailed) {
-            Message.crate_teleport_failed.sendMessage(player, "{id}", id);
-        }
+            final Location location = new Location(
+                    world,
+                    index.getX(),
+                    index.getY(),
+                    index.getZ()
+            );
+
+            if (player.teleport(location.add(.5, 1, .5))) {
+                Message.crate_teleport_success.sendMessage(player, "{name}", index.getId());
+            }
+        }, () -> Message.crate_teleport_failed.sendMessage(player, "{id}", id));
     }
 }

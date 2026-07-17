@@ -2,20 +2,12 @@ package com.badbones69.crazycrates.paper.listeners;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
-import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.crazycrates.paper.api.objects.crates.BrokeLocation;
-import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
-import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
-import java.util.ArrayList;
-import java.util.List;
 
 // The only use for this class is to check if for broken locations and to try and fix them when the server loads the world.
 public class BrokeLocationsListener implements Listener {
@@ -32,23 +24,25 @@ public class BrokeLocationsListener implements Listener {
     
     @EventHandler
     public void onWorldLoad(WorldLoadEvent event) {
-        if (this.crateManager.getBrokeLocations().isEmpty()) return;
+        /*final List<CrazyLocation> locations = this.crateManager.getBrokenLocations();
+
+        if (locations.isEmpty()) return;
 
         int fixedAmount = 0;
 
-        final List<BrokeLocation> fixedWorlds = new ArrayList<>();
+        final List<CrazyLocation> fixedWorlds = new ArrayList<>();
 
-        for (final BrokeLocation brokeLocation : this.crateManager.getBrokeLocations()) {
-            final Location location = brokeLocation.getLocation();
+        for (final CrazyLocation index : locations) {
+            final Location location = index.getLocation();
             final World world = location.getWorld();
 
             if (world == null) continue;
 
-            final Crate crate = brokeLocation.getCrate();
+            final Crate crate = index.getCrate();
 
             if (crate == null) continue;
 
-            final CrateLocation crateLocation = new CrateLocation(brokeLocation.getLocationName(), crate, location);
+            final CrateLocation crateLocation = new CrateLocation(index.getId(), crate, location);
 
             this.crateManager.addLocation(crateLocation);
 
@@ -58,7 +52,7 @@ public class BrokeLocationsListener implements Listener {
                 manager.createHologram(location, crate, crateLocation.getID());
             }
 
-            fixedWorlds.add(brokeLocation);
+            fixedWorlds.add(index);
 
             fixedAmount++;
         }
@@ -68,7 +62,7 @@ public class BrokeLocationsListener implements Listener {
         if (this.fusion.isVerbose()) {
             this.logger.warn("Fixed {} broken crate locations.", fixedAmount);
 
-            if (this.crateManager.getBrokeLocations().isEmpty()) this.logger.warn("All broken crate locations have been fixed.");
-        }
+            if (this.crateManager.getBrokenLocations().isEmpty()) this.logger.warn("All broken crate locations have been fixed.");
+        }*/
     }
 }

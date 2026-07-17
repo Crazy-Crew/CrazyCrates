@@ -22,6 +22,8 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
         this.fusion = fusion;
     }
 
+    public abstract boolean isCrateAvailable(final String name);
+
     protected StorageManager storageManager;
     protected StorageHolder storageHolder;
     protected ConfigManager configManager;
@@ -41,7 +43,7 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
             key.load();
         }
 
-        this.storageManager = new StorageManager();
+        this.storageManager = new StorageManager(this);
 
         this.storageHolder = this.storageManager.init();
         this.storageHolder.save();

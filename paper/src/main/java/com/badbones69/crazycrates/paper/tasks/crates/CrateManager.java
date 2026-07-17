@@ -1,12 +1,11 @@
 package com.badbones69.crazycrates.paper.tasks.crates;
 
 import com.Zrips.CMI.Modules.ModuleHandling.CMIModule;
+import com.ryderbelserion.crazycrates.common.enums.CrateStatus;
+import com.ryderbelserion.crazycrates.common.objects.CrazyLocation;
 import com.ryderbelserion.crazycrates.common.storage.holder.StorageHolder;
-import org.spongepowered.configurate.BasicConfigurationNode;
-import org.spongepowered.configurate.CommentedConfigurationNode;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
 import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
-import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
 import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
 import us.crazycrew.crazycrates.api.config.impl.types.editor.EditorKeys;
 import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
@@ -26,7 +25,6 @@ import com.badbones69.crazycrates.paper.tasks.menus.CrateMainMenu;
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateHologram;
 import com.badbones69.crazycrates.paper.api.objects.crates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
-import com.badbones69.crazycrates.paper.api.objects.crates.BrokeLocation;
 import com.badbones69.crazycrates.paper.api.ChestManager;
 import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.badbones69.crazycrates.paper.utils.MiscUtils;
@@ -115,10 +113,11 @@ public class CrateManager {
     private final InventoryManager inventoryManager = this.platform.getInventoryManager();
     private final BukkitKeyManager keyManager = this.platform.getKeyManager();
 
+    private final List<CrazyLocation> brokenLocations = new ArrayList<>();
+
     private final List<QuadCrateManager> quadSessions = new ArrayList<>();
     private final List<CrateLocation> crateLocations = new ArrayList<>();
     private final List<CrateSchematic> crateSchematics = new ArrayList<>();
-    private final List<BrokeLocation> brokeLocations = new ArrayList<>();
     private final Map<UUID, Location> cratesInUse = new HashMap<>();
     private final List<String> brokeCrates = new ArrayList<>();
     private final List<Crate> crates = new ArrayList<>();
@@ -580,78 +579,64 @@ public class CrateManager {
 
         this.fusion.log(Level.WARNING, "All crate information has been loaded, Loading physical crate locations!");
 
-        final CommentedConfigurationNode locations = us.crazycrew.crazycrates.api.enums.Files.locations.getConfiguration();
+        for (final Map.Entry<CrateStatus, CrazyLocation> index : this.storageHolder.getCrateLocations().entrySet()) {
+            final CrazyLocation key = index.getValue();
+            final CrateStatus status = index.getKey();
 
-        int loadedAmount = 0;
-        int brokeAmount = 0;
+            if (status.equals(CrateStatus.failed)) {
+                this.brokenLocations.add(key);
 
-        final CommentedConfigurationNode section = locations.node("Locations");
+                continue;
+            }
 
-        if (section != null) {
-            for (final Object index : section.childrenMap().keySet()) {
-                final CommentedConfigurationNode origin = section.node(index);
+            if (status.equals(CrateStatus.unavailable)) {
+                continue;
+            }
 
-                if (origin == null) continue;
+            final World world = this.server.getWorld(key.getWorldName());
 
-                final String worldName = origin.node("World").getString("");
+            if (world == null) {
+                this.brokenLocations.add(key);
 
-                // If the name is empty or blank, we return.
-                if (worldName.isBlank()) continue;
+                continue;
+            }
 
-                final String asString = index.toString();
+            final Crate crate = getCrateFromName(key.getCrateName());
 
-                final World world = this.server.getWorld(worldName);
+            if (crate == null) {
+                this.brokenLocations.add(key);
 
-                if (!origin.hasChild("X") || !origin.hasChild("Y") || !origin.hasChild("Z")) {
-                    this.brokeLocations.add(new BrokeLocation(asString, null, -1, -1, -1, worldName));
+                continue;
+            }
 
-                    brokeAmount++;
+            final Location location = new Location(world, key.getX(), key.getY(), key.getZ());
 
-                    continue;
-                }
+            final String id = key.getId();
 
-                final int x = origin.node("X").getInt();
-                final int y = origin.node("Y").getInt();
-                final int z = origin.node("Z").getInt();
+            this.crateLocations.add(new CrateLocation(
+                    id,
+                    crate,
+                    location
+            ));
 
-                if (world == null) {
-                    this.brokeLocations.add(new BrokeLocation(asString, null, x, y, z, worldName));
-
-                    brokeAmount++;
-
-                    continue;
-                }
-
-                final Crate crate = getCrateFromName(origin.node("Crate").getString(""));
-
-                if (crate == null) {
-                    this.brokeLocations.add(new BrokeLocation(asString, null, x, y, z, worldName));
-
-                    brokeAmount++;
-
-                    continue;
-                }
-
-                final Location location = new Location(world, x, y, z);
-
-                this.crateLocations.add(new CrateLocation(asString, crate, location));
-
-                if (this.holograms != null) {
-                    this.holograms.createHologram(location, crate, asString);
-                }
-
-                loadedAmount++;
+            if (this.holograms != null) {
+                this.holograms.createHologram(location, crate, id);
             }
         }
 
         // Checking if all physical locations loaded
         if (this.fusion.isVerbose()) {
+            final int brokeAmount = this.brokenLocations.size();
+            final int loadedAmount = this.crates.size();
+
             if (loadedAmount > 0 || brokeAmount > 0) {
-                if (brokeAmount <= 0) {
+                if (brokeAmount == 0) {
                     this.logger.info("All physical crate locations have been loaded.");
                 } else {
                     this.logger.info("Loaded {} physical crate locations.", loadedAmount);
-                    this.logger.info("Failed to load {} physical crate locations.", brokeAmount);
+                    this.logger.warn("Failed to load {} physical crate locations.", brokeAmount);
+
+                    this.brokenLocations.forEach(location -> this.logger.warn("The physical crate location {} failed to load!", location.getId()));
                 }
             }
 
@@ -1625,22 +1610,6 @@ public class CrateManager {
      */
     public @NotNull final List<String> getBrokeCrates() {
         return Collections.unmodifiableList(this.brokeCrates);
-    }
-
-    /**
-     * @return an unmodifiable list of broken crate locations.
-     */
-    public @NotNull final List<BrokeLocation> getBrokeLocations() {
-        return Collections.unmodifiableList(this.brokeLocations);
-    }
-
-    /**
-     * Removes broken locations.
-     *
-     * @param crateLocation list of locations to remove.
-     */
-    public void removeBrokeLocation(@NotNull final List<BrokeLocation> crateLocation) {
-        this.brokeLocations.removeAll(crateLocation);
     }
 
     /**
