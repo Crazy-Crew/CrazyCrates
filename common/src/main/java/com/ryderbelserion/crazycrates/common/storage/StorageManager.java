@@ -25,7 +25,7 @@ public class StorageManager {
 
         return switch (storageType.toLowerCase()) {
             case "yaml" -> new StorageHolder(new YamlFactory(this.plugin)).init();
-            case "sqlite" -> new StorageHolder(new SqliteFactory(this.plugin)).init();
+            case "sqlite" -> new StorageHolder(new YamlFactory(this.plugin)).init();
             default -> throw new IllegalStateException("Unexpected storage type value: " + storageType);
         };
     }

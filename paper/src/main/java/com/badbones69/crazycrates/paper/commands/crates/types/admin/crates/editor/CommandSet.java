@@ -54,7 +54,7 @@ public class CommandSet extends BaseCommand {
         final Location location = block.getLocation();
 
         if (this.crateManager.isCrateLocation(location)) {
-            final CrateLocation crateLocation = crateManager.getCrateLocation(location);
+            final CrateLocation crateLocation = this.crateManager.getCrateLocation(location);
 
             Message.physical_crate_exists.sendMessage(player, Map.of(
                     "{id}", crateLocation != null ? crateLocation.getID() : "N/A",
