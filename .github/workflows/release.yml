@@ -3,9 +3,8 @@ name: Release Build
 on:
   workflow_dispatch:
 
-  push:
-    tags:
-      - 'v*'
+  release:
+    types: [ published ]
 
 env:
   version_status: "release"
