@@ -352,7 +352,7 @@ public class CrateManager {
             return;
         }
 
-        this.fusion.log(Level.WARNING, "%s support has been enabled.", this.holograms.getName());
+        this.fusion.log(Level.INFO, "%s support has been enabled.", this.holograms.getName());
     }
 
     public List<String> getCrateNames(final boolean keepExtension) {
@@ -367,7 +367,7 @@ public class CrateManager {
                 try (final Stream<Path> values = Files.walk(examples)) {
                     values.sorted(Comparator.reverseOrder()).forEach(path -> { // sorted in reverse order, to ensure the directories are empty first.
                         try {
-                            this.fusion.log(Level.WARNING, "Successfully deleted path %s, re-generating the examples later.", path);
+                            this.fusion.log(Level.INFO, "Successfully deleted path %s, re-generating the examples later.", path);
 
                             Files.delete(path);
                         } catch (final IOException exception) {
@@ -410,7 +410,7 @@ public class CrateManager {
             this.holograms.purge(false);
         }
 
-        this.fusion.log(Level.WARNING, "Loading all crate information...");
+        this.fusion.log(Level.INFO, "Loading all crate information...");
 
         final Path crates = this.dataPath.resolve("crates");
 
@@ -574,7 +574,7 @@ public class CrateManager {
 
         addCrate(new Crate("Menu"));
 
-        this.fusion.log(Level.WARNING, "All crate information has been loaded, Loading physical crate locations!");
+        this.fusion.log(Level.INFO, "All crate information has been loaded, Loading physical crate locations!");
 
         for (final Map.Entry<CrateStatus, CrazyLocation> index : this.storageHolder.getCrateLocations().entrySet()) {
             final CrazyLocation key = index.getValue();
@@ -649,10 +649,10 @@ public class CrateManager {
 
             this.crateSchematics.add(schematic);
 
-            this.fusion.log(Level.WARNING, "%s was successfully found and loaded.", fileName);
+            this.fusion.log(Level.INFO, "%s was successfully found and loaded.", fileName);
         }
 
-        this.fusion.log(Level.WARNING, "All schematics were found and loaded.");
+        this.fusion.log(Level.INFO, "All schematics were found and loaded.");
 
         cleanDataFile();
 
