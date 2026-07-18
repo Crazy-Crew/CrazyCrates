@@ -91,6 +91,12 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
             return Component.empty();
         }
 
+        final String value = values.getFirst();
+
+        if (value.isEmpty()) {
+            return Component.empty();
+        }
+
         final Map<String, String> map = new HashMap<>(placeholders);
 
         final String prefix = this.pluginConfig.getProperty(RootKeys.get_command_prefix);
@@ -112,6 +118,12 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
             return "";
         }
 
+        final String value = values.getFirst();
+
+        if (value.isEmpty()) {
+            return "";
+        }
+
         final Map<String, String> map = new HashMap<>(placeholders);
 
         final String prefix = this.pluginConfig.getProperty(RootKeys.get_command_prefix);
@@ -120,7 +132,7 @@ public class PaperSenderAdapter extends ISenderAdapter<Component, CommandSender>
             map.putIfAbsent("{prefix}", prefix);
         }
 
-        return this.fusion.replacePlaceholders(this.fusion.papi(sender, values.getFirst()), map);
+        return this.fusion.replacePlaceholders(this.fusion.papi(sender, value), map);
     }
 
     @Override

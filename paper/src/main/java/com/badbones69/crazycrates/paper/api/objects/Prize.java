@@ -189,10 +189,14 @@ public class Prize {
         }
 
         if (maxPulls != 0 && pulls != 0 && pulls >= maxPulls) {
-            lore.add(Message.crate_pulls_max.getMessage(audience, Map.of(
+            final String message = Message.crate_pulls_max.getMessage(audience, Map.of(
                     "{maxpulls}", String.valueOf(maxPulls),
                     "{pulls}", amount
-            )));
+            ));
+
+            if (!message.isBlank()) {
+                lore.add(message);
+            }
         }
 
         this.displayItem.withDisplayLore(lore);
