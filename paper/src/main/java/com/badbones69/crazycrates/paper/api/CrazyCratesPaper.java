@@ -83,7 +83,7 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
     @Override
     public boolean isCrateAvailable(final String name) {
-        return this.crateManager.getCrateFromName(name) != null;
+        return this.crateManager.getCrateByName(name).isPresent();
     }
 
     @Override

@@ -576,48 +576,49 @@ public class CrateManager {
 
         this.fusion.log(Level.INFO, "All crate information has been loaded, Loading physical crate locations!");
 
-        for (final Map.Entry<CrateStatus, CrazyLocation> index : this.storageHolder.getCrateLocations().entrySet()) {
-            final CrazyLocation key = index.getValue();
-            final CrateStatus status = index.getKey();
+        for (final Map.Entry<CrateStatus, List<CrazyLocation>> index : this.storageHolder.getCrateLocations().entrySet()) {
+            for (final CrazyLocation key : index.getValue()) {
+                final CrateStatus status = index.getKey();
 
-            if (status.equals(CrateStatus.failed)) {
-                this.brokenLocations.add(key);
+                if (status.equals(CrateStatus.failed)) {
+                    this.brokenLocations.add(key);
 
-                continue;
-            }
+                    continue;
+                }
 
-            if (status.equals(CrateStatus.unavailable)) {
-                continue;
-            }
+                if (status.equals(CrateStatus.unavailable)) {
+                    continue;
+                }
 
-            final World world = this.server.getWorld(key.getWorldName());
+                final World world = this.server.getWorld(key.getWorldName());
 
-            if (world == null) {
-                this.brokenLocations.add(key);
+                if (world == null) {
+                    this.brokenLocations.add(key);
 
-                continue;
-            }
+                    continue;
+                }
 
-            final Crate crate = getCrateFromName(key.getCrateName());
+                final Crate crate = getCrateFromName(key.getCrateName());
 
-            if (crate == null) {
-                this.brokenLocations.add(key);
+                if (crate == null) {
+                    this.brokenLocations.add(key);
 
-                continue;
-            }
+                    continue;
+                }
 
-            final Location location = new Location(world, key.getX(), key.getY(), key.getZ());
+                final Location location = new Location(world, key.getX(), key.getY(), key.getZ());
 
-            final String id = key.getId();
+                final String id = key.getId();
 
-            this.crateLocations.add(new CrateLocation(
-                    id,
-                    crate,
-                    location
-            ));
+                this.crateLocations.add(new CrateLocation(
+                        id,
+                        crate,
+                        location
+                ));
 
-            if (this.holograms != null) {
-                this.holograms.createHologram(location, crate, id);
+                if (this.holograms != null) {
+                    this.holograms.createHologram(location, crate, id);
+                }
             }
         }
 

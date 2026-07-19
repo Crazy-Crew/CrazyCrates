@@ -4,6 +4,8 @@ import com.ryderbelserion.crazycrates.common.enums.CrateStatus;
 import com.ryderbelserion.crazycrates.common.objects.CrazyLocation;
 import com.ryderbelserion.crazycrates.common.storage.impl.ConnectionFactory;
 import org.jspecify.annotations.NullMarked;
+
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -41,7 +43,7 @@ public final class StorageHolder {
         return this.factory.getCrateLocation(id);
     }
 
-    public Map<CrateStatus, CrazyLocation> getCrateLocations() {
+    public Map<CrateStatus, List<CrazyLocation>> getCrateLocations() {
         return this.factory.getCrateLocations();
     }
 

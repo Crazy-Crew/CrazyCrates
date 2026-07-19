@@ -10,6 +10,7 @@ import org.jspecify.annotations.NullMarked;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -72,7 +73,7 @@ public final class SqliteFactory extends SqlFactory {
     }
 
     @Override
-    public Map<CrateStatus, CrazyLocation> getCrateLocations() {
+    public Map<CrateStatus, List<CrazyLocation>> getCrateLocations() {
         return Map.of();
     }
 
