@@ -27,14 +27,16 @@ public class FancyHologramsSupport extends HologramManager {
 
         final CrateHologram crateHologram = crate.getHologram();
 
+        final String identifier = name(id);
+
         if (!crateHologram.isEnabled()) {
-            removeHologram(id);
+            removeHologram(identifier);
 
             return;
         }
 
         // We don't want to create a new one if one already exists.
-        if (exists(id)) {
+        if (exists(identifier)) {
             return;
         }
 
@@ -53,7 +55,7 @@ public class FancyHologramsSupport extends HologramManager {
             background = textColor == null ? null : Color.fromARGB(textColor.value() | 0xC8000000);
         }
 
-        TextHologramData hologramData = new TextHologramData(name(id), location.clone().add(getVector(crate))).setBackground(background);
+        TextHologramData hologramData = new TextHologramData(identifier, location.clone().add(getVector(crate))).setBackground(background);
 
         hologramData.setTextShadow(crateHologram.getTextShadow());
 
@@ -81,16 +83,12 @@ public class FancyHologramsSupport extends HologramManager {
 
     @Override
     public void removeHologram(@NotNull final String id) {
-        final Hologram hologram = this.manager.getHologram(name(id)).orElse(null);
-
-        if (hologram == null) return;
-
-        FancyHologramsPlugin.get().getHologramThread().submit(() -> this.manager.removeHologram(hologram));
+        this.manager.getHologram(id).ifPresent(hologram -> FancyHologramsPlugin.get().getHologramThread().submit(() -> this.manager.removeHologram(hologram)));
     }
 
     @Override
     public boolean exists(@NotNull final String id) {
-        return this.manager.getHologram(name(id)).isPresent();
+        return this.manager.getHologram(id).isPresent();
     }
 
     @Override

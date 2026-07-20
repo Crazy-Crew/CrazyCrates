@@ -22,16 +22,18 @@ public class DecentHologramsSupport extends HologramManager {
 
         final CrateHologram crateHologram = crate.getHologram();
 
+        final String identifier = name(id);
+
         if (!crateHologram.isEnabled()) {
-            removeHologram(id);
+            removeHologram(identifier);
 
             return;
         }
 
         // We don't want to create a new one if one already exists.
-        if (exists(id)) return;
+        if (exists(identifier)) return;
 
-        final Hologram hologram = DHAPI.createHologram(name(id), location.clone().add(getVector(crate)));
+        final Hologram hologram = DHAPI.createHologram(identifier, location.clone().add(getVector(crate)));
 
         crateHologram.getMessages().forEach(line -> DHAPI.addHologramLine(hologram, IridiumColorAPI.process(line)));
 
@@ -41,17 +43,17 @@ public class DecentHologramsSupport extends HologramManager {
             hologram.setUpdateInterval(crateHologram.getUpdateInterval());
         }
 
-        this.holograms.putIfAbsent(name(id), hologram);
+        this.holograms.putIfAbsent(identifier, hologram);
     }
 
     @Override
     public void removeHologram(@NotNull final String id) {
-        DHAPI.removeHologram(name(id));
+        DHAPI.removeHologram(id);
     }
 
     @Override
     public boolean exists(@NotNull final String id) {
-        return DHAPI.getHologram(name(id)) != null;
+        return DHAPI.getHologram(id) != null;
     }
 
     @Override
