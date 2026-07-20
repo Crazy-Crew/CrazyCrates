@@ -9,6 +9,7 @@ import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -27,8 +28,8 @@ import java.util.HashMap;
 
 public class WheelCrate extends CrateBuilder {
 
-    public WheelCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
-        super(crate, player, size);
+    public WheelCrate(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location, final int size) {
+        super(crate, player, location, size);
     }
 
     private final Inventory inventory = getInventory();
@@ -120,7 +121,7 @@ public class WheelCrate extends CrateBuilder {
                     if (this.full >= (this.timer + 55 + 47)) {
                         Prize prize = null;
 
-                        if (crateManager.isInOpeningList(player)) {
+                        if (cacheManager.hasOpeningCrate(uuid)) {
                             prize = crate.getPrize(rewards.get(this.slots.get(this.what)));
                         }
 

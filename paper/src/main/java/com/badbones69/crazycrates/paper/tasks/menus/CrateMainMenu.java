@@ -177,7 +177,7 @@ public class CrateMainMenu extends StaticInventoryBuilder {
     }
 
     private void openCrate(@NotNull final UUID uuid, @NotNull final Crate crate, @NotNull final String fileName, @NotNull final String fancyName) {
-        if (this.crateManager.isInOpeningList(this.player)) {
+        if (this.cacheManager.hasOpeningCrate(uuid)) {
             Message.crate_already_opened.sendMessage(this.player, "{crate}", fancyName);
 
             return;
@@ -203,16 +203,6 @@ public class CrateMainMenu extends StaticInventoryBuilder {
             Message.no_virtual_keys.sendMessage(this.player, "{crate}", fancyName);
 
             return;
-        }
-
-        final String worldName = this.player.getWorld().getName();
-
-        for (final String world : crate.getDisabledWorlds()) {
-            if (world.equalsIgnoreCase(worldName)) {
-                Message.world_disabled.sendMessage(this.player, "{world}", worldName);
-
-                return;
-            }
         }
 
         if (MiscUtils.isInventoryFull(this.player)) {

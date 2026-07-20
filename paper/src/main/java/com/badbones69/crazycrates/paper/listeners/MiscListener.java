@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.paper.listeners;
 
+import com.badbones69.crazycrates.paper.cache.CacheManager;
+import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
@@ -26,6 +28,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
+import us.crazycrew.crazycrates.api.enums.types.KeyType;
+import java.util.Map;
 import java.util.UUID;
 
 public class MiscListener implements Listener {
@@ -33,6 +37,8 @@ public class MiscListener implements Listener {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final CacheManager cacheManager = this.platform.getCacheManager();
 
     private final CrateManager crateManager = this.platform.getCrateManager();
 
@@ -94,13 +100,13 @@ public class MiscListener implements Listener {
 
         final Player player = event.getPlayer();
 
-        if (this.crateManager.isInOpeningList(player)) {
-            // DrBot Start
-            if (this.crateManager.getOpeningCrate(player).getCrateType().equals(CrateType.quick_crate)) return;
+        this.cacheManager.getActiveCrate(player.getUniqueId()).ifPresent(activeCrate -> {
+            final Crate crate = activeCrate.getCrate();
 
-            // DrBot End
+            if (crate.getCrateType().equals(CrateType.quick_crate)) return;
+
             event.setCancelled(true);
-        }
+        });
     }
 
     @EventHandler
@@ -111,42 +117,55 @@ public class MiscListener implements Listener {
 
         final Player player = holder.getPlayer();
 
-        final Crate crate = this.crateManager.getOpeningCrate(player);
+        final UUID uuid = player.getUniqueId();
 
-        if (!this.crateManager.isInOpeningList(player) || crate == null) return;
+        this.cacheManager.getActiveCrate(uuid).ifPresent(activeCrate -> {
+            final Crate crate = activeCrate.getCrate();
 
-        switch (crate.getCrateType()) {
-            case war -> this.crateManager.endCrate(crate, player);
+            switch (crate.getCrateType()) {
+                case war -> this.crateManager.endCrate(crate, player);
 
-            case cosmic -> {
-                final CosmicCrateManager crateManager = (CosmicCrateManager) crate.getManager();
+                case cosmic -> {
+                    final CosmicCrateManager crateManager = (CosmicCrateManager) crate.getManager();
 
-                boolean playSound = false;
+                    boolean playSound = false;
 
-                if (holder.contains(" - Prizes")) {
-                    for (final int key : crateManager.getPrizes(player).keySet()) {
-                        final ItemStack item = inventory.getItem(key);
+                    if (holder.contains(" - Prizes")) {
+                        for (final int key : crateManager.getPrizes(player).keySet()) {
+                            final ItemStack item = inventory.getItem(key);
 
-                        if (item != null) {
-                            final Tier tier = this.crateManager.getTier(crate, item);
+                            if (item != null) {
+                                final Tier tier = this.crateManager.getTier(crate, item);
 
-                            if (tier != null) {
-                                PrizeManager.givePrize(player, crate, crate.pickPrize(player, tier));
+                                if (tier != null) {
+                                    PrizeManager.givePrize(player, crate, crate.pickPrize(player, tier));
 
-                                playSound = true;
+                                    playSound = true;
+                                }
                             }
                         }
                     }
-                }
 
-                // Play sound.
-                if (playSound) {
-                    crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", Sound.Source.MASTER);
-                }
+                    if (holder.contains(" - Shuffling")) {
+                        final String crateName = crate.getFileName();
+                        final int amount = activeCrate.getAmount();
 
-                this.crateManager.endCrate(crate, player);
+                        this.userManager.addKeys(uuid, crateName, !MiscUtils.isInventoryFull(player) ? KeyType.physical_key : KeyType.virtual_key, amount);
+
+                        Message.command_key_refund.sendMessage(player, Map.of(
+                                "{crate}", crate.getCrateName()
+                        ));
+                    }
+
+                    // Play sound.
+                    if (playSound) {
+                        crate.playSound(player, player.getLocation(), "click-sound", "ui.button.click", Sound.Source.MASTER);
+                    }
+
+                    this.crateManager.endCrate(crate, player);
+                }
             }
-        }
+        });
     }
 
     @EventHandler

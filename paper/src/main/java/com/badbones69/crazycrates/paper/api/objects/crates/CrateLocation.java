@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.api.objects.crates;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
+import com.badbones69.crazycrates.paper.utils.MiscUtils;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
@@ -12,30 +13,16 @@ public class CrateLocation {
     
     private final String id;
     private final Crate crate;
-    private final Location loc;
+    private final Location location;
     
-    public CrateLocation(@NotNull final String id, @NotNull final Crate crate, @NotNull final Location loc) {
-        this.id = id;
+    public CrateLocation(@NotNull final String id, @NotNull final Crate crate, @NotNull final Location location) {
+        this.location = location;
         this.crate = crate;
-        this.loc = loc;
+        this.id = id;
     }
-    
-    /**
-     * Get the ID of the location.
-     *
-     * @return the location's ID.
-     */
-    public @NotNull final String getID() {
-        return this.id;
-    }
-    
-    /**
-     * Get the crate that this location is set to.
-     *
-     * @return the crate that the block is set to.
-     */
-    public @NotNull final Crate getCrate() {
-        return this.crate;
+
+    public @NotNull final String getLocationAsString() {
+        return MiscUtils.location(this.location);
     }
     
     /**
@@ -53,6 +40,24 @@ public class CrateLocation {
      * @return the location of the crate.
      */
     public @NotNull final Location getLocation() {
-        return this.loc;
+        return this.location;
+    }
+
+    /**
+     * Get the crate that this location is set to.
+     *
+     * @return the crate that the block is set to.
+     */
+    public @NotNull final Crate getCrate() {
+        return this.crate;
+    }
+
+    /**
+     * Get the ID of the location.
+     *
+     * @return the location's ID.
+     */
+    public @NotNull final String getID() {
+        return this.id;
     }
 }

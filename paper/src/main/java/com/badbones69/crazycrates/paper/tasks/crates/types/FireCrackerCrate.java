@@ -24,7 +24,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class FireCrackerCrate extends CrateBuilder {
 
-    public FireCrackerCrate(@NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final Location location) {
+    public FireCrackerCrate(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location, final int size) {
         super(crate, player, size, location);
     }
 
@@ -51,11 +51,7 @@ public class FireCrackerCrate extends CrateBuilder {
         final HologramManager manager = this.crateManager.getHolograms();
 
         if (manager != null && this.crate.getHologram().isEnabled()) {
-            CrateLocation crateLocation = this.crateManager.getCrateLocation(this.location);
-
-            if (crateLocation != null) {
-                manager.removeHologram(crateLocation.getID());
-            }
+            this.crateManager.getCrateLocation(this.location).ifPresent(crateLocation -> manager.removeHologram(crateLocation.getID()));
         }
 
         final List<Color> colors = Arrays.asList(Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE, Color.BLACK, Color.AQUA, Color.MAROON, Color.PURPLE);
@@ -78,8 +74,7 @@ public class FireCrackerCrate extends CrateBuilder {
                     if (crate.isCyclePrize() && !PrizeManager.isCapped(crate, player)) { // re-open this menu
                         new CrateSpinMenu(player, new GuiSettings(crate, prize, FileKeys.respin_gui.getConfiguration())).open();
 
-                        crateManager.removePlayerFromOpeningList(player);
-                        crateManager.removeCrateInUse(player);
+                        cacheManager.removeActiveCrate(uuid);
 
                         return;
                     } else {

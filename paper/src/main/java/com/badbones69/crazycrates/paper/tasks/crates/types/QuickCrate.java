@@ -7,6 +7,8 @@ import com.badbones69.crazycrates.paper.api.objects.Prize;
 import com.badbones69.crazycrates.paper.api.ChestManager;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
+import com.badbones69.crazycrates.paper.cache.enums.ActiveStatus;
+import com.badbones69.crazycrates.paper.cache.objects.ActiveCrate;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
@@ -77,12 +79,17 @@ public class QuickCrate extends CrateBuilder {
             return;
         }
 
-        this.crateManager.addCrateInUse(this.player, this.location);
-
         int currentAmount = reference.get();
+        int keysUsed = 0;
+
+        this.cacheManager.addActiveCrate(this.uuid, new ActiveCrate(
+                ActiveStatus.physical_location,
+                this.location,
+                keysUsed,
+                this.crate
+        ));
 
         if (currentAmount > 1) {
-            int keysUsed = 0;
 
             for (;currentAmount > 0; currentAmount--) {
                 if (MiscUtils.isInventoryFull(this.player)) {
@@ -111,8 +118,7 @@ public class QuickCrate extends CrateBuilder {
         if (this.crate.isCyclePrize() && !PrizeManager.isCapped(this.crate, this.player)) { // re-open this menu
             new CrateSpinMenu(this.player, new GuiSettings(this.crate, prize, FileKeys.respin_gui.getConfiguration())).open();
 
-            this.crateManager.removePlayerFromOpeningList(this.player);
-            this.crateManager.removeCrateInUse(this.player);
+            this.cacheManager.removeActiveCrate(this.uuid);
 
             return;
         } else {

@@ -32,7 +32,7 @@ public class OraxenInteractListener implements Listener {
         final Player player = event.getPlayer();
 
         if (this.crateManager.hasEditorCrate(player)) {
-            this.crateManager.addCrateByLocation(player, location);
+            this.crateManager.addCrateByLocation(player, location, this.crateManager.getEditorCrate(player));
 
             event.setCancelled(true);
 
@@ -53,24 +53,18 @@ public class OraxenInteractListener implements Listener {
 
         if (player.getActiveItemHand() == EquipmentSlot.OFF_HAND) return;
 
-        if (this.crateManager.hasEditorCrate(player)) {
-            this.crateManager.removeCrateByLocation(player, location, false);
-
+        if (this.crateManager.hasEditorCrate(player) && this.crateManager.removeCrateByLocation(player, location)) {
             event.setCancelled(true);
 
             return;
         }
 
-        if (this.crateManager.isCrateLocation(location)) {
-            if (player.isSneaking() && player.hasPermission("crazycrates.admin")) {
-                this.crateManager.removeCrateByLocation(player, location, true);
+        if (player.isSneaking() && player.hasPermission("crazycrates.admin") && this.crateManager.removeCrateByLocation(player, location)) {
+            event.setCancelled(true);
 
-                event.setCancelled(true);
-
-                return;
-            }
-
-            new CrateInteractEvent(event, Action.LEFT_CLICK_BLOCK, location).callEvent();
+            return;
         }
+
+        new CrateInteractEvent(event, Action.LEFT_CLICK_BLOCK, location).callEvent();
     }
 }

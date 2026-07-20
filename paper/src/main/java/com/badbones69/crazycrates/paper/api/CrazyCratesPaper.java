@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.api;
 
+import com.badbones69.crazycrates.paper.cache.CacheManager;
 import com.ryderbelserion.crazycrates.common.CrazyCratesPlugin;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
@@ -78,6 +79,7 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
     private BukkitKeyManager keyManager;
     private ButtonManager buttonManager;
     private CrateManager crateManager;
+    private CacheManager cacheManager;
 
     private MetricsWrapper metrics;
 
@@ -111,6 +113,8 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
         this.inventoryManager = new InventoryManager();
         this.keyManager = new BukkitKeyManager();
+
+        this.cacheManager = new CacheManager();
 
         this.crateManager = new CrateManager();
 
@@ -265,6 +269,10 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
     public @NonNull CrateManager getCrateManager() {
         return this.crateManager;
+    }
+
+    public @NonNull CacheManager getCacheManager() {
+        return this.cacheManager;
     }
 
     public @NonNull MetricsWrapper getMetrics() {

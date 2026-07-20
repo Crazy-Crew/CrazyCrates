@@ -2,7 +2,6 @@ package com.badbones69.crazycrates.paper.tasks.crates.types;
 
 import com.badbones69.crazycrates.paper.api.objects.crates.quadcrates.CrateSchematic;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
-import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.tasks.crates.other.quadcrates.structures.StructureManager;
 import org.bukkit.Location;
@@ -20,7 +19,7 @@ public class QuadCrate extends CrateBuilder {
     private final Location location;
 
     public QuadCrate(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location) {
-        super(crate, player);
+        super(crate, player, location);
 
         this.location = location;
     }
@@ -48,12 +47,10 @@ public class QuadCrate extends CrateBuilder {
 
         handler.applyStructure(crateSchematic.schematicFile().toFile());
 
-        final CrateLocation crateLocation = this.crateManager.getCrateLocation(this.location);
-
-        if (crateLocation != null) {
+        this.crateManager.getCrateLocation(this.location).ifPresent(crateLocation -> {
             final QuadCrateManager session = new QuadCrateManager(getPlayer(), getCrate(), type, crateLocation.getLocation(), checkHand, handler, amount);
 
             session.startCrate();
-        }
+        });
     }
 }

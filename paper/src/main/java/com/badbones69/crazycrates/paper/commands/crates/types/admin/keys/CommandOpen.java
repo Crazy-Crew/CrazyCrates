@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.keys;
 
+import com.badbones69.crazycrates.paper.cache.enums.ActiveStatus;
+import com.badbones69.crazycrates.paper.cache.objects.ActiveCrate;
 import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
@@ -41,7 +43,7 @@ public class CommandOpen extends BaseCommand {
         }
 
         // Check if player is in opening list first.
-        if (this.crateManager.isInOpeningList(player)) {
+        if (this.cacheManager.hasOpeningCrate(player.getUniqueId())) {
             Message.crate_already_opened.sendMessage(player, "{crate}", crateName);
 
             return true;
@@ -274,8 +276,6 @@ public class CommandOpen extends BaseCommand {
             return;
         }
 
-        this.crateManager.addPlayerToOpeningList(player, crate);
-
         final ConfigurationSection configuration = crate.getSection();
 
         for (;keys > 0; keys--) { // check keys first.
@@ -285,6 +285,13 @@ public class CommandOpen extends BaseCommand {
 
             currentAmount++;
         }
+
+        this.cacheManager.addActiveCrate(player.getUniqueId(), new ActiveCrate(
+                ActiveStatus.virtual_location,
+                player.getLocation(),
+                currentAmount,
+                crate
+        ));
 
         final UUID uuid = player.getUniqueId();
 
@@ -418,6 +425,6 @@ public class CommandOpen extends BaseCommand {
         EventManager.logEvent(EventType.event_crate_opened, name, player, crate, keyType, keysUsed);
         EventManager.logEvent(EventType.event_key_taken, name, player, crate, keyType, keysUsed);
 
-        this.crateManager.removePlayerFromOpeningList(player);
+        this.cacheManager.removeActiveCrate(uuid);
     }
 }

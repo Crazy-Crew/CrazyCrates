@@ -9,6 +9,7 @@ import com.badbones69.crazycrates.paper.api.objects.gui.GuiSettings;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import net.kyori.adventure.sound.Sound;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
@@ -22,8 +23,8 @@ import java.util.UUID;
 
 public class RouletteCrate extends CrateBuilder {
 
-    public RouletteCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
-        super(crate, player, size);
+    public RouletteCrate(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location, final int size) {
+        super(crate, player, location, size);
     }
 
     private final Inventory inventory = getInventory();
@@ -115,7 +116,7 @@ public class RouletteCrate extends CrateBuilder {
                             if (crate.isCyclePrize() && !PrizeManager.isCapped(crate, player)) { // re-open this menu
                                 new CrateSpinMenu(player, new GuiSettings(crate, prize, FileKeys.respin_gui.getConfiguration())).open();
 
-                                crateManager.removePlayerFromOpeningList(player);
+                                cacheManager.removeActiveCrate(uuid);
 
                                 return;
                             } else {
@@ -129,7 +130,7 @@ public class RouletteCrate extends CrateBuilder {
                             PrizeManager.givePrize(player, crate, prize);
                         }
 
-                        crateManager.removePlayerFromOpeningList(player);
+                        cacheManager.removeActiveCrate(uuid);
 
                         new FoliaScheduler(plugin, null, player) {
                             @Override

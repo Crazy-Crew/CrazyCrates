@@ -75,6 +75,10 @@ public class MiscUtils {
         }.runNow();
     }
 
+    public static @NotNull String location(@NotNull final Location location) {
+        return location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ();
+    }
+
     public static void sendCommand(@NotNull final String command, @NotNull final Map<String, String> placeholders) {
         sendCommand(null, command, placeholders);
     }
@@ -175,22 +179,6 @@ public class MiscUtils {
                 firework.detonate();
             }
         }.runDelayed(3L);
-    }
-
-    public static @NotNull String location(@NotNull final Location location, final boolean getName) {
-        String name = getName ? location.getWorld().getName() : String.valueOf(location.getWorld().getUID());
-
-        return name + "," + location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ();
-    }
-
-    /**
-     * Converts a {@link Location} without the world name.
-     *
-     * @param location {@link Location}
-     * @return {@link String}
-     */
-    public static @NotNull String location(@NotNull final Location location) {
-        return location(location, false);
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.badbones69.crazycrates.paper.listeners.crates;
 
+import com.badbones69.crazycrates.paper.cache.CacheManager;
+import com.badbones69.crazycrates.paper.cache.objects.ActiveCrate;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
 import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
 import us.crazycrew.crazycrates.api.config.impl.types.config.gui.GuiKeys;
@@ -34,12 +36,16 @@ import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 public class CrateInteractListener implements Listener {
 
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final CacheManager cacheManager = this.platform.getCacheManager();
 
     private final ConfigManager configManager = this.platform.getConfigManager();
 
@@ -106,13 +112,44 @@ public class CrateInteractListener implements Listener {
     }
 
     private void openCrate(@NotNull final Player player, @NotNull final CrateLocation crateLocation, @NotNull final Crate crate) {
+        final Location location = crateLocation.getLocation();
+        final String fancyName = crate.getCrateName();
+
+        final UUID uuid = player.getUniqueId();
+
+        if (this.cacheManager.hasOpeningCrate(uuid)) { // if the player trying to interact again is the one currently opening.
+            final Optional<ActiveCrate> index = this.cacheManager.getActiveCrate(uuid);
+
+            if (index.isPresent()) {
+                final ActiveCrate value = index.get();
+
+                if (value.getLocationAsString().equals(crateLocation.getLocationAsString())) {
+                    Message.crate_already_opened.sendMessage(player, "{crate}", fancyName);
+
+                    return;
+                }
+            }
+        }
+
+        if (!this.cacheManager.hasOpeningCrate(uuid)) { // only runs if the player is not in the map, avoids double-dipping
+            final Optional<ActiveCrate> index = this.cacheManager.getActiveCrateByLocation(location); // checks the map for all locations that match.
+
+            if (index.isPresent()) {
+                final ActiveCrate value = index.get();
+
+                if (value.getLocationAsString().equals(crateLocation.getLocationAsString())) { // checks if location matches, and returns!
+                    Message.crate_already_used.sendMessage(player, "{crate}", fancyName);
+
+                    return;
+                }
+            }
+        }
+
         final KeyCheckEvent key = new KeyCheckEvent(player, crateLocation);
 
         this.pluginManager.callEvent(key);
 
         if (key.isCancelled()) return;
-
-        final Location location = crateLocation.getLocation();
 
         boolean isPhysical = false;
         boolean hasKey = false;
@@ -122,8 +159,6 @@ public class CrateInteractListener implements Listener {
         final String fileName = crate.getFileName();
 
         final int totalKeys = this.userManager.getTotalKeys(player.getUniqueId(), fileName);
-
-        final String fancyName = crate.getCrateName();
 
         if (requiredKeys > 0 && totalKeys < requiredKeys) { //todo() this, and the checks below should be combined. this is weird lol
             lackingKey(player, crate, location, totalKeys, requiredKeys);
@@ -158,23 +193,6 @@ public class CrateInteractListener implements Listener {
             this.crateManager.endCrate(crate, player);
 
             return;
-        }
-
-        if (!this.crateManager.isInOpeningList(player) && (this.crateManager.hasOpeningCrate(player) && this.crateManager.getOpeningCrate(player).getCrateType() == CrateType.quick_crate)
-                && (this.crateManager.isCrateInUse(player) && this.crateManager.getCrateInUseLocation(player).equals(crateLocation.getLocation()))) { // wtf is this?
-            if (this.crateManager.isInOpeningList(player)) {
-                Message.crate_already_opened.sendMessage(player, "{crate}", fancyName);
-
-                return;
-            }
-
-            if (this.crateManager.getCratesInUse().containsValue(crateLocation.getLocation())) {
-                Message.crate_already_used.sendMessage(player, "{crate}", fancyName);
-
-                return;
-            }
-        } else {
-            this.crateManager.endQuickCrate(player, crateLocation.getLocation(), crate, true);
         }
 
         // Only cosmic crate type uses this method.
@@ -227,7 +245,7 @@ public class CrateInteractListener implements Listener {
         if (skipTypeCheck || crate.getCrateType() == CrateType.menu) {
 
             // this is to stop players in QuadCrate to not be able to try and open a crate set to a menu.
-            if (!this.crateManager.isInOpeningList(player) && this.pluginConfig.getProperty(GuiKeys.is_crate_menu_enabled)) {
+            if (!this.cacheManager.hasOpeningCrate(player.getUniqueId()) && this.pluginConfig.getProperty(GuiKeys.is_crate_menu_enabled)) {
                 new CrateMainMenu(
                         player,
                         this.pluginConfig.getProperty(GuiKeys.crate_menu_inventory_name),

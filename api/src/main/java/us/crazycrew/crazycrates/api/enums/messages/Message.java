@@ -202,6 +202,7 @@ public enum Message {
     physical_crate_overwrite("", "crates.physical.crate.overwrite", "{prefix}<gray>You have overridden the crate's location with id <gold>{id} with {new_crate}.", "crates", "physical-crate", "override"),
     physical_crate_exists("", "crates.physical.crate.exists", "{prefix}<gray>This location already has a crate named <gold>{crate} <gray>with id: <gold>{id}.", "crates", "physical-crate", "exists"),
     physical_crate_removed("", "crates.physical.crate.removed", "{prefix}<gray>You have removed <gold>{id}.", "crates", "physical-crate", "removed"),
+    physical_crate_doesnt_exist("", "crates.physical.crate.doesnt-exist", "{prefix}<gray>There is no crate at this location.", "crates", "physical-crate", "doesnt-exist"),
 
     crate_respins_max_none("", "crates.respins.max.none", "N/A", "crates", "respins", "none"),
     crate_respins_max("", "crates.respins.max", "{prefix}<red>You can no longer respin, Status: {status}", "crates", "respins", "max"),

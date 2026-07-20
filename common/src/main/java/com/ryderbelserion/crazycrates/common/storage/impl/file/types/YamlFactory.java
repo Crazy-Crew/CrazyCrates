@@ -94,6 +94,12 @@ public class YamlFactory extends FlatFactory {
                 continue;
             }
 
+            if (!index.hasChild("UUID")) {
+                setValue(index.node("UUID"), String.class, id);
+
+                Files.locations.save();
+            }
+
             final int x = index.node("X").getInt();
             final int y = index.node("Y").getInt();
             final int z = index.node("Z").getInt();
@@ -123,8 +129,13 @@ public class YamlFactory extends FlatFactory {
 
         final CommentedConfigurationNode section = configuration.node("Locations");
 
-        setValue(section.node(id, "Crate"), String.class, crateName);
+        if (section.hasChild(id, "UUID")) { // already saved.
+            return section.node(id, "UUID").getString("");
+        }
+
         setValue(section.node(id, "World"), String.class, worldName);
+        setValue(section.node(id, "Crate"), String.class, crateName);
+        setValue(section.node(id, "UUID"), String.class, id);
         setValue(section.node(id, "X"), Integer.class, x);
         setValue(section.node(id, "Y"), Integer.class, y);
         setValue(section.node(id, "Z"), Integer.class, z);

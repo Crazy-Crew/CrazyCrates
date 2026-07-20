@@ -1,5 +1,8 @@
 package com.badbones69.crazycrates.paper.listeners.crates;
 
+import com.badbones69.crazycrates.paper.cache.CacheManager;
+import com.badbones69.crazycrates.paper.cache.enums.ActiveStatus;
+import com.badbones69.crazycrates.paper.cache.objects.ActiveCrate;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
 import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
 import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
@@ -27,6 +30,8 @@ public class CrateOpenListener implements Listener {
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
+
+    private final CacheManager cacheManager = this.platform.getCacheManager();
 
     private final ConfigManager configManager = this.platform.getConfigManager();
 
@@ -103,7 +108,12 @@ public class CrateOpenListener implements Listener {
             }
         }
 
-        this.crateManager.addPlayerToOpeningList(player, crate);
+        this.cacheManager.addActiveCrate(player.getUniqueId(), new ActiveCrate(
+                ActiveStatus.physical_location,
+                event.getLocation(),
+                event.getAmount(),
+                crate
+        ));
 
         final int amount = event.getAmount();
 

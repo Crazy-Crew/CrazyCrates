@@ -90,7 +90,7 @@ public class CrateButton extends GuiButton {
 
                     this.userManager.addRespinCrate(uuid, crateName, 1);
 
-                    this.crateManager.openCrate(clicker, this.crate, KeyType.free_key, clicker.getLocation(), true, false, true, EventType.event_crate_opened);
+                    this.crateManager.openCrate(clicker, this.crate, KeyType.free_key, clicker.getLocation(), false, false, true, EventType.event_crate_opened);
                 }
             }
         });

@@ -12,6 +12,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import net.kyori.adventure.sound.Sound;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -29,8 +30,8 @@ public class CsgoCrate extends CrateBuilder {
 
     private final BukkitUserManager userManager = this.platform.getUserManager();
 
-    public CsgoCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
-        super(crate, player, size);
+    public CsgoCrate(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location, final int size) {
+        super(crate, player, size, location);
     }
 
     private final Inventory inventory = getInventory();
@@ -125,7 +126,7 @@ public class CsgoCrate extends CrateBuilder {
                             PrizeManager.givePrize(player, crate, prize);
                         }
 
-                        crateManager.removePlayerFromOpeningList(player);
+                        cacheManager.removeActiveCrate(uuid);
 
                         new FoliaScheduler(plugin, null, player) {
                             @Override

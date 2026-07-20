@@ -66,7 +66,7 @@ public class CommandManager {
 
         commandManager.registerSuggestion(SuggestionKey.of("players"), (_) -> server.getOnlinePlayers().stream().map(Player::getName).toList());
 
-        commandManager.registerSuggestion(SuggestionKey.of("locations"), (_) -> crateManager.getCrateLocations().stream().map(CrateLocation::getID).toList());
+        commandManager.registerSuggestion(SuggestionKey.of("locations"), (_) -> crateManager.getCrateIds().stream().toList());
 
         commandManager.registerSuggestion(SuggestionKey.of("prizes"), (context) -> {
             final List<String> prizes = new ArrayList<>();

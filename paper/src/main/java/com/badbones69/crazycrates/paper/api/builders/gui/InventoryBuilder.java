@@ -4,6 +4,7 @@ import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
+import com.badbones69.crazycrates.paper.cache.CacheManager;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
@@ -49,6 +50,8 @@ public abstract class InventoryBuilder {
     protected final CrateManager crateManager = this.platform.getCrateManager();
 
     protected final BukkitUserManager userManager = this.platform.getUserManager();
+
+    protected final CacheManager cacheManager = this.platform.getCacheManager();
 
     protected final InventoryManager inventoryManager = this.platform.getInventoryManager();
 

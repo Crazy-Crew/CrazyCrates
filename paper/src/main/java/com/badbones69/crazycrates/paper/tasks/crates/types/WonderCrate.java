@@ -14,6 +14,7 @@ import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import net.kyori.adventure.sound.Sound;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
@@ -33,8 +34,8 @@ public class WonderCrate extends CrateBuilder {
 
     private final BukkitUserManager userManager = this.platform.getUserManager();
 
-    public WonderCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
-        super(crate, player, size);
+    public WonderCrate(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location, final int size) {
+        super(crate, player, location, size);
     }
 
     private final Inventory inventory = getInventory();
@@ -126,7 +127,7 @@ public class WonderCrate extends CrateBuilder {
                     if (crate.isCyclePrize() && !PrizeManager.isCapped(crate, player)) { // re-open this menu
                         new CrateSpinMenu(player, new GuiSettings(crate, prize, FileKeys.respin_gui.getConfiguration())).open();
 
-                        crateManager.removePlayerFromOpeningList(player);
+                        cacheManager.removeActiveCrate(uuid);
 
                         return;
                     } else {
@@ -141,7 +142,7 @@ public class WonderCrate extends CrateBuilder {
 
                     playSound("stop-sound", Sound.Source.MASTER, "entity.player.levelup");
 
-                    crateManager.removePlayerFromOpeningList(player);
+                    cacheManager.removeActiveCrate(uuid);
 
                     return;
                 }

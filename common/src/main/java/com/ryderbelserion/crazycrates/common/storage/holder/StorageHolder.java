@@ -4,7 +4,6 @@ import com.ryderbelserion.crazycrates.common.enums.CrateStatus;
 import com.ryderbelserion.crazycrates.common.objects.CrazyLocation;
 import com.ryderbelserion.crazycrates.common.storage.impl.ConnectionFactory;
 import org.jspecify.annotations.NullMarked;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

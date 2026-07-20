@@ -4,7 +4,7 @@ import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.PrizeManager;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.ItemKeys;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
-import com.badbones69.crazycrates.paper.api.objects.crates.CrateLocation;
+import com.badbones69.crazycrates.paper.cache.CacheManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
 import com.badbones69.crazycrates.paper.tasks.menus.CratePrizeMenu;
@@ -59,6 +59,8 @@ public abstract class CrateBuilder extends FoliaScheduler {
 
     protected final CrateManager crateManager = this.platform.getCrateManager();
 
+    protected final CacheManager cacheManager = this.platform.getCacheManager();
+
     protected final BukkitUserManager userManager = this.platform.getUserManager();
 
     private final InventoryBuilder builder;
@@ -76,13 +78,13 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param size size of inventory
      * @param title inventory title
      */
-    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size, @NotNull final String title) {
+    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location, final int size, @NotNull final String title) {
         super(CrazyCrates.getPlugin(), null, player);
 
         Preconditions.checkNotNull(crate, "Crate can't be null.");
         Preconditions.checkNotNull(player, "Player can't be null.");
 
-        this.location = player.getLocation();
+        this.location = location;
         this.player = player;
 
         this.crate = crate;
@@ -99,8 +101,8 @@ public abstract class CrateBuilder extends FoliaScheduler {
      * @param player player opening crate
      * @param size size of inventory
      */
-    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, final int size) {
-        this(crate, player, size, "");
+    public CrateBuilder(@NotNull final Crate crate, @NotNull final Player player, final Location location, final int size) {
+        this(crate, player, location, size, "");
     }
 
     /**
@@ -178,11 +180,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
             final HologramManager manager = this.crateManager.getHolograms();
 
             if (manager != null && this.crate.getHologram().isEnabled()) {
-                CrateLocation crateLocation = this.crateManager.getCrateLocation(this.location);
-
-                if (crateLocation != null) {
-                    manager.removeHologram(crateLocation.getID());
-                }
+                this.crateManager.getCrateLocation(this.location).ifPresent(crateLocation -> manager.removeHologram(crateLocation.getID()));
             }
 
             // Get the display item.
@@ -399,7 +397,7 @@ public abstract class CrateBuilder extends FoliaScheduler {
 
             final Consumer<CrateOpenEvent> consumer
     ) {
-        final CrateOpenEvent event = new CrateOpenEvent(this.player, this.crate, keyType, checkHand, this.crate.getSection(), isSilent, eventType, amount);
+        final CrateOpenEvent event = new CrateOpenEvent(this.player, this.location, this.crate, keyType, checkHand, this.crate.getSection(), isSilent, eventType, amount);
 
         consumer.accept(event);
 

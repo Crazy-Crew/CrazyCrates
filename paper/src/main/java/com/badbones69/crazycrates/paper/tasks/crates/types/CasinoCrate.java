@@ -11,6 +11,7 @@ import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import net.kyori.adventure.sound.Sound;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -23,8 +24,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CasinoCrate extends CrateBuilder {
 
-    public CasinoCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
-        super(crate, player, size);
+    public CasinoCrate(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location, final int size) {
+        super(crate, player, size, location);
     }
 
     private final Inventory inventory = getInventory();

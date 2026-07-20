@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.paper.tasks.crates.types;
 
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
@@ -9,8 +10,8 @@ import com.badbones69.crazycrates.paper.api.builders.CrateBuilder;
 
 public class CosmicCrate extends CrateBuilder {
 
-    public CosmicCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
-        super(crate, player, size, crate.getCrateName() + " - Choose");
+    public CosmicCrate(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location, final int size) {
+        super(crate, player, location, size, crate.getCrateName() + " - Choose");
     }
 
     @Override

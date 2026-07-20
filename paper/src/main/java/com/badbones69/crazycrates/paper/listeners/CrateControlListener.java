@@ -2,6 +2,7 @@ package com.badbones69.crazycrates.paper.listeners;
 
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
+import com.badbones69.crazycrates.paper.cache.CacheManager;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -22,6 +23,8 @@ public class CrateControlListener implements Listener {
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
 
     private final CrateManager crateManager = this.platform.getCrateManager();
+
+    private final CacheManager cacheManager = this.platform.getCacheManager();
 
     private final InventoryManager inventoryManager = this.platform.getInventoryManager();
 
@@ -60,10 +63,12 @@ public class CrateControlListener implements Listener {
         final Player player = event.getPlayer();
         final UUID uuid = player.getUniqueId();
 
-        final Crate crate = this.crateManager.getOpeningCrate(player);
-
         this.inventoryManager.removePreviewViewer(uuid);
 
-        this.crateManager.endCrate(crate, player);
+        this.cacheManager.getActiveCrate(uuid).ifPresent(activeCrate -> {
+            final Crate crate = activeCrate.getCrate();
+
+            this.crateManager.endCrate(crate, player);
+        });
     }
 }

@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.listeners.crates.types;
 
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
+import com.badbones69.crazycrates.paper.cache.CacheManager;
 import com.badbones69.crazycrates.paper.tasks.menus.CratePrizeMenu;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.api.objects.Prize;
@@ -25,6 +26,8 @@ public class WarCrateListener implements Listener {
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
 
+    private final CacheManager cacheManager = this.platform.getCacheManager();
+
     private final CrateManager crateManager = this.platform.getCrateManager();
 
     @EventHandler
@@ -42,68 +45,69 @@ public class WarCrateListener implements Listener {
         event.setCancelled(true);
 
         if (!this.crateManager.isPicker(player)) return;
-        if (!this.crateManager.isInOpeningList(player)) return;
 
-        final Crate crate = this.crateManager.getOpeningCrate(player);
+        this.cacheManager.getActiveCrate(player.getUniqueId()).ifPresent(activeCrate -> {
+            final Crate crate = activeCrate.getCrate();
 
-        if (crate.getCrateType() != CrateType.war) return;
-        if (!item.getType().toString().contains(Material.GLASS_PANE.toString())) return;
+            if (crate.getCrateType() != CrateType.war) return;
+            if (!item.getType().toString().contains(Material.GLASS_PANE.toString())) return;
 
-        final int slot = event.getRawSlot();
+            final int slot = event.getRawSlot();
 
-        final Prize prize = crate.pickPrize(player);
+            final Prize prize = crate.pickPrize(player);
 
-        inventory.setItem(slot, prize.getDisplayItem(player, crate));
+            inventory.setItem(slot, prize.getDisplayItem(player, crate));
 
-        if (this.crateManager.hasCrateTask(player)) {
-            this.crateManager.endCrate(crate, player);
-        }
-
-        this.crateManager.removePicker(player);
-
-        this.crateManager.addCloser(player, true);
-
-        PrizeManager.givePrize(player, crate, prize);
-
-        this.crateManager.removePlayerFromOpeningList(player);
-
-        crate.playSound(player, player.getLocation(), "cycle-sound", "block.anvil.land", Sound.Source.MASTER);
-
-        this.crateManager.addCrateTask(player, new FoliaScheduler(this.plugin, null, player) {
-            @Override
-            public void run() {
-                for (int i = 0; i < 9; i++) {
-                    if (i != slot) inventory.setItem(i, crate.pickPrize(player).getDisplayItem(player, crate));
-                }
-
-                if (crateManager.hasCrateTask(player)) {
-                    crateManager.endCrate(crate, player);
-                }
-
-                // Removing other items then the prize.
-                crateManager.addCrateTask(player, new FoliaScheduler(plugin, null, player) {
-                    @Override
-                    public void run() {
-                        for (int i = 0; i < 9; i++) {
-                            if (i != slot) inventory.setItem(i, null);
-                        }
-
-                        if (crateManager.hasCrateTask(player)) {
-                            crateManager.endCrate(crate, player);
-                        }
-
-                        // Closing the inventory when finished.
-                        crateManager.addCrateTask(player, new FoliaScheduler(plugin, null, player) {
-                            @Override
-                            public void run() {
-                                crateManager.endCrate(crate, player);
-
-                                player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
-                            }
-                        }.runDelayed(30));
-                    }
-                }.runDelayed(30));
+            if (this.crateManager.hasCrateTask(player)) {
+                this.crateManager.endCrate(crate, player);
             }
-        }.runDelayed(30));
+
+            this.crateManager.removePicker(player);
+
+            this.crateManager.addCloser(player, true);
+
+            PrizeManager.givePrize(player, crate, prize);
+
+            this.cacheManager.removeActiveCrate(player.getUniqueId());
+
+            crate.playSound(player, player.getLocation(), "cycle-sound", "block.anvil.land", Sound.Source.MASTER);
+
+            this.crateManager.addCrateTask(player, new FoliaScheduler(this.plugin, null, player) {
+                @Override
+                public void run() {
+                    for (int i = 0; i < 9; i++) {
+                        if (i != slot) inventory.setItem(i, crate.pickPrize(player).getDisplayItem(player, crate));
+                    }
+
+                    if (crateManager.hasCrateTask(player)) {
+                        crateManager.endCrate(crate, player);
+                    }
+
+                    // Removing other items then the prize.
+                    crateManager.addCrateTask(player, new FoliaScheduler(plugin, null, player) {
+                        @Override
+                        public void run() {
+                            for (int i = 0; i < 9; i++) {
+                                if (i != slot) inventory.setItem(i, null);
+                            }
+
+                            if (crateManager.hasCrateTask(player)) {
+                                crateManager.endCrate(crate, player);
+                            }
+
+                            // Closing the inventory when finished.
+                            crateManager.addCrateTask(player, new FoliaScheduler(plugin, null, player) {
+                                @Override
+                                public void run() {
+                                    crateManager.endCrate(crate, player);
+
+                                    player.closeInventory(InventoryCloseEvent.Reason.PLUGIN);
+                                }
+                            }.runDelayed(30));
+                        }
+                    }.runDelayed(30));
+                }
+            }.runDelayed(30));
+        });
     }
 }

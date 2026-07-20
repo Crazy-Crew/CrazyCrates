@@ -56,7 +56,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
         setCancelled(this.slot == EquipmentSlot.OFF_HAND);
 
         if (!isCancelled()) {
-            this.crateLocation = this.crateManager.getCrateLocation(this.location);
+            this.crateManager.getCrateLocation(this.location).ifPresent(crateLocation -> this.crateLocation = crateLocation);
         }
     }
 
@@ -71,7 +71,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
         setCancelled(this.slot == EquipmentSlot.OFF_HAND);
 
         if (!isCancelled()) {
-            this.crateLocation = this.crateManager.getCrateLocation(this.location);
+            this.crateManager.getCrateLocation(this.location).ifPresent(crateLocation -> this.crateLocation = crateLocation);
         }
     }
 
@@ -86,7 +86,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
         setCancelled(this.slot == EquipmentSlot.OFF_HAND);
 
         if (!isCancelled()) {
-            this.crateLocation = this.crateManager.getCrateLocation(this.location);
+            this.crateManager.getCrateLocation(this.location).ifPresent(crateLocation -> this.crateLocation = crateLocation);
         }
     }
 
@@ -101,7 +101,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
         setCancelled(this.slot == EquipmentSlot.OFF_HAND || !isFurniture(location));
 
         if (!isCancelled()) {
-            this.crateLocation = this.crateManager.getCrateLocation(this.location);
+            this.crateManager.getCrateLocation(this.location).ifPresent(crateLocation -> this.crateLocation = crateLocation);
         }
     }
 
@@ -116,7 +116,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
         setCancelled(this.slot == EquipmentSlot.OFF_HAND || isFurniture(location));
 
         if (!isCancelled()) {
-            this.crateLocation = this.crateManager.getCrateLocation(this.location);
+            this.crateManager.getCrateLocation(this.location).ifPresent(crateLocation -> this.crateLocation = crateLocation);
         }
     }
 

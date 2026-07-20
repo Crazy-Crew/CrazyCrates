@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import net.kyori.adventure.sound.Sound;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -23,8 +24,8 @@ public class WarCrate extends CrateBuilder {
 
     private final Map<ItemType, String> colorCodes = new HashMap<>();
 
-    public WarCrate(@NotNull final Crate crate, @NotNull final Player player, final int size) {
-        super(crate, player, size);
+    public WarCrate(@NotNull final Crate crate, @NotNull final Player player, @NotNull final Location location, final int size) {
+        super(crate, player, location, size);
     }
 
     private final Inventory inventory = getInventory();
@@ -51,8 +52,6 @@ public class WarCrate extends CrateBuilder {
         this.crateManager.addCloser(this.player, false);
 
         setRandomPrizes();
-
-        this.player.openInventory(this.inventory);
 
         addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
             int full = 0;
@@ -88,7 +87,7 @@ public class WarCrate extends CrateBuilder {
     }
 
     private void setRandomPrizes() {
-        if (!this.crateManager.isInOpeningList(this.player) && !(this.inventory.getHolder(false) instanceof CratePrizeMenu)) return;
+        if (!this.cacheManager.hasOpeningCrate(this.uuid) && !(this.inventory.getHolder(false) instanceof CratePrizeMenu)) return;
 
         for (int index = 0; index < 9; index++) {
             setItem(index, this.crate.pickPrize(this.player).getDisplayItem(this.player, this.crate));
@@ -96,9 +95,7 @@ public class WarCrate extends CrateBuilder {
     }
 
     private void setRandomGlass() {
-        final Player player = getPlayer();
-
-        if (!this.crateManager.isInOpeningList(player) && !(this.inventory.getHolder(false) instanceof CratePrizeMenu)) return;
+        if (!this.cacheManager.hasOpeningCrate(this.uuid) && !(this.inventory.getHolder(false) instanceof CratePrizeMenu)) return;
 
         if (this.colorCodes.isEmpty()) getColorCode();
 
