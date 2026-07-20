@@ -91,7 +91,7 @@ public class CommandKey {
             if (amount > 0) {
                 hasKeys = true;
 
-                message.add(Message.crate_list_per_crate.getMessage(player, Map.of(
+                message.add(Message.command_keys_crate_format.getMessage(player, Map.of(
                         "{crate_opened}", String.valueOf(userManager.getCrateOpened(uuid, crate.getFileName())),
                         "{keys}", String.valueOf(amount),
                         "{crate}", crate.getCrateName()
