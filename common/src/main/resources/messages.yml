@@ -118,7 +118,7 @@ crates:
     # A list of available placeholders: {id}
     removed: "{prefix}<gray>You have removed <gold>{id}."
     # A list of available placeholders: {prefix}
-    doesnt-exist: "{prefix}<gray>There is no crate at this location."
+    # doesnt-exist: "{prefix}<gray>There is no crate at this location."
   # List messages.
   list:
     # The format for the /crazycrates list command.

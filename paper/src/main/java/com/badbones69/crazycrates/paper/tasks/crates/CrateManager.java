@@ -689,8 +689,6 @@ public class CrateManager {
         final Optional<CrateLocation> optional = getCrateLocation(location);
 
         if (optional.isEmpty()) {
-            Message.physical_crate_doesnt_exist.sendMessage(player);
-
             return false;
         }
 

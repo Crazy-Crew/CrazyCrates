@@ -285,11 +285,11 @@ crate:
     # This will switch how previews/opening the virtual crates are handled.
     #  true -> Right click to open, Left click to preview
     #  false -> Left click to open, Right click to preview
-    virtual: false
+    virtual: true
     # This will switch how previews/opening the physical crates are handled.
     #  true -> Right click to open, Left click to preview
     #  false -> Left click to open, Right click to preview
-    physical: false
+    physical: true
   # The preview settings.
   preview:
     # If players should be forced to exit out of the preview during /crates reload

@@ -46,7 +46,7 @@ public class CrateKeys implements IPropertyHolder {
             " false -> Left click to open, Right click to preview"
     })
     public static final Property<Boolean> crate_physical_interaction =
-            newProperty(false, "crate", "interaction", "physical");
+            newProperty(true, "crate", "interaction", "physical");
 
     @Comment({
             "This will switch how previews/opening the virtual crates are handled.",
@@ -55,7 +55,7 @@ public class CrateKeys implements IPropertyHolder {
             " false -> Left click to open, Right click to preview"
     })
     public static final Property<Boolean> crate_virtual_interaction =
-            newProperty(false, "crate", "interaction", "virtual");
+            newProperty(true, "crate", "interaction", "virtual");
 
     @Comment("Whether to show the display item when opening QuickCrate")
     public static final Property<Boolean> show_quickcrate_item =
