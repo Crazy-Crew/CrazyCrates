@@ -23,12 +23,8 @@ public abstract class HologramManager {
 
     public abstract String getName();
 
-    protected @NotNull final String name() {
-        return this.name + "-" + UUID.randomUUID();
-    }
-
     protected @NotNull final String name(final String id) {
-        return this.name + "-" + id;
+        return "%s_%s".formatted(this.name, id);
     }
 
     protected @NotNull final Vector getVector(@NotNull final Crate crate) {

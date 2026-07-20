@@ -1,6 +1,8 @@
 package com.badbones69.crazycrates.paper.api;
 
+import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.cache.CacheManager;
+import com.badbones69.crazycrates.paper.cache.objects.ChunkCrate;
 import com.ryderbelserion.crazycrates.common.CrazyCratesPlugin;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
@@ -206,6 +208,12 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
 
         if (this.crateManager != null) {
             this.crateManager.purgeRewards();
+
+            this.crateManager.getCrateLocations().forEach(crateLocation -> {
+                final ChunkCrate chunk = new ChunkCrate(crateLocation.getLocation());
+
+                chunk.remove();
+            });
 
             final HologramManager holograms = this.crateManager.getHolograms();
 

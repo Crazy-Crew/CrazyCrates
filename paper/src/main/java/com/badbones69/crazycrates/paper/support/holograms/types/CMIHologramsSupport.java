@@ -97,9 +97,9 @@ public class CMIHologramsSupport extends HologramManager {
 
         final List<String> holograms = new ArrayList<>();
 
-        hologramManager.getHolograms().forEach((id, hologram) -> {
-            if (id.startsWith(name + "-")) {
-                holograms.add(id.replace(name + "-", ""));
+        hologramManager.getHolograms().forEach((id, _) -> {
+            if (id.startsWith(name)) {
+                holograms.add(id);
             }
         });
 

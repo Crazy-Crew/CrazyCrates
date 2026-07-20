@@ -34,7 +34,9 @@ public class FancyHologramsSupport extends HologramManager {
         }
 
         // We don't want to create a new one if one already exists.
-        if (exists(id)) return;
+        if (exists(id)) {
+            return;
+        }
 
         final String color = crateHologram.getBackgroundColor();
 
@@ -88,7 +90,7 @@ public class FancyHologramsSupport extends HologramManager {
 
     @Override
     public boolean exists(@NotNull final String id) {
-        return this.manager.getHologram(name(id)).orElse(null) != null;
+        return this.manager.getHologram(name(id)).isPresent();
     }
 
     @Override
@@ -97,11 +99,11 @@ public class FancyHologramsSupport extends HologramManager {
 
         final List<String> holograms = new ArrayList<>();
 
-        manager.getHolograms().forEach(hologram -> {
+        this.manager.getHolograms().forEach(hologram -> {
             final String id = hologram.getName();
 
-            if (id.startsWith(name + "-")) {
-                holograms.add(id.replace(name + "-", ""));
+            if (id.startsWith(name)) {
+                holograms.add(id);
             }
         });
 

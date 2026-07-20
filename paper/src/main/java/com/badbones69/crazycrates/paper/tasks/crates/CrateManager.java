@@ -651,9 +651,7 @@ public class CrateManager {
 
                 this.locations.put(id, new CrateLocation(id, crate, value)); // add to cache!
 
-                final CrateHologram hologram = crate.getHologram();
-
-                if (this.locations.containsKey(id) && hologram.isEnabled() && this.holograms != null) {
+                if (this.holograms != null && crate.getHologram().isEnabled()) {
                     this.holograms.createHologram(value, crate, id);
                 }
             }
@@ -809,9 +807,7 @@ public class CrateManager {
 
         this.locations.put(id, new CrateLocation(id, crate, location));
 
-        final CrateHologram hologram = crate.getHologram();
-
-        if (this.locations.containsKey(id) && hologram.isEnabled() && this.holograms != null) {
+        if (this.holograms != null && crate.getHologram().isEnabled()) {
             this.holograms.createHologram(location, crate, id);
         }
     }
@@ -957,8 +953,8 @@ public class CrateManager {
         crateBuilder.open(keyType, checkHand, isSilent, crate.useRequiredKeys() ? crate.getRequiredKeys() : 1, eventType);
     }
 
-    private boolean isVirtualCrate(@NotNull final Player player, @NotNull final Crate crate, final boolean virtualCrate, @NotNull final String fancyName) {
-        if (virtualCrate) {
+    private boolean isVirtualCrate(@NotNull final Player player, @NotNull final Crate crate, final boolean isVirtual, @NotNull final String fancyName) {
+        if (isVirtual) {
             Message.not_physical_crate.sendMessage(player, Map.of(
                     "{cratetype}", crate.getCrateType().getName(),
                     "{crate}", fancyName
