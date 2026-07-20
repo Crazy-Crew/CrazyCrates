@@ -798,7 +798,7 @@ public class CrateManager {
                 location.getWorld().getName(),
                 location.getBlockX(),
                 location.getBlockY(),
-                location.getBlockY()
+                location.getBlockZ()
         );
 
         new ChunkCrate(location).init(id);
