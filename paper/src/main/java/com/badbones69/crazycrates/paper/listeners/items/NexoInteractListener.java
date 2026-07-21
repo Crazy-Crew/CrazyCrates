@@ -65,6 +65,8 @@ public class NexoInteractListener implements Listener {
             return;
         }
 
-        new CrateInteractEvent(event, Action.LEFT_CLICK_BLOCK, location).callEvent();
+        if (this.crateManager.isCrateLocation(location)) {
+            new CrateInteractEvent(event, Action.LEFT_CLICK_BLOCK, location).callEvent();
+        }
     }
 }
