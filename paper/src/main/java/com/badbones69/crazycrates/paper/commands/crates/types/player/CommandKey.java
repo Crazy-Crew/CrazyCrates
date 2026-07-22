@@ -31,7 +31,7 @@ public class CommandKey {
     @Syntax("/keys")
     public void personal(Player player) {
         getKeys(player, player, Message.command_keys_virtual_keys_header.getMessage(player, "{crates_opened}", String.valueOf(userManager.getTotalCratesOpened(player.getUniqueId()))
-        ), Message.no_virtual_keys.getMessage(player));
+        ), Message.command_keys_no_virtual_keys.getMessage(player));
     }
 
     @Command("view")
