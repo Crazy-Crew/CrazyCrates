@@ -863,7 +863,9 @@ public class CrateManager {
      * @param isSilent true or false, this decides on sending the broadcast messages etc.
      */
     public void openCrate(@NotNull final Player player, @NotNull final Crate crate, @NotNull final KeyType keyType, @NotNull final Location location, final boolean isVirtual, final boolean checkHand, final boolean isSilent, final EventType eventType) {
-        if (crate.getCrateType() == CrateType.menu) {
+        final CrateType crateType = crate.getCrateType();
+
+        if (crateType == CrateType.menu) {
             if (this.pluginConfig.getProperty(GuiKeys.is_crate_menu_enabled)) {
                 new CrateMainMenu(
                         player,
@@ -891,9 +893,32 @@ public class CrateManager {
 
         final String fancyName = crate.getCrateName();
 
+        if (isVirtual) {
+            if (crateType.equals(CrateType.crate_on_the_go) ||
+                    crateType.equals(CrateType.fire_cracker) ||
+                    crateType.equals(CrateType.quick_crate) ||
+                    crateType.equals(CrateType.quad_crate)
+            ) {
+                if (crate.isPreviewEnabled()) {
+                    this.inventoryManager.openNewCratePreview(player, crate);
+                } else {
+                    Message.preview_disabled.sendMessage(player, "{crate}", fancyName);
+                }
+
+                Message.not_physical_crate.sendMessage(player, Map.of(
+                        "{cratetype}", crateType.getName(),
+                        "{crate}", fancyName
+                ));
+
+                this.cacheManager.removeActiveCrate(player.getUniqueId());
+
+                return;
+            }
+        }
+
         CrateBuilder crateBuilder;
 
-        switch (crate.getCrateType()) {
+        switch (crateType) {
             case csgo -> crateBuilder = new CsgoCrate(crate, player, location, 27);
             case casino -> crateBuilder = new CasinoCrate(crate, player, location, 27);
             case wonder -> crateBuilder = new WonderCrate(crate, player, location, 45);
@@ -901,39 +926,10 @@ public class CrateManager {
             case roulette -> crateBuilder = new RouletteCrate(crate, player, location, 27);
             case war -> crateBuilder = new WarCrate(crate, player, location, 9);
             case cosmic -> crateBuilder = new CosmicCrate(crate, player, location, 27);
-
-            case quad_crate -> {
-                if (isVirtualCrate(player, crate, isVirtual, fancyName)) {
-                    return;
-                }
-
-                crateBuilder = new QuadCrate(crate, player, location);
-            }
-
-            case fire_cracker -> {
-                if (isVirtualCrate(player, crate, isVirtual, fancyName)) {
-                    return;
-                }
-
-                crateBuilder = new FireCrackerCrate(crate, player, location, 45);
-            }
-
-            case crate_on_the_go -> {
-                if (isVirtualCrate(player, crate, isVirtual, fancyName)) {
-                    return;
-                }
-
-                crateBuilder = new CrateOnTheGo(crate, player, location);
-            }
-
-            case quick_crate -> {
-                if (isVirtualCrate(player, crate, isVirtual, fancyName)) {
-                    return;
-                }
-
-                crateBuilder = new QuickCrate(crate, player, location);
-            }
-
+            case quad_crate -> crateBuilder = new QuadCrate(crate, player, location);
+            case fire_cracker -> crateBuilder = new FireCrackerCrate(crate, player, location, 45);
+            case crate_on_the_go -> crateBuilder = new CrateOnTheGo(crate, player, location);
+            case quick_crate -> crateBuilder = new QuickCrate(crate, player, location);
             default -> {
                 crateBuilder = new CsgoCrate(crate, player, location, 27);
 

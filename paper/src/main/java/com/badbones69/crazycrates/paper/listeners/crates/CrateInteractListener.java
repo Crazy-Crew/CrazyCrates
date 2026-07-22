@@ -78,7 +78,7 @@ public class CrateInteractListener implements Listener {
 
         switch (action) {
             case LEFT_CLICK_BLOCK, LEFT_CLICK_AIR -> {
-                if (crate.getCrateType() == CrateType.menu) {
+                if (crateType.equals(CrateType.menu)) {
                     preview(player, crate, true);
 
                     return;
@@ -90,18 +90,30 @@ public class CrateInteractListener implements Listener {
                     return;
                 }
 
+                if (crateType.equals(CrateType.crate_on_the_go)) {
+                    preview(player, crate, false);
+
+                    return;
+                }
+
                 // left click to open
                 openCrate(player, crateLocation, crate);
             }
 
             case RIGHT_CLICK_BLOCK, RIGHT_CLICK_AIR -> {
-                if (crate.getCrateType() == CrateType.menu) {
+                if (crateType.equals(CrateType.menu)) {
                     preview(player, crate, true);
 
                     return;
                 }
 
                 if (this.pluginConfig.getProperty(CrateKeys.crate_physical_interaction)) { // right click to open
+                    if (crateType.equals(CrateType.crate_on_the_go)) {
+                        preview(player, crate, false);
+
+                        return;
+                    }
+
                     openCrate(player, crateLocation, crate);
 
                     return;
