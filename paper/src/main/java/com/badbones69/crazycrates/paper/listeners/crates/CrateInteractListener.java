@@ -72,6 +72,8 @@ public class CrateInteractListener implements Listener {
         final CrateLocation crateLocation = event.getCrateLocation();
         final Crate crate = crateLocation.getCrate();
 
+        final CrateType crateType = crate.getCrateType();
+
         final Action action = event.getAction();
 
         switch (action) {
@@ -131,7 +133,13 @@ public class CrateInteractListener implements Listener {
             }
         }
 
-        if (!this.cacheManager.hasOpeningCrate(uuid)) { // only runs if the player is not in the map, avoids double-dipping
+        final CrateType crateType = crate.getCrateType();
+
+        // QuadCrate spawns a schematic, so we want to check this as it can break shit.
+        // QuickCrate shows an item, so if that toggle enabled. don't let them use it at the same time.
+        if (!this.cacheManager.hasOpeningCrate(uuid) &&
+                crateType.equals(CrateType.quad_crate) ||
+                crateType.equals(CrateType.quick_crate) && this.pluginConfig.getProperty(CrateKeys.show_quickcrate_item)) { // only runs if the player is not in the map, avoids double-dipping
             final Optional<ActiveCrate> index = this.cacheManager.getActiveCrateByLocation(location); // checks the map for all locations that match.
 
             if (index.isPresent()) {
