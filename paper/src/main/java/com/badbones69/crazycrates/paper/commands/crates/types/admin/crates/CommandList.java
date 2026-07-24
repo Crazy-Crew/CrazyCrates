@@ -12,6 +12,7 @@ import dev.triumphteam.cmd.core.annotations.Syntax;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +31,10 @@ public class CommandList extends BaseCommand {
             final Location location = crateLocation.getLocation();
             final Crate crate = crateLocation.getCrate();
 
+            final CrateType type = crate.getCrateType();
+
             crates.add(Message.crate_list_per_crate.getMessage(sender, Map.of(
-                    "{crate_name}", crate.getCrateName(),
+                    "{crate_name}", type.equals(CrateType.menu) ? "Menu" : crate.getCrateName(),
                     "{id}", crateLocation.getID(),
                     "{x}", String.valueOf(location.getBlockX()),
                     "{y}", String.valueOf(location.getBlockY()),

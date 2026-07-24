@@ -651,7 +651,7 @@ public class CrateManager {
 
                 this.locations.put(id, new CrateLocation(id, crate, value)); // add to cache!
 
-                if (this.holograms != null && crate.getHologram().isEnabled()) {
+                if (this.holograms != null && !crate.getCrateType().equals(CrateType.menu) && crate.getHologram().isEnabled()) {
                     this.holograms.createHologram(value, crate, id);
                 }
             }
@@ -805,7 +805,7 @@ public class CrateManager {
 
         this.locations.put(id, new CrateLocation(id, crate, location));
 
-        if (this.holograms != null && crate.getHologram().isEnabled()) {
+        if (this.holograms != null && !crate.getCrateType().equals(CrateType.menu) && crate.getHologram().isEnabled()) {
             this.holograms.createHologram(location, crate, id);
         }
     }
