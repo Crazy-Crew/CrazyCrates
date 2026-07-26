@@ -12,6 +12,7 @@ import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.custom.CustomBuilder;
+import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
@@ -313,27 +314,27 @@ public class ItemUtil {
 
             itemBuilder.setTrim(item.getString("settings.trim.pattern", ""), item.getString("settings.trim.material", ""));
 
-            if (itemBuilder.isPotion()) {
+            if (itemBuilder.isPotion() || itemBuilder.isTippedArrow()) {
                 final ConfigurationSection potions = item.getConfigurationSection("settings.potions");
 
                 final PotionBuilder potionBuilder = itemBuilder.asPotionBuilder();
 
                 if (potions != null) {
                     for (final String potion : potions.getKeys(false)) {
-                        final PotionEffectType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getPotionEffect(potion);
+                        final ConfigurationSection data = potions.getConfigurationSection(potion);
 
-                        if (type != null) {
-                            final ConfigurationSection data = potions.getConfigurationSection(potion);
+                        if (data != null) {
+                            final PotionEffectType type = ItemUtils.getPotionEffect(data.getString("type", potion));
 
-                            if (data != null) {
+                            if (type != null) {
                                 final int duration = data.getInt("duration", 10) * 20;
                                 final int level = data.getInt("level", 1);
 
-                                final boolean icon = data.getBoolean("style.icon", false);
-                                final boolean ambient = data.getBoolean("style.ambient", false);
-                                final boolean particles = data.getBoolean("style.particles", false);
+                                final boolean isAmbient = data.getBoolean("style.ambient", false);
+                                final boolean hasParticles = data.getBoolean("style.particles", false);
+                                final boolean hasIcon = data.getBoolean("style.icon", false);
 
-                                potionBuilder.withPotionEffect(type, duration, level, ambient, particles, icon);
+                                potionBuilder.withPotionEffect(type, duration, level, isAmbient, hasParticles, hasIcon);
                             }
                         }
                     }

@@ -34,7 +34,7 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
 
     @Override
     public void init() {
-        this.fusion.init();
+        this.fusion.init().post();
 
         this.configManager = new ConfigManager();
         this.configManager.init();

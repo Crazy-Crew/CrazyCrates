@@ -573,6 +573,24 @@ Crate:
       DisplayName: "<red>Muscle Man Potion"
       # The item to display in the gui.
       DisplayItem: "potion"
+      # The potions to display in the gui.
+      DisplayPotions:
+        # The internal identifier, which can be anything as long as it's not a duplicate.
+        "strength_potion":
+          # The duration of the potion effect.
+          duration: 10
+          # The name of the potion effect.
+          type: "strength"
+          # The level of the potion effect.
+          level: 3
+          # The potion style settings.
+          style:
+            # Should the icon show in the inventory?
+            icon: false
+            # Should there be an ambient effect for the player?
+            ambient: false
+            # Should the particles show around the player?
+            particles: false
       # Prize display preview settings
       Settings:
         # The rgb used for the potion.
@@ -596,10 +614,12 @@ Crate:
             rgb: "229,164,229"
             # The potion settings.
             potions:
-              # The name of the potion effect.
-              "strength":
+              # The internal identifier, which can be anything as long as it's not a duplicate.
+              "strength_potion":
                 # The duration of the potion effect.
                 duration: 10
+                # The name of the potion effect.
+                type: "strength"
                 # The level of the potion effect.
                 level: 3
                 # The potion style settings.

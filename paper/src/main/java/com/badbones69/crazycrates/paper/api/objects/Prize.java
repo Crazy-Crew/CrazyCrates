@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.api.objects;
 
+import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
@@ -422,8 +423,6 @@ public class Prize {
 
             ItemUtil.addCustomModel(builder, this.section.getString("Settings.Custom-Model-Data", ""));
 
-            builder.setColor(this.section.contains("Settings.RGB") ? this.section.getString("Settings.RGB", "") : this.section.getString("Settings.Color", ""));
-
             if (this.section.contains("Skull")) {
                 builder.withSkull(this.section.getString("Skull", ""));
             }
@@ -448,29 +447,35 @@ public class Prize {
                 }
             }
 
-            if (this.section.contains("DisplayPotions")) {
-                final ConfigurationSection potions = this.section.getConfigurationSection("DisplayPotions");
-
+            if (builder.isPotion() || builder.isTippedArrow()) {
                 final PotionBuilder potionBuilder = builder.asPotionBuilder();
 
-                if (potions != null) {
-                    for (final String potion : potions.getKeys(false)) {
-                        final PotionEffectType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getPotionEffect(potion);
+                if (this.section.contains("DisplayPotions")) {
+                    final ConfigurationSection potions = this.section.getConfigurationSection("DisplayPotions");
 
-                        if (type != null) {
+                    if (potions != null) {
+                        for (final String potion : potions.getKeys(false)) {
                             final ConfigurationSection data = potions.getConfigurationSection(potion);
 
                             if (data != null) {
-                                final int duration = data.getInt("duration", 10) * 20;
-                                final int level = data.getInt("level", 1);
+                                final PotionEffectType type = ItemUtils.getPotionEffect(data.getString("type", potion));
 
-                                potionBuilder.withPotionEffect(type, duration, level);
+                                if (type != null) {
+                                    final int duration = data.getInt("duration", 10) * 20;
+                                    final int level = data.getInt("level", 1);
+
+                                    final boolean isAmbient = data.getBoolean("style.ambient", false);
+                                    final boolean hasParticles = data.getBoolean("style.particles", false);
+                                    final boolean hasIcon = data.getBoolean("style.icon", false);
+
+                                    potionBuilder.withPotionEffect(type, duration, level, isAmbient, hasParticles, hasIcon);
+                                }
                             }
                         }
                     }
-
-                    potionBuilder.build();
                 }
+
+                potionBuilder.setColor(this.section.contains("Settings.RGB") ? this.section.getString("Settings.RGB", "") : this.section.getString("Settings.Color", "")).build();
             }
 
             return builder;

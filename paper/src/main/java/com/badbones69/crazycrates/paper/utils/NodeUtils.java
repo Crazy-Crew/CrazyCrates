@@ -5,6 +5,7 @@ import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.custom.CustomBuilder;
+import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -97,28 +98,30 @@ public class NodeUtils {
                 settings.node("trim", "material").getString("")
         );
 
-        if (builder.isPotion() && configuration.hasChild("potions")) {
-            final CommentedConfigurationNode potion = configuration.node("potions");
-
+        if (builder.isPotion() || builder.isTippedArrow()) {
             final PotionBuilder potionBuilder = builder.asPotionBuilder();
 
-            for (final Map.Entry<Object, CommentedConfigurationNode> child : potion.childrenMap().entrySet()) {
-                final PotionEffectType type = com.ryderbelserion.fusion.paper.utils.ItemUtils.getPotionEffect(child.getKey().toString());
+            if (configuration.hasChild("potions")) {
+                final CommentedConfigurationNode potion = configuration.node("potions");
 
-                if (type == null) {
-                    continue;
+                for (final Map.Entry<Object, CommentedConfigurationNode> child : potion.childrenMap().entrySet()) {
+                    final CommentedConfigurationNode section = child.getValue();
+
+                    final PotionEffectType type = ItemUtils.getPotionEffect(section.node("type").getString(child.getKey().toString()));
+
+                    if (type == null) {
+                        continue;
+                    }
+
+                    final int duration = section.node("duration").getInt(10) * 20;
+                    final int level = section.node("level").getInt(1);
+
+                    final boolean isAmbient = section.node("style", "ambient").getBoolean(false);
+                    final boolean hasParticles = section.node("style", "particles").getBoolean(false);
+                    final boolean hasIcon = section.node("style", "icon").getBoolean(false);
+
+                    potionBuilder.withPotionEffect(type, duration, level, isAmbient, hasParticles, hasIcon);
                 }
-
-                final CommentedConfigurationNode section = child.getValue();
-
-                potionBuilder.withPotionEffect(
-                        type,
-                        section.node("duration").getInt(10) * 20,
-                        section.node("level").getInt(1),
-                        section.node("style", "icon").getBoolean(false),
-                        section.node("style", "ambient").getBoolean(false),
-                        section.node("style", "particles").getBoolean(false)
-                );
             }
 
             potionBuilder.setColor(settings.hasChild("rgb") ?
