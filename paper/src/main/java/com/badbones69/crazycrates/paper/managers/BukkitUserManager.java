@@ -556,6 +556,8 @@ public class BukkitUserManager extends UserManager {
 
                 int keysGiven = 0;
 
+                boolean droppedOnGround = false;
+
                 final int amount = configuration.getInt("Offline-Players." + uuid + ".Physical." + fileName);
 
                 final Location location = player.getLocation();
@@ -572,6 +574,8 @@ public class BukkitUserManager extends UserManager {
                             }
                         }.runNow();
 
+                        keysGiven = amount;
+                        droppedOnGround = true;
                         break;
                     }
 
@@ -579,7 +583,7 @@ public class BukkitUserManager extends UserManager {
                 }
 
                 // If the inventory not full, add to inventory.
-                MiscUtils.dropItem(player, crate.getKey(keysGiven, player), location, true);
+                if (!droppedOnGround) MiscUtils.dropItem(player, crate.getKey(keysGiven, player), location, true);
 
                 // If keys given is greater or equal than, remove data.
                 if (keysGiven >= amount) configuration.set("Offline-Players." + uuid + ".Physical." + fileName, null);
