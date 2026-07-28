@@ -12,9 +12,7 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
-import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.PlayerInventory;
@@ -471,14 +469,14 @@ public class BukkitUserManager extends UserManager {
                 final String fileName = crate.getFileName();
 
                 if (configuration.contains("Offline-Players." + name + "." + fileName)) {
-                    final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.OFFLINE_PLAYER, 1);
+                    final int keys = getVirtualKeys(uuid, fileName);
+                    final int addedKeys = configuration.getInt("Offline-Players." + name + "." + fileName);
+
+                    final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.OFFLINE_PLAYER, addedKeys);
 
                     this.pluginManager.callEvent(event);
 
                     if (!event.isCancelled()) {
-                        final int keys = getVirtualKeys(uuid, fileName);
-                        final int addedKeys = configuration.getInt("Offline-Players." + name + "." + fileName);
-
                         configuration.set("Players." + uuid + "." + fileName, (Math.max((keys + addedKeys), 0)));
 
                         this.data.save();
@@ -501,108 +499,63 @@ public class BukkitUserManager extends UserManager {
         final YamlConfiguration configuration = this.data.getConfiguration();
 
         final UUID uuid = player.getUniqueId();
+        final String asString = uuid.toString();
 
-        if (!configuration.contains("Offline-Players." + uuid) || crates.isEmpty()) return;
+        final ConfigurationSection section = configuration.getConfigurationSection("Offline-Players");
+
+        if (section == null || crates.isEmpty()) return;
+
+        final ConfigurationSection user = section.getConfigurationSection(asString);
+
+        if (user == null) return;
 
         for (final Crate crate : crates) {
             final String fileName = crate.getFileName();
 
-            if (configuration.contains("Offline-Players." + uuid + "." + fileName)) {
-                final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.OFFLINE_PLAYER, 1);
-
-                this.pluginManager.callEvent(event);
-
-                if (event.isCancelled()) return;
-
-                int keysGiven = 0;
-
-                int amount = configuration.getInt("Offline-Players." + uuid + "." + fileName);
-
-                final boolean isCrateOnTheGo = crate.getCrateType() == CrateType.crate_on_the_go;
-
-                final Location location = player.getLocation();
-
-                while (keysGiven < amount) {
-                    if (isCrateOnTheGo && MiscUtils.isInventoryFull(player)) {
-                        new FoliaScheduler(this.plugin, location) {
-                            @Override
-                            public void run() {
-                                player.getWorld().dropItemNaturally(location, crate.getKey(amount, player));
-                            }
-                        }.runNow();
-
-                        break;
-                    }
-
-                    keysGiven++;
-                }
-
-                if (isCrateOnTheGo) {
-                    MiscUtils.dropItem(player, crate.getKey(amount, player), location, true);
-                } else {
-                    addVirtualKeys(uuid, fileName, amount);
-                }
-
-                // If keys given is greater or equal than, remove data.
-                if (keysGiven >= amount) configuration.set("Offline-Players." + uuid + "." + crate.getFileName(), null);
+            if (user.contains(fileName)) {
+                validate(player, crate, fileName, user, false);
             }
 
-            if (configuration.contains("Offline-Players." + uuid + ".Physical." + fileName)) {
-                final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.OFFLINE_PLAYER, 1);
-
-                this.pluginManager.callEvent(event);
-
-                if (event.isCancelled()) return;
-
-                int keysGiven = 0;
-
-                boolean droppedOnGround = false;
-
-                final int amount = configuration.getInt("Offline-Players." + uuid + ".Physical." + fileName);
-
-                final Location location = player.getLocation();
-
-                while (keysGiven < amount) {
-                    // If the inventory is full, drop the remaining keys then stop.
-                    if (MiscUtils.isInventoryFull(player)) {
-                        final int keysToDrop = amount - keysGiven;
-
-                        new FoliaScheduler(this.plugin, location) {
-                            @Override
-                            public void run() {
-                                player.getWorld().dropItemNaturally(location, crate.getKey(keysToDrop, player));
-                            }
-                        }.runNow();
-
-                        keysGiven = amount;
-                        droppedOnGround = true;
-                        break;
-                    }
-
-                    keysGiven++;
-                }
-
-                // If the inventory not full, add to inventory.
-                if (!droppedOnGround) MiscUtils.dropItem(player, crate.getKey(keysGiven, player), location, true);
-
-                // If keys given is greater or equal than, remove data.
-                if (keysGiven >= amount) configuration.set("Offline-Players." + uuid + ".Physical." + fileName, null);
+            if (user.contains("Physical.%s".formatted(fileName))) {
+                validate(player, crate, fileName, user, true);
             }
         }
 
-        final ConfigurationSection physicalSection = configuration.getConfigurationSection("Offline-Players." + uuid + ".Physical");
+        Optional.ofNullable(user.getConfigurationSection("Physical")).ifPresent(index -> {
+            if (index.getKeys(false).isEmpty()) {
+                user.set("Physical", null);
+            }
+        });
 
-        if (physicalSection != null) {
-            if (physicalSection.getKeys(false).isEmpty()) configuration.set("Offline-Players." + uuid + ".Physical", null);
-        }
-
-        final ConfigurationSection section = configuration.getConfigurationSection("Offline-Players." + uuid);
-
-        if (section != null) {
-            if (section.getKeys(false).isEmpty()) configuration.set("Offline-Players." + uuid, null);
+        if (user.getKeys(false).isEmpty()) {
+            configuration.set("Offline-Players.%s".formatted(uuid), null);
         }
 
         this.data.save();
+    }
+
+    public void validate(@NonNull final Player player, @NonNull final Crate crate, @NonNull final String fileName, @NonNull final ConfigurationSection index, final boolean isPhysical) {
+        final String path = !isPhysical ? fileName : "Physical.%s".formatted(fileName);
+        final int initial = index.getInt(path, 0);
+
+        if (index.contains(path) && initial <= 0) {
+            index.set(path, null);
+
+            return;
+        }
+
+        final PlayerReceiveKeyEvent event = new PlayerReceiveKeyEvent(player, crate, PlayerReceiveKeyEvent.KeyReceiveReason.OFFLINE_PLAYER, initial);
+
+        if (event.isCancelled()) {
+            return;
+        }
+
+        final boolean isMobileCrate = crate.getCrateType() == CrateType.crate_on_the_go;
+        final UUID uuid = player.getUniqueId();
+
+        addKeys(uuid, fileName, isPhysical || isMobileCrate ? KeyType.physical_key : KeyType.virtual_key, initial);
+
+        index.set(path, null);
     }
 
     @Override

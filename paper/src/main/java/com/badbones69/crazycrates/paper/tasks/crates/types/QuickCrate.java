@@ -90,7 +90,6 @@ public class QuickCrate extends CrateBuilder {
         ));
 
         if (currentAmount > 1) {
-
             for (;currentAmount > 0; currentAmount--) {
                 if (MiscUtils.isInventoryFull(this.player)) {
                     this.userManager.addVirtualKeys(this.uuid, fileName, currentAmount);
