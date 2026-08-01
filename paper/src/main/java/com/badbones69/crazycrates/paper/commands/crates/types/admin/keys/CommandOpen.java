@@ -295,7 +295,7 @@ public class CommandOpen extends BaseCommand {
 
         final UUID uuid = player.getUniqueId();
 
-        if (!this.userManager.takeKeys(uuid, fileName, keyType, currentAmount, true)) { // take keys first.
+        if (!this.userManager.takeKeys(uuid, fileName, keyType, currentAmount, false)) { // take keys first.
             // End the crate.
             this.crateManager.endCrate(player);
 
