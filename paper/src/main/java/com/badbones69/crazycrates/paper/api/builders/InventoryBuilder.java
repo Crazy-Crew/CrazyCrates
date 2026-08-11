@@ -9,7 +9,14 @@ import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.utils.GuiUtils;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
+import net.minecraft.network.protocol.game.ClientboundOpenScreenPacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.inventory.MenuType;
 import org.bukkit.Server;
+import org.bukkit.craftbukkit.entity.CraftHumanEntity;
+import org.bukkit.craftbukkit.inventory.CraftContainer;
+import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -105,7 +112,23 @@ public abstract class InventoryBuilder implements InventoryHolder, Listener {
     }
 
     public void sendTitleChange() {
-        GuiUtils.updateTitle(this.player, this.inventory, this.title);
+        updateTitle(this.player, this.player.getOpenInventory(), this.title, Map.of());
+    }
+
+    // temporarily here until I finish my maintenance in fusion api, but it does fix the issue with cosmic crate animation title not updating.
+    public String updateTitle(final Player player, final InventoryView inventory, final String origin, final Map<String, String> placeholders) {
+        final ServerPlayer entityPlayer = (ServerPlayer) ((CraftHumanEntity) player).getHandle();
+
+        final int containerId = entityPlayer.containerMenu.containerId;
+
+        final MenuType<?> windowType = CraftContainer.getNotchInventoryType(inventory.getTopInventory());
+
+        final String title = this.fusion.replacePlaceholders(origin, placeholders);
+
+        entityPlayer.connection.send(new ClientboundOpenScreenPacket(containerId, windowType, CraftChatMessage.fromJSON(JSONComponentSerializer.json().serialize(this.fusion.asComponent(player, title)))));
+        entityPlayer.containerMenu.sendAllDataToRemote();
+
+        return title;
     }
 
     @Override
