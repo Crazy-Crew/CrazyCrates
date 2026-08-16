@@ -83,7 +83,7 @@ public class FancyHologramsSupport extends HologramManager {
 
     @Override
     public void removeHologram(@NotNull final String id) {
-        this.manager.getHologram(id).ifPresent(hologram -> FancyHologramsPlugin.get().getHologramThread().submit(() -> this.manager.removeHologram(hologram)));
+        this.manager.getHologram(name(id)).ifPresent(hologram -> FancyHologramsPlugin.get().getHologramThread().submit(() -> this.manager.removeHologram(hologram)));
     }
 
     @Override

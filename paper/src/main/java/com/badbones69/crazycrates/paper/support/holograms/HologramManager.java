@@ -2,14 +2,16 @@ package com.badbones69.crazycrates.paper.support.holograms;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import java.util.UUID;
 
 public abstract class HologramManager {
 
     protected CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    protected FusionPaper fusion = this.plugin.getPlatform().getFusion();
 
     protected String name = this.plugin.getName().toLowerCase();
     
