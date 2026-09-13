@@ -48,7 +48,7 @@ public class DecentHologramsSupport extends HologramManager {
 
     @Override
     public void removeHologram(@NotNull final String id) {
-        DHAPI.removeHologram(id);
+        DHAPI.removeHologram(name(id));
     }
 
     @Override

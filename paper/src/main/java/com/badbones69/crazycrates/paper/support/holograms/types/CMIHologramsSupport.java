@@ -81,7 +81,7 @@ public class CMIHologramsSupport extends HologramManager {
 
     @Override
     public void removeHologram(@NotNull final String id) {
-        final CMIHologram hologram = this.hologramManager.getByName(id);
+        final CMIHologram hologram = this.hologramManager.getByName(name(id));
 
         if (hologram != null) {
             hologram.remove();
