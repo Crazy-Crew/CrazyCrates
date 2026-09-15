@@ -645,15 +645,19 @@ public class CrateManager {
                     continue;
                 }
 
-                final ChunkCrate chunk = new ChunkCrate(new Location(world, location.getX(), location.getY(), location.getZ())).init(location.getId());
-                final Location value = chunk.getLocation();
-                final String id = chunk.getId();
+                final Location value = new Location(world, location.getX(), location.getY(), location.getZ());
 
-                this.locations.put(id, new CrateLocation(id, crate, value)); // add to cache!
+                // Folia requires chunk access to happen on the thread of the region that owns the chunk.
+                this.server.getRegionScheduler().run(this.plugin, value, task -> {
+                    final ChunkCrate chunk = new ChunkCrate(value).init(location.getId());
+                    final String id = chunk.getId();
 
-                if (this.holograms != null && !crate.getCrateType().equals(CrateType.menu) && crate.getHologram().isEnabled()) {
-                    this.holograms.createHologram(value, crate, id);
-                }
+                    this.locations.put(id, new CrateLocation(id, crate, value)); // add to cache!
+
+                    if (this.holograms != null && !crate.getCrateType().equals(CrateType.menu) && crate.getHologram().isEnabled()) {
+                        this.holograms.createHologram(value, crate, id);
+                    }
+                });
             }
         }
 
@@ -702,7 +706,10 @@ public class CrateManager {
             this.holograms.removeHologram(id);
         }
 
-        new ChunkCrate(crateLocation.getLocation()).remove();
+        final Location removedLocation = crateLocation.getLocation();
+
+        // Folia requires chunk access to happen on the thread of the region that owns the chunk.
+        this.server.getRegionScheduler().run(this.plugin, removedLocation, task -> new ChunkCrate(removedLocation).remove());
 
         this.locations.remove(id);
 
@@ -801,13 +808,16 @@ public class CrateManager {
                 location.getBlockZ()
         );
 
-        new ChunkCrate(location).init(id);
+        // Folia requires chunk access to happen on the thread of the region that owns the chunk.
+        this.server.getRegionScheduler().run(this.plugin, location, task -> {
+            new ChunkCrate(location).init(id);
+
+            if (this.holograms != null && !crate.getCrateType().equals(CrateType.menu) && crate.getHologram().isEnabled()) {
+                this.holograms.createHologram(location, crate, id);
+            }
+        });
 
         this.locations.put(id, new CrateLocation(id, crate, location));
-
-        if (this.holograms != null && !crate.getCrateType().equals(CrateType.menu) && crate.getHologram().isEnabled()) {
-            this.holograms.createHologram(location, crate, id);
-        }
     }
 
     /**
