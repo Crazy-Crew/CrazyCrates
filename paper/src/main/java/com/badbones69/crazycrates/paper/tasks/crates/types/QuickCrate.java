@@ -11,6 +11,7 @@ import com.badbones69.crazycrates.paper.cache.enums.ActiveStatus;
 import com.badbones69.crazycrates.paper.cache.objects.ActiveCrate;
 import com.badbones69.crazycrates.paper.managers.events.EventManager;
 import com.badbones69.crazycrates.paper.managers.events.enums.EventType;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -49,7 +50,7 @@ public class QuickCrate extends CrateBuilder {
                     default -> 1;
                 };
 
-                if (keys > 1) {
+                if (keys >= 1) {
                     for (;keys > 0; keys--) { // check keys first.
                         int currentAmount = reference.get();
 
@@ -58,7 +59,9 @@ public class QuickCrate extends CrateBuilder {
                         reference.getAndIncrement();
                     }
 
-                    if (!this.userManager.takeKeys(this.uuid, fileName, type, reference.get(), true)) { // take keys first.
+                    final int value = reference.get();
+
+                    if (!this.userManager.takeKeys(this.uuid, fileName, type, value, true)) { // take keys first.
                         this.crateManager.endCrate(this.crate, this.player);
 
                         event.setCancelled(true);
