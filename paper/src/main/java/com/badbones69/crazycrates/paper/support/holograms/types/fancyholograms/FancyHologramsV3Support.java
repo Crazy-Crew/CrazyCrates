@@ -80,7 +80,9 @@ public class FancyHologramsV3Support extends HologramManager {
 
     @Override
     public void removeHologram(@NotNull final String id) {
-        this.registry.get(name(id)).ifPresentOrElse(this.registry::unregister, () -> this.fusion.log(Level.WARNING, "No hologram found with id: %s", id));
+        final String identifier = name(id);
+
+        this.registry.get(identifier).ifPresentOrElse(this.registry::unregister, () -> this.fusion.log(Level.WARNING, "No hologram found with id: %s", identifier));
     }
 
     @Override
@@ -96,7 +98,7 @@ public class FancyHologramsV3Support extends HologramManager {
             final String id = hologram.getData().getName();
 
             if (id.startsWith(name)) {
-                removeHologram(id);
+                this.registry.unregister(hologram);
             }
         });
     }
