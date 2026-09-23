@@ -17,6 +17,7 @@ public enum Plugins {
 
     cmi("CMI"),
 
+    fancy_holograms_v3("FancyHolograms"),
     fancy_holograms("FancyHolograms"),
 
     decent_holograms("DecentHolograms"),
@@ -47,6 +48,18 @@ public enum Plugins {
 
     Plugins(@NotNull final String name) {
         this.name = name;
+    }
+
+    public final boolean isClassPresent(final String name) {
+        boolean isClassPresent = false;
+
+        try {
+            Class.forName(name);
+
+            isClassPresent = true;
+        } catch (final Exception _) {}
+
+        return isClassPresent;
     }
 
     public final boolean isEnabled() {

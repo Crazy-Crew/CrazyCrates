@@ -1,25 +1,25 @@
-package com.badbones69.crazycrates.paper.support.holograms.types;
+package com.badbones69.crazycrates.paper.support.holograms.types.fancyholograms;
 
-import com.badbones69.crazycrates.paper.api.objects.crates.CrateHologram;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
+import com.badbones69.crazycrates.paper.api.objects.crates.CrateHologram;
 import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
+import com.fancyinnovations.fancyholograms.api.FancyHolograms;
+import com.fancyinnovations.fancyholograms.api.HologramRegistry;
+import com.fancyinnovations.fancyholograms.api.data.builder.TextHologramBuilder;
+import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
-import de.oliver.fancyholograms.api.FancyHologramsPlugin;
-import de.oliver.fancyholograms.api.data.TextHologramData;
-import de.oliver.fancyholograms.api.hologram.Hologram;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import java.util.ArrayList;
-import java.util.List;
 
-public class FancyHologramsSupport extends HologramManager {
+public class FancyHologramsV3Support extends HologramManager {
 
-    private final de.oliver.fancyholograms.api.HologramManager manager = FancyHologramsPlugin.get().getHologramManager();
+    private final HologramRegistry registry = FancyHolograms.get().getRegistry();
 
     @Override
     public void createHologram(@NotNull final Location location, @NotNull final Crate crate, @NotNull final String id) {
@@ -55,57 +55,50 @@ public class FancyHologramsSupport extends HologramManager {
             background = textColor == null ? null : Color.fromARGB(textColor.value() | 0xC8000000);
         }
 
-        TextHologramData hologramData = new TextHologramData(identifier, location.clone().add(getVector(crate))).setBackground(background);
+        final TextHologramBuilder builder = TextHologramBuilder.create(identifier, location.clone().add(getVector(crate)))
+                .text(crateHologram.getMessages())
+                .background(background)
+                .textShadow(crateHologram.getTextShadow());
 
-        hologramData.setTextShadow(crateHologram.getTextShadow());
+        final int interval = crateHologram.getUpdateInterval();
 
-        hologramData.setText(crateHologram.getMessages());
-
-        if (crateHologram.getUpdateInterval() != -1) {
-            hologramData.setTextUpdateInterval(crateHologram.getUpdateInterval());
+        if (interval != -1) {
+            builder.updateTextInterval(interval);
         }
 
-        final Hologram hologram = this.manager.create(hologramData);
-
-        hologram.createHologram();
+        final Hologram hologram = builder.buildAndRegister();
 
         final Server server = this.plugin.getServer();
 
         new FoliaScheduler(this.plugin, Scheduler.async_scheduler) {
             @Override
             public void run() {
-                server.getOnlinePlayers().forEach(hologram::updateShownStateFor);
+                server.getOnlinePlayers().forEach(hologram::updateFor);
             }
         }.runNow();
-
-        this.manager.addHologram(hologram);
     }
 
     @Override
     public void removeHologram(@NotNull final String id) {
-        this.manager.getHologram(name(id)).ifPresent(hologram -> FancyHologramsPlugin.get().getHologramThread().submit(() -> this.manager.removeHologram(hologram)));
+        this.registry.get(name(id)).ifPresentOrElse(this.registry::unregister, () -> this.fusion.log(Level.WARNING, "No hologram found with id: %s", id));
     }
 
     @Override
     public boolean exists(@NotNull final String id) {
-        return this.manager.getHologram(id).isPresent();
+        return this.registry.contains(name(id));
     }
 
     @Override
     public void purge(final boolean isShutdown) {
         final String name = this.plugin.getName().toLowerCase();
 
-        final List<String> holograms = new ArrayList<>();
-
-        this.manager.getHolograms().forEach(hologram -> {
-            final String id = hologram.getName();
+        this.registry.getAll().forEach(hologram -> {
+            final String id = hologram.getData().getName();
 
             if (id.startsWith(name)) {
-                holograms.add(id);
+                removeHologram(id);
             }
         });
-
-        holograms.forEach(this::removeHologram);
     }
 
     @Override

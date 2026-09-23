@@ -5,6 +5,8 @@ plugins {
 project.group = "${rootProject.group}.paper"
 
 repositories {
+    maven("https://maven.fancyspaces.net/fancyinnovations/snapshots/")
+
     maven("https://repo.fancyinnovations.com/releases/")
 
     maven("https://repo.momirealms.net/releases/")
