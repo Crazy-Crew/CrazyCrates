@@ -1,4 +1,4 @@
-package com.badbones69.crazycrates.paper.support.holograms.types;
+package com.badbones69.crazycrates.paper.support.holograms.types.fancyholograms;
 
 import com.badbones69.crazycrates.paper.api.objects.crates.CrateHologram;
 import com.badbones69.crazycrates.paper.api.objects.Crate;
@@ -17,7 +17,7 @@ import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FancyHologramsSupport extends HologramManager {
+public class FancyHologramsV2Support extends HologramManager {
 
     private final de.oliver.fancyholograms.api.HologramManager manager = FancyHologramsPlugin.get().getHologramManager();
 

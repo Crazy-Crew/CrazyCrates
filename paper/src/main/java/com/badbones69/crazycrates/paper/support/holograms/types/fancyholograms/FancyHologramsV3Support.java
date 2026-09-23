@@ -1,0 +1,110 @@
+package com.badbones69.crazycrates.paper.support.holograms.types.fancyholograms;
+
+import com.badbones69.crazycrates.paper.api.objects.Crate;
+import com.badbones69.crazycrates.paper.api.objects.crates.CrateHologram;
+import com.badbones69.crazycrates.paper.support.holograms.HologramManager;
+import com.fancyinnovations.fancyholograms.api.FancyHolograms;
+import com.fancyinnovations.fancyholograms.api.HologramRegistry;
+import com.fancyinnovations.fancyholograms.api.data.builder.TextHologramBuilder;
+import com.fancyinnovations.fancyholograms.api.hologram.Hologram;
+import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
+import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Server;
+import org.jetbrains.annotations.NotNull;
+import us.crazycrew.crazycrates.api.enums.types.CrateType;
+
+public class FancyHologramsV3Support extends HologramManager {
+
+    private final HologramRegistry registry = FancyHolograms.get().getRegistry();
+
+    @Override
+    public void createHologram(@NotNull final Location location, @NotNull final Crate crate, @NotNull final String id) {
+        if (crate.getCrateType() == CrateType.menu) return;
+
+        final CrateHologram crateHologram = crate.getHologram();
+
+        final String identifier = name(id);
+
+        if (!crateHologram.isEnabled()) {
+            removeHologram(identifier);
+
+            return;
+        }
+
+        // We don't want to create a new one if one already exists.
+        if (exists(identifier)) {
+            return;
+        }
+
+        final String color = crateHologram.getBackgroundColor();
+
+        final Color background;
+
+        // taken from how fancyholograms handles colors
+        if (color.equalsIgnoreCase("transparent")) {
+            background = Hologram.TRANSPARENT;
+        } else if (color.startsWith("#")) {
+            Color parsed = Color.fromARGB((int) Long.parseLong(color.substring(1), 16));
+            if (color.length() == 7) background = parsed.setAlpha(255); else background = parsed;
+        } else {
+            NamedTextColor textColor = NamedTextColor.NAMES.value(color.replace(' ', '_'));
+            background = textColor == null ? null : Color.fromARGB(textColor.value() | 0xC8000000);
+        }
+
+        final TextHologramBuilder builder = TextHologramBuilder.create(identifier, location.clone().add(getVector(crate)))
+                .text(crateHologram.getMessages())
+                .background(background)
+                .textShadow(crateHologram.getTextShadow());
+
+        final int interval = crateHologram.getUpdateInterval();
+
+        if (interval != -1) {
+            builder.updateTextInterval(interval);
+        }
+
+        final Hologram hologram = builder.buildAndRegister();
+
+        final Server server = this.plugin.getServer();
+
+        new FoliaScheduler(this.plugin, Scheduler.async_scheduler) {
+            @Override
+            public void run() {
+                server.getOnlinePlayers().forEach(hologram::updateFor);
+            }
+        }.runNow();
+    }
+
+    @Override
+    public void removeHologram(@NotNull final String id) {
+        final String identifier = name(id);
+
+        this.registry.get(identifier).ifPresentOrElse(this.registry::unregister, () -> this.fusion.log(Level.WARNING, "No hologram found with id: %s", identifier));
+    }
+
+    @Override
+    public boolean exists(@NotNull final String id) {
+        return this.registry.contains(name(id));
+    }
+
+    @Override
+    public void purge(final boolean isShutdown) {
+        final String name = this.plugin.getName().toLowerCase();
+
+        this.registry.getAll().forEach(hologram -> {
+            final String id = hologram.getData().getName();
+
+            if (id.startsWith(name)) {
+                this.registry.unregister(hologram);
+            }
+        });
+    }
+
+    @Override
+    public @NotNull final String getName() {
+        return "FancyHolograms";
+    }
+}

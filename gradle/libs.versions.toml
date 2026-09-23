@@ -25,6 +25,7 @@ nightcore = "2.6.3" # https://modrinth.com/plugin/nightcore
 ## Hologram API
 decentholograms = "2.9.9" # https://modrinth.com/plugin/decentholograms
 fancyholograms = "2.9.1" # https://modrinth.com/plugin/fancyholograms
+fancyholograms-v3 = "3.0.0-SNAPSHOT.86" # https://fancyspaces.net/spaces/fancyinnovations/maven-repos/snapshots/com.fancyinnovations:FancyHolograms
 cmi-api = "9.8.6.4" # https://github.com/Zrips/CMI-API
 cmi-lib = "1.5.9.3" # https://www.spigotmc.org/resources/cmilib.87610
 
@@ -87,6 +88,8 @@ nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }
 
 # https://modrinth.com/plugin/decentholograms
 decent-holograms = { module = "com.github.decentsoftware-eu:decentholograms", version.ref = "decentholograms" }
+# https://fancyspaces.net/spaces/fancyinnovations/maven-repos/snapshots/com.fancyinnovations:FancyHolograms
+fancy-holograms-v3 = { module = "com.fancyinnovations:FancyHolograms", version.ref = "fancyholograms-v3" }
 # https://modrinth.com/plugin/fancyholograms
 fancy-holograms = { module = "de.oliver:FancyHolograms", version.ref = "fancyholograms" }
 # https://github.com/Zrips/CMI-API
@@ -142,6 +145,8 @@ shared = [
 
 holograms = [
     "decent-holograms",
+
+    "fancy-holograms-v3",
     "fancy-holograms"
 ]
 

@@ -5,6 +5,7 @@ import com.badbones69.crazycrates.paper.api.objects.crates.CrateRequirement;
 import com.badbones69.crazycrates.paper.cache.CacheManager;
 import com.badbones69.crazycrates.paper.cache.objects.ChunkCrate;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
+import com.badbones69.crazycrates.paper.support.holograms.types.fancyholograms.FancyHologramsV3Support;
 import com.ryderbelserion.crazycrates.common.enums.CrateStatus;
 import com.ryderbelserion.crazycrates.common.objects.CrazyLocation;
 import com.ryderbelserion.crazycrates.common.storage.holder.StorageHolder;
@@ -34,7 +35,7 @@ import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.api.ChestManager;
 import com.badbones69.crazycrates.paper.utils.ItemUtil;
 import com.badbones69.crazycrates.paper.support.holograms.types.DecentHologramsSupport;
-import com.badbones69.crazycrates.paper.support.holograms.types.FancyHologramsSupport;
+import com.badbones69.crazycrates.paper.support.holograms.types.fancyholograms.FancyHologramsV2Support;
 import com.badbones69.crazycrates.paper.managers.InventoryManager;
 import com.badbones69.crazycrates.paper.tasks.crates.types.CasinoCrate;
 import com.badbones69.crazycrates.paper.tasks.crates.types.CosmicCrate;
@@ -325,7 +326,21 @@ public class CrateManager {
             case "fancyholograms" -> {
                 if (!Plugins.fancy_holograms.isEnabled()) return;
 
-                this.holograms = new FancyHologramsSupport();
+                this.holograms = new FancyHologramsV2Support();
+            }
+
+            case "fancyholograms-v3" -> {
+                final Plugins hologram = Plugins.fancy_holograms;
+
+                if (!hologram.isEnabled()) return;
+
+                if (!hologram.isClassPresent("com.fancyinnovations.fancyholograms.api.FancyHolograms")) {
+                    this.holograms = new FancyHologramsV2Support();
+
+                    return;
+                }
+
+                this.holograms = new FancyHologramsV3Support();
             }
 
             case "cmi" -> {
@@ -347,10 +362,14 @@ public class CrateManager {
 
                 if (Plugins.cmi.isEnabled() && CMIModule.holograms.isEnabled()) {
                     this.holograms = new CMIHologramsSupport();
+
+                    break;
                 }
 
-                if (Plugins.fancy_holograms.isEnabled()) {
-                    this.holograms = new FancyHologramsSupport();
+                final Plugins hologram = Plugins.fancy_holograms;
+
+                if (hologram.isEnabled()) {
+                    this.holograms = hologram.isClassPresent("com.fancyinnovations.fancyholograms.api.FancyHolograms") ? new FancyHologramsV3Support() : new FancyHologramsV2Support();
                 }
             }
         }
