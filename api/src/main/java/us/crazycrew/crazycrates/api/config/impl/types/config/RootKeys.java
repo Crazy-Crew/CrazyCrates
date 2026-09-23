@@ -53,6 +53,7 @@ public class RootKeys implements IPropertyHolder {
     @Comment({
             "A list of available hologram plugins:",
             " -> DecentHolograms",
+            " -> FancyHologramsV3",
             " -> FancyHolograms",
             " -> CMI",
             " -> None",
