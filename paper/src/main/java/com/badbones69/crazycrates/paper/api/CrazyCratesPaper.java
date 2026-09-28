@@ -92,6 +92,17 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender, Wor
     }
 
     @Override
+    public String getWorld(String worldName) {
+        final World world = this.server.getWorld(worldName);
+
+        if (world == null) {
+            return "";
+        }
+
+        return world.getKey().asString();
+    }
+
+    @Override
     public boolean isCrateAvailable(final String name) {
         return this.crateManager.getCrateByName(name).isPresent();
     }

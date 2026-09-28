@@ -33,8 +33,8 @@ public abstract class CrazyCratesPlugin<S, W> extends CrazyCrates<Component, S> 
             case "world_the_end" -> value = "minecraft:the_end";
             case "world_nether" -> value = "minecraft:the_nether";
             default -> {
-                if (!world.contains("minecraft:")) {
-                    value = "minecraft:%s".formatted(world);
+                if (!world.startsWith("minecraft:")) {
+                    value = getWorld(world);
                 }
             }
         }
@@ -47,6 +47,8 @@ public abstract class CrazyCratesPlugin<S, W> extends CrazyCrates<Component, S> 
     }
 
     public abstract Optional<W> getWorld(final Key worldKey);
+
+    public abstract String getWorld(final String worldName);
 
     public abstract boolean isCrateAvailable(final String name);
 
