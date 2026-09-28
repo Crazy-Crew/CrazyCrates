@@ -47,8 +47,7 @@ tasks {
             "org.spongepowered",
             "com.google.gson",
             "org.jspecify",
-            "org.bstats",
-            "org.slf4j"
+            "org.bstats"
         ).forEach {
             relocate(it, "libs.$it")
         }
