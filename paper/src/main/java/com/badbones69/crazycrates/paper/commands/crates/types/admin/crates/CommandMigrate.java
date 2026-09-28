@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates;
 
+import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.database.DatabaseMigrator;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.enums.other.Plugins;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.deprecation.NewItemMigrator;
@@ -50,6 +51,7 @@ public class CommandMigrate extends BaseCommand {
 
         switch (type) {
             case MOJANG_MAPPED_ALL -> new MojangMappedMigratorMultiple(sender).run();
+            case DATABASE_MIGRATION -> new DatabaseMigrator(sender).run();
             case MOJANG_MAPPED_SINGLE -> {
                 final boolean hasCrateFlag = flags.hasFlag("c");
 

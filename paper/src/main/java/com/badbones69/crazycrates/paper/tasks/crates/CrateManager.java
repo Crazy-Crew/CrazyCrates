@@ -9,6 +9,7 @@ import com.badbones69.crazycrates.paper.support.holograms.types.fancyholograms.F
 import com.ryderbelserion.crazycrates.common.enums.CrateStatus;
 import com.ryderbelserion.crazycrates.common.objects.CrazyLocation;
 import com.ryderbelserion.crazycrates.common.storage.holder.StorageHolder;
+import net.kyori.adventure.key.Key;
 import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
 import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
@@ -427,6 +428,14 @@ public class CrateManager {
      * Loads the crates.
      */
     public void loadCrates() {
+        this.server.getWorlds().forEach(world -> {
+            final Key key = world.key();
+
+            if (!this.storageHolder.hasWorld(key)) {
+                this.storageHolder.addWorld(key);
+            }
+        });
+
         loadExamples();
 
         this.giveNewPlayersKeys = false;
@@ -648,9 +657,9 @@ public class CrateManager {
                     continue;
                 }
 
-                final World world = this.server.getWorld(location.getWorldName());
+                final Optional<World> optional = this.platform.getWorld(location.getWorldKey());
 
-                if (world == null) {
+                if (optional.isEmpty()) {
                     this.brokenLocations.add(location);
 
                     continue;
@@ -664,7 +673,7 @@ public class CrateManager {
                     continue;
                 }
 
-                final ChunkCrate chunk = new ChunkCrate(new Location(world, location.getX(), location.getY(), location.getZ())).init(location.getId());
+                final ChunkCrate chunk = new ChunkCrate(new Location(optional.get(), location.getX(), location.getY(), location.getZ())).init(location.getId());
                 final Location value = chunk.getLocation();
                 final String id = chunk.getId();
 
@@ -681,15 +690,13 @@ public class CrateManager {
             final int brokeAmount = this.brokenLocations.size();
             final int loadedAmount = this.crates.size();
 
-            if (loadedAmount > 0 || brokeAmount > 0) {
-                if (brokeAmount == 0) {
-                    this.logger.info("All physical crate locations have been loaded.");
-                } else {
-                    this.logger.info("Loaded {} physical crate locations.", loadedAmount);
-                    this.logger.warn("Failed to load {} physical crate locations.", brokeAmount);
+            if (brokeAmount > 0) {
+                this.logger.info("Loaded {} physical crate locations.", loadedAmount);
+                this.logger.warn("Failed to load {} physical crate locations.", brokeAmount);
 
-                    this.brokenLocations.forEach(location -> this.logger.warn("The physical crate location {} failed to load!", location.getId()));
-                }
+                this.brokenLocations.forEach(location -> this.logger.warn("The physical crate location {} failed to load!", location.getId()));
+            } else {
+                this.logger.info("All physical crate locations have been loaded.");
             }
 
             this.logger.info("Searching for schematics to load.");
@@ -814,7 +821,7 @@ public class CrateManager {
 
         final String id = this.storageHolder.addCrateLocation(
                 crate.getFileName(),
-                location.getWorld().getName(),
+                location.getWorld().key(),
                 location.getBlockX(),
                 location.getBlockY(),
                 location.getBlockZ()
@@ -900,7 +907,7 @@ public class CrateManager {
             return;
         }
 
-        final String worldName = player.getWorld().getName();
+        final String worldName = player.getWorld().getName(); //todo() migrate to minecraft:world, minecraft:the_end etc.
 
         for (final String world : crate.getDisabledWorlds()) {
             if (world.equalsIgnoreCase(worldName)) {

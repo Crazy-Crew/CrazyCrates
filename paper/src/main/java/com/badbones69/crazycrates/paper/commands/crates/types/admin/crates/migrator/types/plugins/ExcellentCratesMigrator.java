@@ -1,5 +1,6 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.types.plugins;
 
+import net.kyori.adventure.key.Key;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.api.enums.other.keys.FileKeys;
 import com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator.ICrateMigrator;
@@ -147,20 +148,25 @@ public class ExcellentCratesMigrator extends ICrateMigrator {
 
             if (!locations.isEmpty()) {
                 crateConfig.getStringList("Block.Locations").forEach(location -> {
-                    String[] splitter = location.split(",");
+                    final String[] splitter = location.split(",");
 
-                    String arg5 = splitter[5];
-                    String arg0 = splitter[0];
-                    String arg1 = splitter[1];
-                    String arg2 = splitter[2];
+                    final String arg5 = splitter[5];
 
-                    this.storageHolder.addCrateLocation(
-                            strippedName,
-                            arg5,
-                            (int) Double.parseDouble(arg0),
-                            (int) Double.parseDouble(arg1),
-                            (int) Double.parseDouble(arg2)
-                    );
+                    final Key key = this.platform.asWorld(arg5);
+
+                    if (key != null) {
+                        final String arg0 = splitter[0];
+                        final String arg1 = splitter[1];
+                        final String arg2 = splitter[2];
+
+                        this.storageHolder.addCrateLocation(
+                                strippedName,
+                                key,
+                                (int) Double.parseDouble(arg0),
+                                (int) Double.parseDouble(arg1),
+                                (int) Double.parseDouble(arg2)
+                        );
+                    }
                 });
             }
 

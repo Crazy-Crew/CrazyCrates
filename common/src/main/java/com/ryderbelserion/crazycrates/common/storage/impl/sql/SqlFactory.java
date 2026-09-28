@@ -13,8 +13,7 @@ import java.util.concurrent.CompletableFuture;
 public abstract class SqlFactory extends FlatFactory {
 
     protected final String create_crate_worlds_table = "create table if not exists crate_worlds(" +
-            "world varchar(36) primary key, " +
-            "name varchar(36) not null)";
+            "world_id varchar(36) primary key)";
 
     protected final String create_crate_locations_table = "create table if not exists crate_locations(" +
             "id varchar(16) primary key, " +
@@ -23,7 +22,7 @@ public abstract class SqlFactory extends FlatFactory {
             "x bigint not null, " +
             "y bigint not null, " +
             "z bigint not null, " +
-            "foreign key(world_id) references crate_worlds(world) on delete cascade)";
+            "foreign key(world_id) references crate_worlds(world_id) on delete cascade)";
 
     protected HikariDataSource source;
 

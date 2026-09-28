@@ -22,16 +22,16 @@ public class CommandTeleport extends BaseCommand {
         }
 
         this.storageHolder.getCrateLocation(id).ifPresentOrElse(index -> {
-            final World world = this.server.getWorld(index.getWorldName());
+            final java.util.Optional<World> optional = this.platform.getWorld(index.getWorldKey());
 
-            if (world == null) {
+            if (optional.isEmpty()) {
                 Message.crate_teleport_failed.sendMessage(player, "{id}", id);
 
                 return;
             }
 
             final Location location = new Location(
-                    world,
+                    optional.get(),
                     index.getX(),
                     index.getY(),
                     index.getZ()

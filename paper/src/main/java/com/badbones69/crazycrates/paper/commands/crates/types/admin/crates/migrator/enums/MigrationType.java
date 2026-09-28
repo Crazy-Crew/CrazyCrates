@@ -11,6 +11,8 @@ public enum MigrationType {
 
     NEW_ITEM_FORMAT("NewItemFormat"),
 
+    DATABASE_MIGRATION("DatabaseMigration"),
+
     //MIGRATE_OLD_COMMANDS("MigrateOldCommands"),
 
     CRATES_DEPRECATED_ALL("CratesDeprecated"),

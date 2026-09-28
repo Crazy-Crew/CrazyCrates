@@ -31,9 +31,11 @@ import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.jspecify.annotations.NonNull;
@@ -43,10 +45,11 @@ import us.crazycrew.crazycrates.api.enums.messages.Message;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Timer;
 import static com.badbones69.crazycrates.paper.utils.MiscUtils.registerPermissions;
 
-public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
+public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender, World> {
 
     private final PaperFileManager fileManager;
     private final CrazyCrates plugin;
@@ -84,6 +87,11 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
     private MetricsWrapper metrics;
 
     @Override
+    public Optional<World> getWorld(final Key worldKey) {
+        return Optional.ofNullable(this.server.getWorld(worldKey));
+    }
+
+    @Override
     public boolean isCrateAvailable(final String name) {
         return this.crateManager.getCrateByName(name).isPresent();
     }
@@ -93,7 +101,6 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
         super.init();
 
         this.fileManager.addPaperFile(this.path.resolve("data.yml"))
-
                 .addPaperFolder(this.path.resolve("guis"))
                 .addPaperFolder(this.path.resolve("crates"))
 
@@ -181,7 +188,6 @@ public final class CrazyCratesPaper extends CrazyCratesPlugin<CommandSender> {
         super.reload();
 
         this.fileManager.addPaperFile(this.path.resolve("data.yml"))
-
                 .addPaperFolder(this.path.resolve("guis"))
                 .addPaperFolder(this.path.resolve("crates"))
 

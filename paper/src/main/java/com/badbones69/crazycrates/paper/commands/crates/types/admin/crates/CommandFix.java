@@ -13,6 +13,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 import java.util.List;
+import java.util.Optional;
 
 public class CommandFix extends BaseCommand {
 
@@ -25,16 +26,19 @@ public class CommandFix extends BaseCommand {
         int amount = 0;
 
         for (final CrazyLocation index : locations) {
-            final World world = this.server.getWorld(index.getWorldName());
             final String id = index.getId();
 
-            if (world == null) {
+            final Optional<World> optional = this.platform.getWorld(index.getWorldKey());
+
+            if (optional.isEmpty()) {
                 this.crateManager.removeBrokenCrateLocation(index);
 
                 this.storageHolder.removeCrateLocation(id);
 
                 continue;
             }
+
+            final World world = optional.get();
 
             final Crate crate = this.crateManager.getCrateFromName(index.getCrateName());
 

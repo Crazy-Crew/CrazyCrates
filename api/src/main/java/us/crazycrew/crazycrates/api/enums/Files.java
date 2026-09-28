@@ -24,29 +24,29 @@ import java.util.Optional;
 @NullMarked
 public enum Files {
 
-    crate_log("crates.log", "logs", FileType.LOG, List.of(
+    crate_log("crates.log", "logs", FileType.LOG, false, List.of(
             FileAction.EXTRACT_FROM_FOLDER
     )),
-    key_log("keys.log", "logs", FileType.LOG, List.of(
+    key_log("keys.log", "logs", FileType.LOG, false, List.of(
             FileAction.EXTRACT_FROM_FOLDER
     )),
 
-    editor_config("editor.yml", FileType.YAML, List.of(
+    editor_config("editor.yml", FileType.YAML, false, List.of(
             FileAction.EXTRACT_FILE
     )),
 
-    config("config.yml", FileType.YAML, List.of(
+    config("config.yml", FileType.YAML, false, List.of(
             FileAction.EXTRACT_FILE
     )),
-    messages("messages.yml", FileType.YAML, List.of(
-            FileAction.EXTRACT_FILE
-    )),
-
-    locations("locations.yml", FileType.YAML, List.of(
+    messages("messages.yml", FileType.YAML, false, List.of(
             FileAction.EXTRACT_FILE
     )),
 
-    version("version.json", FileType.JSON, List.of(
+    locations("locations.yml", FileType.YAML, true, List.of(
+            FileAction.EXTRACT_FILE
+    )),
+
+    version("version.json", FileType.JSON, false, List.of(
             FileAction.DELETE_FILE,
             FileAction.EXTRACT_FILE
     ));
@@ -58,17 +58,20 @@ public enum Files {
     private final FileManager fileManager = this.fusion.getFileManager();
 
     private final List<FileAction> actions;
+    private final boolean isExcluded;
     private final FileType fileType;
     private final Path path;
 
-    Files(final String fileName, final String folder, final FileType fileType, final List<FileAction> actions) {
+    Files(final String fileName, final String folder, final FileType fileType, final boolean isExcluded, final List<FileAction> actions) {
         this.path = this.dataPath.resolve(folder).resolve(fileName);
+        this.isExcluded = isExcluded;
         this.fileType = fileType;
         this.actions = actions;
     }
 
-    Files(final String fileName, final FileType fileType, final List<FileAction> actions) {
+    Files(final String fileName, final FileType fileType, final boolean isExcluded, final List<FileAction> actions) {
         this.path = this.dataPath.resolve(fileName);
+        this.isExcluded = isExcluded;
         this.fileType = fileType;
         this.actions = actions;
     }
@@ -159,5 +162,13 @@ public enum Files {
 
     public final Path getPath() {
         return this.path;
+    }
+
+    public final boolean exists() {
+        return java.nio.file.Files.exists(this.path);
+    }
+
+    public final boolean isExcluded() {
+        return this.isExcluded;
     }
 }

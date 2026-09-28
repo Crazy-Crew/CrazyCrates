@@ -1,6 +1,6 @@
 [versions]
 ## Paper API
-paperweight = "2.0.0-beta.21" # https://github.com/PaperMC/paperweight
+paperweight = "2.0.0-beta.24" # https://github.com/PaperMC/paperweight
 adventure = "5.2.0" # https://github.com/KyoriPowered/adventure
 paper = "26.1.2.build.+" # https://github.com/PaperMC/Paper
 
@@ -36,11 +36,11 @@ bStats = "3.2.1" # https://github.com/Bastian/bStats
 ## Fusion API
 fusion = "4.47.2" # https://github.com/ryderbelserion/Fusion
 ## Database API
-hikari = "7.0.2" # https://github.com/brettwooldridge/HikariCP
+hikari = "7.1.0" # https://github.com/brettwooldridge/HikariCP
 
 ## Gradle Plugins
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
-run-paper = "3.0.2" # https://github.com/jpenilla/run-task
+run-paper = "3.1.0" # https://github.com/jpenilla/run-task
 minotaur = "2.9.0" # https://github.com/modrinth/minotaur
 feather = "0.6.1" # https://github.com/ryderbelserion/Feather
 hangar = "0.1.4" # https://github.com/HangarMC/hangar-publish-plugin

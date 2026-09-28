@@ -3,16 +3,19 @@ package com.ryderbelserion.crazycrates.common;
 import com.ryderbelserion.crazycrates.common.storage.StorageManager;
 import com.ryderbelserion.crazycrates.common.storage.holder.StorageHolder;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.CrazyCrates;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
 import us.crazycrew.crazycrates.api.enums.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 
-public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
+public abstract class CrazyCratesPlugin<S, W> extends CrazyCrates<Component, S> {
 
     private final FusionKyori fusion;
 
@@ -21,6 +24,29 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
 
         this.fusion = fusion;
     }
+
+    public @Nullable Key asWorld(final String world) {
+        String value = world;
+
+        switch (world) {
+            case "world" -> value = "minecraft:overworld";
+            case "world_the_end" -> value = "minecraft:the_end";
+            case "world_nether" -> value = "minecraft:the_nether";
+            default -> {
+                if (!world.contains("minecraft:")) {
+                    value = "minecraft:%s".formatted(world);
+                }
+            }
+        }
+
+        if (value.isBlank()) {
+            return null;
+        }
+
+        return Key.key(value);
+    }
+
+    public abstract Optional<W> getWorld(final Key worldKey);
 
     public abstract boolean isCrateAvailable(final String name);
 
@@ -40,6 +66,8 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
         this.configManager.init();
 
         for (final Files key : Files.values()) {
+            if (key.isExcluded()) continue;
+
             key.load();
         }
 
@@ -58,6 +86,8 @@ public abstract class CrazyCratesPlugin<S> extends CrazyCrates<Component, S> {
         this.configManager.reload();
 
         for (final Files key : Files.values()) {
+            if (key.isExcluded()) continue;
+
             key.reload();
         }
 

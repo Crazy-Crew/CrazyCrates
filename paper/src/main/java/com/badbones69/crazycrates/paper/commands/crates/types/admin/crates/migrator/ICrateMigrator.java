@@ -1,6 +1,7 @@
 package com.badbones69.crazycrates.paper.commands.crates.types.admin.crates.migrator;
 
 import com.ryderbelserion.crazycrates.common.storage.holder.StorageHolder;
+import org.bukkit.Server;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
 import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
 import us.crazycrew.crazycrates.api.enums.messages.Message;
@@ -25,6 +26,8 @@ import java.util.*;
 public abstract class ICrateMigrator {
 
     protected final CrazyCrates plugin = CrazyCrates.getPlugin();
+
+    protected final Server server = this.plugin.getServer();
 
     protected final CrazyCratesPaper platform = this.plugin.getPlatform();
 

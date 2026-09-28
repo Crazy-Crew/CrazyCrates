@@ -4,11 +4,10 @@ import com.ryderbelserion.crazycrates.common.CrazyCratesPlugin;
 import com.ryderbelserion.crazycrates.common.enums.CrateStatus;
 import com.ryderbelserion.crazycrates.common.objects.CrazyLocation;
 import com.ryderbelserion.crazycrates.common.storage.impl.file.FlatFactory;
-import com.ryderbelserion.fusion.core.api.enums.Level;
+import net.kyori.adventure.key.Key;
 import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import us.crazycrew.crazycrates.api.enums.Files;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,18 +72,18 @@ public class YamlFactory extends FlatFactory {
             final CommentedConfigurationNode index = key.getValue();
             final String id = key.getKey().toString();
 
-            final String worldName = index.node("World").getString("");
+            final Key worldKey = this.plugin.asWorld(index.node("World").getString(""));
 
-            if (worldName.isBlank()) continue;
+            if (worldKey == null) continue;
 
-            final String crateName = index.node("Crate").getString("");
+            final String crateId = index.node("Crate").getString("");
 
-            if (crateName.isBlank()) continue;
+            if (crateId.isBlank()) continue;
 
             if (!index.hasChild("X") || !index.hasChild("Y") || !index.hasChild("Z")) {
                 locations.get(CrateStatus.failed).add(new CrazyLocation(
-                        crateName,
-                        worldName,
+                        crateId,
+                        worldKey,
                         id,
                         -1,
                         -1,
@@ -104,9 +103,9 @@ public class YamlFactory extends FlatFactory {
             final int y = index.node("Y").getInt();
             final int z = index.node("Z").getInt();
 
-            final CrazyLocation location = new CrazyLocation(crateName, worldName, id, x, y, z);
+            final CrazyLocation location = new CrazyLocation(crateId, worldKey, id, x, y, z);
 
-            if (!this.plugin.isCrateAvailable(crateName)) {
+            if (!this.plugin.isCrateAvailable(crateId)) {
                 locations.get(CrateStatus.unavailable).add(location);
 
                 continue;
@@ -119,12 +118,23 @@ public class YamlFactory extends FlatFactory {
     }
 
     @Override
-    public String addCrateLocation(final String crateName, final String worldName, final int x, final int y, final int z) {
-        return addCrateLocation(crateName, worldName, UUID.randomUUID().toString(), x, y, z);
+    public String addCrateLocation(final String crateId, final Key worldKey, final int x, final int y, final int z) {
+        return addCrateLocation(crateId, worldKey, UUID.randomUUID().toString(), x, y, z);
     }
 
     @Override
-    public String addCrateLocation(final String crateName, final String worldName, final String id, final int x, final int y, final int z) {
+    public void addWorld(final Key worldKey) {} // does not do anything for yaml.
+
+    @Override
+    public boolean hasWorld(final Key worldKey) { // does not do anything for yaml.
+        return true;
+    }
+
+    @Override
+    public void removeWorld(final Key worldKey) {} // does not do anything for yaml.
+
+    @Override
+    public String addCrateLocation(final String crateId, final Key worldKey, final String id, final int x, final int y, final int z) {
         final CommentedConfigurationNode configuration = Files.locations.getConfiguration();
 
         final CommentedConfigurationNode section = configuration.node("Locations");
@@ -133,8 +143,8 @@ public class YamlFactory extends FlatFactory {
             return section.node(id, "UUID").getString("");
         }
 
-        setValue(section.node(id, "World"), String.class, worldName);
-        setValue(section.node(id, "Crate"), String.class, crateName);
+        setValue(section.node(id, "World"), String.class, worldKey.asString());
+        setValue(section.node(id, "Crate"), String.class, crateId);
         setValue(section.node(id, "UUID"), String.class, id);
         setValue(section.node(id, "X"), Integer.class, x);
         setValue(section.node(id, "Y"), Integer.class, y);
@@ -146,13 +156,17 @@ public class YamlFactory extends FlatFactory {
     }
 
     @Override
-    public void init() {}
+    public void init() {
+        Files.locations.load();
+    }
 
     @Override
     public void stop() {}
 
     @Override
-    public void save() {}
+    public void save() {
+        Files.locations.reload();
+    }
 
     private void setValue(final CommentedConfigurationNode section, final Class<?> type, final Object value) {
         try {

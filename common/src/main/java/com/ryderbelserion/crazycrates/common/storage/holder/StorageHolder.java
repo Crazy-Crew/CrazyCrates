@@ -3,6 +3,7 @@ package com.ryderbelserion.crazycrates.common.storage.holder;
 import com.ryderbelserion.crazycrates.common.enums.CrateStatus;
 import com.ryderbelserion.crazycrates.common.objects.CrazyLocation;
 import com.ryderbelserion.crazycrates.common.storage.impl.ConnectionFactory;
+import net.kyori.adventure.key.Key;
 import org.jspecify.annotations.NullMarked;
 import java.util.List;
 import java.util.Map;
@@ -30,12 +31,26 @@ public final class StorageHolder {
         return this;
     }
 
-    public String addCrateLocation(final String crateName, final String worldName, final String id, final int x, final int y, final int z) {
-        return this.factory.addCrateLocation(crateName, worldName, id, x, y, z);
+    public StorageHolder stop() {
+        this.factory.stop();
+
+        return this;
     }
 
-    public String addCrateLocation(final String crateName, final String worldName, final int x, final int y, final int z) {
-        return addCrateLocation(crateName, worldName, UUID.randomUUID().toString(), x, y, z);
+    public boolean hasWorld(final Key key) {
+        return this.factory.hasWorld(key);
+    }
+
+    public void addWorld(final Key key) {
+        this.factory.addWorld(key);
+    }
+
+    public String addCrateLocation(final String crateName, final Key worldKey, final String id, final int x, final int y, final int z) {
+        return this.factory.addCrateLocation(crateName, worldKey, id, x, y, z);
+    }
+
+    public String addCrateLocation(final String crateName, final Key worldKey, final int x, final int y, final int z) {
+        return addCrateLocation(crateName, worldKey, UUID.randomUUID().toString(), x, y, z);
     }
 
     public Optional<CrazyLocation> getCrateLocation(final String id) {
