@@ -9,9 +9,11 @@ import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.serialize.SerializationException;
 import us.crazycrew.crazycrates.CratesProvider;
 import us.crazycrew.crazycrates.api.CrazyCrates;
 import us.crazycrew.crazycrates.api.adapters.sender.ISenderAdapter;
+import us.crazycrew.crazycrates.api.config.annotations.Comment;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
 import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
 import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
@@ -245,6 +247,7 @@ public enum Message {
 
     private final String defaultValue;
     private final PropertyType type;
+    private final Object[] oldPath;
     private final Object[] path;
     private final FusionKey id;
 
@@ -252,6 +255,7 @@ public enum Message {
         this.defaultValue = defaultValue;
         this.id = FusionKey.key(namespace, id);
         this.type = PropertyType.STRING;
+        this.oldPath = oldPath.split("\\.");
         this.path = path;
     }
 
@@ -259,6 +263,7 @@ public enum Message {
         this.defaultValue = StringUtils.toString(defaultValue);
         this.id = FusionKey.key(namespace, id);
         this.type = PropertyType.STRING_LIST;
+        this.oldPath = oldPath.split("\\.");
         this.path = path;
     }
 
@@ -296,6 +301,42 @@ public enum Message {
                 this.id,
                 adapter
         );
+    }
+
+    public void migrateKey(final YamlCustomFile customFile, final CommentedConfigurationNode configuration) {
+        if (!configuration.hasChild(this.oldPath)) {
+            return;
+        }
+
+        final CommentedConfigurationNode oldSection = configuration.node(this.oldPath);
+
+        final CommentedConfigurationNode section = configuration.node(this.path);
+
+        switch (this.type) {
+            case STRING_LIST -> {
+                try {
+                    section.node(this.path).set(StringUtils.getStringList(oldSection, toList(this.defaultValue)));
+
+                    configuration.removeChild(this.oldPath);
+
+                    customFile.save();
+                } catch (final SerializationException exception) {
+                    exception.printStackTrace();
+                }
+            }
+
+            case STRING -> {
+                try {
+                    section.node(this.path).set(oldSection.getString(this.defaultValue));
+
+                    configuration.removeChild(this.oldPath);
+
+                    customFile.save();
+                } catch (final SerializationException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }
     }
 
     public List<String> toList(final String value) {
