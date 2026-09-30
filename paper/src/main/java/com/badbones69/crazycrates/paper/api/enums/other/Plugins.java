@@ -17,7 +17,6 @@ public enum Plugins {
 
     cmi("CMI"),
 
-    fancy_holograms_v3("FancyHolograms"),
     fancy_holograms("FancyHolograms"),
 
     decent_holograms("DecentHolograms"),

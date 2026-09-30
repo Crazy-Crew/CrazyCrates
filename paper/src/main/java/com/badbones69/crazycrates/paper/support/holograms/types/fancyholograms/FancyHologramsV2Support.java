@@ -14,8 +14,6 @@ import org.bukkit.Location;
 import org.bukkit.Server;
 import org.jetbrains.annotations.NotNull;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FancyHologramsV2Support extends HologramManager {
 
@@ -27,16 +25,14 @@ public class FancyHologramsV2Support extends HologramManager {
 
         final CrateHologram crateHologram = crate.getHologram();
 
-        final String identifier = name(id);
-
         if (!crateHologram.isEnabled()) {
-            removeHologram(identifier);
+            removeHologram(id);
 
             return;
         }
 
         // We don't want to create a new one if one already exists.
-        if (exists(identifier)) {
+        if (exists(id)) {
             return;
         }
 
@@ -54,6 +50,8 @@ public class FancyHologramsV2Support extends HologramManager {
             NamedTextColor textColor = NamedTextColor.NAMES.value(color.replace(' ', '_'));
             background = textColor == null ? null : Color.fromARGB(textColor.value() | 0xC8000000);
         }
+
+        final String identifier = name(id);
 
         TextHologramData hologramData = new TextHologramData(identifier, location.clone().add(getVector(crate))).setBackground(background);
 
@@ -88,24 +86,20 @@ public class FancyHologramsV2Support extends HologramManager {
 
     @Override
     public boolean exists(@NotNull final String id) {
-        return this.manager.getHologram(id).isPresent();
+        return this.manager.getHologram(name(id)).isPresent();
     }
 
     @Override
     public void purge(final boolean isShutdown) {
         final String name = this.plugin.getName().toLowerCase();
 
-        final List<String> holograms = new ArrayList<>();
-
         this.manager.getHolograms().forEach(hologram -> {
             final String id = hologram.getName();
 
             if (id.startsWith(name)) {
-                holograms.add(id);
+                FancyHologramsPlugin.get().getHologramThread().submit(() -> this.manager.removeHologram(hologram));
             }
         });
-
-        holograms.forEach(this::removeHologram);
     }
 
     @Override

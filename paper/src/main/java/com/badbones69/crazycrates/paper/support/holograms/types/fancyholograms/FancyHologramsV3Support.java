@@ -27,16 +27,14 @@ public class FancyHologramsV3Support extends HologramManager {
 
         final CrateHologram crateHologram = crate.getHologram();
 
-        final String identifier = name(id);
-
         if (!crateHologram.isEnabled()) {
-            removeHologram(identifier);
+            removeHologram(id);
 
             return;
         }
 
         // We don't want to create a new one if one already exists.
-        if (exists(identifier)) {
+        if (exists(id)) {
             return;
         }
 
@@ -54,6 +52,8 @@ public class FancyHologramsV3Support extends HologramManager {
             NamedTextColor textColor = NamedTextColor.NAMES.value(color.replace(' ', '_'));
             background = textColor == null ? null : Color.fromARGB(textColor.value() | 0xC8000000);
         }
+
+        final String identifier = name(id);
 
         final TextHologramBuilder builder = TextHologramBuilder.create(identifier, location.clone().add(getVector(crate)))
                 .text(crateHologram.getMessages())

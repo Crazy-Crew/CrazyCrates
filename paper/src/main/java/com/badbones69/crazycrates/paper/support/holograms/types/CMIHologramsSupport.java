@@ -28,16 +28,18 @@ public class CMIHologramsSupport extends HologramManager {
 
         final CrateHologram crateHologram = crate.getHologram();
 
-        final String identifier = name(id);
-
         if (!crateHologram.isEnabled()) {
-            removeHologram(identifier);
+            removeHologram(id);
 
             return;
         }
 
         // We don't want to create a new one if one already exists.
-        if (exists(identifier)) return;
+        if (exists(id)) {
+            return;
+        }
+
+        final String identifier = name(id);
 
         final CMIHologram hologram = new CMIHologram(identifier, new CMILocation(location.clone().add(getVector(crate))));
 
@@ -90,22 +92,18 @@ public class CMIHologramsSupport extends HologramManager {
 
     @Override
     public boolean exists(@NotNull final String id) {
-        return this.hologramManager.getByName(id) != null;
+        return this.hologramManager.getByName(name(id)) != null;
     }
 
     @Override
     public void purge(final boolean isShutdown) {
         final String name = this.plugin.getName().toLowerCase();
 
-        final List<String> holograms = new ArrayList<>();
-
-        hologramManager.getHolograms().forEach((id, _) -> {
+        hologramManager.getHolograms().forEach((id, hologram) -> {
             if (id.startsWith(name)) {
-                holograms.add(id);
+                hologram.remove();
             }
         });
-
-        holograms.forEach(this::removeHologram);
     }
 
     @Override

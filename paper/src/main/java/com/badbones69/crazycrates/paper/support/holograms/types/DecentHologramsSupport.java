@@ -22,16 +22,18 @@ public class DecentHologramsSupport extends HologramManager {
 
         final CrateHologram crateHologram = crate.getHologram();
 
-        final String identifier = name(id);
-
         if (!crateHologram.isEnabled()) {
-            removeHologram(identifier);
+            removeHologram(id);
 
             return;
         }
 
         // We don't want to create a new one if one already exists.
-        if (exists(identifier)) return;
+        if (exists(id)) {
+            return;
+        }
+
+        final String identifier = name(id);
 
         final Hologram hologram = DHAPI.createHologram(identifier, location.clone().add(getVector(crate)));
 
@@ -53,13 +55,13 @@ public class DecentHologramsSupport extends HologramManager {
 
     @Override
     public boolean exists(@NotNull final String id) {
-        return DHAPI.getHologram(id) != null;
+        return DHAPI.getHologram(name(id)) != null;
     }
 
     @Override
     public void purge(final boolean isShutdown) {
         this.holograms.forEach((key, value) -> {
-            removeHologram(key);
+            DHAPI.removeHologram(key);
 
             value.delete();
         });
