@@ -80,6 +80,7 @@ public final class SqliteFactory extends SqlFactory {
         });
     }
 
+    @Override
     public void removeWorld(final Key worldKey) {
         CompletableFuture.runAsync(() -> {
             try (final Connection connection = this.source.getConnection(); final PreparedStatement statement =

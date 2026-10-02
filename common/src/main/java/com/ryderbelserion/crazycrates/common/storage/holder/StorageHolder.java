@@ -37,6 +37,10 @@ public final class StorageHolder {
         return this;
     }
 
+    public boolean tableExists(final String table) {
+        return this.factory.tableExists(table);
+    }
+
     public boolean hasWorld(final Key key) {
         return this.factory.hasWorld(key);
     }

@@ -35,4 +35,7 @@ public abstract class ConnectionFactory {
 
     public abstract void save();
 
+    public boolean tableExists(final String table) {
+        return true;
+    }
 }

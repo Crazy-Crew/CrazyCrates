@@ -4,6 +4,7 @@ import com.ryderbelserion.crazycrates.common.CrazyCratesPlugin;
 import com.ryderbelserion.crazycrates.common.storage.impl.file.FlatFactory;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.zaxxer.hikari.HikariDataSource;
+import org.jspecify.annotations.NonNull;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -76,7 +77,8 @@ public abstract class SqlFactory extends FlatFactory {
         return this.source.getConnection();
     }
 
-    public boolean tableExists(final String table) {
+    @Override
+    public boolean tableExists(@NonNull final String table) {
         try (final ResultSet resultSet = getConnection().getMetaData().getTables(
                 null,
                 null,
