@@ -221,7 +221,7 @@ public class PrizeManager {
                 "%pulls%", pulls
         ));
 
-        MiscUtils.sendCommand(origin, Map.of(
+        MiscUtils.sendCommand(player, origin, Map.of(
                 "%player%", player.getName(),
                 "%reward%", prizeName,
                 "%reward_stripped%", prize.getStrippedName(),
