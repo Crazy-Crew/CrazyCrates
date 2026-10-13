@@ -52,9 +52,7 @@ val isRelease = releaseType.equals("release", true)
 val lines = rootProject.ext.get("mc_changelog").toString()
 val result: String = if (lines.length > 1024) {
     listOf(
-        "Uh oh, I typed too much.... I got lost in the sauce. The horrors!!! you gotta click a link to read oh no",
-        "<:modrinth:1115307870473420800> [Modrinth](https://modrinth.com/plugin/${rootProject.name.lowercase()}/version/${rootProject.version})",
-        "<:hangar:1139326635313733652> [Hangar](https://hangar.papermc.io/${rootProject.property("repository_owner").toString().replace("-", "")}/${rootProject.name.lowercase()}/versions/${rootProject.version})"
+        "Click the download links above!"
     ).convertList()
 } else {
     lines
