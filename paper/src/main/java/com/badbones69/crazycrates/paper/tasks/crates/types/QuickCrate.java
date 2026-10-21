@@ -138,6 +138,8 @@ public class QuickCrate extends CrateBuilder {
 
         PrizeManager.givePrize(this.player, this.location.clone().add(0.5, 1, 0.5), this.crate, prize);
 
+        this.cacheManager.removeActiveCrate(this.uuid);
+
         addCrateTask(new FoliaScheduler(this.plugin, null, this.player) {
             @Override
             public void run() {
