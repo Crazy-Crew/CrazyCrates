@@ -99,9 +99,9 @@ public class CMIHologramsSupport extends HologramManager {
     public void purge(final boolean isShutdown) {
         final String name = this.plugin.getName().toLowerCase();
 
-        hologramManager.getHolograms().forEach((id, hologram) -> {
+        this.hologramManager.getHolograms().forEach((id, hologram) -> {
             if (id.startsWith(name)) {
-                hologram.remove();
+                this.hologramManager.remove(hologram);
             }
         });
     }
