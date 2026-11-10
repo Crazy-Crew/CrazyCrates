@@ -60,7 +60,7 @@ public enum Permissions {
     )),
 
     CRAZYCRATES_PLAYER_ALL("players.*", "Give all player based permissions.", PermissionDefault.OP, Map.ofEntries(
-            Map.entry("crazycrates.key-others", true),
+            Map.entry("crazycrates.keys-others", true),
             Map.entry("crazycrates.gui", true),
             Map.entry("crazycrates.help", true)
     ));
