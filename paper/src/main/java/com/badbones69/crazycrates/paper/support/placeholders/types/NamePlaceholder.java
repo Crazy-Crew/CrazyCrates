@@ -2,25 +2,44 @@ package com.badbones69.crazycrates.paper.support.placeholders.types;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
+import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.support.placeholders.api.AbstractPlaceholder;
+import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.items.PlayerBuilder;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import us.crazycrew.crazycrates.api.users.UserManager;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 public final class NamePlaceholder implements AbstractPlaceholder {
 
+    // A suffix that ends with another suffix must come before it.
+    private static final List<String> suffixes = List.of(
+            "_virtual_raw",
+            "_virtual",
+            "_physical_raw",
+            "_physical",
+            "_total_raw",
+            "_total",
+            "_opened_raw",
+            "_opened"
+    );
+
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
 
     private final FusionPaper fusion = this.platform.getFusion();
+
+    private final CrateManager crateManager = this.platform.getCrateManager();
 
     private final UserManager userManager = this.platform.getUserManager();
 
@@ -30,95 +49,61 @@ public final class NamePlaceholder implements AbstractPlaceholder {
         this.player = player;
     }
 
+    /**
+     * Resolves {@code <player>_<crate><suffix>} and {@code <player>_opened[_raw]}, where the crate is a loaded crate's file name.
+     *
+     * @param placeholder the placeholder without the identifier
+     * @return the value, or empty if nothing matches
+     */
     @Override
     public @NonNull Optional<String> get(@NonNull final String placeholder) {
-        final String[] index = placeholder.split("_");
-
-        if (index.length == 0) {
-            return Optional.empty();
-        }
-
         try {
             String reference = placeholder;
 
-            final String[] splitter = reference.split("_");
-
-            if (splitter.length == 0) {
-                return Optional.empty();
+            if (reference.regionMatches(true, 0, "{player}", 0, 8)) {
+                reference = this.fusion.papi(this.player, "%player_name%") + reference.substring(8);
             }
 
-            final String name = this.player.getName();
+            final String lowerCase = reference.toLowerCase(Locale.ROOT);
 
-            String playerName = splitter[0];
+            for (final String suffix : suffixes) {
+                if (!lowerCase.endsWith(suffix)) continue;
 
-            final AtomicReference<UUID> atomic = new AtomicReference<>(this.player.getUniqueId());
+                final String target = reference.substring(0, reference.length() - suffix.length());
 
-            if (playerName.equalsIgnoreCase("{player}")) {
-                playerName = this.fusion.papi(this.player, playerName
-                        .replace("{", "%")
-                        .replace("}", "_name%"));
+                // Shortest player name first, so the crate name takes every remaining underscore.
+                for (int index = target.indexOf('_'); index > 0; index = target.indexOf('_', index + 1)) {
+                    final Crate crate = this.crateManager.getCrateFromName(target.substring(index + 1));
 
-                reference = reference.replace("{player}", playerName);
-            }
+                    if (crate == null) continue;
 
-            if (!playerName.equals(name)) {
-                final PlayerBuilder playerBuilder = new PlayerBuilder(playerName);
+                    final UUID uuid = getUuid(target.substring(0, index));
 
-                playerBuilder.getPlayer().ifPresentOrElse(target -> atomic.set(target.getUniqueId()), () -> playerBuilder.getOfflinePlayer().ifPresent(target -> atomic.set(target.getUniqueId())));
-            } else {
-                playerName = name;
-            }
+                    if (uuid == null) continue;
 
-            final UUID uuid = atomic.get();
+                    final String fileName = crate.getFileName();
 
-            if (uuid == null) {
-                return Optional.empty();
-            }
+                    return Optional.of(switch (suffix) {
+                        case "_virtual_raw" -> String.valueOf(this.userManager.getVirtualKeys(uuid, fileName));
+                        case "_virtual" -> StringUtils.formatNumber(this.userManager.getVirtualKeys(uuid, fileName));
+                        case "_physical_raw" -> String.valueOf(this.userManager.getPhysicalKeys(uuid, fileName));
+                        case "_physical" -> StringUtils.formatNumber(this.userManager.getPhysicalKeys(uuid, fileName));
+                        case "_total_raw" -> String.valueOf(this.userManager.getTotalKeys(uuid, fileName));
+                        case "_total" -> StringUtils.formatNumber(this.userManager.getTotalKeys(uuid, fileName));
+                        case "_opened_raw" -> String.valueOf(this.userManager.getCrateOpened(uuid, fileName));
+                        default -> StringUtils.formatNumber(this.userManager.getCrateOpened(uuid, fileName));
+                    });
+                }
 
-            if (reference.equalsIgnoreCase("%s_opened_raw".formatted(playerName))) {
-                return Optional.of(String.valueOf(this.userManager.getTotalCratesOpened(uuid)));
-            }
+                if (target.isEmpty() || !suffix.startsWith("_opened")) continue;
 
-            if (reference.equalsIgnoreCase("%s_opened".formatted(playerName))) {
-                return Optional.of(StringUtils.formatNumber(this.userManager.getTotalCratesOpened(uuid)));
-            }
+                final UUID uuid = getUuid(target);
 
-            if (splitter.length == 1) {
-                return Optional.empty();
-            }
+                if (uuid == null) continue;
 
-            final String crateName = splitter[1];
+                final int opened = this.userManager.getTotalCratesOpened(uuid);
 
-            if (reference.equalsIgnoreCase("%s_%s_opened_raw".formatted(playerName, crateName))) {
-                return Optional.of(String.valueOf(this.userManager.getCrateOpened(uuid, crateName)));
-            }
-
-            if (reference.equalsIgnoreCase("%s_%s_opened".formatted(playerName, crateName))) {
-                return Optional.of(StringUtils.formatNumber(this.userManager.getCrateOpened(uuid, crateName)));
-            }
-
-            if (reference.equalsIgnoreCase("%s_%s_physical_raw".formatted(playerName, crateName))) {
-                return Optional.of(String.valueOf(this.userManager.getPhysicalKeys(uuid, crateName)));
-            }
-
-            if (reference.equalsIgnoreCase("%s_%s_physical".formatted(playerName, crateName))) {
-                return Optional.of(StringUtils.formatNumber(this.userManager.getPhysicalKeys(uuid, crateName)));
-            }
-
-            if (reference.equalsIgnoreCase("%s_%s_virtual_raw".formatted(playerName, crateName))) {
-                return Optional.of(String.valueOf(this.userManager.getVirtualKeys(uuid, crateName)));
-            }
-
-            if (reference.equalsIgnoreCase("%s_%s_virtual".formatted(playerName, crateName))) {
-                return Optional.of(StringUtils.formatNumber(this.userManager.getVirtualKeys(uuid, crateName)));
-            }
-
-            if (reference.equalsIgnoreCase("%s_%s_total_raw".formatted(playerName, crateName))) {
-                return Optional.of(String.valueOf(this.userManager.getTotalKeys(uuid, crateName)));
-            }
-
-            if (reference.equalsIgnoreCase("%s_%s_total".formatted(playerName, crateName))) {
-                return Optional.of(StringUtils.formatNumber(this.userManager.getTotalKeys(uuid, crateName)));
+                return Optional.of(suffix.equals("_opened_raw") ? String.valueOf(opened) : StringUtils.formatNumber(opened));
             }
 
             return Optional.empty();
@@ -127,5 +112,17 @@ public final class NamePlaceholder implements AbstractPlaceholder {
 
             return Optional.empty();
         }
+    }
+
+    private @Nullable UUID getUuid(@NonNull final String playerName) {
+        final AtomicReference<UUID> atomic = new AtomicReference<>(this.player.getUniqueId());
+
+        if (!playerName.equals(this.player.getName())) {
+            final PlayerBuilder playerBuilder = new PlayerBuilder(playerName);
+
+            playerBuilder.getPlayer().ifPresentOrElse(target -> atomic.set(target.getUniqueId()), () -> playerBuilder.getOfflinePlayer().ifPresent(target -> atomic.set(target.getUniqueId())));
+        }
+
+        return atomic.get();
     }
 }
