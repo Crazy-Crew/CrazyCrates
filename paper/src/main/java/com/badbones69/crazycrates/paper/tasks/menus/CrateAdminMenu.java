@@ -82,7 +82,7 @@ public class CrateAdminMenu extends DynamicInventoryBuilder {
                 }
 
                 case SHIFT_LEFT -> {
-                    if (MiscUtils.isInventoryFull(this.player)) {
+                    if (!MiscUtils.isInventoryFull(this.player)) {
                         new FoliaScheduler(this.plugin, location) {
                             @Override
                             public void run() {

@@ -2,19 +2,38 @@ package com.badbones69.crazycrates.paper.support.placeholders.types;
 
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
+import com.badbones69.crazycrates.paper.api.objects.Crate;
 import com.badbones69.crazycrates.paper.support.placeholders.api.AbstractPlaceholder;
+import com.badbones69.crazycrates.paper.tasks.crates.CrateManager;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import org.jspecify.annotations.NonNull;
 import us.crazycrew.crazycrates.api.users.UserManager;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
 public final class SimplePlaceholder implements AbstractPlaceholder {
 
+    // A suffix that ends with another suffix must come before it.
+    private static final List<String> suffixes = List.of(
+            "_virtual_raw",
+            "_virtual",
+            "_physical_raw",
+            "_physical",
+            "_total_raw",
+            "_total",
+            "_opened_raw",
+            "_opened",
+            "_raw"
+    );
+
     private final CrazyCrates plugin = CrazyCrates.getPlugin();
 
     private final CrazyCratesPaper platform = this.plugin.getPlatform();
-    
+
+    private final CrateManager crateManager = this.platform.getCrateManager();
+
     private final UserManager userManager = this.platform.getUserManager();
 
     private final UUID uuid;
@@ -23,54 +42,41 @@ public final class SimplePlaceholder implements AbstractPlaceholder {
         this.uuid = uuid;
     }
 
+    /**
+     * Resolves {@code <crate>} and {@code <crate><suffix>}, where the crate is a loaded crate's file name.
+     *
+     * @param placeholder the placeholder without the identifier
+     * @return the value, or empty if no loaded crate matches
+     */
     @Override
     public @NonNull Optional<String> get(@NonNull final String placeholder) {
-        final String[] index = placeholder.split("_");
+        final Crate exact = this.crateManager.getCrateFromName(placeholder);
 
-        if (index.length == 0) {
-            return Optional.empty();
+        if (exact != null) {
+            return Optional.of(StringUtils.formatNumber(this.userManager.getVirtualKeys(this.uuid, exact.getFileName())));
         }
 
-        final String reference = index[0];
-        
-        if (placeholder.equalsIgnoreCase(reference)) {
-            return Optional.of(StringUtils.formatNumber(this.userManager.getVirtualKeys(this.uuid, reference)));
-        }
+        final String lowerCase = placeholder.toLowerCase(Locale.ROOT);
 
-        if (placeholder.equalsIgnoreCase("%s_virtual_raw".formatted(reference))) {
-            return Optional.of(String.valueOf(this.userManager.getVirtualKeys(this.uuid, reference)));
-        }
+        for (final String suffix : suffixes) {
+            if (!lowerCase.endsWith(suffix)) continue;
 
-        if (placeholder.equalsIgnoreCase("%s_virtual".formatted(reference))) {
-            return Optional.of(StringUtils.formatNumber(this.userManager.getVirtualKeys(this.uuid, reference)));
-        }
+            final Crate crate = this.crateManager.getCrateFromName(placeholder.substring(0, placeholder.length() - suffix.length()));
 
-        if (placeholder.equalsIgnoreCase("%s_physical_raw".formatted(reference))) {
-            return Optional.of(String.valueOf(this.userManager.getPhysicalKeys(this.uuid, reference)));
-        }
+            if (crate == null) continue;
 
-        if (placeholder.equalsIgnoreCase("%s_physical".formatted(reference))) {
-            return Optional.of(StringUtils.formatNumber(this.userManager.getPhysicalKeys(this.uuid, reference)));
-        }
+            final String fileName = crate.getFileName();
 
-        if (placeholder.equalsIgnoreCase("%s_total_raw".formatted(reference))) {
-            return Optional.of(String.valueOf(this.userManager.getTotalKeys(this.uuid, reference)));
-        }
-
-        if (placeholder.equalsIgnoreCase("%s_total".formatted(reference))) {
-            return Optional.of(StringUtils.formatNumber(this.userManager.getTotalKeys(this.uuid, reference)));
-        }
-
-        if (placeholder.equalsIgnoreCase("%s_opened_raw".formatted(reference))) {
-            return Optional.of(String.valueOf(this.userManager.getCrateOpened(this.uuid, reference)));
-        }
-
-        if (placeholder.equalsIgnoreCase("%s_opened".formatted(reference))) {
-            return Optional.of(StringUtils.formatNumber(this.userManager.getCrateOpened(this.uuid, reference)));
-        }
-
-        if (placeholder.equalsIgnoreCase("%s_raw".formatted(reference))) {
-            return Optional.of(String.valueOf(this.userManager.getVirtualKeys(this.uuid, reference)));
+            return Optional.of(switch (suffix) {
+                case "_virtual_raw", "_raw" -> String.valueOf(this.userManager.getVirtualKeys(this.uuid, fileName));
+                case "_virtual" -> StringUtils.formatNumber(this.userManager.getVirtualKeys(this.uuid, fileName));
+                case "_physical_raw" -> String.valueOf(this.userManager.getPhysicalKeys(this.uuid, fileName));
+                case "_physical" -> StringUtils.formatNumber(this.userManager.getPhysicalKeys(this.uuid, fileName));
+                case "_total_raw" -> String.valueOf(this.userManager.getTotalKeys(this.uuid, fileName));
+                case "_total" -> StringUtils.formatNumber(this.userManager.getTotalKeys(this.uuid, fileName));
+                case "_opened_raw" -> String.valueOf(this.userManager.getCrateOpened(this.uuid, fileName));
+                default -> StringUtils.formatNumber(this.userManager.getCrateOpened(this.uuid, fileName));
+            });
         }
 
         return Optional.empty();

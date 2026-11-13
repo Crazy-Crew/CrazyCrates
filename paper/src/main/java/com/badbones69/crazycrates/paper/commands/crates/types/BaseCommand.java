@@ -256,7 +256,15 @@ public abstract class BaseCommand {
             final UUID uuid = player.getUniqueId();
             final String name = player.getName();
 
-            this.userManager.addKeys(uuid, fileName, crate.getCrateType() == CrateType.crate_on_the_go ? KeyType.physical_key : type, clamp);
+            final boolean isOnTheGo = crate.getCrateType() == CrateType.crate_on_the_go;
+
+            // True when addKeys sends the inventory full notice in place of the keys.
+            final boolean isNotified = type == KeyType.physical_key && !isOnTheGo
+                    && this.pluginConfig.getProperty(CrateKeys.give_virtual_keys_when_inventory_full)
+                    && this.pluginConfig.getProperty(CrateKeys.notify_player_when_inventory_full)
+                    && MiscUtils.isInventoryFull(player);
+
+            this.userManager.addKeys(uuid, fileName, isOnTheGo ? KeyType.physical_key : type, clamp);
 
             final Map<String, String> placeholders = Map.of(
                 "{keytype}", type.getFriendlyName(),
@@ -275,7 +283,7 @@ public abstract class BaseCommand {
                 return;
             }
 
-            if (!this.pluginConfig.getProperty(CrateKeys.give_virtual_keys_when_inventory_full) || !this.pluginConfig.getProperty(CrateKeys.notify_player_when_inventory_full) && !MiscUtils.isInventoryFull(player) && player.isOnline()) {
+            if (!isNotified) {
                 Message.obtaining_keys.sendMessage(player, placeholders);
             }
 
