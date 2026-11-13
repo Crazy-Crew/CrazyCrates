@@ -6,7 +6,6 @@ import com.badbones69.crazycrates.paper.cache.objects.ActiveCrate;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
 import us.crazycrew.crazycrates.api.config.impl.types.config.RootKeys;
 import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
-import us.crazycrew.crazycrates.api.enums.messages.Message;
 import com.badbones69.crazycrates.paper.CrazyCrates;
 import com.badbones69.crazycrates.paper.api.CrazyCratesPaper;
 import com.badbones69.crazycrates.paper.managers.BukkitUserManager;
@@ -57,28 +56,6 @@ public class CrateOpenListener implements Listener {
 
         if (event.isCancelled()) { // if cancelled return.
             this.crateManager.endCrate(crate, player);
-
-            return;
-        }
-
-        if (crateType != CrateType.menu) {
-            if (crate.getPrizes().isEmpty() || !crate.canWinPrizes(player)) {
-                Message.prizes_empty.sendMessage(player, "{value}", fancyName);
-
-                this.crateManager.endCrate(crate, player);
-
-                event.setCancelled(true);
-
-                return;
-            }
-        }
-
-        if (!player.hasPermission("crazycrates.open." + fileName)) {
-            Message.crate_no_permission.sendMessage(player, "{crate}", fancyName);
-
-            this.crateManager.endCrate(crate, player);
-
-            event.setCancelled(true);
 
             return;
         }
