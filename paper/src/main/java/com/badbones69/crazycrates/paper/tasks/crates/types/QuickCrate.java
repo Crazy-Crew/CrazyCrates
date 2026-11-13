@@ -41,29 +41,34 @@ public class QuickCrate extends CrateBuilder {
 
         final AtomicInteger reference = new AtomicInteger();
 
-        // Keys consumed per open.
-        final int required = Math.max(amount, 1);
-
         // Crate event failed, so we return.
         if (isCrateEventValid(type, checkHand, isSilent, amount, eventType, event -> {
             if (isSneaking) {
-                final int keys = switch (type) {
+                int keys = switch (type) {
                     case virtual_key -> this.userManager.getVirtualKeys(this.uuid, fileName);
                     case physical_key -> this.userManager.getPhysicalKeys(this.uuid, fileName);
-                    default -> required;
+                    default -> 1;
                 };
 
-                final int opens = Math.min(keys / required, Math.max(this.crate.getMaxMassOpen(), 1));
+                if (keys >= 1) {
+                    for (;keys > 0; keys--) { // check keys first.
+                        int currentAmount = reference.get();
 
-                if (opens < 1 || !this.userManager.takeKeys(this.uuid, fileName, type, opens * required, true)) { // take keys first.
-                    this.crateManager.endCrate(this.crate, this.player);
+                        if (currentAmount >= this.crate.getMaxMassOpen()) break;
 
-                    event.setCancelled(true);
+                        reference.getAndIncrement();
+                    }
 
-                    return;
+                    final int value = reference.get();
+
+                    if (!this.userManager.takeKeys(this.uuid, fileName, type, value, true)) { // take keys first.
+                        this.crateManager.endCrate(this.crate, this.player);
+
+                        event.setCancelled(true);
+
+                        return;
+                    }
                 }
-
-                reference.set(opens);
 
                 return;
             }
@@ -90,7 +95,7 @@ public class QuickCrate extends CrateBuilder {
         if (currentAmount > 1) {
             for (;currentAmount > 0; currentAmount--) {
                 if (MiscUtils.isInventoryFull(this.player)) {
-                    this.userManager.addVirtualKeys(this.uuid, fileName, currentAmount * required);
+                    this.userManager.addVirtualKeys(this.uuid, fileName, currentAmount);
 
                     break;
                 }
