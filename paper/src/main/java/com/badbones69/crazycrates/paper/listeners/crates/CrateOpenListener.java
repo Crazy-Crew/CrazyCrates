@@ -81,7 +81,7 @@ public class CrateOpenListener implements Listener {
                     }
                 }
 
-                this.userManager.addOpenedCrate(player.getUniqueId(), fileName, 1);
+                this.userManager.addOpenedCrate(player.getUniqueId(), fileName, event.getAmount());
             }
         }
 
