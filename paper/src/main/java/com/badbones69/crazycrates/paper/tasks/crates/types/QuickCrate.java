@@ -100,6 +100,11 @@ public class QuickCrate extends CrateBuilder {
                 keysUsed++;
             }
 
+            // The open event already counted one open.
+            if (keysUsed != 1) {
+                this.userManager.addOpenedCrate(this.uuid, fileName, keysUsed - 1);
+            }
+
             this.crateManager.endQuickCrate(this.player, this.location, this.crate, true);
 
             final String name = this.player.getName();
