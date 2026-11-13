@@ -35,6 +35,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import us.crazycrew.crazycrates.api.config.impl.ConfigManager;
 import us.crazycrew.crazycrates.api.config.impl.types.config.crate.CrateKeys;
 import us.crazycrew.crazycrates.api.config.properties.PropertyManager;
+import us.crazycrew.crazycrates.api.enums.messages.Message;
 import us.crazycrew.crazycrates.api.enums.types.CrateType;
 import us.crazycrew.crazycrates.api.enums.types.KeyType;
 import com.badbones69.crazycrates.paper.CrazyCrates;
@@ -397,29 +398,41 @@ public abstract class CrateBuilder extends FoliaScheduler {
 
             final Consumer<CrateOpenEvent> consumer
     ) {
+        final String fileName = this.crate.getFileName();
+        final String playerName = this.player.getName();
+
+        // The consumer takes the keys, so these checks must run before it.
+        if (this.crate.getCrateType() != CrateType.menu && (this.crate.getPrizes().isEmpty() || !this.crate.canWinPrizes(this.player))) {
+            Message.prizes_empty.sendMessage(this.player, "{value}", this.crate.getCrateName());
+
+            if (this.fusion.isVerbose()) {
+                this.logger.warn("{} could not open {} due to no valid prizes being found.", playerName, fileName);
+            }
+
+            this.crateManager.endCrate(this.crate, this.player);
+
+            return true;
+        }
+
+        if (!this.player.hasPermission("crazycrates.open." + fileName)) {
+            Message.crate_no_permission.sendMessage(this.player, "{crate}", this.crate.getCrateName());
+
+            if (this.fusion.isVerbose()) {
+                this.logger.warn("{} could not open {} due to not having the permission required to open the crate.", playerName, fileName);
+            }
+
+            this.crateManager.endCrate(this.crate, this.player);
+
+            return true;
+        }
+
         final CrateOpenEvent event = new CrateOpenEvent(this.player, this.location, this.crate, keyType, checkHand, this.crate.getSection(), isSilent, eventType, amount);
 
         consumer.accept(event);
 
         event.callEvent();
 
-        final boolean isCancelled = event.isCancelled();
-
-        if (isCancelled) {
-            if (this.fusion.isVerbose()) {
-                final String fileName = this.crate.getFileName();
-
-                final String playerName = this.player.getName();
-
-                if (!this.player.hasPermission("crazycrates.open." + fileName)) {
-                    this.logger.warn("{} could not open {} due to not having the permission required to open the crate.", playerName, fileName);
-                } else if (!this.crate.canWinPrizes(this.player)) {
-                    this.logger.warn("{} could not open {} due to no valid prizes being found which led to the event being cancelled.", playerName, fileName);
-                }
-            }
-        }
-
-        return isCancelled;
+        return event.isCancelled();
     }
 
     public final boolean isCrateEventValid(
