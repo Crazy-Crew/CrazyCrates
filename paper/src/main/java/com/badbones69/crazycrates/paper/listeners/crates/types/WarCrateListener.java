@@ -54,6 +54,9 @@ public class WarCrateListener implements Listener {
 
             final int slot = event.getRawSlot();
 
+            // Raw slots at or above the menu size belong to the player's inventory.
+            if (slot < 0 || slot >= inventory.getSize()) return;
+
             final Prize prize = crate.pickPrize(player);
 
             inventory.setItem(slot, prize.getDisplayItem(player, crate));
