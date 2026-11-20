@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class ChestManager {
 
     public static void openChest(@NotNull final Block block, final boolean forceUpdate) {
-        if (block.getType() != Material.CHEST || block.getType() != Material.TRAPPED_CHEST || block.getType() != Material.ENDER_CHEST) return;
+        if (block.getType() != Material.CHEST && block.getType() != Material.TRAPPED_CHEST && block.getType() != Material.ENDER_CHEST) return;
 
         final BlockState blockState = block.getState();
 
@@ -36,7 +36,7 @@ public class ChestManager {
     }
 
     public static void closeChest(@NotNull final Block block, final boolean forceUpdate) {
-        if (block.getType() != Material.CHEST || block.getType() != Material.TRAPPED_CHEST || block.getType() != Material.ENDER_CHEST) return;
+        if (block.getType() != Material.CHEST && block.getType() != Material.TRAPPED_CHEST && block.getType() != Material.ENDER_CHEST) return;
 
         final BlockState blockState = block.getState();
 
@@ -86,7 +86,7 @@ public class ChestManager {
     }
 
     public static boolean isChestOpen(@NotNull final Block block) {
-        if (block.getType() != Material.CHEST || block.getType() != Material.TRAPPED_CHEST || block.getType() != Material.ENDER_CHEST) return false;
+        if (block.getType() != Material.CHEST && block.getType() != Material.TRAPPED_CHEST && block.getType() != Material.ENDER_CHEST) return false;
 
         final BlockState blockState = block.getState();
 

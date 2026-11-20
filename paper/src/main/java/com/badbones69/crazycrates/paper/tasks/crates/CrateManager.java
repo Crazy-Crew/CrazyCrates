@@ -1613,7 +1613,7 @@ public class CrateManager {
         if (section == null) return;
 
         for (final String uuid : section.getKeys(false)) {
-            if (data.contains("Players." + uuid + ".tracking")) return;
+            if (data.contains("Players." + uuid + ".tracking")) continue;
 
             boolean hasKeys = false;
 

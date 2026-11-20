@@ -590,7 +590,9 @@ public class BukkitUserManager extends UserManager {
 
         final YamlConfiguration configuration = this.data.getConfiguration();
 
-        final ConfigurationSection section = configuration.getConfigurationSection("Players.%s".formatted(uuid));
+        final String path = "Players.%s".formatted(uuid);
+
+        final ConfigurationSection section = configuration.isConfigurationSection(path) ? configuration.getConfigurationSection(path) : configuration.createSection(path);
 
         if (section == null) return;
 
